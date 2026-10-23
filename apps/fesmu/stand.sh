@@ -10,7 +10,7 @@ set -euo pipefail
 
 cd "$(dirname "$0")"
 
-stand=$(grep -E '^STAND=' .env 2>/dev/null | tail -1 | cut -d= -f2- | tr -d "\"' ")
+stand=$( (grep -E '^STAND=' .env 2>/dev/null || true) | tail -1 | cut -d= -f2- | tr -d "\"' ")
 if [ -z "$stand" ]; then
   echo "в .env нет STAND=… — это прод-конфигурация, на стенде не запускаю" >&2
   exit 1

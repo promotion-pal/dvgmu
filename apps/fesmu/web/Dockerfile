@@ -15,16 +15,18 @@ WORKDIR /workspace
 
 RUN npm install -g pnpm
 
+# Контекст сборки — корень монорепо (общий pnpm workspace и packages/);
+# что именно попадает в контекст, задаёт Dockerfile.dockerignore рядом.
 COPY .npmrc pnpm-workspace.yaml pnpm-lock.yaml package.json ./
-COPY apps/app/package.json apps/app/package.json
+COPY apps/fesmu/web/package.json apps/fesmu/web/package.json
 COPY packages/contract/package.json packages/contract/package.json
 
 RUN pnpm install --frozen-lockfile
 
-COPY apps/app apps/app
+COPY apps/fesmu/web apps/fesmu/web
 COPY packages packages
 
-WORKDIR /workspace/apps/app
+WORKDIR /workspace/apps/fesmu/web
 RUN pnpm run build
 
 EXPOSE 3000

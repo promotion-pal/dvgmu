@@ -3,6 +3,7 @@
 #
 #   ./stand.sh auth up -d --build
 #   ./stand.sh mdm logs -f
+#   ./stand.sh fesmu up -d --build
 #
 # Отказывается работать, если в services/<svc>/.env нет STAND=…: без него
 # compose возьмёт прод-имена и пересоздаст прод-контейнеры. См. docs/stand.md.
@@ -15,14 +16,17 @@ fi
 
 svc=$1
 shift
-dir="$(cd "$(dirname "$0")" && pwd)/services/$svc"
+root="$(cd "$(dirname "$0")" && pwd)"
+# Сервис (services/<svc>) или приложение (apps/<svc>, например fesmu).
+dir="$root/services/$svc"
+[ -f "$dir/docker-compose.yml" ] || dir="$root/apps/$svc"
 
 if [ ! -f "$dir/docker-compose.yml" ]; then
-  echo "нет сервиса $svc ($dir/docker-compose.yml)" >&2
+  echo "нет сервиса или приложения $svc (services/$svc, apps/$svc)" >&2
   exit 2
 fi
 
-stand=$(grep -E '^STAND=' "$dir/.env" 2>/dev/null | tail -1 | cut -d= -f2- | tr -d "\"' ")
+stand=$( (grep -E '^STAND=' "$dir/.env" 2>/dev/null || true) | tail -1 | cut -d= -f2- | tr -d "\"' ")
 if [ -z "$stand" ]; then
   echo "в $dir/.env нет STAND=… — это прод-конфигурация, на стенде не запускаю" >&2
   exit 1

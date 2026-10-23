@@ -1,0 +1,7 @@
+# Общий фронтовый workspace монорепо. Бэкенды (services/*/api, apps/*/api) —
+# отдельные Go-модули и сюда не входят: каждый собирается из своей папки.
+packages:
+  - "apps/fesmu/web"
+  - "packages/*"
+allowBuilds:
+  esbuild: true

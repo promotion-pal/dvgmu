@@ -11,8 +11,9 @@ services:
   core_app:
     container_name: "fesmu_core${STAND:+_${STAND}}_app"
     build:
-      context: "."
-      dockerfile: "apps/app/Dockerfile"
+      # Корень монорепо: веб собирается в общем pnpm workspace (packages/).
+      context: "../.."
+      dockerfile: "apps/fesmu/web/Dockerfile"
       args:
         VERSION: ${VERSION:-dev}
         API_URL: ${VITE_API_URL:-https://api.core.fesmu.ru}

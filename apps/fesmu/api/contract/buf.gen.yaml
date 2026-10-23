@@ -16,5 +16,5 @@ plugins:
     opt: paths=source_relative
 
   - local: protoc-gen-es
-    out: ../../packages/contract
+    out: ../../../../packages/contract
     opt: target=ts
