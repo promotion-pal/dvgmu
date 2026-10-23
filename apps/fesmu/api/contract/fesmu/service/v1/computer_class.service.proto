@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package contract.service.v1;
+
+import "fesmu/entity/v1/computer_class.entity.proto";
+import "fesmu/enum/v1/computer_class.enum.proto";
+
+option go_package = "service_v1;service_pb";
+
+// The computer classes' timetable. Reading is public (students check where
+// and when their lesson or testing is); creating, editing and deleting need
+// the computer_classes.post permission.
+service ComputerClassService {
+    rpc ComputerClassSessionFetch (ComputerClassSessionFetchRequest) returns (ComputerClassSessionFetchResponse);
+    rpc ComputerClassSessionCreate (ComputerClassSessionCreateRequest) returns (ComputerClassSessionCreateResponse);
+    rpc ComputerClassSessionUpdate (ComputerClassSessionUpdateRequest) returns (ComputerClassSessionUpdateResponse);
+    rpc ComputerClassSessionDelete (ComputerClassSessionDeleteRequest) returns (ComputerClassSessionDeleteResponse);
+}
+
+// Empty fields mean "any". Dates are ISO (YYYY-MM-DD), both inclusive.
+message ComputerClassSessionFetchRequest {
+    string room = 1;
+    string date_from = 2;
+    string date_to = 3;
+    // UNSPECIFIED — any kind.
+    contract.enum.v1.ComputerClassSessionKind kind = 4;
+}
+
+message ComputerClassSessionFetchResponse {
+    repeated contract.entity.v1.ComputerClassSession list = 1;
+}
+
+message ComputerClassSessionCreateRequest {
+    string date = 1;
+    string time_start = 2;
+    string time_end = 3;
+    string room = 4;
+    string title = 5;
+    string groups = 6;
+    string note = 7;
+    contract.enum.v1.ComputerClassSessionKind kind = 8;
+}
+
+message ComputerClassSessionCreateResponse {
+    bool success = 1;
+    string message = 2;
+    int64 computer_class_session_id = 3;
+}
+
+message ComputerClassSessionUpdateRequest {
+    int64 id = 1;
+    string date = 2;
+    string time_start = 3;
+    string time_end = 4;
+    string room = 5;
+    string title = 6;
+    string groups = 7;
+    string note = 8;
+    contract.enum.v1.ComputerClassSessionKind kind = 9;
+}
+
+message ComputerClassSessionUpdateResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message ComputerClassSessionDeleteRequest {
+    int64 id = 1;
+}
+
+message ComputerClassSessionDeleteResponse {
+    bool success = 1;
+    string message = 2;
+}

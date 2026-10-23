@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: entity/ticket.entity.proto
+// source: tickets/entity/ticket.entity.proto
 
 package entity
 
@@ -40,7 +40,7 @@ type TicketBuild struct {
 
 func (x *TicketBuild) Reset() {
 	*x = TicketBuild{}
-	mi := &file_entity_ticket_entity_proto_msgTypes[0]
+	mi := &file_tickets_entity_ticket_entity_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -52,7 +52,7 @@ func (x *TicketBuild) String() string {
 func (*TicketBuild) ProtoMessage() {}
 
 func (x *TicketBuild) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_ticket_entity_proto_msgTypes[0]
+	mi := &file_tickets_entity_ticket_entity_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -65,7 +65,7 @@ func (x *TicketBuild) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TicketBuild.ProtoReflect.Descriptor instead.
 func (*TicketBuild) Descriptor() ([]byte, []int) {
-	return file_entity_ticket_entity_proto_rawDescGZIP(), []int{0}
+	return file_tickets_entity_ticket_entity_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *TicketBuild) GetId() int64 {
@@ -148,7 +148,7 @@ type TicketDormitory struct {
 
 func (x *TicketDormitory) Reset() {
 	*x = TicketDormitory{}
-	mi := &file_entity_ticket_entity_proto_msgTypes[1]
+	mi := &file_tickets_entity_ticket_entity_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -160,7 +160,7 @@ func (x *TicketDormitory) String() string {
 func (*TicketDormitory) ProtoMessage() {}
 
 func (x *TicketDormitory) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_ticket_entity_proto_msgTypes[1]
+	mi := &file_tickets_entity_ticket_entity_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -173,7 +173,7 @@ func (x *TicketDormitory) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TicketDormitory.ProtoReflect.Descriptor instead.
 func (*TicketDormitory) Descriptor() ([]byte, []int) {
-	return file_entity_ticket_entity_proto_rawDescGZIP(), []int{1}
+	return file_tickets_entity_ticket_entity_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *TicketDormitory) GetId() int64 {
@@ -239,11 +239,11 @@ func (x *TicketDormitory) GetCreatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
-var File_entity_ticket_entity_proto protoreflect.FileDescriptor
+var File_tickets_entity_ticket_entity_proto protoreflect.FileDescriptor
 
-const file_entity_ticket_entity_proto_rawDesc = "" +
+const file_tickets_entity_ticket_entity_proto_rawDesc = "" +
 	"\n" +
-	"\x1aentity/ticket.entity.proto\x12\x17contract.tickets.entity\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x16enum/ticket.enum.proto\x1a\x18enum/location.enum.proto\"\x94\x03\n" +
+	"\"tickets/entity/ticket.entity.proto\x12\x17contract.tickets.entity\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1etickets/enum/ticket.enum.proto\x1a tickets/enum/location.enum.proto\"\x94\x03\n" +
 	"\vTicketBuild\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\x03R\x06userId\x12\x12\n" +
@@ -271,19 +271,19 @@ const file_entity_ticket_entity_proto_rawDesc = "" +
 	"\x1bcom.contract.tickets.entityB\x11TicketEntityProtoP\x01Z\x1dfesmu/contract/tickets/entity\xa2\x02\x03CTE\xaa\x02\x17Contract.Tickets.Entity\xca\x02\x17Contract\\Tickets\\Entity\xe2\x02#Contract\\Tickets\\Entity\\GPBMetadata\xea\x02\x19Contract::Tickets::Entityb\x06proto3"
 
 var (
-	file_entity_ticket_entity_proto_rawDescOnce sync.Once
-	file_entity_ticket_entity_proto_rawDescData []byte
+	file_tickets_entity_ticket_entity_proto_rawDescOnce sync.Once
+	file_tickets_entity_ticket_entity_proto_rawDescData []byte
 )
 
-func file_entity_ticket_entity_proto_rawDescGZIP() []byte {
-	file_entity_ticket_entity_proto_rawDescOnce.Do(func() {
-		file_entity_ticket_entity_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_entity_ticket_entity_proto_rawDesc), len(file_entity_ticket_entity_proto_rawDesc)))
+func file_tickets_entity_ticket_entity_proto_rawDescGZIP() []byte {
+	file_tickets_entity_ticket_entity_proto_rawDescOnce.Do(func() {
+		file_tickets_entity_ticket_entity_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_tickets_entity_ticket_entity_proto_rawDesc), len(file_tickets_entity_ticket_entity_proto_rawDesc)))
 	})
-	return file_entity_ticket_entity_proto_rawDescData
+	return file_tickets_entity_ticket_entity_proto_rawDescData
 }
 
-var file_entity_ticket_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_entity_ticket_entity_proto_goTypes = []any{
+var file_tickets_entity_ticket_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_tickets_entity_ticket_entity_proto_goTypes = []any{
 	(*TicketBuild)(nil),             // 0: contract.tickets.entity.TicketBuild
 	(*TicketDormitory)(nil),         // 1: contract.tickets.entity.TicketDormitory
 	(enum.LocationBuildType)(0),     // 2: contract.tickets.enum.LocationBuildType
@@ -292,7 +292,7 @@ var file_entity_ticket_entity_proto_goTypes = []any{
 	(*timestamppb.Timestamp)(nil),   // 5: google.protobuf.Timestamp
 	(enum.LocationDormitoryType)(0), // 6: contract.tickets.enum.LocationDormitoryType
 }
-var file_entity_ticket_entity_proto_depIdxs = []int32{
+var file_tickets_entity_ticket_entity_proto_depIdxs = []int32{
 	2,  // 0: contract.tickets.entity.TicketBuild.location:type_name -> contract.tickets.enum.LocationBuildType
 	3,  // 1: contract.tickets.entity.TicketBuild.type:type_name -> contract.tickets.enum.TicketType
 	4,  // 2: contract.tickets.entity.TicketBuild.status:type_name -> contract.tickets.enum.TicketStatus
@@ -310,26 +310,26 @@ var file_entity_ticket_entity_proto_depIdxs = []int32{
 	0,  // [0:10] is the sub-list for field type_name
 }
 
-func init() { file_entity_ticket_entity_proto_init() }
-func file_entity_ticket_entity_proto_init() {
-	if File_entity_ticket_entity_proto != nil {
+func init() { file_tickets_entity_ticket_entity_proto_init() }
+func file_tickets_entity_ticket_entity_proto_init() {
+	if File_tickets_entity_ticket_entity_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_entity_ticket_entity_proto_rawDesc), len(file_entity_ticket_entity_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_tickets_entity_ticket_entity_proto_rawDesc), len(file_tickets_entity_ticket_entity_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_entity_ticket_entity_proto_goTypes,
-		DependencyIndexes: file_entity_ticket_entity_proto_depIdxs,
-		MessageInfos:      file_entity_ticket_entity_proto_msgTypes,
+		GoTypes:           file_tickets_entity_ticket_entity_proto_goTypes,
+		DependencyIndexes: file_tickets_entity_ticket_entity_proto_depIdxs,
+		MessageInfos:      file_tickets_entity_ticket_entity_proto_msgTypes,
 	}.Build()
-	File_entity_ticket_entity_proto = out.File
-	file_entity_ticket_entity_proto_goTypes = nil
-	file_entity_ticket_entity_proto_depIdxs = nil
+	File_tickets_entity_ticket_entity_proto = out.File
+	file_tickets_entity_ticket_entity_proto_goTypes = nil
+	file_tickets_entity_ticket_entity_proto_depIdxs = nil
 }

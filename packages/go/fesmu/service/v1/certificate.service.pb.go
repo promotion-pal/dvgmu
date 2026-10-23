@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: service/v1/certificate.service.proto
+// source: fesmu/service/v1/certificate.service.proto
 
 package servicev1
 
@@ -56,11 +56,11 @@ func (x CertificateOrderStatus) String() string {
 }
 
 func (CertificateOrderStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_service_v1_certificate_service_proto_enumTypes[0].Descriptor()
+	return file_fesmu_service_v1_certificate_service_proto_enumTypes[0].Descriptor()
 }
 
 func (CertificateOrderStatus) Type() protoreflect.EnumType {
-	return &file_service_v1_certificate_service_proto_enumTypes[0]
+	return &file_fesmu_service_v1_certificate_service_proto_enumTypes[0]
 }
 
 func (x CertificateOrderStatus) Number() protoreflect.EnumNumber {
@@ -69,7 +69,7 @@ func (x CertificateOrderStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use CertificateOrderStatus.Descriptor instead.
 func (CertificateOrderStatus) EnumDescriptor() ([]byte, []int) {
-	return file_service_v1_certificate_service_proto_rawDescGZIP(), []int{0}
+	return file_fesmu_service_v1_certificate_service_proto_rawDescGZIP(), []int{0}
 }
 
 type CertificateOrderEntry struct {
@@ -90,7 +90,7 @@ type CertificateOrderEntry struct {
 
 func (x *CertificateOrderEntry) Reset() {
 	*x = CertificateOrderEntry{}
-	mi := &file_service_v1_certificate_service_proto_msgTypes[0]
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -102,7 +102,7 @@ func (x *CertificateOrderEntry) String() string {
 func (*CertificateOrderEntry) ProtoMessage() {}
 
 func (x *CertificateOrderEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_certificate_service_proto_msgTypes[0]
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -115,7 +115,7 @@ func (x *CertificateOrderEntry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CertificateOrderEntry.ProtoReflect.Descriptor instead.
 func (*CertificateOrderEntry) Descriptor() ([]byte, []int) {
-	return file_service_v1_certificate_service_proto_rawDescGZIP(), []int{0}
+	return file_fesmu_service_v1_certificate_service_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *CertificateOrderEntry) GetId() int64 {
@@ -198,7 +198,7 @@ type CertificateFetchRequest struct {
 
 func (x *CertificateFetchRequest) Reset() {
 	*x = CertificateFetchRequest{}
-	mi := &file_service_v1_certificate_service_proto_msgTypes[1]
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -210,7 +210,7 @@ func (x *CertificateFetchRequest) String() string {
 func (*CertificateFetchRequest) ProtoMessage() {}
 
 func (x *CertificateFetchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_certificate_service_proto_msgTypes[1]
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -223,7 +223,7 @@ func (x *CertificateFetchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CertificateFetchRequest.ProtoReflect.Descriptor instead.
 func (*CertificateFetchRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_certificate_service_proto_rawDescGZIP(), []int{1}
+	return file_fesmu_service_v1_certificate_service_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *CertificateFetchRequest) GetStatus() CertificateOrderStatus {
@@ -242,7 +242,7 @@ type CertificateFetchResponse struct {
 
 func (x *CertificateFetchResponse) Reset() {
 	*x = CertificateFetchResponse{}
-	mi := &file_service_v1_certificate_service_proto_msgTypes[2]
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -254,7 +254,7 @@ func (x *CertificateFetchResponse) String() string {
 func (*CertificateFetchResponse) ProtoMessage() {}
 
 func (x *CertificateFetchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_certificate_service_proto_msgTypes[2]
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -267,7 +267,7 @@ func (x *CertificateFetchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CertificateFetchResponse.ProtoReflect.Descriptor instead.
 func (*CertificateFetchResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_certificate_service_proto_rawDescGZIP(), []int{2}
+	return file_fesmu_service_v1_certificate_service_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *CertificateFetchResponse) GetOrders() []*CertificateOrderEntry {
@@ -286,7 +286,7 @@ type CertificateIssueRequest struct {
 
 func (x *CertificateIssueRequest) Reset() {
 	*x = CertificateIssueRequest{}
-	mi := &file_service_v1_certificate_service_proto_msgTypes[3]
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -298,7 +298,7 @@ func (x *CertificateIssueRequest) String() string {
 func (*CertificateIssueRequest) ProtoMessage() {}
 
 func (x *CertificateIssueRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_certificate_service_proto_msgTypes[3]
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -311,7 +311,7 @@ func (x *CertificateIssueRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CertificateIssueRequest.ProtoReflect.Descriptor instead.
 func (*CertificateIssueRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_certificate_service_proto_rawDescGZIP(), []int{3}
+	return file_fesmu_service_v1_certificate_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *CertificateIssueRequest) GetId() int64 {
@@ -332,7 +332,7 @@ type CertificateIssueResponse struct {
 
 func (x *CertificateIssueResponse) Reset() {
 	*x = CertificateIssueResponse{}
-	mi := &file_service_v1_certificate_service_proto_msgTypes[4]
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -344,7 +344,7 @@ func (x *CertificateIssueResponse) String() string {
 func (*CertificateIssueResponse) ProtoMessage() {}
 
 func (x *CertificateIssueResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_certificate_service_proto_msgTypes[4]
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -357,7 +357,7 @@ func (x *CertificateIssueResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CertificateIssueResponse.ProtoReflect.Descriptor instead.
 func (*CertificateIssueResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_certificate_service_proto_rawDescGZIP(), []int{4}
+	return file_fesmu_service_v1_certificate_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *CertificateIssueResponse) GetOrder() *CertificateOrderEntry {
@@ -396,7 +396,7 @@ type CertificateOrderRequest struct {
 
 func (x *CertificateOrderRequest) Reset() {
 	*x = CertificateOrderRequest{}
-	mi := &file_service_v1_certificate_service_proto_msgTypes[5]
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -408,7 +408,7 @@ func (x *CertificateOrderRequest) String() string {
 func (*CertificateOrderRequest) ProtoMessage() {}
 
 func (x *CertificateOrderRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_certificate_service_proto_msgTypes[5]
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -421,7 +421,7 @@ func (x *CertificateOrderRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CertificateOrderRequest.ProtoReflect.Descriptor instead.
 func (*CertificateOrderRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_certificate_service_proto_rawDescGZIP(), []int{5}
+	return file_fesmu_service_v1_certificate_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *CertificateOrderRequest) GetUserId() int64 {
@@ -457,7 +457,7 @@ type CertificateOrderResponse struct {
 
 func (x *CertificateOrderResponse) Reset() {
 	*x = CertificateOrderResponse{}
-	mi := &file_service_v1_certificate_service_proto_msgTypes[6]
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -469,7 +469,7 @@ func (x *CertificateOrderResponse) String() string {
 func (*CertificateOrderResponse) ProtoMessage() {}
 
 func (x *CertificateOrderResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_certificate_service_proto_msgTypes[6]
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -482,7 +482,7 @@ func (x *CertificateOrderResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CertificateOrderResponse.ProtoReflect.Descriptor instead.
 func (*CertificateOrderResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_certificate_service_proto_rawDescGZIP(), []int{6}
+	return file_fesmu_service_v1_certificate_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *CertificateOrderResponse) GetSuccess() bool {
@@ -513,11 +513,11 @@ func (x *CertificateOrderResponse) GetContent() []byte {
 	return nil
 }
 
-var File_service_v1_certificate_service_proto protoreflect.FileDescriptor
+var File_fesmu_service_v1_certificate_service_proto protoreflect.FileDescriptor
 
-const file_service_v1_certificate_service_proto_rawDesc = "" +
+const file_fesmu_service_v1_certificate_service_proto_rawDesc = "" +
 	"\n" +
-	"$service/v1/certificate.service.proto\x12\x13contract.service.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x14enum/file.enum.proto\"\xca\x03\n" +
+	"*fesmu/service/v1/certificate.service.proto\x12\x13contract.service.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x19file/enum/file.enum.proto\"\xca\x03\n" +
 	"\x15CertificateOrderEntry\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12$\n" +
 	"\x0estudent_mdm_id\x18\x02 \x01(\x03R\fstudentMdmId\x12!\n" +
@@ -564,20 +564,20 @@ const file_service_v1_certificate_service_proto_rawDesc = "" +
 	"\x17com.contract.service.v1B\x17CertificateServiceProtoP\x01Z)fesmu/contract/fesmu/service/v1;servicev1\xa2\x02\x03CSX\xaa\x02\x13Contract.Service.V1\xca\x02\x13Contract\\Service\\V1\xe2\x02\x1fContract\\Service\\V1\\GPBMetadata\xea\x02\x15Contract::Service::V1b\x06proto3"
 
 var (
-	file_service_v1_certificate_service_proto_rawDescOnce sync.Once
-	file_service_v1_certificate_service_proto_rawDescData []byte
+	file_fesmu_service_v1_certificate_service_proto_rawDescOnce sync.Once
+	file_fesmu_service_v1_certificate_service_proto_rawDescData []byte
 )
 
-func file_service_v1_certificate_service_proto_rawDescGZIP() []byte {
-	file_service_v1_certificate_service_proto_rawDescOnce.Do(func() {
-		file_service_v1_certificate_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_service_v1_certificate_service_proto_rawDesc), len(file_service_v1_certificate_service_proto_rawDesc)))
+func file_fesmu_service_v1_certificate_service_proto_rawDescGZIP() []byte {
+	file_fesmu_service_v1_certificate_service_proto_rawDescOnce.Do(func() {
+		file_fesmu_service_v1_certificate_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_fesmu_service_v1_certificate_service_proto_rawDesc), len(file_fesmu_service_v1_certificate_service_proto_rawDesc)))
 	})
-	return file_service_v1_certificate_service_proto_rawDescData
+	return file_fesmu_service_v1_certificate_service_proto_rawDescData
 }
 
-var file_service_v1_certificate_service_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_service_v1_certificate_service_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
-var file_service_v1_certificate_service_proto_goTypes = []any{
+var file_fesmu_service_v1_certificate_service_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_fesmu_service_v1_certificate_service_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_fesmu_service_v1_certificate_service_proto_goTypes = []any{
 	(CertificateOrderStatus)(0),      // 0: contract.service.v1.CertificateOrderStatus
 	(*CertificateOrderEntry)(nil),    // 1: contract.service.v1.CertificateOrderEntry
 	(*CertificateFetchRequest)(nil),  // 2: contract.service.v1.CertificateFetchRequest
@@ -589,7 +589,7 @@ var file_service_v1_certificate_service_proto_goTypes = []any{
 	(enum.FileGenerateType)(0),       // 8: contract.file.enum.FileGenerateType
 	(*timestamppb.Timestamp)(nil),    // 9: google.protobuf.Timestamp
 }
-var file_service_v1_certificate_service_proto_depIdxs = []int32{
+var file_fesmu_service_v1_certificate_service_proto_depIdxs = []int32{
 	8,  // 0: contract.service.v1.CertificateOrderEntry.type:type_name -> contract.file.enum.FileGenerateType
 	0,  // 1: contract.service.v1.CertificateOrderEntry.status:type_name -> contract.service.v1.CertificateOrderStatus
 	9,  // 2: contract.service.v1.CertificateOrderEntry.created_at:type_name -> google.protobuf.Timestamp
@@ -611,28 +611,28 @@ var file_service_v1_certificate_service_proto_depIdxs = []int32{
 	0,  // [0:8] is the sub-list for field type_name
 }
 
-func init() { file_service_v1_certificate_service_proto_init() }
-func file_service_v1_certificate_service_proto_init() {
-	if File_service_v1_certificate_service_proto != nil {
+func init() { file_fesmu_service_v1_certificate_service_proto_init() }
+func file_fesmu_service_v1_certificate_service_proto_init() {
+	if File_fesmu_service_v1_certificate_service_proto != nil {
 		return
 	}
-	file_service_v1_certificate_service_proto_msgTypes[0].OneofWrappers = []any{}
+	file_fesmu_service_v1_certificate_service_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_service_v1_certificate_service_proto_rawDesc), len(file_service_v1_certificate_service_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_fesmu_service_v1_certificate_service_proto_rawDesc), len(file_fesmu_service_v1_certificate_service_proto_rawDesc)),
 			NumEnums:      1,
 			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_service_v1_certificate_service_proto_goTypes,
-		DependencyIndexes: file_service_v1_certificate_service_proto_depIdxs,
-		EnumInfos:         file_service_v1_certificate_service_proto_enumTypes,
-		MessageInfos:      file_service_v1_certificate_service_proto_msgTypes,
+		GoTypes:           file_fesmu_service_v1_certificate_service_proto_goTypes,
+		DependencyIndexes: file_fesmu_service_v1_certificate_service_proto_depIdxs,
+		EnumInfos:         file_fesmu_service_v1_certificate_service_proto_enumTypes,
+		MessageInfos:      file_fesmu_service_v1_certificate_service_proto_msgTypes,
 	}.Build()
-	File_service_v1_certificate_service_proto = out.File
-	file_service_v1_certificate_service_proto_goTypes = nil
-	file_service_v1_certificate_service_proto_depIdxs = nil
+	File_fesmu_service_v1_certificate_service_proto = out.File
+	file_fesmu_service_v1_certificate_service_proto_goTypes = nil
+	file_fesmu_service_v1_certificate_service_proto_depIdxs = nil
 }

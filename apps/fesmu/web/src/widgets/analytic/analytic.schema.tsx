@@ -1,4 +1,4 @@
-import { AnalyticType } from "@fesmu/contract/enum/analytic.enum_pb";
+import { AnalyticType } from "@fesmu/contract/analytics/enum/analytic.enum_pb";
 import z from "zod";
 
 export const analyticSchema = z.object({

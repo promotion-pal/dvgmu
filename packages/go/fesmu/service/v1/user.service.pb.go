@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: service/v1/user.service.proto
+// source: fesmu/service/v1/user.service.proto
 
 package servicev1
 
@@ -30,7 +30,7 @@ type UserMeRequest struct {
 
 func (x *UserMeRequest) Reset() {
 	*x = UserMeRequest{}
-	mi := &file_service_v1_user_service_proto_msgTypes[0]
+	mi := &file_fesmu_service_v1_user_service_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -42,7 +42,7 @@ func (x *UserMeRequest) String() string {
 func (*UserMeRequest) ProtoMessage() {}
 
 func (x *UserMeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_user_service_proto_msgTypes[0]
+	mi := &file_fesmu_service_v1_user_service_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -55,7 +55,7 @@ func (x *UserMeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserMeRequest.ProtoReflect.Descriptor instead.
 func (*UserMeRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_user_service_proto_rawDescGZIP(), []int{0}
+	return file_fesmu_service_v1_user_service_proto_rawDescGZIP(), []int{0}
 }
 
 type UserMeResponse struct {
@@ -73,7 +73,7 @@ type UserMeResponse struct {
 
 func (x *UserMeResponse) Reset() {
 	*x = UserMeResponse{}
-	mi := &file_service_v1_user_service_proto_msgTypes[1]
+	mi := &file_fesmu_service_v1_user_service_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -85,7 +85,7 @@ func (x *UserMeResponse) String() string {
 func (*UserMeResponse) ProtoMessage() {}
 
 func (x *UserMeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_user_service_proto_msgTypes[1]
+	mi := &file_fesmu_service_v1_user_service_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -98,7 +98,7 @@ func (x *UserMeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserMeResponse.ProtoReflect.Descriptor instead.
 func (*UserMeResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_user_service_proto_rawDescGZIP(), []int{1}
+	return file_fesmu_service_v1_user_service_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *UserMeResponse) GetUser() *v1.User {
@@ -136,11 +136,11 @@ func (x *UserMeResponse) GetUsername() string {
 	return ""
 }
 
-var File_service_v1_user_service_proto protoreflect.FileDescriptor
+var File_fesmu_service_v1_user_service_proto protoreflect.FileDescriptor
 
-const file_service_v1_user_service_proto_rawDesc = "" +
+const file_fesmu_service_v1_user_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1dservice/v1/user.service.proto\x12\x13contract.service.v1\x1a\x1bentity/v1/user.entity.proto\"\x0f\n" +
+	"#fesmu/service/v1/user.service.proto\x12\x13contract.service.v1\x1a!fesmu/entity/v1/user.entity.proto\"\x0f\n" +
 	"\rUserMeRequest\"\xac\x01\n" +
 	"\x0eUserMeResponse\x12,\n" +
 	"\x04user\x18\x01 \x01(\v2\x18.contract.entity.v1.UserR\x04user\x12\x1d\n" +
@@ -154,24 +154,24 @@ const file_service_v1_user_service_proto_rawDesc = "" +
 	"\x17com.contract.service.v1B\x10UserServiceProtoP\x01Z)fesmu/contract/fesmu/service/v1;servicev1\xa2\x02\x03CSX\xaa\x02\x13Contract.Service.V1\xca\x02\x13Contract\\Service\\V1\xe2\x02\x1fContract\\Service\\V1\\GPBMetadata\xea\x02\x15Contract::Service::V1b\x06proto3"
 
 var (
-	file_service_v1_user_service_proto_rawDescOnce sync.Once
-	file_service_v1_user_service_proto_rawDescData []byte
+	file_fesmu_service_v1_user_service_proto_rawDescOnce sync.Once
+	file_fesmu_service_v1_user_service_proto_rawDescData []byte
 )
 
-func file_service_v1_user_service_proto_rawDescGZIP() []byte {
-	file_service_v1_user_service_proto_rawDescOnce.Do(func() {
-		file_service_v1_user_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_service_v1_user_service_proto_rawDesc), len(file_service_v1_user_service_proto_rawDesc)))
+func file_fesmu_service_v1_user_service_proto_rawDescGZIP() []byte {
+	file_fesmu_service_v1_user_service_proto_rawDescOnce.Do(func() {
+		file_fesmu_service_v1_user_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_fesmu_service_v1_user_service_proto_rawDesc), len(file_fesmu_service_v1_user_service_proto_rawDesc)))
 	})
-	return file_service_v1_user_service_proto_rawDescData
+	return file_fesmu_service_v1_user_service_proto_rawDescData
 }
 
-var file_service_v1_user_service_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_service_v1_user_service_proto_goTypes = []any{
+var file_fesmu_service_v1_user_service_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_fesmu_service_v1_user_service_proto_goTypes = []any{
 	(*UserMeRequest)(nil),  // 0: contract.service.v1.UserMeRequest
 	(*UserMeResponse)(nil), // 1: contract.service.v1.UserMeResponse
 	(*v1.User)(nil),        // 2: contract.entity.v1.User
 }
-var file_service_v1_user_service_proto_depIdxs = []int32{
+var file_fesmu_service_v1_user_service_proto_depIdxs = []int32{
 	2, // 0: contract.service.v1.UserMeResponse.user:type_name -> contract.entity.v1.User
 	0, // 1: contract.service.v1.UserService.UserMe:input_type -> contract.service.v1.UserMeRequest
 	1, // 2: contract.service.v1.UserService.UserMe:output_type -> contract.service.v1.UserMeResponse
@@ -182,26 +182,26 @@ var file_service_v1_user_service_proto_depIdxs = []int32{
 	0, // [0:1] is the sub-list for field type_name
 }
 
-func init() { file_service_v1_user_service_proto_init() }
-func file_service_v1_user_service_proto_init() {
-	if File_service_v1_user_service_proto != nil {
+func init() { file_fesmu_service_v1_user_service_proto_init() }
+func file_fesmu_service_v1_user_service_proto_init() {
+	if File_fesmu_service_v1_user_service_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_service_v1_user_service_proto_rawDesc), len(file_service_v1_user_service_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_fesmu_service_v1_user_service_proto_rawDesc), len(file_fesmu_service_v1_user_service_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_service_v1_user_service_proto_goTypes,
-		DependencyIndexes: file_service_v1_user_service_proto_depIdxs,
-		MessageInfos:      file_service_v1_user_service_proto_msgTypes,
+		GoTypes:           file_fesmu_service_v1_user_service_proto_goTypes,
+		DependencyIndexes: file_fesmu_service_v1_user_service_proto_depIdxs,
+		MessageInfos:      file_fesmu_service_v1_user_service_proto_msgTypes,
 	}.Build()
-	File_service_v1_user_service_proto = out.File
-	file_service_v1_user_service_proto_goTypes = nil
-	file_service_v1_user_service_proto_depIdxs = nil
+	File_fesmu_service_v1_user_service_proto = out.File
+	file_fesmu_service_v1_user_service_proto_goTypes = nil
+	file_fesmu_service_v1_user_service_proto_depIdxs = nil
 }

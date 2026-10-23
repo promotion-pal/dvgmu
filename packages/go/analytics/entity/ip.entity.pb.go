@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: entity/ip.entity.proto
+// source: analytics/entity/ip.entity.proto
 
 package entity
 
@@ -35,7 +35,7 @@ type IpEntry struct {
 
 func (x *IpEntry) Reset() {
 	*x = IpEntry{}
-	mi := &file_entity_ip_entity_proto_msgTypes[0]
+	mi := &file_analytics_entity_ip_entity_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -47,7 +47,7 @@ func (x *IpEntry) String() string {
 func (*IpEntry) ProtoMessage() {}
 
 func (x *IpEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_ip_entity_proto_msgTypes[0]
+	mi := &file_analytics_entity_ip_entity_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -60,7 +60,7 @@ func (x *IpEntry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IpEntry.ProtoReflect.Descriptor instead.
 func (*IpEntry) Descriptor() ([]byte, []int) {
-	return file_entity_ip_entity_proto_rawDescGZIP(), []int{0}
+	return file_analytics_entity_ip_entity_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *IpEntry) GetId() int64 {
@@ -98,11 +98,11 @@ func (x *IpEntry) GetUpdatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
-var File_entity_ip_entity_proto protoreflect.FileDescriptor
+var File_analytics_entity_ip_entity_proto protoreflect.FileDescriptor
 
-const file_entity_ip_entity_proto_rawDesc = "" +
+const file_analytics_entity_ip_entity_proto_rawDesc = "" +
 	"\n" +
-	"\x16entity/ip.entity.proto\x12\x19contract.analytics.entity\x1a\x1fgoogle/protobuf/timestamp.proto\"\xc0\x01\n" +
+	" analytics/entity/ip.entity.proto\x12\x19contract.analytics.entity\x1a\x1fgoogle/protobuf/timestamp.proto\"\xc0\x01\n" +
 	"\aIpEntry\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x0e\n" +
 	"\x02ip\x18\x02 \x01(\tR\x02ip\x12\x1f\n" +
@@ -115,23 +115,23 @@ const file_entity_ip_entity_proto_rawDesc = "" +
 	"\x1dcom.contract.analytics.entityB\rIpEntityProtoP\x01Z\x1ffesmu/contract/analytics/entity\xa2\x02\x03CAE\xaa\x02\x19Contract.Analytics.Entity\xca\x02\x19Contract\\Analytics\\Entity\xe2\x02%Contract\\Analytics\\Entity\\GPBMetadata\xea\x02\x1bContract::Analytics::Entityb\x06proto3"
 
 var (
-	file_entity_ip_entity_proto_rawDescOnce sync.Once
-	file_entity_ip_entity_proto_rawDescData []byte
+	file_analytics_entity_ip_entity_proto_rawDescOnce sync.Once
+	file_analytics_entity_ip_entity_proto_rawDescData []byte
 )
 
-func file_entity_ip_entity_proto_rawDescGZIP() []byte {
-	file_entity_ip_entity_proto_rawDescOnce.Do(func() {
-		file_entity_ip_entity_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_entity_ip_entity_proto_rawDesc), len(file_entity_ip_entity_proto_rawDesc)))
+func file_analytics_entity_ip_entity_proto_rawDescGZIP() []byte {
+	file_analytics_entity_ip_entity_proto_rawDescOnce.Do(func() {
+		file_analytics_entity_ip_entity_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_analytics_entity_ip_entity_proto_rawDesc), len(file_analytics_entity_ip_entity_proto_rawDesc)))
 	})
-	return file_entity_ip_entity_proto_rawDescData
+	return file_analytics_entity_ip_entity_proto_rawDescData
 }
 
-var file_entity_ip_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
-var file_entity_ip_entity_proto_goTypes = []any{
+var file_analytics_entity_ip_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_analytics_entity_ip_entity_proto_goTypes = []any{
 	(*IpEntry)(nil),               // 0: contract.analytics.entity.IpEntry
 	(*timestamppb.Timestamp)(nil), // 1: google.protobuf.Timestamp
 }
-var file_entity_ip_entity_proto_depIdxs = []int32{
+var file_analytics_entity_ip_entity_proto_depIdxs = []int32{
 	1, // 0: contract.analytics.entity.IpEntry.created_at:type_name -> google.protobuf.Timestamp
 	1, // 1: contract.analytics.entity.IpEntry.updated_at:type_name -> google.protobuf.Timestamp
 	2, // [2:2] is the sub-list for method output_type
@@ -141,26 +141,26 @@ var file_entity_ip_entity_proto_depIdxs = []int32{
 	0, // [0:2] is the sub-list for field type_name
 }
 
-func init() { file_entity_ip_entity_proto_init() }
-func file_entity_ip_entity_proto_init() {
-	if File_entity_ip_entity_proto != nil {
+func init() { file_analytics_entity_ip_entity_proto_init() }
+func file_analytics_entity_ip_entity_proto_init() {
+	if File_analytics_entity_ip_entity_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_entity_ip_entity_proto_rawDesc), len(file_entity_ip_entity_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_analytics_entity_ip_entity_proto_rawDesc), len(file_analytics_entity_ip_entity_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_entity_ip_entity_proto_goTypes,
-		DependencyIndexes: file_entity_ip_entity_proto_depIdxs,
-		MessageInfos:      file_entity_ip_entity_proto_msgTypes,
+		GoTypes:           file_analytics_entity_ip_entity_proto_goTypes,
+		DependencyIndexes: file_analytics_entity_ip_entity_proto_depIdxs,
+		MessageInfos:      file_analytics_entity_ip_entity_proto_msgTypes,
 	}.Build()
-	File_entity_ip_entity_proto = out.File
-	file_entity_ip_entity_proto_goTypes = nil
-	file_entity_ip_entity_proto_depIdxs = nil
+	File_analytics_entity_ip_entity_proto = out.File
+	file_analytics_entity_ip_entity_proto_goTypes = nil
+	file_analytics_entity_ip_entity_proto_depIdxs = nil
 }

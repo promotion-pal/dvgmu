@@ -1,4 +1,4 @@
-import { AnalyticType } from "@fesmu/contract/enum/analytic.enum_pb";
+import { AnalyticType } from "@fesmu/contract/analytics/enum/analytic.enum_pb";
 
 // The 11 workplace metric fields — the ratings AnalyticRatingCreateRequest
 // carries for the WORKPLACE survey (see

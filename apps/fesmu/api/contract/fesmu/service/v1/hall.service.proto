@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package contract.service.v1;
+
+import "fesmu/entity/v1/hall.entity.proto";
+
+option go_package = "service_v1;service_pb";
+
+service HallService {
+    rpc HallFetch (HallFetchRequest) returns (HallFetchResponse);
+
+    // Staff view: every field, organizer and contact included.
+    rpc HallBookingFetch (HallBookingFetchRequest) returns (HallBookingFetchResponse);
+    // Public view (no login): what is booked and when, without who booked it.
+    rpc HallBookingPublicFetch (HallBookingFetchRequest) returns (HallBookingFetchResponse);
+    rpc HallBookingCreate (HallBookingCreateRequest) returns (HallBookingCreateResponse);
+    rpc HallBookingDelete (HallBookingDeleteRequest) returns (HallBookingDeleteResponse);
+}
+
+message HallFetchRequest {
+}
+
+message HallFetchResponse {
+    repeated contract.entity.v1.Hall list = 1;
+}
+
+// Empty fields mean "any": no hall_id — every hall, no date_from/date_to — no bound.
+message HallBookingFetchRequest {
+    int64 hall_id = 1;
+    // ISO dates (YYYY-MM-DD), both inclusive.
+    string date_from = 2;
+    string date_to = 3;
+}
+
+message HallBookingFetchResponse {
+    repeated contract.entity.v1.HallBooking list = 1;
+}
+
+message HallBookingCreateRequest {
+    int64 hall_id = 1;
+    string date = 2;
+    string time_start = 3;
+    string time_end = 4;
+    string title = 5;
+    string organizer = 6;
+    string contact = 7;
+    // Consent to the processing of organizer/contact under the privacy policy
+    // (/docs?doc=privacy); a booking without it is rejected.
+    bool personal_data_consent = 8;
+}
+
+message HallBookingCreateResponse {
+    bool success = 1;
+    string message = 2;
+    int64 hall_booking_id = 3;
+}
+
+message HallBookingDeleteRequest {
+    int64 id = 1;
+}
+
+message HallBookingDeleteResponse {
+    bool success = 1;
+    string message = 2;
+}

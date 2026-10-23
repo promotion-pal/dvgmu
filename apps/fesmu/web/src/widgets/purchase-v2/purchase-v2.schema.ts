@@ -6,10 +6,10 @@ import {
     PurchaseLotStatus,
     PurchasePlanType,
     PurchaseRequestStatus,
-} from "@fesmu/contract/enum/v2/purchase.enum_pb";
+} from "@fesmu/contract/fesmu/enum/v2/purchase.enum_pb";
 
 export { PurchaseActorRole, PurchaseFundingSource, PurchaseItemType, PurchaseLotStatus, PurchasePlanType, PurchaseRequestStatus };
-export { PurchaseLotAction, PurchaseRequestAction } from "@fesmu/contract/enum/v2/purchase.enum_pb";
+export { PurchaseLotAction, PurchaseRequestAction } from "@fesmu/contract/fesmu/enum/v2/purchase.enum_pb";
 
 /** Money is in kopecks, as the server sends it. */
 export interface PurchaseApproval {

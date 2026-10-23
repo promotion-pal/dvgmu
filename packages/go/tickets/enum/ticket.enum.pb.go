@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: enum/ticket.enum.proto
+// source: tickets/enum/ticket.enum.proto
 
 package enum
 
@@ -51,11 +51,11 @@ func (x TicketType) String() string {
 }
 
 func (TicketType) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_ticket_enum_proto_enumTypes[0].Descriptor()
+	return file_tickets_enum_ticket_enum_proto_enumTypes[0].Descriptor()
 }
 
 func (TicketType) Type() protoreflect.EnumType {
-	return &file_enum_ticket_enum_proto_enumTypes[0]
+	return &file_tickets_enum_ticket_enum_proto_enumTypes[0]
 }
 
 func (x TicketType) Number() protoreflect.EnumNumber {
@@ -64,7 +64,7 @@ func (x TicketType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use TicketType.Descriptor instead.
 func (TicketType) EnumDescriptor() ([]byte, []int) {
-	return file_enum_ticket_enum_proto_rawDescGZIP(), []int{0}
+	return file_tickets_enum_ticket_enum_proto_rawDescGZIP(), []int{0}
 }
 
 type TicketStatus int32
@@ -103,11 +103,11 @@ func (x TicketStatus) String() string {
 }
 
 func (TicketStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_ticket_enum_proto_enumTypes[1].Descriptor()
+	return file_tickets_enum_ticket_enum_proto_enumTypes[1].Descriptor()
 }
 
 func (TicketStatus) Type() protoreflect.EnumType {
-	return &file_enum_ticket_enum_proto_enumTypes[1]
+	return &file_tickets_enum_ticket_enum_proto_enumTypes[1]
 }
 
 func (x TicketStatus) Number() protoreflect.EnumNumber {
@@ -116,14 +116,14 @@ func (x TicketStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use TicketStatus.Descriptor instead.
 func (TicketStatus) EnumDescriptor() ([]byte, []int) {
-	return file_enum_ticket_enum_proto_rawDescGZIP(), []int{1}
+	return file_tickets_enum_ticket_enum_proto_rawDescGZIP(), []int{1}
 }
 
-var File_enum_ticket_enum_proto protoreflect.FileDescriptor
+var File_tickets_enum_ticket_enum_proto protoreflect.FileDescriptor
 
-const file_enum_ticket_enum_proto_rawDesc = "" +
+const file_tickets_enum_ticket_enum_proto_rawDesc = "" +
 	"\n" +
-	"\x16enum/ticket.enum.proto\x12\x15contract.tickets.enum*>\n" +
+	"\x1etickets/enum/ticket.enum.proto\x12\x15contract.tickets.enum*>\n" +
 	"\n" +
 	"TicketType\x12\x17\n" +
 	"\x13TICKET_TYPE_UNKNOWN\x10\x00\x12\x17\n" +
@@ -136,23 +136,23 @@ const file_enum_ticket_enum_proto_rawDesc = "" +
 	"\x19com.contract.tickets.enumB\x0fTicketEnumProtoP\x01Z\x1bfesmu/contract/tickets/enum\xa2\x02\x03CTE\xaa\x02\x15Contract.Tickets.Enum\xca\x02\x15Contract\\Tickets\\Enum\xe2\x02!Contract\\Tickets\\Enum\\GPBMetadata\xea\x02\x17Contract::Tickets::Enumb\x06proto3"
 
 var (
-	file_enum_ticket_enum_proto_rawDescOnce sync.Once
-	file_enum_ticket_enum_proto_rawDescData []byte
+	file_tickets_enum_ticket_enum_proto_rawDescOnce sync.Once
+	file_tickets_enum_ticket_enum_proto_rawDescData []byte
 )
 
-func file_enum_ticket_enum_proto_rawDescGZIP() []byte {
-	file_enum_ticket_enum_proto_rawDescOnce.Do(func() {
-		file_enum_ticket_enum_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_enum_ticket_enum_proto_rawDesc), len(file_enum_ticket_enum_proto_rawDesc)))
+func file_tickets_enum_ticket_enum_proto_rawDescGZIP() []byte {
+	file_tickets_enum_ticket_enum_proto_rawDescOnce.Do(func() {
+		file_tickets_enum_ticket_enum_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_tickets_enum_ticket_enum_proto_rawDesc), len(file_tickets_enum_ticket_enum_proto_rawDesc)))
 	})
-	return file_enum_ticket_enum_proto_rawDescData
+	return file_tickets_enum_ticket_enum_proto_rawDescData
 }
 
-var file_enum_ticket_enum_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_enum_ticket_enum_proto_goTypes = []any{
+var file_tickets_enum_ticket_enum_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_tickets_enum_ticket_enum_proto_goTypes = []any{
 	(TicketType)(0),   // 0: contract.tickets.enum.TicketType
 	(TicketStatus)(0), // 1: contract.tickets.enum.TicketStatus
 }
-var file_enum_ticket_enum_proto_depIdxs = []int32{
+var file_tickets_enum_ticket_enum_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
 	0, // [0:0] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -160,26 +160,26 @@ var file_enum_ticket_enum_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_enum_ticket_enum_proto_init() }
-func file_enum_ticket_enum_proto_init() {
-	if File_enum_ticket_enum_proto != nil {
+func init() { file_tickets_enum_ticket_enum_proto_init() }
+func file_tickets_enum_ticket_enum_proto_init() {
+	if File_tickets_enum_ticket_enum_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_enum_ticket_enum_proto_rawDesc), len(file_enum_ticket_enum_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_tickets_enum_ticket_enum_proto_rawDesc), len(file_tickets_enum_ticket_enum_proto_rawDesc)),
 			NumEnums:      2,
 			NumMessages:   0,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_enum_ticket_enum_proto_goTypes,
-		DependencyIndexes: file_enum_ticket_enum_proto_depIdxs,
-		EnumInfos:         file_enum_ticket_enum_proto_enumTypes,
+		GoTypes:           file_tickets_enum_ticket_enum_proto_goTypes,
+		DependencyIndexes: file_tickets_enum_ticket_enum_proto_depIdxs,
+		EnumInfos:         file_tickets_enum_ticket_enum_proto_enumTypes,
 	}.Build()
-	File_enum_ticket_enum_proto = out.File
-	file_enum_ticket_enum_proto_goTypes = nil
-	file_enum_ticket_enum_proto_depIdxs = nil
+	File_tickets_enum_ticket_enum_proto = out.File
+	file_tickets_enum_ticket_enum_proto_goTypes = nil
+	file_tickets_enum_ticket_enum_proto_depIdxs = nil
 }

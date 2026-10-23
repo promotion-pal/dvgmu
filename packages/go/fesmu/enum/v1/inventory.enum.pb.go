@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: enum/v1/inventory.enum.proto
+// source: fesmu/enum/v1/inventory.enum.proto
 
 package enumv1
 
@@ -60,11 +60,11 @@ func (x InventoryStatus) String() string {
 }
 
 func (InventoryStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_v1_inventory_enum_proto_enumTypes[0].Descriptor()
+	return file_fesmu_enum_v1_inventory_enum_proto_enumTypes[0].Descriptor()
 }
 
 func (InventoryStatus) Type() protoreflect.EnumType {
-	return &file_enum_v1_inventory_enum_proto_enumTypes[0]
+	return &file_fesmu_enum_v1_inventory_enum_proto_enumTypes[0]
 }
 
 func (x InventoryStatus) Number() protoreflect.EnumNumber {
@@ -73,7 +73,7 @@ func (x InventoryStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use InventoryStatus.Descriptor instead.
 func (InventoryStatus) EnumDescriptor() ([]byte, []int) {
-	return file_enum_v1_inventory_enum_proto_rawDescGZIP(), []int{0}
+	return file_fesmu_enum_v1_inventory_enum_proto_rawDescGZIP(), []int{0}
 }
 
 type InventoryType int32
@@ -115,11 +115,11 @@ func (x InventoryType) String() string {
 }
 
 func (InventoryType) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_v1_inventory_enum_proto_enumTypes[1].Descriptor()
+	return file_fesmu_enum_v1_inventory_enum_proto_enumTypes[1].Descriptor()
 }
 
 func (InventoryType) Type() protoreflect.EnumType {
-	return &file_enum_v1_inventory_enum_proto_enumTypes[1]
+	return &file_fesmu_enum_v1_inventory_enum_proto_enumTypes[1]
 }
 
 func (x InventoryType) Number() protoreflect.EnumNumber {
@@ -128,14 +128,14 @@ func (x InventoryType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use InventoryType.Descriptor instead.
 func (InventoryType) EnumDescriptor() ([]byte, []int) {
-	return file_enum_v1_inventory_enum_proto_rawDescGZIP(), []int{1}
+	return file_fesmu_enum_v1_inventory_enum_proto_rawDescGZIP(), []int{1}
 }
 
-var File_enum_v1_inventory_enum_proto protoreflect.FileDescriptor
+var File_fesmu_enum_v1_inventory_enum_proto protoreflect.FileDescriptor
 
-const file_enum_v1_inventory_enum_proto_rawDesc = "" +
+const file_fesmu_enum_v1_inventory_enum_proto_rawDesc = "" +
 	"\n" +
-	"\x1cenum/v1/inventory.enum.proto\x12\x10contract.enum.v1*\xb6\x01\n" +
+	"\"fesmu/enum/v1/inventory.enum.proto\x12\x10contract.enum.v1*\xb6\x01\n" +
 	"\x0fInventoryStatus\x12 \n" +
 	"\x1cINVENTORY_STATUS_UNSPECIFIED\x10\x00\x12\x1b\n" +
 	"\x17INVENTORY_STATUS_IN_USE\x10\x01\x12\x1f\n" +
@@ -151,23 +151,23 @@ const file_enum_v1_inventory_enum_proto_rawDesc = "" +
 	"\x14com.contract.enum.v1B\x12InventoryEnumProtoP\x01Z#fesmu/contract/fesmu/enum/v1;enumv1\xa2\x02\x03CEX\xaa\x02\x10Contract.Enum.V1\xca\x02\x10Contract\\Enum\\V1\xe2\x02\x1cContract\\Enum\\V1\\GPBMetadata\xea\x02\x12Contract::Enum::V1b\x06proto3"
 
 var (
-	file_enum_v1_inventory_enum_proto_rawDescOnce sync.Once
-	file_enum_v1_inventory_enum_proto_rawDescData []byte
+	file_fesmu_enum_v1_inventory_enum_proto_rawDescOnce sync.Once
+	file_fesmu_enum_v1_inventory_enum_proto_rawDescData []byte
 )
 
-func file_enum_v1_inventory_enum_proto_rawDescGZIP() []byte {
-	file_enum_v1_inventory_enum_proto_rawDescOnce.Do(func() {
-		file_enum_v1_inventory_enum_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_enum_v1_inventory_enum_proto_rawDesc), len(file_enum_v1_inventory_enum_proto_rawDesc)))
+func file_fesmu_enum_v1_inventory_enum_proto_rawDescGZIP() []byte {
+	file_fesmu_enum_v1_inventory_enum_proto_rawDescOnce.Do(func() {
+		file_fesmu_enum_v1_inventory_enum_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_fesmu_enum_v1_inventory_enum_proto_rawDesc), len(file_fesmu_enum_v1_inventory_enum_proto_rawDesc)))
 	})
-	return file_enum_v1_inventory_enum_proto_rawDescData
+	return file_fesmu_enum_v1_inventory_enum_proto_rawDescData
 }
 
-var file_enum_v1_inventory_enum_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_enum_v1_inventory_enum_proto_goTypes = []any{
+var file_fesmu_enum_v1_inventory_enum_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_fesmu_enum_v1_inventory_enum_proto_goTypes = []any{
 	(InventoryStatus)(0), // 0: contract.enum.v1.InventoryStatus
 	(InventoryType)(0),   // 1: contract.enum.v1.InventoryType
 }
-var file_enum_v1_inventory_enum_proto_depIdxs = []int32{
+var file_fesmu_enum_v1_inventory_enum_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
 	0, // [0:0] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -175,26 +175,26 @@ var file_enum_v1_inventory_enum_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_enum_v1_inventory_enum_proto_init() }
-func file_enum_v1_inventory_enum_proto_init() {
-	if File_enum_v1_inventory_enum_proto != nil {
+func init() { file_fesmu_enum_v1_inventory_enum_proto_init() }
+func file_fesmu_enum_v1_inventory_enum_proto_init() {
+	if File_fesmu_enum_v1_inventory_enum_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_enum_v1_inventory_enum_proto_rawDesc), len(file_enum_v1_inventory_enum_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_fesmu_enum_v1_inventory_enum_proto_rawDesc), len(file_fesmu_enum_v1_inventory_enum_proto_rawDesc)),
 			NumEnums:      2,
 			NumMessages:   0,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_enum_v1_inventory_enum_proto_goTypes,
-		DependencyIndexes: file_enum_v1_inventory_enum_proto_depIdxs,
-		EnumInfos:         file_enum_v1_inventory_enum_proto_enumTypes,
+		GoTypes:           file_fesmu_enum_v1_inventory_enum_proto_goTypes,
+		DependencyIndexes: file_fesmu_enum_v1_inventory_enum_proto_depIdxs,
+		EnumInfos:         file_fesmu_enum_v1_inventory_enum_proto_enumTypes,
 	}.Build()
-	File_enum_v1_inventory_enum_proto = out.File
-	file_enum_v1_inventory_enum_proto_goTypes = nil
-	file_enum_v1_inventory_enum_proto_depIdxs = nil
+	File_fesmu_enum_v1_inventory_enum_proto = out.File
+	file_fesmu_enum_v1_inventory_enum_proto_goTypes = nil
+	file_fesmu_enum_v1_inventory_enum_proto_depIdxs = nil
 }

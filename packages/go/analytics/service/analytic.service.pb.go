@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: service/analytic.service.proto
+// source: analytics/service/analytic.service.proto
 
 package service
 
@@ -33,7 +33,7 @@ type AnalyticByIDRequest struct {
 
 func (x *AnalyticByIDRequest) Reset() {
 	*x = AnalyticByIDRequest{}
-	mi := &file_service_analytic_service_proto_msgTypes[0]
+	mi := &file_analytics_service_analytic_service_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -45,7 +45,7 @@ func (x *AnalyticByIDRequest) String() string {
 func (*AnalyticByIDRequest) ProtoMessage() {}
 
 func (x *AnalyticByIDRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_analytic_service_proto_msgTypes[0]
+	mi := &file_analytics_service_analytic_service_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -58,7 +58,7 @@ func (x *AnalyticByIDRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AnalyticByIDRequest.ProtoReflect.Descriptor instead.
 func (*AnalyticByIDRequest) Descriptor() ([]byte, []int) {
-	return file_service_analytic_service_proto_rawDescGZIP(), []int{0}
+	return file_analytics_service_analytic_service_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *AnalyticByIDRequest) GetId() int64 {
@@ -77,7 +77,7 @@ type AnalyticByIDResponse struct {
 
 func (x *AnalyticByIDResponse) Reset() {
 	*x = AnalyticByIDResponse{}
-	mi := &file_service_analytic_service_proto_msgTypes[1]
+	mi := &file_analytics_service_analytic_service_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -89,7 +89,7 @@ func (x *AnalyticByIDResponse) String() string {
 func (*AnalyticByIDResponse) ProtoMessage() {}
 
 func (x *AnalyticByIDResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_analytic_service_proto_msgTypes[1]
+	mi := &file_analytics_service_analytic_service_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -102,7 +102,7 @@ func (x *AnalyticByIDResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AnalyticByIDResponse.ProtoReflect.Descriptor instead.
 func (*AnalyticByIDResponse) Descriptor() ([]byte, []int) {
-	return file_service_analytic_service_proto_rawDescGZIP(), []int{1}
+	return file_analytics_service_analytic_service_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *AnalyticByIDResponse) GetEntity() *entity.Analytic {
@@ -125,7 +125,7 @@ type AnalyticFetchRequest struct {
 
 func (x *AnalyticFetchRequest) Reset() {
 	*x = AnalyticFetchRequest{}
-	mi := &file_service_analytic_service_proto_msgTypes[2]
+	mi := &file_analytics_service_analytic_service_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -137,7 +137,7 @@ func (x *AnalyticFetchRequest) String() string {
 func (*AnalyticFetchRequest) ProtoMessage() {}
 
 func (x *AnalyticFetchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_analytic_service_proto_msgTypes[2]
+	mi := &file_analytics_service_analytic_service_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -150,7 +150,7 @@ func (x *AnalyticFetchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AnalyticFetchRequest.ProtoReflect.Descriptor instead.
 func (*AnalyticFetchRequest) Descriptor() ([]byte, []int) {
-	return file_service_analytic_service_proto_rawDescGZIP(), []int{2}
+	return file_analytics_service_analytic_service_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *AnalyticFetchRequest) GetName() string {
@@ -200,7 +200,7 @@ type AnalyticCreateRequest struct {
 
 func (x *AnalyticCreateRequest) Reset() {
 	*x = AnalyticCreateRequest{}
-	mi := &file_service_analytic_service_proto_msgTypes[3]
+	mi := &file_analytics_service_analytic_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -212,7 +212,7 @@ func (x *AnalyticCreateRequest) String() string {
 func (*AnalyticCreateRequest) ProtoMessage() {}
 
 func (x *AnalyticCreateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_analytic_service_proto_msgTypes[3]
+	mi := &file_analytics_service_analytic_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -225,7 +225,7 @@ func (x *AnalyticCreateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AnalyticCreateRequest.ProtoReflect.Descriptor instead.
 func (*AnalyticCreateRequest) Descriptor() ([]byte, []int) {
-	return file_service_analytic_service_proto_rawDescGZIP(), []int{3}
+	return file_analytics_service_analytic_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *AnalyticCreateRequest) GetName() string {
@@ -267,7 +267,7 @@ type AnalyticCreateResponse struct {
 
 func (x *AnalyticCreateResponse) Reset() {
 	*x = AnalyticCreateResponse{}
-	mi := &file_service_analytic_service_proto_msgTypes[4]
+	mi := &file_analytics_service_analytic_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -279,7 +279,7 @@ func (x *AnalyticCreateResponse) String() string {
 func (*AnalyticCreateResponse) ProtoMessage() {}
 
 func (x *AnalyticCreateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_analytic_service_proto_msgTypes[4]
+	mi := &file_analytics_service_analytic_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -292,7 +292,7 @@ func (x *AnalyticCreateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AnalyticCreateResponse.ProtoReflect.Descriptor instead.
 func (*AnalyticCreateResponse) Descriptor() ([]byte, []int) {
-	return file_service_analytic_service_proto_rawDescGZIP(), []int{4}
+	return file_analytics_service_analytic_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *AnalyticCreateResponse) GetId() int64 {
@@ -329,7 +329,7 @@ type AnalyticUpdateRequest struct {
 
 func (x *AnalyticUpdateRequest) Reset() {
 	*x = AnalyticUpdateRequest{}
-	mi := &file_service_analytic_service_proto_msgTypes[5]
+	mi := &file_analytics_service_analytic_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -341,7 +341,7 @@ func (x *AnalyticUpdateRequest) String() string {
 func (*AnalyticUpdateRequest) ProtoMessage() {}
 
 func (x *AnalyticUpdateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_analytic_service_proto_msgTypes[5]
+	mi := &file_analytics_service_analytic_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -354,7 +354,7 @@ func (x *AnalyticUpdateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AnalyticUpdateRequest.ProtoReflect.Descriptor instead.
 func (*AnalyticUpdateRequest) Descriptor() ([]byte, []int) {
-	return file_service_analytic_service_proto_rawDescGZIP(), []int{5}
+	return file_analytics_service_analytic_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *AnalyticUpdateRequest) GetId() int64 {
@@ -404,7 +404,7 @@ type AnalyticUpdateResponse struct {
 
 func (x *AnalyticUpdateResponse) Reset() {
 	*x = AnalyticUpdateResponse{}
-	mi := &file_service_analytic_service_proto_msgTypes[6]
+	mi := &file_analytics_service_analytic_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -416,7 +416,7 @@ func (x *AnalyticUpdateResponse) String() string {
 func (*AnalyticUpdateResponse) ProtoMessage() {}
 
 func (x *AnalyticUpdateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_analytic_service_proto_msgTypes[6]
+	mi := &file_analytics_service_analytic_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -429,7 +429,7 @@ func (x *AnalyticUpdateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AnalyticUpdateResponse.ProtoReflect.Descriptor instead.
 func (*AnalyticUpdateResponse) Descriptor() ([]byte, []int) {
-	return file_service_analytic_service_proto_rawDescGZIP(), []int{6}
+	return file_analytics_service_analytic_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *AnalyticUpdateResponse) GetSuccess() bool {
@@ -516,7 +516,7 @@ type AnalyticRatingCreateRequest struct {
 
 func (x *AnalyticRatingCreateRequest) Reset() {
 	*x = AnalyticRatingCreateRequest{}
-	mi := &file_service_analytic_service_proto_msgTypes[7]
+	mi := &file_analytics_service_analytic_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -528,7 +528,7 @@ func (x *AnalyticRatingCreateRequest) String() string {
 func (*AnalyticRatingCreateRequest) ProtoMessage() {}
 
 func (x *AnalyticRatingCreateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_analytic_service_proto_msgTypes[7]
+	mi := &file_analytics_service_analytic_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -541,7 +541,7 @@ func (x *AnalyticRatingCreateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AnalyticRatingCreateRequest.ProtoReflect.Descriptor instead.
 func (*AnalyticRatingCreateRequest) Descriptor() ([]byte, []int) {
-	return file_service_analytic_service_proto_rawDescGZIP(), []int{7}
+	return file_analytics_service_analytic_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *AnalyticRatingCreateRequest) GetAnalyticId() int64 {
@@ -905,7 +905,7 @@ type AnalyticRatingCreateResponse struct {
 
 func (x *AnalyticRatingCreateResponse) Reset() {
 	*x = AnalyticRatingCreateResponse{}
-	mi := &file_service_analytic_service_proto_msgTypes[8]
+	mi := &file_analytics_service_analytic_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -917,7 +917,7 @@ func (x *AnalyticRatingCreateResponse) String() string {
 func (*AnalyticRatingCreateResponse) ProtoMessage() {}
 
 func (x *AnalyticRatingCreateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_analytic_service_proto_msgTypes[8]
+	mi := &file_analytics_service_analytic_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -930,7 +930,7 @@ func (x *AnalyticRatingCreateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AnalyticRatingCreateResponse.ProtoReflect.Descriptor instead.
 func (*AnalyticRatingCreateResponse) Descriptor() ([]byte, []int) {
-	return file_service_analytic_service_proto_rawDescGZIP(), []int{8}
+	return file_analytics_service_analytic_service_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *AnalyticRatingCreateResponse) GetId() int64 {
@@ -954,11 +954,11 @@ func (x *AnalyticRatingCreateResponse) GetMessage() string {
 	return ""
 }
 
-var File_service_analytic_service_proto protoreflect.FileDescriptor
+var File_analytics_service_analytic_service_proto protoreflect.FileDescriptor
 
-const file_service_analytic_service_proto_rawDesc = "" +
+const file_analytics_service_analytic_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1eservice/analytic.service.proto\x12\x1acontract.analytics.service\x1a\x18enum/analytic.enum.proto\x1a\x1centity/analytic.entity.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"%\n" +
+	"(analytics/service/analytic.service.proto\x12\x1acontract.analytics.service\x1a\"analytics/enum/analytic.enum.proto\x1a&analytics/entity/analytic.entity.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"%\n" +
 	"\x13AnalyticByIDRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\"S\n" +
 	"\x14AnalyticByIDResponse\x12;\n" +
@@ -1068,19 +1068,19 @@ const file_service_analytic_service_proto_rawDesc = "" +
 	"\x1ecom.contract.analytics.serviceB\x14AnalyticServiceProtoP\x01Z fesmu/contract/analytics/service\xa2\x02\x03CAS\xaa\x02\x1aContract.Analytics.Service\xca\x02\x1aContract\\Analytics\\Service\xe2\x02&Contract\\Analytics\\Service\\GPBMetadata\xea\x02\x1cContract::Analytics::Serviceb\x06proto3"
 
 var (
-	file_service_analytic_service_proto_rawDescOnce sync.Once
-	file_service_analytic_service_proto_rawDescData []byte
+	file_analytics_service_analytic_service_proto_rawDescOnce sync.Once
+	file_analytics_service_analytic_service_proto_rawDescData []byte
 )
 
-func file_service_analytic_service_proto_rawDescGZIP() []byte {
-	file_service_analytic_service_proto_rawDescOnce.Do(func() {
-		file_service_analytic_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_service_analytic_service_proto_rawDesc), len(file_service_analytic_service_proto_rawDesc)))
+func file_analytics_service_analytic_service_proto_rawDescGZIP() []byte {
+	file_analytics_service_analytic_service_proto_rawDescOnce.Do(func() {
+		file_analytics_service_analytic_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_analytics_service_analytic_service_proto_rawDesc), len(file_analytics_service_analytic_service_proto_rawDesc)))
 	})
-	return file_service_analytic_service_proto_rawDescData
+	return file_analytics_service_analytic_service_proto_rawDescData
 }
 
-var file_service_analytic_service_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
-var file_service_analytic_service_proto_goTypes = []any{
+var file_analytics_service_analytic_service_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_analytics_service_analytic_service_proto_goTypes = []any{
 	(*AnalyticByIDRequest)(nil),           // 0: contract.analytics.service.AnalyticByIDRequest
 	(*AnalyticByIDResponse)(nil),          // 1: contract.analytics.service.AnalyticByIDResponse
 	(*AnalyticFetchRequest)(nil),          // 2: contract.analytics.service.AnalyticFetchRequest
@@ -1097,7 +1097,7 @@ var file_service_analytic_service_proto_goTypes = []any{
 	(enum.InformationSecurityResource)(0), // 13: contract.analytics.enum.InformationSecurityResource
 	(enum.InformationSecurityOs)(0),       // 14: contract.analytics.enum.InformationSecurityOs
 }
-var file_service_analytic_service_proto_depIdxs = []int32{
+var file_analytics_service_analytic_service_proto_depIdxs = []int32{
 	9,  // 0: contract.analytics.service.AnalyticByIDResponse.entity:type_name -> contract.analytics.entity.Analytic
 	10, // 1: contract.analytics.service.AnalyticFetchRequest.type:type_name -> contract.analytics.enum.AnalyticType
 	11, // 2: contract.analytics.service.AnalyticFetchRequest.end_date:type_name -> google.protobuf.Timestamp
@@ -1125,28 +1125,28 @@ var file_service_analytic_service_proto_depIdxs = []int32{
 	0,  // [0:10] is the sub-list for field type_name
 }
 
-func init() { file_service_analytic_service_proto_init() }
-func file_service_analytic_service_proto_init() {
-	if File_service_analytic_service_proto != nil {
+func init() { file_analytics_service_analytic_service_proto_init() }
+func file_analytics_service_analytic_service_proto_init() {
+	if File_analytics_service_analytic_service_proto != nil {
 		return
 	}
-	file_service_analytic_service_proto_msgTypes[2].OneofWrappers = []any{}
-	file_service_analytic_service_proto_msgTypes[5].OneofWrappers = []any{}
+	file_analytics_service_analytic_service_proto_msgTypes[2].OneofWrappers = []any{}
+	file_analytics_service_analytic_service_proto_msgTypes[5].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_service_analytic_service_proto_rawDesc), len(file_service_analytic_service_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_analytics_service_analytic_service_proto_rawDesc), len(file_analytics_service_analytic_service_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_service_analytic_service_proto_goTypes,
-		DependencyIndexes: file_service_analytic_service_proto_depIdxs,
-		MessageInfos:      file_service_analytic_service_proto_msgTypes,
+		GoTypes:           file_analytics_service_analytic_service_proto_goTypes,
+		DependencyIndexes: file_analytics_service_analytic_service_proto_depIdxs,
+		MessageInfos:      file_analytics_service_analytic_service_proto_msgTypes,
 	}.Build()
-	File_service_analytic_service_proto = out.File
-	file_service_analytic_service_proto_goTypes = nil
-	file_service_analytic_service_proto_depIdxs = nil
+	File_analytics_service_analytic_service_proto = out.File
+	file_analytics_service_analytic_service_proto_goTypes = nil
+	file_analytics_service_analytic_service_proto_depIdxs = nil
 }

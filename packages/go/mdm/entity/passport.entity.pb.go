@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: entity/passport.entity.proto
+// source: mdm/entity/passport.entity.proto
 
 package entity
 
@@ -47,7 +47,7 @@ type Passport struct {
 
 func (x *Passport) Reset() {
 	*x = Passport{}
-	mi := &file_entity_passport_entity_proto_msgTypes[0]
+	mi := &file_mdm_entity_passport_entity_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -59,7 +59,7 @@ func (x *Passport) String() string {
 func (*Passport) ProtoMessage() {}
 
 func (x *Passport) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_passport_entity_proto_msgTypes[0]
+	mi := &file_mdm_entity_passport_entity_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -72,7 +72,7 @@ func (x *Passport) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Passport.ProtoReflect.Descriptor instead.
 func (*Passport) Descriptor() ([]byte, []int) {
-	return file_entity_passport_entity_proto_rawDescGZIP(), []int{0}
+	return file_mdm_entity_passport_entity_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Passport) GetId() int64 {
@@ -187,11 +187,11 @@ func (x *Passport) GetUpdatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
-var File_entity_passport_entity_proto protoreflect.FileDescriptor
+var File_mdm_entity_passport_entity_proto protoreflect.FileDescriptor
 
-const file_entity_passport_entity_proto_rawDesc = "" +
+const file_mdm_entity_passport_entity_proto_rawDesc = "" +
 	"\n" +
-	"\x1centity/passport.entity.proto\x12\x0fcontract.entity\x1a\x14enum/user.enum.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x84\x05\n" +
+	" mdm/entity/passport.entity.proto\x12\x0fcontract.entity\x1a\x18mdm/enum/user.enum.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x84\x05\n" +
 	"\bPassport\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x16\n" +
 	"\x06series\x18\x02 \x01(\tR\x06series\x12\x16\n" +
@@ -218,25 +218,25 @@ const file_entity_passport_entity_proto_rawDesc = "" +
 	"\x13com.contract.entityB\x13PassportEntityProtoP\x01Z\x19fesmu/contract/mdm/entity\xa2\x02\x03CEX\xaa\x02\x0fContract.Entity\xca\x02\x0fContract\\Entity\xe2\x02\x1bContract\\Entity\\GPBMetadata\xea\x02\x10Contract::Entityb\x06proto3"
 
 var (
-	file_entity_passport_entity_proto_rawDescOnce sync.Once
-	file_entity_passport_entity_proto_rawDescData []byte
+	file_mdm_entity_passport_entity_proto_rawDescOnce sync.Once
+	file_mdm_entity_passport_entity_proto_rawDescData []byte
 )
 
-func file_entity_passport_entity_proto_rawDescGZIP() []byte {
-	file_entity_passport_entity_proto_rawDescOnce.Do(func() {
-		file_entity_passport_entity_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_entity_passport_entity_proto_rawDesc), len(file_entity_passport_entity_proto_rawDesc)))
+func file_mdm_entity_passport_entity_proto_rawDescGZIP() []byte {
+	file_mdm_entity_passport_entity_proto_rawDescOnce.Do(func() {
+		file_mdm_entity_passport_entity_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_mdm_entity_passport_entity_proto_rawDesc), len(file_mdm_entity_passport_entity_proto_rawDesc)))
 	})
-	return file_entity_passport_entity_proto_rawDescData
+	return file_mdm_entity_passport_entity_proto_rawDescData
 }
 
-var file_entity_passport_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
-var file_entity_passport_entity_proto_goTypes = []any{
+var file_mdm_entity_passport_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_mdm_entity_passport_entity_proto_goTypes = []any{
 	(*Passport)(nil),              // 0: contract.entity.Passport
 	(enum.UserGender)(0),          // 1: contract.enum.UserGender
 	(enum.UserNationality)(0),     // 2: contract.enum.UserNationality
 	(*timestamppb.Timestamp)(nil), // 3: google.protobuf.Timestamp
 }
-var file_entity_passport_entity_proto_depIdxs = []int32{
+var file_mdm_entity_passport_entity_proto_depIdxs = []int32{
 	1, // 0: contract.entity.Passport.gender:type_name -> contract.enum.UserGender
 	2, // 1: contract.entity.Passport.nationality:type_name -> contract.enum.UserNationality
 	3, // 2: contract.entity.Passport.created_at:type_name -> google.protobuf.Timestamp
@@ -248,26 +248,26 @@ var file_entity_passport_entity_proto_depIdxs = []int32{
 	0, // [0:4] is the sub-list for field type_name
 }
 
-func init() { file_entity_passport_entity_proto_init() }
-func file_entity_passport_entity_proto_init() {
-	if File_entity_passport_entity_proto != nil {
+func init() { file_mdm_entity_passport_entity_proto_init() }
+func file_mdm_entity_passport_entity_proto_init() {
+	if File_mdm_entity_passport_entity_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_entity_passport_entity_proto_rawDesc), len(file_entity_passport_entity_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_mdm_entity_passport_entity_proto_rawDesc), len(file_mdm_entity_passport_entity_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_entity_passport_entity_proto_goTypes,
-		DependencyIndexes: file_entity_passport_entity_proto_depIdxs,
-		MessageInfos:      file_entity_passport_entity_proto_msgTypes,
+		GoTypes:           file_mdm_entity_passport_entity_proto_goTypes,
+		DependencyIndexes: file_mdm_entity_passport_entity_proto_depIdxs,
+		MessageInfos:      file_mdm_entity_passport_entity_proto_msgTypes,
 	}.Build()
-	File_entity_passport_entity_proto = out.File
-	file_entity_passport_entity_proto_goTypes = nil
-	file_entity_passport_entity_proto_depIdxs = nil
+	File_mdm_entity_passport_entity_proto = out.File
+	file_mdm_entity_passport_entity_proto_goTypes = nil
+	file_mdm_entity_passport_entity_proto_depIdxs = nil
 }

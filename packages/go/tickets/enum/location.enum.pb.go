@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: enum/location.enum.proto
+// source: tickets/enum/location.enum.proto
 
 package enum
 
@@ -60,11 +60,11 @@ func (x LocationBuildType) String() string {
 }
 
 func (LocationBuildType) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_location_enum_proto_enumTypes[0].Descriptor()
+	return file_tickets_enum_location_enum_proto_enumTypes[0].Descriptor()
 }
 
 func (LocationBuildType) Type() protoreflect.EnumType {
-	return &file_enum_location_enum_proto_enumTypes[0]
+	return &file_tickets_enum_location_enum_proto_enumTypes[0]
 }
 
 func (x LocationBuildType) Number() protoreflect.EnumNumber {
@@ -73,7 +73,7 @@ func (x LocationBuildType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use LocationBuildType.Descriptor instead.
 func (LocationBuildType) EnumDescriptor() ([]byte, []int) {
-	return file_enum_location_enum_proto_rawDescGZIP(), []int{0}
+	return file_tickets_enum_location_enum_proto_rawDescGZIP(), []int{0}
 }
 
 type LocationDormitoryType int32
@@ -112,11 +112,11 @@ func (x LocationDormitoryType) String() string {
 }
 
 func (LocationDormitoryType) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_location_enum_proto_enumTypes[1].Descriptor()
+	return file_tickets_enum_location_enum_proto_enumTypes[1].Descriptor()
 }
 
 func (LocationDormitoryType) Type() protoreflect.EnumType {
-	return &file_enum_location_enum_proto_enumTypes[1]
+	return &file_tickets_enum_location_enum_proto_enumTypes[1]
 }
 
 func (x LocationDormitoryType) Number() protoreflect.EnumNumber {
@@ -125,7 +125,7 @@ func (x LocationDormitoryType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use LocationDormitoryType.Descriptor instead.
 func (LocationDormitoryType) EnumDescriptor() ([]byte, []int) {
-	return file_enum_location_enum_proto_rawDescGZIP(), []int{1}
+	return file_tickets_enum_location_enum_proto_rawDescGZIP(), []int{1}
 }
 
 type LocationCommonType struct {
@@ -141,7 +141,7 @@ type LocationCommonType struct {
 
 func (x *LocationCommonType) Reset() {
 	*x = LocationCommonType{}
-	mi := &file_enum_location_enum_proto_msgTypes[0]
+	mi := &file_tickets_enum_location_enum_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -153,7 +153,7 @@ func (x *LocationCommonType) String() string {
 func (*LocationCommonType) ProtoMessage() {}
 
 func (x *LocationCommonType) ProtoReflect() protoreflect.Message {
-	mi := &file_enum_location_enum_proto_msgTypes[0]
+	mi := &file_tickets_enum_location_enum_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -166,7 +166,7 @@ func (x *LocationCommonType) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LocationCommonType.ProtoReflect.Descriptor instead.
 func (*LocationCommonType) Descriptor() ([]byte, []int) {
-	return file_enum_location_enum_proto_rawDescGZIP(), []int{0}
+	return file_tickets_enum_location_enum_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *LocationCommonType) GetPlace() isLocationCommonType_Place {
@@ -210,11 +210,11 @@ func (*LocationCommonType_Building) isLocationCommonType_Place() {}
 
 func (*LocationCommonType_Dormitory) isLocationCommonType_Place() {}
 
-var File_enum_location_enum_proto protoreflect.FileDescriptor
+var File_tickets_enum_location_enum_proto protoreflect.FileDescriptor
 
-const file_enum_location_enum_proto_rawDesc = "" +
+const file_tickets_enum_location_enum_proto_rawDesc = "" +
 	"\n" +
-	"\x18enum/location.enum.proto\x12\x15contract.tickets.enum\"\xb3\x01\n" +
+	" tickets/enum/location.enum.proto\x12\x15contract.tickets.enum\"\xb3\x01\n" +
 	"\x12LocationCommonType\x12F\n" +
 	"\bbuilding\x18\x01 \x01(\x0e2(.contract.tickets.enum.LocationBuildTypeH\x00R\bbuilding\x12L\n" +
 	"\tdormitory\x18\x02 \x01(\x0e2,.contract.tickets.enum.LocationDormitoryTypeH\x00R\tdormitoryB\a\n" +
@@ -233,25 +233,25 @@ const file_enum_location_enum_proto_rawDesc = "" +
 	"\x19com.contract.tickets.enumB\x11LocationEnumProtoP\x01Z\x1bfesmu/contract/tickets/enum\xa2\x02\x03CTE\xaa\x02\x15Contract.Tickets.Enum\xca\x02\x15Contract\\Tickets\\Enum\xe2\x02!Contract\\Tickets\\Enum\\GPBMetadata\xea\x02\x17Contract::Tickets::Enumb\x06proto3"
 
 var (
-	file_enum_location_enum_proto_rawDescOnce sync.Once
-	file_enum_location_enum_proto_rawDescData []byte
+	file_tickets_enum_location_enum_proto_rawDescOnce sync.Once
+	file_tickets_enum_location_enum_proto_rawDescData []byte
 )
 
-func file_enum_location_enum_proto_rawDescGZIP() []byte {
-	file_enum_location_enum_proto_rawDescOnce.Do(func() {
-		file_enum_location_enum_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_enum_location_enum_proto_rawDesc), len(file_enum_location_enum_proto_rawDesc)))
+func file_tickets_enum_location_enum_proto_rawDescGZIP() []byte {
+	file_tickets_enum_location_enum_proto_rawDescOnce.Do(func() {
+		file_tickets_enum_location_enum_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_tickets_enum_location_enum_proto_rawDesc), len(file_tickets_enum_location_enum_proto_rawDesc)))
 	})
-	return file_enum_location_enum_proto_rawDescData
+	return file_tickets_enum_location_enum_proto_rawDescData
 }
 
-var file_enum_location_enum_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_enum_location_enum_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
-var file_enum_location_enum_proto_goTypes = []any{
+var file_tickets_enum_location_enum_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_tickets_enum_location_enum_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_tickets_enum_location_enum_proto_goTypes = []any{
 	(LocationBuildType)(0),     // 0: contract.tickets.enum.LocationBuildType
 	(LocationDormitoryType)(0), // 1: contract.tickets.enum.LocationDormitoryType
 	(*LocationCommonType)(nil), // 2: contract.tickets.enum.LocationCommonType
 }
-var file_enum_location_enum_proto_depIdxs = []int32{
+var file_tickets_enum_location_enum_proto_depIdxs = []int32{
 	0, // 0: contract.tickets.enum.LocationCommonType.building:type_name -> contract.tickets.enum.LocationBuildType
 	1, // 1: contract.tickets.enum.LocationCommonType.dormitory:type_name -> contract.tickets.enum.LocationDormitoryType
 	2, // [2:2] is the sub-list for method output_type
@@ -261,12 +261,12 @@ var file_enum_location_enum_proto_depIdxs = []int32{
 	0, // [0:2] is the sub-list for field type_name
 }
 
-func init() { file_enum_location_enum_proto_init() }
-func file_enum_location_enum_proto_init() {
-	if File_enum_location_enum_proto != nil {
+func init() { file_tickets_enum_location_enum_proto_init() }
+func file_tickets_enum_location_enum_proto_init() {
+	if File_tickets_enum_location_enum_proto != nil {
 		return
 	}
-	file_enum_location_enum_proto_msgTypes[0].OneofWrappers = []any{
+	file_tickets_enum_location_enum_proto_msgTypes[0].OneofWrappers = []any{
 		(*LocationCommonType_Building)(nil),
 		(*LocationCommonType_Dormitory)(nil),
 	}
@@ -274,18 +274,18 @@ func file_enum_location_enum_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_enum_location_enum_proto_rawDesc), len(file_enum_location_enum_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_tickets_enum_location_enum_proto_rawDesc), len(file_tickets_enum_location_enum_proto_rawDesc)),
 			NumEnums:      2,
 			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_enum_location_enum_proto_goTypes,
-		DependencyIndexes: file_enum_location_enum_proto_depIdxs,
-		EnumInfos:         file_enum_location_enum_proto_enumTypes,
-		MessageInfos:      file_enum_location_enum_proto_msgTypes,
+		GoTypes:           file_tickets_enum_location_enum_proto_goTypes,
+		DependencyIndexes: file_tickets_enum_location_enum_proto_depIdxs,
+		EnumInfos:         file_tickets_enum_location_enum_proto_enumTypes,
+		MessageInfos:      file_tickets_enum_location_enum_proto_msgTypes,
 	}.Build()
-	File_enum_location_enum_proto = out.File
-	file_enum_location_enum_proto_goTypes = nil
-	file_enum_location_enum_proto_depIdxs = nil
+	File_tickets_enum_location_enum_proto = out.File
+	file_tickets_enum_location_enum_proto_goTypes = nil
+	file_tickets_enum_location_enum_proto_depIdxs = nil
 }

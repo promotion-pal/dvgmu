@@ -1,6 +1,5 @@
 packages:
   - "apps/fesmu/web"
-  # Сгенерированный TS всех схем — пакет @fesmu/contract.
   - "packages/ts"
 allowBuilds:
   esbuild: true

@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: service/ip.service.proto
+// source: analytics/service/ip.service.proto
 
 package service
 
@@ -33,7 +33,7 @@ type IpCheckRequest struct {
 
 func (x *IpCheckRequest) Reset() {
 	*x = IpCheckRequest{}
-	mi := &file_service_ip_service_proto_msgTypes[0]
+	mi := &file_analytics_service_ip_service_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -45,7 +45,7 @@ func (x *IpCheckRequest) String() string {
 func (*IpCheckRequest) ProtoMessage() {}
 
 func (x *IpCheckRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_ip_service_proto_msgTypes[0]
+	mi := &file_analytics_service_ip_service_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -58,7 +58,7 @@ func (x *IpCheckRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IpCheckRequest.ProtoReflect.Descriptor instead.
 func (*IpCheckRequest) Descriptor() ([]byte, []int) {
-	return file_service_ip_service_proto_rawDescGZIP(), []int{0}
+	return file_analytics_service_ip_service_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *IpCheckRequest) GetAnalyticId() int64 {
@@ -85,7 +85,7 @@ type IpCheckResponse struct {
 
 func (x *IpCheckResponse) Reset() {
 	*x = IpCheckResponse{}
-	mi := &file_service_ip_service_proto_msgTypes[1]
+	mi := &file_analytics_service_ip_service_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -97,7 +97,7 @@ func (x *IpCheckResponse) String() string {
 func (*IpCheckResponse) ProtoMessage() {}
 
 func (x *IpCheckResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_ip_service_proto_msgTypes[1]
+	mi := &file_analytics_service_ip_service_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -110,7 +110,7 @@ func (x *IpCheckResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IpCheckResponse.ProtoReflect.Descriptor instead.
 func (*IpCheckResponse) Descriptor() ([]byte, []int) {
-	return file_service_ip_service_proto_rawDescGZIP(), []int{1}
+	return file_analytics_service_ip_service_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *IpCheckResponse) GetAllowed() bool {
@@ -137,7 +137,7 @@ type IpCreateRequest struct {
 
 func (x *IpCreateRequest) Reset() {
 	*x = IpCreateRequest{}
-	mi := &file_service_ip_service_proto_msgTypes[2]
+	mi := &file_analytics_service_ip_service_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -149,7 +149,7 @@ func (x *IpCreateRequest) String() string {
 func (*IpCreateRequest) ProtoMessage() {}
 
 func (x *IpCreateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_ip_service_proto_msgTypes[2]
+	mi := &file_analytics_service_ip_service_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -162,7 +162,7 @@ func (x *IpCreateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IpCreateRequest.ProtoReflect.Descriptor instead.
 func (*IpCreateRequest) Descriptor() ([]byte, []int) {
-	return file_service_ip_service_proto_rawDescGZIP(), []int{2}
+	return file_analytics_service_ip_service_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *IpCreateRequest) GetAnalyticId() int64 {
@@ -190,7 +190,7 @@ type IpCreateResponse struct {
 
 func (x *IpCreateResponse) Reset() {
 	*x = IpCreateResponse{}
-	mi := &file_service_ip_service_proto_msgTypes[3]
+	mi := &file_analytics_service_ip_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -202,7 +202,7 @@ func (x *IpCreateResponse) String() string {
 func (*IpCreateResponse) ProtoMessage() {}
 
 func (x *IpCreateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_ip_service_proto_msgTypes[3]
+	mi := &file_analytics_service_ip_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -215,7 +215,7 @@ func (x *IpCreateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IpCreateResponse.ProtoReflect.Descriptor instead.
 func (*IpCreateResponse) Descriptor() ([]byte, []int) {
-	return file_service_ip_service_proto_rawDescGZIP(), []int{3}
+	return file_analytics_service_ip_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *IpCreateResponse) GetId() int64 {
@@ -251,7 +251,7 @@ type IpFetchRequest struct {
 
 func (x *IpFetchRequest) Reset() {
 	*x = IpFetchRequest{}
-	mi := &file_service_ip_service_proto_msgTypes[4]
+	mi := &file_analytics_service_ip_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -263,7 +263,7 @@ func (x *IpFetchRequest) String() string {
 func (*IpFetchRequest) ProtoMessage() {}
 
 func (x *IpFetchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_ip_service_proto_msgTypes[4]
+	mi := &file_analytics_service_ip_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -276,7 +276,7 @@ func (x *IpFetchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IpFetchRequest.ProtoReflect.Descriptor instead.
 func (*IpFetchRequest) Descriptor() ([]byte, []int) {
-	return file_service_ip_service_proto_rawDescGZIP(), []int{4}
+	return file_analytics_service_ip_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *IpFetchRequest) GetAnalyticId() int64 {
@@ -316,7 +316,7 @@ type IpFetchResponse struct {
 
 func (x *IpFetchResponse) Reset() {
 	*x = IpFetchResponse{}
-	mi := &file_service_ip_service_proto_msgTypes[5]
+	mi := &file_analytics_service_ip_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -328,7 +328,7 @@ func (x *IpFetchResponse) String() string {
 func (*IpFetchResponse) ProtoMessage() {}
 
 func (x *IpFetchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_ip_service_proto_msgTypes[5]
+	mi := &file_analytics_service_ip_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -341,7 +341,7 @@ func (x *IpFetchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IpFetchResponse.ProtoReflect.Descriptor instead.
 func (*IpFetchResponse) Descriptor() ([]byte, []int) {
-	return file_service_ip_service_proto_rawDescGZIP(), []int{5}
+	return file_analytics_service_ip_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *IpFetchResponse) GetEntity() *entity.IpEntry {
@@ -351,11 +351,11 @@ func (x *IpFetchResponse) GetEntity() *entity.IpEntry {
 	return nil
 }
 
-var File_service_ip_service_proto protoreflect.FileDescriptor
+var File_analytics_service_ip_service_proto protoreflect.FileDescriptor
 
-const file_service_ip_service_proto_rawDesc = "" +
+const file_analytics_service_ip_service_proto_rawDesc = "" +
 	"\n" +
-	"\x18service/ip.service.proto\x12\x1acontract.analytics.service\x1a\x16entity/ip.entity.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"A\n" +
+	"\"analytics/service/ip.service.proto\x12\x1acontract.analytics.service\x1a analytics/entity/ip.entity.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"A\n" +
 	"\x0eIpCheckRequest\x12\x1f\n" +
 	"\vanalytic_id\x18\x01 \x01(\x03R\n" +
 	"analyticId\x12\x0e\n" +
@@ -392,19 +392,19 @@ const file_service_ip_service_proto_rawDesc = "" +
 	"\x1ecom.contract.analytics.serviceB\x0eIpServiceProtoP\x01Z fesmu/contract/analytics/service\xa2\x02\x03CAS\xaa\x02\x1aContract.Analytics.Service\xca\x02\x1aContract\\Analytics\\Service\xe2\x02&Contract\\Analytics\\Service\\GPBMetadata\xea\x02\x1cContract::Analytics::Serviceb\x06proto3"
 
 var (
-	file_service_ip_service_proto_rawDescOnce sync.Once
-	file_service_ip_service_proto_rawDescData []byte
+	file_analytics_service_ip_service_proto_rawDescOnce sync.Once
+	file_analytics_service_ip_service_proto_rawDescData []byte
 )
 
-func file_service_ip_service_proto_rawDescGZIP() []byte {
-	file_service_ip_service_proto_rawDescOnce.Do(func() {
-		file_service_ip_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_service_ip_service_proto_rawDesc), len(file_service_ip_service_proto_rawDesc)))
+func file_analytics_service_ip_service_proto_rawDescGZIP() []byte {
+	file_analytics_service_ip_service_proto_rawDescOnce.Do(func() {
+		file_analytics_service_ip_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_analytics_service_ip_service_proto_rawDesc), len(file_analytics_service_ip_service_proto_rawDesc)))
 	})
-	return file_service_ip_service_proto_rawDescData
+	return file_analytics_service_ip_service_proto_rawDescData
 }
 
-var file_service_ip_service_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
-var file_service_ip_service_proto_goTypes = []any{
+var file_analytics_service_ip_service_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_analytics_service_ip_service_proto_goTypes = []any{
 	(*IpCheckRequest)(nil),        // 0: contract.analytics.service.IpCheckRequest
 	(*IpCheckResponse)(nil),       // 1: contract.analytics.service.IpCheckResponse
 	(*IpCreateRequest)(nil),       // 2: contract.analytics.service.IpCreateRequest
@@ -414,7 +414,7 @@ var file_service_ip_service_proto_goTypes = []any{
 	(*timestamppb.Timestamp)(nil), // 6: google.protobuf.Timestamp
 	(*entity.IpEntry)(nil),        // 7: contract.analytics.entity.IpEntry
 }
-var file_service_ip_service_proto_depIdxs = []int32{
+var file_analytics_service_ip_service_proto_depIdxs = []int32{
 	6, // 0: contract.analytics.service.IpCheckResponse.retry_after:type_name -> google.protobuf.Timestamp
 	6, // 1: contract.analytics.service.IpFetchRequest.start_date:type_name -> google.protobuf.Timestamp
 	6, // 2: contract.analytics.service.IpFetchRequest.end_date:type_name -> google.protobuf.Timestamp
@@ -432,27 +432,27 @@ var file_service_ip_service_proto_depIdxs = []int32{
 	0, // [0:4] is the sub-list for field type_name
 }
 
-func init() { file_service_ip_service_proto_init() }
-func file_service_ip_service_proto_init() {
-	if File_service_ip_service_proto != nil {
+func init() { file_analytics_service_ip_service_proto_init() }
+func file_analytics_service_ip_service_proto_init() {
+	if File_analytics_service_ip_service_proto != nil {
 		return
 	}
-	file_service_ip_service_proto_msgTypes[4].OneofWrappers = []any{}
+	file_analytics_service_ip_service_proto_msgTypes[4].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_service_ip_service_proto_rawDesc), len(file_service_ip_service_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_analytics_service_ip_service_proto_rawDesc), len(file_analytics_service_ip_service_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_service_ip_service_proto_goTypes,
-		DependencyIndexes: file_service_ip_service_proto_depIdxs,
-		MessageInfos:      file_service_ip_service_proto_msgTypes,
+		GoTypes:           file_analytics_service_ip_service_proto_goTypes,
+		DependencyIndexes: file_analytics_service_ip_service_proto_depIdxs,
+		MessageInfos:      file_analytics_service_ip_service_proto_msgTypes,
 	}.Build()
-	File_service_ip_service_proto = out.File
-	file_service_ip_service_proto_goTypes = nil
-	file_service_ip_service_proto_depIdxs = nil
+	File_analytics_service_ip_service_proto = out.File
+	file_analytics_service_ip_service_proto_goTypes = nil
+	file_analytics_service_ip_service_proto_depIdxs = nil
 }

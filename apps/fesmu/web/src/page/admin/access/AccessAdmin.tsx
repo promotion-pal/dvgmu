@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { PlusIcon } from "lucide-react";
-import type { AccessGroup } from "@fesmu/contract/entity/user.entity_pb";
+import type { AccessGroup } from "@fesmu/contract/mdm/entity/user.entity_pb";
 import { CommonWrapper } from "@/shared/components/wrapper";
 import { Button } from "@/shared/ui/button";
 import {

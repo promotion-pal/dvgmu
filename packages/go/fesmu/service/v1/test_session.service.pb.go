@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: service/v1/test_session.service.proto
+// source: fesmu/service/v1/test_session.service.proto
 
 package servicev1
 
@@ -43,7 +43,7 @@ type TestSessionCreateRequest struct {
 
 func (x *TestSessionCreateRequest) Reset() {
 	*x = TestSessionCreateRequest{}
-	mi := &file_service_v1_test_session_service_proto_msgTypes[0]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -55,7 +55,7 @@ func (x *TestSessionCreateRequest) String() string {
 func (*TestSessionCreateRequest) ProtoMessage() {}
 
 func (x *TestSessionCreateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_session_service_proto_msgTypes[0]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -68,7 +68,7 @@ func (x *TestSessionCreateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestSessionCreateRequest.ProtoReflect.Descriptor instead.
 func (*TestSessionCreateRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_session_service_proto_rawDescGZIP(), []int{0}
+	return file_fesmu_service_v1_test_session_service_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *TestSessionCreateRequest) GetTestId() int64 {
@@ -143,7 +143,7 @@ type TestSessionCreateResponse struct {
 
 func (x *TestSessionCreateResponse) Reset() {
 	*x = TestSessionCreateResponse{}
-	mi := &file_service_v1_test_session_service_proto_msgTypes[1]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -155,7 +155,7 @@ func (x *TestSessionCreateResponse) String() string {
 func (*TestSessionCreateResponse) ProtoMessage() {}
 
 func (x *TestSessionCreateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_session_service_proto_msgTypes[1]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -168,7 +168,7 @@ func (x *TestSessionCreateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestSessionCreateResponse.ProtoReflect.Descriptor instead.
 func (*TestSessionCreateResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_session_service_proto_rawDescGZIP(), []int{1}
+	return file_fesmu_service_v1_test_session_service_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *TestSessionCreateResponse) GetSession() *v1.TestSession {
@@ -188,7 +188,7 @@ type TestSessionFetchRequest struct {
 
 func (x *TestSessionFetchRequest) Reset() {
 	*x = TestSessionFetchRequest{}
-	mi := &file_service_v1_test_session_service_proto_msgTypes[2]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -200,7 +200,7 @@ func (x *TestSessionFetchRequest) String() string {
 func (*TestSessionFetchRequest) ProtoMessage() {}
 
 func (x *TestSessionFetchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_session_service_proto_msgTypes[2]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -213,7 +213,7 @@ func (x *TestSessionFetchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestSessionFetchRequest.ProtoReflect.Descriptor instead.
 func (*TestSessionFetchRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_session_service_proto_rawDescGZIP(), []int{2}
+	return file_fesmu_service_v1_test_session_service_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *TestSessionFetchRequest) GetTestId() int64 {
@@ -232,7 +232,7 @@ type TestSessionFetchResponse struct {
 
 func (x *TestSessionFetchResponse) Reset() {
 	*x = TestSessionFetchResponse{}
-	mi := &file_service_v1_test_session_service_proto_msgTypes[3]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -244,7 +244,7 @@ func (x *TestSessionFetchResponse) String() string {
 func (*TestSessionFetchResponse) ProtoMessage() {}
 
 func (x *TestSessionFetchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_session_service_proto_msgTypes[3]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -257,7 +257,7 @@ func (x *TestSessionFetchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestSessionFetchResponse.ProtoReflect.Descriptor instead.
 func (*TestSessionFetchResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_session_service_proto_rawDescGZIP(), []int{3}
+	return file_fesmu_service_v1_test_session_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *TestSessionFetchResponse) GetList() []*v1.TestSession {
@@ -277,7 +277,7 @@ type TestSessionOpenUpdateRequest struct {
 
 func (x *TestSessionOpenUpdateRequest) Reset() {
 	*x = TestSessionOpenUpdateRequest{}
-	mi := &file_service_v1_test_session_service_proto_msgTypes[4]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -289,7 +289,7 @@ func (x *TestSessionOpenUpdateRequest) String() string {
 func (*TestSessionOpenUpdateRequest) ProtoMessage() {}
 
 func (x *TestSessionOpenUpdateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_session_service_proto_msgTypes[4]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -302,7 +302,7 @@ func (x *TestSessionOpenUpdateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestSessionOpenUpdateRequest.ProtoReflect.Descriptor instead.
 func (*TestSessionOpenUpdateRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_session_service_proto_rawDescGZIP(), []int{4}
+	return file_fesmu_service_v1_test_session_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *TestSessionOpenUpdateRequest) GetId() int64 {
@@ -329,7 +329,7 @@ type TestSessionOpenUpdateResponse struct {
 
 func (x *TestSessionOpenUpdateResponse) Reset() {
 	*x = TestSessionOpenUpdateResponse{}
-	mi := &file_service_v1_test_session_service_proto_msgTypes[5]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -341,7 +341,7 @@ func (x *TestSessionOpenUpdateResponse) String() string {
 func (*TestSessionOpenUpdateResponse) ProtoMessage() {}
 
 func (x *TestSessionOpenUpdateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_session_service_proto_msgTypes[5]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -354,7 +354,7 @@ func (x *TestSessionOpenUpdateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestSessionOpenUpdateResponse.ProtoReflect.Descriptor instead.
 func (*TestSessionOpenUpdateResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_session_service_proto_rawDescGZIP(), []int{5}
+	return file_fesmu_service_v1_test_session_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *TestSessionOpenUpdateResponse) GetSuccess() bool {
@@ -380,7 +380,7 @@ type TestSessionDeleteRequest struct {
 
 func (x *TestSessionDeleteRequest) Reset() {
 	*x = TestSessionDeleteRequest{}
-	mi := &file_service_v1_test_session_service_proto_msgTypes[6]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -392,7 +392,7 @@ func (x *TestSessionDeleteRequest) String() string {
 func (*TestSessionDeleteRequest) ProtoMessage() {}
 
 func (x *TestSessionDeleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_session_service_proto_msgTypes[6]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -405,7 +405,7 @@ func (x *TestSessionDeleteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestSessionDeleteRequest.ProtoReflect.Descriptor instead.
 func (*TestSessionDeleteRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_session_service_proto_rawDescGZIP(), []int{6}
+	return file_fesmu_service_v1_test_session_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *TestSessionDeleteRequest) GetId() int64 {
@@ -425,7 +425,7 @@ type TestSessionDeleteResponse struct {
 
 func (x *TestSessionDeleteResponse) Reset() {
 	*x = TestSessionDeleteResponse{}
-	mi := &file_service_v1_test_session_service_proto_msgTypes[7]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -437,7 +437,7 @@ func (x *TestSessionDeleteResponse) String() string {
 func (*TestSessionDeleteResponse) ProtoMessage() {}
 
 func (x *TestSessionDeleteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_session_service_proto_msgTypes[7]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -450,7 +450,7 @@ func (x *TestSessionDeleteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestSessionDeleteResponse.ProtoReflect.Descriptor instead.
 func (*TestSessionDeleteResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_session_service_proto_rawDescGZIP(), []int{7}
+	return file_fesmu_service_v1_test_session_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *TestSessionDeleteResponse) GetSuccess() bool {
@@ -476,7 +476,7 @@ type TestAttemptFetchRequest struct {
 
 func (x *TestAttemptFetchRequest) Reset() {
 	*x = TestAttemptFetchRequest{}
-	mi := &file_service_v1_test_session_service_proto_msgTypes[8]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -488,7 +488,7 @@ func (x *TestAttemptFetchRequest) String() string {
 func (*TestAttemptFetchRequest) ProtoMessage() {}
 
 func (x *TestAttemptFetchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_session_service_proto_msgTypes[8]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -501,7 +501,7 @@ func (x *TestAttemptFetchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestAttemptFetchRequest.ProtoReflect.Descriptor instead.
 func (*TestAttemptFetchRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_session_service_proto_rawDescGZIP(), []int{8}
+	return file_fesmu_service_v1_test_session_service_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *TestAttemptFetchRequest) GetSessionId() int64 {
@@ -523,7 +523,7 @@ type TestAttemptFetchResponse struct {
 
 func (x *TestAttemptFetchResponse) Reset() {
 	*x = TestAttemptFetchResponse{}
-	mi := &file_service_v1_test_session_service_proto_msgTypes[9]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -535,7 +535,7 @@ func (x *TestAttemptFetchResponse) String() string {
 func (*TestAttemptFetchResponse) ProtoMessage() {}
 
 func (x *TestAttemptFetchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_session_service_proto_msgTypes[9]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -548,7 +548,7 @@ func (x *TestAttemptFetchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestAttemptFetchResponse.ProtoReflect.Descriptor instead.
 func (*TestAttemptFetchResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_session_service_proto_rawDescGZIP(), []int{9}
+	return file_fesmu_service_v1_test_session_service_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *TestAttemptFetchResponse) GetSession() *v1.TestSession {
@@ -581,7 +581,7 @@ type TestAttemptDeleteRequest struct {
 
 func (x *TestAttemptDeleteRequest) Reset() {
 	*x = TestAttemptDeleteRequest{}
-	mi := &file_service_v1_test_session_service_proto_msgTypes[10]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -593,7 +593,7 @@ func (x *TestAttemptDeleteRequest) String() string {
 func (*TestAttemptDeleteRequest) ProtoMessage() {}
 
 func (x *TestAttemptDeleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_session_service_proto_msgTypes[10]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -606,7 +606,7 @@ func (x *TestAttemptDeleteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestAttemptDeleteRequest.ProtoReflect.Descriptor instead.
 func (*TestAttemptDeleteRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_session_service_proto_rawDescGZIP(), []int{10}
+	return file_fesmu_service_v1_test_session_service_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *TestAttemptDeleteRequest) GetId() int64 {
@@ -626,7 +626,7 @@ type TestAttemptDeleteResponse struct {
 
 func (x *TestAttemptDeleteResponse) Reset() {
 	*x = TestAttemptDeleteResponse{}
-	mi := &file_service_v1_test_session_service_proto_msgTypes[11]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -638,7 +638,7 @@ func (x *TestAttemptDeleteResponse) String() string {
 func (*TestAttemptDeleteResponse) ProtoMessage() {}
 
 func (x *TestAttemptDeleteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_session_service_proto_msgTypes[11]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -651,7 +651,7 @@ func (x *TestAttemptDeleteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestAttemptDeleteResponse.ProtoReflect.Descriptor instead.
 func (*TestAttemptDeleteResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_session_service_proto_rawDescGZIP(), []int{11}
+	return file_fesmu_service_v1_test_session_service_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *TestAttemptDeleteResponse) GetSuccess() bool {
@@ -677,7 +677,7 @@ type TestTakeInfoRequest struct {
 
 func (x *TestTakeInfoRequest) Reset() {
 	*x = TestTakeInfoRequest{}
-	mi := &file_service_v1_test_session_service_proto_msgTypes[12]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -689,7 +689,7 @@ func (x *TestTakeInfoRequest) String() string {
 func (*TestTakeInfoRequest) ProtoMessage() {}
 
 func (x *TestTakeInfoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_session_service_proto_msgTypes[12]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -702,7 +702,7 @@ func (x *TestTakeInfoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestTakeInfoRequest.ProtoReflect.Descriptor instead.
 func (*TestTakeInfoRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_session_service_proto_rawDescGZIP(), []int{12}
+	return file_fesmu_service_v1_test_session_service_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *TestTakeInfoRequest) GetToken() string {
@@ -729,7 +729,7 @@ type TestTakeInfoResponse struct {
 
 func (x *TestTakeInfoResponse) Reset() {
 	*x = TestTakeInfoResponse{}
-	mi := &file_service_v1_test_session_service_proto_msgTypes[13]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -741,7 +741,7 @@ func (x *TestTakeInfoResponse) String() string {
 func (*TestTakeInfoResponse) ProtoMessage() {}
 
 func (x *TestTakeInfoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_session_service_proto_msgTypes[13]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -754,7 +754,7 @@ func (x *TestTakeInfoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestTakeInfoResponse.ProtoReflect.Descriptor instead.
 func (*TestTakeInfoResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_session_service_proto_rawDescGZIP(), []int{13}
+	return file_fesmu_service_v1_test_session_service_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *TestTakeInfoResponse) GetTopic() string {
@@ -817,7 +817,7 @@ type TestTakeStartRequest struct {
 
 func (x *TestTakeStartRequest) Reset() {
 	*x = TestTakeStartRequest{}
-	mi := &file_service_v1_test_session_service_proto_msgTypes[14]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -829,7 +829,7 @@ func (x *TestTakeStartRequest) String() string {
 func (*TestTakeStartRequest) ProtoMessage() {}
 
 func (x *TestTakeStartRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_session_service_proto_msgTypes[14]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -842,7 +842,7 @@ func (x *TestTakeStartRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestTakeStartRequest.ProtoReflect.Descriptor instead.
 func (*TestTakeStartRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_session_service_proto_rawDescGZIP(), []int{14}
+	return file_fesmu_service_v1_test_session_service_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *TestTakeStartRequest) GetToken() string {
@@ -875,7 +875,7 @@ type TestTakeStateRequest struct {
 
 func (x *TestTakeStateRequest) Reset() {
 	*x = TestTakeStateRequest{}
-	mi := &file_service_v1_test_session_service_proto_msgTypes[15]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -887,7 +887,7 @@ func (x *TestTakeStateRequest) String() string {
 func (*TestTakeStateRequest) ProtoMessage() {}
 
 func (x *TestTakeStateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_session_service_proto_msgTypes[15]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -900,7 +900,7 @@ func (x *TestTakeStateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestTakeStateRequest.ProtoReflect.Descriptor instead.
 func (*TestTakeStateRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_session_service_proto_rawDescGZIP(), []int{15}
+	return file_fesmu_service_v1_test_session_service_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *TestTakeStateRequest) GetAttemptToken() string {
@@ -922,7 +922,7 @@ type TestTakeAnswerRequest struct {
 
 func (x *TestTakeAnswerRequest) Reset() {
 	*x = TestTakeAnswerRequest{}
-	mi := &file_service_v1_test_session_service_proto_msgTypes[16]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -934,7 +934,7 @@ func (x *TestTakeAnswerRequest) String() string {
 func (*TestTakeAnswerRequest) ProtoMessage() {}
 
 func (x *TestTakeAnswerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_session_service_proto_msgTypes[16]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -947,7 +947,7 @@ func (x *TestTakeAnswerRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestTakeAnswerRequest.ProtoReflect.Descriptor instead.
 func (*TestTakeAnswerRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_session_service_proto_rawDescGZIP(), []int{16}
+	return file_fesmu_service_v1_test_session_service_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *TestTakeAnswerRequest) GetAttemptToken() string {
@@ -980,7 +980,7 @@ type TestTakeAnswerResponse struct {
 
 func (x *TestTakeAnswerResponse) Reset() {
 	*x = TestTakeAnswerResponse{}
-	mi := &file_service_v1_test_session_service_proto_msgTypes[17]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -992,7 +992,7 @@ func (x *TestTakeAnswerResponse) String() string {
 func (*TestTakeAnswerResponse) ProtoMessage() {}
 
 func (x *TestTakeAnswerResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_session_service_proto_msgTypes[17]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1005,7 +1005,7 @@ func (x *TestTakeAnswerResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestTakeAnswerResponse.ProtoReflect.Descriptor instead.
 func (*TestTakeAnswerResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_session_service_proto_rawDescGZIP(), []int{17}
+	return file_fesmu_service_v1_test_session_service_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *TestTakeAnswerResponse) GetSuccess() bool {
@@ -1024,7 +1024,7 @@ type TestTakeFinishRequest struct {
 
 func (x *TestTakeFinishRequest) Reset() {
 	*x = TestTakeFinishRequest{}
-	mi := &file_service_v1_test_session_service_proto_msgTypes[18]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1036,7 +1036,7 @@ func (x *TestTakeFinishRequest) String() string {
 func (*TestTakeFinishRequest) ProtoMessage() {}
 
 func (x *TestTakeFinishRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_session_service_proto_msgTypes[18]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1049,7 +1049,7 @@ func (x *TestTakeFinishRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestTakeFinishRequest.ProtoReflect.Descriptor instead.
 func (*TestTakeFinishRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_session_service_proto_rawDescGZIP(), []int{18}
+	return file_fesmu_service_v1_test_session_service_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *TestTakeFinishRequest) GetAttemptToken() string {
@@ -1083,7 +1083,7 @@ type TestTakeStateResponse struct {
 
 func (x *TestTakeStateResponse) Reset() {
 	*x = TestTakeStateResponse{}
-	mi := &file_service_v1_test_session_service_proto_msgTypes[19]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1095,7 +1095,7 @@ func (x *TestTakeStateResponse) String() string {
 func (*TestTakeStateResponse) ProtoMessage() {}
 
 func (x *TestTakeStateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_session_service_proto_msgTypes[19]
+	mi := &file_fesmu_service_v1_test_session_service_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1108,7 +1108,7 @@ func (x *TestTakeStateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestTakeStateResponse.ProtoReflect.Descriptor instead.
 func (*TestTakeStateResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_session_service_proto_rawDescGZIP(), []int{19}
+	return file_fesmu_service_v1_test_session_service_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *TestTakeStateResponse) GetAttemptToken() string {
@@ -1188,11 +1188,11 @@ func (x *TestTakeStateResponse) GetTotal() int32 {
 	return 0
 }
 
-var File_service_v1_test_session_service_proto protoreflect.FileDescriptor
+var File_fesmu_service_v1_test_session_service_proto protoreflect.FileDescriptor
 
-const file_service_v1_test_session_service_proto_rawDesc = "" +
+const file_fesmu_service_v1_test_session_service_proto_rawDesc = "" +
 	"\n" +
-	"%service/v1/test_session.service.proto\x12\x13contract.service.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bentity/v1/test.entity.proto\x1a\x17enum/v1/test.enum.proto\"\xe7\x02\n" +
+	"+fesmu/service/v1/test_session.service.proto\x12\x13contract.service.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a!fesmu/entity/v1/test.entity.proto\x1a\x1dfesmu/enum/v1/test.enum.proto\"\xe7\x02\n" +
 	"\x18TestSessionCreateRequest\x12\x17\n" +
 	"\atest_id\x18\x01 \x01(\x03R\x06testId\x12)\n" +
 	"\x10duration_minutes\x18\x02 \x01(\x05R\x0fdurationMinutes\x12%\n" +
@@ -1289,19 +1289,19 @@ const file_service_v1_test_session_service_proto_rawDesc = "" +
 	"\x17com.contract.service.v1B\x17TestSessionServiceProtoP\x01Z)fesmu/contract/fesmu/service/v1;servicev1\xa2\x02\x03CSX\xaa\x02\x13Contract.Service.V1\xca\x02\x13Contract\\Service\\V1\xe2\x02\x1fContract\\Service\\V1\\GPBMetadata\xea\x02\x15Contract::Service::V1b\x06proto3"
 
 var (
-	file_service_v1_test_session_service_proto_rawDescOnce sync.Once
-	file_service_v1_test_session_service_proto_rawDescData []byte
+	file_fesmu_service_v1_test_session_service_proto_rawDescOnce sync.Once
+	file_fesmu_service_v1_test_session_service_proto_rawDescData []byte
 )
 
-func file_service_v1_test_session_service_proto_rawDescGZIP() []byte {
-	file_service_v1_test_session_service_proto_rawDescOnce.Do(func() {
-		file_service_v1_test_session_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_service_v1_test_session_service_proto_rawDesc), len(file_service_v1_test_session_service_proto_rawDesc)))
+func file_fesmu_service_v1_test_session_service_proto_rawDescGZIP() []byte {
+	file_fesmu_service_v1_test_session_service_proto_rawDescOnce.Do(func() {
+		file_fesmu_service_v1_test_session_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_fesmu_service_v1_test_session_service_proto_rawDesc), len(file_fesmu_service_v1_test_session_service_proto_rawDesc)))
 	})
-	return file_service_v1_test_session_service_proto_rawDescData
+	return file_fesmu_service_v1_test_session_service_proto_rawDescData
 }
 
-var file_service_v1_test_session_service_proto_msgTypes = make([]protoimpl.MessageInfo, 20)
-var file_service_v1_test_session_service_proto_goTypes = []any{
+var file_fesmu_service_v1_test_session_service_proto_msgTypes = make([]protoimpl.MessageInfo, 20)
+var file_fesmu_service_v1_test_session_service_proto_goTypes = []any{
 	(*TestSessionCreateRequest)(nil),      // 0: contract.service.v1.TestSessionCreateRequest
 	(*TestSessionCreateResponse)(nil),     // 1: contract.service.v1.TestSessionCreateResponse
 	(*TestSessionFetchRequest)(nil),       // 2: contract.service.v1.TestSessionFetchRequest
@@ -1330,7 +1330,7 @@ var file_service_v1_test_session_service_proto_goTypes = []any{
 	(*v1.TestTakeQuestion)(nil),           // 25: contract.entity.v1.TestTakeQuestion
 	(*v1.TestAttemptAnswer)(nil),          // 26: contract.entity.v1.TestAttemptAnswer
 }
-var file_service_v1_test_session_service_proto_depIdxs = []int32{
+var file_fesmu_service_v1_test_session_service_proto_depIdxs = []int32{
 	20, // 0: contract.service.v1.TestSessionCreateRequest.closes_at:type_name -> google.protobuf.Timestamp
 	20, // 1: contract.service.v1.TestSessionCreateRequest.opens_at:type_name -> google.protobuf.Timestamp
 	21, // 2: contract.service.v1.TestSessionCreateResponse.session:type_name -> contract.entity.v1.TestSession
@@ -1374,26 +1374,26 @@ var file_service_v1_test_session_service_proto_depIdxs = []int32{
 	0,  // [0:14] is the sub-list for field type_name
 }
 
-func init() { file_service_v1_test_session_service_proto_init() }
-func file_service_v1_test_session_service_proto_init() {
-	if File_service_v1_test_session_service_proto != nil {
+func init() { file_fesmu_service_v1_test_session_service_proto_init() }
+func file_fesmu_service_v1_test_session_service_proto_init() {
+	if File_fesmu_service_v1_test_session_service_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_service_v1_test_session_service_proto_rawDesc), len(file_service_v1_test_session_service_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_fesmu_service_v1_test_session_service_proto_rawDesc), len(file_fesmu_service_v1_test_session_service_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   20,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_service_v1_test_session_service_proto_goTypes,
-		DependencyIndexes: file_service_v1_test_session_service_proto_depIdxs,
-		MessageInfos:      file_service_v1_test_session_service_proto_msgTypes,
+		GoTypes:           file_fesmu_service_v1_test_session_service_proto_goTypes,
+		DependencyIndexes: file_fesmu_service_v1_test_session_service_proto_depIdxs,
+		MessageInfos:      file_fesmu_service_v1_test_session_service_proto_msgTypes,
 	}.Build()
-	File_service_v1_test_session_service_proto = out.File
-	file_service_v1_test_session_service_proto_goTypes = nil
-	file_service_v1_test_session_service_proto_depIdxs = nil
+	File_fesmu_service_v1_test_session_service_proto = out.File
+	file_fesmu_service_v1_test_session_service_proto_goTypes = nil
+	file_fesmu_service_v1_test_session_service_proto_depIdxs = nil
 }

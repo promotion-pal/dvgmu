@@ -2,7 +2,7 @@ import type { ComponentProps, FC } from "react";
 import { memberKey } from "@/shared/lib/role-members";
 import { BookOpenIcon, CalendarIcon, GraduationCapIcon, HomeIcon, KeyIcon, MailIcon, PhoneIcon, UsersIcon } from "lucide-react";
 import { Badge } from "@/shared/ui/badge";
-import type { StudentWithUser } from "@fesmu/contract/service/user.service_pb";
+import type { StudentWithUser } from "@fesmu/contract/mdm/service/user.service_pb";
 import { PersonDetails, PersonSummary } from "@/shared/components/person";
 import { CommonControlState } from "@/shared/components/state/control-state";
 import { CommonModal } from "@/shared/components/modal";

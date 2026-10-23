@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: entity/v1/schedule_collect.entity.proto
+// source: fesmu/entity/v1/schedule_collect.entity.proto
 
 package entityv1
 
@@ -64,7 +64,7 @@ type ScheduleCollectEntry struct {
 
 func (x *ScheduleCollectEntry) Reset() {
 	*x = ScheduleCollectEntry{}
-	mi := &file_entity_v1_schedule_collect_entity_proto_msgTypes[0]
+	mi := &file_fesmu_entity_v1_schedule_collect_entity_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -76,7 +76,7 @@ func (x *ScheduleCollectEntry) String() string {
 func (*ScheduleCollectEntry) ProtoMessage() {}
 
 func (x *ScheduleCollectEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v1_schedule_collect_entity_proto_msgTypes[0]
+	mi := &file_fesmu_entity_v1_schedule_collect_entity_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -89,7 +89,7 @@ func (x *ScheduleCollectEntry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ScheduleCollectEntry.ProtoReflect.Descriptor instead.
 func (*ScheduleCollectEntry) Descriptor() ([]byte, []int) {
-	return file_entity_v1_schedule_collect_entity_proto_rawDescGZIP(), []int{0}
+	return file_fesmu_entity_v1_schedule_collect_entity_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *ScheduleCollectEntry) GetId() string {
@@ -253,11 +253,11 @@ func (x *ScheduleCollectEntry) GetCreatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
-var File_entity_v1_schedule_collect_entity_proto protoreflect.FileDescriptor
+var File_fesmu_entity_v1_schedule_collect_entity_proto protoreflect.FileDescriptor
 
-const file_entity_v1_schedule_collect_entity_proto_rawDesc = "" +
+const file_fesmu_entity_v1_schedule_collect_entity_proto_rawDesc = "" +
 	"\n" +
-	"'entity/v1/schedule_collect.entity.proto\x12\x12contract.entity.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xf4\x05\n" +
+	"-fesmu/entity/v1/schedule_collect.entity.proto\x12\x12contract.entity.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xf4\x05\n" +
 	"\x14ScheduleCollectEntry\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
 	"\x05group\x18\x02 \x01(\tR\x05group\x12$\n" +
@@ -287,23 +287,23 @@ const file_entity_v1_schedule_collect_entity_proto_rawDesc = "" +
 	"\x16com.contract.entity.v1B\x1aScheduleCollectEntityProtoP\x01Z'fesmu/contract/fesmu/entity/v1;entityv1\xa2\x02\x03CEX\xaa\x02\x12Contract.Entity.V1\xca\x02\x12Contract\\Entity\\V1\xe2\x02\x1eContract\\Entity\\V1\\GPBMetadata\xea\x02\x14Contract::Entity::V1b\x06proto3"
 
 var (
-	file_entity_v1_schedule_collect_entity_proto_rawDescOnce sync.Once
-	file_entity_v1_schedule_collect_entity_proto_rawDescData []byte
+	file_fesmu_entity_v1_schedule_collect_entity_proto_rawDescOnce sync.Once
+	file_fesmu_entity_v1_schedule_collect_entity_proto_rawDescData []byte
 )
 
-func file_entity_v1_schedule_collect_entity_proto_rawDescGZIP() []byte {
-	file_entity_v1_schedule_collect_entity_proto_rawDescOnce.Do(func() {
-		file_entity_v1_schedule_collect_entity_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_entity_v1_schedule_collect_entity_proto_rawDesc), len(file_entity_v1_schedule_collect_entity_proto_rawDesc)))
+func file_fesmu_entity_v1_schedule_collect_entity_proto_rawDescGZIP() []byte {
+	file_fesmu_entity_v1_schedule_collect_entity_proto_rawDescOnce.Do(func() {
+		file_fesmu_entity_v1_schedule_collect_entity_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_fesmu_entity_v1_schedule_collect_entity_proto_rawDesc), len(file_fesmu_entity_v1_schedule_collect_entity_proto_rawDesc)))
 	})
-	return file_entity_v1_schedule_collect_entity_proto_rawDescData
+	return file_fesmu_entity_v1_schedule_collect_entity_proto_rawDescData
 }
 
-var file_entity_v1_schedule_collect_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
-var file_entity_v1_schedule_collect_entity_proto_goTypes = []any{
+var file_fesmu_entity_v1_schedule_collect_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_fesmu_entity_v1_schedule_collect_entity_proto_goTypes = []any{
 	(*ScheduleCollectEntry)(nil),  // 0: contract.entity.v1.ScheduleCollectEntry
 	(*timestamppb.Timestamp)(nil), // 1: google.protobuf.Timestamp
 }
-var file_entity_v1_schedule_collect_entity_proto_depIdxs = []int32{
+var file_fesmu_entity_v1_schedule_collect_entity_proto_depIdxs = []int32{
 	1, // 0: contract.entity.v1.ScheduleCollectEntry.created_at:type_name -> google.protobuf.Timestamp
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
@@ -312,26 +312,26 @@ var file_entity_v1_schedule_collect_entity_proto_depIdxs = []int32{
 	0, // [0:1] is the sub-list for field type_name
 }
 
-func init() { file_entity_v1_schedule_collect_entity_proto_init() }
-func file_entity_v1_schedule_collect_entity_proto_init() {
-	if File_entity_v1_schedule_collect_entity_proto != nil {
+func init() { file_fesmu_entity_v1_schedule_collect_entity_proto_init() }
+func file_fesmu_entity_v1_schedule_collect_entity_proto_init() {
+	if File_fesmu_entity_v1_schedule_collect_entity_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_entity_v1_schedule_collect_entity_proto_rawDesc), len(file_entity_v1_schedule_collect_entity_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_fesmu_entity_v1_schedule_collect_entity_proto_rawDesc), len(file_fesmu_entity_v1_schedule_collect_entity_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_entity_v1_schedule_collect_entity_proto_goTypes,
-		DependencyIndexes: file_entity_v1_schedule_collect_entity_proto_depIdxs,
-		MessageInfos:      file_entity_v1_schedule_collect_entity_proto_msgTypes,
+		GoTypes:           file_fesmu_entity_v1_schedule_collect_entity_proto_goTypes,
+		DependencyIndexes: file_fesmu_entity_v1_schedule_collect_entity_proto_depIdxs,
+		MessageInfos:      file_fesmu_entity_v1_schedule_collect_entity_proto_msgTypes,
 	}.Build()
-	File_entity_v1_schedule_collect_entity_proto = out.File
-	file_entity_v1_schedule_collect_entity_proto_goTypes = nil
-	file_entity_v1_schedule_collect_entity_proto_depIdxs = nil
+	File_fesmu_entity_v1_schedule_collect_entity_proto = out.File
+	file_fesmu_entity_v1_schedule_collect_entity_proto_goTypes = nil
+	file_fesmu_entity_v1_schedule_collect_entity_proto_depIdxs = nil
 }

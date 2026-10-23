@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: service/v1/test.service.proto
+// source: fesmu/service/v1/test.service.proto
 
 package servicev1
 
@@ -36,7 +36,7 @@ type TestQuestionInput struct {
 
 func (x *TestQuestionInput) Reset() {
 	*x = TestQuestionInput{}
-	mi := &file_service_v1_test_service_proto_msgTypes[0]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -48,7 +48,7 @@ func (x *TestQuestionInput) String() string {
 func (*TestQuestionInput) ProtoMessage() {}
 
 func (x *TestQuestionInput) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_service_proto_msgTypes[0]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -61,7 +61,7 @@ func (x *TestQuestionInput) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestQuestionInput.ProtoReflect.Descriptor instead.
 func (*TestQuestionInput) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_service_proto_rawDescGZIP(), []int{0}
+	return file_fesmu_service_v1_test_service_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *TestQuestionInput) GetText() string {
@@ -95,7 +95,7 @@ type TestAnswerInput struct {
 
 func (x *TestAnswerInput) Reset() {
 	*x = TestAnswerInput{}
-	mi := &file_service_v1_test_service_proto_msgTypes[1]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -107,7 +107,7 @@ func (x *TestAnswerInput) String() string {
 func (*TestAnswerInput) ProtoMessage() {}
 
 func (x *TestAnswerInput) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_service_proto_msgTypes[1]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -120,7 +120,7 @@ func (x *TestAnswerInput) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestAnswerInput.ProtoReflect.Descriptor instead.
 func (*TestAnswerInput) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_service_proto_rawDescGZIP(), []int{1}
+	return file_fesmu_service_v1_test_service_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *TestAnswerInput) GetText() string {
@@ -147,7 +147,7 @@ type TestFetchRequest struct {
 
 func (x *TestFetchRequest) Reset() {
 	*x = TestFetchRequest{}
-	mi := &file_service_v1_test_service_proto_msgTypes[2]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -159,7 +159,7 @@ func (x *TestFetchRequest) String() string {
 func (*TestFetchRequest) ProtoMessage() {}
 
 func (x *TestFetchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_service_proto_msgTypes[2]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -172,7 +172,7 @@ func (x *TestFetchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestFetchRequest.ProtoReflect.Descriptor instead.
 func (*TestFetchRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_service_proto_rawDescGZIP(), []int{2}
+	return file_fesmu_service_v1_test_service_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *TestFetchRequest) GetTopic() string {
@@ -191,7 +191,7 @@ type TestFetchResponse struct {
 
 func (x *TestFetchResponse) Reset() {
 	*x = TestFetchResponse{}
-	mi := &file_service_v1_test_service_proto_msgTypes[3]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -203,7 +203,7 @@ func (x *TestFetchResponse) String() string {
 func (*TestFetchResponse) ProtoMessage() {}
 
 func (x *TestFetchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_service_proto_msgTypes[3]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -216,7 +216,7 @@ func (x *TestFetchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestFetchResponse.ProtoReflect.Descriptor instead.
 func (*TestFetchResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_service_proto_rawDescGZIP(), []int{3}
+	return file_fesmu_service_v1_test_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *TestFetchResponse) GetList() []*v1.Test {
@@ -235,7 +235,7 @@ type TestByIDRequest struct {
 
 func (x *TestByIDRequest) Reset() {
 	*x = TestByIDRequest{}
-	mi := &file_service_v1_test_service_proto_msgTypes[4]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -247,7 +247,7 @@ func (x *TestByIDRequest) String() string {
 func (*TestByIDRequest) ProtoMessage() {}
 
 func (x *TestByIDRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_service_proto_msgTypes[4]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -260,7 +260,7 @@ func (x *TestByIDRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestByIDRequest.ProtoReflect.Descriptor instead.
 func (*TestByIDRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_service_proto_rawDescGZIP(), []int{4}
+	return file_fesmu_service_v1_test_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *TestByIDRequest) GetId() int64 {
@@ -279,7 +279,7 @@ type TestByIDResponse struct {
 
 func (x *TestByIDResponse) Reset() {
 	*x = TestByIDResponse{}
-	mi := &file_service_v1_test_service_proto_msgTypes[5]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -291,7 +291,7 @@ func (x *TestByIDResponse) String() string {
 func (*TestByIDResponse) ProtoMessage() {}
 
 func (x *TestByIDResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_service_proto_msgTypes[5]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -304,7 +304,7 @@ func (x *TestByIDResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestByIDResponse.ProtoReflect.Descriptor instead.
 func (*TestByIDResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_service_proto_rawDescGZIP(), []int{5}
+	return file_fesmu_service_v1_test_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *TestByIDResponse) GetTest() *v1.Test {
@@ -329,7 +329,7 @@ type TestCreateRequest struct {
 
 func (x *TestCreateRequest) Reset() {
 	*x = TestCreateRequest{}
-	mi := &file_service_v1_test_service_proto_msgTypes[6]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -341,7 +341,7 @@ func (x *TestCreateRequest) String() string {
 func (*TestCreateRequest) ProtoMessage() {}
 
 func (x *TestCreateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_service_proto_msgTypes[6]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -354,7 +354,7 @@ func (x *TestCreateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestCreateRequest.ProtoReflect.Descriptor instead.
 func (*TestCreateRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_service_proto_rawDescGZIP(), []int{6}
+	return file_fesmu_service_v1_test_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *TestCreateRequest) GetTopic() string {
@@ -410,7 +410,7 @@ type TestCreateResponse struct {
 
 func (x *TestCreateResponse) Reset() {
 	*x = TestCreateResponse{}
-	mi := &file_service_v1_test_service_proto_msgTypes[7]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -422,7 +422,7 @@ func (x *TestCreateResponse) String() string {
 func (*TestCreateResponse) ProtoMessage() {}
 
 func (x *TestCreateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_service_proto_msgTypes[7]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -435,7 +435,7 @@ func (x *TestCreateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestCreateResponse.ProtoReflect.Descriptor instead.
 func (*TestCreateResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_service_proto_rawDescGZIP(), []int{7}
+	return file_fesmu_service_v1_test_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *TestCreateResponse) GetSuccess() bool {
@@ -476,7 +476,7 @@ type TestUpdateRequest struct {
 
 func (x *TestUpdateRequest) Reset() {
 	*x = TestUpdateRequest{}
-	mi := &file_service_v1_test_service_proto_msgTypes[8]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -488,7 +488,7 @@ func (x *TestUpdateRequest) String() string {
 func (*TestUpdateRequest) ProtoMessage() {}
 
 func (x *TestUpdateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_service_proto_msgTypes[8]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -501,7 +501,7 @@ func (x *TestUpdateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestUpdateRequest.ProtoReflect.Descriptor instead.
 func (*TestUpdateRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_service_proto_rawDescGZIP(), []int{8}
+	return file_fesmu_service_v1_test_service_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *TestUpdateRequest) GetId() int64 {
@@ -563,7 +563,7 @@ type TestUpdateResponse struct {
 
 func (x *TestUpdateResponse) Reset() {
 	*x = TestUpdateResponse{}
-	mi := &file_service_v1_test_service_proto_msgTypes[9]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -575,7 +575,7 @@ func (x *TestUpdateResponse) String() string {
 func (*TestUpdateResponse) ProtoMessage() {}
 
 func (x *TestUpdateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_service_proto_msgTypes[9]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -588,7 +588,7 @@ func (x *TestUpdateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestUpdateResponse.ProtoReflect.Descriptor instead.
 func (*TestUpdateResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_service_proto_rawDescGZIP(), []int{9}
+	return file_fesmu_service_v1_test_service_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *TestUpdateResponse) GetSuccess() bool {
@@ -614,7 +614,7 @@ type TestDeleteRequest struct {
 
 func (x *TestDeleteRequest) Reset() {
 	*x = TestDeleteRequest{}
-	mi := &file_service_v1_test_service_proto_msgTypes[10]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -626,7 +626,7 @@ func (x *TestDeleteRequest) String() string {
 func (*TestDeleteRequest) ProtoMessage() {}
 
 func (x *TestDeleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_service_proto_msgTypes[10]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -639,7 +639,7 @@ func (x *TestDeleteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestDeleteRequest.ProtoReflect.Descriptor instead.
 func (*TestDeleteRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_service_proto_rawDescGZIP(), []int{10}
+	return file_fesmu_service_v1_test_service_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *TestDeleteRequest) GetId() int64 {
@@ -659,7 +659,7 @@ type TestDeleteResponse struct {
 
 func (x *TestDeleteResponse) Reset() {
 	*x = TestDeleteResponse{}
-	mi := &file_service_v1_test_service_proto_msgTypes[11]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -671,7 +671,7 @@ func (x *TestDeleteResponse) String() string {
 func (*TestDeleteResponse) ProtoMessage() {}
 
 func (x *TestDeleteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_service_proto_msgTypes[11]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -684,7 +684,7 @@ func (x *TestDeleteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestDeleteResponse.ProtoReflect.Descriptor instead.
 func (*TestDeleteResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_service_proto_rawDescGZIP(), []int{11}
+	return file_fesmu_service_v1_test_service_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *TestDeleteResponse) GetSuccess() bool {
@@ -710,7 +710,7 @@ type TestExportRequest struct {
 
 func (x *TestExportRequest) Reset() {
 	*x = TestExportRequest{}
-	mi := &file_service_v1_test_service_proto_msgTypes[12]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -722,7 +722,7 @@ func (x *TestExportRequest) String() string {
 func (*TestExportRequest) ProtoMessage() {}
 
 func (x *TestExportRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_service_proto_msgTypes[12]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -735,7 +735,7 @@ func (x *TestExportRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestExportRequest.ProtoReflect.Descriptor instead.
 func (*TestExportRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_service_proto_rawDescGZIP(), []int{12}
+	return file_fesmu_service_v1_test_service_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *TestExportRequest) GetId() int64 {
@@ -755,7 +755,7 @@ type TestExportResponse struct {
 
 func (x *TestExportResponse) Reset() {
 	*x = TestExportResponse{}
-	mi := &file_service_v1_test_service_proto_msgTypes[13]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -767,7 +767,7 @@ func (x *TestExportResponse) String() string {
 func (*TestExportResponse) ProtoMessage() {}
 
 func (x *TestExportResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_service_proto_msgTypes[13]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -780,7 +780,7 @@ func (x *TestExportResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestExportResponse.ProtoReflect.Descriptor instead.
 func (*TestExportResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_service_proto_rawDescGZIP(), []int{13}
+	return file_fesmu_service_v1_test_service_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *TestExportResponse) GetFileName() string {
@@ -807,7 +807,7 @@ type TestImportParseRequest struct {
 
 func (x *TestImportParseRequest) Reset() {
 	*x = TestImportParseRequest{}
-	mi := &file_service_v1_test_service_proto_msgTypes[14]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -819,7 +819,7 @@ func (x *TestImportParseRequest) String() string {
 func (*TestImportParseRequest) ProtoMessage() {}
 
 func (x *TestImportParseRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_service_proto_msgTypes[14]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -832,7 +832,7 @@ func (x *TestImportParseRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestImportParseRequest.ProtoReflect.Descriptor instead.
 func (*TestImportParseRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_service_proto_rawDescGZIP(), []int{14}
+	return file_fesmu_service_v1_test_service_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *TestImportParseRequest) GetFileName() string {
@@ -862,7 +862,7 @@ type TestImportParseResponse struct {
 
 func (x *TestImportParseResponse) Reset() {
 	*x = TestImportParseResponse{}
-	mi := &file_service_v1_test_service_proto_msgTypes[15]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -874,7 +874,7 @@ func (x *TestImportParseResponse) String() string {
 func (*TestImportParseResponse) ProtoMessage() {}
 
 func (x *TestImportParseResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_service_proto_msgTypes[15]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -887,7 +887,7 @@ func (x *TestImportParseResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestImportParseResponse.ProtoReflect.Descriptor instead.
 func (*TestImportParseResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_service_proto_rawDescGZIP(), []int{15}
+	return file_fesmu_service_v1_test_service_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *TestImportParseResponse) GetTopic() string {
@@ -921,7 +921,7 @@ type TestExportStatusUpdateRequest struct {
 
 func (x *TestExportStatusUpdateRequest) Reset() {
 	*x = TestExportStatusUpdateRequest{}
-	mi := &file_service_v1_test_service_proto_msgTypes[16]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -933,7 +933,7 @@ func (x *TestExportStatusUpdateRequest) String() string {
 func (*TestExportStatusUpdateRequest) ProtoMessage() {}
 
 func (x *TestExportStatusUpdateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_service_proto_msgTypes[16]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -946,7 +946,7 @@ func (x *TestExportStatusUpdateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestExportStatusUpdateRequest.ProtoReflect.Descriptor instead.
 func (*TestExportStatusUpdateRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_service_proto_rawDescGZIP(), []int{16}
+	return file_fesmu_service_v1_test_service_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *TestExportStatusUpdateRequest) GetId() int64 {
@@ -973,7 +973,7 @@ type TestExportStatusUpdateResponse struct {
 
 func (x *TestExportStatusUpdateResponse) Reset() {
 	*x = TestExportStatusUpdateResponse{}
-	mi := &file_service_v1_test_service_proto_msgTypes[17]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -985,7 +985,7 @@ func (x *TestExportStatusUpdateResponse) String() string {
 func (*TestExportStatusUpdateResponse) ProtoMessage() {}
 
 func (x *TestExportStatusUpdateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_service_proto_msgTypes[17]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -998,7 +998,7 @@ func (x *TestExportStatusUpdateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestExportStatusUpdateResponse.ProtoReflect.Descriptor instead.
 func (*TestExportStatusUpdateResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_service_proto_rawDescGZIP(), []int{17}
+	return file_fesmu_service_v1_test_service_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *TestExportStatusUpdateResponse) GetSuccess() bool {
@@ -1024,7 +1024,7 @@ type TestImageUploadRequest struct {
 
 func (x *TestImageUploadRequest) Reset() {
 	*x = TestImageUploadRequest{}
-	mi := &file_service_v1_test_service_proto_msgTypes[18]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1036,7 +1036,7 @@ func (x *TestImageUploadRequest) String() string {
 func (*TestImageUploadRequest) ProtoMessage() {}
 
 func (x *TestImageUploadRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_service_proto_msgTypes[18]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1049,7 +1049,7 @@ func (x *TestImageUploadRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestImageUploadRequest.ProtoReflect.Descriptor instead.
 func (*TestImageUploadRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_service_proto_rawDescGZIP(), []int{18}
+	return file_fesmu_service_v1_test_service_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *TestImageUploadRequest) GetContent() []byte {
@@ -1070,7 +1070,7 @@ type TestImageUploadResponse struct {
 
 func (x *TestImageUploadResponse) Reset() {
 	*x = TestImageUploadResponse{}
-	mi := &file_service_v1_test_service_proto_msgTypes[19]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1082,7 +1082,7 @@ func (x *TestImageUploadResponse) String() string {
 func (*TestImageUploadResponse) ProtoMessage() {}
 
 func (x *TestImageUploadResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_test_service_proto_msgTypes[19]
+	mi := &file_fesmu_service_v1_test_service_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1095,7 +1095,7 @@ func (x *TestImageUploadResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestImageUploadResponse.ProtoReflect.Descriptor instead.
 func (*TestImageUploadResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_test_service_proto_rawDescGZIP(), []int{19}
+	return file_fesmu_service_v1_test_service_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *TestImageUploadResponse) GetImage() string {
@@ -1119,11 +1119,11 @@ func (x *TestImageUploadResponse) GetHeight() int32 {
 	return 0
 }
 
-var File_service_v1_test_service_proto protoreflect.FileDescriptor
+var File_fesmu_service_v1_test_service_proto protoreflect.FileDescriptor
 
-const file_service_v1_test_service_proto_rawDesc = "" +
+const file_fesmu_service_v1_test_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1dservice/v1/test.service.proto\x12\x13contract.service.v1\x1a\x1bentity/v1/test.entity.proto\x1a\x17enum/v1/test.enum.proto\"}\n" +
+	"#fesmu/service/v1/test.service.proto\x12\x13contract.service.v1\x1a!fesmu/entity/v1/test.entity.proto\x1a\x1dfesmu/enum/v1/test.enum.proto\"}\n" +
 	"\x11TestQuestionInput\x12\x12\n" +
 	"\x04text\x18\x01 \x01(\tR\x04text\x12>\n" +
 	"\aanswers\x18\x02 \x03(\v2$.contract.service.v1.TestAnswerInputR\aanswers\x12\x14\n" +
@@ -1216,19 +1216,19 @@ const file_service_v1_test_service_proto_rawDesc = "" +
 	"\x17com.contract.service.v1B\x10TestServiceProtoP\x01Z)fesmu/contract/fesmu/service/v1;servicev1\xa2\x02\x03CSX\xaa\x02\x13Contract.Service.V1\xca\x02\x13Contract\\Service\\V1\xe2\x02\x1fContract\\Service\\V1\\GPBMetadata\xea\x02\x15Contract::Service::V1b\x06proto3"
 
 var (
-	file_service_v1_test_service_proto_rawDescOnce sync.Once
-	file_service_v1_test_service_proto_rawDescData []byte
+	file_fesmu_service_v1_test_service_proto_rawDescOnce sync.Once
+	file_fesmu_service_v1_test_service_proto_rawDescData []byte
 )
 
-func file_service_v1_test_service_proto_rawDescGZIP() []byte {
-	file_service_v1_test_service_proto_rawDescOnce.Do(func() {
-		file_service_v1_test_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_service_v1_test_service_proto_rawDesc), len(file_service_v1_test_service_proto_rawDesc)))
+func file_fesmu_service_v1_test_service_proto_rawDescGZIP() []byte {
+	file_fesmu_service_v1_test_service_proto_rawDescOnce.Do(func() {
+		file_fesmu_service_v1_test_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_fesmu_service_v1_test_service_proto_rawDesc), len(file_fesmu_service_v1_test_service_proto_rawDesc)))
 	})
-	return file_service_v1_test_service_proto_rawDescData
+	return file_fesmu_service_v1_test_service_proto_rawDescData
 }
 
-var file_service_v1_test_service_proto_msgTypes = make([]protoimpl.MessageInfo, 20)
-var file_service_v1_test_service_proto_goTypes = []any{
+var file_fesmu_service_v1_test_service_proto_msgTypes = make([]protoimpl.MessageInfo, 20)
+var file_fesmu_service_v1_test_service_proto_goTypes = []any{
 	(*TestQuestionInput)(nil),              // 0: contract.service.v1.TestQuestionInput
 	(*TestAnswerInput)(nil),                // 1: contract.service.v1.TestAnswerInput
 	(*TestFetchRequest)(nil),               // 2: contract.service.v1.TestFetchRequest
@@ -1253,7 +1253,7 @@ var file_service_v1_test_service_proto_goTypes = []any{
 	(v11.TestVersion)(0),                   // 21: contract.enum.v1.TestVersion
 	(v11.TestExportStatus)(0),              // 22: contract.enum.v1.TestExportStatus
 }
-var file_service_v1_test_service_proto_depIdxs = []int32{
+var file_fesmu_service_v1_test_service_proto_depIdxs = []int32{
 	1,  // 0: contract.service.v1.TestQuestionInput.answers:type_name -> contract.service.v1.TestAnswerInput
 	20, // 1: contract.service.v1.TestFetchResponse.list:type_name -> contract.entity.v1.Test
 	20, // 2: contract.service.v1.TestByIDResponse.test:type_name -> contract.entity.v1.Test
@@ -1288,26 +1288,26 @@ var file_service_v1_test_service_proto_depIdxs = []int32{
 	0,  // [0:9] is the sub-list for field type_name
 }
 
-func init() { file_service_v1_test_service_proto_init() }
-func file_service_v1_test_service_proto_init() {
-	if File_service_v1_test_service_proto != nil {
+func init() { file_fesmu_service_v1_test_service_proto_init() }
+func file_fesmu_service_v1_test_service_proto_init() {
+	if File_fesmu_service_v1_test_service_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_service_v1_test_service_proto_rawDesc), len(file_service_v1_test_service_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_fesmu_service_v1_test_service_proto_rawDesc), len(file_fesmu_service_v1_test_service_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   20,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_service_v1_test_service_proto_goTypes,
-		DependencyIndexes: file_service_v1_test_service_proto_depIdxs,
-		MessageInfos:      file_service_v1_test_service_proto_msgTypes,
+		GoTypes:           file_fesmu_service_v1_test_service_proto_goTypes,
+		DependencyIndexes: file_fesmu_service_v1_test_service_proto_depIdxs,
+		MessageInfos:      file_fesmu_service_v1_test_service_proto_msgTypes,
 	}.Build()
-	File_service_v1_test_service_proto = out.File
-	file_service_v1_test_service_proto_goTypes = nil
-	file_service_v1_test_service_proto_depIdxs = nil
+	File_fesmu_service_v1_test_service_proto = out.File
+	file_fesmu_service_v1_test_service_proto_goTypes = nil
+	file_fesmu_service_v1_test_service_proto_depIdxs = nil
 }

@@ -8,7 +8,7 @@ import { Card } from "@/shared/ui/card";
 import { InfrastructureList, useInfrastructure, useInfrastructureFilter } from "@/widgets/infrastructure";
 import { LOCATION_COMMON_TYPE_LABEL } from "@/widgets/infrastructure/infrastructure.fn";
 import { useInventory } from "@/widgets/inventory";
-import { LocationCommonType } from "@fesmu/contract/enum/v1/location.enum_pb";
+import { LocationCommonType } from "@fesmu/contract/fesmu/enum/v1/location.enum_pb";
 import { BoxIcon, ListIcon, PencilIcon, PlusIcon, XIcon } from "lucide-react";
 import type { FC } from "react";
 import { Suspense, lazy, useEffect, useMemo } from "react";

@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: enum/v1/test.enum.proto
+// source: fesmu/enum/v1/test.enum.proto
 
 package enumv1
 
@@ -58,11 +58,11 @@ func (x TestExportStatus) String() string {
 }
 
 func (TestExportStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_v1_test_enum_proto_enumTypes[0].Descriptor()
+	return file_fesmu_enum_v1_test_enum_proto_enumTypes[0].Descriptor()
 }
 
 func (TestExportStatus) Type() protoreflect.EnumType {
-	return &file_enum_v1_test_enum_proto_enumTypes[0]
+	return &file_fesmu_enum_v1_test_enum_proto_enumTypes[0]
 }
 
 func (x TestExportStatus) Number() protoreflect.EnumNumber {
@@ -71,7 +71,7 @@ func (x TestExportStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use TestExportStatus.Descriptor instead.
 func (TestExportStatus) EnumDescriptor() ([]byte, []int) {
-	return file_enum_v1_test_enum_proto_rawDescGZIP(), []int{0}
+	return file_fesmu_enum_v1_test_enum_proto_rawDescGZIP(), []int{0}
 }
 
 // How a test's questions are written and asked.
@@ -113,11 +113,11 @@ func (x TestVersion) String() string {
 }
 
 func (TestVersion) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_v1_test_enum_proto_enumTypes[1].Descriptor()
+	return file_fesmu_enum_v1_test_enum_proto_enumTypes[1].Descriptor()
 }
 
 func (TestVersion) Type() protoreflect.EnumType {
-	return &file_enum_v1_test_enum_proto_enumTypes[1]
+	return &file_fesmu_enum_v1_test_enum_proto_enumTypes[1]
 }
 
 func (x TestVersion) Number() protoreflect.EnumNumber {
@@ -126,7 +126,7 @@ func (x TestVersion) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use TestVersion.Descriptor instead.
 func (TestVersion) EnumDescriptor() ([]byte, []int) {
-	return file_enum_v1_test_enum_proto_rawDescGZIP(), []int{1}
+	return file_fesmu_enum_v1_test_enum_proto_rawDescGZIP(), []int{1}
 }
 
 // Where a student's attempt at a test session stands.
@@ -168,11 +168,11 @@ func (x TestAttemptStatus) String() string {
 }
 
 func (TestAttemptStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_v1_test_enum_proto_enumTypes[2].Descriptor()
+	return file_fesmu_enum_v1_test_enum_proto_enumTypes[2].Descriptor()
 }
 
 func (TestAttemptStatus) Type() protoreflect.EnumType {
-	return &file_enum_v1_test_enum_proto_enumTypes[2]
+	return &file_fesmu_enum_v1_test_enum_proto_enumTypes[2]
 }
 
 func (x TestAttemptStatus) Number() protoreflect.EnumNumber {
@@ -181,14 +181,14 @@ func (x TestAttemptStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use TestAttemptStatus.Descriptor instead.
 func (TestAttemptStatus) EnumDescriptor() ([]byte, []int) {
-	return file_enum_v1_test_enum_proto_rawDescGZIP(), []int{2}
+	return file_fesmu_enum_v1_test_enum_proto_rawDescGZIP(), []int{2}
 }
 
-var File_enum_v1_test_enum_proto protoreflect.FileDescriptor
+var File_fesmu_enum_v1_test_enum_proto protoreflect.FileDescriptor
 
-const file_enum_v1_test_enum_proto_rawDesc = "" +
+const file_fesmu_enum_v1_test_enum_proto_rawDesc = "" +
 	"\n" +
-	"\x17enum/v1/test.enum.proto\x12\x10contract.enum.v1*\x9a\x01\n" +
+	"\x1dfesmu/enum/v1/test.enum.proto\x12\x10contract.enum.v1*\x9a\x01\n" +
 	"\x10TestExportStatus\x12\"\n" +
 	"\x1eTEST_EXPORT_STATUS_UNSPECIFIED\x10\x00\x12#\n" +
 	"\x1fTEST_EXPORT_STATUS_NOT_EXPORTED\x10\x01\x12\x1c\n" +
@@ -206,24 +206,24 @@ const file_enum_v1_test_enum_proto_rawDesc = "" +
 	"\x14com.contract.enum.v1B\rTestEnumProtoP\x01Z#fesmu/contract/fesmu/enum/v1;enumv1\xa2\x02\x03CEX\xaa\x02\x10Contract.Enum.V1\xca\x02\x10Contract\\Enum\\V1\xe2\x02\x1cContract\\Enum\\V1\\GPBMetadata\xea\x02\x12Contract::Enum::V1b\x06proto3"
 
 var (
-	file_enum_v1_test_enum_proto_rawDescOnce sync.Once
-	file_enum_v1_test_enum_proto_rawDescData []byte
+	file_fesmu_enum_v1_test_enum_proto_rawDescOnce sync.Once
+	file_fesmu_enum_v1_test_enum_proto_rawDescData []byte
 )
 
-func file_enum_v1_test_enum_proto_rawDescGZIP() []byte {
-	file_enum_v1_test_enum_proto_rawDescOnce.Do(func() {
-		file_enum_v1_test_enum_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_enum_v1_test_enum_proto_rawDesc), len(file_enum_v1_test_enum_proto_rawDesc)))
+func file_fesmu_enum_v1_test_enum_proto_rawDescGZIP() []byte {
+	file_fesmu_enum_v1_test_enum_proto_rawDescOnce.Do(func() {
+		file_fesmu_enum_v1_test_enum_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_fesmu_enum_v1_test_enum_proto_rawDesc), len(file_fesmu_enum_v1_test_enum_proto_rawDesc)))
 	})
-	return file_enum_v1_test_enum_proto_rawDescData
+	return file_fesmu_enum_v1_test_enum_proto_rawDescData
 }
 
-var file_enum_v1_test_enum_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_enum_v1_test_enum_proto_goTypes = []any{
+var file_fesmu_enum_v1_test_enum_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
+var file_fesmu_enum_v1_test_enum_proto_goTypes = []any{
 	(TestExportStatus)(0),  // 0: contract.enum.v1.TestExportStatus
 	(TestVersion)(0),       // 1: contract.enum.v1.TestVersion
 	(TestAttemptStatus)(0), // 2: contract.enum.v1.TestAttemptStatus
 }
-var file_enum_v1_test_enum_proto_depIdxs = []int32{
+var file_fesmu_enum_v1_test_enum_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
 	0, // [0:0] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -231,26 +231,26 @@ var file_enum_v1_test_enum_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_enum_v1_test_enum_proto_init() }
-func file_enum_v1_test_enum_proto_init() {
-	if File_enum_v1_test_enum_proto != nil {
+func init() { file_fesmu_enum_v1_test_enum_proto_init() }
+func file_fesmu_enum_v1_test_enum_proto_init() {
+	if File_fesmu_enum_v1_test_enum_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_enum_v1_test_enum_proto_rawDesc), len(file_enum_v1_test_enum_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_fesmu_enum_v1_test_enum_proto_rawDesc), len(file_fesmu_enum_v1_test_enum_proto_rawDesc)),
 			NumEnums:      3,
 			NumMessages:   0,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_enum_v1_test_enum_proto_goTypes,
-		DependencyIndexes: file_enum_v1_test_enum_proto_depIdxs,
-		EnumInfos:         file_enum_v1_test_enum_proto_enumTypes,
+		GoTypes:           file_fesmu_enum_v1_test_enum_proto_goTypes,
+		DependencyIndexes: file_fesmu_enum_v1_test_enum_proto_depIdxs,
+		EnumInfos:         file_fesmu_enum_v1_test_enum_proto_enumTypes,
 	}.Build()
-	File_enum_v1_test_enum_proto = out.File
-	file_enum_v1_test_enum_proto_goTypes = nil
-	file_enum_v1_test_enum_proto_depIdxs = nil
+	File_fesmu_enum_v1_test_enum_proto = out.File
+	file_fesmu_enum_v1_test_enum_proto_goTypes = nil
+	file_fesmu_enum_v1_test_enum_proto_depIdxs = nil
 }

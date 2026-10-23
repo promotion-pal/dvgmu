@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package contract.entity.v1;
+
+import "google/protobuf/timestamp.proto";
+import "fesmu/enum/v1/location.enum.proto";
+
+option go_package = "entity_v1;entity_pb";
+
+message Infrastructure {
+  int64 id = 1;
+
+  string title = 2;
+  string description = 3;
+
+  int32 floor = 4;
+  int32 room = 5;
+
+  repeated int64 user_ids = 6;
+  repeated int64 inventory_ids = 7;
+
+  contract.enum.v1.LocationCommonType location = 8;
+
+  google.protobuf.Timestamp created_at = 9;
+  google.protobuf.Timestamp updated_at = 10;
+}

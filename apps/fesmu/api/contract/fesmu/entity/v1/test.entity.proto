@@ -1,0 +1,120 @@
+syntax = "proto3";
+
+package contract.entity.v1;
+
+import "google/protobuf/timestamp.proto";
+import "fesmu/enum/v1/test.enum.proto";
+
+option go_package = "entity_v1;entity_pb";
+
+message Test {
+  int64 id = 1;
+
+  string topic = 2;
+  string description = 3;
+  string department = 7;
+  // Free text, e.g. "Анатомия человека"; tests are grouped by it inside a department.
+  string discipline = 9;
+  contract.enum.v1.TestExportStatus export_status = 8;
+  contract.enum.v1.TestVersion version = 10;
+
+  repeated TestQuestion questions = 4;
+
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+}
+
+message TestQuestion {
+  int64 id = 1;
+  string text = 2;
+  repeated TestAnswer answers = 3;
+  // The question's picture: its id (GET /test-images/{image}) and size in
+  // pixels, so a page keeps its place before it loads. Empty — no picture.
+  string image = 4;
+  int32 image_width = 5;
+  int32 image_height = 6;
+}
+
+message TestAnswer {
+  int64 id = 1;
+  string text = 2;
+  bool is_correct = 3;
+}
+
+// A test handed out to students by a link: a frozen copy of its questions
+// (later edits to the test don't change it) and a time limit per attempt.
+message TestSession {
+  int64 id = 1;
+  // 0 once the test itself was deleted; the session keeps its copy and results.
+  int64 test_id = 2;
+  // The secret part of the student link.
+  string token = 3;
+  string topic = 4;
+  string department = 5;
+  string description = 6;
+  // Staff's own label, e.g. the group or stream.
+  string note = 7;
+  int32 duration_minutes = 8;
+  // Questions asked per attempt, picked at random; 0 = all of them.
+  int32 question_count = 9;
+  // Questions in the frozen copy.
+  int32 total_questions = 10;
+  bool shuffle = 11;
+  // Whether the student sees the score after finishing.
+  bool show_result = 12;
+  // Closed by hand: no new attempts; those already started may finish.
+  bool is_open = 13;
+  // Unset: open until closed by hand.
+  google.protobuf.Timestamp closes_at = 14;
+  int32 attempt_count = 15;
+  google.protobuf.Timestamp created_at = 16;
+  // Unset: attempts can start right away. Before it the link takes no attempts.
+  google.protobuf.Timestamp opens_at = 17;
+  // Options shown per question: a random mix of right and wrong ones for each
+  // student (questions with fewer options show them all); 0 = all.
+  int32 option_count = 18;
+  // The test's version when the session was made; option_count is V2 only.
+  contract.enum.v1.TestVersion version = 19;
+}
+
+// One student's run through a session.
+message TestAttempt {
+  int64 id = 1;
+  int64 session_id = 2;
+  string full_name = 3;
+  string student_group = 4;
+  contract.enum.v1.TestAttemptStatus status = 5;
+  // Questions answered fully right (exactly the correct options picked).
+  int32 score = 6;
+  int32 total = 7;
+  google.protobuf.Timestamp started_at = 8;
+  google.protobuf.Timestamp deadline = 9;
+  google.protobuf.Timestamp finished_at = 10;
+  // Every question asked, in the order asked; unanswered ones have no answer_ids.
+  repeated TestAttemptAnswer answers = 11;
+}
+
+message TestAttemptAnswer {
+  int64 question_id = 1;
+  repeated int64 answer_ids = 2;
+  // Set for staff only, never sent to the student while the attempt runs.
+  bool is_correct = 3;
+}
+
+// A question as the student sees it: the correct options are not marked.
+message TestTakeQuestion {
+  int64 id = 1;
+  string text = 2;
+  repeated TestTakeAnswer answers = 3;
+  // More than one option is correct: show checkboxes instead of radio buttons.
+  bool multiple = 4;
+  // As in TestQuestion.
+  string image = 5;
+  int32 image_width = 6;
+  int32 image_height = 7;
+}
+
+message TestTakeAnswer {
+  int64 id = 1;
+  string text = 2;
+}

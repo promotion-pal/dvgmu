@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: entity/user.entity.proto
+// source: mdm/entity/user.entity.proto
 
 package entity
 
@@ -63,7 +63,7 @@ type User struct {
 
 func (x *User) Reset() {
 	*x = User{}
-	mi := &file_entity_user_entity_proto_msgTypes[0]
+	mi := &file_mdm_entity_user_entity_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -75,7 +75,7 @@ func (x *User) String() string {
 func (*User) ProtoMessage() {}
 
 func (x *User) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_user_entity_proto_msgTypes[0]
+	mi := &file_mdm_entity_user_entity_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -88,7 +88,7 @@ func (x *User) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use User.ProtoReflect.Descriptor instead.
 func (*User) Descriptor() ([]byte, []int) {
-	return file_entity_user_entity_proto_rawDescGZIP(), []int{0}
+	return file_mdm_entity_user_entity_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *User) GetId() int64 {
@@ -248,7 +248,7 @@ type AccessGroup struct {
 
 func (x *AccessGroup) Reset() {
 	*x = AccessGroup{}
-	mi := &file_entity_user_entity_proto_msgTypes[1]
+	mi := &file_mdm_entity_user_entity_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -260,7 +260,7 @@ func (x *AccessGroup) String() string {
 func (*AccessGroup) ProtoMessage() {}
 
 func (x *AccessGroup) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_user_entity_proto_msgTypes[1]
+	mi := &file_mdm_entity_user_entity_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -273,7 +273,7 @@ func (x *AccessGroup) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AccessGroup.ProtoReflect.Descriptor instead.
 func (*AccessGroup) Descriptor() ([]byte, []int) {
-	return file_entity_user_entity_proto_rawDescGZIP(), []int{1}
+	return file_mdm_entity_user_entity_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *AccessGroup) GetId() int64 {
@@ -332,7 +332,7 @@ type UserFull struct {
 
 func (x *UserFull) Reset() {
 	*x = UserFull{}
-	mi := &file_entity_user_entity_proto_msgTypes[2]
+	mi := &file_mdm_entity_user_entity_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -344,7 +344,7 @@ func (x *UserFull) String() string {
 func (*UserFull) ProtoMessage() {}
 
 func (x *UserFull) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_user_entity_proto_msgTypes[2]
+	mi := &file_mdm_entity_user_entity_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -357,7 +357,7 @@ func (x *UserFull) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserFull.ProtoReflect.Descriptor instead.
 func (*UserFull) Descriptor() ([]byte, []int) {
-	return file_entity_user_entity_proto_rawDescGZIP(), []int{2}
+	return file_mdm_entity_user_entity_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *UserFull) GetUser() *User {
@@ -402,11 +402,11 @@ func (x *UserFull) GetEmployee() *Employee {
 	return nil
 }
 
-var File_entity_user_entity_proto protoreflect.FileDescriptor
+var File_mdm_entity_user_entity_proto protoreflect.FileDescriptor
 
-const file_entity_user_entity_proto_rawDesc = "" +
+const file_mdm_entity_user_entity_proto_rawDesc = "" +
 	"\n" +
-	"\x18entity/user.entity.proto\x12\x0fcontract.entity\x1a\x14enum/user.enum.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1centity/passport.entity.proto\x1a\x1dentity/education.entity.proto\x1a\x1centity/military.entity.proto\x1a\x1bentity/student.entity.proto\x1a\x1centity/employee.entity.proto\"\x82\a\n" +
+	"\x1cmdm/entity/user.entity.proto\x12\x0fcontract.entity\x1a\x18mdm/enum/user.enum.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a mdm/entity/passport.entity.proto\x1a!mdm/entity/education.entity.proto\x1a mdm/entity/military.entity.proto\x1a\x1fmdm/entity/student.entity.proto\x1a mdm/entity/employee.entity.proto\"\x82\a\n" +
 	"\x04User\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1d\n" +
 	"\n" +
@@ -460,19 +460,19 @@ const file_entity_user_entity_proto_rawDesc = "" +
 	"\x13com.contract.entityB\x0fUserEntityProtoP\x01Z\x19fesmu/contract/mdm/entity\xa2\x02\x03CEX\xaa\x02\x0fContract.Entity\xca\x02\x0fContract\\Entity\xe2\x02\x1bContract\\Entity\\GPBMetadata\xea\x02\x10Contract::Entityb\x06proto3"
 
 var (
-	file_entity_user_entity_proto_rawDescOnce sync.Once
-	file_entity_user_entity_proto_rawDescData []byte
+	file_mdm_entity_user_entity_proto_rawDescOnce sync.Once
+	file_mdm_entity_user_entity_proto_rawDescData []byte
 )
 
-func file_entity_user_entity_proto_rawDescGZIP() []byte {
-	file_entity_user_entity_proto_rawDescOnce.Do(func() {
-		file_entity_user_entity_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_entity_user_entity_proto_rawDesc), len(file_entity_user_entity_proto_rawDesc)))
+func file_mdm_entity_user_entity_proto_rawDescGZIP() []byte {
+	file_mdm_entity_user_entity_proto_rawDescOnce.Do(func() {
+		file_mdm_entity_user_entity_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_mdm_entity_user_entity_proto_rawDesc), len(file_mdm_entity_user_entity_proto_rawDesc)))
 	})
-	return file_entity_user_entity_proto_rawDescData
+	return file_mdm_entity_user_entity_proto_rawDescData
 }
 
-var file_entity_user_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
-var file_entity_user_entity_proto_goTypes = []any{
+var file_mdm_entity_user_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_mdm_entity_user_entity_proto_goTypes = []any{
 	(*User)(nil),                     // 0: contract.entity.User
 	(*AccessGroup)(nil),              // 1: contract.entity.AccessGroup
 	(*UserFull)(nil),                 // 2: contract.entity.UserFull
@@ -486,7 +486,7 @@ var file_entity_user_entity_proto_goTypes = []any{
 	(*Student)(nil),                  // 10: contract.entity.Student
 	(*Employee)(nil),                 // 11: contract.entity.Employee
 }
-var file_entity_user_entity_proto_depIdxs = []int32{
+var file_mdm_entity_user_entity_proto_depIdxs = []int32{
 	3,  // 0: contract.entity.User.status:type_name -> contract.enum.UserStatus
 	4,  // 1: contract.entity.User.birthday:type_name -> google.protobuf.Timestamp
 	4,  // 2: contract.entity.User.created_at:type_name -> google.protobuf.Timestamp
@@ -507,32 +507,32 @@ var file_entity_user_entity_proto_depIdxs = []int32{
 	0,  // [0:13] is the sub-list for field type_name
 }
 
-func init() { file_entity_user_entity_proto_init() }
-func file_entity_user_entity_proto_init() {
-	if File_entity_user_entity_proto != nil {
+func init() { file_mdm_entity_user_entity_proto_init() }
+func file_mdm_entity_user_entity_proto_init() {
+	if File_mdm_entity_user_entity_proto != nil {
 		return
 	}
-	file_entity_passport_entity_proto_init()
-	file_entity_education_entity_proto_init()
-	file_entity_military_entity_proto_init()
-	file_entity_student_entity_proto_init()
-	file_entity_employee_entity_proto_init()
-	file_entity_user_entity_proto_msgTypes[0].OneofWrappers = []any{}
+	file_mdm_entity_passport_entity_proto_init()
+	file_mdm_entity_education_entity_proto_init()
+	file_mdm_entity_military_entity_proto_init()
+	file_mdm_entity_student_entity_proto_init()
+	file_mdm_entity_employee_entity_proto_init()
+	file_mdm_entity_user_entity_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_entity_user_entity_proto_rawDesc), len(file_entity_user_entity_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_mdm_entity_user_entity_proto_rawDesc), len(file_mdm_entity_user_entity_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_entity_user_entity_proto_goTypes,
-		DependencyIndexes: file_entity_user_entity_proto_depIdxs,
-		MessageInfos:      file_entity_user_entity_proto_msgTypes,
+		GoTypes:           file_mdm_entity_user_entity_proto_goTypes,
+		DependencyIndexes: file_mdm_entity_user_entity_proto_depIdxs,
+		MessageInfos:      file_mdm_entity_user_entity_proto_msgTypes,
 	}.Build()
-	File_entity_user_entity_proto = out.File
-	file_entity_user_entity_proto_goTypes = nil
-	file_entity_user_entity_proto_depIdxs = nil
+	File_mdm_entity_user_entity_proto = out.File
+	file_mdm_entity_user_entity_proto_goTypes = nil
+	file_mdm_entity_user_entity_proto_depIdxs = nil
 }

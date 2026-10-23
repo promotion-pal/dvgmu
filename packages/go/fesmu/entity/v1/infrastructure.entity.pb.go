@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: entity/v1/infrastructure.entity.proto
+// source: fesmu/entity/v1/infrastructure.entity.proto
 
 package entityv1
 
@@ -41,7 +41,7 @@ type Infrastructure struct {
 
 func (x *Infrastructure) Reset() {
 	*x = Infrastructure{}
-	mi := &file_entity_v1_infrastructure_entity_proto_msgTypes[0]
+	mi := &file_fesmu_entity_v1_infrastructure_entity_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -53,7 +53,7 @@ func (x *Infrastructure) String() string {
 func (*Infrastructure) ProtoMessage() {}
 
 func (x *Infrastructure) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v1_infrastructure_entity_proto_msgTypes[0]
+	mi := &file_fesmu_entity_v1_infrastructure_entity_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -66,7 +66,7 @@ func (x *Infrastructure) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Infrastructure.ProtoReflect.Descriptor instead.
 func (*Infrastructure) Descriptor() ([]byte, []int) {
-	return file_entity_v1_infrastructure_entity_proto_rawDescGZIP(), []int{0}
+	return file_fesmu_entity_v1_infrastructure_entity_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Infrastructure) GetId() int64 {
@@ -139,11 +139,11 @@ func (x *Infrastructure) GetUpdatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
-var File_entity_v1_infrastructure_entity_proto protoreflect.FileDescriptor
+var File_fesmu_entity_v1_infrastructure_entity_proto protoreflect.FileDescriptor
 
-const file_entity_v1_infrastructure_entity_proto_rawDesc = "" +
+const file_fesmu_entity_v1_infrastructure_entity_proto_rawDesc = "" +
 	"\n" +
-	"%entity/v1/infrastructure.entity.proto\x12\x12contract.entity.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1benum/v1/location.enum.proto\"\xfa\x02\n" +
+	"+fesmu/entity/v1/infrastructure.entity.proto\x12\x12contract.entity.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a!fesmu/enum/v1/location.enum.proto\"\xfa\x02\n" +
 	"\x0eInfrastructure\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12 \n" +
@@ -161,24 +161,24 @@ const file_entity_v1_infrastructure_entity_proto_rawDesc = "" +
 	"\x16com.contract.entity.v1B\x19InfrastructureEntityProtoP\x01Z'fesmu/contract/fesmu/entity/v1;entityv1\xa2\x02\x03CEX\xaa\x02\x12Contract.Entity.V1\xca\x02\x12Contract\\Entity\\V1\xe2\x02\x1eContract\\Entity\\V1\\GPBMetadata\xea\x02\x14Contract::Entity::V1b\x06proto3"
 
 var (
-	file_entity_v1_infrastructure_entity_proto_rawDescOnce sync.Once
-	file_entity_v1_infrastructure_entity_proto_rawDescData []byte
+	file_fesmu_entity_v1_infrastructure_entity_proto_rawDescOnce sync.Once
+	file_fesmu_entity_v1_infrastructure_entity_proto_rawDescData []byte
 )
 
-func file_entity_v1_infrastructure_entity_proto_rawDescGZIP() []byte {
-	file_entity_v1_infrastructure_entity_proto_rawDescOnce.Do(func() {
-		file_entity_v1_infrastructure_entity_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_entity_v1_infrastructure_entity_proto_rawDesc), len(file_entity_v1_infrastructure_entity_proto_rawDesc)))
+func file_fesmu_entity_v1_infrastructure_entity_proto_rawDescGZIP() []byte {
+	file_fesmu_entity_v1_infrastructure_entity_proto_rawDescOnce.Do(func() {
+		file_fesmu_entity_v1_infrastructure_entity_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_fesmu_entity_v1_infrastructure_entity_proto_rawDesc), len(file_fesmu_entity_v1_infrastructure_entity_proto_rawDesc)))
 	})
-	return file_entity_v1_infrastructure_entity_proto_rawDescData
+	return file_fesmu_entity_v1_infrastructure_entity_proto_rawDescData
 }
 
-var file_entity_v1_infrastructure_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
-var file_entity_v1_infrastructure_entity_proto_goTypes = []any{
+var file_fesmu_entity_v1_infrastructure_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_fesmu_entity_v1_infrastructure_entity_proto_goTypes = []any{
 	(*Infrastructure)(nil),        // 0: contract.entity.v1.Infrastructure
 	(v1.LocationCommonType)(0),    // 1: contract.enum.v1.LocationCommonType
 	(*timestamppb.Timestamp)(nil), // 2: google.protobuf.Timestamp
 }
-var file_entity_v1_infrastructure_entity_proto_depIdxs = []int32{
+var file_fesmu_entity_v1_infrastructure_entity_proto_depIdxs = []int32{
 	1, // 0: contract.entity.v1.Infrastructure.location:type_name -> contract.enum.v1.LocationCommonType
 	2, // 1: contract.entity.v1.Infrastructure.created_at:type_name -> google.protobuf.Timestamp
 	2, // 2: contract.entity.v1.Infrastructure.updated_at:type_name -> google.protobuf.Timestamp
@@ -189,26 +189,26 @@ var file_entity_v1_infrastructure_entity_proto_depIdxs = []int32{
 	0, // [0:3] is the sub-list for field type_name
 }
 
-func init() { file_entity_v1_infrastructure_entity_proto_init() }
-func file_entity_v1_infrastructure_entity_proto_init() {
-	if File_entity_v1_infrastructure_entity_proto != nil {
+func init() { file_fesmu_entity_v1_infrastructure_entity_proto_init() }
+func file_fesmu_entity_v1_infrastructure_entity_proto_init() {
+	if File_fesmu_entity_v1_infrastructure_entity_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_entity_v1_infrastructure_entity_proto_rawDesc), len(file_entity_v1_infrastructure_entity_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_fesmu_entity_v1_infrastructure_entity_proto_rawDesc), len(file_fesmu_entity_v1_infrastructure_entity_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_entity_v1_infrastructure_entity_proto_goTypes,
-		DependencyIndexes: file_entity_v1_infrastructure_entity_proto_depIdxs,
-		MessageInfos:      file_entity_v1_infrastructure_entity_proto_msgTypes,
+		GoTypes:           file_fesmu_entity_v1_infrastructure_entity_proto_goTypes,
+		DependencyIndexes: file_fesmu_entity_v1_infrastructure_entity_proto_depIdxs,
+		MessageInfos:      file_fesmu_entity_v1_infrastructure_entity_proto_msgTypes,
 	}.Build()
-	File_entity_v1_infrastructure_entity_proto = out.File
-	file_entity_v1_infrastructure_entity_proto_goTypes = nil
-	file_entity_v1_infrastructure_entity_proto_depIdxs = nil
+	File_fesmu_entity_v1_infrastructure_entity_proto = out.File
+	file_fesmu_entity_v1_infrastructure_entity_proto_goTypes = nil
+	file_fesmu_entity_v1_infrastructure_entity_proto_depIdxs = nil
 }

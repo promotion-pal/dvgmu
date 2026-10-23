@@ -9,8 +9,8 @@ import type {
     ManualSection as SectionMessage,
     ManualSectionSchema,
     ReaderProgress as ProgressMessage,
-} from "@fesmu/contract/entity/v2/library.entity_pb";
-import { LibraryItemKind, ManualCalloutTone, ManualStatus as StatusEnum, ReaderSourceKind } from "@fesmu/contract/enum/v2/library.enum_pb";
+} from "@fesmu/contract/fesmu/entity/v2/library.entity_pb";
+import { LibraryItemKind, ManualCalloutTone, ManualStatus as StatusEnum, ReaderSourceKind } from "@fesmu/contract/fesmu/enum/v2/library.enum_pb";
 import type { Block, BlockFile, CalloutTone, Section } from "@/shared/blocks";
 import type { ItemKind, LibraryFile, LibraryItem, Manual, ManualStatus, ReaderKind, ReaderProgress } from "./library.types";
 

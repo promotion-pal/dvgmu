@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: enum/analytic.enum.proto
+// source: analytics/enum/analytic.enum.proto
 
 package enum
 
@@ -63,11 +63,11 @@ func (x AnalyticType) String() string {
 }
 
 func (AnalyticType) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_analytic_enum_proto_enumTypes[0].Descriptor()
+	return file_analytics_enum_analytic_enum_proto_enumTypes[0].Descriptor()
 }
 
 func (AnalyticType) Type() protoreflect.EnumType {
-	return &file_enum_analytic_enum_proto_enumTypes[0]
+	return &file_analytics_enum_analytic_enum_proto_enumTypes[0]
 }
 
 func (x AnalyticType) Number() protoreflect.EnumNumber {
@@ -76,7 +76,7 @@ func (x AnalyticType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use AnalyticType.Descriptor instead.
 func (AnalyticType) EnumDescriptor() ([]byte, []int) {
-	return file_enum_analytic_enum_proto_rawDescGZIP(), []int{0}
+	return file_analytics_enum_analytic_enum_proto_rawDescGZIP(), []int{0}
 }
 
 // Вид информации ограниченного доступа, с которой работает сотрудник (вопрос 4).
@@ -119,11 +119,11 @@ func (x InformationSecurityInfoType) String() string {
 }
 
 func (InformationSecurityInfoType) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_analytic_enum_proto_enumTypes[1].Descriptor()
+	return file_analytics_enum_analytic_enum_proto_enumTypes[1].Descriptor()
 }
 
 func (InformationSecurityInfoType) Type() protoreflect.EnumType {
-	return &file_enum_analytic_enum_proto_enumTypes[1]
+	return &file_analytics_enum_analytic_enum_proto_enumTypes[1]
 }
 
 func (x InformationSecurityInfoType) Number() protoreflect.EnumNumber {
@@ -132,7 +132,7 @@ func (x InformationSecurityInfoType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use InformationSecurityInfoType.Descriptor instead.
 func (InformationSecurityInfoType) EnumDescriptor() ([]byte, []int) {
-	return file_enum_analytic_enum_proto_rawDescGZIP(), []int{1}
+	return file_analytics_enum_analytic_enum_proto_rawDescGZIP(), []int{1}
 }
 
 // Информационные ресурсы, с которыми работает сотрудник (вопрос 5).
@@ -202,11 +202,11 @@ func (x InformationSecurityResource) String() string {
 }
 
 func (InformationSecurityResource) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_analytic_enum_proto_enumTypes[2].Descriptor()
+	return file_analytics_enum_analytic_enum_proto_enumTypes[2].Descriptor()
 }
 
 func (InformationSecurityResource) Type() protoreflect.EnumType {
-	return &file_enum_analytic_enum_proto_enumTypes[2]
+	return &file_analytics_enum_analytic_enum_proto_enumTypes[2]
 }
 
 func (x InformationSecurityResource) Number() protoreflect.EnumNumber {
@@ -215,7 +215,7 @@ func (x InformationSecurityResource) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use InformationSecurityResource.Descriptor instead.
 func (InformationSecurityResource) EnumDescriptor() ([]byte, []int) {
-	return file_enum_analytic_enum_proto_rawDescGZIP(), []int{2}
+	return file_analytics_enum_analytic_enum_proto_rawDescGZIP(), []int{2}
 }
 
 // Операционная система на рабочем месте (вопрос 15).
@@ -255,11 +255,11 @@ func (x InformationSecurityOs) String() string {
 }
 
 func (InformationSecurityOs) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_analytic_enum_proto_enumTypes[3].Descriptor()
+	return file_analytics_enum_analytic_enum_proto_enumTypes[3].Descriptor()
 }
 
 func (InformationSecurityOs) Type() protoreflect.EnumType {
-	return &file_enum_analytic_enum_proto_enumTypes[3]
+	return &file_analytics_enum_analytic_enum_proto_enumTypes[3]
 }
 
 func (x InformationSecurityOs) Number() protoreflect.EnumNumber {
@@ -268,14 +268,14 @@ func (x InformationSecurityOs) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use InformationSecurityOs.Descriptor instead.
 func (InformationSecurityOs) EnumDescriptor() ([]byte, []int) {
-	return file_enum_analytic_enum_proto_rawDescGZIP(), []int{3}
+	return file_analytics_enum_analytic_enum_proto_rawDescGZIP(), []int{3}
 }
 
-var File_enum_analytic_enum_proto protoreflect.FileDescriptor
+var File_analytics_enum_analytic_enum_proto protoreflect.FileDescriptor
 
-const file_enum_analytic_enum_proto_rawDesc = "" +
+const file_analytics_enum_analytic_enum_proto_rawDesc = "" +
 	"\n" +
-	"\x18enum/analytic.enum.proto\x12\x17contract.analytics.enum*\xc7\x01\n" +
+	"\"analytics/enum/analytic.enum.proto\x12\x17contract.analytics.enum*\xc7\x01\n" +
 	"\fAnalyticType\x12\x19\n" +
 	"\x15ANALYTIC_TYPE_UNKNOWN\x10\x00\x12\x18\n" +
 	"\x14ANALYTIC_TYPE_TOILET\x10\x01\x12\x19\n" +
@@ -313,25 +313,25 @@ const file_enum_analytic_enum_proto_rawDesc = "" +
 	"\x1bcom.contract.analytics.enumB\x11AnalyticEnumProtoP\x01Z\x1dfesmu/contract/analytics/enum\xa2\x02\x03CAE\xaa\x02\x17Contract.Analytics.Enum\xca\x02\x17Contract\\Analytics\\Enum\xe2\x02#Contract\\Analytics\\Enum\\GPBMetadata\xea\x02\x19Contract::Analytics::Enumb\x06proto3"
 
 var (
-	file_enum_analytic_enum_proto_rawDescOnce sync.Once
-	file_enum_analytic_enum_proto_rawDescData []byte
+	file_analytics_enum_analytic_enum_proto_rawDescOnce sync.Once
+	file_analytics_enum_analytic_enum_proto_rawDescData []byte
 )
 
-func file_enum_analytic_enum_proto_rawDescGZIP() []byte {
-	file_enum_analytic_enum_proto_rawDescOnce.Do(func() {
-		file_enum_analytic_enum_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_enum_analytic_enum_proto_rawDesc), len(file_enum_analytic_enum_proto_rawDesc)))
+func file_analytics_enum_analytic_enum_proto_rawDescGZIP() []byte {
+	file_analytics_enum_analytic_enum_proto_rawDescOnce.Do(func() {
+		file_analytics_enum_analytic_enum_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_analytics_enum_analytic_enum_proto_rawDesc), len(file_analytics_enum_analytic_enum_proto_rawDesc)))
 	})
-	return file_enum_analytic_enum_proto_rawDescData
+	return file_analytics_enum_analytic_enum_proto_rawDescData
 }
 
-var file_enum_analytic_enum_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_enum_analytic_enum_proto_goTypes = []any{
+var file_analytics_enum_analytic_enum_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
+var file_analytics_enum_analytic_enum_proto_goTypes = []any{
 	(AnalyticType)(0),                // 0: contract.analytics.enum.AnalyticType
 	(InformationSecurityInfoType)(0), // 1: contract.analytics.enum.InformationSecurityInfoType
 	(InformationSecurityResource)(0), // 2: contract.analytics.enum.InformationSecurityResource
 	(InformationSecurityOs)(0),       // 3: contract.analytics.enum.InformationSecurityOs
 }
-var file_enum_analytic_enum_proto_depIdxs = []int32{
+var file_analytics_enum_analytic_enum_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
 	0, // [0:0] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -339,26 +339,26 @@ var file_enum_analytic_enum_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_enum_analytic_enum_proto_init() }
-func file_enum_analytic_enum_proto_init() {
-	if File_enum_analytic_enum_proto != nil {
+func init() { file_analytics_enum_analytic_enum_proto_init() }
+func file_analytics_enum_analytic_enum_proto_init() {
+	if File_analytics_enum_analytic_enum_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_enum_analytic_enum_proto_rawDesc), len(file_enum_analytic_enum_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_analytics_enum_analytic_enum_proto_rawDesc), len(file_analytics_enum_analytic_enum_proto_rawDesc)),
 			NumEnums:      4,
 			NumMessages:   0,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_enum_analytic_enum_proto_goTypes,
-		DependencyIndexes: file_enum_analytic_enum_proto_depIdxs,
-		EnumInfos:         file_enum_analytic_enum_proto_enumTypes,
+		GoTypes:           file_analytics_enum_analytic_enum_proto_goTypes,
+		DependencyIndexes: file_analytics_enum_analytic_enum_proto_depIdxs,
+		EnumInfos:         file_analytics_enum_analytic_enum_proto_enumTypes,
 	}.Build()
-	File_enum_analytic_enum_proto = out.File
-	file_enum_analytic_enum_proto_goTypes = nil
-	file_enum_analytic_enum_proto_depIdxs = nil
+	File_analytics_enum_analytic_enum_proto = out.File
+	file_analytics_enum_analytic_enum_proto_goTypes = nil
+	file_analytics_enum_analytic_enum_proto_depIdxs = nil
 }

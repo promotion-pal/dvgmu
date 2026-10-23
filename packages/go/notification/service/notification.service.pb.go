@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: service/notification.service.proto
+// source: notification/service/notification.service.proto
 
 package service
 
@@ -31,7 +31,7 @@ type NotificationSendRequest struct {
 
 func (x *NotificationSendRequest) Reset() {
 	*x = NotificationSendRequest{}
-	mi := &file_service_notification_service_proto_msgTypes[0]
+	mi := &file_notification_service_notification_service_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -43,7 +43,7 @@ func (x *NotificationSendRequest) String() string {
 func (*NotificationSendRequest) ProtoMessage() {}
 
 func (x *NotificationSendRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_notification_service_proto_msgTypes[0]
+	mi := &file_notification_service_notification_service_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -56,7 +56,7 @@ func (x *NotificationSendRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NotificationSendRequest.ProtoReflect.Descriptor instead.
 func (*NotificationSendRequest) Descriptor() ([]byte, []int) {
-	return file_service_notification_service_proto_rawDescGZIP(), []int{0}
+	return file_notification_service_notification_service_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *NotificationSendRequest) GetMessage() *entity.NotificationMessage {
@@ -76,7 +76,7 @@ type NotificationSendResponse struct {
 
 func (x *NotificationSendResponse) Reset() {
 	*x = NotificationSendResponse{}
-	mi := &file_service_notification_service_proto_msgTypes[1]
+	mi := &file_notification_service_notification_service_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -88,7 +88,7 @@ func (x *NotificationSendResponse) String() string {
 func (*NotificationSendResponse) ProtoMessage() {}
 
 func (x *NotificationSendResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_notification_service_proto_msgTypes[1]
+	mi := &file_notification_service_notification_service_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -101,7 +101,7 @@ func (x *NotificationSendResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NotificationSendResponse.ProtoReflect.Descriptor instead.
 func (*NotificationSendResponse) Descriptor() ([]byte, []int) {
-	return file_service_notification_service_proto_rawDescGZIP(), []int{1}
+	return file_notification_service_notification_service_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *NotificationSendResponse) GetSuccess() bool {
@@ -118,11 +118,11 @@ func (x *NotificationSendResponse) GetMessage() string {
 	return ""
 }
 
-var File_service_notification_service_proto protoreflect.FileDescriptor
+var File_notification_service_notification_service_proto protoreflect.FileDescriptor
 
-const file_service_notification_service_proto_rawDesc = "" +
+const file_notification_service_notification_service_proto_rawDesc = "" +
 	"\n" +
-	"\"service/notification.service.proto\x12\x1dcontract.notification.service\x1a entity/notification.entity.proto\"f\n" +
+	"/notification/service/notification.service.proto\x12\x1dcontract.notification.service\x1a-notification/entity/notification.entity.proto\"f\n" +
 	"\x17NotificationSendRequest\x12K\n" +
 	"\amessage\x18\x01 \x01(\v21.contract.notification.entity.NotificationMessageR\amessage\"N\n" +
 	"\x18NotificationSendResponse\x12\x18\n" +
@@ -133,24 +133,24 @@ const file_service_notification_service_proto_rawDesc = "" +
 	"!com.contract.notification.serviceB\x18NotificationServiceProtoP\x01Z#fesmu/contract/notification/service\xa2\x02\x03CNS\xaa\x02\x1dContract.Notification.Service\xca\x02\x1dContract\\Notification\\Service\xe2\x02)Contract\\Notification\\Service\\GPBMetadata\xea\x02\x1fContract::Notification::Serviceb\x06proto3"
 
 var (
-	file_service_notification_service_proto_rawDescOnce sync.Once
-	file_service_notification_service_proto_rawDescData []byte
+	file_notification_service_notification_service_proto_rawDescOnce sync.Once
+	file_notification_service_notification_service_proto_rawDescData []byte
 )
 
-func file_service_notification_service_proto_rawDescGZIP() []byte {
-	file_service_notification_service_proto_rawDescOnce.Do(func() {
-		file_service_notification_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_service_notification_service_proto_rawDesc), len(file_service_notification_service_proto_rawDesc)))
+func file_notification_service_notification_service_proto_rawDescGZIP() []byte {
+	file_notification_service_notification_service_proto_rawDescOnce.Do(func() {
+		file_notification_service_notification_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_notification_service_notification_service_proto_rawDesc), len(file_notification_service_notification_service_proto_rawDesc)))
 	})
-	return file_service_notification_service_proto_rawDescData
+	return file_notification_service_notification_service_proto_rawDescData
 }
 
-var file_service_notification_service_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_service_notification_service_proto_goTypes = []any{
+var file_notification_service_notification_service_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_notification_service_notification_service_proto_goTypes = []any{
 	(*NotificationSendRequest)(nil),    // 0: contract.notification.service.NotificationSendRequest
 	(*NotificationSendResponse)(nil),   // 1: contract.notification.service.NotificationSendResponse
 	(*entity.NotificationMessage)(nil), // 2: contract.notification.entity.NotificationMessage
 }
-var file_service_notification_service_proto_depIdxs = []int32{
+var file_notification_service_notification_service_proto_depIdxs = []int32{
 	2, // 0: contract.notification.service.NotificationSendRequest.message:type_name -> contract.notification.entity.NotificationMessage
 	0, // 1: contract.notification.service.NotificationService.NotificationSend:input_type -> contract.notification.service.NotificationSendRequest
 	1, // 2: contract.notification.service.NotificationService.NotificationSend:output_type -> contract.notification.service.NotificationSendResponse
@@ -161,26 +161,26 @@ var file_service_notification_service_proto_depIdxs = []int32{
 	0, // [0:1] is the sub-list for field type_name
 }
 
-func init() { file_service_notification_service_proto_init() }
-func file_service_notification_service_proto_init() {
-	if File_service_notification_service_proto != nil {
+func init() { file_notification_service_notification_service_proto_init() }
+func file_notification_service_notification_service_proto_init() {
+	if File_notification_service_notification_service_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_service_notification_service_proto_rawDesc), len(file_service_notification_service_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_notification_service_notification_service_proto_rawDesc), len(file_notification_service_notification_service_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_service_notification_service_proto_goTypes,
-		DependencyIndexes: file_service_notification_service_proto_depIdxs,
-		MessageInfos:      file_service_notification_service_proto_msgTypes,
+		GoTypes:           file_notification_service_notification_service_proto_goTypes,
+		DependencyIndexes: file_notification_service_notification_service_proto_depIdxs,
+		MessageInfos:      file_notification_service_notification_service_proto_msgTypes,
 	}.Build()
-	File_service_notification_service_proto = out.File
-	file_service_notification_service_proto_goTypes = nil
-	file_service_notification_service_proto_depIdxs = nil
+	File_notification_service_notification_service_proto = out.File
+	file_notification_service_notification_service_proto_goTypes = nil
+	file_notification_service_notification_service_proto_depIdxs = nil
 }

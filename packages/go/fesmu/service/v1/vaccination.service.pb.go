@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: service/v1/vaccination.service.proto
+// source: fesmu/service/v1/vaccination.service.proto
 
 package servicev1
 
@@ -32,7 +32,7 @@ type VaccinationDayFetchRequest struct {
 
 func (x *VaccinationDayFetchRequest) Reset() {
 	*x = VaccinationDayFetchRequest{}
-	mi := &file_service_v1_vaccination_service_proto_msgTypes[0]
+	mi := &file_fesmu_service_v1_vaccination_service_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -44,7 +44,7 @@ func (x *VaccinationDayFetchRequest) String() string {
 func (*VaccinationDayFetchRequest) ProtoMessage() {}
 
 func (x *VaccinationDayFetchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_vaccination_service_proto_msgTypes[0]
+	mi := &file_fesmu_service_v1_vaccination_service_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -57,7 +57,7 @@ func (x *VaccinationDayFetchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VaccinationDayFetchRequest.ProtoReflect.Descriptor instead.
 func (*VaccinationDayFetchRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_vaccination_service_proto_rawDescGZIP(), []int{0}
+	return file_fesmu_service_v1_vaccination_service_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *VaccinationDayFetchRequest) GetDateFrom() string {
@@ -76,7 +76,7 @@ type VaccinationDayFetchResponse struct {
 
 func (x *VaccinationDayFetchResponse) Reset() {
 	*x = VaccinationDayFetchResponse{}
-	mi := &file_service_v1_vaccination_service_proto_msgTypes[1]
+	mi := &file_fesmu_service_v1_vaccination_service_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -88,7 +88,7 @@ func (x *VaccinationDayFetchResponse) String() string {
 func (*VaccinationDayFetchResponse) ProtoMessage() {}
 
 func (x *VaccinationDayFetchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_vaccination_service_proto_msgTypes[1]
+	mi := &file_fesmu_service_v1_vaccination_service_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -101,7 +101,7 @@ func (x *VaccinationDayFetchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VaccinationDayFetchResponse.ProtoReflect.Descriptor instead.
 func (*VaccinationDayFetchResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_vaccination_service_proto_rawDescGZIP(), []int{1}
+	return file_fesmu_service_v1_vaccination_service_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *VaccinationDayFetchResponse) GetList() []*v1.VaccinationDay {
@@ -124,7 +124,7 @@ type VaccinationDayCreateRequest struct {
 
 func (x *VaccinationDayCreateRequest) Reset() {
 	*x = VaccinationDayCreateRequest{}
-	mi := &file_service_v1_vaccination_service_proto_msgTypes[2]
+	mi := &file_fesmu_service_v1_vaccination_service_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -136,7 +136,7 @@ func (x *VaccinationDayCreateRequest) String() string {
 func (*VaccinationDayCreateRequest) ProtoMessage() {}
 
 func (x *VaccinationDayCreateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_vaccination_service_proto_msgTypes[2]
+	mi := &file_fesmu_service_v1_vaccination_service_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -149,7 +149,7 @@ func (x *VaccinationDayCreateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VaccinationDayCreateRequest.ProtoReflect.Descriptor instead.
 func (*VaccinationDayCreateRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_vaccination_service_proto_rawDescGZIP(), []int{2}
+	return file_fesmu_service_v1_vaccination_service_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *VaccinationDayCreateRequest) GetDate() string {
@@ -191,7 +191,7 @@ type VaccinationDayCreateResponse struct {
 
 func (x *VaccinationDayCreateResponse) Reset() {
 	*x = VaccinationDayCreateResponse{}
-	mi := &file_service_v1_vaccination_service_proto_msgTypes[3]
+	mi := &file_fesmu_service_v1_vaccination_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -203,7 +203,7 @@ func (x *VaccinationDayCreateResponse) String() string {
 func (*VaccinationDayCreateResponse) ProtoMessage() {}
 
 func (x *VaccinationDayCreateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_vaccination_service_proto_msgTypes[3]
+	mi := &file_fesmu_service_v1_vaccination_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -216,7 +216,7 @@ func (x *VaccinationDayCreateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VaccinationDayCreateResponse.ProtoReflect.Descriptor instead.
 func (*VaccinationDayCreateResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_vaccination_service_proto_rawDescGZIP(), []int{3}
+	return file_fesmu_service_v1_vaccination_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *VaccinationDayCreateResponse) GetSuccess() bool {
@@ -249,7 +249,7 @@ type VaccinationDayDeleteRequest struct {
 
 func (x *VaccinationDayDeleteRequest) Reset() {
 	*x = VaccinationDayDeleteRequest{}
-	mi := &file_service_v1_vaccination_service_proto_msgTypes[4]
+	mi := &file_fesmu_service_v1_vaccination_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -261,7 +261,7 @@ func (x *VaccinationDayDeleteRequest) String() string {
 func (*VaccinationDayDeleteRequest) ProtoMessage() {}
 
 func (x *VaccinationDayDeleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_vaccination_service_proto_msgTypes[4]
+	mi := &file_fesmu_service_v1_vaccination_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -274,7 +274,7 @@ func (x *VaccinationDayDeleteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VaccinationDayDeleteRequest.ProtoReflect.Descriptor instead.
 func (*VaccinationDayDeleteRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_vaccination_service_proto_rawDescGZIP(), []int{4}
+	return file_fesmu_service_v1_vaccination_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *VaccinationDayDeleteRequest) GetId() int64 {
@@ -294,7 +294,7 @@ type VaccinationDayDeleteResponse struct {
 
 func (x *VaccinationDayDeleteResponse) Reset() {
 	*x = VaccinationDayDeleteResponse{}
-	mi := &file_service_v1_vaccination_service_proto_msgTypes[5]
+	mi := &file_fesmu_service_v1_vaccination_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -306,7 +306,7 @@ func (x *VaccinationDayDeleteResponse) String() string {
 func (*VaccinationDayDeleteResponse) ProtoMessage() {}
 
 func (x *VaccinationDayDeleteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_vaccination_service_proto_msgTypes[5]
+	mi := &file_fesmu_service_v1_vaccination_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -319,7 +319,7 @@ func (x *VaccinationDayDeleteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VaccinationDayDeleteResponse.ProtoReflect.Descriptor instead.
 func (*VaccinationDayDeleteResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_vaccination_service_proto_rawDescGZIP(), []int{5}
+	return file_fesmu_service_v1_vaccination_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *VaccinationDayDeleteResponse) GetSuccess() bool {
@@ -349,7 +349,7 @@ type VaccinationSignupCreateRequest struct {
 
 func (x *VaccinationSignupCreateRequest) Reset() {
 	*x = VaccinationSignupCreateRequest{}
-	mi := &file_service_v1_vaccination_service_proto_msgTypes[6]
+	mi := &file_fesmu_service_v1_vaccination_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -361,7 +361,7 @@ func (x *VaccinationSignupCreateRequest) String() string {
 func (*VaccinationSignupCreateRequest) ProtoMessage() {}
 
 func (x *VaccinationSignupCreateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_vaccination_service_proto_msgTypes[6]
+	mi := &file_fesmu_service_v1_vaccination_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -374,7 +374,7 @@ func (x *VaccinationSignupCreateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VaccinationSignupCreateRequest.ProtoReflect.Descriptor instead.
 func (*VaccinationSignupCreateRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_vaccination_service_proto_rawDescGZIP(), []int{6}
+	return file_fesmu_service_v1_vaccination_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *VaccinationSignupCreateRequest) GetSlotId() int64 {
@@ -409,7 +409,7 @@ type VaccinationSignupCreateResponse struct {
 
 func (x *VaccinationSignupCreateResponse) Reset() {
 	*x = VaccinationSignupCreateResponse{}
-	mi := &file_service_v1_vaccination_service_proto_msgTypes[7]
+	mi := &file_fesmu_service_v1_vaccination_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -421,7 +421,7 @@ func (x *VaccinationSignupCreateResponse) String() string {
 func (*VaccinationSignupCreateResponse) ProtoMessage() {}
 
 func (x *VaccinationSignupCreateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_vaccination_service_proto_msgTypes[7]
+	mi := &file_fesmu_service_v1_vaccination_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -434,7 +434,7 @@ func (x *VaccinationSignupCreateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VaccinationSignupCreateResponse.ProtoReflect.Descriptor instead.
 func (*VaccinationSignupCreateResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_vaccination_service_proto_rawDescGZIP(), []int{7}
+	return file_fesmu_service_v1_vaccination_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *VaccinationSignupCreateResponse) GetSuccess() bool {
@@ -467,7 +467,7 @@ type VaccinationSignupDeleteRequest struct {
 
 func (x *VaccinationSignupDeleteRequest) Reset() {
 	*x = VaccinationSignupDeleteRequest{}
-	mi := &file_service_v1_vaccination_service_proto_msgTypes[8]
+	mi := &file_fesmu_service_v1_vaccination_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -479,7 +479,7 @@ func (x *VaccinationSignupDeleteRequest) String() string {
 func (*VaccinationSignupDeleteRequest) ProtoMessage() {}
 
 func (x *VaccinationSignupDeleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_vaccination_service_proto_msgTypes[8]
+	mi := &file_fesmu_service_v1_vaccination_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -492,7 +492,7 @@ func (x *VaccinationSignupDeleteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VaccinationSignupDeleteRequest.ProtoReflect.Descriptor instead.
 func (*VaccinationSignupDeleteRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_vaccination_service_proto_rawDescGZIP(), []int{8}
+	return file_fesmu_service_v1_vaccination_service_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *VaccinationSignupDeleteRequest) GetId() int64 {
@@ -512,7 +512,7 @@ type VaccinationSignupDeleteResponse struct {
 
 func (x *VaccinationSignupDeleteResponse) Reset() {
 	*x = VaccinationSignupDeleteResponse{}
-	mi := &file_service_v1_vaccination_service_proto_msgTypes[9]
+	mi := &file_fesmu_service_v1_vaccination_service_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -524,7 +524,7 @@ func (x *VaccinationSignupDeleteResponse) String() string {
 func (*VaccinationSignupDeleteResponse) ProtoMessage() {}
 
 func (x *VaccinationSignupDeleteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_vaccination_service_proto_msgTypes[9]
+	mi := &file_fesmu_service_v1_vaccination_service_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -537,7 +537,7 @@ func (x *VaccinationSignupDeleteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VaccinationSignupDeleteResponse.ProtoReflect.Descriptor instead.
 func (*VaccinationSignupDeleteResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_vaccination_service_proto_rawDescGZIP(), []int{9}
+	return file_fesmu_service_v1_vaccination_service_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *VaccinationSignupDeleteResponse) GetSuccess() bool {
@@ -554,11 +554,11 @@ func (x *VaccinationSignupDeleteResponse) GetMessage() string {
 	return ""
 }
 
-var File_service_v1_vaccination_service_proto protoreflect.FileDescriptor
+var File_fesmu_service_v1_vaccination_service_proto protoreflect.FileDescriptor
 
-const file_service_v1_vaccination_service_proto_rawDesc = "" +
+const file_fesmu_service_v1_vaccination_service_proto_rawDesc = "" +
 	"\n" +
-	"$service/v1/vaccination.service.proto\x12\x13contract.service.v1\x1a\"entity/v1/vaccination.entity.proto\"9\n" +
+	"*fesmu/service/v1/vaccination.service.proto\x12\x13contract.service.v1\x1a(fesmu/entity/v1/vaccination.entity.proto\"9\n" +
 	"\x1aVaccinationDayFetchRequest\x12\x1b\n" +
 	"\tdate_from\x18\x01 \x01(\tR\bdateFrom\"U\n" +
 	"\x1bVaccinationDayFetchResponse\x126\n" +
@@ -599,19 +599,19 @@ const file_service_v1_vaccination_service_proto_rawDesc = "" +
 	"\x17com.contract.service.v1B\x17VaccinationServiceProtoP\x01Z)fesmu/contract/fesmu/service/v1;servicev1\xa2\x02\x03CSX\xaa\x02\x13Contract.Service.V1\xca\x02\x13Contract\\Service\\V1\xe2\x02\x1fContract\\Service\\V1\\GPBMetadata\xea\x02\x15Contract::Service::V1b\x06proto3"
 
 var (
-	file_service_v1_vaccination_service_proto_rawDescOnce sync.Once
-	file_service_v1_vaccination_service_proto_rawDescData []byte
+	file_fesmu_service_v1_vaccination_service_proto_rawDescOnce sync.Once
+	file_fesmu_service_v1_vaccination_service_proto_rawDescData []byte
 )
 
-func file_service_v1_vaccination_service_proto_rawDescGZIP() []byte {
-	file_service_v1_vaccination_service_proto_rawDescOnce.Do(func() {
-		file_service_v1_vaccination_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_service_v1_vaccination_service_proto_rawDesc), len(file_service_v1_vaccination_service_proto_rawDesc)))
+func file_fesmu_service_v1_vaccination_service_proto_rawDescGZIP() []byte {
+	file_fesmu_service_v1_vaccination_service_proto_rawDescOnce.Do(func() {
+		file_fesmu_service_v1_vaccination_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_fesmu_service_v1_vaccination_service_proto_rawDesc), len(file_fesmu_service_v1_vaccination_service_proto_rawDesc)))
 	})
-	return file_service_v1_vaccination_service_proto_rawDescData
+	return file_fesmu_service_v1_vaccination_service_proto_rawDescData
 }
 
-var file_service_v1_vaccination_service_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
-var file_service_v1_vaccination_service_proto_goTypes = []any{
+var file_fesmu_service_v1_vaccination_service_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_fesmu_service_v1_vaccination_service_proto_goTypes = []any{
 	(*VaccinationDayFetchRequest)(nil),      // 0: contract.service.v1.VaccinationDayFetchRequest
 	(*VaccinationDayFetchResponse)(nil),     // 1: contract.service.v1.VaccinationDayFetchResponse
 	(*VaccinationDayCreateRequest)(nil),     // 2: contract.service.v1.VaccinationDayCreateRequest
@@ -624,7 +624,7 @@ var file_service_v1_vaccination_service_proto_goTypes = []any{
 	(*VaccinationSignupDeleteResponse)(nil), // 9: contract.service.v1.VaccinationSignupDeleteResponse
 	(*v1.VaccinationDay)(nil),               // 10: contract.entity.v1.VaccinationDay
 }
-var file_service_v1_vaccination_service_proto_depIdxs = []int32{
+var file_fesmu_service_v1_vaccination_service_proto_depIdxs = []int32{
 	10, // 0: contract.service.v1.VaccinationDayFetchResponse.list:type_name -> contract.entity.v1.VaccinationDay
 	0,  // 1: contract.service.v1.VaccinationService.VaccinationDayFetch:input_type -> contract.service.v1.VaccinationDayFetchRequest
 	2,  // 2: contract.service.v1.VaccinationService.VaccinationDayCreate:input_type -> contract.service.v1.VaccinationDayCreateRequest
@@ -643,26 +643,26 @@ var file_service_v1_vaccination_service_proto_depIdxs = []int32{
 	0,  // [0:1] is the sub-list for field type_name
 }
 
-func init() { file_service_v1_vaccination_service_proto_init() }
-func file_service_v1_vaccination_service_proto_init() {
-	if File_service_v1_vaccination_service_proto != nil {
+func init() { file_fesmu_service_v1_vaccination_service_proto_init() }
+func file_fesmu_service_v1_vaccination_service_proto_init() {
+	if File_fesmu_service_v1_vaccination_service_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_service_v1_vaccination_service_proto_rawDesc), len(file_service_v1_vaccination_service_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_fesmu_service_v1_vaccination_service_proto_rawDesc), len(file_fesmu_service_v1_vaccination_service_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_service_v1_vaccination_service_proto_goTypes,
-		DependencyIndexes: file_service_v1_vaccination_service_proto_depIdxs,
-		MessageInfos:      file_service_v1_vaccination_service_proto_msgTypes,
+		GoTypes:           file_fesmu_service_v1_vaccination_service_proto_goTypes,
+		DependencyIndexes: file_fesmu_service_v1_vaccination_service_proto_depIdxs,
+		MessageInfos:      file_fesmu_service_v1_vaccination_service_proto_msgTypes,
 	}.Build()
-	File_service_v1_vaccination_service_proto = out.File
-	file_service_v1_vaccination_service_proto_goTypes = nil
-	file_service_v1_vaccination_service_proto_depIdxs = nil
+	File_fesmu_service_v1_vaccination_service_proto = out.File
+	file_fesmu_service_v1_vaccination_service_proto_goTypes = nil
+	file_fesmu_service_v1_vaccination_service_proto_depIdxs = nil
 }

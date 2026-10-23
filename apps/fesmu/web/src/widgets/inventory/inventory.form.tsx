@@ -1,5 +1,5 @@
 import { PromFieldInput, PromFieldSelect, PromFieldTextArea, PromDateField } from "@/features/lib/form";
-import { InventoryStatus, InventoryType } from "@fesmu/contract/enum/v1/inventory.enum_pb";
+import { InventoryStatus, InventoryType } from "@fesmu/contract/fesmu/enum/v1/inventory.enum_pb";
 import { InfrastructureFieldSelect } from "../infrastructure";
 import type { FC } from "react";
 import { useMemo } from "react";

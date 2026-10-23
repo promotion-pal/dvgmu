@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: service/v1/schedule.service.proto
+// source: fesmu/service/v1/schedule.service.proto
 
 package servicev1
 
@@ -32,7 +32,7 @@ type ScheduleFetchRequest struct {
 
 func (x *ScheduleFetchRequest) Reset() {
 	*x = ScheduleFetchRequest{}
-	mi := &file_service_v1_schedule_service_proto_msgTypes[0]
+	mi := &file_fesmu_service_v1_schedule_service_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -44,7 +44,7 @@ func (x *ScheduleFetchRequest) String() string {
 func (*ScheduleFetchRequest) ProtoMessage() {}
 
 func (x *ScheduleFetchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_schedule_service_proto_msgTypes[0]
+	mi := &file_fesmu_service_v1_schedule_service_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -57,7 +57,7 @@ func (x *ScheduleFetchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ScheduleFetchRequest.ProtoReflect.Descriptor instead.
 func (*ScheduleFetchRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_schedule_service_proto_rawDescGZIP(), []int{0}
+	return file_fesmu_service_v1_schedule_service_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *ScheduleFetchRequest) GetProgramId() string {
@@ -83,7 +83,7 @@ type ScheduleFetchResponse struct {
 
 func (x *ScheduleFetchResponse) Reset() {
 	*x = ScheduleFetchResponse{}
-	mi := &file_service_v1_schedule_service_proto_msgTypes[1]
+	mi := &file_fesmu_service_v1_schedule_service_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -95,7 +95,7 @@ func (x *ScheduleFetchResponse) String() string {
 func (*ScheduleFetchResponse) ProtoMessage() {}
 
 func (x *ScheduleFetchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_schedule_service_proto_msgTypes[1]
+	mi := &file_fesmu_service_v1_schedule_service_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -108,7 +108,7 @@ func (x *ScheduleFetchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ScheduleFetchResponse.ProtoReflect.Descriptor instead.
 func (*ScheduleFetchResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_schedule_service_proto_rawDescGZIP(), []int{1}
+	return file_fesmu_service_v1_schedule_service_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *ScheduleFetchResponse) GetList() []*v1.ScheduleTimetable {
@@ -127,7 +127,7 @@ type ScheduleByIDRequest struct {
 
 func (x *ScheduleByIDRequest) Reset() {
 	*x = ScheduleByIDRequest{}
-	mi := &file_service_v1_schedule_service_proto_msgTypes[2]
+	mi := &file_fesmu_service_v1_schedule_service_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -139,7 +139,7 @@ func (x *ScheduleByIDRequest) String() string {
 func (*ScheduleByIDRequest) ProtoMessage() {}
 
 func (x *ScheduleByIDRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_schedule_service_proto_msgTypes[2]
+	mi := &file_fesmu_service_v1_schedule_service_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -152,7 +152,7 @@ func (x *ScheduleByIDRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ScheduleByIDRequest.ProtoReflect.Descriptor instead.
 func (*ScheduleByIDRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_schedule_service_proto_rawDescGZIP(), []int{2}
+	return file_fesmu_service_v1_schedule_service_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ScheduleByIDRequest) GetId() string {
@@ -171,7 +171,7 @@ type ScheduleByIDResponse struct {
 
 func (x *ScheduleByIDResponse) Reset() {
 	*x = ScheduleByIDResponse{}
-	mi := &file_service_v1_schedule_service_proto_msgTypes[3]
+	mi := &file_fesmu_service_v1_schedule_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -183,7 +183,7 @@ func (x *ScheduleByIDResponse) String() string {
 func (*ScheduleByIDResponse) ProtoMessage() {}
 
 func (x *ScheduleByIDResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_schedule_service_proto_msgTypes[3]
+	mi := &file_fesmu_service_v1_schedule_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -196,7 +196,7 @@ func (x *ScheduleByIDResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ScheduleByIDResponse.ProtoReflect.Descriptor instead.
 func (*ScheduleByIDResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_schedule_service_proto_rawDescGZIP(), []int{3}
+	return file_fesmu_service_v1_schedule_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ScheduleByIDResponse) GetItem() *v1.ScheduleTimetable {
@@ -218,7 +218,7 @@ type ScheduleCreateRequest struct {
 
 func (x *ScheduleCreateRequest) Reset() {
 	*x = ScheduleCreateRequest{}
-	mi := &file_service_v1_schedule_service_proto_msgTypes[4]
+	mi := &file_fesmu_service_v1_schedule_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -230,7 +230,7 @@ func (x *ScheduleCreateRequest) String() string {
 func (*ScheduleCreateRequest) ProtoMessage() {}
 
 func (x *ScheduleCreateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_schedule_service_proto_msgTypes[4]
+	mi := &file_fesmu_service_v1_schedule_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -243,7 +243,7 @@ func (x *ScheduleCreateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ScheduleCreateRequest.ProtoReflect.Descriptor instead.
 func (*ScheduleCreateRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_schedule_service_proto_rawDescGZIP(), []int{4}
+	return file_fesmu_service_v1_schedule_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ScheduleCreateRequest) GetItem() *v1.ScheduleTimetable {
@@ -264,7 +264,7 @@ type ScheduleCreateResponse struct {
 
 func (x *ScheduleCreateResponse) Reset() {
 	*x = ScheduleCreateResponse{}
-	mi := &file_service_v1_schedule_service_proto_msgTypes[5]
+	mi := &file_fesmu_service_v1_schedule_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -276,7 +276,7 @@ func (x *ScheduleCreateResponse) String() string {
 func (*ScheduleCreateResponse) ProtoMessage() {}
 
 func (x *ScheduleCreateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_schedule_service_proto_msgTypes[5]
+	mi := &file_fesmu_service_v1_schedule_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -289,7 +289,7 @@ func (x *ScheduleCreateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ScheduleCreateResponse.ProtoReflect.Descriptor instead.
 func (*ScheduleCreateResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_schedule_service_proto_rawDescGZIP(), []int{5}
+	return file_fesmu_service_v1_schedule_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ScheduleCreateResponse) GetSuccess() bool {
@@ -323,7 +323,7 @@ type ScheduleUpdateRequest struct {
 
 func (x *ScheduleUpdateRequest) Reset() {
 	*x = ScheduleUpdateRequest{}
-	mi := &file_service_v1_schedule_service_proto_msgTypes[6]
+	mi := &file_fesmu_service_v1_schedule_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -335,7 +335,7 @@ func (x *ScheduleUpdateRequest) String() string {
 func (*ScheduleUpdateRequest) ProtoMessage() {}
 
 func (x *ScheduleUpdateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_schedule_service_proto_msgTypes[6]
+	mi := &file_fesmu_service_v1_schedule_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -348,7 +348,7 @@ func (x *ScheduleUpdateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ScheduleUpdateRequest.ProtoReflect.Descriptor instead.
 func (*ScheduleUpdateRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_schedule_service_proto_rawDescGZIP(), []int{6}
+	return file_fesmu_service_v1_schedule_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *ScheduleUpdateRequest) GetItem() *v1.ScheduleTimetable {
@@ -368,7 +368,7 @@ type ScheduleUpdateResponse struct {
 
 func (x *ScheduleUpdateResponse) Reset() {
 	*x = ScheduleUpdateResponse{}
-	mi := &file_service_v1_schedule_service_proto_msgTypes[7]
+	mi := &file_fesmu_service_v1_schedule_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -380,7 +380,7 @@ func (x *ScheduleUpdateResponse) String() string {
 func (*ScheduleUpdateResponse) ProtoMessage() {}
 
 func (x *ScheduleUpdateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_schedule_service_proto_msgTypes[7]
+	mi := &file_fesmu_service_v1_schedule_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -393,7 +393,7 @@ func (x *ScheduleUpdateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ScheduleUpdateResponse.ProtoReflect.Descriptor instead.
 func (*ScheduleUpdateResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_schedule_service_proto_rawDescGZIP(), []int{7}
+	return file_fesmu_service_v1_schedule_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *ScheduleUpdateResponse) GetSuccess() bool {
@@ -419,7 +419,7 @@ type ScheduleDeleteRequest struct {
 
 func (x *ScheduleDeleteRequest) Reset() {
 	*x = ScheduleDeleteRequest{}
-	mi := &file_service_v1_schedule_service_proto_msgTypes[8]
+	mi := &file_fesmu_service_v1_schedule_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -431,7 +431,7 @@ func (x *ScheduleDeleteRequest) String() string {
 func (*ScheduleDeleteRequest) ProtoMessage() {}
 
 func (x *ScheduleDeleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_schedule_service_proto_msgTypes[8]
+	mi := &file_fesmu_service_v1_schedule_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -444,7 +444,7 @@ func (x *ScheduleDeleteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ScheduleDeleteRequest.ProtoReflect.Descriptor instead.
 func (*ScheduleDeleteRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_schedule_service_proto_rawDescGZIP(), []int{8}
+	return file_fesmu_service_v1_schedule_service_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *ScheduleDeleteRequest) GetId() string {
@@ -464,7 +464,7 @@ type ScheduleDeleteResponse struct {
 
 func (x *ScheduleDeleteResponse) Reset() {
 	*x = ScheduleDeleteResponse{}
-	mi := &file_service_v1_schedule_service_proto_msgTypes[9]
+	mi := &file_fesmu_service_v1_schedule_service_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -476,7 +476,7 @@ func (x *ScheduleDeleteResponse) String() string {
 func (*ScheduleDeleteResponse) ProtoMessage() {}
 
 func (x *ScheduleDeleteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_schedule_service_proto_msgTypes[9]
+	mi := &file_fesmu_service_v1_schedule_service_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -489,7 +489,7 @@ func (x *ScheduleDeleteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ScheduleDeleteResponse.ProtoReflect.Descriptor instead.
 func (*ScheduleDeleteResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_schedule_service_proto_rawDescGZIP(), []int{9}
+	return file_fesmu_service_v1_schedule_service_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *ScheduleDeleteResponse) GetSuccess() bool {
@@ -506,11 +506,11 @@ func (x *ScheduleDeleteResponse) GetMessage() string {
 	return ""
 }
 
-var File_service_v1_schedule_service_proto protoreflect.FileDescriptor
+var File_fesmu_service_v1_schedule_service_proto protoreflect.FileDescriptor
 
-const file_service_v1_schedule_service_proto_rawDesc = "" +
+const file_fesmu_service_v1_schedule_service_proto_rawDesc = "" +
 	"\n" +
-	"!service/v1/schedule.service.proto\x12\x13contract.service.v1\x1a\x1fentity/v1/schedule.entity.proto\"M\n" +
+	"'fesmu/service/v1/schedule.service.proto\x12\x13contract.service.v1\x1a%fesmu/entity/v1/schedule.entity.proto\"M\n" +
 	"\x14ScheduleFetchRequest\x12\x1d\n" +
 	"\n" +
 	"program_id\x18\x01 \x01(\tR\tprogramId\x12\x16\n" +
@@ -547,19 +547,19 @@ const file_service_v1_schedule_service_proto_rawDesc = "" +
 	"\x17com.contract.service.v1B\x14ScheduleServiceProtoP\x01Z)fesmu/contract/fesmu/service/v1;servicev1\xa2\x02\x03CSX\xaa\x02\x13Contract.Service.V1\xca\x02\x13Contract\\Service\\V1\xe2\x02\x1fContract\\Service\\V1\\GPBMetadata\xea\x02\x15Contract::Service::V1b\x06proto3"
 
 var (
-	file_service_v1_schedule_service_proto_rawDescOnce sync.Once
-	file_service_v1_schedule_service_proto_rawDescData []byte
+	file_fesmu_service_v1_schedule_service_proto_rawDescOnce sync.Once
+	file_fesmu_service_v1_schedule_service_proto_rawDescData []byte
 )
 
-func file_service_v1_schedule_service_proto_rawDescGZIP() []byte {
-	file_service_v1_schedule_service_proto_rawDescOnce.Do(func() {
-		file_service_v1_schedule_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_service_v1_schedule_service_proto_rawDesc), len(file_service_v1_schedule_service_proto_rawDesc)))
+func file_fesmu_service_v1_schedule_service_proto_rawDescGZIP() []byte {
+	file_fesmu_service_v1_schedule_service_proto_rawDescOnce.Do(func() {
+		file_fesmu_service_v1_schedule_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_fesmu_service_v1_schedule_service_proto_rawDesc), len(file_fesmu_service_v1_schedule_service_proto_rawDesc)))
 	})
-	return file_service_v1_schedule_service_proto_rawDescData
+	return file_fesmu_service_v1_schedule_service_proto_rawDescData
 }
 
-var file_service_v1_schedule_service_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
-var file_service_v1_schedule_service_proto_goTypes = []any{
+var file_fesmu_service_v1_schedule_service_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_fesmu_service_v1_schedule_service_proto_goTypes = []any{
 	(*ScheduleFetchRequest)(nil),   // 0: contract.service.v1.ScheduleFetchRequest
 	(*ScheduleFetchResponse)(nil),  // 1: contract.service.v1.ScheduleFetchResponse
 	(*ScheduleByIDRequest)(nil),    // 2: contract.service.v1.ScheduleByIDRequest
@@ -572,7 +572,7 @@ var file_service_v1_schedule_service_proto_goTypes = []any{
 	(*ScheduleDeleteResponse)(nil), // 9: contract.service.v1.ScheduleDeleteResponse
 	(*v1.ScheduleTimetable)(nil),   // 10: contract.entity.v1.ScheduleTimetable
 }
-var file_service_v1_schedule_service_proto_depIdxs = []int32{
+var file_fesmu_service_v1_schedule_service_proto_depIdxs = []int32{
 	10, // 0: contract.service.v1.ScheduleFetchResponse.list:type_name -> contract.entity.v1.ScheduleTimetable
 	10, // 1: contract.service.v1.ScheduleByIDResponse.item:type_name -> contract.entity.v1.ScheduleTimetable
 	10, // 2: contract.service.v1.ScheduleCreateRequest.item:type_name -> contract.entity.v1.ScheduleTimetable
@@ -594,26 +594,26 @@ var file_service_v1_schedule_service_proto_depIdxs = []int32{
 	0,  // [0:4] is the sub-list for field type_name
 }
 
-func init() { file_service_v1_schedule_service_proto_init() }
-func file_service_v1_schedule_service_proto_init() {
-	if File_service_v1_schedule_service_proto != nil {
+func init() { file_fesmu_service_v1_schedule_service_proto_init() }
+func file_fesmu_service_v1_schedule_service_proto_init() {
+	if File_fesmu_service_v1_schedule_service_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_service_v1_schedule_service_proto_rawDesc), len(file_service_v1_schedule_service_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_fesmu_service_v1_schedule_service_proto_rawDesc), len(file_fesmu_service_v1_schedule_service_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_service_v1_schedule_service_proto_goTypes,
-		DependencyIndexes: file_service_v1_schedule_service_proto_depIdxs,
-		MessageInfos:      file_service_v1_schedule_service_proto_msgTypes,
+		GoTypes:           file_fesmu_service_v1_schedule_service_proto_goTypes,
+		DependencyIndexes: file_fesmu_service_v1_schedule_service_proto_depIdxs,
+		MessageInfos:      file_fesmu_service_v1_schedule_service_proto_msgTypes,
 	}.Build()
-	File_service_v1_schedule_service_proto = out.File
-	file_service_v1_schedule_service_proto_goTypes = nil
-	file_service_v1_schedule_service_proto_depIdxs = nil
+	File_fesmu_service_v1_schedule_service_proto = out.File
+	file_fesmu_service_v1_schedule_service_proto_goTypes = nil
+	file_fesmu_service_v1_schedule_service_proto_depIdxs = nil
 }

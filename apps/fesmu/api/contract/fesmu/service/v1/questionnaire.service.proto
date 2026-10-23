@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package contract.service.v1;
+
+import "analytics/entity/analytic.entity.proto";
+import "analytics/service/analytic.service.proto";
+
+option go_package = "service_v1;service_pb";
+
+// QuestionnaireService — открытая страница анкеты по QR (без входа). Ходит в
+// сервис аналитики от имени fesmu: опрос отдаёт БЕЗ ответов (в них ФИО
+// респондентов — их видит только панель «Аналитика» с правом на раздел),
+// ответ передаёт с IP респондента (защита от повторов в сервисе аналитики).
+service QuestionnaireService {
+    // QuestionnaireFetch — опрос по номеру QR (как в печатных кодах) или по id.
+    rpc QuestionnaireFetch (QuestionnaireFetchRequest) returns (QuestionnaireFetchResponse);
+    // QuestionnaireSubmit — ответ на анкету.
+    rpc QuestionnaireSubmit (contract.analytics.service.AnalyticRatingCreateRequest) returns (contract.analytics.service.AnalyticRatingCreateResponse);
+}
+
+message QuestionnaireFetchRequest {
+    int64 qr = 1;
+    int64 id = 2;
+}
+
+message QuestionnaireFetchResponse {
+    // analytic — опрос без ответов (ratings пуст).
+    contract.analytics.entity.Analytic analytic = 1;
+}

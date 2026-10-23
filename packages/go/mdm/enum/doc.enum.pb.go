@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: enum/doc.enum.proto
+// source: mdm/enum/doc.enum.proto
 
 package enum
 
@@ -69,11 +69,11 @@ func (x EducationType) String() string {
 }
 
 func (EducationType) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_doc_enum_proto_enumTypes[0].Descriptor()
+	return file_mdm_enum_doc_enum_proto_enumTypes[0].Descriptor()
 }
 
 func (EducationType) Type() protoreflect.EnumType {
-	return &file_enum_doc_enum_proto_enumTypes[0]
+	return &file_mdm_enum_doc_enum_proto_enumTypes[0]
 }
 
 func (x EducationType) Number() protoreflect.EnumNumber {
@@ -82,7 +82,7 @@ func (x EducationType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use EducationType.Descriptor instead.
 func (EducationType) EnumDescriptor() ([]byte, []int) {
-	return file_enum_doc_enum_proto_rawDescGZIP(), []int{0}
+	return file_mdm_enum_doc_enum_proto_rawDescGZIP(), []int{0}
 }
 
 type EducationStatus int32
@@ -121,11 +121,11 @@ func (x EducationStatus) String() string {
 }
 
 func (EducationStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_doc_enum_proto_enumTypes[1].Descriptor()
+	return file_mdm_enum_doc_enum_proto_enumTypes[1].Descriptor()
 }
 
 func (EducationStatus) Type() protoreflect.EnumType {
-	return &file_enum_doc_enum_proto_enumTypes[1]
+	return &file_mdm_enum_doc_enum_proto_enumTypes[1]
 }
 
 func (x EducationStatus) Number() protoreflect.EnumNumber {
@@ -134,7 +134,7 @@ func (x EducationStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use EducationStatus.Descriptor instead.
 func (EducationStatus) EnumDescriptor() ([]byte, []int) {
-	return file_enum_doc_enum_proto_rawDescGZIP(), []int{1}
+	return file_mdm_enum_doc_enum_proto_rawDescGZIP(), []int{1}
 }
 
 type EducationForm int32
@@ -176,11 +176,11 @@ func (x EducationForm) String() string {
 }
 
 func (EducationForm) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_doc_enum_proto_enumTypes[2].Descriptor()
+	return file_mdm_enum_doc_enum_proto_enumTypes[2].Descriptor()
 }
 
 func (EducationForm) Type() protoreflect.EnumType {
-	return &file_enum_doc_enum_proto_enumTypes[2]
+	return &file_mdm_enum_doc_enum_proto_enumTypes[2]
 }
 
 func (x EducationForm) Number() protoreflect.EnumNumber {
@@ -189,7 +189,7 @@ func (x EducationForm) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use EducationForm.Descriptor instead.
 func (EducationForm) EnumDescriptor() ([]byte, []int) {
-	return file_enum_doc_enum_proto_rawDescGZIP(), []int{2}
+	return file_mdm_enum_doc_enum_proto_rawDescGZIP(), []int{2}
 }
 
 type MilitaryValidity int32
@@ -234,11 +234,11 @@ func (x MilitaryValidity) String() string {
 }
 
 func (MilitaryValidity) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_doc_enum_proto_enumTypes[3].Descriptor()
+	return file_mdm_enum_doc_enum_proto_enumTypes[3].Descriptor()
 }
 
 func (MilitaryValidity) Type() protoreflect.EnumType {
-	return &file_enum_doc_enum_proto_enumTypes[3]
+	return &file_mdm_enum_doc_enum_proto_enumTypes[3]
 }
 
 func (x MilitaryValidity) Number() protoreflect.EnumNumber {
@@ -247,7 +247,7 @@ func (x MilitaryValidity) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use MilitaryValidity.Descriptor instead.
 func (MilitaryValidity) EnumDescriptor() ([]byte, []int) {
-	return file_enum_doc_enum_proto_rawDescGZIP(), []int{3}
+	return file_mdm_enum_doc_enum_proto_rawDescGZIP(), []int{3}
 }
 
 type MilitaryDocument int32
@@ -289,11 +289,11 @@ func (x MilitaryDocument) String() string {
 }
 
 func (MilitaryDocument) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_doc_enum_proto_enumTypes[4].Descriptor()
+	return file_mdm_enum_doc_enum_proto_enumTypes[4].Descriptor()
 }
 
 func (MilitaryDocument) Type() protoreflect.EnumType {
-	return &file_enum_doc_enum_proto_enumTypes[4]
+	return &file_mdm_enum_doc_enum_proto_enumTypes[4]
 }
 
 func (x MilitaryDocument) Number() protoreflect.EnumNumber {
@@ -302,7 +302,7 @@ func (x MilitaryDocument) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use MilitaryDocument.Descriptor instead.
 func (MilitaryDocument) EnumDescriptor() ([]byte, []int) {
-	return file_enum_doc_enum_proto_rawDescGZIP(), []int{4}
+	return file_mdm_enum_doc_enum_proto_rawDescGZIP(), []int{4}
 }
 
 type MilitaryRank int32
@@ -397,11 +397,11 @@ func (x MilitaryRank) String() string {
 }
 
 func (MilitaryRank) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_doc_enum_proto_enumTypes[5].Descriptor()
+	return file_mdm_enum_doc_enum_proto_enumTypes[5].Descriptor()
 }
 
 func (MilitaryRank) Type() protoreflect.EnumType {
-	return &file_enum_doc_enum_proto_enumTypes[5]
+	return &file_mdm_enum_doc_enum_proto_enumTypes[5]
 }
 
 func (x MilitaryRank) Number() protoreflect.EnumNumber {
@@ -410,14 +410,14 @@ func (x MilitaryRank) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use MilitaryRank.Descriptor instead.
 func (MilitaryRank) EnumDescriptor() ([]byte, []int) {
-	return file_enum_doc_enum_proto_rawDescGZIP(), []int{5}
+	return file_mdm_enum_doc_enum_proto_rawDescGZIP(), []int{5}
 }
 
-var File_enum_doc_enum_proto protoreflect.FileDescriptor
+var File_mdm_enum_doc_enum_proto protoreflect.FileDescriptor
 
-const file_enum_doc_enum_proto_rawDesc = "" +
+const file_mdm_enum_doc_enum_proto_rawDesc = "" +
 	"\n" +
-	"\x13enum/doc.enum.proto\x12\rcontract.enum*\x89\x02\n" +
+	"\x17mdm/enum/doc.enum.proto\x12\rcontract.enum*\x89\x02\n" +
 	"\rEducationType\x12\x1e\n" +
 	"\x1aEDUCATION_TYPE_UNSPECIFIED\x10\x00\x12\x19\n" +
 	"\x15EDUCATION_TYPE_MASTER\x10\x01\x12\x1a\n" +
@@ -477,19 +477,19 @@ const file_enum_doc_enum_proto_rawDesc = "" +
 	"\x11com.contract.enumB\fDocEnumProtoP\x01Z\x17fesmu/contract/mdm/enum\xa2\x02\x03CEX\xaa\x02\rContract.Enum\xca\x02\rContract\\Enum\xe2\x02\x19Contract\\Enum\\GPBMetadata\xea\x02\x0eContract::Enumb\x06proto3"
 
 var (
-	file_enum_doc_enum_proto_rawDescOnce sync.Once
-	file_enum_doc_enum_proto_rawDescData []byte
+	file_mdm_enum_doc_enum_proto_rawDescOnce sync.Once
+	file_mdm_enum_doc_enum_proto_rawDescData []byte
 )
 
-func file_enum_doc_enum_proto_rawDescGZIP() []byte {
-	file_enum_doc_enum_proto_rawDescOnce.Do(func() {
-		file_enum_doc_enum_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_enum_doc_enum_proto_rawDesc), len(file_enum_doc_enum_proto_rawDesc)))
+func file_mdm_enum_doc_enum_proto_rawDescGZIP() []byte {
+	file_mdm_enum_doc_enum_proto_rawDescOnce.Do(func() {
+		file_mdm_enum_doc_enum_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_mdm_enum_doc_enum_proto_rawDesc), len(file_mdm_enum_doc_enum_proto_rawDesc)))
 	})
-	return file_enum_doc_enum_proto_rawDescData
+	return file_mdm_enum_doc_enum_proto_rawDescData
 }
 
-var file_enum_doc_enum_proto_enumTypes = make([]protoimpl.EnumInfo, 6)
-var file_enum_doc_enum_proto_goTypes = []any{
+var file_mdm_enum_doc_enum_proto_enumTypes = make([]protoimpl.EnumInfo, 6)
+var file_mdm_enum_doc_enum_proto_goTypes = []any{
 	(EducationType)(0),    // 0: contract.enum.EducationType
 	(EducationStatus)(0),  // 1: contract.enum.EducationStatus
 	(EducationForm)(0),    // 2: contract.enum.EducationForm
@@ -497,7 +497,7 @@ var file_enum_doc_enum_proto_goTypes = []any{
 	(MilitaryDocument)(0), // 4: contract.enum.MilitaryDocument
 	(MilitaryRank)(0),     // 5: contract.enum.MilitaryRank
 }
-var file_enum_doc_enum_proto_depIdxs = []int32{
+var file_mdm_enum_doc_enum_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
 	0, // [0:0] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -505,26 +505,26 @@ var file_enum_doc_enum_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_enum_doc_enum_proto_init() }
-func file_enum_doc_enum_proto_init() {
-	if File_enum_doc_enum_proto != nil {
+func init() { file_mdm_enum_doc_enum_proto_init() }
+func file_mdm_enum_doc_enum_proto_init() {
+	if File_mdm_enum_doc_enum_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_enum_doc_enum_proto_rawDesc), len(file_enum_doc_enum_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_mdm_enum_doc_enum_proto_rawDesc), len(file_mdm_enum_doc_enum_proto_rawDesc)),
 			NumEnums:      6,
 			NumMessages:   0,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_enum_doc_enum_proto_goTypes,
-		DependencyIndexes: file_enum_doc_enum_proto_depIdxs,
-		EnumInfos:         file_enum_doc_enum_proto_enumTypes,
+		GoTypes:           file_mdm_enum_doc_enum_proto_goTypes,
+		DependencyIndexes: file_mdm_enum_doc_enum_proto_depIdxs,
+		EnumInfos:         file_mdm_enum_doc_enum_proto_enumTypes,
 	}.Build()
-	File_enum_doc_enum_proto = out.File
-	file_enum_doc_enum_proto_goTypes = nil
-	file_enum_doc_enum_proto_depIdxs = nil
+	File_mdm_enum_doc_enum_proto = out.File
+	file_mdm_enum_doc_enum_proto_goTypes = nil
+	file_mdm_enum_doc_enum_proto_depIdxs = nil
 }

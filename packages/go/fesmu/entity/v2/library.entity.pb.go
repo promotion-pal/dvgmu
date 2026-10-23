@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: entity/v2/library.entity.proto
+// source: fesmu/entity/v2/library.entity.proto
 
 package entityv2
 
@@ -37,7 +37,7 @@ type LibraryFile struct {
 
 func (x *LibraryFile) Reset() {
 	*x = LibraryFile{}
-	mi := &file_entity_v2_library_entity_proto_msgTypes[0]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -49,7 +49,7 @@ func (x *LibraryFile) String() string {
 func (*LibraryFile) ProtoMessage() {}
 
 func (x *LibraryFile) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v2_library_entity_proto_msgTypes[0]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -62,7 +62,7 @@ func (x *LibraryFile) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LibraryFile.ProtoReflect.Descriptor instead.
 func (*LibraryFile) Descriptor() ([]byte, []int) {
-	return file_entity_v2_library_entity_proto_rawDescGZIP(), []int{0}
+	return file_fesmu_entity_v2_library_entity_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *LibraryFile) GetId() int64 {
@@ -115,7 +115,7 @@ type LibraryItem struct {
 
 func (x *LibraryItem) Reset() {
 	*x = LibraryItem{}
-	mi := &file_entity_v2_library_entity_proto_msgTypes[1]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -127,7 +127,7 @@ func (x *LibraryItem) String() string {
 func (*LibraryItem) ProtoMessage() {}
 
 func (x *LibraryItem) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v2_library_entity_proto_msgTypes[1]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -140,7 +140,7 @@ func (x *LibraryItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LibraryItem.ProtoReflect.Descriptor instead.
 func (*LibraryItem) Descriptor() ([]byte, []int) {
-	return file_entity_v2_library_entity_proto_rawDescGZIP(), []int{1}
+	return file_fesmu_entity_v2_library_entity_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *LibraryItem) GetId() int64 {
@@ -259,7 +259,7 @@ type ManualBlock struct {
 
 func (x *ManualBlock) Reset() {
 	*x = ManualBlock{}
-	mi := &file_entity_v2_library_entity_proto_msgTypes[2]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -271,7 +271,7 @@ func (x *ManualBlock) String() string {
 func (*ManualBlock) ProtoMessage() {}
 
 func (x *ManualBlock) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v2_library_entity_proto_msgTypes[2]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -284,7 +284,7 @@ func (x *ManualBlock) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualBlock.ProtoReflect.Descriptor instead.
 func (*ManualBlock) Descriptor() ([]byte, []int) {
-	return file_entity_v2_library_entity_proto_rawDescGZIP(), []int{2}
+	return file_fesmu_entity_v2_library_entity_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ManualBlock) GetId() string {
@@ -510,7 +510,7 @@ type ManualHeadingBlock struct {
 
 func (x *ManualHeadingBlock) Reset() {
 	*x = ManualHeadingBlock{}
-	mi := &file_entity_v2_library_entity_proto_msgTypes[3]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -522,7 +522,7 @@ func (x *ManualHeadingBlock) String() string {
 func (*ManualHeadingBlock) ProtoMessage() {}
 
 func (x *ManualHeadingBlock) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v2_library_entity_proto_msgTypes[3]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -535,7 +535,7 @@ func (x *ManualHeadingBlock) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualHeadingBlock.ProtoReflect.Descriptor instead.
 func (*ManualHeadingBlock) Descriptor() ([]byte, []int) {
-	return file_entity_v2_library_entity_proto_rawDescGZIP(), []int{3}
+	return file_fesmu_entity_v2_library_entity_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ManualHeadingBlock) GetText() string {
@@ -563,7 +563,7 @@ type ManualTextBlock struct {
 
 func (x *ManualTextBlock) Reset() {
 	*x = ManualTextBlock{}
-	mi := &file_entity_v2_library_entity_proto_msgTypes[4]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -575,7 +575,7 @@ func (x *ManualTextBlock) String() string {
 func (*ManualTextBlock) ProtoMessage() {}
 
 func (x *ManualTextBlock) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v2_library_entity_proto_msgTypes[4]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -588,7 +588,7 @@ func (x *ManualTextBlock) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualTextBlock.ProtoReflect.Descriptor instead.
 func (*ManualTextBlock) Descriptor() ([]byte, []int) {
-	return file_entity_v2_library_entity_proto_rawDescGZIP(), []int{4}
+	return file_fesmu_entity_v2_library_entity_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ManualTextBlock) GetText() string {
@@ -609,7 +609,7 @@ type ManualFigureBlock struct {
 
 func (x *ManualFigureBlock) Reset() {
 	*x = ManualFigureBlock{}
-	mi := &file_entity_v2_library_entity_proto_msgTypes[5]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -621,7 +621,7 @@ func (x *ManualFigureBlock) String() string {
 func (*ManualFigureBlock) ProtoMessage() {}
 
 func (x *ManualFigureBlock) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v2_library_entity_proto_msgTypes[5]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -634,7 +634,7 @@ func (x *ManualFigureBlock) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualFigureBlock.ProtoReflect.Descriptor instead.
 func (*ManualFigureBlock) Descriptor() ([]byte, []int) {
-	return file_entity_v2_library_entity_proto_rawDescGZIP(), []int{5}
+	return file_fesmu_entity_v2_library_entity_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ManualFigureBlock) GetFile() *LibraryFile {
@@ -667,7 +667,7 @@ type ManualTableRow struct {
 
 func (x *ManualTableRow) Reset() {
 	*x = ManualTableRow{}
-	mi := &file_entity_v2_library_entity_proto_msgTypes[6]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -679,7 +679,7 @@ func (x *ManualTableRow) String() string {
 func (*ManualTableRow) ProtoMessage() {}
 
 func (x *ManualTableRow) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v2_library_entity_proto_msgTypes[6]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -692,7 +692,7 @@ func (x *ManualTableRow) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualTableRow.ProtoReflect.Descriptor instead.
 func (*ManualTableRow) Descriptor() ([]byte, []int) {
-	return file_entity_v2_library_entity_proto_rawDescGZIP(), []int{6}
+	return file_fesmu_entity_v2_library_entity_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *ManualTableRow) GetCells() []string {
@@ -713,7 +713,7 @@ type ManualTableBlock struct {
 
 func (x *ManualTableBlock) Reset() {
 	*x = ManualTableBlock{}
-	mi := &file_entity_v2_library_entity_proto_msgTypes[7]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -725,7 +725,7 @@ func (x *ManualTableBlock) String() string {
 func (*ManualTableBlock) ProtoMessage() {}
 
 func (x *ManualTableBlock) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v2_library_entity_proto_msgTypes[7]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -738,7 +738,7 @@ func (x *ManualTableBlock) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualTableBlock.ProtoReflect.Descriptor instead.
 func (*ManualTableBlock) Descriptor() ([]byte, []int) {
-	return file_entity_v2_library_entity_proto_rawDescGZIP(), []int{7}
+	return file_fesmu_entity_v2_library_entity_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *ManualTableBlock) GetCaption() string {
@@ -773,7 +773,7 @@ type ManualCalloutBlock struct {
 
 func (x *ManualCalloutBlock) Reset() {
 	*x = ManualCalloutBlock{}
-	mi := &file_entity_v2_library_entity_proto_msgTypes[8]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -785,7 +785,7 @@ func (x *ManualCalloutBlock) String() string {
 func (*ManualCalloutBlock) ProtoMessage() {}
 
 func (x *ManualCalloutBlock) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v2_library_entity_proto_msgTypes[8]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -798,7 +798,7 @@ func (x *ManualCalloutBlock) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualCalloutBlock.ProtoReflect.Descriptor instead.
 func (*ManualCalloutBlock) Descriptor() ([]byte, []int) {
-	return file_entity_v2_library_entity_proto_rawDescGZIP(), []int{8}
+	return file_fesmu_entity_v2_library_entity_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *ManualCalloutBlock) GetTone() v2.ManualCalloutTone {
@@ -834,7 +834,7 @@ type ManualVideoBlock struct {
 
 func (x *ManualVideoBlock) Reset() {
 	*x = ManualVideoBlock{}
-	mi := &file_entity_v2_library_entity_proto_msgTypes[9]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -846,7 +846,7 @@ func (x *ManualVideoBlock) String() string {
 func (*ManualVideoBlock) ProtoMessage() {}
 
 func (x *ManualVideoBlock) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v2_library_entity_proto_msgTypes[9]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -859,7 +859,7 @@ func (x *ManualVideoBlock) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualVideoBlock.ProtoReflect.Descriptor instead.
 func (*ManualVideoBlock) Descriptor() ([]byte, []int) {
-	return file_entity_v2_library_entity_proto_rawDescGZIP(), []int{9}
+	return file_fesmu_entity_v2_library_entity_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *ManualVideoBlock) GetUrl() string {
@@ -886,7 +886,7 @@ type ManualAttachmentBlock struct {
 
 func (x *ManualAttachmentBlock) Reset() {
 	*x = ManualAttachmentBlock{}
-	mi := &file_entity_v2_library_entity_proto_msgTypes[10]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -898,7 +898,7 @@ func (x *ManualAttachmentBlock) String() string {
 func (*ManualAttachmentBlock) ProtoMessage() {}
 
 func (x *ManualAttachmentBlock) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v2_library_entity_proto_msgTypes[10]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -911,7 +911,7 @@ func (x *ManualAttachmentBlock) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualAttachmentBlock.ProtoReflect.Descriptor instead.
 func (*ManualAttachmentBlock) Descriptor() ([]byte, []int) {
-	return file_entity_v2_library_entity_proto_rawDescGZIP(), []int{10}
+	return file_fesmu_entity_v2_library_entity_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *ManualAttachmentBlock) GetFile() *LibraryFile {
@@ -941,7 +941,7 @@ type ManualCaseBlock struct {
 
 func (x *ManualCaseBlock) Reset() {
 	*x = ManualCaseBlock{}
-	mi := &file_entity_v2_library_entity_proto_msgTypes[11]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -953,7 +953,7 @@ func (x *ManualCaseBlock) String() string {
 func (*ManualCaseBlock) ProtoMessage() {}
 
 func (x *ManualCaseBlock) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v2_library_entity_proto_msgTypes[11]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -966,7 +966,7 @@ func (x *ManualCaseBlock) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualCaseBlock.ProtoReflect.Descriptor instead.
 func (*ManualCaseBlock) Descriptor() ([]byte, []int) {
-	return file_entity_v2_library_entity_proto_rawDescGZIP(), []int{11}
+	return file_fesmu_entity_v2_library_entity_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *ManualCaseBlock) GetTitle() string {
@@ -1009,7 +1009,7 @@ type ManualQuizQuestion struct {
 
 func (x *ManualQuizQuestion) Reset() {
 	*x = ManualQuizQuestion{}
-	mi := &file_entity_v2_library_entity_proto_msgTypes[12]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1021,7 +1021,7 @@ func (x *ManualQuizQuestion) String() string {
 func (*ManualQuizQuestion) ProtoMessage() {}
 
 func (x *ManualQuizQuestion) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v2_library_entity_proto_msgTypes[12]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1034,7 +1034,7 @@ func (x *ManualQuizQuestion) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualQuizQuestion.ProtoReflect.Descriptor instead.
 func (*ManualQuizQuestion) Descriptor() ([]byte, []int) {
-	return file_entity_v2_library_entity_proto_rawDescGZIP(), []int{12}
+	return file_fesmu_entity_v2_library_entity_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *ManualQuizQuestion) GetText() string {
@@ -1076,7 +1076,7 @@ type ManualQuizBlock struct {
 
 func (x *ManualQuizBlock) Reset() {
 	*x = ManualQuizBlock{}
-	mi := &file_entity_v2_library_entity_proto_msgTypes[13]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1088,7 +1088,7 @@ func (x *ManualQuizBlock) String() string {
 func (*ManualQuizBlock) ProtoMessage() {}
 
 func (x *ManualQuizBlock) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v2_library_entity_proto_msgTypes[13]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1101,7 +1101,7 @@ func (x *ManualQuizBlock) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualQuizBlock.ProtoReflect.Descriptor instead.
 func (*ManualQuizBlock) Descriptor() ([]byte, []int) {
-	return file_entity_v2_library_entity_proto_rawDescGZIP(), []int{13}
+	return file_fesmu_entity_v2_library_entity_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *ManualQuizBlock) GetTitle() string {
@@ -1130,7 +1130,7 @@ type ManualChecklistBlock struct {
 
 func (x *ManualChecklistBlock) Reset() {
 	*x = ManualChecklistBlock{}
-	mi := &file_entity_v2_library_entity_proto_msgTypes[14]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1142,7 +1142,7 @@ func (x *ManualChecklistBlock) String() string {
 func (*ManualChecklistBlock) ProtoMessage() {}
 
 func (x *ManualChecklistBlock) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v2_library_entity_proto_msgTypes[14]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1155,7 +1155,7 @@ func (x *ManualChecklistBlock) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualChecklistBlock.ProtoReflect.Descriptor instead.
 func (*ManualChecklistBlock) Descriptor() ([]byte, []int) {
-	return file_entity_v2_library_entity_proto_rawDescGZIP(), []int{14}
+	return file_fesmu_entity_v2_library_entity_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *ManualChecklistBlock) GetTitle() string {
@@ -1189,7 +1189,7 @@ type ManualGlossaryTerm struct {
 
 func (x *ManualGlossaryTerm) Reset() {
 	*x = ManualGlossaryTerm{}
-	mi := &file_entity_v2_library_entity_proto_msgTypes[15]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1201,7 +1201,7 @@ func (x *ManualGlossaryTerm) String() string {
 func (*ManualGlossaryTerm) ProtoMessage() {}
 
 func (x *ManualGlossaryTerm) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v2_library_entity_proto_msgTypes[15]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1214,7 +1214,7 @@ func (x *ManualGlossaryTerm) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualGlossaryTerm.ProtoReflect.Descriptor instead.
 func (*ManualGlossaryTerm) Descriptor() ([]byte, []int) {
-	return file_entity_v2_library_entity_proto_rawDescGZIP(), []int{15}
+	return file_fesmu_entity_v2_library_entity_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *ManualGlossaryTerm) GetTerm() string {
@@ -1240,7 +1240,7 @@ type ManualGlossaryBlock struct {
 
 func (x *ManualGlossaryBlock) Reset() {
 	*x = ManualGlossaryBlock{}
-	mi := &file_entity_v2_library_entity_proto_msgTypes[16]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1252,7 +1252,7 @@ func (x *ManualGlossaryBlock) String() string {
 func (*ManualGlossaryBlock) ProtoMessage() {}
 
 func (x *ManualGlossaryBlock) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v2_library_entity_proto_msgTypes[16]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1265,7 +1265,7 @@ func (x *ManualGlossaryBlock) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualGlossaryBlock.ProtoReflect.Descriptor instead.
 func (*ManualGlossaryBlock) Descriptor() ([]byte, []int) {
-	return file_entity_v2_library_entity_proto_rawDescGZIP(), []int{16}
+	return file_fesmu_entity_v2_library_entity_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *ManualGlossaryBlock) GetTerms() []*ManualGlossaryTerm {
@@ -1286,7 +1286,7 @@ type ManualLiteratureBlock struct {
 
 func (x *ManualLiteratureBlock) Reset() {
 	*x = ManualLiteratureBlock{}
-	mi := &file_entity_v2_library_entity_proto_msgTypes[17]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1298,7 +1298,7 @@ func (x *ManualLiteratureBlock) String() string {
 func (*ManualLiteratureBlock) ProtoMessage() {}
 
 func (x *ManualLiteratureBlock) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v2_library_entity_proto_msgTypes[17]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1311,7 +1311,7 @@ func (x *ManualLiteratureBlock) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualLiteratureBlock.ProtoReflect.Descriptor instead.
 func (*ManualLiteratureBlock) Descriptor() ([]byte, []int) {
-	return file_entity_v2_library_entity_proto_rawDescGZIP(), []int{17}
+	return file_fesmu_entity_v2_library_entity_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *ManualLiteratureBlock) GetTitle() string {
@@ -1336,7 +1336,7 @@ type ManualDividerBlock struct {
 
 func (x *ManualDividerBlock) Reset() {
 	*x = ManualDividerBlock{}
-	mi := &file_entity_v2_library_entity_proto_msgTypes[18]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1348,7 +1348,7 @@ func (x *ManualDividerBlock) String() string {
 func (*ManualDividerBlock) ProtoMessage() {}
 
 func (x *ManualDividerBlock) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v2_library_entity_proto_msgTypes[18]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1361,7 +1361,7 @@ func (x *ManualDividerBlock) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualDividerBlock.ProtoReflect.Descriptor instead.
 func (*ManualDividerBlock) Descriptor() ([]byte, []int) {
-	return file_entity_v2_library_entity_proto_rawDescGZIP(), []int{18}
+	return file_fesmu_entity_v2_library_entity_proto_rawDescGZIP(), []int{18}
 }
 
 // A topic of the manual: its title and blocks.
@@ -1376,7 +1376,7 @@ type ManualSection struct {
 
 func (x *ManualSection) Reset() {
 	*x = ManualSection{}
-	mi := &file_entity_v2_library_entity_proto_msgTypes[19]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1388,7 +1388,7 @@ func (x *ManualSection) String() string {
 func (*ManualSection) ProtoMessage() {}
 
 func (x *ManualSection) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v2_library_entity_proto_msgTypes[19]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1401,7 +1401,7 @@ func (x *ManualSection) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualSection.ProtoReflect.Descriptor instead.
 func (*ManualSection) Descriptor() ([]byte, []int) {
-	return file_entity_v2_library_entity_proto_rawDescGZIP(), []int{19}
+	return file_fesmu_entity_v2_library_entity_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *ManualSection) GetId() string {
@@ -1449,7 +1449,7 @@ type Manual struct {
 
 func (x *Manual) Reset() {
 	*x = Manual{}
-	mi := &file_entity_v2_library_entity_proto_msgTypes[20]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1461,7 +1461,7 @@ func (x *Manual) String() string {
 func (*Manual) ProtoMessage() {}
 
 func (x *Manual) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v2_library_entity_proto_msgTypes[20]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1474,7 +1474,7 @@ func (x *Manual) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Manual.ProtoReflect.Descriptor instead.
 func (*Manual) Descriptor() ([]byte, []int) {
-	return file_entity_v2_library_entity_proto_rawDescGZIP(), []int{20}
+	return file_fesmu_entity_v2_library_entity_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *Manual) GetId() int64 {
@@ -1591,7 +1591,7 @@ type ReaderProgress struct {
 
 func (x *ReaderProgress) Reset() {
 	*x = ReaderProgress{}
-	mi := &file_entity_v2_library_entity_proto_msgTypes[21]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1603,7 +1603,7 @@ func (x *ReaderProgress) String() string {
 func (*ReaderProgress) ProtoMessage() {}
 
 func (x *ReaderProgress) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v2_library_entity_proto_msgTypes[21]
+	mi := &file_fesmu_entity_v2_library_entity_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1616,7 +1616,7 @@ func (x *ReaderProgress) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReaderProgress.ProtoReflect.Descriptor instead.
 func (*ReaderProgress) Descriptor() ([]byte, []int) {
-	return file_entity_v2_library_entity_proto_rawDescGZIP(), []int{21}
+	return file_fesmu_entity_v2_library_entity_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *ReaderProgress) GetKind() v2.ReaderSourceKind {
@@ -1661,11 +1661,11 @@ func (x *ReaderProgress) GetUpdatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
-var File_entity_v2_library_entity_proto protoreflect.FileDescriptor
+var File_fesmu_entity_v2_library_entity_proto protoreflect.FileDescriptor
 
-const file_entity_v2_library_entity_proto_rawDesc = "" +
+const file_fesmu_entity_v2_library_entity_proto_rawDesc = "" +
 	"\n" +
-	"\x1eentity/v2/library.entity.proto\x12\x12contract.entity.v2\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1aenum/v2/library.enum.proto\"b\n" +
+	"$fesmu/entity/v2/library.entity.proto\x12\x12contract.entity.v2\x1a\x1fgoogle/protobuf/timestamp.proto\x1a fesmu/enum/v2/library.enum.proto\"b\n" +
 	"\vLibraryFile\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1b\n" +
@@ -1802,19 +1802,19 @@ const file_entity_v2_library_entity_proto_rawDesc = "" +
 	"\x16com.contract.entity.v2B\x12LibraryEntityProtoP\x01Z'fesmu/contract/fesmu/entity/v2;entityv2\xa2\x02\x03CEX\xaa\x02\x12Contract.Entity.V2\xca\x02\x12Contract\\Entity\\V2\xe2\x02\x1eContract\\Entity\\V2\\GPBMetadata\xea\x02\x14Contract::Entity::V2b\x06proto3"
 
 var (
-	file_entity_v2_library_entity_proto_rawDescOnce sync.Once
-	file_entity_v2_library_entity_proto_rawDescData []byte
+	file_fesmu_entity_v2_library_entity_proto_rawDescOnce sync.Once
+	file_fesmu_entity_v2_library_entity_proto_rawDescData []byte
 )
 
-func file_entity_v2_library_entity_proto_rawDescGZIP() []byte {
-	file_entity_v2_library_entity_proto_rawDescOnce.Do(func() {
-		file_entity_v2_library_entity_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_entity_v2_library_entity_proto_rawDesc), len(file_entity_v2_library_entity_proto_rawDesc)))
+func file_fesmu_entity_v2_library_entity_proto_rawDescGZIP() []byte {
+	file_fesmu_entity_v2_library_entity_proto_rawDescOnce.Do(func() {
+		file_fesmu_entity_v2_library_entity_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_fesmu_entity_v2_library_entity_proto_rawDesc), len(file_fesmu_entity_v2_library_entity_proto_rawDesc)))
 	})
-	return file_entity_v2_library_entity_proto_rawDescData
+	return file_fesmu_entity_v2_library_entity_proto_rawDescData
 }
 
-var file_entity_v2_library_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
-var file_entity_v2_library_entity_proto_goTypes = []any{
+var file_fesmu_entity_v2_library_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
+var file_fesmu_entity_v2_library_entity_proto_goTypes = []any{
 	(*LibraryFile)(nil),           // 0: contract.entity.v2.LibraryFile
 	(*LibraryItem)(nil),           // 1: contract.entity.v2.LibraryItem
 	(*ManualBlock)(nil),           // 2: contract.entity.v2.ManualBlock
@@ -1843,7 +1843,7 @@ var file_entity_v2_library_entity_proto_goTypes = []any{
 	(v2.ManualStatus)(0),          // 25: contract.enum.v2.ManualStatus
 	(v2.ReaderSourceKind)(0),      // 26: contract.enum.v2.ReaderSourceKind
 }
-var file_entity_v2_library_entity_proto_depIdxs = []int32{
+var file_fesmu_entity_v2_library_entity_proto_depIdxs = []int32{
 	22, // 0: contract.entity.v2.LibraryItem.kind:type_name -> contract.enum.v2.LibraryItemKind
 	0,  // 1: contract.entity.v2.LibraryItem.file:type_name -> contract.entity.v2.LibraryFile
 	23, // 2: contract.entity.v2.LibraryItem.created_at:type_name -> google.protobuf.Timestamp
@@ -1881,12 +1881,12 @@ var file_entity_v2_library_entity_proto_depIdxs = []int32{
 	0,  // [0:30] is the sub-list for field type_name
 }
 
-func init() { file_entity_v2_library_entity_proto_init() }
-func file_entity_v2_library_entity_proto_init() {
-	if File_entity_v2_library_entity_proto != nil {
+func init() { file_fesmu_entity_v2_library_entity_proto_init() }
+func file_fesmu_entity_v2_library_entity_proto_init() {
+	if File_fesmu_entity_v2_library_entity_proto != nil {
 		return
 	}
-	file_entity_v2_library_entity_proto_msgTypes[2].OneofWrappers = []any{
+	file_fesmu_entity_v2_library_entity_proto_msgTypes[2].OneofWrappers = []any{
 		(*ManualBlock_Heading)(nil),
 		(*ManualBlock_Text)(nil),
 		(*ManualBlock_Figure)(nil),
@@ -1905,17 +1905,17 @@ func file_entity_v2_library_entity_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_entity_v2_library_entity_proto_rawDesc), len(file_entity_v2_library_entity_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_fesmu_entity_v2_library_entity_proto_rawDesc), len(file_fesmu_entity_v2_library_entity_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   22,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_entity_v2_library_entity_proto_goTypes,
-		DependencyIndexes: file_entity_v2_library_entity_proto_depIdxs,
-		MessageInfos:      file_entity_v2_library_entity_proto_msgTypes,
+		GoTypes:           file_fesmu_entity_v2_library_entity_proto_goTypes,
+		DependencyIndexes: file_fesmu_entity_v2_library_entity_proto_depIdxs,
+		MessageInfos:      file_fesmu_entity_v2_library_entity_proto_msgTypes,
 	}.Build()
-	File_entity_v2_library_entity_proto = out.File
-	file_entity_v2_library_entity_proto_goTypes = nil
-	file_entity_v2_library_entity_proto_depIdxs = nil
+	File_fesmu_entity_v2_library_entity_proto = out.File
+	file_fesmu_entity_v2_library_entity_proto_goTypes = nil
+	file_fesmu_entity_v2_library_entity_proto_depIdxs = nil
 }

@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: enum/v2/library.enum.proto
+// source: fesmu/enum/v2/library.enum.proto
 
 package enumv2
 
@@ -55,11 +55,11 @@ func (x LibraryItemKind) String() string {
 }
 
 func (LibraryItemKind) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_v2_library_enum_proto_enumTypes[0].Descriptor()
+	return file_fesmu_enum_v2_library_enum_proto_enumTypes[0].Descriptor()
 }
 
 func (LibraryItemKind) Type() protoreflect.EnumType {
-	return &file_enum_v2_library_enum_proto_enumTypes[0]
+	return &file_fesmu_enum_v2_library_enum_proto_enumTypes[0]
 }
 
 func (x LibraryItemKind) Number() protoreflect.EnumNumber {
@@ -68,7 +68,7 @@ func (x LibraryItemKind) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use LibraryItemKind.Descriptor instead.
 func (LibraryItemKind) EnumDescriptor() ([]byte, []int) {
-	return file_enum_v2_library_enum_proto_rawDescGZIP(), []int{0}
+	return file_fesmu_enum_v2_library_enum_proto_rawDescGZIP(), []int{0}
 }
 
 // Where a manual is. Students see only the published version; the editors'
@@ -109,11 +109,11 @@ func (x ManualStatus) String() string {
 }
 
 func (ManualStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_v2_library_enum_proto_enumTypes[1].Descriptor()
+	return file_fesmu_enum_v2_library_enum_proto_enumTypes[1].Descriptor()
 }
 
 func (ManualStatus) Type() protoreflect.EnumType {
-	return &file_enum_v2_library_enum_proto_enumTypes[1]
+	return &file_fesmu_enum_v2_library_enum_proto_enumTypes[1]
 }
 
 func (x ManualStatus) Number() protoreflect.EnumNumber {
@@ -122,7 +122,7 @@ func (x ManualStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use ManualStatus.Descriptor instead.
 func (ManualStatus) EnumDescriptor() ([]byte, []int) {
-	return file_enum_v2_library_enum_proto_rawDescGZIP(), []int{1}
+	return file_fesmu_enum_v2_library_enum_proto_rawDescGZIP(), []int{1}
 }
 
 // How a callout block looks and what it marks.
@@ -165,11 +165,11 @@ func (x ManualCalloutTone) String() string {
 }
 
 func (ManualCalloutTone) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_v2_library_enum_proto_enumTypes[2].Descriptor()
+	return file_fesmu_enum_v2_library_enum_proto_enumTypes[2].Descriptor()
 }
 
 func (ManualCalloutTone) Type() protoreflect.EnumType {
-	return &file_enum_v2_library_enum_proto_enumTypes[2]
+	return &file_fesmu_enum_v2_library_enum_proto_enumTypes[2]
 }
 
 func (x ManualCalloutTone) Number() protoreflect.EnumNumber {
@@ -178,7 +178,7 @@ func (x ManualCalloutTone) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use ManualCalloutTone.Descriptor instead.
 func (ManualCalloutTone) EnumDescriptor() ([]byte, []int) {
-	return file_enum_v2_library_enum_proto_rawDescGZIP(), []int{2}
+	return file_fesmu_enum_v2_library_enum_proto_rawDescGZIP(), []int{2}
 }
 
 // What the reader has open: a catalog edition or a manual.
@@ -215,11 +215,11 @@ func (x ReaderSourceKind) String() string {
 }
 
 func (ReaderSourceKind) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_v2_library_enum_proto_enumTypes[3].Descriptor()
+	return file_fesmu_enum_v2_library_enum_proto_enumTypes[3].Descriptor()
 }
 
 func (ReaderSourceKind) Type() protoreflect.EnumType {
-	return &file_enum_v2_library_enum_proto_enumTypes[3]
+	return &file_fesmu_enum_v2_library_enum_proto_enumTypes[3]
 }
 
 func (x ReaderSourceKind) Number() protoreflect.EnumNumber {
@@ -228,14 +228,14 @@ func (x ReaderSourceKind) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use ReaderSourceKind.Descriptor instead.
 func (ReaderSourceKind) EnumDescriptor() ([]byte, []int) {
-	return file_enum_v2_library_enum_proto_rawDescGZIP(), []int{3}
+	return file_fesmu_enum_v2_library_enum_proto_rawDescGZIP(), []int{3}
 }
 
-var File_enum_v2_library_enum_proto protoreflect.FileDescriptor
+var File_fesmu_enum_v2_library_enum_proto protoreflect.FileDescriptor
 
-const file_enum_v2_library_enum_proto_rawDesc = "" +
+const file_fesmu_enum_v2_library_enum_proto_rawDesc = "" +
 	"\n" +
-	"\x1aenum/v2/library.enum.proto\x12\x10contract.enum.v2*l\n" +
+	" fesmu/enum/v2/library.enum.proto\x12\x10contract.enum.v2*l\n" +
 	"\x0fLibraryItemKind\x12!\n" +
 	"\x1dLIBRARY_ITEM_KIND_UNSPECIFIED\x10\x00\x12\x1a\n" +
 	"\x16LIBRARY_ITEM_KIND_FILE\x10\x01\x12\x1a\n" +
@@ -258,25 +258,25 @@ const file_enum_v2_library_enum_proto_rawDesc = "" +
 	"\x14com.contract.enum.v2B\x10LibraryEnumProtoP\x01Z#fesmu/contract/fesmu/enum/v2;enumv2\xa2\x02\x03CEX\xaa\x02\x10Contract.Enum.V2\xca\x02\x10Contract\\Enum\\V2\xe2\x02\x1cContract\\Enum\\V2\\GPBMetadata\xea\x02\x12Contract::Enum::V2b\x06proto3"
 
 var (
-	file_enum_v2_library_enum_proto_rawDescOnce sync.Once
-	file_enum_v2_library_enum_proto_rawDescData []byte
+	file_fesmu_enum_v2_library_enum_proto_rawDescOnce sync.Once
+	file_fesmu_enum_v2_library_enum_proto_rawDescData []byte
 )
 
-func file_enum_v2_library_enum_proto_rawDescGZIP() []byte {
-	file_enum_v2_library_enum_proto_rawDescOnce.Do(func() {
-		file_enum_v2_library_enum_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_enum_v2_library_enum_proto_rawDesc), len(file_enum_v2_library_enum_proto_rawDesc)))
+func file_fesmu_enum_v2_library_enum_proto_rawDescGZIP() []byte {
+	file_fesmu_enum_v2_library_enum_proto_rawDescOnce.Do(func() {
+		file_fesmu_enum_v2_library_enum_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_fesmu_enum_v2_library_enum_proto_rawDesc), len(file_fesmu_enum_v2_library_enum_proto_rawDesc)))
 	})
-	return file_enum_v2_library_enum_proto_rawDescData
+	return file_fesmu_enum_v2_library_enum_proto_rawDescData
 }
 
-var file_enum_v2_library_enum_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_enum_v2_library_enum_proto_goTypes = []any{
+var file_fesmu_enum_v2_library_enum_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
+var file_fesmu_enum_v2_library_enum_proto_goTypes = []any{
 	(LibraryItemKind)(0),   // 0: contract.enum.v2.LibraryItemKind
 	(ManualStatus)(0),      // 1: contract.enum.v2.ManualStatus
 	(ManualCalloutTone)(0), // 2: contract.enum.v2.ManualCalloutTone
 	(ReaderSourceKind)(0),  // 3: contract.enum.v2.ReaderSourceKind
 }
-var file_enum_v2_library_enum_proto_depIdxs = []int32{
+var file_fesmu_enum_v2_library_enum_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
 	0, // [0:0] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -284,26 +284,26 @@ var file_enum_v2_library_enum_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_enum_v2_library_enum_proto_init() }
-func file_enum_v2_library_enum_proto_init() {
-	if File_enum_v2_library_enum_proto != nil {
+func init() { file_fesmu_enum_v2_library_enum_proto_init() }
+func file_fesmu_enum_v2_library_enum_proto_init() {
+	if File_fesmu_enum_v2_library_enum_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_enum_v2_library_enum_proto_rawDesc), len(file_enum_v2_library_enum_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_fesmu_enum_v2_library_enum_proto_rawDesc), len(file_fesmu_enum_v2_library_enum_proto_rawDesc)),
 			NumEnums:      4,
 			NumMessages:   0,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_enum_v2_library_enum_proto_goTypes,
-		DependencyIndexes: file_enum_v2_library_enum_proto_depIdxs,
-		EnumInfos:         file_enum_v2_library_enum_proto_enumTypes,
+		GoTypes:           file_fesmu_enum_v2_library_enum_proto_goTypes,
+		DependencyIndexes: file_fesmu_enum_v2_library_enum_proto_depIdxs,
+		EnumInfos:         file_fesmu_enum_v2_library_enum_proto_enumTypes,
 	}.Build()
-	File_enum_v2_library_enum_proto = out.File
-	file_enum_v2_library_enum_proto_goTypes = nil
-	file_enum_v2_library_enum_proto_depIdxs = nil
+	File_fesmu_enum_v2_library_enum_proto = out.File
+	file_fesmu_enum_v2_library_enum_proto_goTypes = nil
+	file_fesmu_enum_v2_library_enum_proto_depIdxs = nil
 }

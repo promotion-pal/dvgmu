@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+package contract.service.v1;
+
+import "fesmu/entity/v1/infrastructure.entity.proto";
+import "fesmu/enum/v1/location.enum.proto";
+
+option go_package = "service_v1;service_pb";
+
+service InfrastructureService {
+    rpc InfrastructureFetch (InfrastructureFetchRequest) returns (InfrastructureFetchResponse);
+    rpc InfrastructureCreate (InfrastructureCreateRequest) returns (InfrastructureCreateResponse);
+    rpc InfrastructureByID (InfrastructureByIDRequest) returns (InfrastructureByIDResponse);
+    rpc InfrastructureUpdate (InfrastructureUpdateRequest) returns (InfrastructureUpdateResponse);
+    rpc InfrastructureDelete (InfrastructureDeleteRequest) returns (InfrastructureDeleteResponse);
+}
+
+message InfrastructureFetchRequest {
+}
+
+message InfrastructureFetchResponse {
+    repeated contract.entity.v1.Infrastructure list = 1;
+}
+
+message InfrastructureCreateRequest {
+    string title = 1;
+    string description = 2;
+
+    int32 floor = 3;
+    int32 room = 4;
+
+    contract.enum.v1.LocationCommonType location = 5;
+}
+
+message InfrastructureCreateResponse {
+    bool success = 1;
+    string message = 2;
+    int64 infrastructure_id = 3;
+}
+
+message InfrastructureByIDRequest {
+    int64 id = 1;
+}
+
+message InfrastructureByIDResponse {
+    contract.entity.v1.Infrastructure item = 1;
+}
+
+message InfrastructureUpdateRequest {
+    int64 id = 1;
+
+    string title = 2;
+    string description = 3;
+
+    int32 floor = 4;
+    int32 room = 5;
+}
+
+message InfrastructureUpdateResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message InfrastructureDeleteRequest {
+    int64 id = 1;
+}
+
+message InfrastructureDeleteResponse {
+    bool success = 1;
+    string message = 2;
+}

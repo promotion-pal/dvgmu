@@ -1,8 +1,3 @@
-# Все схемы — один buf workspace. Схемы лежат плоско у владельца
-# (services/<svc>/api/contract, apps/fesmu/api/contract); пути файлов уникальны,
-# поэтому схемы ссылаются друг на друга напрямую ("entity/user.entity.proto" — mdm).
-# Имена модулей нужны buf.gen.yaml: по ним Go каждого модуля ложится в свою папку.
-# dormitory, mentor и ojs — отдельные модули, сюда не входят.
 version: v2
 
 lint:
@@ -14,16 +9,9 @@ breaking:
 
 modules:
   - path: apps/fesmu/api/contract
-    name: buf.build/fesmu/fesmu
   - path: services/analytics/api/contract
-    name: buf.build/fesmu/analytics
   - path: services/auth/api/contract
-    name: buf.build/fesmu/auth
   - path: services/file/api/contract
-    name: buf.build/fesmu/file
   - path: services/mdm/api/contract
-    name: buf.build/fesmu/mdm
   - path: services/notification/api/contract
-    name: buf.build/fesmu/notification
   - path: services/tickets/api/contract
-    name: buf.build/fesmu/tickets

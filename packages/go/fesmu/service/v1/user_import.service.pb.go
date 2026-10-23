@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: service/v1/user_import.service.proto
+// source: fesmu/service/v1/user_import.service.proto
 
 package servicev1
 
@@ -31,7 +31,7 @@ type EmployeeImportFromExcelRequest struct {
 
 func (x *EmployeeImportFromExcelRequest) Reset() {
 	*x = EmployeeImportFromExcelRequest{}
-	mi := &file_service_v1_user_import_service_proto_msgTypes[0]
+	mi := &file_fesmu_service_v1_user_import_service_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -43,7 +43,7 @@ func (x *EmployeeImportFromExcelRequest) String() string {
 func (*EmployeeImportFromExcelRequest) ProtoMessage() {}
 
 func (x *EmployeeImportFromExcelRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_user_import_service_proto_msgTypes[0]
+	mi := &file_fesmu_service_v1_user_import_service_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -56,7 +56,7 @@ func (x *EmployeeImportFromExcelRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmployeeImportFromExcelRequest.ProtoReflect.Descriptor instead.
 func (*EmployeeImportFromExcelRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_user_import_service_proto_rawDescGZIP(), []int{0}
+	return file_fesmu_service_v1_user_import_service_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *EmployeeImportFromExcelRequest) GetFileName() string {
@@ -83,7 +83,7 @@ type StudentImportFromExcelRequest struct {
 
 func (x *StudentImportFromExcelRequest) Reset() {
 	*x = StudentImportFromExcelRequest{}
-	mi := &file_service_v1_user_import_service_proto_msgTypes[1]
+	mi := &file_fesmu_service_v1_user_import_service_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -95,7 +95,7 @@ func (x *StudentImportFromExcelRequest) String() string {
 func (*StudentImportFromExcelRequest) ProtoMessage() {}
 
 func (x *StudentImportFromExcelRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_user_import_service_proto_msgTypes[1]
+	mi := &file_fesmu_service_v1_user_import_service_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -108,7 +108,7 @@ func (x *StudentImportFromExcelRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StudentImportFromExcelRequest.ProtoReflect.Descriptor instead.
 func (*StudentImportFromExcelRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_user_import_service_proto_rawDescGZIP(), []int{1}
+	return file_fesmu_service_v1_user_import_service_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *StudentImportFromExcelRequest) GetFileName() string {
@@ -140,7 +140,7 @@ type UserImportFromExcelResponse struct {
 
 func (x *UserImportFromExcelResponse) Reset() {
 	*x = UserImportFromExcelResponse{}
-	mi := &file_service_v1_user_import_service_proto_msgTypes[2]
+	mi := &file_fesmu_service_v1_user_import_service_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -152,7 +152,7 @@ func (x *UserImportFromExcelResponse) String() string {
 func (*UserImportFromExcelResponse) ProtoMessage() {}
 
 func (x *UserImportFromExcelResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_user_import_service_proto_msgTypes[2]
+	mi := &file_fesmu_service_v1_user_import_service_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -165,7 +165,7 @@ func (x *UserImportFromExcelResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserImportFromExcelResponse.ProtoReflect.Descriptor instead.
 func (*UserImportFromExcelResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_user_import_service_proto_rawDescGZIP(), []int{2}
+	return file_fesmu_service_v1_user_import_service_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *UserImportFromExcelResponse) GetSuccess() bool {
@@ -213,7 +213,7 @@ type UserImportError struct {
 
 func (x *UserImportError) Reset() {
 	*x = UserImportError{}
-	mi := &file_service_v1_user_import_service_proto_msgTypes[3]
+	mi := &file_fesmu_service_v1_user_import_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -225,7 +225,7 @@ func (x *UserImportError) String() string {
 func (*UserImportError) ProtoMessage() {}
 
 func (x *UserImportError) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_user_import_service_proto_msgTypes[3]
+	mi := &file_fesmu_service_v1_user_import_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -238,7 +238,7 @@ func (x *UserImportError) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserImportError.ProtoReflect.Descriptor instead.
 func (*UserImportError) Descriptor() ([]byte, []int) {
-	return file_service_v1_user_import_service_proto_rawDescGZIP(), []int{3}
+	return file_fesmu_service_v1_user_import_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *UserImportError) GetIndex() int32 {
@@ -268,7 +268,7 @@ type UserImportCreated struct {
 
 func (x *UserImportCreated) Reset() {
 	*x = UserImportCreated{}
-	mi := &file_service_v1_user_import_service_proto_msgTypes[4]
+	mi := &file_fesmu_service_v1_user_import_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -280,7 +280,7 @@ func (x *UserImportCreated) String() string {
 func (*UserImportCreated) ProtoMessage() {}
 
 func (x *UserImportCreated) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_user_import_service_proto_msgTypes[4]
+	mi := &file_fesmu_service_v1_user_import_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -293,7 +293,7 @@ func (x *UserImportCreated) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserImportCreated.ProtoReflect.Descriptor instead.
 func (*UserImportCreated) Descriptor() ([]byte, []int) {
-	return file_service_v1_user_import_service_proto_rawDescGZIP(), []int{4}
+	return file_fesmu_service_v1_user_import_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *UserImportCreated) GetUserId() int64 {
@@ -331,11 +331,11 @@ func (x *UserImportCreated) GetTemporaryPassword() string {
 	return ""
 }
 
-var File_service_v1_user_import_service_proto protoreflect.FileDescriptor
+var File_fesmu_service_v1_user_import_service_proto protoreflect.FileDescriptor
 
-const file_service_v1_user_import_service_proto_rawDesc = "" +
+const file_fesmu_service_v1_user_import_service_proto_rawDesc = "" +
 	"\n" +
-	"$service/v1/user_import.service.proto\x12\x13contract.service.v1\"W\n" +
+	"*fesmu/service/v1/user_import.service.proto\x12\x13contract.service.v1\"W\n" +
 	"\x1eEmployeeImportFromExcelRequest\x12\x1b\n" +
 	"\tfile_name\x18\x01 \x01(\tR\bfileName\x12\x18\n" +
 	"\acontent\x18\x02 \x01(\fR\acontent\"V\n" +
@@ -364,26 +364,26 @@ const file_service_v1_user_import_service_proto_rawDesc = "" +
 	"\x17com.contract.service.v1B\x16UserImportServiceProtoP\x01Z)fesmu/contract/fesmu/service/v1;servicev1\xa2\x02\x03CSX\xaa\x02\x13Contract.Service.V1\xca\x02\x13Contract\\Service\\V1\xe2\x02\x1fContract\\Service\\V1\\GPBMetadata\xea\x02\x15Contract::Service::V1b\x06proto3"
 
 var (
-	file_service_v1_user_import_service_proto_rawDescOnce sync.Once
-	file_service_v1_user_import_service_proto_rawDescData []byte
+	file_fesmu_service_v1_user_import_service_proto_rawDescOnce sync.Once
+	file_fesmu_service_v1_user_import_service_proto_rawDescData []byte
 )
 
-func file_service_v1_user_import_service_proto_rawDescGZIP() []byte {
-	file_service_v1_user_import_service_proto_rawDescOnce.Do(func() {
-		file_service_v1_user_import_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_service_v1_user_import_service_proto_rawDesc), len(file_service_v1_user_import_service_proto_rawDesc)))
+func file_fesmu_service_v1_user_import_service_proto_rawDescGZIP() []byte {
+	file_fesmu_service_v1_user_import_service_proto_rawDescOnce.Do(func() {
+		file_fesmu_service_v1_user_import_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_fesmu_service_v1_user_import_service_proto_rawDesc), len(file_fesmu_service_v1_user_import_service_proto_rawDesc)))
 	})
-	return file_service_v1_user_import_service_proto_rawDescData
+	return file_fesmu_service_v1_user_import_service_proto_rawDescData
 }
 
-var file_service_v1_user_import_service_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
-var file_service_v1_user_import_service_proto_goTypes = []any{
+var file_fesmu_service_v1_user_import_service_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_fesmu_service_v1_user_import_service_proto_goTypes = []any{
 	(*EmployeeImportFromExcelRequest)(nil), // 0: contract.service.v1.EmployeeImportFromExcelRequest
 	(*StudentImportFromExcelRequest)(nil),  // 1: contract.service.v1.StudentImportFromExcelRequest
 	(*UserImportFromExcelResponse)(nil),    // 2: contract.service.v1.UserImportFromExcelResponse
 	(*UserImportError)(nil),                // 3: contract.service.v1.UserImportError
 	(*UserImportCreated)(nil),              // 4: contract.service.v1.UserImportCreated
 }
-var file_service_v1_user_import_service_proto_depIdxs = []int32{
+var file_fesmu_service_v1_user_import_service_proto_depIdxs = []int32{
 	3, // 0: contract.service.v1.UserImportFromExcelResponse.errors:type_name -> contract.service.v1.UserImportError
 	4, // 1: contract.service.v1.UserImportFromExcelResponse.created:type_name -> contract.service.v1.UserImportCreated
 	0, // 2: contract.service.v1.UserImportService.EmployeeImportFromExcel:input_type -> contract.service.v1.EmployeeImportFromExcelRequest
@@ -397,26 +397,26 @@ var file_service_v1_user_import_service_proto_depIdxs = []int32{
 	0, // [0:2] is the sub-list for field type_name
 }
 
-func init() { file_service_v1_user_import_service_proto_init() }
-func file_service_v1_user_import_service_proto_init() {
-	if File_service_v1_user_import_service_proto != nil {
+func init() { file_fesmu_service_v1_user_import_service_proto_init() }
+func file_fesmu_service_v1_user_import_service_proto_init() {
+	if File_fesmu_service_v1_user_import_service_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_service_v1_user_import_service_proto_rawDesc), len(file_service_v1_user_import_service_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_fesmu_service_v1_user_import_service_proto_rawDesc), len(file_fesmu_service_v1_user_import_service_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_service_v1_user_import_service_proto_goTypes,
-		DependencyIndexes: file_service_v1_user_import_service_proto_depIdxs,
-		MessageInfos:      file_service_v1_user_import_service_proto_msgTypes,
+		GoTypes:           file_fesmu_service_v1_user_import_service_proto_goTypes,
+		DependencyIndexes: file_fesmu_service_v1_user_import_service_proto_depIdxs,
+		MessageInfos:      file_fesmu_service_v1_user_import_service_proto_msgTypes,
 	}.Build()
-	File_service_v1_user_import_service_proto = out.File
-	file_service_v1_user_import_service_proto_goTypes = nil
-	file_service_v1_user_import_service_proto_depIdxs = nil
+	File_fesmu_service_v1_user_import_service_proto = out.File
+	file_fesmu_service_v1_user_import_service_proto_goTypes = nil
+	file_fesmu_service_v1_user_import_service_proto_depIdxs = nil
 }

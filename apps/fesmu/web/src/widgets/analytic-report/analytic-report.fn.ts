@@ -6,9 +6,9 @@ import { connectTransport } from "@/shared/config/api";
 import {
   AnalyticService,
   AnalyticFetchRequestSchema,
-} from "@fesmu/contract/service/analytic.service_pb";
-import type { AnalyticType } from "@fesmu/contract/enum/analytic.enum_pb";
-import type { Analytic } from "@fesmu/contract/entity/analytic.entity_pb";
+} from "@fesmu/contract/analytics/service/analytic.service_pb";
+import type { AnalyticType } from "@fesmu/contract/analytics/enum/analytic.enum_pb";
+import type { Analytic } from "@fesmu/contract/analytics/entity/analytic.entity_pb";
 
 import { analyticCategoryLabel, extractAnalyticCategory, isAnalyticTypeEnabled } from "@/widgets/analytic";
 

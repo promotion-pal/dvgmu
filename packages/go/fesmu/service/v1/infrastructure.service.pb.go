@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: service/v1/infrastructure.service.proto
+// source: fesmu/service/v1/infrastructure.service.proto
 
 package servicev1
 
@@ -31,7 +31,7 @@ type InfrastructureFetchRequest struct {
 
 func (x *InfrastructureFetchRequest) Reset() {
 	*x = InfrastructureFetchRequest{}
-	mi := &file_service_v1_infrastructure_service_proto_msgTypes[0]
+	mi := &file_fesmu_service_v1_infrastructure_service_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -43,7 +43,7 @@ func (x *InfrastructureFetchRequest) String() string {
 func (*InfrastructureFetchRequest) ProtoMessage() {}
 
 func (x *InfrastructureFetchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_infrastructure_service_proto_msgTypes[0]
+	mi := &file_fesmu_service_v1_infrastructure_service_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -56,7 +56,7 @@ func (x *InfrastructureFetchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InfrastructureFetchRequest.ProtoReflect.Descriptor instead.
 func (*InfrastructureFetchRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_infrastructure_service_proto_rawDescGZIP(), []int{0}
+	return file_fesmu_service_v1_infrastructure_service_proto_rawDescGZIP(), []int{0}
 }
 
 type InfrastructureFetchResponse struct {
@@ -68,7 +68,7 @@ type InfrastructureFetchResponse struct {
 
 func (x *InfrastructureFetchResponse) Reset() {
 	*x = InfrastructureFetchResponse{}
-	mi := &file_service_v1_infrastructure_service_proto_msgTypes[1]
+	mi := &file_fesmu_service_v1_infrastructure_service_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -80,7 +80,7 @@ func (x *InfrastructureFetchResponse) String() string {
 func (*InfrastructureFetchResponse) ProtoMessage() {}
 
 func (x *InfrastructureFetchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_infrastructure_service_proto_msgTypes[1]
+	mi := &file_fesmu_service_v1_infrastructure_service_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -93,7 +93,7 @@ func (x *InfrastructureFetchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InfrastructureFetchResponse.ProtoReflect.Descriptor instead.
 func (*InfrastructureFetchResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_infrastructure_service_proto_rawDescGZIP(), []int{1}
+	return file_fesmu_service_v1_infrastructure_service_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *InfrastructureFetchResponse) GetList() []*v1.Infrastructure {
@@ -116,7 +116,7 @@ type InfrastructureCreateRequest struct {
 
 func (x *InfrastructureCreateRequest) Reset() {
 	*x = InfrastructureCreateRequest{}
-	mi := &file_service_v1_infrastructure_service_proto_msgTypes[2]
+	mi := &file_fesmu_service_v1_infrastructure_service_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -128,7 +128,7 @@ func (x *InfrastructureCreateRequest) String() string {
 func (*InfrastructureCreateRequest) ProtoMessage() {}
 
 func (x *InfrastructureCreateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_infrastructure_service_proto_msgTypes[2]
+	mi := &file_fesmu_service_v1_infrastructure_service_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -141,7 +141,7 @@ func (x *InfrastructureCreateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InfrastructureCreateRequest.ProtoReflect.Descriptor instead.
 func (*InfrastructureCreateRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_infrastructure_service_proto_rawDescGZIP(), []int{2}
+	return file_fesmu_service_v1_infrastructure_service_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *InfrastructureCreateRequest) GetTitle() string {
@@ -190,7 +190,7 @@ type InfrastructureCreateResponse struct {
 
 func (x *InfrastructureCreateResponse) Reset() {
 	*x = InfrastructureCreateResponse{}
-	mi := &file_service_v1_infrastructure_service_proto_msgTypes[3]
+	mi := &file_fesmu_service_v1_infrastructure_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -202,7 +202,7 @@ func (x *InfrastructureCreateResponse) String() string {
 func (*InfrastructureCreateResponse) ProtoMessage() {}
 
 func (x *InfrastructureCreateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_infrastructure_service_proto_msgTypes[3]
+	mi := &file_fesmu_service_v1_infrastructure_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -215,7 +215,7 @@ func (x *InfrastructureCreateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InfrastructureCreateResponse.ProtoReflect.Descriptor instead.
 func (*InfrastructureCreateResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_infrastructure_service_proto_rawDescGZIP(), []int{3}
+	return file_fesmu_service_v1_infrastructure_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *InfrastructureCreateResponse) GetSuccess() bool {
@@ -248,7 +248,7 @@ type InfrastructureByIDRequest struct {
 
 func (x *InfrastructureByIDRequest) Reset() {
 	*x = InfrastructureByIDRequest{}
-	mi := &file_service_v1_infrastructure_service_proto_msgTypes[4]
+	mi := &file_fesmu_service_v1_infrastructure_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -260,7 +260,7 @@ func (x *InfrastructureByIDRequest) String() string {
 func (*InfrastructureByIDRequest) ProtoMessage() {}
 
 func (x *InfrastructureByIDRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_infrastructure_service_proto_msgTypes[4]
+	mi := &file_fesmu_service_v1_infrastructure_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -273,7 +273,7 @@ func (x *InfrastructureByIDRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InfrastructureByIDRequest.ProtoReflect.Descriptor instead.
 func (*InfrastructureByIDRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_infrastructure_service_proto_rawDescGZIP(), []int{4}
+	return file_fesmu_service_v1_infrastructure_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *InfrastructureByIDRequest) GetId() int64 {
@@ -292,7 +292,7 @@ type InfrastructureByIDResponse struct {
 
 func (x *InfrastructureByIDResponse) Reset() {
 	*x = InfrastructureByIDResponse{}
-	mi := &file_service_v1_infrastructure_service_proto_msgTypes[5]
+	mi := &file_fesmu_service_v1_infrastructure_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -304,7 +304,7 @@ func (x *InfrastructureByIDResponse) String() string {
 func (*InfrastructureByIDResponse) ProtoMessage() {}
 
 func (x *InfrastructureByIDResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_infrastructure_service_proto_msgTypes[5]
+	mi := &file_fesmu_service_v1_infrastructure_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -317,7 +317,7 @@ func (x *InfrastructureByIDResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InfrastructureByIDResponse.ProtoReflect.Descriptor instead.
 func (*InfrastructureByIDResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_infrastructure_service_proto_rawDescGZIP(), []int{5}
+	return file_fesmu_service_v1_infrastructure_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *InfrastructureByIDResponse) GetItem() *v1.Infrastructure {
@@ -340,7 +340,7 @@ type InfrastructureUpdateRequest struct {
 
 func (x *InfrastructureUpdateRequest) Reset() {
 	*x = InfrastructureUpdateRequest{}
-	mi := &file_service_v1_infrastructure_service_proto_msgTypes[6]
+	mi := &file_fesmu_service_v1_infrastructure_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -352,7 +352,7 @@ func (x *InfrastructureUpdateRequest) String() string {
 func (*InfrastructureUpdateRequest) ProtoMessage() {}
 
 func (x *InfrastructureUpdateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_infrastructure_service_proto_msgTypes[6]
+	mi := &file_fesmu_service_v1_infrastructure_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -365,7 +365,7 @@ func (x *InfrastructureUpdateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InfrastructureUpdateRequest.ProtoReflect.Descriptor instead.
 func (*InfrastructureUpdateRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_infrastructure_service_proto_rawDescGZIP(), []int{6}
+	return file_fesmu_service_v1_infrastructure_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *InfrastructureUpdateRequest) GetId() int64 {
@@ -413,7 +413,7 @@ type InfrastructureUpdateResponse struct {
 
 func (x *InfrastructureUpdateResponse) Reset() {
 	*x = InfrastructureUpdateResponse{}
-	mi := &file_service_v1_infrastructure_service_proto_msgTypes[7]
+	mi := &file_fesmu_service_v1_infrastructure_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -425,7 +425,7 @@ func (x *InfrastructureUpdateResponse) String() string {
 func (*InfrastructureUpdateResponse) ProtoMessage() {}
 
 func (x *InfrastructureUpdateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_infrastructure_service_proto_msgTypes[7]
+	mi := &file_fesmu_service_v1_infrastructure_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -438,7 +438,7 @@ func (x *InfrastructureUpdateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InfrastructureUpdateResponse.ProtoReflect.Descriptor instead.
 func (*InfrastructureUpdateResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_infrastructure_service_proto_rawDescGZIP(), []int{7}
+	return file_fesmu_service_v1_infrastructure_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *InfrastructureUpdateResponse) GetSuccess() bool {
@@ -464,7 +464,7 @@ type InfrastructureDeleteRequest struct {
 
 func (x *InfrastructureDeleteRequest) Reset() {
 	*x = InfrastructureDeleteRequest{}
-	mi := &file_service_v1_infrastructure_service_proto_msgTypes[8]
+	mi := &file_fesmu_service_v1_infrastructure_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -476,7 +476,7 @@ func (x *InfrastructureDeleteRequest) String() string {
 func (*InfrastructureDeleteRequest) ProtoMessage() {}
 
 func (x *InfrastructureDeleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_infrastructure_service_proto_msgTypes[8]
+	mi := &file_fesmu_service_v1_infrastructure_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -489,7 +489,7 @@ func (x *InfrastructureDeleteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InfrastructureDeleteRequest.ProtoReflect.Descriptor instead.
 func (*InfrastructureDeleteRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_infrastructure_service_proto_rawDescGZIP(), []int{8}
+	return file_fesmu_service_v1_infrastructure_service_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *InfrastructureDeleteRequest) GetId() int64 {
@@ -509,7 +509,7 @@ type InfrastructureDeleteResponse struct {
 
 func (x *InfrastructureDeleteResponse) Reset() {
 	*x = InfrastructureDeleteResponse{}
-	mi := &file_service_v1_infrastructure_service_proto_msgTypes[9]
+	mi := &file_fesmu_service_v1_infrastructure_service_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -521,7 +521,7 @@ func (x *InfrastructureDeleteResponse) String() string {
 func (*InfrastructureDeleteResponse) ProtoMessage() {}
 
 func (x *InfrastructureDeleteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_infrastructure_service_proto_msgTypes[9]
+	mi := &file_fesmu_service_v1_infrastructure_service_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -534,7 +534,7 @@ func (x *InfrastructureDeleteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InfrastructureDeleteResponse.ProtoReflect.Descriptor instead.
 func (*InfrastructureDeleteResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_infrastructure_service_proto_rawDescGZIP(), []int{9}
+	return file_fesmu_service_v1_infrastructure_service_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *InfrastructureDeleteResponse) GetSuccess() bool {
@@ -551,11 +551,11 @@ func (x *InfrastructureDeleteResponse) GetMessage() string {
 	return ""
 }
 
-var File_service_v1_infrastructure_service_proto protoreflect.FileDescriptor
+var File_fesmu_service_v1_infrastructure_service_proto protoreflect.FileDescriptor
 
-const file_service_v1_infrastructure_service_proto_rawDesc = "" +
+const file_fesmu_service_v1_infrastructure_service_proto_rawDesc = "" +
 	"\n" +
-	"'service/v1/infrastructure.service.proto\x12\x13contract.service.v1\x1a%entity/v1/infrastructure.entity.proto\x1a\x1benum/v1/location.enum.proto\"\x1c\n" +
+	"-fesmu/service/v1/infrastructure.service.proto\x12\x13contract.service.v1\x1a+fesmu/entity/v1/infrastructure.entity.proto\x1a!fesmu/enum/v1/location.enum.proto\"\x1c\n" +
 	"\x1aInfrastructureFetchRequest\"U\n" +
 	"\x1bInfrastructureFetchResponse\x126\n" +
 	"\x04list\x18\x01 \x03(\v2\".contract.entity.v1.InfrastructureR\x04list\"\xc1\x01\n" +
@@ -596,19 +596,19 @@ const file_service_v1_infrastructure_service_proto_rawDesc = "" +
 	"\x17com.contract.service.v1B\x1aInfrastructureServiceProtoP\x01Z)fesmu/contract/fesmu/service/v1;servicev1\xa2\x02\x03CSX\xaa\x02\x13Contract.Service.V1\xca\x02\x13Contract\\Service\\V1\xe2\x02\x1fContract\\Service\\V1\\GPBMetadata\xea\x02\x15Contract::Service::V1b\x06proto3"
 
 var (
-	file_service_v1_infrastructure_service_proto_rawDescOnce sync.Once
-	file_service_v1_infrastructure_service_proto_rawDescData []byte
+	file_fesmu_service_v1_infrastructure_service_proto_rawDescOnce sync.Once
+	file_fesmu_service_v1_infrastructure_service_proto_rawDescData []byte
 )
 
-func file_service_v1_infrastructure_service_proto_rawDescGZIP() []byte {
-	file_service_v1_infrastructure_service_proto_rawDescOnce.Do(func() {
-		file_service_v1_infrastructure_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_service_v1_infrastructure_service_proto_rawDesc), len(file_service_v1_infrastructure_service_proto_rawDesc)))
+func file_fesmu_service_v1_infrastructure_service_proto_rawDescGZIP() []byte {
+	file_fesmu_service_v1_infrastructure_service_proto_rawDescOnce.Do(func() {
+		file_fesmu_service_v1_infrastructure_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_fesmu_service_v1_infrastructure_service_proto_rawDesc), len(file_fesmu_service_v1_infrastructure_service_proto_rawDesc)))
 	})
-	return file_service_v1_infrastructure_service_proto_rawDescData
+	return file_fesmu_service_v1_infrastructure_service_proto_rawDescData
 }
 
-var file_service_v1_infrastructure_service_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
-var file_service_v1_infrastructure_service_proto_goTypes = []any{
+var file_fesmu_service_v1_infrastructure_service_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_fesmu_service_v1_infrastructure_service_proto_goTypes = []any{
 	(*InfrastructureFetchRequest)(nil),   // 0: contract.service.v1.InfrastructureFetchRequest
 	(*InfrastructureFetchResponse)(nil),  // 1: contract.service.v1.InfrastructureFetchResponse
 	(*InfrastructureCreateRequest)(nil),  // 2: contract.service.v1.InfrastructureCreateRequest
@@ -622,7 +622,7 @@ var file_service_v1_infrastructure_service_proto_goTypes = []any{
 	(*v1.Infrastructure)(nil),            // 10: contract.entity.v1.Infrastructure
 	(v11.LocationCommonType)(0),          // 11: contract.enum.v1.LocationCommonType
 }
-var file_service_v1_infrastructure_service_proto_depIdxs = []int32{
+var file_fesmu_service_v1_infrastructure_service_proto_depIdxs = []int32{
 	10, // 0: contract.service.v1.InfrastructureFetchResponse.list:type_name -> contract.entity.v1.Infrastructure
 	11, // 1: contract.service.v1.InfrastructureCreateRequest.location:type_name -> contract.enum.v1.LocationCommonType
 	10, // 2: contract.service.v1.InfrastructureByIDResponse.item:type_name -> contract.entity.v1.Infrastructure
@@ -643,26 +643,26 @@ var file_service_v1_infrastructure_service_proto_depIdxs = []int32{
 	0,  // [0:3] is the sub-list for field type_name
 }
 
-func init() { file_service_v1_infrastructure_service_proto_init() }
-func file_service_v1_infrastructure_service_proto_init() {
-	if File_service_v1_infrastructure_service_proto != nil {
+func init() { file_fesmu_service_v1_infrastructure_service_proto_init() }
+func file_fesmu_service_v1_infrastructure_service_proto_init() {
+	if File_fesmu_service_v1_infrastructure_service_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_service_v1_infrastructure_service_proto_rawDesc), len(file_service_v1_infrastructure_service_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_fesmu_service_v1_infrastructure_service_proto_rawDesc), len(file_fesmu_service_v1_infrastructure_service_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_service_v1_infrastructure_service_proto_goTypes,
-		DependencyIndexes: file_service_v1_infrastructure_service_proto_depIdxs,
-		MessageInfos:      file_service_v1_infrastructure_service_proto_msgTypes,
+		GoTypes:           file_fesmu_service_v1_infrastructure_service_proto_goTypes,
+		DependencyIndexes: file_fesmu_service_v1_infrastructure_service_proto_depIdxs,
+		MessageInfos:      file_fesmu_service_v1_infrastructure_service_proto_msgTypes,
 	}.Build()
-	File_service_v1_infrastructure_service_proto = out.File
-	file_service_v1_infrastructure_service_proto_goTypes = nil
-	file_service_v1_infrastructure_service_proto_depIdxs = nil
+	File_fesmu_service_v1_infrastructure_service_proto = out.File
+	file_fesmu_service_v1_infrastructure_service_proto_goTypes = nil
+	file_fesmu_service_v1_infrastructure_service_proto_depIdxs = nil
 }

@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: service/v2/library.service.proto
+// source: fesmu/service/v2/library.service.proto
 
 package servicev2
 
@@ -33,7 +33,7 @@ type LibraryItemFetchRequest struct {
 
 func (x *LibraryItemFetchRequest) Reset() {
 	*x = LibraryItemFetchRequest{}
-	mi := &file_service_v2_library_service_proto_msgTypes[0]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -45,7 +45,7 @@ func (x *LibraryItemFetchRequest) String() string {
 func (*LibraryItemFetchRequest) ProtoMessage() {}
 
 func (x *LibraryItemFetchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[0]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -58,7 +58,7 @@ func (x *LibraryItemFetchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LibraryItemFetchRequest.ProtoReflect.Descriptor instead.
 func (*LibraryItemFetchRequest) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{0}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *LibraryItemFetchRequest) GetQuery() string {
@@ -84,7 +84,7 @@ type LibraryItemFetchResponse struct {
 
 func (x *LibraryItemFetchResponse) Reset() {
 	*x = LibraryItemFetchResponse{}
-	mi := &file_service_v2_library_service_proto_msgTypes[1]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -96,7 +96,7 @@ func (x *LibraryItemFetchResponse) String() string {
 func (*LibraryItemFetchResponse) ProtoMessage() {}
 
 func (x *LibraryItemFetchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[1]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -109,7 +109,7 @@ func (x *LibraryItemFetchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LibraryItemFetchResponse.ProtoReflect.Descriptor instead.
 func (*LibraryItemFetchResponse) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{1}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *LibraryItemFetchResponse) GetItems() []*v2.LibraryItem {
@@ -128,7 +128,7 @@ type LibraryItemByIDRequest struct {
 
 func (x *LibraryItemByIDRequest) Reset() {
 	*x = LibraryItemByIDRequest{}
-	mi := &file_service_v2_library_service_proto_msgTypes[2]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -140,7 +140,7 @@ func (x *LibraryItemByIDRequest) String() string {
 func (*LibraryItemByIDRequest) ProtoMessage() {}
 
 func (x *LibraryItemByIDRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[2]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -153,7 +153,7 @@ func (x *LibraryItemByIDRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LibraryItemByIDRequest.ProtoReflect.Descriptor instead.
 func (*LibraryItemByIDRequest) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{2}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *LibraryItemByIDRequest) GetId() int64 {
@@ -172,7 +172,7 @@ type LibraryItemByIDResponse struct {
 
 func (x *LibraryItemByIDResponse) Reset() {
 	*x = LibraryItemByIDResponse{}
-	mi := &file_service_v2_library_service_proto_msgTypes[3]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -184,7 +184,7 @@ func (x *LibraryItemByIDResponse) String() string {
 func (*LibraryItemByIDResponse) ProtoMessage() {}
 
 func (x *LibraryItemByIDResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[3]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -197,7 +197,7 @@ func (x *LibraryItemByIDResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LibraryItemByIDResponse.ProtoReflect.Descriptor instead.
 func (*LibraryItemByIDResponse) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{3}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *LibraryItemByIDResponse) GetItem() *v2.LibraryItem {
@@ -224,7 +224,7 @@ type LibraryItemInput struct {
 
 func (x *LibraryItemInput) Reset() {
 	*x = LibraryItemInput{}
-	mi := &file_service_v2_library_service_proto_msgTypes[4]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -236,7 +236,7 @@ func (x *LibraryItemInput) String() string {
 func (*LibraryItemInput) ProtoMessage() {}
 
 func (x *LibraryItemInput) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[4]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -249,7 +249,7 @@ func (x *LibraryItemInput) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LibraryItemInput.ProtoReflect.Descriptor instead.
 func (*LibraryItemInput) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{4}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *LibraryItemInput) GetKind() v21.LibraryItemKind {
@@ -320,7 +320,7 @@ type LibraryItemCreateRequest struct {
 
 func (x *LibraryItemCreateRequest) Reset() {
 	*x = LibraryItemCreateRequest{}
-	mi := &file_service_v2_library_service_proto_msgTypes[5]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -332,7 +332,7 @@ func (x *LibraryItemCreateRequest) String() string {
 func (*LibraryItemCreateRequest) ProtoMessage() {}
 
 func (x *LibraryItemCreateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[5]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -345,7 +345,7 @@ func (x *LibraryItemCreateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LibraryItemCreateRequest.ProtoReflect.Descriptor instead.
 func (*LibraryItemCreateRequest) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{5}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *LibraryItemCreateRequest) GetItem() *LibraryItemInput {
@@ -378,7 +378,7 @@ type LibraryItemCreateResponse struct {
 
 func (x *LibraryItemCreateResponse) Reset() {
 	*x = LibraryItemCreateResponse{}
-	mi := &file_service_v2_library_service_proto_msgTypes[6]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -390,7 +390,7 @@ func (x *LibraryItemCreateResponse) String() string {
 func (*LibraryItemCreateResponse) ProtoMessage() {}
 
 func (x *LibraryItemCreateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[6]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -403,7 +403,7 @@ func (x *LibraryItemCreateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LibraryItemCreateResponse.ProtoReflect.Descriptor instead.
 func (*LibraryItemCreateResponse) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{6}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *LibraryItemCreateResponse) GetId() int64 {
@@ -426,7 +426,7 @@ type LibraryItemUpdateRequest struct {
 
 func (x *LibraryItemUpdateRequest) Reset() {
 	*x = LibraryItemUpdateRequest{}
-	mi := &file_service_v2_library_service_proto_msgTypes[7]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -438,7 +438,7 @@ func (x *LibraryItemUpdateRequest) String() string {
 func (*LibraryItemUpdateRequest) ProtoMessage() {}
 
 func (x *LibraryItemUpdateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[7]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -451,7 +451,7 @@ func (x *LibraryItemUpdateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LibraryItemUpdateRequest.ProtoReflect.Descriptor instead.
 func (*LibraryItemUpdateRequest) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{7}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *LibraryItemUpdateRequest) GetId() int64 {
@@ -490,7 +490,7 @@ type LibraryItemUpdateResponse struct {
 
 func (x *LibraryItemUpdateResponse) Reset() {
 	*x = LibraryItemUpdateResponse{}
-	mi := &file_service_v2_library_service_proto_msgTypes[8]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -502,7 +502,7 @@ func (x *LibraryItemUpdateResponse) String() string {
 func (*LibraryItemUpdateResponse) ProtoMessage() {}
 
 func (x *LibraryItemUpdateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[8]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -515,7 +515,7 @@ func (x *LibraryItemUpdateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LibraryItemUpdateResponse.ProtoReflect.Descriptor instead.
 func (*LibraryItemUpdateResponse) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{8}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{8}
 }
 
 type LibraryItemDeleteRequest struct {
@@ -527,7 +527,7 @@ type LibraryItemDeleteRequest struct {
 
 func (x *LibraryItemDeleteRequest) Reset() {
 	*x = LibraryItemDeleteRequest{}
-	mi := &file_service_v2_library_service_proto_msgTypes[9]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -539,7 +539,7 @@ func (x *LibraryItemDeleteRequest) String() string {
 func (*LibraryItemDeleteRequest) ProtoMessage() {}
 
 func (x *LibraryItemDeleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[9]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -552,7 +552,7 @@ func (x *LibraryItemDeleteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LibraryItemDeleteRequest.ProtoReflect.Descriptor instead.
 func (*LibraryItemDeleteRequest) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{9}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *LibraryItemDeleteRequest) GetId() int64 {
@@ -570,7 +570,7 @@ type LibraryItemDeleteResponse struct {
 
 func (x *LibraryItemDeleteResponse) Reset() {
 	*x = LibraryItemDeleteResponse{}
-	mi := &file_service_v2_library_service_proto_msgTypes[10]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -582,7 +582,7 @@ func (x *LibraryItemDeleteResponse) String() string {
 func (*LibraryItemDeleteResponse) ProtoMessage() {}
 
 func (x *LibraryItemDeleteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[10]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -595,7 +595,7 @@ func (x *LibraryItemDeleteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LibraryItemDeleteResponse.ProtoReflect.Descriptor instead.
 func (*LibraryItemDeleteResponse) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{10}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{10}
 }
 
 type LibraryDisciplineFetchRequest struct {
@@ -606,7 +606,7 @@ type LibraryDisciplineFetchRequest struct {
 
 func (x *LibraryDisciplineFetchRequest) Reset() {
 	*x = LibraryDisciplineFetchRequest{}
-	mi := &file_service_v2_library_service_proto_msgTypes[11]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -618,7 +618,7 @@ func (x *LibraryDisciplineFetchRequest) String() string {
 func (*LibraryDisciplineFetchRequest) ProtoMessage() {}
 
 func (x *LibraryDisciplineFetchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[11]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -631,7 +631,7 @@ func (x *LibraryDisciplineFetchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LibraryDisciplineFetchRequest.ProtoReflect.Descriptor instead.
 func (*LibraryDisciplineFetchRequest) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{11}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{11}
 }
 
 type LibraryDisciplineFetchResponse struct {
@@ -643,7 +643,7 @@ type LibraryDisciplineFetchResponse struct {
 
 func (x *LibraryDisciplineFetchResponse) Reset() {
 	*x = LibraryDisciplineFetchResponse{}
-	mi := &file_service_v2_library_service_proto_msgTypes[12]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -655,7 +655,7 @@ func (x *LibraryDisciplineFetchResponse) String() string {
 func (*LibraryDisciplineFetchResponse) ProtoMessage() {}
 
 func (x *LibraryDisciplineFetchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[12]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -668,7 +668,7 @@ func (x *LibraryDisciplineFetchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LibraryDisciplineFetchResponse.ProtoReflect.Descriptor instead.
 func (*LibraryDisciplineFetchResponse) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{12}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *LibraryDisciplineFetchResponse) GetDisciplines() []string {
@@ -688,7 +688,7 @@ type LibraryFileUploadRequest struct {
 
 func (x *LibraryFileUploadRequest) Reset() {
 	*x = LibraryFileUploadRequest{}
-	mi := &file_service_v2_library_service_proto_msgTypes[13]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -700,7 +700,7 @@ func (x *LibraryFileUploadRequest) String() string {
 func (*LibraryFileUploadRequest) ProtoMessage() {}
 
 func (x *LibraryFileUploadRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[13]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -713,7 +713,7 @@ func (x *LibraryFileUploadRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LibraryFileUploadRequest.ProtoReflect.Descriptor instead.
 func (*LibraryFileUploadRequest) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{13}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *LibraryFileUploadRequest) GetFileName() string {
@@ -739,7 +739,7 @@ type LibraryFileUploadResponse struct {
 
 func (x *LibraryFileUploadResponse) Reset() {
 	*x = LibraryFileUploadResponse{}
-	mi := &file_service_v2_library_service_proto_msgTypes[14]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -751,7 +751,7 @@ func (x *LibraryFileUploadResponse) String() string {
 func (*LibraryFileUploadResponse) ProtoMessage() {}
 
 func (x *LibraryFileUploadResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[14]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -764,7 +764,7 @@ func (x *LibraryFileUploadResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LibraryFileUploadResponse.ProtoReflect.Descriptor instead.
 func (*LibraryFileUploadResponse) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{14}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *LibraryFileUploadResponse) GetFile() *v2.LibraryFile {
@@ -783,7 +783,7 @@ type LibraryFileFetchRequest struct {
 
 func (x *LibraryFileFetchRequest) Reset() {
 	*x = LibraryFileFetchRequest{}
-	mi := &file_service_v2_library_service_proto_msgTypes[15]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -795,7 +795,7 @@ func (x *LibraryFileFetchRequest) String() string {
 func (*LibraryFileFetchRequest) ProtoMessage() {}
 
 func (x *LibraryFileFetchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[15]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -808,7 +808,7 @@ func (x *LibraryFileFetchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LibraryFileFetchRequest.ProtoReflect.Descriptor instead.
 func (*LibraryFileFetchRequest) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{15}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *LibraryFileFetchRequest) GetId() int64 {
@@ -828,7 +828,7 @@ type LibraryFileFetchResponse struct {
 
 func (x *LibraryFileFetchResponse) Reset() {
 	*x = LibraryFileFetchResponse{}
-	mi := &file_service_v2_library_service_proto_msgTypes[16]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -840,7 +840,7 @@ func (x *LibraryFileFetchResponse) String() string {
 func (*LibraryFileFetchResponse) ProtoMessage() {}
 
 func (x *LibraryFileFetchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[16]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -853,7 +853,7 @@ func (x *LibraryFileFetchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LibraryFileFetchResponse.ProtoReflect.Descriptor instead.
 func (*LibraryFileFetchResponse) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{16}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *LibraryFileFetchResponse) GetFile() *v2.LibraryFile {
@@ -880,7 +880,7 @@ type ManualFetchRequest struct {
 
 func (x *ManualFetchRequest) Reset() {
 	*x = ManualFetchRequest{}
-	mi := &file_service_v2_library_service_proto_msgTypes[17]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -892,7 +892,7 @@ func (x *ManualFetchRequest) String() string {
 func (*ManualFetchRequest) ProtoMessage() {}
 
 func (x *ManualFetchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[17]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -905,7 +905,7 @@ func (x *ManualFetchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualFetchRequest.ProtoReflect.Descriptor instead.
 func (*ManualFetchRequest) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{17}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *ManualFetchRequest) GetDiscipline() string {
@@ -932,7 +932,7 @@ type ManualFetchResponse struct {
 
 func (x *ManualFetchResponse) Reset() {
 	*x = ManualFetchResponse{}
-	mi := &file_service_v2_library_service_proto_msgTypes[18]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -944,7 +944,7 @@ func (x *ManualFetchResponse) String() string {
 func (*ManualFetchResponse) ProtoMessage() {}
 
 func (x *ManualFetchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[18]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -957,7 +957,7 @@ func (x *ManualFetchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualFetchResponse.ProtoReflect.Descriptor instead.
 func (*ManualFetchResponse) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{18}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *ManualFetchResponse) GetManuals() []*v2.Manual {
@@ -978,7 +978,7 @@ type ManualByIDRequest struct {
 
 func (x *ManualByIDRequest) Reset() {
 	*x = ManualByIDRequest{}
-	mi := &file_service_v2_library_service_proto_msgTypes[19]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -990,7 +990,7 @@ func (x *ManualByIDRequest) String() string {
 func (*ManualByIDRequest) ProtoMessage() {}
 
 func (x *ManualByIDRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[19]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1003,7 +1003,7 @@ func (x *ManualByIDRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualByIDRequest.ProtoReflect.Descriptor instead.
 func (*ManualByIDRequest) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{19}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *ManualByIDRequest) GetId() int64 {
@@ -1031,7 +1031,7 @@ type ManualByIDResponse struct {
 
 func (x *ManualByIDResponse) Reset() {
 	*x = ManualByIDResponse{}
-	mi := &file_service_v2_library_service_proto_msgTypes[20]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1043,7 +1043,7 @@ func (x *ManualByIDResponse) String() string {
 func (*ManualByIDResponse) ProtoMessage() {}
 
 func (x *ManualByIDResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[20]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1056,7 +1056,7 @@ func (x *ManualByIDResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualByIDResponse.ProtoReflect.Descriptor instead.
 func (*ManualByIDResponse) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{20}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *ManualByIDResponse) GetManual() *v2.Manual {
@@ -1088,7 +1088,7 @@ type ManualInput struct {
 
 func (x *ManualInput) Reset() {
 	*x = ManualInput{}
-	mi := &file_service_v2_library_service_proto_msgTypes[21]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1100,7 +1100,7 @@ func (x *ManualInput) String() string {
 func (*ManualInput) ProtoMessage() {}
 
 func (x *ManualInput) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[21]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1113,7 +1113,7 @@ func (x *ManualInput) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualInput.ProtoReflect.Descriptor instead.
 func (*ManualInput) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{21}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *ManualInput) GetDiscipline() string {
@@ -1174,7 +1174,7 @@ type ManualCreateRequest struct {
 
 func (x *ManualCreateRequest) Reset() {
 	*x = ManualCreateRequest{}
-	mi := &file_service_v2_library_service_proto_msgTypes[22]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1186,7 +1186,7 @@ func (x *ManualCreateRequest) String() string {
 func (*ManualCreateRequest) ProtoMessage() {}
 
 func (x *ManualCreateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[22]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1199,7 +1199,7 @@ func (x *ManualCreateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualCreateRequest.ProtoReflect.Descriptor instead.
 func (*ManualCreateRequest) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{22}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *ManualCreateRequest) GetManual() *ManualInput {
@@ -1218,7 +1218,7 @@ type ManualCreateResponse struct {
 
 func (x *ManualCreateResponse) Reset() {
 	*x = ManualCreateResponse{}
-	mi := &file_service_v2_library_service_proto_msgTypes[23]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1230,7 +1230,7 @@ func (x *ManualCreateResponse) String() string {
 func (*ManualCreateResponse) ProtoMessage() {}
 
 func (x *ManualCreateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[23]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1243,7 +1243,7 @@ func (x *ManualCreateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualCreateResponse.ProtoReflect.Descriptor instead.
 func (*ManualCreateResponse) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{23}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *ManualCreateResponse) GetId() int64 {
@@ -1264,7 +1264,7 @@ type ManualUpdateRequest struct {
 
 func (x *ManualUpdateRequest) Reset() {
 	*x = ManualUpdateRequest{}
-	mi := &file_service_v2_library_service_proto_msgTypes[24]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1276,7 +1276,7 @@ func (x *ManualUpdateRequest) String() string {
 func (*ManualUpdateRequest) ProtoMessage() {}
 
 func (x *ManualUpdateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[24]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1289,7 +1289,7 @@ func (x *ManualUpdateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualUpdateRequest.ProtoReflect.Descriptor instead.
 func (*ManualUpdateRequest) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{24}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *ManualUpdateRequest) GetId() int64 {
@@ -1321,7 +1321,7 @@ type ManualUpdateResponse struct {
 
 func (x *ManualUpdateResponse) Reset() {
 	*x = ManualUpdateResponse{}
-	mi := &file_service_v2_library_service_proto_msgTypes[25]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1333,7 +1333,7 @@ func (x *ManualUpdateResponse) String() string {
 func (*ManualUpdateResponse) ProtoMessage() {}
 
 func (x *ManualUpdateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[25]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1346,7 +1346,7 @@ func (x *ManualUpdateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualUpdateResponse.ProtoReflect.Descriptor instead.
 func (*ManualUpdateResponse) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{25}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{25}
 }
 
 type ManualPublishRequest struct {
@@ -1358,7 +1358,7 @@ type ManualPublishRequest struct {
 
 func (x *ManualPublishRequest) Reset() {
 	*x = ManualPublishRequest{}
-	mi := &file_service_v2_library_service_proto_msgTypes[26]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1370,7 +1370,7 @@ func (x *ManualPublishRequest) String() string {
 func (*ManualPublishRequest) ProtoMessage() {}
 
 func (x *ManualPublishRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[26]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1383,7 +1383,7 @@ func (x *ManualPublishRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualPublishRequest.ProtoReflect.Descriptor instead.
 func (*ManualPublishRequest) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{26}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *ManualPublishRequest) GetId() int64 {
@@ -1401,7 +1401,7 @@ type ManualPublishResponse struct {
 
 func (x *ManualPublishResponse) Reset() {
 	*x = ManualPublishResponse{}
-	mi := &file_service_v2_library_service_proto_msgTypes[27]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1413,7 +1413,7 @@ func (x *ManualPublishResponse) String() string {
 func (*ManualPublishResponse) ProtoMessage() {}
 
 func (x *ManualPublishResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[27]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1426,7 +1426,7 @@ func (x *ManualPublishResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualPublishResponse.ProtoReflect.Descriptor instead.
 func (*ManualPublishResponse) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{27}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{27}
 }
 
 type ManualArchiveRequest struct {
@@ -1438,7 +1438,7 @@ type ManualArchiveRequest struct {
 
 func (x *ManualArchiveRequest) Reset() {
 	*x = ManualArchiveRequest{}
-	mi := &file_service_v2_library_service_proto_msgTypes[28]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1450,7 +1450,7 @@ func (x *ManualArchiveRequest) String() string {
 func (*ManualArchiveRequest) ProtoMessage() {}
 
 func (x *ManualArchiveRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[28]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1463,7 +1463,7 @@ func (x *ManualArchiveRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualArchiveRequest.ProtoReflect.Descriptor instead.
 func (*ManualArchiveRequest) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{28}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *ManualArchiveRequest) GetId() int64 {
@@ -1481,7 +1481,7 @@ type ManualArchiveResponse struct {
 
 func (x *ManualArchiveResponse) Reset() {
 	*x = ManualArchiveResponse{}
-	mi := &file_service_v2_library_service_proto_msgTypes[29]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1493,7 +1493,7 @@ func (x *ManualArchiveResponse) String() string {
 func (*ManualArchiveResponse) ProtoMessage() {}
 
 func (x *ManualArchiveResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[29]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1506,7 +1506,7 @@ func (x *ManualArchiveResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualArchiveResponse.ProtoReflect.Descriptor instead.
 func (*ManualArchiveResponse) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{29}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{29}
 }
 
 type ManualDeleteRequest struct {
@@ -1518,7 +1518,7 @@ type ManualDeleteRequest struct {
 
 func (x *ManualDeleteRequest) Reset() {
 	*x = ManualDeleteRequest{}
-	mi := &file_service_v2_library_service_proto_msgTypes[30]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1530,7 +1530,7 @@ func (x *ManualDeleteRequest) String() string {
 func (*ManualDeleteRequest) ProtoMessage() {}
 
 func (x *ManualDeleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[30]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1543,7 +1543,7 @@ func (x *ManualDeleteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualDeleteRequest.ProtoReflect.Descriptor instead.
 func (*ManualDeleteRequest) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{30}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *ManualDeleteRequest) GetId() int64 {
@@ -1561,7 +1561,7 @@ type ManualDeleteResponse struct {
 
 func (x *ManualDeleteResponse) Reset() {
 	*x = ManualDeleteResponse{}
-	mi := &file_service_v2_library_service_proto_msgTypes[31]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1573,7 +1573,7 @@ func (x *ManualDeleteResponse) String() string {
 func (*ManualDeleteResponse) ProtoMessage() {}
 
 func (x *ManualDeleteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[31]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1586,7 +1586,7 @@ func (x *ManualDeleteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManualDeleteResponse.ProtoReflect.Descriptor instead.
 func (*ManualDeleteResponse) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{31}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{31}
 }
 
 // ref_id 0 — the latest positions across everything, newest first.
@@ -1600,7 +1600,7 @@ type ReaderProgressFetchRequest struct {
 
 func (x *ReaderProgressFetchRequest) Reset() {
 	*x = ReaderProgressFetchRequest{}
-	mi := &file_service_v2_library_service_proto_msgTypes[32]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1612,7 +1612,7 @@ func (x *ReaderProgressFetchRequest) String() string {
 func (*ReaderProgressFetchRequest) ProtoMessage() {}
 
 func (x *ReaderProgressFetchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[32]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1625,7 +1625,7 @@ func (x *ReaderProgressFetchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReaderProgressFetchRequest.ProtoReflect.Descriptor instead.
 func (*ReaderProgressFetchRequest) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{32}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *ReaderProgressFetchRequest) GetKind() v21.ReaderSourceKind {
@@ -1651,7 +1651,7 @@ type ReaderProgressFetchResponse struct {
 
 func (x *ReaderProgressFetchResponse) Reset() {
 	*x = ReaderProgressFetchResponse{}
-	mi := &file_service_v2_library_service_proto_msgTypes[33]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1663,7 +1663,7 @@ func (x *ReaderProgressFetchResponse) String() string {
 func (*ReaderProgressFetchResponse) ProtoMessage() {}
 
 func (x *ReaderProgressFetchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[33]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1676,7 +1676,7 @@ func (x *ReaderProgressFetchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReaderProgressFetchResponse.ProtoReflect.Descriptor instead.
 func (*ReaderProgressFetchResponse) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{33}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *ReaderProgressFetchResponse) GetProgress() []*v2.ReaderProgress {
@@ -1698,7 +1698,7 @@ type ReaderProgressSaveRequest struct {
 
 func (x *ReaderProgressSaveRequest) Reset() {
 	*x = ReaderProgressSaveRequest{}
-	mi := &file_service_v2_library_service_proto_msgTypes[34]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1710,7 +1710,7 @@ func (x *ReaderProgressSaveRequest) String() string {
 func (*ReaderProgressSaveRequest) ProtoMessage() {}
 
 func (x *ReaderProgressSaveRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[34]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1723,7 +1723,7 @@ func (x *ReaderProgressSaveRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReaderProgressSaveRequest.ProtoReflect.Descriptor instead.
 func (*ReaderProgressSaveRequest) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{34}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *ReaderProgressSaveRequest) GetKind() v21.ReaderSourceKind {
@@ -1762,7 +1762,7 @@ type ReaderProgressSaveResponse struct {
 
 func (x *ReaderProgressSaveResponse) Reset() {
 	*x = ReaderProgressSaveResponse{}
-	mi := &file_service_v2_library_service_proto_msgTypes[35]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1774,7 +1774,7 @@ func (x *ReaderProgressSaveResponse) String() string {
 func (*ReaderProgressSaveResponse) ProtoMessage() {}
 
 func (x *ReaderProgressSaveResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v2_library_service_proto_msgTypes[35]
+	mi := &file_fesmu_service_v2_library_service_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1787,14 +1787,14 @@ func (x *ReaderProgressSaveResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReaderProgressSaveResponse.ProtoReflect.Descriptor instead.
 func (*ReaderProgressSaveResponse) Descriptor() ([]byte, []int) {
-	return file_service_v2_library_service_proto_rawDescGZIP(), []int{35}
+	return file_fesmu_service_v2_library_service_proto_rawDescGZIP(), []int{35}
 }
 
-var File_service_v2_library_service_proto protoreflect.FileDescriptor
+var File_fesmu_service_v2_library_service_proto protoreflect.FileDescriptor
 
-const file_service_v2_library_service_proto_rawDesc = "" +
+const file_fesmu_service_v2_library_service_proto_rawDesc = "" +
 	"\n" +
-	" service/v2/library.service.proto\x12\x13contract.service.v2\x1a\x1aenum/v2/library.enum.proto\x1a\x1eentity/v2/library.entity.proto\"O\n" +
+	"&fesmu/service/v2/library.service.proto\x12\x13contract.service.v2\x1a fesmu/enum/v2/library.enum.proto\x1a$fesmu/entity/v2/library.entity.proto\"O\n" +
 	"\x17LibraryItemFetchRequest\x12\x14\n" +
 	"\x05query\x18\x01 \x01(\tR\x05query\x12\x1e\n" +
 	"\n" +
@@ -1923,19 +1923,19 @@ const file_service_v2_library_service_proto_rawDesc = "" +
 	"\x17com.contract.service.v2B\x13LibraryServiceProtoP\x01Z)fesmu/contract/fesmu/service/v2;servicev2\xa2\x02\x03CSX\xaa\x02\x13Contract.Service.V2\xca\x02\x13Contract\\Service\\V2\xe2\x02\x1fContract\\Service\\V2\\GPBMetadata\xea\x02\x15Contract::Service::V2b\x06proto3"
 
 var (
-	file_service_v2_library_service_proto_rawDescOnce sync.Once
-	file_service_v2_library_service_proto_rawDescData []byte
+	file_fesmu_service_v2_library_service_proto_rawDescOnce sync.Once
+	file_fesmu_service_v2_library_service_proto_rawDescData []byte
 )
 
-func file_service_v2_library_service_proto_rawDescGZIP() []byte {
-	file_service_v2_library_service_proto_rawDescOnce.Do(func() {
-		file_service_v2_library_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_service_v2_library_service_proto_rawDesc), len(file_service_v2_library_service_proto_rawDesc)))
+func file_fesmu_service_v2_library_service_proto_rawDescGZIP() []byte {
+	file_fesmu_service_v2_library_service_proto_rawDescOnce.Do(func() {
+		file_fesmu_service_v2_library_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_fesmu_service_v2_library_service_proto_rawDesc), len(file_fesmu_service_v2_library_service_proto_rawDesc)))
 	})
-	return file_service_v2_library_service_proto_rawDescData
+	return file_fesmu_service_v2_library_service_proto_rawDescData
 }
 
-var file_service_v2_library_service_proto_msgTypes = make([]protoimpl.MessageInfo, 36)
-var file_service_v2_library_service_proto_goTypes = []any{
+var file_fesmu_service_v2_library_service_proto_msgTypes = make([]protoimpl.MessageInfo, 36)
+var file_fesmu_service_v2_library_service_proto_goTypes = []any{
 	(*LibraryItemFetchRequest)(nil),        // 0: contract.service.v2.LibraryItemFetchRequest
 	(*LibraryItemFetchResponse)(nil),       // 1: contract.service.v2.LibraryItemFetchResponse
 	(*LibraryItemByIDRequest)(nil),         // 2: contract.service.v2.LibraryItemByIDRequest
@@ -1980,7 +1980,7 @@ var file_service_v2_library_service_proto_goTypes = []any{
 	(v21.ReaderSourceKind)(0),              // 41: contract.enum.v2.ReaderSourceKind
 	(*v2.ReaderProgress)(nil),              // 42: contract.entity.v2.ReaderProgress
 }
-var file_service_v2_library_service_proto_depIdxs = []int32{
+var file_fesmu_service_v2_library_service_proto_depIdxs = []int32{
 	36, // 0: contract.service.v2.LibraryItemFetchResponse.items:type_name -> contract.entity.v2.LibraryItem
 	36, // 1: contract.service.v2.LibraryItemByIDResponse.item:type_name -> contract.entity.v2.LibraryItem
 	37, // 2: contract.service.v2.LibraryItemInput.kind:type_name -> contract.enum.v2.LibraryItemKind
@@ -2038,26 +2038,26 @@ var file_service_v2_library_service_proto_depIdxs = []int32{
 	0,  // [0:16] is the sub-list for field type_name
 }
 
-func init() { file_service_v2_library_service_proto_init() }
-func file_service_v2_library_service_proto_init() {
-	if File_service_v2_library_service_proto != nil {
+func init() { file_fesmu_service_v2_library_service_proto_init() }
+func file_fesmu_service_v2_library_service_proto_init() {
+	if File_fesmu_service_v2_library_service_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_service_v2_library_service_proto_rawDesc), len(file_service_v2_library_service_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_fesmu_service_v2_library_service_proto_rawDesc), len(file_fesmu_service_v2_library_service_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   36,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_service_v2_library_service_proto_goTypes,
-		DependencyIndexes: file_service_v2_library_service_proto_depIdxs,
-		MessageInfos:      file_service_v2_library_service_proto_msgTypes,
+		GoTypes:           file_fesmu_service_v2_library_service_proto_goTypes,
+		DependencyIndexes: file_fesmu_service_v2_library_service_proto_depIdxs,
+		MessageInfos:      file_fesmu_service_v2_library_service_proto_msgTypes,
 	}.Build()
-	File_service_v2_library_service_proto = out.File
-	file_service_v2_library_service_proto_goTypes = nil
-	file_service_v2_library_service_proto_depIdxs = nil
+	File_fesmu_service_v2_library_service_proto = out.File
+	file_fesmu_service_v2_library_service_proto_goTypes = nil
+	file_fesmu_service_v2_library_service_proto_depIdxs = nil
 }

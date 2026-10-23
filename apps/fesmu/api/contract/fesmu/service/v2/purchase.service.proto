@@ -1,0 +1,286 @@
+syntax = "proto3";
+
+package contract.service.v2;
+
+import "fesmu/enum/v2/purchase.enum.proto";
+import "fesmu/entity/v2/purchase.entity.proto";
+
+option go_package = "service_v2;service_pb";
+
+// Purchases v2: employee request → department head → curating vice-rector
+// (offers, merging) → economic department (codes, budget) → budget
+// commission → ПФХД. Every change is written to the log.
+service PurchaseService {
+    rpc PurchaseOverview (PurchaseOverviewRequest) returns (PurchaseOverviewResponse);
+
+    rpc PurchaseRequestCreate (PurchaseRequestCreateRequest) returns (PurchaseRequestCreateResponse);
+    rpc PurchaseRequestUpdate (PurchaseRequestUpdateRequest) returns (PurchaseRequestUpdateResponse);
+    rpc PurchaseRequestAction (PurchaseRequestActionRequest) returns (PurchaseRequestActionResponse);
+    rpc PurchaseRequestDelete (PurchaseRequestDeleteRequest) returns (PurchaseRequestDeleteResponse);
+    rpc PurchaseRequestMerge (PurchaseRequestMergeRequest) returns (PurchaseRequestMergeResponse);
+
+    rpc PurchaseLotCreate (PurchaseLotCreateRequest) returns (PurchaseLotCreateResponse);
+    rpc PurchaseLotUpdate (PurchaseLotUpdateRequest) returns (PurchaseLotUpdateResponse);
+    rpc PurchaseLotRequests (PurchaseLotRequestsRequest) returns (PurchaseLotRequestsResponse);
+    rpc PurchaseLotAction (PurchaseLotActionRequest) returns (PurchaseLotActionResponse);
+
+    rpc PurchaseQuotationCreate (PurchaseQuotationCreateRequest) returns (PurchaseQuotationCreateResponse);
+    rpc PurchaseQuotationDelete (PurchaseQuotationDeleteRequest) returns (PurchaseQuotationDeleteResponse);
+    rpc PurchaseQuotationFile (PurchaseQuotationFileRequest) returns (PurchaseQuotationFileResponse);
+
+    // ОКПД2 / КТРУ / ОКВЭД2 guessed from a purchase's name.
+    rpc PurchaseCodeSuggest (PurchaseCodeSuggestRequest) returns (PurchaseCodeSuggestResponse);
+
+    // Employees of a department (0 — everyone), from MDM: whom a head can
+    // give a purchase to, whom the administrator binds to a vice-rector.
+    rpc PurchaseEmployeeFetch (PurchaseEmployeeFetchRequest) returns (PurchaseEmployeeFetchResponse);
+
+    // Directories, administrator only.
+    rpc PurchaseCuratorSave (PurchaseCuratorSaveRequest) returns (PurchaseCuratorSaveResponse);
+    rpc PurchaseDepartmentSave (PurchaseDepartmentSaveRequest) returns (PurchaseDepartmentSaveResponse);
+    rpc PurchaseCategorySave (PurchaseCategorySaveRequest) returns (PurchaseCategorySaveResponse);
+    rpc PurchaseCategoryDelete (PurchaseCategoryDeleteRequest) returns (PurchaseCategoryDeleteResponse);
+}
+
+message PurchaseOverviewRequest {
+}
+
+// Everything at once, with logs: the page filters and totals it by role.
+message PurchaseOverviewResponse {
+    repeated contract.entity.v2.PurchaseRequest requests = 1;
+    repeated contract.entity.v2.PurchaseLot lots = 2;
+    repeated contract.entity.v2.PurchaseCurator curators = 3;
+    repeated contract.entity.v2.PurchaseDepartment departments = 4;
+    repeated contract.entity.v2.PurchaseCategory categories = 5;
+    contract.entity.v2.PurchaseMe me = 6;
+}
+
+// The employee does not pick the vice-rector: the department head does.
+message PurchaseRequestCreateRequest {
+    contract.entity.v2.PurchaseActor actor = 1;
+    string title = 2;
+    double quantity = 3;
+    string unit = 4;
+    string description = 5;
+    string department = 6;
+    reserved 7;
+    contract.enum.v2.PurchaseItemType item_type = 8;
+    // The department comes from the author's MDM profile; only an
+    // administrator (testing) may name another one here.
+    int32 department_id = 9;
+}
+
+message PurchaseRequestCreateResponse {
+    int64 id = 1;
+}
+
+// The employee edits a request returned for rework, the department head one
+// under review; only the head sets curator_id (the employee's is ignored).
+message PurchaseRequestUpdateRequest {
+    contract.entity.v2.PurchaseActor actor = 1;
+    int64 id = 2;
+    string title = 3;
+    double quantity = 4;
+    string unit = 5;
+    string description = 6;
+    string department = 7;
+    int64 curator_id = 8;
+    contract.enum.v2.PurchaseItemType item_type = 9;
+}
+
+message PurchaseRequestUpdateResponse {
+}
+
+message PurchaseRequestActionRequest {
+    contract.entity.v2.PurchaseActor actor = 1;
+    int64 id = 2;
+    contract.enum.v2.PurchaseRequestAction action = 3;
+    string comment = 4;
+    // VICE_RECTOR_APPROVE: the implementing department; 0 takes the suggested one.
+    int32 implementing_department = 5;
+}
+
+message PurchaseRequestActionResponse {
+}
+
+message PurchaseRequestDeleteRequest {
+    contract.entity.v2.PurchaseActor actor = 1;
+    int64 id = 2;
+}
+
+message PurchaseRequestDeleteResponse {
+}
+
+// The department head merges requests of one type under review into a new
+// one; the originals stay, marked as merged into it.
+message PurchaseRequestMergeRequest {
+    contract.entity.v2.PurchaseActor actor = 1;
+    repeated int64 request_ids = 2;
+    string title = 3;
+    // 0 keeps the vice-rector the requests share, if they share one.
+    int64 curator_id = 4;
+}
+
+message PurchaseRequestMergeResponse {
+    int64 id = 1;
+}
+
+// The vice-rector merges requests of one curator into a purchase.
+message PurchaseLotCreateRequest {
+    contract.entity.v2.PurchaseActor actor = 1;
+    repeated int64 request_ids = 2;
+    string title = 3;
+    string comment = 4;
+}
+
+message PurchaseLotCreateResponse {
+    int64 id = 1;
+}
+
+// Each role saves only its own fields, at its own stage:
+// vice-rector — title, description, quantity, unit, comment;
+// economist — codes, funding source, КОСГУ, НМЦК, economist_comment;
+// commission — plan type, plan year, commission_comment.
+message PurchaseLotUpdateRequest {
+    contract.entity.v2.PurchaseActor actor = 1;
+    int64 id = 2;
+
+    string title = 3;
+    string description = 4;
+    double quantity = 5;
+    string unit = 6;
+    string comment = 7;
+
+    string okpd2 = 8;
+    string ktru = 9;
+    string okved = 10;
+    contract.enum.v2.PurchaseFundingSource funding_source = 11;
+    string kosgu = 12;
+    string economist_comment = 13;
+
+    contract.enum.v2.PurchasePlanType plan_type = 14;
+    int32 plan_year = 15;
+    string commission_comment = 16;
+
+    // In kopecks; 0 leaves it unset (the average-based amount applies).
+    int64 nmck = 17;
+}
+
+message PurchaseLotUpdateResponse {
+}
+
+// Adds requests to a forming purchase or takes them out of it.
+message PurchaseLotRequestsRequest {
+    contract.entity.v2.PurchaseActor actor = 1;
+    int64 lot_id = 2;
+    repeated int64 add_ids = 3;
+    repeated int64 remove_ids = 4;
+}
+
+message PurchaseLotRequestsResponse {
+}
+
+message PurchaseLotActionRequest {
+    contract.entity.v2.PurchaseActor actor = 1;
+    int64 id = 2;
+    contract.enum.v2.PurchaseLotAction action = 3;
+    string comment = 4;
+    // COMMISSION_APPROVE may set these in the same call (for approving
+    // several at once); unset keeps what the purchase has.
+    contract.enum.v2.PurchasePlanType plan_type = 5;
+    int32 plan_year = 6;
+    // ASSIGN: who prepares the purchase.
+    string assignee_uuid = 7;
+    string assignee_name = 8;
+}
+
+message PurchaseLotActionResponse {
+}
+
+message PurchaseQuotationCreateRequest {
+    contract.entity.v2.PurchaseActor actor = 1;
+    int64 lot_id = 2;
+    string supplier = 3;
+    int64 unit_price = 4;
+    string note = 5;
+    string file_name = 6;
+    bytes file_content = 7;
+}
+
+message PurchaseQuotationCreateResponse {
+    int64 id = 1;
+}
+
+message PurchaseQuotationDeleteRequest {
+    contract.entity.v2.PurchaseActor actor = 1;
+    int64 id = 2;
+}
+
+message PurchaseQuotationDeleteResponse {
+}
+
+message PurchaseQuotationFileRequest {
+    int64 id = 1;
+}
+
+message PurchaseQuotationFileResponse {
+    string file_name = 1;
+    bytes content = 2;
+}
+
+message PurchaseCodeSuggestRequest {
+    string title = 1;
+}
+
+message PurchaseCodeSuggestResponse {
+    contract.entity.v2.PurchaseCodeSuggestion suggestion = 1;
+}
+
+message PurchaseEmployeeFetchRequest {
+    int32 department = 1;
+}
+
+message PurchaseEmployeeFetchResponse {
+    repeated contract.entity.v2.PurchaseEmployee list = 1;
+}
+
+message PurchaseCuratorSaveRequest {
+    // 0 adds a vice-rector.
+    int64 id = 1;
+    string name = 2;
+    string position = 3;
+    string user_uuid = 4;
+    string user_name = 5;
+}
+
+message PurchaseCuratorSaveResponse {
+    int64 id = 1;
+}
+
+message PurchaseDepartmentSaveRequest {
+    int32 department = 1;
+    // 0 — no vice-rector.
+    int64 curator_id = 2;
+}
+
+message PurchaseDepartmentSaveResponse {
+}
+
+message PurchaseCategorySaveRequest {
+    // 0 adds a category.
+    int64 id = 1;
+    string name = 2;
+    string okpd2_prefix = 3;
+    int32 department = 4;
+}
+
+message PurchaseCategorySaveResponse {
+    int64 id = 1;
+}
+
+message PurchaseCategoryDeleteRequest {
+    int64 id = 1;
+}
+
+message PurchaseCategoryDeleteResponse {
+}

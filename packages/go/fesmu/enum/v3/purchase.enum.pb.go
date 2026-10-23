@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: enum/v3/purchase.enum.proto
+// source: fesmu/enum/v3/purchase.enum.proto
 
 package enumv3
 
@@ -132,11 +132,11 @@ func (x PurchasePermission) String() string {
 }
 
 func (PurchasePermission) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_v3_purchase_enum_proto_enumTypes[0].Descriptor()
+	return file_fesmu_enum_v3_purchase_enum_proto_enumTypes[0].Descriptor()
 }
 
 func (PurchasePermission) Type() protoreflect.EnumType {
-	return &file_enum_v3_purchase_enum_proto_enumTypes[0]
+	return &file_fesmu_enum_v3_purchase_enum_proto_enumTypes[0]
 }
 
 func (x PurchasePermission) Number() protoreflect.EnumNumber {
@@ -145,7 +145,7 @@ func (x PurchasePermission) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PurchasePermission.Descriptor instead.
 func (PurchasePermission) EnumDescriptor() ([]byte, []int) {
-	return file_enum_v3_purchase_enum_proto_rawDescGZIP(), []int{0}
+	return file_fesmu_enum_v3_purchase_enum_proto_rawDescGZIP(), []int{0}
 }
 
 // Who acts at a stage: written into sign-offs and the log. One person may
@@ -210,11 +210,11 @@ func (x PurchaseRole) String() string {
 }
 
 func (PurchaseRole) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_v3_purchase_enum_proto_enumTypes[1].Descriptor()
+	return file_fesmu_enum_v3_purchase_enum_proto_enumTypes[1].Descriptor()
 }
 
 func (PurchaseRole) Type() protoreflect.EnumType {
-	return &file_enum_v3_purchase_enum_proto_enumTypes[1]
+	return &file_fesmu_enum_v3_purchase_enum_proto_enumTypes[1]
 }
 
 func (x PurchaseRole) Number() protoreflect.EnumNumber {
@@ -223,7 +223,7 @@ func (x PurchaseRole) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PurchaseRole.Descriptor instead.
 func (PurchaseRole) EnumDescriptor() ([]byte, []int) {
-	return file_enum_v3_purchase_enum_proto_rawDescGZIP(), []int{1}
+	return file_fesmu_enum_v3_purchase_enum_proto_rawDescGZIP(), []int{1}
 }
 
 // What one does with a record at its stage. Who may, and where it goes,
@@ -264,11 +264,11 @@ func (x PurchaseMove) String() string {
 }
 
 func (PurchaseMove) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_v3_purchase_enum_proto_enumTypes[2].Descriptor()
+	return file_fesmu_enum_v3_purchase_enum_proto_enumTypes[2].Descriptor()
 }
 
 func (PurchaseMove) Type() protoreflect.EnumType {
-	return &file_enum_v3_purchase_enum_proto_enumTypes[2]
+	return &file_fesmu_enum_v3_purchase_enum_proto_enumTypes[2]
 }
 
 func (x PurchaseMove) Number() protoreflect.EnumNumber {
@@ -277,7 +277,7 @@ func (x PurchaseMove) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PurchaseMove.Descriptor instead.
 func (PurchaseMove) EnumDescriptor() ([]byte, []int) {
-	return file_enum_v3_purchase_enum_proto_rawDescGZIP(), []int{2}
+	return file_fesmu_enum_v3_purchase_enum_proto_rawDescGZIP(), []int{2}
 }
 
 // An employee's request, until it goes into a purchase (lot).
@@ -334,11 +334,11 @@ func (x PurchaseRequestStatus) String() string {
 }
 
 func (PurchaseRequestStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_v3_purchase_enum_proto_enumTypes[3].Descriptor()
+	return file_fesmu_enum_v3_purchase_enum_proto_enumTypes[3].Descriptor()
 }
 
 func (PurchaseRequestStatus) Type() protoreflect.EnumType {
-	return &file_enum_v3_purchase_enum_proto_enumTypes[3]
+	return &file_fesmu_enum_v3_purchase_enum_proto_enumTypes[3]
 }
 
 func (x PurchaseRequestStatus) Number() protoreflect.EnumNumber {
@@ -347,7 +347,7 @@ func (x PurchaseRequestStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PurchaseRequestStatus.Descriptor instead.
 func (PurchaseRequestStatus) EnumDescriptor() ([]byte, []int) {
-	return file_enum_v3_purchase_enum_proto_rawDescGZIP(), []int{3}
+	return file_fesmu_enum_v3_purchase_enum_proto_rawDescGZIP(), []int{3}
 }
 
 // A purchase (lot): similar requests the implementing head merged, in flow
@@ -454,11 +454,11 @@ func (x PurchaseLotStatus) String() string {
 }
 
 func (PurchaseLotStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_v3_purchase_enum_proto_enumTypes[4].Descriptor()
+	return file_fesmu_enum_v3_purchase_enum_proto_enumTypes[4].Descriptor()
 }
 
 func (PurchaseLotStatus) Type() protoreflect.EnumType {
-	return &file_enum_v3_purchase_enum_proto_enumTypes[4]
+	return &file_fesmu_enum_v3_purchase_enum_proto_enumTypes[4]
 }
 
 func (x PurchaseLotStatus) Number() protoreflect.EnumNumber {
@@ -467,7 +467,7 @@ func (x PurchaseLotStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PurchaseLotStatus.Descriptor instead.
 func (PurchaseLotStatus) EnumDescriptor() ([]byte, []int) {
-	return file_enum_v3_purchase_enum_proto_rawDescGZIP(), []int{4}
+	return file_fesmu_enum_v3_purchase_enum_proto_rawDescGZIP(), []int{4}
 }
 
 // What is bought. A purchase holds requests of one type only.
@@ -504,11 +504,11 @@ func (x PurchaseItemType) String() string {
 }
 
 func (PurchaseItemType) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_v3_purchase_enum_proto_enumTypes[5].Descriptor()
+	return file_fesmu_enum_v3_purchase_enum_proto_enumTypes[5].Descriptor()
 }
 
 func (PurchaseItemType) Type() protoreflect.EnumType {
-	return &file_enum_v3_purchase_enum_proto_enumTypes[5]
+	return &file_fesmu_enum_v3_purchase_enum_proto_enumTypes[5]
 }
 
 func (x PurchaseItemType) Number() protoreflect.EnumNumber {
@@ -517,7 +517,7 @@ func (x PurchaseItemType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PurchaseItemType.Descriptor instead.
 func (PurchaseItemType) EnumDescriptor() ([]byte, []int) {
-	return file_enum_v3_purchase_enum_proto_rawDescGZIP(), []int{5}
+	return file_fesmu_enum_v3_purchase_enum_proto_rawDescGZIP(), []int{5}
 }
 
 // ПФХД splits approved purchases into planned and unplanned ones.
@@ -554,11 +554,11 @@ func (x PurchasePlanType) String() string {
 }
 
 func (PurchasePlanType) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_v3_purchase_enum_proto_enumTypes[6].Descriptor()
+	return file_fesmu_enum_v3_purchase_enum_proto_enumTypes[6].Descriptor()
 }
 
 func (PurchasePlanType) Type() protoreflect.EnumType {
-	return &file_enum_v3_purchase_enum_proto_enumTypes[6]
+	return &file_fesmu_enum_v3_purchase_enum_proto_enumTypes[6]
 }
 
 func (x PurchasePlanType) Number() protoreflect.EnumNumber {
@@ -567,7 +567,7 @@ func (x PurchasePlanType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PurchasePlanType.Descriptor instead.
 func (PurchasePlanType) EnumDescriptor() ([]byte, []int) {
-	return file_enum_v3_purchase_enum_proto_rawDescGZIP(), []int{6}
+	return file_fesmu_enum_v3_purchase_enum_proto_rawDescGZIP(), []int{6}
 }
 
 type PurchaseFundingSource int32
@@ -609,11 +609,11 @@ func (x PurchaseFundingSource) String() string {
 }
 
 func (PurchaseFundingSource) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_v3_purchase_enum_proto_enumTypes[7].Descriptor()
+	return file_fesmu_enum_v3_purchase_enum_proto_enumTypes[7].Descriptor()
 }
 
 func (PurchaseFundingSource) Type() protoreflect.EnumType {
-	return &file_enum_v3_purchase_enum_proto_enumTypes[7]
+	return &file_fesmu_enum_v3_purchase_enum_proto_enumTypes[7]
 }
 
 func (x PurchaseFundingSource) Number() protoreflect.EnumNumber {
@@ -622,7 +622,7 @@ func (x PurchaseFundingSource) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PurchaseFundingSource.Descriptor instead.
 func (PurchaseFundingSource) EnumDescriptor() ([]byte, []int) {
-	return file_enum_v3_purchase_enum_proto_rawDescGZIP(), []int{7}
+	return file_fesmu_enum_v3_purchase_enum_proto_rawDescGZIP(), []int{7}
 }
 
 // The budget commission's decision on one purchase, in a protocol.
@@ -662,11 +662,11 @@ func (x PurchaseCommissionDecision) String() string {
 }
 
 func (PurchaseCommissionDecision) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_v3_purchase_enum_proto_enumTypes[8].Descriptor()
+	return file_fesmu_enum_v3_purchase_enum_proto_enumTypes[8].Descriptor()
 }
 
 func (PurchaseCommissionDecision) Type() protoreflect.EnumType {
-	return &file_enum_v3_purchase_enum_proto_enumTypes[8]
+	return &file_fesmu_enum_v3_purchase_enum_proto_enumTypes[8]
 }
 
 func (x PurchaseCommissionDecision) Number() protoreflect.EnumNumber {
@@ -675,7 +675,7 @@ func (x PurchaseCommissionDecision) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PurchaseCommissionDecision.Descriptor instead.
 func (PurchaseCommissionDecision) EnumDescriptor() ([]byte, []int) {
-	return file_enum_v3_purchase_enum_proto_rawDescGZIP(), []int{8}
+	return file_fesmu_enum_v3_purchase_enum_proto_rawDescGZIP(), []int{8}
 }
 
 // The law a purchase is carried out under; set by the contract service.
@@ -712,11 +712,11 @@ func (x PurchaseLaw) String() string {
 }
 
 func (PurchaseLaw) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_v3_purchase_enum_proto_enumTypes[9].Descriptor()
+	return file_fesmu_enum_v3_purchase_enum_proto_enumTypes[9].Descriptor()
 }
 
 func (PurchaseLaw) Type() protoreflect.EnumType {
-	return &file_enum_v3_purchase_enum_proto_enumTypes[9]
+	return &file_fesmu_enum_v3_purchase_enum_proto_enumTypes[9]
 }
 
 func (x PurchaseLaw) Number() protoreflect.EnumNumber {
@@ -725,7 +725,7 @@ func (x PurchaseLaw) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PurchaseLaw.Descriptor instead.
 func (PurchaseLaw) EnumDescriptor() ([]byte, []int) {
-	return file_enum_v3_purchase_enum_proto_rawDescGZIP(), []int{9}
+	return file_fesmu_enum_v3_purchase_enum_proto_rawDescGZIP(), []int{9}
 }
 
 // How the supplier is chosen; set by the contract service.
@@ -774,11 +774,11 @@ func (x PurchaseMethod) String() string {
 }
 
 func (PurchaseMethod) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_v3_purchase_enum_proto_enumTypes[10].Descriptor()
+	return file_fesmu_enum_v3_purchase_enum_proto_enumTypes[10].Descriptor()
 }
 
 func (PurchaseMethod) Type() protoreflect.EnumType {
-	return &file_enum_v3_purchase_enum_proto_enumTypes[10]
+	return &file_fesmu_enum_v3_purchase_enum_proto_enumTypes[10]
 }
 
 func (x PurchaseMethod) Number() protoreflect.EnumNumber {
@@ -787,7 +787,7 @@ func (x PurchaseMethod) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PurchaseMethod.Descriptor instead.
 func (PurchaseMethod) EnumDescriptor() ([]byte, []int) {
-	return file_enum_v3_purchase_enum_proto_rawDescGZIP(), []int{10}
+	return file_fesmu_enum_v3_purchase_enum_proto_rawDescGZIP(), []int{10}
 }
 
 // A file attached to a purchase, besides the commercial offers.
@@ -839,11 +839,11 @@ func (x PurchaseDocumentKind) String() string {
 }
 
 func (PurchaseDocumentKind) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_v3_purchase_enum_proto_enumTypes[11].Descriptor()
+	return file_fesmu_enum_v3_purchase_enum_proto_enumTypes[11].Descriptor()
 }
 
 func (PurchaseDocumentKind) Type() protoreflect.EnumType {
-	return &file_enum_v3_purchase_enum_proto_enumTypes[11]
+	return &file_fesmu_enum_v3_purchase_enum_proto_enumTypes[11]
 }
 
 func (x PurchaseDocumentKind) Number() protoreflect.EnumNumber {
@@ -852,7 +852,7 @@ func (x PurchaseDocumentKind) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PurchaseDocumentKind.Descriptor instead.
 func (PurchaseDocumentKind) EnumDescriptor() ([]byte, []int) {
-	return file_enum_v3_purchase_enum_proto_rawDescGZIP(), []int{11}
+	return file_fesmu_enum_v3_purchase_enum_proto_rawDescGZIP(), []int{11}
 }
 
 type PurchaseLogTarget int32
@@ -891,11 +891,11 @@ func (x PurchaseLogTarget) String() string {
 }
 
 func (PurchaseLogTarget) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_v3_purchase_enum_proto_enumTypes[12].Descriptor()
+	return file_fesmu_enum_v3_purchase_enum_proto_enumTypes[12].Descriptor()
 }
 
 func (PurchaseLogTarget) Type() protoreflect.EnumType {
-	return &file_enum_v3_purchase_enum_proto_enumTypes[12]
+	return &file_fesmu_enum_v3_purchase_enum_proto_enumTypes[12]
 }
 
 func (x PurchaseLogTarget) Number() protoreflect.EnumNumber {
@@ -904,14 +904,14 @@ func (x PurchaseLogTarget) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PurchaseLogTarget.Descriptor instead.
 func (PurchaseLogTarget) EnumDescriptor() ([]byte, []int) {
-	return file_enum_v3_purchase_enum_proto_rawDescGZIP(), []int{12}
+	return file_fesmu_enum_v3_purchase_enum_proto_rawDescGZIP(), []int{12}
 }
 
-var File_enum_v3_purchase_enum_proto protoreflect.FileDescriptor
+var File_fesmu_enum_v3_purchase_enum_proto protoreflect.FileDescriptor
 
-const file_enum_v3_purchase_enum_proto_rawDesc = "" +
+const file_fesmu_enum_v3_purchase_enum_proto_rawDesc = "" +
 	"\n" +
-	"\x1benum/v3/purchase.enum.proto\x12\x10contract.enum.v3*\xe3\x05\n" +
+	"!fesmu/enum/v3/purchase.enum.proto\x12\x10contract.enum.v3*\xe3\x05\n" +
 	"\x12PurchasePermission\x12#\n" +
 	"\x1fPURCHASE_PERMISSION_UNSPECIFIED\x10\x00\x12'\n" +
 	"#PURCHASE_PERMISSION_VIEW_DEPARTMENT\x10\x01\x12&\n" +
@@ -1031,19 +1031,19 @@ const file_enum_v3_purchase_enum_proto_rawDesc = "" +
 	"\x14com.contract.enum.v3B\x11PurchaseEnumProtoP\x01Z#fesmu/contract/fesmu/enum/v3;enumv3\xa2\x02\x03CEX\xaa\x02\x10Contract.Enum.V3\xca\x02\x10Contract\\Enum\\V3\xe2\x02\x1cContract\\Enum\\V3\\GPBMetadata\xea\x02\x12Contract::Enum::V3b\x06proto3"
 
 var (
-	file_enum_v3_purchase_enum_proto_rawDescOnce sync.Once
-	file_enum_v3_purchase_enum_proto_rawDescData []byte
+	file_fesmu_enum_v3_purchase_enum_proto_rawDescOnce sync.Once
+	file_fesmu_enum_v3_purchase_enum_proto_rawDescData []byte
 )
 
-func file_enum_v3_purchase_enum_proto_rawDescGZIP() []byte {
-	file_enum_v3_purchase_enum_proto_rawDescOnce.Do(func() {
-		file_enum_v3_purchase_enum_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_enum_v3_purchase_enum_proto_rawDesc), len(file_enum_v3_purchase_enum_proto_rawDesc)))
+func file_fesmu_enum_v3_purchase_enum_proto_rawDescGZIP() []byte {
+	file_fesmu_enum_v3_purchase_enum_proto_rawDescOnce.Do(func() {
+		file_fesmu_enum_v3_purchase_enum_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_fesmu_enum_v3_purchase_enum_proto_rawDesc), len(file_fesmu_enum_v3_purchase_enum_proto_rawDesc)))
 	})
-	return file_enum_v3_purchase_enum_proto_rawDescData
+	return file_fesmu_enum_v3_purchase_enum_proto_rawDescData
 }
 
-var file_enum_v3_purchase_enum_proto_enumTypes = make([]protoimpl.EnumInfo, 13)
-var file_enum_v3_purchase_enum_proto_goTypes = []any{
+var file_fesmu_enum_v3_purchase_enum_proto_enumTypes = make([]protoimpl.EnumInfo, 13)
+var file_fesmu_enum_v3_purchase_enum_proto_goTypes = []any{
 	(PurchasePermission)(0),         // 0: contract.enum.v3.PurchasePermission
 	(PurchaseRole)(0),               // 1: contract.enum.v3.PurchaseRole
 	(PurchaseMove)(0),               // 2: contract.enum.v3.PurchaseMove
@@ -1058,7 +1058,7 @@ var file_enum_v3_purchase_enum_proto_goTypes = []any{
 	(PurchaseDocumentKind)(0),       // 11: contract.enum.v3.PurchaseDocumentKind
 	(PurchaseLogTarget)(0),          // 12: contract.enum.v3.PurchaseLogTarget
 }
-var file_enum_v3_purchase_enum_proto_depIdxs = []int32{
+var file_fesmu_enum_v3_purchase_enum_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
 	0, // [0:0] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -1066,26 +1066,26 @@ var file_enum_v3_purchase_enum_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_enum_v3_purchase_enum_proto_init() }
-func file_enum_v3_purchase_enum_proto_init() {
-	if File_enum_v3_purchase_enum_proto != nil {
+func init() { file_fesmu_enum_v3_purchase_enum_proto_init() }
+func file_fesmu_enum_v3_purchase_enum_proto_init() {
+	if File_fesmu_enum_v3_purchase_enum_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_enum_v3_purchase_enum_proto_rawDesc), len(file_enum_v3_purchase_enum_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_fesmu_enum_v3_purchase_enum_proto_rawDesc), len(file_fesmu_enum_v3_purchase_enum_proto_rawDesc)),
 			NumEnums:      13,
 			NumMessages:   0,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_enum_v3_purchase_enum_proto_goTypes,
-		DependencyIndexes: file_enum_v3_purchase_enum_proto_depIdxs,
-		EnumInfos:         file_enum_v3_purchase_enum_proto_enumTypes,
+		GoTypes:           file_fesmu_enum_v3_purchase_enum_proto_goTypes,
+		DependencyIndexes: file_fesmu_enum_v3_purchase_enum_proto_depIdxs,
+		EnumInfos:         file_fesmu_enum_v3_purchase_enum_proto_enumTypes,
 	}.Build()
-	File_enum_v3_purchase_enum_proto = out.File
-	file_enum_v3_purchase_enum_proto_goTypes = nil
-	file_enum_v3_purchase_enum_proto_depIdxs = nil
+	File_fesmu_enum_v3_purchase_enum_proto = out.File
+	file_fesmu_enum_v3_purchase_enum_proto_goTypes = nil
+	file_fesmu_enum_v3_purchase_enum_proto_depIdxs = nil
 }

@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+package contract.service.v1;
+
+import "google/protobuf/timestamp.proto";
+import "file/enum/file.enum.proto";
+
+option go_package = "service_v1;service_pb";
+
+// CertificateService combines two package services' responses (MDM's own
+// profile lookup, then the files service's document generation) behind one
+// call — the same shape as UserImportService. See
+// internal/service/packages/certificate.
+//
+// Every order lands in the certificate journal. A student orders for
+// themselves only; ordering for someone else, seeing the journal and
+// issuing need the rights certificate.issue / certificate.view (from MDM).
+service CertificateService {
+    rpc CertificateOrder (CertificateOrderRequest) returns (CertificateOrderResponse);
+    // The journal, newest first (certificate.view).
+    rpc CertificateFetch (CertificateFetchRequest) returns (CertificateFetchResponse);
+    // Mark an order issued and render its document again (certificate.issue).
+    rpc CertificateIssue (CertificateIssueRequest) returns (CertificateIssueResponse);
+}
+
+enum CertificateOrderStatus {
+    CERTIFICATE_ORDER_STATUS_UNSPECIFIED = 0;
+    CERTIFICATE_ORDER_STATUS_ORDERED = 1;
+    CERTIFICATE_ORDER_STATUS_ISSUED = 2;
+}
+
+message CertificateOrderEntry {
+    int64 id = 1;
+    int64 student_mdm_id = 2;
+    string student_name = 3;
+    contract.file.enum.FileGenerateType type = 4;
+    int32 copies = 5;
+    CertificateOrderStatus status = 6;
+    string ordered_by = 7;
+    google.protobuf.Timestamp created_at = 8;
+    string issued_by = 9;
+    optional google.protobuf.Timestamp issued_at = 10;
+}
+
+message CertificateFetchRequest {
+    // UNSPECIFIED — all.
+    CertificateOrderStatus status = 1;
+}
+
+message CertificateFetchResponse {
+    repeated CertificateOrderEntry orders = 1;
+}
+
+message CertificateIssueRequest {
+    int64 id = 1;
+}
+
+message CertificateIssueResponse {
+    CertificateOrderEntry order = 1;
+    string file_name = 2;
+    bytes content = 3;
+}
+
+message CertificateOrderRequest {
+    // The student; 0 — the caller. Someone else needs certificate.issue.
+    int64 user_id = 1;
+    contract.file.enum.FileGenerateType type = 2;
+    // How many copies the student needs. MDM/Files don't track this — it's
+    // carried through for the deanery's own paperwork; the document itself
+    // is still generated once per request.
+    int32 copies = 3;
+}
+
+message CertificateOrderResponse {
+    bool success = 1;
+    string message = 2;
+    string file_name = 3;
+    bytes content = 4;
+}

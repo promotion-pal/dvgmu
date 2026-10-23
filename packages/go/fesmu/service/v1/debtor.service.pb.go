@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: service/v1/debtor.service.proto
+// source: fesmu/service/v1/debtor.service.proto
 
 package servicev1
 
@@ -35,7 +35,7 @@ type DebtorFetchRequest struct {
 
 func (x *DebtorFetchRequest) Reset() {
 	*x = DebtorFetchRequest{}
-	mi := &file_service_v1_debtor_service_proto_msgTypes[0]
+	mi := &file_fesmu_service_v1_debtor_service_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -47,7 +47,7 @@ func (x *DebtorFetchRequest) String() string {
 func (*DebtorFetchRequest) ProtoMessage() {}
 
 func (x *DebtorFetchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_debtor_service_proto_msgTypes[0]
+	mi := &file_fesmu_service_v1_debtor_service_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -60,7 +60,7 @@ func (x *DebtorFetchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DebtorFetchRequest.ProtoReflect.Descriptor instead.
 func (*DebtorFetchRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_debtor_service_proto_rawDescGZIP(), []int{0}
+	return file_fesmu_service_v1_debtor_service_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *DebtorFetchRequest) GetDateFrom() string {
@@ -101,7 +101,7 @@ type DebtorFetchResponse struct {
 
 func (x *DebtorFetchResponse) Reset() {
 	*x = DebtorFetchResponse{}
-	mi := &file_service_v1_debtor_service_proto_msgTypes[1]
+	mi := &file_fesmu_service_v1_debtor_service_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -113,7 +113,7 @@ func (x *DebtorFetchResponse) String() string {
 func (*DebtorFetchResponse) ProtoMessage() {}
 
 func (x *DebtorFetchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_debtor_service_proto_msgTypes[1]
+	mi := &file_fesmu_service_v1_debtor_service_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -126,7 +126,7 @@ func (x *DebtorFetchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DebtorFetchResponse.ProtoReflect.Descriptor instead.
 func (*DebtorFetchResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_debtor_service_proto_rawDescGZIP(), []int{1}
+	return file_fesmu_service_v1_debtor_service_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *DebtorFetchResponse) GetDebtors() []*v1.Debtor {
@@ -196,7 +196,7 @@ type DebtorDiagnoseRequest struct {
 
 func (x *DebtorDiagnoseRequest) Reset() {
 	*x = DebtorDiagnoseRequest{}
-	mi := &file_service_v1_debtor_service_proto_msgTypes[2]
+	mi := &file_fesmu_service_v1_debtor_service_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -208,7 +208,7 @@ func (x *DebtorDiagnoseRequest) String() string {
 func (*DebtorDiagnoseRequest) ProtoMessage() {}
 
 func (x *DebtorDiagnoseRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_debtor_service_proto_msgTypes[2]
+	mi := &file_fesmu_service_v1_debtor_service_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -221,7 +221,7 @@ func (x *DebtorDiagnoseRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DebtorDiagnoseRequest.ProtoReflect.Descriptor instead.
 func (*DebtorDiagnoseRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_debtor_service_proto_rawDescGZIP(), []int{2}
+	return file_fesmu_service_v1_debtor_service_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *DebtorDiagnoseRequest) GetIncludeMetadata() bool {
@@ -241,7 +241,7 @@ type DebtorDiagnoseResponse struct {
 
 func (x *DebtorDiagnoseResponse) Reset() {
 	*x = DebtorDiagnoseResponse{}
-	mi := &file_service_v1_debtor_service_proto_msgTypes[3]
+	mi := &file_fesmu_service_v1_debtor_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -253,7 +253,7 @@ func (x *DebtorDiagnoseResponse) String() string {
 func (*DebtorDiagnoseResponse) ProtoMessage() {}
 
 func (x *DebtorDiagnoseResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_debtor_service_proto_msgTypes[3]
+	mi := &file_fesmu_service_v1_debtor_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -266,7 +266,7 @@ func (x *DebtorDiagnoseResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DebtorDiagnoseResponse.ProtoReflect.Descriptor instead.
 func (*DebtorDiagnoseResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_debtor_service_proto_rawDescGZIP(), []int{3}
+	return file_fesmu_service_v1_debtor_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *DebtorDiagnoseResponse) GetSections() []*DiagnoseSection {
@@ -297,7 +297,7 @@ type DiagnoseSection struct {
 
 func (x *DiagnoseSection) Reset() {
 	*x = DiagnoseSection{}
-	mi := &file_service_v1_debtor_service_proto_msgTypes[4]
+	mi := &file_fesmu_service_v1_debtor_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -309,7 +309,7 @@ func (x *DiagnoseSection) String() string {
 func (*DiagnoseSection) ProtoMessage() {}
 
 func (x *DiagnoseSection) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_debtor_service_proto_msgTypes[4]
+	mi := &file_fesmu_service_v1_debtor_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -322,7 +322,7 @@ func (x *DiagnoseSection) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DiagnoseSection.ProtoReflect.Descriptor instead.
 func (*DiagnoseSection) Descriptor() ([]byte, []int) {
-	return file_service_v1_debtor_service_proto_rawDescGZIP(), []int{4}
+	return file_fesmu_service_v1_debtor_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *DiagnoseSection) GetTitle() string {
@@ -362,7 +362,7 @@ type DiagnoseRow struct {
 
 func (x *DiagnoseRow) Reset() {
 	*x = DiagnoseRow{}
-	mi := &file_service_v1_debtor_service_proto_msgTypes[5]
+	mi := &file_fesmu_service_v1_debtor_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -374,7 +374,7 @@ func (x *DiagnoseRow) String() string {
 func (*DiagnoseRow) ProtoMessage() {}
 
 func (x *DiagnoseRow) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_debtor_service_proto_msgTypes[5]
+	mi := &file_fesmu_service_v1_debtor_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -387,7 +387,7 @@ func (x *DiagnoseRow) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DiagnoseRow.ProtoReflect.Descriptor instead.
 func (*DiagnoseRow) Descriptor() ([]byte, []int) {
-	return file_service_v1_debtor_service_proto_rawDescGZIP(), []int{5}
+	return file_fesmu_service_v1_debtor_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *DiagnoseRow) GetCells() []string {
@@ -407,7 +407,7 @@ type DebtorOperationsRequest struct {
 
 func (x *DebtorOperationsRequest) Reset() {
 	*x = DebtorOperationsRequest{}
-	mi := &file_service_v1_debtor_service_proto_msgTypes[6]
+	mi := &file_fesmu_service_v1_debtor_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -419,7 +419,7 @@ func (x *DebtorOperationsRequest) String() string {
 func (*DebtorOperationsRequest) ProtoMessage() {}
 
 func (x *DebtorOperationsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_debtor_service_proto_msgTypes[6]
+	mi := &file_fesmu_service_v1_debtor_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -432,7 +432,7 @@ func (x *DebtorOperationsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DebtorOperationsRequest.ProtoReflect.Descriptor instead.
 func (*DebtorOperationsRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_debtor_service_proto_rawDescGZIP(), []int{6}
+	return file_fesmu_service_v1_debtor_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *DebtorOperationsRequest) GetContractRef() string {
@@ -451,7 +451,7 @@ type DebtorOperationsResponse struct {
 
 func (x *DebtorOperationsResponse) Reset() {
 	*x = DebtorOperationsResponse{}
-	mi := &file_service_v1_debtor_service_proto_msgTypes[7]
+	mi := &file_fesmu_service_v1_debtor_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -463,7 +463,7 @@ func (x *DebtorOperationsResponse) String() string {
 func (*DebtorOperationsResponse) ProtoMessage() {}
 
 func (x *DebtorOperationsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_debtor_service_proto_msgTypes[7]
+	mi := &file_fesmu_service_v1_debtor_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -476,7 +476,7 @@ func (x *DebtorOperationsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DebtorOperationsResponse.ProtoReflect.Descriptor instead.
 func (*DebtorOperationsResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_debtor_service_proto_rawDescGZIP(), []int{7}
+	return file_fesmu_service_v1_debtor_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *DebtorOperationsResponse) GetOperations() []*v1.DebtorOperation {
@@ -486,11 +486,11 @@ func (x *DebtorOperationsResponse) GetOperations() []*v1.DebtorOperation {
 	return nil
 }
 
-var File_service_v1_debtor_service_proto protoreflect.FileDescriptor
+var File_fesmu_service_v1_debtor_service_proto protoreflect.FileDescriptor
 
-const file_service_v1_debtor_service_proto_rawDesc = "" +
+const file_fesmu_service_v1_debtor_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1fservice/v1/debtor.service.proto\x12\x13contract.service.v1\x1a\x1dentity/v1/debtor.entity.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"J\n" +
+	"%fesmu/service/v1/debtor.service.proto\x12\x13contract.service.v1\x1a#fesmu/entity/v1/debtor.entity.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"J\n" +
 	"\x12DebtorFetchRequest\x12\x1b\n" +
 	"\tdate_from\x18\x01 \x01(\tR\bdateFrom\x12\x17\n" +
 	"\adate_to\x18\x02 \x01(\tR\x06dateTo\"\xd5\x02\n" +
@@ -531,19 +531,19 @@ const file_service_v1_debtor_service_proto_rawDesc = "" +
 	"\x17com.contract.service.v1B\x12DebtorServiceProtoP\x01Z)fesmu/contract/fesmu/service/v1;servicev1\xa2\x02\x03CSX\xaa\x02\x13Contract.Service.V1\xca\x02\x13Contract\\Service\\V1\xe2\x02\x1fContract\\Service\\V1\\GPBMetadata\xea\x02\x15Contract::Service::V1b\x06proto3"
 
 var (
-	file_service_v1_debtor_service_proto_rawDescOnce sync.Once
-	file_service_v1_debtor_service_proto_rawDescData []byte
+	file_fesmu_service_v1_debtor_service_proto_rawDescOnce sync.Once
+	file_fesmu_service_v1_debtor_service_proto_rawDescData []byte
 )
 
-func file_service_v1_debtor_service_proto_rawDescGZIP() []byte {
-	file_service_v1_debtor_service_proto_rawDescOnce.Do(func() {
-		file_service_v1_debtor_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_service_v1_debtor_service_proto_rawDesc), len(file_service_v1_debtor_service_proto_rawDesc)))
+func file_fesmu_service_v1_debtor_service_proto_rawDescGZIP() []byte {
+	file_fesmu_service_v1_debtor_service_proto_rawDescOnce.Do(func() {
+		file_fesmu_service_v1_debtor_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_fesmu_service_v1_debtor_service_proto_rawDesc), len(file_fesmu_service_v1_debtor_service_proto_rawDesc)))
 	})
-	return file_service_v1_debtor_service_proto_rawDescData
+	return file_fesmu_service_v1_debtor_service_proto_rawDescData
 }
 
-var file_service_v1_debtor_service_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
-var file_service_v1_debtor_service_proto_goTypes = []any{
+var file_fesmu_service_v1_debtor_service_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_fesmu_service_v1_debtor_service_proto_goTypes = []any{
 	(*DebtorFetchRequest)(nil),       // 0: contract.service.v1.DebtorFetchRequest
 	(*DebtorFetchResponse)(nil),      // 1: contract.service.v1.DebtorFetchResponse
 	(*DebtorDiagnoseRequest)(nil),    // 2: contract.service.v1.DebtorDiagnoseRequest
@@ -556,7 +556,7 @@ var file_service_v1_debtor_service_proto_goTypes = []any{
 	(*timestamppb.Timestamp)(nil),    // 9: google.protobuf.Timestamp
 	(*v1.DebtorOperation)(nil),       // 10: contract.entity.v1.DebtorOperation
 }
-var file_service_v1_debtor_service_proto_depIdxs = []int32{
+var file_fesmu_service_v1_debtor_service_proto_depIdxs = []int32{
 	8,  // 0: contract.service.v1.DebtorFetchResponse.debtors:type_name -> contract.entity.v1.Debtor
 	9,  // 1: contract.service.v1.DebtorFetchResponse.fetched_at:type_name -> google.protobuf.Timestamp
 	4,  // 2: contract.service.v1.DebtorDiagnoseResponse.sections:type_name -> contract.service.v1.DiagnoseSection
@@ -576,26 +576,26 @@ var file_service_v1_debtor_service_proto_depIdxs = []int32{
 	0,  // [0:6] is the sub-list for field type_name
 }
 
-func init() { file_service_v1_debtor_service_proto_init() }
-func file_service_v1_debtor_service_proto_init() {
-	if File_service_v1_debtor_service_proto != nil {
+func init() { file_fesmu_service_v1_debtor_service_proto_init() }
+func file_fesmu_service_v1_debtor_service_proto_init() {
+	if File_fesmu_service_v1_debtor_service_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_service_v1_debtor_service_proto_rawDesc), len(file_service_v1_debtor_service_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_fesmu_service_v1_debtor_service_proto_rawDesc), len(file_fesmu_service_v1_debtor_service_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_service_v1_debtor_service_proto_goTypes,
-		DependencyIndexes: file_service_v1_debtor_service_proto_depIdxs,
-		MessageInfos:      file_service_v1_debtor_service_proto_msgTypes,
+		GoTypes:           file_fesmu_service_v1_debtor_service_proto_goTypes,
+		DependencyIndexes: file_fesmu_service_v1_debtor_service_proto_depIdxs,
+		MessageInfos:      file_fesmu_service_v1_debtor_service_proto_msgTypes,
 	}.Build()
-	File_service_v1_debtor_service_proto = out.File
-	file_service_v1_debtor_service_proto_goTypes = nil
-	file_service_v1_debtor_service_proto_depIdxs = nil
+	File_fesmu_service_v1_debtor_service_proto = out.File
+	file_fesmu_service_v1_debtor_service_proto_goTypes = nil
+	file_fesmu_service_v1_debtor_service_proto_depIdxs = nil
 }

@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: entity/v1/schedule.entity.proto
+// source: fesmu/entity/v1/schedule.entity.proto
 
 package entityv1
 
@@ -34,7 +34,7 @@ type ScheduleProgram struct {
 
 func (x *ScheduleProgram) Reset() {
 	*x = ScheduleProgram{}
-	mi := &file_entity_v1_schedule_entity_proto_msgTypes[0]
+	mi := &file_fesmu_entity_v1_schedule_entity_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -46,7 +46,7 @@ func (x *ScheduleProgram) String() string {
 func (*ScheduleProgram) ProtoMessage() {}
 
 func (x *ScheduleProgram) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v1_schedule_entity_proto_msgTypes[0]
+	mi := &file_fesmu_entity_v1_schedule_entity_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -59,7 +59,7 @@ func (x *ScheduleProgram) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ScheduleProgram.ProtoReflect.Descriptor instead.
 func (*ScheduleProgram) Descriptor() ([]byte, []int) {
-	return file_entity_v1_schedule_entity_proto_rawDescGZIP(), []int{0}
+	return file_fesmu_entity_v1_schedule_entity_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *ScheduleProgram) GetId() string {
@@ -94,7 +94,7 @@ type ScheduleSemester struct {
 
 func (x *ScheduleSemester) Reset() {
 	*x = ScheduleSemester{}
-	mi := &file_entity_v1_schedule_entity_proto_msgTypes[1]
+	mi := &file_fesmu_entity_v1_schedule_entity_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -106,7 +106,7 @@ func (x *ScheduleSemester) String() string {
 func (*ScheduleSemester) ProtoMessage() {}
 
 func (x *ScheduleSemester) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v1_schedule_entity_proto_msgTypes[1]
+	mi := &file_fesmu_entity_v1_schedule_entity_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -119,7 +119,7 @@ func (x *ScheduleSemester) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ScheduleSemester.ProtoReflect.Descriptor instead.
 func (*ScheduleSemester) Descriptor() ([]byte, []int) {
-	return file_entity_v1_schedule_entity_proto_rawDescGZIP(), []int{1}
+	return file_fesmu_entity_v1_schedule_entity_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *ScheduleSemester) GetLabel() string {
@@ -154,7 +154,7 @@ type ScheduleSubject struct {
 
 func (x *ScheduleSubject) Reset() {
 	*x = ScheduleSubject{}
-	mi := &file_entity_v1_schedule_entity_proto_msgTypes[2]
+	mi := &file_fesmu_entity_v1_schedule_entity_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -166,7 +166,7 @@ func (x *ScheduleSubject) String() string {
 func (*ScheduleSubject) ProtoMessage() {}
 
 func (x *ScheduleSubject) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v1_schedule_entity_proto_msgTypes[2]
+	mi := &file_fesmu_entity_v1_schedule_entity_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -179,7 +179,7 @@ func (x *ScheduleSubject) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ScheduleSubject.ProtoReflect.Descriptor instead.
 func (*ScheduleSubject) Descriptor() ([]byte, []int) {
-	return file_entity_v1_schedule_entity_proto_rawDescGZIP(), []int{2}
+	return file_fesmu_entity_v1_schedule_entity_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ScheduleSubject) GetId() string {
@@ -214,7 +214,7 @@ type ScheduleSlot struct {
 
 func (x *ScheduleSlot) Reset() {
 	*x = ScheduleSlot{}
-	mi := &file_entity_v1_schedule_entity_proto_msgTypes[3]
+	mi := &file_fesmu_entity_v1_schedule_entity_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -226,7 +226,7 @@ func (x *ScheduleSlot) String() string {
 func (*ScheduleSlot) ProtoMessage() {}
 
 func (x *ScheduleSlot) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v1_schedule_entity_proto_msgTypes[3]
+	mi := &file_fesmu_entity_v1_schedule_entity_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -239,7 +239,7 @@ func (x *ScheduleSlot) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ScheduleSlot.ProtoReflect.Descriptor instead.
 func (*ScheduleSlot) Descriptor() ([]byte, []int) {
-	return file_entity_v1_schedule_entity_proto_rawDescGZIP(), []int{3}
+	return file_fesmu_entity_v1_schedule_entity_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ScheduleSlot) GetId() string {
@@ -285,7 +285,7 @@ type ScheduleEntry struct {
 
 func (x *ScheduleEntry) Reset() {
 	*x = ScheduleEntry{}
-	mi := &file_entity_v1_schedule_entity_proto_msgTypes[4]
+	mi := &file_fesmu_entity_v1_schedule_entity_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -297,7 +297,7 @@ func (x *ScheduleEntry) String() string {
 func (*ScheduleEntry) ProtoMessage() {}
 
 func (x *ScheduleEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v1_schedule_entity_proto_msgTypes[4]
+	mi := &file_fesmu_entity_v1_schedule_entity_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -310,7 +310,7 @@ func (x *ScheduleEntry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ScheduleEntry.ProtoReflect.Descriptor instead.
 func (*ScheduleEntry) Descriptor() ([]byte, []int) {
-	return file_entity_v1_schedule_entity_proto_rawDescGZIP(), []int{4}
+	return file_fesmu_entity_v1_schedule_entity_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ScheduleEntry) GetId() string {
@@ -424,7 +424,7 @@ type SchedulePeriod struct {
 
 func (x *SchedulePeriod) Reset() {
 	*x = SchedulePeriod{}
-	mi := &file_entity_v1_schedule_entity_proto_msgTypes[5]
+	mi := &file_fesmu_entity_v1_schedule_entity_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -436,7 +436,7 @@ func (x *SchedulePeriod) String() string {
 func (*SchedulePeriod) ProtoMessage() {}
 
 func (x *SchedulePeriod) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v1_schedule_entity_proto_msgTypes[5]
+	mi := &file_fesmu_entity_v1_schedule_entity_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -449,7 +449,7 @@ func (x *SchedulePeriod) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SchedulePeriod.ProtoReflect.Descriptor instead.
 func (*SchedulePeriod) Descriptor() ([]byte, []int) {
-	return file_entity_v1_schedule_entity_proto_rawDescGZIP(), []int{5}
+	return file_fesmu_entity_v1_schedule_entity_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *SchedulePeriod) GetId() string {
@@ -510,7 +510,7 @@ type ScheduleLecture struct {
 
 func (x *ScheduleLecture) Reset() {
 	*x = ScheduleLecture{}
-	mi := &file_entity_v1_schedule_entity_proto_msgTypes[6]
+	mi := &file_fesmu_entity_v1_schedule_entity_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -522,7 +522,7 @@ func (x *ScheduleLecture) String() string {
 func (*ScheduleLecture) ProtoMessage() {}
 
 func (x *ScheduleLecture) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v1_schedule_entity_proto_msgTypes[6]
+	mi := &file_fesmu_entity_v1_schedule_entity_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -535,7 +535,7 @@ func (x *ScheduleLecture) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ScheduleLecture.ProtoReflect.Descriptor instead.
 func (*ScheduleLecture) Descriptor() ([]byte, []int) {
-	return file_entity_v1_schedule_entity_proto_rawDescGZIP(), []int{6}
+	return file_fesmu_entity_v1_schedule_entity_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *ScheduleLecture) GetId() string {
@@ -618,7 +618,7 @@ type ScheduleCycle struct {
 
 func (x *ScheduleCycle) Reset() {
 	*x = ScheduleCycle{}
-	mi := &file_entity_v1_schedule_entity_proto_msgTypes[7]
+	mi := &file_fesmu_entity_v1_schedule_entity_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -630,7 +630,7 @@ func (x *ScheduleCycle) String() string {
 func (*ScheduleCycle) ProtoMessage() {}
 
 func (x *ScheduleCycle) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v1_schedule_entity_proto_msgTypes[7]
+	mi := &file_fesmu_entity_v1_schedule_entity_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -643,7 +643,7 @@ func (x *ScheduleCycle) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ScheduleCycle.ProtoReflect.Descriptor instead.
 func (*ScheduleCycle) Descriptor() ([]byte, []int) {
-	return file_entity_v1_schedule_entity_proto_rawDescGZIP(), []int{7}
+	return file_fesmu_entity_v1_schedule_entity_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *ScheduleCycle) GetId() string {
@@ -720,7 +720,7 @@ type ScheduleTimetable struct {
 
 func (x *ScheduleTimetable) Reset() {
 	*x = ScheduleTimetable{}
-	mi := &file_entity_v1_schedule_entity_proto_msgTypes[8]
+	mi := &file_fesmu_entity_v1_schedule_entity_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -732,7 +732,7 @@ func (x *ScheduleTimetable) String() string {
 func (*ScheduleTimetable) ProtoMessage() {}
 
 func (x *ScheduleTimetable) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v1_schedule_entity_proto_msgTypes[8]
+	mi := &file_fesmu_entity_v1_schedule_entity_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -745,7 +745,7 @@ func (x *ScheduleTimetable) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ScheduleTimetable.ProtoReflect.Descriptor instead.
 func (*ScheduleTimetable) Descriptor() ([]byte, []int) {
-	return file_entity_v1_schedule_entity_proto_rawDescGZIP(), []int{8}
+	return file_fesmu_entity_v1_schedule_entity_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *ScheduleTimetable) GetId() string {
@@ -909,11 +909,11 @@ func (x *ScheduleTimetable) GetCycles() []*ScheduleCycle {
 	return nil
 }
 
-var File_entity_v1_schedule_entity_proto protoreflect.FileDescriptor
+var File_fesmu_entity_v1_schedule_entity_proto protoreflect.FileDescriptor
 
-const file_entity_v1_schedule_entity_proto_rawDesc = "" +
+const file_fesmu_entity_v1_schedule_entity_proto_rawDesc = "" +
 	"\n" +
-	"\x1fentity/v1/schedule.entity.proto\x12\x12contract.entity.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1benum/v1/schedule.enum.proto\"I\n" +
+	"%fesmu/entity/v1/schedule.entity.proto\x12\x12contract.entity.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a!fesmu/enum/v1/schedule.enum.proto\"I\n" +
 	"\x0fScheduleProgram\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04code\x18\x02 \x01(\tR\x04code\x12\x12\n" +
@@ -1004,19 +1004,19 @@ const file_entity_v1_schedule_entity_proto_rawDesc = "" +
 	"\x16com.contract.entity.v1B\x13ScheduleEntityProtoP\x01Z'fesmu/contract/fesmu/entity/v1;entityv1\xa2\x02\x03CEX\xaa\x02\x12Contract.Entity.V1\xca\x02\x12Contract\\Entity\\V1\xe2\x02\x1eContract\\Entity\\V1\\GPBMetadata\xea\x02\x14Contract::Entity::V1b\x06proto3"
 
 var (
-	file_entity_v1_schedule_entity_proto_rawDescOnce sync.Once
-	file_entity_v1_schedule_entity_proto_rawDescData []byte
+	file_fesmu_entity_v1_schedule_entity_proto_rawDescOnce sync.Once
+	file_fesmu_entity_v1_schedule_entity_proto_rawDescData []byte
 )
 
-func file_entity_v1_schedule_entity_proto_rawDescGZIP() []byte {
-	file_entity_v1_schedule_entity_proto_rawDescOnce.Do(func() {
-		file_entity_v1_schedule_entity_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_entity_v1_schedule_entity_proto_rawDesc), len(file_entity_v1_schedule_entity_proto_rawDesc)))
+func file_fesmu_entity_v1_schedule_entity_proto_rawDescGZIP() []byte {
+	file_fesmu_entity_v1_schedule_entity_proto_rawDescOnce.Do(func() {
+		file_fesmu_entity_v1_schedule_entity_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_fesmu_entity_v1_schedule_entity_proto_rawDesc), len(file_fesmu_entity_v1_schedule_entity_proto_rawDesc)))
 	})
-	return file_entity_v1_schedule_entity_proto_rawDescData
+	return file_fesmu_entity_v1_schedule_entity_proto_rawDescData
 }
 
-var file_entity_v1_schedule_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
-var file_entity_v1_schedule_entity_proto_goTypes = []any{
+var file_fesmu_entity_v1_schedule_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_fesmu_entity_v1_schedule_entity_proto_goTypes = []any{
 	(*ScheduleProgram)(nil),       // 0: contract.entity.v1.ScheduleProgram
 	(*ScheduleSemester)(nil),      // 1: contract.entity.v1.ScheduleSemester
 	(*ScheduleSubject)(nil),       // 2: contract.entity.v1.ScheduleSubject
@@ -1032,7 +1032,7 @@ var file_entity_v1_schedule_entity_proto_goTypes = []any{
 	(*timestamppb.Timestamp)(nil), // 12: google.protobuf.Timestamp
 	(v1.ScheduleFormat)(0),        // 13: contract.enum.v1.ScheduleFormat
 }
-var file_entity_v1_schedule_entity_proto_depIdxs = []int32{
+var file_fesmu_entity_v1_schedule_entity_proto_depIdxs = []int32{
 	9,  // 0: contract.entity.v1.ScheduleEntry.kind:type_name -> contract.enum.v1.ScheduleEntryKind
 	10, // 1: contract.entity.v1.ScheduleEntry.weeks:type_name -> contract.enum.v1.ScheduleWeeks
 	11, // 2: contract.entity.v1.SchedulePeriod.kind:type_name -> contract.enum.v1.SchedulePeriodKind
@@ -1054,26 +1054,26 @@ var file_entity_v1_schedule_entity_proto_depIdxs = []int32{
 	0,  // [0:14] is the sub-list for field type_name
 }
 
-func init() { file_entity_v1_schedule_entity_proto_init() }
-func file_entity_v1_schedule_entity_proto_init() {
-	if File_entity_v1_schedule_entity_proto != nil {
+func init() { file_fesmu_entity_v1_schedule_entity_proto_init() }
+func file_fesmu_entity_v1_schedule_entity_proto_init() {
+	if File_fesmu_entity_v1_schedule_entity_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_entity_v1_schedule_entity_proto_rawDesc), len(file_entity_v1_schedule_entity_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_fesmu_entity_v1_schedule_entity_proto_rawDesc), len(file_fesmu_entity_v1_schedule_entity_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_entity_v1_schedule_entity_proto_goTypes,
-		DependencyIndexes: file_entity_v1_schedule_entity_proto_depIdxs,
-		MessageInfos:      file_entity_v1_schedule_entity_proto_msgTypes,
+		GoTypes:           file_fesmu_entity_v1_schedule_entity_proto_goTypes,
+		DependencyIndexes: file_fesmu_entity_v1_schedule_entity_proto_depIdxs,
+		MessageInfos:      file_fesmu_entity_v1_schedule_entity_proto_msgTypes,
 	}.Build()
-	File_entity_v1_schedule_entity_proto = out.File
-	file_entity_v1_schedule_entity_proto_goTypes = nil
-	file_entity_v1_schedule_entity_proto_depIdxs = nil
+	File_fesmu_entity_v1_schedule_entity_proto = out.File
+	file_fesmu_entity_v1_schedule_entity_proto_goTypes = nil
+	file_fesmu_entity_v1_schedule_entity_proto_depIdxs = nil
 }

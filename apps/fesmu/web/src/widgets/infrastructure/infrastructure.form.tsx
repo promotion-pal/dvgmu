@@ -1,5 +1,5 @@
 import { promAllowedPatternNaturalNumbers, PromFieldInput, PromFieldSelect, PromFieldTextArea } from "@/features/lib/form";
-import { LocationCommonType } from "@fesmu/contract/enum/v1/location.enum_pb";
+import { LocationCommonType } from "@fesmu/contract/fesmu/enum/v1/location.enum_pb";
 import type { FC } from "react";
 import { useEffect, useMemo } from "react";
 import { FormProvider } from "react-hook-form";

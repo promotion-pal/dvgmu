@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: entity/analytic.entity.proto
+// source: analytics/entity/analytic.entity.proto
 
 package entity
 
@@ -39,7 +39,7 @@ type Analytic struct {
 
 func (x *Analytic) Reset() {
 	*x = Analytic{}
-	mi := &file_entity_analytic_entity_proto_msgTypes[0]
+	mi := &file_analytics_entity_analytic_entity_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -51,7 +51,7 @@ func (x *Analytic) String() string {
 func (*Analytic) ProtoMessage() {}
 
 func (x *Analytic) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_analytic_entity_proto_msgTypes[0]
+	mi := &file_analytics_entity_analytic_entity_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -64,7 +64,7 @@ func (x *Analytic) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Analytic.ProtoReflect.Descriptor instead.
 func (*Analytic) Descriptor() ([]byte, []int) {
-	return file_entity_analytic_entity_proto_rawDescGZIP(), []int{0}
+	return file_analytics_entity_analytic_entity_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Analytic) GetId() int64 {
@@ -191,7 +191,7 @@ type AnalyticRating struct {
 
 func (x *AnalyticRating) Reset() {
 	*x = AnalyticRating{}
-	mi := &file_entity_analytic_entity_proto_msgTypes[1]
+	mi := &file_analytics_entity_analytic_entity_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -203,7 +203,7 @@ func (x *AnalyticRating) String() string {
 func (*AnalyticRating) ProtoMessage() {}
 
 func (x *AnalyticRating) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_analytic_entity_proto_msgTypes[1]
+	mi := &file_analytics_entity_analytic_entity_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -216,7 +216,7 @@ func (x *AnalyticRating) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AnalyticRating.ProtoReflect.Descriptor instead.
 func (*AnalyticRating) Descriptor() ([]byte, []int) {
-	return file_entity_analytic_entity_proto_rawDescGZIP(), []int{1}
+	return file_analytics_entity_analytic_entity_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *AnalyticRating) GetId() int64 {
@@ -590,11 +590,11 @@ func (x *AnalyticRating) GetCleanliness() int32 {
 	return 0
 }
 
-var File_entity_analytic_entity_proto protoreflect.FileDescriptor
+var File_analytics_entity_analytic_entity_proto protoreflect.FileDescriptor
 
-const file_entity_analytic_entity_proto_rawDesc = "" +
+const file_analytics_entity_analytic_entity_proto_rawDesc = "" +
 	"\n" +
-	"\x1centity/analytic.entity.proto\x12\x19contract.analytics.entity\x1a\x18enum/analytic.enum.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xd4\x02\n" +
+	"&analytics/entity/analytic.entity.proto\x12\x19contract.analytics.entity\x1a\"analytics/enum/analytic.enum.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xd4\x02\n" +
 	"\bAnalytic\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x0e\n" +
 	"\x02qr\x18\x02 \x01(\x03R\x02qr\x12\x12\n" +
@@ -669,19 +669,19 @@ const file_entity_analytic_entity_proto_rawDesc = "" +
 	"\x1dcom.contract.analytics.entityB\x13AnalyticEntityProtoP\x01Z\x1ffesmu/contract/analytics/entity\xa2\x02\x03CAE\xaa\x02\x19Contract.Analytics.Entity\xca\x02\x19Contract\\Analytics\\Entity\xe2\x02%Contract\\Analytics\\Entity\\GPBMetadata\xea\x02\x1bContract::Analytics::Entityb\x06proto3"
 
 var (
-	file_entity_analytic_entity_proto_rawDescOnce sync.Once
-	file_entity_analytic_entity_proto_rawDescData []byte
+	file_analytics_entity_analytic_entity_proto_rawDescOnce sync.Once
+	file_analytics_entity_analytic_entity_proto_rawDescData []byte
 )
 
-func file_entity_analytic_entity_proto_rawDescGZIP() []byte {
-	file_entity_analytic_entity_proto_rawDescOnce.Do(func() {
-		file_entity_analytic_entity_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_entity_analytic_entity_proto_rawDesc), len(file_entity_analytic_entity_proto_rawDesc)))
+func file_analytics_entity_analytic_entity_proto_rawDescGZIP() []byte {
+	file_analytics_entity_analytic_entity_proto_rawDescOnce.Do(func() {
+		file_analytics_entity_analytic_entity_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_analytics_entity_analytic_entity_proto_rawDesc), len(file_analytics_entity_analytic_entity_proto_rawDesc)))
 	})
-	return file_entity_analytic_entity_proto_rawDescData
+	return file_analytics_entity_analytic_entity_proto_rawDescData
 }
 
-var file_entity_analytic_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_entity_analytic_entity_proto_goTypes = []any{
+var file_analytics_entity_analytic_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_analytics_entity_analytic_entity_proto_goTypes = []any{
 	(*Analytic)(nil),                      // 0: contract.analytics.entity.Analytic
 	(*AnalyticRating)(nil),                // 1: contract.analytics.entity.AnalyticRating
 	(enum.AnalyticType)(0),                // 2: contract.analytics.enum.AnalyticType
@@ -690,7 +690,7 @@ var file_entity_analytic_entity_proto_goTypes = []any{
 	(enum.InformationSecurityResource)(0), // 5: contract.analytics.enum.InformationSecurityResource
 	(enum.InformationSecurityOs)(0),       // 6: contract.analytics.enum.InformationSecurityOs
 }
-var file_entity_analytic_entity_proto_depIdxs = []int32{
+var file_analytics_entity_analytic_entity_proto_depIdxs = []int32{
 	2, // 0: contract.analytics.entity.Analytic.type:type_name -> contract.analytics.enum.AnalyticType
 	1, // 1: contract.analytics.entity.Analytic.ratings:type_name -> contract.analytics.entity.AnalyticRating
 	3, // 2: contract.analytics.entity.Analytic.created_at:type_name -> google.protobuf.Timestamp
@@ -707,26 +707,26 @@ var file_entity_analytic_entity_proto_depIdxs = []int32{
 	0, // [0:9] is the sub-list for field type_name
 }
 
-func init() { file_entity_analytic_entity_proto_init() }
-func file_entity_analytic_entity_proto_init() {
-	if File_entity_analytic_entity_proto != nil {
+func init() { file_analytics_entity_analytic_entity_proto_init() }
+func file_analytics_entity_analytic_entity_proto_init() {
+	if File_analytics_entity_analytic_entity_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_entity_analytic_entity_proto_rawDesc), len(file_entity_analytic_entity_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_analytics_entity_analytic_entity_proto_rawDesc), len(file_analytics_entity_analytic_entity_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_entity_analytic_entity_proto_goTypes,
-		DependencyIndexes: file_entity_analytic_entity_proto_depIdxs,
-		MessageInfos:      file_entity_analytic_entity_proto_msgTypes,
+		GoTypes:           file_analytics_entity_analytic_entity_proto_goTypes,
+		DependencyIndexes: file_analytics_entity_analytic_entity_proto_depIdxs,
+		MessageInfos:      file_analytics_entity_analytic_entity_proto_msgTypes,
 	}.Build()
-	File_entity_analytic_entity_proto = out.File
-	file_entity_analytic_entity_proto_goTypes = nil
-	file_entity_analytic_entity_proto_depIdxs = nil
+	File_analytics_entity_analytic_entity_proto = out.File
+	file_analytics_entity_analytic_entity_proto_goTypes = nil
+	file_analytics_entity_analytic_entity_proto_depIdxs = nil
 }

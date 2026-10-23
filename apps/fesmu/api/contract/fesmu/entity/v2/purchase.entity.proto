@@ -1,0 +1,188 @@
+syntax = "proto3";
+
+package contract.entity.v2;
+
+import "google/protobuf/timestamp.proto";
+import "fesmu/enum/v2/purchase.enum.proto";
+
+option go_package = "entity_v2;entity_pb";
+
+// Money is in kopecks throughout, so sums never pick up float errors.
+
+// Who performs a call. The page's "view as" switch picks the role; the name
+// is the signed-in user's when there is one.
+message PurchaseActor {
+  contract.enum.v2.PurchaseActorRole role = 1;
+  string name = 2;
+  // The vice-rector acting; 0 for other roles.
+  int64 curator_id = 3;
+}
+
+// A vice-rector who curates purchases.
+message PurchaseCurator {
+  int64 id = 1;
+  string name = 2;
+  string position = 3;
+  // The portal user who is this vice-rector (MDM uuid); empty until bound.
+  string user_uuid = 4;
+  string user_name = 5;
+}
+
+// A department (MDM UserEmployeeDepartment) and the vice-rector over it.
+message PurchaseDepartment {
+  int32 department = 1;
+  string name = 2;
+  // 0 until the administrator assigns one.
+  int64 curator_id = 3;
+}
+
+// What kind of purchase an ОКПД2 prefix is, and which department carries
+// such purchases out.
+message PurchaseCategory {
+  int64 id = 1;
+  string name = 2;
+  string okpd2_prefix = 3;
+  int32 department = 4;
+}
+
+// The signed-in user as the purchase flow sees them.
+message PurchaseMe {
+  string uuid = 1;
+  string name = 2;
+  // MDM department; 0 when the profile has none.
+  int32 department = 3;
+  // The vice-rector bound to this user; 0 if none.
+  int64 curator_id = 4;
+  bool admin = 5;
+}
+
+// A person who may be given a purchase to prepare.
+message PurchaseEmployee {
+  string uuid = 1;
+  string name = 2;
+  int32 department = 3;
+}
+
+// The latest sign-off of a stage: shown to the next stage as "who approved".
+message PurchaseApproval {
+  contract.enum.v2.PurchaseActorRole role = 1;
+  string name = 2;
+  string comment = 3;
+  google.protobuf.Timestamp at = 4;
+}
+
+message PurchaseLog {
+  int64 id = 1;
+  contract.enum.v2.PurchaseLogTarget target = 2;
+  int64 target_id = 3;
+  contract.enum.v2.PurchaseActorRole actor_role = 4;
+  string actor_name = 5;
+  string action = 6;
+  // What happened, in words.
+  string text = 7;
+  string comment = 8;
+  google.protobuf.Timestamp created_at = 9;
+}
+
+message PurchaseRequest {
+  int64 id = 1;
+  string title = 2;
+  double quantity = 3;
+  string unit = 4;
+  string description = 5;
+  string department = 6;
+  // Chosen by the department head; 0 until then.
+  int64 curator_id = 7;
+  contract.enum.v2.PurchaseRequestStatus status = 8;
+  string author_name = 9;
+  // The purchase it was merged into; 0 while it is not in one.
+  int64 lot_id = 10;
+  repeated PurchaseApproval approvals = 11;
+  // The comment of the last return or rejection.
+  string last_comment = 12;
+  repeated PurchaseLog logs = 13;
+  google.protobuf.Timestamp created_at = 14;
+  google.protobuf.Timestamp updated_at = 15;
+  contract.enum.v2.PurchaseItemType item_type = 16;
+  // The request the department head merged this one into; 0 if none.
+  int64 merged_into_id = 17;
+  // The author's department (MDM) — whose head reviews it.
+  int32 department_id = 18;
+  // The department that carries the purchase out; 0 until the vice-rector sends it there.
+  int32 implementing_department = 19;
+  // The implementing department the title suggests (by category); 0 if none.
+  int32 suggested_department = 20;
+  string author_uuid = 21;
+}
+
+// A commercial offer (КП) the vice-rector attaches to price a purchase.
+message PurchaseQuotation {
+  int64 id = 1;
+  int64 lot_id = 2;
+  string supplier = 3;
+  int64 unit_price = 4;
+  string note = 5;
+  string file_name = 6;
+  int64 file_size = 7;
+  string created_by = 8;
+  google.protobuf.Timestamp created_at = 9;
+}
+
+message PurchaseLot {
+  int64 id = 1;
+  string title = 2;
+  string description = 3;
+  int64 curator_id = 4;
+  contract.enum.v2.PurchaseLotStatus status = 5;
+  double quantity = 6;
+  string unit = 7;
+  // The vice-rector's explanation for the budget commission.
+  string comment = 8;
+
+  string okpd2 = 9;
+  string ktru = 10;
+  string okved = 11;
+  // The codes were filled from the title and nobody has checked them yet.
+  bool codes_auto = 12;
+  contract.enum.v2.PurchaseFundingSource funding_source = 13;
+  string kosgu = 14;
+  string economist_comment = 15;
+
+  contract.enum.v2.PurchasePlanType plan_type = 16;
+  int32 plan_year = 17;
+  string commission_comment = 18;
+
+  // Priced by the offers: the average unit price, the lowest, and the
+  // purchase's amount — the economist's НМЦК once set, average × quantity
+  // until then.
+  int64 unit_price = 19;
+  int64 min_unit_price = 20;
+  int64 total_amount = 21;
+
+  repeated int64 request_ids = 22;
+  repeated PurchaseQuotation quotations = 23;
+  repeated PurchaseApproval approvals = 24;
+  string last_comment = 25;
+  repeated PurchaseLog logs = 26;
+  string created_by = 27;
+  google.protobuf.Timestamp created_at = 28;
+  google.protobuf.Timestamp updated_at = 29;
+  contract.enum.v2.PurchaseItemType item_type = 30;
+  // НМЦК the economist entered; 0 until then.
+  int64 nmck = 31;
+  // Average offer price × quantity: the economist's starting point.
+  int64 calc_amount = 32;
+  int32 implementing_department = 33;
+  // Who prepares the specification and offers; empty until assigned.
+  string assignee_uuid = 34;
+  string assignee_name = 35;
+}
+
+message PurchaseCodeSuggestion {
+  bool found = 1;
+  string okpd2 = 2;
+  string ktru = 3;
+  string okved = 4;
+  // The classifier's name for what was matched.
+  string name = 5;
+}

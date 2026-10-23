@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: entity/v1/test.entity.proto
+// source: fesmu/entity/v1/test.entity.proto
 
 package entityv1
 
@@ -42,7 +42,7 @@ type Test struct {
 
 func (x *Test) Reset() {
 	*x = Test{}
-	mi := &file_entity_v1_test_entity_proto_msgTypes[0]
+	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -54,7 +54,7 @@ func (x *Test) String() string {
 func (*Test) ProtoMessage() {}
 
 func (x *Test) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v1_test_entity_proto_msgTypes[0]
+	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -67,7 +67,7 @@ func (x *Test) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Test.ProtoReflect.Descriptor instead.
 func (*Test) Descriptor() ([]byte, []int) {
-	return file_entity_v1_test_entity_proto_rawDescGZIP(), []int{0}
+	return file_fesmu_entity_v1_test_entity_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Test) GetId() int64 {
@@ -156,7 +156,7 @@ type TestQuestion struct {
 
 func (x *TestQuestion) Reset() {
 	*x = TestQuestion{}
-	mi := &file_entity_v1_test_entity_proto_msgTypes[1]
+	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -168,7 +168,7 @@ func (x *TestQuestion) String() string {
 func (*TestQuestion) ProtoMessage() {}
 
 func (x *TestQuestion) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v1_test_entity_proto_msgTypes[1]
+	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -181,7 +181,7 @@ func (x *TestQuestion) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestQuestion.ProtoReflect.Descriptor instead.
 func (*TestQuestion) Descriptor() ([]byte, []int) {
-	return file_entity_v1_test_entity_proto_rawDescGZIP(), []int{1}
+	return file_fesmu_entity_v1_test_entity_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *TestQuestion) GetId() int64 {
@@ -237,7 +237,7 @@ type TestAnswer struct {
 
 func (x *TestAnswer) Reset() {
 	*x = TestAnswer{}
-	mi := &file_entity_v1_test_entity_proto_msgTypes[2]
+	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -249,7 +249,7 @@ func (x *TestAnswer) String() string {
 func (*TestAnswer) ProtoMessage() {}
 
 func (x *TestAnswer) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v1_test_entity_proto_msgTypes[2]
+	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -262,7 +262,7 @@ func (x *TestAnswer) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestAnswer.ProtoReflect.Descriptor instead.
 func (*TestAnswer) Descriptor() ([]byte, []int) {
-	return file_entity_v1_test_entity_proto_rawDescGZIP(), []int{2}
+	return file_fesmu_entity_v1_test_entity_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *TestAnswer) GetId() int64 {
@@ -327,7 +327,7 @@ type TestSession struct {
 
 func (x *TestSession) Reset() {
 	*x = TestSession{}
-	mi := &file_entity_v1_test_entity_proto_msgTypes[3]
+	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -339,7 +339,7 @@ func (x *TestSession) String() string {
 func (*TestSession) ProtoMessage() {}
 
 func (x *TestSession) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v1_test_entity_proto_msgTypes[3]
+	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -352,7 +352,7 @@ func (x *TestSession) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestSession.ProtoReflect.Descriptor instead.
 func (*TestSession) Descriptor() ([]byte, []int) {
-	return file_entity_v1_test_entity_proto_rawDescGZIP(), []int{3}
+	return file_fesmu_entity_v1_test_entity_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *TestSession) GetId() int64 {
@@ -510,7 +510,7 @@ type TestAttempt struct {
 
 func (x *TestAttempt) Reset() {
 	*x = TestAttempt{}
-	mi := &file_entity_v1_test_entity_proto_msgTypes[4]
+	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -522,7 +522,7 @@ func (x *TestAttempt) String() string {
 func (*TestAttempt) ProtoMessage() {}
 
 func (x *TestAttempt) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v1_test_entity_proto_msgTypes[4]
+	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -535,7 +535,7 @@ func (x *TestAttempt) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestAttempt.ProtoReflect.Descriptor instead.
 func (*TestAttempt) Descriptor() ([]byte, []int) {
-	return file_entity_v1_test_entity_proto_rawDescGZIP(), []int{4}
+	return file_fesmu_entity_v1_test_entity_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *TestAttempt) GetId() int64 {
@@ -627,7 +627,7 @@ type TestAttemptAnswer struct {
 
 func (x *TestAttemptAnswer) Reset() {
 	*x = TestAttemptAnswer{}
-	mi := &file_entity_v1_test_entity_proto_msgTypes[5]
+	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -639,7 +639,7 @@ func (x *TestAttemptAnswer) String() string {
 func (*TestAttemptAnswer) ProtoMessage() {}
 
 func (x *TestAttemptAnswer) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v1_test_entity_proto_msgTypes[5]
+	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -652,7 +652,7 @@ func (x *TestAttemptAnswer) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestAttemptAnswer.ProtoReflect.Descriptor instead.
 func (*TestAttemptAnswer) Descriptor() ([]byte, []int) {
-	return file_entity_v1_test_entity_proto_rawDescGZIP(), []int{5}
+	return file_fesmu_entity_v1_test_entity_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *TestAttemptAnswer) GetQuestionId() int64 {
@@ -694,7 +694,7 @@ type TestTakeQuestion struct {
 
 func (x *TestTakeQuestion) Reset() {
 	*x = TestTakeQuestion{}
-	mi := &file_entity_v1_test_entity_proto_msgTypes[6]
+	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -706,7 +706,7 @@ func (x *TestTakeQuestion) String() string {
 func (*TestTakeQuestion) ProtoMessage() {}
 
 func (x *TestTakeQuestion) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v1_test_entity_proto_msgTypes[6]
+	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -719,7 +719,7 @@ func (x *TestTakeQuestion) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestTakeQuestion.ProtoReflect.Descriptor instead.
 func (*TestTakeQuestion) Descriptor() ([]byte, []int) {
-	return file_entity_v1_test_entity_proto_rawDescGZIP(), []int{6}
+	return file_fesmu_entity_v1_test_entity_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *TestTakeQuestion) GetId() int64 {
@@ -781,7 +781,7 @@ type TestTakeAnswer struct {
 
 func (x *TestTakeAnswer) Reset() {
 	*x = TestTakeAnswer{}
-	mi := &file_entity_v1_test_entity_proto_msgTypes[7]
+	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -793,7 +793,7 @@ func (x *TestTakeAnswer) String() string {
 func (*TestTakeAnswer) ProtoMessage() {}
 
 func (x *TestTakeAnswer) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v1_test_entity_proto_msgTypes[7]
+	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -806,7 +806,7 @@ func (x *TestTakeAnswer) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestTakeAnswer.ProtoReflect.Descriptor instead.
 func (*TestTakeAnswer) Descriptor() ([]byte, []int) {
-	return file_entity_v1_test_entity_proto_rawDescGZIP(), []int{7}
+	return file_fesmu_entity_v1_test_entity_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *TestTakeAnswer) GetId() int64 {
@@ -823,11 +823,11 @@ func (x *TestTakeAnswer) GetText() string {
 	return ""
 }
 
-var File_entity_v1_test_entity_proto protoreflect.FileDescriptor
+var File_fesmu_entity_v1_test_entity_proto protoreflect.FileDescriptor
 
-const file_entity_v1_test_entity_proto_rawDesc = "" +
+const file_fesmu_entity_v1_test_entity_proto_rawDesc = "" +
 	"\n" +
-	"\x1bentity/v1/test.entity.proto\x12\x12contract.entity.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17enum/v1/test.enum.proto\"\xc6\x03\n" +
+	"!fesmu/entity/v1/test.entity.proto\x12\x12contract.entity.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1dfesmu/enum/v1/test.enum.proto\"\xc6\x03\n" +
 	"\x04Test\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x14\n" +
 	"\x05topic\x18\x02 \x01(\tR\x05topic\x12 \n" +
@@ -923,19 +923,19 @@ const file_entity_v1_test_entity_proto_rawDesc = "" +
 	"\x16com.contract.entity.v1B\x0fTestEntityProtoP\x01Z'fesmu/contract/fesmu/entity/v1;entityv1\xa2\x02\x03CEX\xaa\x02\x12Contract.Entity.V1\xca\x02\x12Contract\\Entity\\V1\xe2\x02\x1eContract\\Entity\\V1\\GPBMetadata\xea\x02\x14Contract::Entity::V1b\x06proto3"
 
 var (
-	file_entity_v1_test_entity_proto_rawDescOnce sync.Once
-	file_entity_v1_test_entity_proto_rawDescData []byte
+	file_fesmu_entity_v1_test_entity_proto_rawDescOnce sync.Once
+	file_fesmu_entity_v1_test_entity_proto_rawDescData []byte
 )
 
-func file_entity_v1_test_entity_proto_rawDescGZIP() []byte {
-	file_entity_v1_test_entity_proto_rawDescOnce.Do(func() {
-		file_entity_v1_test_entity_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_entity_v1_test_entity_proto_rawDesc), len(file_entity_v1_test_entity_proto_rawDesc)))
+func file_fesmu_entity_v1_test_entity_proto_rawDescGZIP() []byte {
+	file_fesmu_entity_v1_test_entity_proto_rawDescOnce.Do(func() {
+		file_fesmu_entity_v1_test_entity_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_fesmu_entity_v1_test_entity_proto_rawDesc), len(file_fesmu_entity_v1_test_entity_proto_rawDesc)))
 	})
-	return file_entity_v1_test_entity_proto_rawDescData
+	return file_fesmu_entity_v1_test_entity_proto_rawDescData
 }
 
-var file_entity_v1_test_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
-var file_entity_v1_test_entity_proto_goTypes = []any{
+var file_fesmu_entity_v1_test_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_fesmu_entity_v1_test_entity_proto_goTypes = []any{
 	(*Test)(nil),                  // 0: contract.entity.v1.Test
 	(*TestQuestion)(nil),          // 1: contract.entity.v1.TestQuestion
 	(*TestAnswer)(nil),            // 2: contract.entity.v1.TestAnswer
@@ -949,7 +949,7 @@ var file_entity_v1_test_entity_proto_goTypes = []any{
 	(*timestamppb.Timestamp)(nil), // 10: google.protobuf.Timestamp
 	(v1.TestAttemptStatus)(0),     // 11: contract.enum.v1.TestAttemptStatus
 }
-var file_entity_v1_test_entity_proto_depIdxs = []int32{
+var file_fesmu_entity_v1_test_entity_proto_depIdxs = []int32{
 	8,  // 0: contract.entity.v1.Test.export_status:type_name -> contract.enum.v1.TestExportStatus
 	9,  // 1: contract.entity.v1.Test.version:type_name -> contract.enum.v1.TestVersion
 	1,  // 2: contract.entity.v1.Test.questions:type_name -> contract.entity.v1.TestQuestion
@@ -973,26 +973,26 @@ var file_entity_v1_test_entity_proto_depIdxs = []int32{
 	0,  // [0:16] is the sub-list for field type_name
 }
 
-func init() { file_entity_v1_test_entity_proto_init() }
-func file_entity_v1_test_entity_proto_init() {
-	if File_entity_v1_test_entity_proto != nil {
+func init() { file_fesmu_entity_v1_test_entity_proto_init() }
+func file_fesmu_entity_v1_test_entity_proto_init() {
+	if File_fesmu_entity_v1_test_entity_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_entity_v1_test_entity_proto_rawDesc), len(file_entity_v1_test_entity_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_fesmu_entity_v1_test_entity_proto_rawDesc), len(file_fesmu_entity_v1_test_entity_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_entity_v1_test_entity_proto_goTypes,
-		DependencyIndexes: file_entity_v1_test_entity_proto_depIdxs,
-		MessageInfos:      file_entity_v1_test_entity_proto_msgTypes,
+		GoTypes:           file_fesmu_entity_v1_test_entity_proto_goTypes,
+		DependencyIndexes: file_fesmu_entity_v1_test_entity_proto_depIdxs,
+		MessageInfos:      file_fesmu_entity_v1_test_entity_proto_msgTypes,
 	}.Build()
-	File_entity_v1_test_entity_proto = out.File
-	file_entity_v1_test_entity_proto_goTypes = nil
-	file_entity_v1_test_entity_proto_depIdxs = nil
+	File_fesmu_entity_v1_test_entity_proto = out.File
+	file_fesmu_entity_v1_test_entity_proto_goTypes = nil
+	file_fesmu_entity_v1_test_entity_proto_depIdxs = nil
 }

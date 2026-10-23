@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: entity/v3/purchase.entity.proto
+// source: fesmu/entity/v3/purchase.entity.proto
 
 package entityv3
 
@@ -45,7 +45,7 @@ type PurchaseMe struct {
 
 func (x *PurchaseMe) Reset() {
 	*x = PurchaseMe{}
-	mi := &file_entity_v3_purchase_entity_proto_msgTypes[0]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -57,7 +57,7 @@ func (x *PurchaseMe) String() string {
 func (*PurchaseMe) ProtoMessage() {}
 
 func (x *PurchaseMe) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v3_purchase_entity_proto_msgTypes[0]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -70,7 +70,7 @@ func (x *PurchaseMe) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseMe.ProtoReflect.Descriptor instead.
 func (*PurchaseMe) Descriptor() ([]byte, []int) {
-	return file_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{0}
+	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *PurchaseMe) GetUuid() string {
@@ -144,7 +144,7 @@ type PurchaseCurator struct {
 
 func (x *PurchaseCurator) Reset() {
 	*x = PurchaseCurator{}
-	mi := &file_entity_v3_purchase_entity_proto_msgTypes[1]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -156,7 +156,7 @@ func (x *PurchaseCurator) String() string {
 func (*PurchaseCurator) ProtoMessage() {}
 
 func (x *PurchaseCurator) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v3_purchase_entity_proto_msgTypes[1]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -169,7 +169,7 @@ func (x *PurchaseCurator) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseCurator.ProtoReflect.Descriptor instead.
 func (*PurchaseCurator) Descriptor() ([]byte, []int) {
-	return file_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{1}
+	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *PurchaseCurator) GetId() int64 {
@@ -235,7 +235,7 @@ type PurchaseDepartment struct {
 
 func (x *PurchaseDepartment) Reset() {
 	*x = PurchaseDepartment{}
-	mi := &file_entity_v3_purchase_entity_proto_msgTypes[2]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -247,7 +247,7 @@ func (x *PurchaseDepartment) String() string {
 func (*PurchaseDepartment) ProtoMessage() {}
 
 func (x *PurchaseDepartment) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v3_purchase_entity_proto_msgTypes[2]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -260,7 +260,7 @@ func (x *PurchaseDepartment) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseDepartment.ProtoReflect.Descriptor instead.
 func (*PurchaseDepartment) Descriptor() ([]byte, []int) {
-	return file_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{2}
+	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *PurchaseDepartment) GetDepartment() enum.UserEmployeeDepartment {
@@ -298,7 +298,7 @@ type PurchaseCategory struct {
 
 func (x *PurchaseCategory) Reset() {
 	*x = PurchaseCategory{}
-	mi := &file_entity_v3_purchase_entity_proto_msgTypes[3]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -310,7 +310,7 @@ func (x *PurchaseCategory) String() string {
 func (*PurchaseCategory) ProtoMessage() {}
 
 func (x *PurchaseCategory) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v3_purchase_entity_proto_msgTypes[3]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -323,7 +323,7 @@ func (x *PurchaseCategory) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseCategory.ProtoReflect.Descriptor instead.
 func (*PurchaseCategory) Descriptor() ([]byte, []int) {
-	return file_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{3}
+	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *PurchaseCategory) GetId() int64 {
@@ -366,7 +366,7 @@ type PurchaseEmployee struct {
 
 func (x *PurchaseEmployee) Reset() {
 	*x = PurchaseEmployee{}
-	mi := &file_entity_v3_purchase_entity_proto_msgTypes[4]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -378,7 +378,7 @@ func (x *PurchaseEmployee) String() string {
 func (*PurchaseEmployee) ProtoMessage() {}
 
 func (x *PurchaseEmployee) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v3_purchase_entity_proto_msgTypes[4]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -391,7 +391,7 @@ func (x *PurchaseEmployee) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseEmployee.ProtoReflect.Descriptor instead.
 func (*PurchaseEmployee) Descriptor() ([]byte, []int) {
-	return file_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{4}
+	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *PurchaseEmployee) GetUuid() string {
@@ -437,7 +437,7 @@ type PurchaseSignOff struct {
 
 func (x *PurchaseSignOff) Reset() {
 	*x = PurchaseSignOff{}
-	mi := &file_entity_v3_purchase_entity_proto_msgTypes[5]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -449,7 +449,7 @@ func (x *PurchaseSignOff) String() string {
 func (*PurchaseSignOff) ProtoMessage() {}
 
 func (x *PurchaseSignOff) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v3_purchase_entity_proto_msgTypes[5]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -462,7 +462,7 @@ func (x *PurchaseSignOff) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseSignOff.ProtoReflect.Descriptor instead.
 func (*PurchaseSignOff) Descriptor() ([]byte, []int) {
-	return file_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{5}
+	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *PurchaseSignOff) GetRole() v3.PurchaseRole {
@@ -562,7 +562,7 @@ type PurchaseLog struct {
 
 func (x *PurchaseLog) Reset() {
 	*x = PurchaseLog{}
-	mi := &file_entity_v3_purchase_entity_proto_msgTypes[6]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -574,7 +574,7 @@ func (x *PurchaseLog) String() string {
 func (*PurchaseLog) ProtoMessage() {}
 
 func (x *PurchaseLog) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v3_purchase_entity_proto_msgTypes[6]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -587,7 +587,7 @@ func (x *PurchaseLog) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseLog.ProtoReflect.Descriptor instead.
 func (*PurchaseLog) Descriptor() ([]byte, []int) {
-	return file_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{6}
+	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *PurchaseLog) GetId() int64 {
@@ -679,7 +679,7 @@ type PurchaseAllowed struct {
 
 func (x *PurchaseAllowed) Reset() {
 	*x = PurchaseAllowed{}
-	mi := &file_entity_v3_purchase_entity_proto_msgTypes[7]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -691,7 +691,7 @@ func (x *PurchaseAllowed) String() string {
 func (*PurchaseAllowed) ProtoMessage() {}
 
 func (x *PurchaseAllowed) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v3_purchase_entity_proto_msgTypes[7]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -704,7 +704,7 @@ func (x *PurchaseAllowed) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseAllowed.ProtoReflect.Descriptor instead.
 func (*PurchaseAllowed) Descriptor() ([]byte, []int) {
-	return file_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{7}
+	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *PurchaseAllowed) GetMoves() []v3.PurchaseMove {
@@ -777,7 +777,7 @@ type PurchaseRequest struct {
 
 func (x *PurchaseRequest) Reset() {
 	*x = PurchaseRequest{}
-	mi := &file_entity_v3_purchase_entity_proto_msgTypes[8]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -789,7 +789,7 @@ func (x *PurchaseRequest) String() string {
 func (*PurchaseRequest) ProtoMessage() {}
 
 func (x *PurchaseRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v3_purchase_entity_proto_msgTypes[8]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -802,7 +802,7 @@ func (x *PurchaseRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseRequest.ProtoReflect.Descriptor instead.
 func (*PurchaseRequest) Descriptor() ([]byte, []int) {
-	return file_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{8}
+	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *PurchaseRequest) GetId() int64 {
@@ -986,7 +986,7 @@ type PurchaseQuotation struct {
 
 func (x *PurchaseQuotation) Reset() {
 	*x = PurchaseQuotation{}
-	mi := &file_entity_v3_purchase_entity_proto_msgTypes[9]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -998,7 +998,7 @@ func (x *PurchaseQuotation) String() string {
 func (*PurchaseQuotation) ProtoMessage() {}
 
 func (x *PurchaseQuotation) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v3_purchase_entity_proto_msgTypes[9]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1011,7 +1011,7 @@ func (x *PurchaseQuotation) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseQuotation.ProtoReflect.Descriptor instead.
 func (*PurchaseQuotation) Descriptor() ([]byte, []int) {
-	return file_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{9}
+	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *PurchaseQuotation) GetId() int64 {
@@ -1101,7 +1101,7 @@ type PurchaseDocument struct {
 
 func (x *PurchaseDocument) Reset() {
 	*x = PurchaseDocument{}
-	mi := &file_entity_v3_purchase_entity_proto_msgTypes[10]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1113,7 +1113,7 @@ func (x *PurchaseDocument) String() string {
 func (*PurchaseDocument) ProtoMessage() {}
 
 func (x *PurchaseDocument) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v3_purchase_entity_proto_msgTypes[10]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1126,7 +1126,7 @@ func (x *PurchaseDocument) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseDocument.ProtoReflect.Descriptor instead.
 func (*PurchaseDocument) Descriptor() ([]byte, []int) {
-	return file_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{10}
+	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *PurchaseDocument) GetId() int64 {
@@ -1286,7 +1286,7 @@ type PurchaseLot struct {
 
 func (x *PurchaseLot) Reset() {
 	*x = PurchaseLot{}
-	mi := &file_entity_v3_purchase_entity_proto_msgTypes[11]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1298,7 +1298,7 @@ func (x *PurchaseLot) String() string {
 func (*PurchaseLot) ProtoMessage() {}
 
 func (x *PurchaseLot) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v3_purchase_entity_proto_msgTypes[11]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1311,7 +1311,7 @@ func (x *PurchaseLot) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseLot.ProtoReflect.Descriptor instead.
 func (*PurchaseLot) Descriptor() ([]byte, []int) {
-	return file_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{11}
+	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *PurchaseLot) GetId() int64 {
@@ -1781,7 +1781,7 @@ type PurchaseProtocolDecision struct {
 
 func (x *PurchaseProtocolDecision) Reset() {
 	*x = PurchaseProtocolDecision{}
-	mi := &file_entity_v3_purchase_entity_proto_msgTypes[12]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1793,7 +1793,7 @@ func (x *PurchaseProtocolDecision) String() string {
 func (*PurchaseProtocolDecision) ProtoMessage() {}
 
 func (x *PurchaseProtocolDecision) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v3_purchase_entity_proto_msgTypes[12]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1806,7 +1806,7 @@ func (x *PurchaseProtocolDecision) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseProtocolDecision.ProtoReflect.Descriptor instead.
 func (*PurchaseProtocolDecision) Descriptor() ([]byte, []int) {
-	return file_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{12}
+	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *PurchaseProtocolDecision) GetLotId() int64 {
@@ -1887,7 +1887,7 @@ type PurchaseProtocol struct {
 
 func (x *PurchaseProtocol) Reset() {
 	*x = PurchaseProtocol{}
-	mi := &file_entity_v3_purchase_entity_proto_msgTypes[13]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1899,7 +1899,7 @@ func (x *PurchaseProtocol) String() string {
 func (*PurchaseProtocol) ProtoMessage() {}
 
 func (x *PurchaseProtocol) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v3_purchase_entity_proto_msgTypes[13]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1912,7 +1912,7 @@ func (x *PurchaseProtocol) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseProtocol.ProtoReflect.Descriptor instead.
 func (*PurchaseProtocol) Descriptor() ([]byte, []int) {
-	return file_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{13}
+	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *PurchaseProtocol) GetId() int64 {
@@ -2008,7 +2008,7 @@ type PurchaseCodeSuggestion struct {
 
 func (x *PurchaseCodeSuggestion) Reset() {
 	*x = PurchaseCodeSuggestion{}
-	mi := &file_entity_v3_purchase_entity_proto_msgTypes[14]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2020,7 +2020,7 @@ func (x *PurchaseCodeSuggestion) String() string {
 func (*PurchaseCodeSuggestion) ProtoMessage() {}
 
 func (x *PurchaseCodeSuggestion) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_v3_purchase_entity_proto_msgTypes[14]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2033,7 +2033,7 @@ func (x *PurchaseCodeSuggestion) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseCodeSuggestion.ProtoReflect.Descriptor instead.
 func (*PurchaseCodeSuggestion) Descriptor() ([]byte, []int) {
-	return file_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{14}
+	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *PurchaseCodeSuggestion) GetFound() bool {
@@ -2078,11 +2078,11 @@ func (x *PurchaseCodeSuggestion) GetImplementingDepartment() enum.UserEmployeeDe
 	return enum.UserEmployeeDepartment(0)
 }
 
-var File_entity_v3_purchase_entity_proto protoreflect.FileDescriptor
+var File_fesmu_entity_v3_purchase_entity_proto protoreflect.FileDescriptor
 
-const file_entity_v3_purchase_entity_proto_rawDesc = "" +
+const file_fesmu_entity_v3_purchase_entity_proto_rawDesc = "" +
 	"\n" +
-	"\x1fentity/v3/purchase.entity.proto\x12\x12contract.entity.v3\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1benum/v3/purchase.enum.proto\x1a\x14enum/user.enum.proto\"\x98\x02\n" +
+	"%fesmu/entity/v3/purchase.entity.proto\x12\x12contract.entity.v3\x1a\x1fgoogle/protobuf/timestamp.proto\x1a!fesmu/enum/v3/purchase.enum.proto\x1a\x18mdm/enum/user.enum.proto\"\x98\x02\n" +
 	"\n" +
 	"PurchaseMe\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x12\n" +
@@ -2329,19 +2329,19 @@ const file_entity_v3_purchase_entity_proto_rawDesc = "" +
 	"\x16com.contract.entity.v3B\x13PurchaseEntityProtoP\x01Z'fesmu/contract/fesmu/entity/v3;entityv3\xa2\x02\x03CEX\xaa\x02\x12Contract.Entity.V3\xca\x02\x12Contract\\Entity\\V3\xe2\x02\x1eContract\\Entity\\V3\\GPBMetadata\xea\x02\x14Contract::Entity::V3b\x06proto3"
 
 var (
-	file_entity_v3_purchase_entity_proto_rawDescOnce sync.Once
-	file_entity_v3_purchase_entity_proto_rawDescData []byte
+	file_fesmu_entity_v3_purchase_entity_proto_rawDescOnce sync.Once
+	file_fesmu_entity_v3_purchase_entity_proto_rawDescData []byte
 )
 
-func file_entity_v3_purchase_entity_proto_rawDescGZIP() []byte {
-	file_entity_v3_purchase_entity_proto_rawDescOnce.Do(func() {
-		file_entity_v3_purchase_entity_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_entity_v3_purchase_entity_proto_rawDesc), len(file_entity_v3_purchase_entity_proto_rawDesc)))
+func file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP() []byte {
+	file_fesmu_entity_v3_purchase_entity_proto_rawDescOnce.Do(func() {
+		file_fesmu_entity_v3_purchase_entity_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_fesmu_entity_v3_purchase_entity_proto_rawDesc), len(file_fesmu_entity_v3_purchase_entity_proto_rawDesc)))
 	})
-	return file_entity_v3_purchase_entity_proto_rawDescData
+	return file_fesmu_entity_v3_purchase_entity_proto_rawDescData
 }
 
-var file_entity_v3_purchase_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
-var file_entity_v3_purchase_entity_proto_goTypes = []any{
+var file_fesmu_entity_v3_purchase_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
+var file_fesmu_entity_v3_purchase_entity_proto_goTypes = []any{
 	(*PurchaseMe)(nil),                 // 0: contract.entity.v3.PurchaseMe
 	(*PurchaseCurator)(nil),            // 1: contract.entity.v3.PurchaseCurator
 	(*PurchaseDepartment)(nil),         // 2: contract.entity.v3.PurchaseDepartment
@@ -2373,7 +2373,7 @@ var file_entity_v3_purchase_entity_proto_goTypes = []any{
 	(v3.PurchaseMethod)(0),             // 28: contract.enum.v3.PurchaseMethod
 	(v3.PurchaseCommissionDecision)(0), // 29: contract.enum.v3.PurchaseCommissionDecision
 }
-var file_entity_v3_purchase_entity_proto_depIdxs = []int32{
+var file_fesmu_entity_v3_purchase_entity_proto_depIdxs = []int32{
 	15, // 0: contract.entity.v3.PurchaseMe.departments:type_name -> contract.enum.UserEmployeeDepartment
 	16, // 1: contract.entity.v3.PurchaseMe.permissions:type_name -> contract.enum.v3.PurchasePermission
 	15, // 2: contract.entity.v3.PurchaseDepartment.department:type_name -> contract.enum.UserEmployeeDepartment
@@ -2438,12 +2438,12 @@ var file_entity_v3_purchase_entity_proto_depIdxs = []int32{
 	0,  // [0:57] is the sub-list for field type_name
 }
 
-func init() { file_entity_v3_purchase_entity_proto_init() }
-func file_entity_v3_purchase_entity_proto_init() {
-	if File_entity_v3_purchase_entity_proto != nil {
+func init() { file_fesmu_entity_v3_purchase_entity_proto_init() }
+func file_fesmu_entity_v3_purchase_entity_proto_init() {
+	if File_fesmu_entity_v3_purchase_entity_proto != nil {
 		return
 	}
-	file_entity_v3_purchase_entity_proto_msgTypes[5].OneofWrappers = []any{
+	file_fesmu_entity_v3_purchase_entity_proto_msgTypes[5].OneofWrappers = []any{
 		(*PurchaseSignOff_RequestStatus)(nil),
 		(*PurchaseSignOff_LotStatus)(nil),
 	}
@@ -2451,17 +2451,17 @@ func file_entity_v3_purchase_entity_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_entity_v3_purchase_entity_proto_rawDesc), len(file_entity_v3_purchase_entity_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_fesmu_entity_v3_purchase_entity_proto_rawDesc), len(file_fesmu_entity_v3_purchase_entity_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   15,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_entity_v3_purchase_entity_proto_goTypes,
-		DependencyIndexes: file_entity_v3_purchase_entity_proto_depIdxs,
-		MessageInfos:      file_entity_v3_purchase_entity_proto_msgTypes,
+		GoTypes:           file_fesmu_entity_v3_purchase_entity_proto_goTypes,
+		DependencyIndexes: file_fesmu_entity_v3_purchase_entity_proto_depIdxs,
+		MessageInfos:      file_fesmu_entity_v3_purchase_entity_proto_msgTypes,
 	}.Build()
-	File_entity_v3_purchase_entity_proto = out.File
-	file_entity_v3_purchase_entity_proto_goTypes = nil
-	file_entity_v3_purchase_entity_proto_depIdxs = nil
+	File_fesmu_entity_v3_purchase_entity_proto = out.File
+	file_fesmu_entity_v3_purchase_entity_proto_goTypes = nil
+	file_fesmu_entity_v3_purchase_entity_proto_depIdxs = nil
 }

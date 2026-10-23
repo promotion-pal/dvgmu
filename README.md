@@ -21,10 +21,11 @@ Makefile              make proto, make proto-check
 
 ## Схемы — только buf
 
-- Схема лежит у владельца, плоско: `services/<svc>/api/contract/{entity,enum,service}`,
-  `apps/fesmu/api/contract/{entity,enum,service}/vN`. Пути файлов во всём workspace
-  уникальны, поэтому схемы ссылаются друг на друга напрямую:
-  `import "entity/user.entity.proto"` — это mdm.
+- Схема лежит у владельца в папке с его именем:
+  `services/mdm/api/contract/mdm/{entity,enum,service}`,
+  `apps/fesmu/api/contract/fesmu/{entity,enum,service}/vN`, у auth — `auth/v1`, `auth/v2`.
+- Путь файла начинается с имени владельца, поэтому он уникален всегда, а импорт показывает,
+  чья это схема: `import "mdm/entity/user.entity.proto"`.
 - Сгенерированный код лежит только в `packages/`. В сервисах сгенерированного кода нет.
 
 ```bash
@@ -32,10 +33,9 @@ make proto         # buf generate: Go → packages/go, TS → packages/ts
 make proto-check   # сгенерированный код совпадает со схемами (это же в CI)
 ```
 
-**Go.** Один модуль `fesmu/contract` в `packages/go`. Пакет схемы —
-`fesmu/contract/<модуль>/<папка>`: `fesmu/contract/mdm/entity`,
-`fesmu/contract/fesmu/service/v1`, `fesmu/contract/auth/v2`. Бэкенд подключает модуль в
-своём `go.mod`:
+**Go.** Один модуль `fesmu/contract` в `packages/go`. Go-пакет = `fesmu/contract/` + папка
+схемы: `fesmu/contract/mdm/entity`, `fesmu/contract/fesmu/service/v1`,
+`fesmu/contract/auth/v2`. Бэкенд подключает модуль в своём `go.mod`:
 
 ```
 require fesmu/contract v0.0.0
@@ -45,14 +45,14 @@ replace fesmu/contract => ../../../packages/go
 Поэтому Docker-образ бэкенда собирается из корня репозитория: ему нужны и папка api, и
 `packages/go`.
 
-**TS.** Пакет `@fesmu/contract` в `packages/ts`, файлы плоско по путям схем:
-`@fesmu/contract/entity/user.entity_pb` (mdm), `@fesmu/contract/entity/v1/…` (fesmu),
+**TS.** Пакет `@fesmu/contract` в `packages/ts`, по владельцам:
+`@fesmu/contract/mdm/entity/user.entity_pb`, `@fesmu/contract/fesmu/entity/v1/…`,
 `@fesmu/contract/auth/v2/…`. Приложение подключает одну зависимость
 `"@fesmu/contract": "workspace:*"`.
 
 dormitory, mentor и ojs — отдельные модули со своей генерацией, в общую схему не входят.
-У dormitory и mentor имена proto-пакетов совпадают с mdm (`contract.entity`), поэтому их
-нельзя добавить в один workspace с mdm без новой версии API.
+У dormitory и mentor имена proto-пакетов совпадают с mdm (`contract.entity.User`): папка
+решает конфликт путей, но не имён — для них нужна новая версия API с уникальными пакетами.
 
 **Фронт — один pnpm workspace.** В корне `package.json`, `pnpm-workspace.yaml`,
 `pnpm-lock.yaml`. Веб fesmu берёт `@fesmu/contract` из `packages/ts`. Docker-образ веба

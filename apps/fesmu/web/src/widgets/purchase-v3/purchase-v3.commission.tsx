@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { FC } from "react";
 import { DownloadIcon, FileCheck2Icon, UploadIcon } from "lucide-react";
-import type { PurchaseLot } from "@fesmu/contract/entity/v3/purchase.entity_pb";
+import type { PurchaseLot } from "@fesmu/contract/fesmu/entity/v3/purchase.entity_pb";
 import { Button } from "@/shared/ui/button";
 import type { DecisionInit, PurchaseV3State } from "./purchase-v3.fn";
 import {

@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: enum/file.enum.proto
+// source: file/enum/file.enum.proto
 
 package enum
 
@@ -69,11 +69,11 @@ func (x FileType) String() string {
 }
 
 func (FileType) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_file_enum_proto_enumTypes[0].Descriptor()
+	return file_file_enum_file_enum_proto_enumTypes[0].Descriptor()
 }
 
 func (FileType) Type() protoreflect.EnumType {
-	return &file_enum_file_enum_proto_enumTypes[0]
+	return &file_file_enum_file_enum_proto_enumTypes[0]
 }
 
 func (x FileType) Number() protoreflect.EnumNumber {
@@ -82,7 +82,7 @@ func (x FileType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use FileType.Descriptor instead.
 func (FileType) EnumDescriptor() ([]byte, []int) {
-	return file_enum_file_enum_proto_rawDescGZIP(), []int{0}
+	return file_file_enum_file_enum_proto_rawDescGZIP(), []int{0}
 }
 
 // FileGenerateRequest.type — which document is generated.
@@ -141,11 +141,11 @@ func (x FileGenerateType) String() string {
 }
 
 func (FileGenerateType) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_file_enum_proto_enumTypes[1].Descriptor()
+	return file_file_enum_file_enum_proto_enumTypes[1].Descriptor()
 }
 
 func (FileGenerateType) Type() protoreflect.EnumType {
-	return &file_enum_file_enum_proto_enumTypes[1]
+	return &file_file_enum_file_enum_proto_enumTypes[1]
 }
 
 func (x FileGenerateType) Number() protoreflect.EnumNumber {
@@ -154,14 +154,14 @@ func (x FileGenerateType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use FileGenerateType.Descriptor instead.
 func (FileGenerateType) EnumDescriptor() ([]byte, []int) {
-	return file_enum_file_enum_proto_rawDescGZIP(), []int{1}
+	return file_file_enum_file_enum_proto_rawDescGZIP(), []int{1}
 }
 
-var File_enum_file_enum_proto protoreflect.FileDescriptor
+var File_file_enum_file_enum_proto protoreflect.FileDescriptor
 
-const file_enum_file_enum_proto_rawDesc = "" +
+const file_file_enum_file_enum_proto_rawDesc = "" +
 	"\n" +
-	"\x14enum/file.enum.proto\x12\x12contract.file.enum*\xbe\x01\n" +
+	"\x19file/enum/file.enum.proto\x12\x12contract.file.enum*\xbe\x01\n" +
 	"\bFileType\x12\x19\n" +
 	"\x15FILE_TYPE_UNSPECIFIED\x10\x00\x12\x1f\n" +
 	"\x1bFILE_TYPE_EXCEL_PARSER_USER\x10\x01\x12\"\n" +
@@ -181,23 +181,23 @@ const file_enum_file_enum_proto_rawDesc = "" +
 	"\x16com.contract.file.enumB\rFileEnumProtoP\x01Z\x18fesmu/contract/file/enum\xa2\x02\x03CFE\xaa\x02\x12Contract.File.Enum\xca\x02\x12Contract\\File\\Enum\xe2\x02\x1eContract\\File\\Enum\\GPBMetadata\xea\x02\x14Contract::File::Enumb\x06proto3"
 
 var (
-	file_enum_file_enum_proto_rawDescOnce sync.Once
-	file_enum_file_enum_proto_rawDescData []byte
+	file_file_enum_file_enum_proto_rawDescOnce sync.Once
+	file_file_enum_file_enum_proto_rawDescData []byte
 )
 
-func file_enum_file_enum_proto_rawDescGZIP() []byte {
-	file_enum_file_enum_proto_rawDescOnce.Do(func() {
-		file_enum_file_enum_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_enum_file_enum_proto_rawDesc), len(file_enum_file_enum_proto_rawDesc)))
+func file_file_enum_file_enum_proto_rawDescGZIP() []byte {
+	file_file_enum_file_enum_proto_rawDescOnce.Do(func() {
+		file_file_enum_file_enum_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_file_enum_file_enum_proto_rawDesc), len(file_file_enum_file_enum_proto_rawDesc)))
 	})
-	return file_enum_file_enum_proto_rawDescData
+	return file_file_enum_file_enum_proto_rawDescData
 }
 
-var file_enum_file_enum_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_enum_file_enum_proto_goTypes = []any{
+var file_file_enum_file_enum_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_file_enum_file_enum_proto_goTypes = []any{
 	(FileType)(0),         // 0: contract.file.enum.FileType
 	(FileGenerateType)(0), // 1: contract.file.enum.FileGenerateType
 }
-var file_enum_file_enum_proto_depIdxs = []int32{
+var file_file_enum_file_enum_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
 	0, // [0:0] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -205,26 +205,26 @@ var file_enum_file_enum_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_enum_file_enum_proto_init() }
-func file_enum_file_enum_proto_init() {
-	if File_enum_file_enum_proto != nil {
+func init() { file_file_enum_file_enum_proto_init() }
+func file_file_enum_file_enum_proto_init() {
+	if File_file_enum_file_enum_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_enum_file_enum_proto_rawDesc), len(file_enum_file_enum_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_file_enum_file_enum_proto_rawDesc), len(file_file_enum_file_enum_proto_rawDesc)),
 			NumEnums:      2,
 			NumMessages:   0,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_enum_file_enum_proto_goTypes,
-		DependencyIndexes: file_enum_file_enum_proto_depIdxs,
-		EnumInfos:         file_enum_file_enum_proto_enumTypes,
+		GoTypes:           file_file_enum_file_enum_proto_goTypes,
+		DependencyIndexes: file_file_enum_file_enum_proto_depIdxs,
+		EnumInfos:         file_file_enum_file_enum_proto_enumTypes,
 	}.Build()
-	File_enum_file_enum_proto = out.File
-	file_enum_file_enum_proto_goTypes = nil
-	file_enum_file_enum_proto_depIdxs = nil
+	File_file_enum_file_enum_proto = out.File
+	file_file_enum_file_enum_proto_goTypes = nil
+	file_file_enum_file_enum_proto_depIdxs = nil
 }

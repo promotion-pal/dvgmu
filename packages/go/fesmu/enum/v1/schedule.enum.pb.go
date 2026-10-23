@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: enum/v1/schedule.enum.proto
+// source: fesmu/enum/v1/schedule.enum.proto
 
 package enumv1
 
@@ -54,11 +54,11 @@ func (x ScheduleEntryKind) String() string {
 }
 
 func (ScheduleEntryKind) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_v1_schedule_enum_proto_enumTypes[0].Descriptor()
+	return file_fesmu_enum_v1_schedule_enum_proto_enumTypes[0].Descriptor()
 }
 
 func (ScheduleEntryKind) Type() protoreflect.EnumType {
-	return &file_enum_v1_schedule_enum_proto_enumTypes[0]
+	return &file_fesmu_enum_v1_schedule_enum_proto_enumTypes[0]
 }
 
 func (x ScheduleEntryKind) Number() protoreflect.EnumNumber {
@@ -67,7 +67,7 @@ func (x ScheduleEntryKind) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use ScheduleEntryKind.Descriptor instead.
 func (ScheduleEntryKind) EnumDescriptor() ([]byte, []int) {
-	return file_enum_v1_schedule_enum_proto_rawDescGZIP(), []int{0}
+	return file_fesmu_enum_v1_schedule_enum_proto_rawDescGZIP(), []int{0}
 }
 
 type ScheduleWeeks int32
@@ -106,11 +106,11 @@ func (x ScheduleWeeks) String() string {
 }
 
 func (ScheduleWeeks) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_v1_schedule_enum_proto_enumTypes[1].Descriptor()
+	return file_fesmu_enum_v1_schedule_enum_proto_enumTypes[1].Descriptor()
 }
 
 func (ScheduleWeeks) Type() protoreflect.EnumType {
-	return &file_enum_v1_schedule_enum_proto_enumTypes[1]
+	return &file_fesmu_enum_v1_schedule_enum_proto_enumTypes[1]
 }
 
 func (x ScheduleWeeks) Number() protoreflect.EnumNumber {
@@ -119,7 +119,7 @@ func (x ScheduleWeeks) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use ScheduleWeeks.Descriptor instead.
 func (ScheduleWeeks) EnumDescriptor() ([]byte, []int) {
-	return file_enum_v1_schedule_enum_proto_rawDescGZIP(), []int{1}
+	return file_fesmu_enum_v1_schedule_enum_proto_rawDescGZIP(), []int{1}
 }
 
 type SchedulePeriodKind int32
@@ -161,11 +161,11 @@ func (x SchedulePeriodKind) String() string {
 }
 
 func (SchedulePeriodKind) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_v1_schedule_enum_proto_enumTypes[2].Descriptor()
+	return file_fesmu_enum_v1_schedule_enum_proto_enumTypes[2].Descriptor()
 }
 
 func (SchedulePeriodKind) Type() protoreflect.EnumType {
-	return &file_enum_v1_schedule_enum_proto_enumTypes[2]
+	return &file_fesmu_enum_v1_schedule_enum_proto_enumTypes[2]
 }
 
 func (x SchedulePeriodKind) Number() protoreflect.EnumNumber {
@@ -174,7 +174,7 @@ func (x SchedulePeriodKind) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use SchedulePeriodKind.Descriptor instead.
 func (SchedulePeriodKind) EnumDescriptor() ([]byte, []int) {
-	return file_enum_v1_schedule_enum_proto_rawDescGZIP(), []int{2}
+	return file_fesmu_enum_v1_schedule_enum_proto_rawDescGZIP(), []int{2}
 }
 
 type ScheduleFormat int32
@@ -210,11 +210,11 @@ func (x ScheduleFormat) String() string {
 }
 
 func (ScheduleFormat) Descriptor() protoreflect.EnumDescriptor {
-	return file_enum_v1_schedule_enum_proto_enumTypes[3].Descriptor()
+	return file_fesmu_enum_v1_schedule_enum_proto_enumTypes[3].Descriptor()
 }
 
 func (ScheduleFormat) Type() protoreflect.EnumType {
-	return &file_enum_v1_schedule_enum_proto_enumTypes[3]
+	return &file_fesmu_enum_v1_schedule_enum_proto_enumTypes[3]
 }
 
 func (x ScheduleFormat) Number() protoreflect.EnumNumber {
@@ -223,14 +223,14 @@ func (x ScheduleFormat) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use ScheduleFormat.Descriptor instead.
 func (ScheduleFormat) EnumDescriptor() ([]byte, []int) {
-	return file_enum_v1_schedule_enum_proto_rawDescGZIP(), []int{3}
+	return file_fesmu_enum_v1_schedule_enum_proto_rawDescGZIP(), []int{3}
 }
 
-var File_enum_v1_schedule_enum_proto protoreflect.FileDescriptor
+var File_fesmu_enum_v1_schedule_enum_proto protoreflect.FileDescriptor
 
-const file_enum_v1_schedule_enum_proto_rawDesc = "" +
+const file_fesmu_enum_v1_schedule_enum_proto_rawDesc = "" +
 	"\n" +
-	"\x1benum/v1/schedule.enum.proto\x12\x10contract.enum.v1*{\n" +
+	"!fesmu/enum/v1/schedule.enum.proto\x12\x10contract.enum.v1*{\n" +
 	"\x11ScheduleEntryKind\x12#\n" +
 	"\x1fSCHEDULE_ENTRY_KIND_UNSPECIFIED\x10\x00\x12\x1f\n" +
 	"\x1bSCHEDULE_ENTRY_KIND_LECTURE\x10\x01\x12 \n" +
@@ -253,25 +253,25 @@ const file_enum_v1_schedule_enum_proto_rawDesc = "" +
 	"\x14com.contract.enum.v1B\x11ScheduleEnumProtoP\x01Z#fesmu/contract/fesmu/enum/v1;enumv1\xa2\x02\x03CEX\xaa\x02\x10Contract.Enum.V1\xca\x02\x10Contract\\Enum\\V1\xe2\x02\x1cContract\\Enum\\V1\\GPBMetadata\xea\x02\x12Contract::Enum::V1b\x06proto3"
 
 var (
-	file_enum_v1_schedule_enum_proto_rawDescOnce sync.Once
-	file_enum_v1_schedule_enum_proto_rawDescData []byte
+	file_fesmu_enum_v1_schedule_enum_proto_rawDescOnce sync.Once
+	file_fesmu_enum_v1_schedule_enum_proto_rawDescData []byte
 )
 
-func file_enum_v1_schedule_enum_proto_rawDescGZIP() []byte {
-	file_enum_v1_schedule_enum_proto_rawDescOnce.Do(func() {
-		file_enum_v1_schedule_enum_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_enum_v1_schedule_enum_proto_rawDesc), len(file_enum_v1_schedule_enum_proto_rawDesc)))
+func file_fesmu_enum_v1_schedule_enum_proto_rawDescGZIP() []byte {
+	file_fesmu_enum_v1_schedule_enum_proto_rawDescOnce.Do(func() {
+		file_fesmu_enum_v1_schedule_enum_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_fesmu_enum_v1_schedule_enum_proto_rawDesc), len(file_fesmu_enum_v1_schedule_enum_proto_rawDesc)))
 	})
-	return file_enum_v1_schedule_enum_proto_rawDescData
+	return file_fesmu_enum_v1_schedule_enum_proto_rawDescData
 }
 
-var file_enum_v1_schedule_enum_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_enum_v1_schedule_enum_proto_goTypes = []any{
+var file_fesmu_enum_v1_schedule_enum_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
+var file_fesmu_enum_v1_schedule_enum_proto_goTypes = []any{
 	(ScheduleEntryKind)(0),  // 0: contract.enum.v1.ScheduleEntryKind
 	(ScheduleWeeks)(0),      // 1: contract.enum.v1.ScheduleWeeks
 	(SchedulePeriodKind)(0), // 2: contract.enum.v1.SchedulePeriodKind
 	(ScheduleFormat)(0),     // 3: contract.enum.v1.ScheduleFormat
 }
-var file_enum_v1_schedule_enum_proto_depIdxs = []int32{
+var file_fesmu_enum_v1_schedule_enum_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
 	0, // [0:0] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -279,26 +279,26 @@ var file_enum_v1_schedule_enum_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_enum_v1_schedule_enum_proto_init() }
-func file_enum_v1_schedule_enum_proto_init() {
-	if File_enum_v1_schedule_enum_proto != nil {
+func init() { file_fesmu_enum_v1_schedule_enum_proto_init() }
+func file_fesmu_enum_v1_schedule_enum_proto_init() {
+	if File_fesmu_enum_v1_schedule_enum_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_enum_v1_schedule_enum_proto_rawDesc), len(file_enum_v1_schedule_enum_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_fesmu_enum_v1_schedule_enum_proto_rawDesc), len(file_fesmu_enum_v1_schedule_enum_proto_rawDesc)),
 			NumEnums:      4,
 			NumMessages:   0,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_enum_v1_schedule_enum_proto_goTypes,
-		DependencyIndexes: file_enum_v1_schedule_enum_proto_depIdxs,
-		EnumInfos:         file_enum_v1_schedule_enum_proto_enumTypes,
+		GoTypes:           file_fesmu_enum_v1_schedule_enum_proto_goTypes,
+		DependencyIndexes: file_fesmu_enum_v1_schedule_enum_proto_depIdxs,
+		EnumInfos:         file_fesmu_enum_v1_schedule_enum_proto_enumTypes,
 	}.Build()
-	File_enum_v1_schedule_enum_proto = out.File
-	file_enum_v1_schedule_enum_proto_goTypes = nil
-	file_enum_v1_schedule_enum_proto_depIdxs = nil
+	File_fesmu_enum_v1_schedule_enum_proto = out.File
+	file_fesmu_enum_v1_schedule_enum_proto_goTypes = nil
+	file_fesmu_enum_v1_schedule_enum_proto_depIdxs = nil
 }

@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: service/v1/computer_class.service.proto
+// source: fesmu/service/v1/computer_class.service.proto
 
 package servicev1
 
@@ -37,7 +37,7 @@ type ComputerClassSessionFetchRequest struct {
 
 func (x *ComputerClassSessionFetchRequest) Reset() {
 	*x = ComputerClassSessionFetchRequest{}
-	mi := &file_service_v1_computer_class_service_proto_msgTypes[0]
+	mi := &file_fesmu_service_v1_computer_class_service_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -49,7 +49,7 @@ func (x *ComputerClassSessionFetchRequest) String() string {
 func (*ComputerClassSessionFetchRequest) ProtoMessage() {}
 
 func (x *ComputerClassSessionFetchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_computer_class_service_proto_msgTypes[0]
+	mi := &file_fesmu_service_v1_computer_class_service_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -62,7 +62,7 @@ func (x *ComputerClassSessionFetchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ComputerClassSessionFetchRequest.ProtoReflect.Descriptor instead.
 func (*ComputerClassSessionFetchRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_computer_class_service_proto_rawDescGZIP(), []int{0}
+	return file_fesmu_service_v1_computer_class_service_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *ComputerClassSessionFetchRequest) GetRoom() string {
@@ -102,7 +102,7 @@ type ComputerClassSessionFetchResponse struct {
 
 func (x *ComputerClassSessionFetchResponse) Reset() {
 	*x = ComputerClassSessionFetchResponse{}
-	mi := &file_service_v1_computer_class_service_proto_msgTypes[1]
+	mi := &file_fesmu_service_v1_computer_class_service_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -114,7 +114,7 @@ func (x *ComputerClassSessionFetchResponse) String() string {
 func (*ComputerClassSessionFetchResponse) ProtoMessage() {}
 
 func (x *ComputerClassSessionFetchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_computer_class_service_proto_msgTypes[1]
+	mi := &file_fesmu_service_v1_computer_class_service_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -127,7 +127,7 @@ func (x *ComputerClassSessionFetchResponse) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use ComputerClassSessionFetchResponse.ProtoReflect.Descriptor instead.
 func (*ComputerClassSessionFetchResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_computer_class_service_proto_rawDescGZIP(), []int{1}
+	return file_fesmu_service_v1_computer_class_service_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *ComputerClassSessionFetchResponse) GetList() []*v11.ComputerClassSession {
@@ -153,7 +153,7 @@ type ComputerClassSessionCreateRequest struct {
 
 func (x *ComputerClassSessionCreateRequest) Reset() {
 	*x = ComputerClassSessionCreateRequest{}
-	mi := &file_service_v1_computer_class_service_proto_msgTypes[2]
+	mi := &file_fesmu_service_v1_computer_class_service_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -165,7 +165,7 @@ func (x *ComputerClassSessionCreateRequest) String() string {
 func (*ComputerClassSessionCreateRequest) ProtoMessage() {}
 
 func (x *ComputerClassSessionCreateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_computer_class_service_proto_msgTypes[2]
+	mi := &file_fesmu_service_v1_computer_class_service_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -178,7 +178,7 @@ func (x *ComputerClassSessionCreateRequest) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use ComputerClassSessionCreateRequest.ProtoReflect.Descriptor instead.
 func (*ComputerClassSessionCreateRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_computer_class_service_proto_rawDescGZIP(), []int{2}
+	return file_fesmu_service_v1_computer_class_service_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ComputerClassSessionCreateRequest) GetDate() string {
@@ -248,7 +248,7 @@ type ComputerClassSessionCreateResponse struct {
 
 func (x *ComputerClassSessionCreateResponse) Reset() {
 	*x = ComputerClassSessionCreateResponse{}
-	mi := &file_service_v1_computer_class_service_proto_msgTypes[3]
+	mi := &file_fesmu_service_v1_computer_class_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -260,7 +260,7 @@ func (x *ComputerClassSessionCreateResponse) String() string {
 func (*ComputerClassSessionCreateResponse) ProtoMessage() {}
 
 func (x *ComputerClassSessionCreateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_computer_class_service_proto_msgTypes[3]
+	mi := &file_fesmu_service_v1_computer_class_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -273,7 +273,7 @@ func (x *ComputerClassSessionCreateResponse) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use ComputerClassSessionCreateResponse.ProtoReflect.Descriptor instead.
 func (*ComputerClassSessionCreateResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_computer_class_service_proto_rawDescGZIP(), []int{3}
+	return file_fesmu_service_v1_computer_class_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ComputerClassSessionCreateResponse) GetSuccess() bool {
@@ -314,7 +314,7 @@ type ComputerClassSessionUpdateRequest struct {
 
 func (x *ComputerClassSessionUpdateRequest) Reset() {
 	*x = ComputerClassSessionUpdateRequest{}
-	mi := &file_service_v1_computer_class_service_proto_msgTypes[4]
+	mi := &file_fesmu_service_v1_computer_class_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -326,7 +326,7 @@ func (x *ComputerClassSessionUpdateRequest) String() string {
 func (*ComputerClassSessionUpdateRequest) ProtoMessage() {}
 
 func (x *ComputerClassSessionUpdateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_computer_class_service_proto_msgTypes[4]
+	mi := &file_fesmu_service_v1_computer_class_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -339,7 +339,7 @@ func (x *ComputerClassSessionUpdateRequest) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use ComputerClassSessionUpdateRequest.ProtoReflect.Descriptor instead.
 func (*ComputerClassSessionUpdateRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_computer_class_service_proto_rawDescGZIP(), []int{4}
+	return file_fesmu_service_v1_computer_class_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ComputerClassSessionUpdateRequest) GetId() int64 {
@@ -415,7 +415,7 @@ type ComputerClassSessionUpdateResponse struct {
 
 func (x *ComputerClassSessionUpdateResponse) Reset() {
 	*x = ComputerClassSessionUpdateResponse{}
-	mi := &file_service_v1_computer_class_service_proto_msgTypes[5]
+	mi := &file_fesmu_service_v1_computer_class_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -427,7 +427,7 @@ func (x *ComputerClassSessionUpdateResponse) String() string {
 func (*ComputerClassSessionUpdateResponse) ProtoMessage() {}
 
 func (x *ComputerClassSessionUpdateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_computer_class_service_proto_msgTypes[5]
+	mi := &file_fesmu_service_v1_computer_class_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -440,7 +440,7 @@ func (x *ComputerClassSessionUpdateResponse) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use ComputerClassSessionUpdateResponse.ProtoReflect.Descriptor instead.
 func (*ComputerClassSessionUpdateResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_computer_class_service_proto_rawDescGZIP(), []int{5}
+	return file_fesmu_service_v1_computer_class_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ComputerClassSessionUpdateResponse) GetSuccess() bool {
@@ -466,7 +466,7 @@ type ComputerClassSessionDeleteRequest struct {
 
 func (x *ComputerClassSessionDeleteRequest) Reset() {
 	*x = ComputerClassSessionDeleteRequest{}
-	mi := &file_service_v1_computer_class_service_proto_msgTypes[6]
+	mi := &file_fesmu_service_v1_computer_class_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -478,7 +478,7 @@ func (x *ComputerClassSessionDeleteRequest) String() string {
 func (*ComputerClassSessionDeleteRequest) ProtoMessage() {}
 
 func (x *ComputerClassSessionDeleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_computer_class_service_proto_msgTypes[6]
+	mi := &file_fesmu_service_v1_computer_class_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -491,7 +491,7 @@ func (x *ComputerClassSessionDeleteRequest) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use ComputerClassSessionDeleteRequest.ProtoReflect.Descriptor instead.
 func (*ComputerClassSessionDeleteRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_computer_class_service_proto_rawDescGZIP(), []int{6}
+	return file_fesmu_service_v1_computer_class_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *ComputerClassSessionDeleteRequest) GetId() int64 {
@@ -511,7 +511,7 @@ type ComputerClassSessionDeleteResponse struct {
 
 func (x *ComputerClassSessionDeleteResponse) Reset() {
 	*x = ComputerClassSessionDeleteResponse{}
-	mi := &file_service_v1_computer_class_service_proto_msgTypes[7]
+	mi := &file_fesmu_service_v1_computer_class_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -523,7 +523,7 @@ func (x *ComputerClassSessionDeleteResponse) String() string {
 func (*ComputerClassSessionDeleteResponse) ProtoMessage() {}
 
 func (x *ComputerClassSessionDeleteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_computer_class_service_proto_msgTypes[7]
+	mi := &file_fesmu_service_v1_computer_class_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -536,7 +536,7 @@ func (x *ComputerClassSessionDeleteResponse) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use ComputerClassSessionDeleteResponse.ProtoReflect.Descriptor instead.
 func (*ComputerClassSessionDeleteResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_computer_class_service_proto_rawDescGZIP(), []int{7}
+	return file_fesmu_service_v1_computer_class_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *ComputerClassSessionDeleteResponse) GetSuccess() bool {
@@ -553,11 +553,11 @@ func (x *ComputerClassSessionDeleteResponse) GetMessage() string {
 	return ""
 }
 
-var File_service_v1_computer_class_service_proto protoreflect.FileDescriptor
+var File_fesmu_service_v1_computer_class_service_proto protoreflect.FileDescriptor
 
-const file_service_v1_computer_class_service_proto_rawDesc = "" +
+const file_fesmu_service_v1_computer_class_service_proto_rawDesc = "" +
 	"\n" +
-	"'service/v1/computer_class.service.proto\x12\x13contract.service.v1\x1a%entity/v1/computer_class.entity.proto\x1a!enum/v1/computer_class.enum.proto\"\xac\x01\n" +
+	"-fesmu/service/v1/computer_class.service.proto\x12\x13contract.service.v1\x1a+fesmu/entity/v1/computer_class.entity.proto\x1a'fesmu/enum/v1/computer_class.enum.proto\"\xac\x01\n" +
 	" ComputerClassSessionFetchRequest\x12\x12\n" +
 	"\x04room\x18\x01 \x01(\tR\x04room\x12\x1b\n" +
 	"\tdate_from\x18\x02 \x01(\tR\bdateFrom\x12\x17\n" +
@@ -606,19 +606,19 @@ const file_service_v1_computer_class_service_proto_rawDesc = "" +
 	"\x17com.contract.service.v1B\x19ComputerClassServiceProtoP\x01Z)fesmu/contract/fesmu/service/v1;servicev1\xa2\x02\x03CSX\xaa\x02\x13Contract.Service.V1\xca\x02\x13Contract\\Service\\V1\xe2\x02\x1fContract\\Service\\V1\\GPBMetadata\xea\x02\x15Contract::Service::V1b\x06proto3"
 
 var (
-	file_service_v1_computer_class_service_proto_rawDescOnce sync.Once
-	file_service_v1_computer_class_service_proto_rawDescData []byte
+	file_fesmu_service_v1_computer_class_service_proto_rawDescOnce sync.Once
+	file_fesmu_service_v1_computer_class_service_proto_rawDescData []byte
 )
 
-func file_service_v1_computer_class_service_proto_rawDescGZIP() []byte {
-	file_service_v1_computer_class_service_proto_rawDescOnce.Do(func() {
-		file_service_v1_computer_class_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_service_v1_computer_class_service_proto_rawDesc), len(file_service_v1_computer_class_service_proto_rawDesc)))
+func file_fesmu_service_v1_computer_class_service_proto_rawDescGZIP() []byte {
+	file_fesmu_service_v1_computer_class_service_proto_rawDescOnce.Do(func() {
+		file_fesmu_service_v1_computer_class_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_fesmu_service_v1_computer_class_service_proto_rawDesc), len(file_fesmu_service_v1_computer_class_service_proto_rawDesc)))
 	})
-	return file_service_v1_computer_class_service_proto_rawDescData
+	return file_fesmu_service_v1_computer_class_service_proto_rawDescData
 }
 
-var file_service_v1_computer_class_service_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
-var file_service_v1_computer_class_service_proto_goTypes = []any{
+var file_fesmu_service_v1_computer_class_service_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_fesmu_service_v1_computer_class_service_proto_goTypes = []any{
 	(*ComputerClassSessionFetchRequest)(nil),   // 0: contract.service.v1.ComputerClassSessionFetchRequest
 	(*ComputerClassSessionFetchResponse)(nil),  // 1: contract.service.v1.ComputerClassSessionFetchResponse
 	(*ComputerClassSessionCreateRequest)(nil),  // 2: contract.service.v1.ComputerClassSessionCreateRequest
@@ -630,7 +630,7 @@ var file_service_v1_computer_class_service_proto_goTypes = []any{
 	(v1.ComputerClassSessionKind)(0),           // 8: contract.enum.v1.ComputerClassSessionKind
 	(*v11.ComputerClassSession)(nil),           // 9: contract.entity.v1.ComputerClassSession
 }
-var file_service_v1_computer_class_service_proto_depIdxs = []int32{
+var file_fesmu_service_v1_computer_class_service_proto_depIdxs = []int32{
 	8, // 0: contract.service.v1.ComputerClassSessionFetchRequest.kind:type_name -> contract.enum.v1.ComputerClassSessionKind
 	9, // 1: contract.service.v1.ComputerClassSessionFetchResponse.list:type_name -> contract.entity.v1.ComputerClassSession
 	8, // 2: contract.service.v1.ComputerClassSessionCreateRequest.kind:type_name -> contract.enum.v1.ComputerClassSessionKind
@@ -650,26 +650,26 @@ var file_service_v1_computer_class_service_proto_depIdxs = []int32{
 	0, // [0:4] is the sub-list for field type_name
 }
 
-func init() { file_service_v1_computer_class_service_proto_init() }
-func file_service_v1_computer_class_service_proto_init() {
-	if File_service_v1_computer_class_service_proto != nil {
+func init() { file_fesmu_service_v1_computer_class_service_proto_init() }
+func file_fesmu_service_v1_computer_class_service_proto_init() {
+	if File_fesmu_service_v1_computer_class_service_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_service_v1_computer_class_service_proto_rawDesc), len(file_service_v1_computer_class_service_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_fesmu_service_v1_computer_class_service_proto_rawDesc), len(file_fesmu_service_v1_computer_class_service_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_service_v1_computer_class_service_proto_goTypes,
-		DependencyIndexes: file_service_v1_computer_class_service_proto_depIdxs,
-		MessageInfos:      file_service_v1_computer_class_service_proto_msgTypes,
+		GoTypes:           file_fesmu_service_v1_computer_class_service_proto_goTypes,
+		DependencyIndexes: file_fesmu_service_v1_computer_class_service_proto_depIdxs,
+		MessageInfos:      file_fesmu_service_v1_computer_class_service_proto_msgTypes,
 	}.Build()
-	File_service_v1_computer_class_service_proto = out.File
-	file_service_v1_computer_class_service_proto_goTypes = nil
-	file_service_v1_computer_class_service_proto_depIdxs = nil
+	File_fesmu_service_v1_computer_class_service_proto = out.File
+	file_fesmu_service_v1_computer_class_service_proto_goTypes = nil
+	file_fesmu_service_v1_computer_class_service_proto_depIdxs = nil
 }

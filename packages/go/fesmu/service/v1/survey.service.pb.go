@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: service/v1/survey.service.proto
+// source: fesmu/service/v1/survey.service.proto
 
 package servicev1
 
@@ -35,7 +35,7 @@ type SurveyQrFetchRequest struct {
 
 func (x *SurveyQrFetchRequest) Reset() {
 	*x = SurveyQrFetchRequest{}
-	mi := &file_service_v1_survey_service_proto_msgTypes[0]
+	mi := &file_fesmu_service_v1_survey_service_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -47,7 +47,7 @@ func (x *SurveyQrFetchRequest) String() string {
 func (*SurveyQrFetchRequest) ProtoMessage() {}
 
 func (x *SurveyQrFetchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_survey_service_proto_msgTypes[0]
+	mi := &file_fesmu_service_v1_survey_service_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -60,7 +60,7 @@ func (x *SurveyQrFetchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SurveyQrFetchRequest.ProtoReflect.Descriptor instead.
 func (*SurveyQrFetchRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_survey_service_proto_rawDescGZIP(), []int{0}
+	return file_fesmu_service_v1_survey_service_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *SurveyQrFetchRequest) GetCheck() int64 {
@@ -89,7 +89,7 @@ type SurveyQrFetchResponse struct {
 
 func (x *SurveyQrFetchResponse) Reset() {
 	*x = SurveyQrFetchResponse{}
-	mi := &file_service_v1_survey_service_proto_msgTypes[1]
+	mi := &file_fesmu_service_v1_survey_service_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -101,7 +101,7 @@ func (x *SurveyQrFetchResponse) String() string {
 func (*SurveyQrFetchResponse) ProtoMessage() {}
 
 func (x *SurveyQrFetchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_survey_service_proto_msgTypes[1]
+	mi := &file_fesmu_service_v1_survey_service_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -114,7 +114,7 @@ func (x *SurveyQrFetchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SurveyQrFetchResponse.ProtoReflect.Descriptor instead.
 func (*SurveyQrFetchResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_survey_service_proto_rawDescGZIP(), []int{1}
+	return file_fesmu_service_v1_survey_service_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *SurveyQrFetchResponse) GetNext() int64 {
@@ -143,7 +143,7 @@ type SurveyCreateRequest struct {
 
 func (x *SurveyCreateRequest) Reset() {
 	*x = SurveyCreateRequest{}
-	mi := &file_service_v1_survey_service_proto_msgTypes[2]
+	mi := &file_fesmu_service_v1_survey_service_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -155,7 +155,7 @@ func (x *SurveyCreateRequest) String() string {
 func (*SurveyCreateRequest) ProtoMessage() {}
 
 func (x *SurveyCreateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_survey_service_proto_msgTypes[2]
+	mi := &file_fesmu_service_v1_survey_service_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -168,7 +168,7 @@ func (x *SurveyCreateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SurveyCreateRequest.ProtoReflect.Descriptor instead.
 func (*SurveyCreateRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_survey_service_proto_rawDescGZIP(), []int{2}
+	return file_fesmu_service_v1_survey_service_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *SurveyCreateRequest) GetName() string {
@@ -212,7 +212,7 @@ type SurveyUpdateRequest struct {
 
 func (x *SurveyUpdateRequest) Reset() {
 	*x = SurveyUpdateRequest{}
-	mi := &file_service_v1_survey_service_proto_msgTypes[3]
+	mi := &file_fesmu_service_v1_survey_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -224,7 +224,7 @@ func (x *SurveyUpdateRequest) String() string {
 func (*SurveyUpdateRequest) ProtoMessage() {}
 
 func (x *SurveyUpdateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_survey_service_proto_msgTypes[3]
+	mi := &file_fesmu_service_v1_survey_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -237,7 +237,7 @@ func (x *SurveyUpdateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SurveyUpdateRequest.ProtoReflect.Descriptor instead.
 func (*SurveyUpdateRequest) Descriptor() ([]byte, []int) {
-	return file_service_v1_survey_service_proto_rawDescGZIP(), []int{3}
+	return file_fesmu_service_v1_survey_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *SurveyUpdateRequest) GetId() int64 {
@@ -285,7 +285,7 @@ type SurveyResponse struct {
 
 func (x *SurveyResponse) Reset() {
 	*x = SurveyResponse{}
-	mi := &file_service_v1_survey_service_proto_msgTypes[4]
+	mi := &file_fesmu_service_v1_survey_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -297,7 +297,7 @@ func (x *SurveyResponse) String() string {
 func (*SurveyResponse) ProtoMessage() {}
 
 func (x *SurveyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_v1_survey_service_proto_msgTypes[4]
+	mi := &file_fesmu_service_v1_survey_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -310,7 +310,7 @@ func (x *SurveyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SurveyResponse.ProtoReflect.Descriptor instead.
 func (*SurveyResponse) Descriptor() ([]byte, []int) {
-	return file_service_v1_survey_service_proto_rawDescGZIP(), []int{4}
+	return file_fesmu_service_v1_survey_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *SurveyResponse) GetSurvey() *entity.Analytic {
@@ -320,11 +320,11 @@ func (x *SurveyResponse) GetSurvey() *entity.Analytic {
 	return nil
 }
 
-var File_service_v1_survey_service_proto protoreflect.FileDescriptor
+var File_fesmu_service_v1_survey_service_proto protoreflect.FileDescriptor
 
-const file_service_v1_survey_service_proto_rawDesc = "" +
+const file_fesmu_service_v1_survey_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1fservice/v1/survey.service.proto\x12\x13contract.service.v1\x1a\x1centity/analytic.entity.proto\x1a\x18enum/analytic.enum.proto\"K\n" +
+	"%fesmu/service/v1/survey.service.proto\x12\x13contract.service.v1\x1a&analytics/entity/analytic.entity.proto\x1a\"analytics/enum/analytic.enum.proto\"K\n" +
 	"\x14SurveyQrFetchRequest\x12\x14\n" +
 	"\x05check\x18\x01 \x01(\x03R\x05check\x12\x1d\n" +
 	"\n" +
@@ -360,19 +360,19 @@ const file_service_v1_survey_service_proto_rawDesc = "" +
 	"\x17com.contract.service.v1B\x12SurveyServiceProtoP\x01Z)fesmu/contract/fesmu/service/v1;servicev1\xa2\x02\x03CSX\xaa\x02\x13Contract.Service.V1\xca\x02\x13Contract\\Service\\V1\xe2\x02\x1fContract\\Service\\V1\\GPBMetadata\xea\x02\x15Contract::Service::V1b\x06proto3"
 
 var (
-	file_service_v1_survey_service_proto_rawDescOnce sync.Once
-	file_service_v1_survey_service_proto_rawDescData []byte
+	file_fesmu_service_v1_survey_service_proto_rawDescOnce sync.Once
+	file_fesmu_service_v1_survey_service_proto_rawDescData []byte
 )
 
-func file_service_v1_survey_service_proto_rawDescGZIP() []byte {
-	file_service_v1_survey_service_proto_rawDescOnce.Do(func() {
-		file_service_v1_survey_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_service_v1_survey_service_proto_rawDesc), len(file_service_v1_survey_service_proto_rawDesc)))
+func file_fesmu_service_v1_survey_service_proto_rawDescGZIP() []byte {
+	file_fesmu_service_v1_survey_service_proto_rawDescOnce.Do(func() {
+		file_fesmu_service_v1_survey_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_fesmu_service_v1_survey_service_proto_rawDesc), len(file_fesmu_service_v1_survey_service_proto_rawDesc)))
 	})
-	return file_service_v1_survey_service_proto_rawDescData
+	return file_fesmu_service_v1_survey_service_proto_rawDescData
 }
 
-var file_service_v1_survey_service_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
-var file_service_v1_survey_service_proto_goTypes = []any{
+var file_fesmu_service_v1_survey_service_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_fesmu_service_v1_survey_service_proto_goTypes = []any{
 	(*SurveyQrFetchRequest)(nil),  // 0: contract.service.v1.SurveyQrFetchRequest
 	(*SurveyQrFetchResponse)(nil), // 1: contract.service.v1.SurveyQrFetchResponse
 	(*SurveyCreateRequest)(nil),   // 2: contract.service.v1.SurveyCreateRequest
@@ -381,7 +381,7 @@ var file_service_v1_survey_service_proto_goTypes = []any{
 	(enum.AnalyticType)(0),        // 5: contract.analytics.enum.AnalyticType
 	(*entity.Analytic)(nil),       // 6: contract.analytics.entity.Analytic
 }
-var file_service_v1_survey_service_proto_depIdxs = []int32{
+var file_fesmu_service_v1_survey_service_proto_depIdxs = []int32{
 	5, // 0: contract.service.v1.SurveyCreateRequest.type:type_name -> contract.analytics.enum.AnalyticType
 	5, // 1: contract.service.v1.SurveyUpdateRequest.type:type_name -> contract.analytics.enum.AnalyticType
 	6, // 2: contract.service.v1.SurveyResponse.survey:type_name -> contract.analytics.entity.Analytic
@@ -398,27 +398,27 @@ var file_service_v1_survey_service_proto_depIdxs = []int32{
 	0, // [0:3] is the sub-list for field type_name
 }
 
-func init() { file_service_v1_survey_service_proto_init() }
-func file_service_v1_survey_service_proto_init() {
-	if File_service_v1_survey_service_proto != nil {
+func init() { file_fesmu_service_v1_survey_service_proto_init() }
+func file_fesmu_service_v1_survey_service_proto_init() {
+	if File_fesmu_service_v1_survey_service_proto != nil {
 		return
 	}
-	file_service_v1_survey_service_proto_msgTypes[3].OneofWrappers = []any{}
+	file_fesmu_service_v1_survey_service_proto_msgTypes[3].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_service_v1_survey_service_proto_rawDesc), len(file_service_v1_survey_service_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_fesmu_service_v1_survey_service_proto_rawDesc), len(file_fesmu_service_v1_survey_service_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_service_v1_survey_service_proto_goTypes,
-		DependencyIndexes: file_service_v1_survey_service_proto_depIdxs,
-		MessageInfos:      file_service_v1_survey_service_proto_msgTypes,
+		GoTypes:           file_fesmu_service_v1_survey_service_proto_goTypes,
+		DependencyIndexes: file_fesmu_service_v1_survey_service_proto_depIdxs,
+		MessageInfos:      file_fesmu_service_v1_survey_service_proto_msgTypes,
 	}.Build()
-	File_service_v1_survey_service_proto = out.File
-	file_service_v1_survey_service_proto_goTypes = nil
-	file_service_v1_survey_service_proto_depIdxs = nil
+	File_fesmu_service_v1_survey_service_proto = out.File
+	file_fesmu_service_v1_survey_service_proto_goTypes = nil
+	file_fesmu_service_v1_survey_service_proto_depIdxs = nil
 }

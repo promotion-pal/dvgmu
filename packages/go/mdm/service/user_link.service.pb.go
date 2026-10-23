@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: service/user_link.service.proto
+// source: mdm/service/user_link.service.proto
 
 package service
 
@@ -32,7 +32,7 @@ type ActivationCheckRequest struct {
 
 func (x *ActivationCheckRequest) Reset() {
 	*x = ActivationCheckRequest{}
-	mi := &file_service_user_link_service_proto_msgTypes[0]
+	mi := &file_mdm_service_user_link_service_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -44,7 +44,7 @@ func (x *ActivationCheckRequest) String() string {
 func (*ActivationCheckRequest) ProtoMessage() {}
 
 func (x *ActivationCheckRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_user_link_service_proto_msgTypes[0]
+	mi := &file_mdm_service_user_link_service_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -57,7 +57,7 @@ func (x *ActivationCheckRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ActivationCheckRequest.ProtoReflect.Descriptor instead.
 func (*ActivationCheckRequest) Descriptor() ([]byte, []int) {
-	return file_service_user_link_service_proto_rawDescGZIP(), []int{0}
+	return file_mdm_service_user_link_service_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *ActivationCheckRequest) GetUsername() string {
@@ -83,7 +83,7 @@ type ActivationCheckResponse struct {
 
 func (x *ActivationCheckResponse) Reset() {
 	*x = ActivationCheckResponse{}
-	mi := &file_service_user_link_service_proto_msgTypes[1]
+	mi := &file_mdm_service_user_link_service_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -95,7 +95,7 @@ func (x *ActivationCheckResponse) String() string {
 func (*ActivationCheckResponse) ProtoMessage() {}
 
 func (x *ActivationCheckResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_user_link_service_proto_msgTypes[1]
+	mi := &file_mdm_service_user_link_service_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -108,7 +108,7 @@ func (x *ActivationCheckResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ActivationCheckResponse.ProtoReflect.Descriptor instead.
 func (*ActivationCheckResponse) Descriptor() ([]byte, []int) {
-	return file_service_user_link_service_proto_rawDescGZIP(), []int{1}
+	return file_mdm_service_user_link_service_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *ActivationCheckResponse) GetUser() *entity.User {
@@ -128,7 +128,7 @@ type UserADLink struct {
 
 func (x *UserADLink) Reset() {
 	*x = UserADLink{}
-	mi := &file_service_user_link_service_proto_msgTypes[2]
+	mi := &file_mdm_service_user_link_service_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -140,7 +140,7 @@ func (x *UserADLink) String() string {
 func (*UserADLink) ProtoMessage() {}
 
 func (x *UserADLink) ProtoReflect() protoreflect.Message {
-	mi := &file_service_user_link_service_proto_msgTypes[2]
+	mi := &file_mdm_service_user_link_service_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -153,7 +153,7 @@ func (x *UserADLink) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserADLink.ProtoReflect.Descriptor instead.
 func (*UserADLink) Descriptor() ([]byte, []int) {
-	return file_service_user_link_service_proto_rawDescGZIP(), []int{2}
+	return file_mdm_service_user_link_service_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *UserADLink) GetId() int64 {
@@ -179,7 +179,7 @@ type UserADLinkBatchRequest struct {
 
 func (x *UserADLinkBatchRequest) Reset() {
 	*x = UserADLinkBatchRequest{}
-	mi := &file_service_user_link_service_proto_msgTypes[3]
+	mi := &file_mdm_service_user_link_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -191,7 +191,7 @@ func (x *UserADLinkBatchRequest) String() string {
 func (*UserADLinkBatchRequest) ProtoMessage() {}
 
 func (x *UserADLinkBatchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_user_link_service_proto_msgTypes[3]
+	mi := &file_mdm_service_user_link_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -204,7 +204,7 @@ func (x *UserADLinkBatchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserADLinkBatchRequest.ProtoReflect.Descriptor instead.
 func (*UserADLinkBatchRequest) Descriptor() ([]byte, []int) {
-	return file_service_user_link_service_proto_rawDescGZIP(), []int{3}
+	return file_mdm_service_user_link_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *UserADLinkBatchRequest) GetLinks() []*UserADLink {
@@ -224,7 +224,7 @@ type UserADLinkBatchResponse struct {
 
 func (x *UserADLinkBatchResponse) Reset() {
 	*x = UserADLinkBatchResponse{}
-	mi := &file_service_user_link_service_proto_msgTypes[4]
+	mi := &file_mdm_service_user_link_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -236,7 +236,7 @@ func (x *UserADLinkBatchResponse) String() string {
 func (*UserADLinkBatchResponse) ProtoMessage() {}
 
 func (x *UserADLinkBatchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_user_link_service_proto_msgTypes[4]
+	mi := &file_mdm_service_user_link_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -249,7 +249,7 @@ func (x *UserADLinkBatchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserADLinkBatchResponse.ProtoReflect.Descriptor instead.
 func (*UserADLinkBatchResponse) Descriptor() ([]byte, []int) {
-	return file_service_user_link_service_proto_rawDescGZIP(), []int{4}
+	return file_mdm_service_user_link_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *UserADLinkBatchResponse) GetLinked() int64 {
@@ -266,11 +266,11 @@ func (x *UserADLinkBatchResponse) GetSkipped() []*UserADLink {
 	return nil
 }
 
-var File_service_user_link_service_proto protoreflect.FileDescriptor
+var File_mdm_service_user_link_service_proto protoreflect.FileDescriptor
 
-const file_service_user_link_service_proto_rawDesc = "" +
+const file_mdm_service_user_link_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1fservice/user_link.service.proto\x12\x10contract.service\x1a\x18entity/user.entity.proto\"H\n" +
+	"#mdm/service/user_link.service.proto\x12\x10contract.service\x1a\x1cmdm/entity/user.entity.proto\"H\n" +
 	"\x16ActivationCheckRequest\x12\x1a\n" +
 	"\busername\x18\x01 \x01(\tR\busername\x12\x12\n" +
 	"\x04code\x18\x02 \x01(\tR\x04code\"D\n" +
@@ -293,19 +293,19 @@ const file_service_user_link_service_proto_rawDesc = "" +
 	"\x14com.contract.serviceB\x14UserLinkServiceProtoP\x01Z\x1afesmu/contract/mdm/service\xa2\x02\x03CSX\xaa\x02\x10Contract.Service\xca\x02\x10Contract\\Service\xe2\x02\x1cContract\\Service\\GPBMetadata\xea\x02\x11Contract::Serviceb\x06proto3"
 
 var (
-	file_service_user_link_service_proto_rawDescOnce sync.Once
-	file_service_user_link_service_proto_rawDescData []byte
+	file_mdm_service_user_link_service_proto_rawDescOnce sync.Once
+	file_mdm_service_user_link_service_proto_rawDescData []byte
 )
 
-func file_service_user_link_service_proto_rawDescGZIP() []byte {
-	file_service_user_link_service_proto_rawDescOnce.Do(func() {
-		file_service_user_link_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_service_user_link_service_proto_rawDesc), len(file_service_user_link_service_proto_rawDesc)))
+func file_mdm_service_user_link_service_proto_rawDescGZIP() []byte {
+	file_mdm_service_user_link_service_proto_rawDescOnce.Do(func() {
+		file_mdm_service_user_link_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_mdm_service_user_link_service_proto_rawDesc), len(file_mdm_service_user_link_service_proto_rawDesc)))
 	})
-	return file_service_user_link_service_proto_rawDescData
+	return file_mdm_service_user_link_service_proto_rawDescData
 }
 
-var file_service_user_link_service_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
-var file_service_user_link_service_proto_goTypes = []any{
+var file_mdm_service_user_link_service_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_mdm_service_user_link_service_proto_goTypes = []any{
 	(*ActivationCheckRequest)(nil),  // 0: contract.service.ActivationCheckRequest
 	(*ActivationCheckResponse)(nil), // 1: contract.service.ActivationCheckResponse
 	(*UserADLink)(nil),              // 2: contract.service.UserADLink
@@ -313,7 +313,7 @@ var file_service_user_link_service_proto_goTypes = []any{
 	(*UserADLinkBatchResponse)(nil), // 4: contract.service.UserADLinkBatchResponse
 	(*entity.User)(nil),             // 5: contract.entity.User
 }
-var file_service_user_link_service_proto_depIdxs = []int32{
+var file_mdm_service_user_link_service_proto_depIdxs = []int32{
 	5, // 0: contract.service.ActivationCheckResponse.user:type_name -> contract.entity.User
 	2, // 1: contract.service.UserADLinkBatchRequest.links:type_name -> contract.service.UserADLink
 	2, // 2: contract.service.UserADLinkBatchResponse.skipped:type_name -> contract.service.UserADLink
@@ -330,26 +330,26 @@ var file_service_user_link_service_proto_depIdxs = []int32{
 	0, // [0:3] is the sub-list for field type_name
 }
 
-func init() { file_service_user_link_service_proto_init() }
-func file_service_user_link_service_proto_init() {
-	if File_service_user_link_service_proto != nil {
+func init() { file_mdm_service_user_link_service_proto_init() }
+func file_mdm_service_user_link_service_proto_init() {
+	if File_mdm_service_user_link_service_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_service_user_link_service_proto_rawDesc), len(file_service_user_link_service_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_mdm_service_user_link_service_proto_rawDesc), len(file_mdm_service_user_link_service_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_service_user_link_service_proto_goTypes,
-		DependencyIndexes: file_service_user_link_service_proto_depIdxs,
-		MessageInfos:      file_service_user_link_service_proto_msgTypes,
+		GoTypes:           file_mdm_service_user_link_service_proto_goTypes,
+		DependencyIndexes: file_mdm_service_user_link_service_proto_depIdxs,
+		MessageInfos:      file_mdm_service_user_link_service_proto_msgTypes,
 	}.Build()
-	File_service_user_link_service_proto = out.File
-	file_service_user_link_service_proto_goTypes = nil
-	file_service_user_link_service_proto_depIdxs = nil
+	File_mdm_service_user_link_service_proto = out.File
+	file_mdm_service_user_link_service_proto_goTypes = nil
+	file_mdm_service_user_link_service_proto_depIdxs = nil
 }
