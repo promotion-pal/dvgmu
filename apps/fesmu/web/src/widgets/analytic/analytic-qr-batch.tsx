@@ -4,7 +4,7 @@ import { QrCodeIcon } from "lucide-react";
 
 import { CommonModal } from "@/shared/components/modal";
 import { QrBatchExport } from "@/shared/components/qr-designer";
-import type { Analytic } from "@dvgmu/analytics/entity/analytic.entity_pb";
+import type { Analytic } from "@dvgmu/contract/analytics/entity/analytic.entity_pb";
 
 import { buildAnalyticQrUrl } from "./analytic.fn";
 import { analyticCategoryEmoji } from "./analytic.utils";

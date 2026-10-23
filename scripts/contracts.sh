@@ -6,8 +6,8 @@
 # уникальны, поэтому схемы ссылаются друг на друга напрямую.
 #
 # Что получается:
-#   TypeScript → packages/<имя> (@dvgmu/<имя>), плоско: packages/mdm/entity/…
-#                ссылки на чужие схемы — импорт пакета (@dvgmu/mdm/…), не копия
+#   TypeScript → packages/<имя>, плоско: packages/mdm/entity/… — всё это один пакет
+#                @dvgmu/contract; ссылки на чужие схемы — @dvgmu/contract/<имя>/…, не копия
 #   Go         → <модуль>/gen/go; чужие схемы, нужные модулю, — в подпапку
 #                gen/go/<сервис>, бэкенд по-прежнему собирается из своей папки
 #
@@ -21,16 +21,16 @@ root="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$root"
 export PATH="$root/node_modules/.bin:$HOME/go/bin:$PATH"
 
-# имя | папка контракта | префикс Go (= module из go.mod + /contract/gen/go) | вывод TS | корень пакета TS
+# имя | папка контракта | префикс Go (= module из go.mod + /contract/gen/go) | вывод TS | импорт TS
 # У auth пути уже начинаются с auth/ (auth/v1, auth/v2) — его TS ложится в packages/ напрямую.
 MODULES=(
-  "fesmu|apps/fesmu/api/contract|dvgmu/api/contract/gen/go|packages/fesmu|@dvgmu/fesmu"
-  "analytics|services/analytics/api/contract|dvgmu/analytics/contract/gen/go|packages/analytics|@dvgmu/analytics"
-  "auth|services/auth/api/contract|dvgmu/auth/contract/gen/go|packages|@dvgmu"
-  "file|services/file/api/contract|dvgmu/file/contract/gen/go|packages/file|@dvgmu/file"
-  "mdm|services/mdm/api/contract|dvgmu/api/contract/gen/go|packages/mdm|@dvgmu/mdm"
-  "notification|services/notification/api/contract|dvgmu/notification/contract/gen/go|packages/notification|@dvgmu/notification"
-  "tickets|services/tickets/api/contract|dvgmu/tickets/contract/gen/go|packages/tickets|@dvgmu/tickets"
+  "fesmu|apps/fesmu/api/contract|dvgmu/api/contract/gen/go|packages/fesmu|@dvgmu/contract/fesmu"
+  "analytics|services/analytics/api/contract|dvgmu/analytics/contract/gen/go|packages/analytics|@dvgmu/contract/analytics"
+  "auth|services/auth/api/contract|dvgmu/auth/contract/gen/go|packages|@dvgmu/contract"
+  "file|services/file/api/contract|dvgmu/file/contract/gen/go|packages/file|@dvgmu/contract/file"
+  "mdm|services/mdm/api/contract|dvgmu/api/contract/gen/go|packages/mdm|@dvgmu/contract/mdm"
+  "notification|services/notification/api/contract|dvgmu/notification/contract/gen/go|packages/notification|@dvgmu/contract/notification"
+  "tickets|services/tickets/api/contract|dvgmu/tickets/contract/gen/go|packages/tickets|@dvgmu/contract/tickets"
 )
 
 # Чьи Go-клиенты нужны модулю: "чужой_модуль:подпапка" (пустая подпапка — пути
@@ -73,7 +73,7 @@ gen_go() {
                  {\"local\":\"protoc-gen-connect-go\",\"out\":\"$out\",\"opt\":\"paths=source_relative\"}]}"
 }
 
-# TS одного модуля: свои схемы — относительно, чужие — импортом пакета @dvgmu/<имя>.
+# TS одного модуля: свои схемы — относительно, чужие — @dvgmu/contract/<имя>/….
 gen_ts() {
   local name=$1 row other f opts="\"target=ts\",\"import_extension=none\""
   for row in "${MODULES[@]}"; do

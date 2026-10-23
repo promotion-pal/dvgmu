@@ -1,4 +1,4 @@
-import type { Infrastructure } from "@dvgmu/fesmu/entity/v1/infrastructure.entity_pb";
+import type { Infrastructure } from "@dvgmu/contract/fesmu/entity/v1/infrastructure.entity_pb";
 import type { FC } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";

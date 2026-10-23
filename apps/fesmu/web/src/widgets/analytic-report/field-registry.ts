@@ -3,8 +3,8 @@ import {
   InformationSecurityOs,
   InformationSecurityResource,
   AnalyticType,
-} from "@dvgmu/analytics/enum/analytic.enum_pb";
-import type { AnalyticRating } from "@dvgmu/analytics/entity/analytic.entity_pb";
+} from "@dvgmu/contract/analytics/enum/analytic.enum_pb";
+import type { AnalyticRating } from "@dvgmu/contract/analytics/entity/analytic.entity_pb";
 
 /**
  * Универсальный реестр полей опроса (AnalyticRating).

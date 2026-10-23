@@ -10,7 +10,7 @@ import {
   DialogTitle,
 } from "@/shared/ui/dialog";
 
-import type { AnalyticRating } from "@dvgmu/analytics/entity/analytic.entity_pb";
+import type { AnalyticRating } from "@dvgmu/contract/analytics/entity/analytic.entity_pb";
 
 import type { AnalyticFieldDef } from "./field-registry";
 import { respondentName, respondentSubtitle, formatFieldValue } from "./analytic-report.stats";

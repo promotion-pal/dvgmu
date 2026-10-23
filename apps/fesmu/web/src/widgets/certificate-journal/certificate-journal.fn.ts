@@ -4,11 +4,11 @@ import { toast } from "sonner";
 import {
     CertificateOrderStatus,
     CertificateService,
-} from "@dvgmu/fesmu/service/v1/certificate.service_pb";
-import type { CertificateOrderEntry } from "@dvgmu/fesmu/service/v1/certificate.service_pb";
-import { FileGenerateType } from "@dvgmu/file/enum/file.enum_pb";
-import type { User } from "@dvgmu/mdm/entity/user.entity_pb";
-import { UserService } from "@dvgmu/mdm/service/user.service_pb";
+} from "@dvgmu/contract/fesmu/service/v1/certificate.service_pb";
+import type { CertificateOrderEntry } from "@dvgmu/contract/fesmu/service/v1/certificate.service_pb";
+import { FileGenerateType } from "@dvgmu/contract/file/enum/file.enum_pb";
+import type { User } from "@dvgmu/contract/mdm/entity/user.entity_pb";
+import { UserService } from "@dvgmu/contract/mdm/service/user.service_pb";
 import { useFetchState } from "@/features/lib/fetch";
 import { downloadFile } from "@/features/certificate/certificate.fn";
 import { connectTransport } from "@/shared/config/api";

@@ -6,8 +6,8 @@ import type {
     PurchaseLog as LogMessage,
     PurchaseLot as LotMessage,
     PurchaseRequest as RequestMessage,
-} from "@dvgmu/fesmu/entity/v2/purchase.entity_pb";
-import { PurchaseService } from "@dvgmu/fesmu/service/v2/purchase.service_pb";
+} from "@dvgmu/contract/fesmu/entity/v2/purchase.entity_pb";
+import { PurchaseService } from "@dvgmu/contract/fesmu/service/v2/purchase.service_pb";
 import { connectTransport } from "@/shared/config/api";
 import { parseQty, parseRub } from "./purchase-v2.schema";
 import type {

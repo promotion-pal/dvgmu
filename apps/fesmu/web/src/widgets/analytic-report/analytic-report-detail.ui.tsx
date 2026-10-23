@@ -12,7 +12,7 @@ import { Card } from "@/shared/ui/card";
 import { QrDesigner } from "@/shared/components/qr-designer";
 import { analyticCategoryEmoji, analyticShortName, buildAnalyticQrUrl } from "@/widgets/analytic";
 
-import type { Analytic } from "@dvgmu/analytics/entity/analytic.entity_pb";
+import type { Analytic } from "@dvgmu/contract/analytics/entity/analytic.entity_pb";
 
 import { analyticClient, analyticTypeLabel } from "./analytic-report.fn";
 import { resolveActiveFields } from "./field-registry";

@@ -1,7 +1,7 @@
 import { useFetchState } from "@/features/lib/fetch";
-import type { AccessGroup } from "@dvgmu/mdm/entity/user.entity_pb";
-import type { UserEmployeeDepartment } from "@dvgmu/mdm/enum/user.enum_pb";
-import { UserService } from "@dvgmu/mdm/service/user.service_pb";
+import type { AccessGroup } from "@dvgmu/contract/mdm/entity/user.entity_pb";
+import type { UserEmployeeDepartment } from "@dvgmu/contract/mdm/enum/user.enum_pb";
+import { UserService } from "@dvgmu/contract/mdm/service/user.service_pb";
 import { connectTransport } from "@/shared/config/api";
 import { ConnectError, createClient } from "@connectrpc/connect";
 import { toast } from "sonner";

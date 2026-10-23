@@ -1,9 +1,9 @@
 import { create } from "@bufbuild/protobuf";
 import { calculatePercentage, resolveDate } from "@/widgets/analytic/analytic.lib";
 import { analyticCategoryLabel, analyticShortName, extractAnalyticCategory } from "@/widgets/analytic/analytic.utils";
-import type { Analytic, AnalyticRating } from "@dvgmu/analytics/entity/analytic.entity_pb";
-import { AnalyticSchema } from "@dvgmu/analytics/entity/analytic.entity_pb";
-import type { AnalyticType } from "@dvgmu/analytics/enum/analytic.enum_pb";
+import type { Analytic, AnalyticRating } from "@dvgmu/contract/analytics/entity/analytic.entity_pb";
+import { AnalyticSchema } from "@dvgmu/contract/analytics/entity/analytic.entity_pb";
+import type { AnalyticType } from "@dvgmu/contract/analytics/enum/analytic.enum_pb";
 
 import type {
   AnalyticFieldDef} from "./field-registry";

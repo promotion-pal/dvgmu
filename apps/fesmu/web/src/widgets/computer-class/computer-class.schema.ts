@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ComputerClassSessionKind } from "@dvgmu/fesmu/enum/v1/computer_class.enum_pb";
+import { ComputerClassSessionKind } from "@dvgmu/contract/fesmu/enum/v1/computer_class.enum_pb";
 
 export { ComputerClassSessionKind };
 

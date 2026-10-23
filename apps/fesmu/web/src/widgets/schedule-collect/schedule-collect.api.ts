@@ -1,6 +1,6 @@
 import { createClient } from "@connectrpc/connect";
-import { ScheduleCollectService } from "@dvgmu/fesmu/service/v1/schedule_collect.service_pb";
-import type { ScheduleCollectEntry as ScheduleCollectEntryMessage } from "@dvgmu/fesmu/entity/v1/schedule_collect.entity_pb";
+import { ScheduleCollectService } from "@dvgmu/contract/fesmu/service/v1/schedule_collect.service_pb";
+import type { ScheduleCollectEntry as ScheduleCollectEntryMessage } from "@dvgmu/contract/fesmu/entity/v1/schedule_collect.entity_pb";
 import { connectTransport } from "@/shared/config/api";
 import type { ScheduleCollectEntry, ScheduleCollectEntryInput } from "./schedule-collect.schema";
 

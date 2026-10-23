@@ -1,7 +1,7 @@
 import { createClient } from "@connectrpc/connect";
 import { timestampDate } from "@bufbuild/protobuf/wkt";
-import type { TestTakeStateResponse } from "@dvgmu/fesmu/service/v1/test_session.service_pb";
-import { TestSessionService } from "@dvgmu/fesmu/service/v1/test_session.service_pb";
+import type { TestTakeStateResponse } from "@dvgmu/contract/fesmu/service/v1/test_session.service_pb";
+import { TestSessionService } from "@dvgmu/contract/fesmu/service/v1/test_session.service_pb";
 import { connectTransport } from "@/shared/config/api";
 import type { TestTakeInfo, TestTakeState } from "./test-take.schema";
 

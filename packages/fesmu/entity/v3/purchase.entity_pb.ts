@@ -8,8 +8,8 @@ import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import type { PurchaseCommissionDecision, PurchaseDocumentKind, PurchaseFundingSource, PurchaseItemType, PurchaseLaw, PurchaseLogTarget, PurchaseLotStatus, PurchaseMethod, PurchaseMove, PurchasePermission, PurchasePlanType, PurchaseRequestStatus, PurchaseRole } from "../../enum/v3/purchase.enum_pb";
 import { file_enum_v3_purchase_enum } from "../../enum/v3/purchase.enum_pb";
-import type { UserEmployeeDepartment } from "@dvgmu/mdm/enum/user.enum_pb.js";
-import { file_enum_user_enum } from "@dvgmu/mdm/enum/user.enum_pb.js";
+import type { UserEmployeeDepartment } from "@dvgmu/contract/mdm/enum/user.enum_pb.js";
+import { file_enum_user_enum } from "@dvgmu/contract/mdm/enum/user.enum_pb.js";
 import type { Message } from "@bufbuild/protobuf";
 
 /**

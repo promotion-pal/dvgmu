@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 import type { ComponentProps, FC } from "react";
 import { ChevronDownIcon, InfoIcon, LoaderCircleIcon, RefreshCwIcon, TriangleAlertIcon } from "lucide-react";
-import type { Debtor } from "@dvgmu/fesmu/entity/v1/debtor.entity_pb";
+import type { Debtor } from "@dvgmu/contract/fesmu/entity/v1/debtor.entity_pb";
 import { CommonControlState } from "@/shared/components/state/control-state";
 import { CommonError } from "@/shared/components/state/error";
 import { Badge } from "@/shared/ui/badge";

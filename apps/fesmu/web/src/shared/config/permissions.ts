@@ -1,5 +1,5 @@
-import { PermissionAction, PermissionSection } from "@dvgmu/fesmu/enum/v1/permission.enum_pb";
-import { PurchasePermission } from "@dvgmu/fesmu/enum/v3/purchase.enum_pb";
+import { PermissionAction, PermissionSection } from "@dvgmu/contract/fesmu/enum/v1/permission.enum_pb";
+import { PurchasePermission } from "@dvgmu/contract/fesmu/enum/v3/purchase.enum_pb";
 
 /* Разделы и действия — enum контракта (api/contract/enum/v1/permission.enum.proto),
  * общий с api. Право — строка "раздел.действие" (так оно в MDM и в токене):

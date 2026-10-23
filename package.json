@@ -5,5 +5,8 @@
   "type": "module",
   "devDependencies": {
     "@bufbuild/protoc-gen-es": "^2.12.1"
+  },
+  "dependencies": {
+    "@dvgmu/contract": "workspace:*"
   }
 }

@@ -13,13 +13,13 @@ import { useCommonModal, type CommonModalConfig } from "@/shared/components/moda
 import type { CommonPopoverProps } from "@/shared/components/menu";
 import { ROUTE } from "@/shared/config/path";
 
-import type { Analytic } from "@dvgmu/analytics/entity/analytic.entity_pb";
-import type { AnalyticType } from "@dvgmu/analytics/enum/analytic.enum_pb";
+import type { Analytic } from "@dvgmu/contract/analytics/entity/analytic.entity_pb";
+import type { AnalyticType } from "@dvgmu/contract/analytics/enum/analytic.enum_pb";
 import {
   AnalyticService,
   AnalyticFetchRequestSchema,
-} from "@dvgmu/analytics/service/analytic.service_pb";
-import { SurveyService } from "@dvgmu/fesmu/service/v1/survey.service_pb";
+} from "@dvgmu/contract/analytics/service/analytic.service_pb";
+import { SurveyService } from "@dvgmu/contract/fesmu/service/v1/survey.service_pb";
 import type { AnalyticSchema} from "./analytic.schema";
 import { analyticSchema } from "./analytic.schema";
 import { extractAnalyticCategory, isAnalyticTypeEnabled } from "./analytic.utils";

@@ -1,11 +1,11 @@
 import { useFetchState } from "@/features/lib/fetch";
-import type { StudentWithUser } from "@dvgmu/mdm/service/user.service_pb";
-import { StudentWithUserSchema } from "@dvgmu/mdm/service/user.service_pb";
-import { UserRole } from "@dvgmu/mdm/enum/user.enum_pb";
+import type { StudentWithUser } from "@dvgmu/contract/mdm/service/user.service_pb";
+import { StudentWithUserSchema } from "@dvgmu/contract/mdm/service/user.service_pb";
+import { UserRole } from "@dvgmu/contract/mdm/enum/user.enum_pb";
 import { create } from "@bufbuild/protobuf";
 import { withRoleMembers } from "@/shared/lib/role-members";
-import { UserService } from "@dvgmu/mdm/service/user.service_pb";
-import { UserStudentEducationForm, UserStudentStatus } from "@dvgmu/mdm/enum/user.enum_pb";
+import { UserService } from "@dvgmu/contract/mdm/service/user.service_pb";
+import { UserStudentEducationForm, UserStudentStatus } from "@dvgmu/contract/mdm/enum/user.enum_pb";
 import { useCommonModal } from "@/shared/components/modal";
 import type { CommonModalType } from "@/shared/components/modal";
 import type { CommonPopoverProps } from "@/shared/components/menu";

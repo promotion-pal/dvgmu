@@ -11,9 +11,10 @@ apps/
   fesmu/web           фронтенд портала (React + Vite)
   ksm, guide, profile, unistom, course   статические сайты
 services/             сервисы — у каждого своя БД, compose, .env и контракт в api/contract
-packages/             сгенерированный TS контрактов — по пакету на модуль:
-  fesmu/              @dvgmu/fesmu        (apps/fesmu/api/contract)
-  analytics/ auth/ file/ mdm/ notification/ tickets/   @dvgmu/<имя>
+packages/             @dvgmu/contract — сгенерированный TS всех схем, один пакет:
+  package.json        единственный: имя, exports, @bufbuild/protobuf
+  fesmu/              схемы apps/fesmu/api/contract
+  analytics/ auth/ file/ mdm/ notification/ tickets/   схемы сервисов
 buf.yaml              общий buf workspace всех контрактов
 Makefile              make proto — генерация всего
 scripts/contracts.sh  генератор (его вызывает make proto)
@@ -29,7 +30,7 @@ scripts/contracts.sh  генератор (его вызывает make proto)
 
 ```bash
 make proto         # Go → services/*/api/contract/gen/go и apps/fesmu/api/contract/gen/go
-                   # TS → packages/<имя> (@dvgmu/<имя>)
+                   # TS → packages/<имя> (@dvgmu/contract/<имя>/…)
 make proto-check   # сгенерированный код совпадает со схемами (это же в CI)
 ```
 
@@ -39,16 +40,18 @@ make proto-check   # сгенерированный код совпадает с
   ложится в подпапку `gen/go/<сервис>`. Бэкенд собирается из своей папки.
 - **Go fesmu** — свои схемы и клиенты сервисов (analytics, auth, file, mdm, tickets) в
   `apps/fesmu/api/contract/gen/go/<сервис>`.
-- **TS** — плоско в `packages/<имя>`. Ссылка на чужую схему — импорт пакета
-  (`@dvgmu/mdm/entity/user.entity_pb`), копий нет. `exports` в `package.json` пакета
-  разрешает пути и с `.js`, и без.
+- **TS** — плоско в `packages/<имя>`. Все папки — один пакет `@dvgmu/contract` с одним
+  `packages/package.json`. Приложение подключает одну зависимость и видит все схемы:
+  `@dvgmu/contract/mdm/entity/user.entity_pb`. Ссылка на чужую схему внутри пакета — тот же
+  путь, копий нет. `exports` разрешает пути и с `.js`, и без. Корневой `package.json`
+  зависит от `@dvgmu/contract`, чтобы этот путь находился из любой папки репозитория.
 
 dormitory, mentor и ojs — отдельные модули со своей генерацией, в общую схему не входят.
 У dormitory и mentor имена proto-пакетов совпадают с mdm (`contract.entity`), поэтому
 в один workspace с mdm их не добавлять без новой версии API.
 
 **Фронт — один pnpm workspace.** В корне `package.json`, `pnpm-workspace.yaml`,
-`pnpm-lock.yaml`. Веб fesmu берёт `@dvgmu/*` из `packages/`. Docker-образ веба
+`pnpm-lock.yaml`. Веб fesmu берёт `@dvgmu/contract` из `packages/`. Docker-образ веба
 собирается из корня, но в контекст попадает только нужное — см.
 `apps/fesmu/web/Dockerfile.dockerignore`.
 

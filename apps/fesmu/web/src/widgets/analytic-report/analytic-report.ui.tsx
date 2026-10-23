@@ -13,8 +13,8 @@ import { FieldDistributionChart } from "@/shared/components/chart";
 import { Badge } from "@/shared/ui/badge";
 import { Card } from "@/shared/ui/card";
 import { Input } from "@/shared/ui/input";
-import type { AnalyticType } from "@dvgmu/analytics/enum/analytic.enum_pb";
-import type { Analytic } from "@dvgmu/analytics/entity/analytic.entity_pb";
+import type { AnalyticType } from "@dvgmu/contract/analytics/enum/analytic.enum_pb";
+import type { Analytic } from "@dvgmu/contract/analytics/entity/analytic.entity_pb";
 
 import {
   ANALYTIC_TYPE_OPTIONS,

@@ -1,6 +1,6 @@
 import type { FC, ReactNode } from "react";
 import { LogOutIcon } from "lucide-react";
-import { UserRole } from "@dvgmu/fesmu/enum/v1/user.enum_pb";
+import { UserRole } from "@dvgmu/contract/fesmu/enum/v1/user.enum_pb";
 import { CommonWrapper } from "@/shared/components/wrapper";
 import { summarizePermissions } from "@/shared/config/permissions";
 import { signOut } from "@/shared/config/session";

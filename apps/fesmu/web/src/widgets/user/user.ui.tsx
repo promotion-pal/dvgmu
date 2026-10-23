@@ -1,7 +1,7 @@
 import type { ComponentProps, FC } from "react";
 import { UserIcon, MailIcon, PhoneIcon, CalendarIcon, KeyIcon } from "lucide-react";
 import { Badge } from "@/shared/ui/badge";
-import type { User } from "@dvgmu/mdm/entity/user.entity_pb";
+import type { User } from "@dvgmu/contract/mdm/entity/user.entity_pb";
 import { PersonDetails, PersonSummary } from "@/shared/components/person";
 import { CommonControlState } from "@/shared/components/state/control-state";
 import { CommonModal } from "@/shared/components/modal";
