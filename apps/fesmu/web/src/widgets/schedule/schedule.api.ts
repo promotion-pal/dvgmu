@@ -1,7 +1,7 @@
 import { createClient } from "@connectrpc/connect";
-import { ScheduleEntryKind, ScheduleFormat, SchedulePeriodKind, ScheduleWeeks } from "@dvgmu/contract/enum/v1/schedule.enum_pb";
-import type { ScheduleTimetable as ScheduleTimetableMessage } from "@dvgmu/contract/entity/v1/schedule.entity_pb";
-import { ScheduleService } from "@dvgmu/contract/service/v1/schedule.service_pb";
+import { ScheduleEntryKind, ScheduleFormat, SchedulePeriodKind, ScheduleWeeks } from "@dvgmu/fesmu/enum/v1/schedule.enum_pb";
+import type { ScheduleTimetable as ScheduleTimetableMessage } from "@dvgmu/fesmu/entity/v1/schedule.entity_pb";
+import { ScheduleService } from "@dvgmu/fesmu/service/v1/schedule.service_pb";
 import { connectTransport } from "@/shared/config/api";
 import { scheduleTimetableSchema, scheduleToneSchema } from "./schedule.schema";
 import type { ScheduleEntry, SchedulePeriod, ScheduleTimetable } from "./schedule.schema";

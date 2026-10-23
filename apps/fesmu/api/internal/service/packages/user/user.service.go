@@ -17,13 +17,13 @@ import (
 	"connectrpc.com/connect"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	filesenum "dvgmu/api/contract/gen/go/packages/files/enum"
-	filespb "dvgmu/api/contract/gen/go/packages/files/service"
-	filesserviceconnect "dvgmu/api/contract/gen/go/packages/files/service/serviceconnect"
-	mdmentity "dvgmu/api/contract/gen/go/packages/mdm/entity"
-	mdmenum "dvgmu/api/contract/gen/go/packages/mdm/enum"
-	mdmpb "dvgmu/api/contract/gen/go/packages/mdm/service"
-	mdmserviceconnect "dvgmu/api/contract/gen/go/packages/mdm/service/serviceconnect"
+	filesenum "dvgmu/api/contract/gen/go/file/enum"
+	filespb "dvgmu/api/contract/gen/go/file/service"
+	filesserviceconnect "dvgmu/api/contract/gen/go/file/service/serviceconnect"
+	mdmentity "dvgmu/api/contract/gen/go/mdm/entity"
+	mdmenum "dvgmu/api/contract/gen/go/mdm/enum"
+	mdmpb "dvgmu/api/contract/gen/go/mdm/service"
+	mdmserviceconnect "dvgmu/api/contract/gen/go/mdm/service/serviceconnect"
 	pb "dvgmu/api/contract/gen/go/service/v1"
 )
 

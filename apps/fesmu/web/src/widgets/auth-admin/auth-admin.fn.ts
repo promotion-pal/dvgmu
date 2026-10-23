@@ -1,6 +1,6 @@
 import { useFetchState } from "@/features/lib/fetch";
-import { IdentityService } from "@dvgmu/contract/packages/auth/v2/identity_pb";
-import type { Identity } from "@dvgmu/contract/packages/auth/v2/identity_pb";
+import { IdentityService } from "@dvgmu/auth/v2/identity_pb";
+import type { Identity } from "@dvgmu/auth/v2/identity_pb";
 import { connectTransport } from "@/shared/config/api";
 import { createClient } from "@connectrpc/connect";
 

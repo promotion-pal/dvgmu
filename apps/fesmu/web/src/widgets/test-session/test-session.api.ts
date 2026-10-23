@@ -1,8 +1,8 @@
 import { createClient } from "@connectrpc/connect";
 import { timestampDate, timestampFromDate } from "@bufbuild/protobuf/wkt";
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
-import type { TestAttempt as AttemptMessage, TestSession as SessionMessage } from "@dvgmu/contract/entity/v1/test.entity_pb";
-import { TestSessionService } from "@dvgmu/contract/service/v1/test_session.service_pb";
+import type { TestAttempt as AttemptMessage, TestSession as SessionMessage } from "@dvgmu/fesmu/entity/v1/test.entity_pb";
+import { TestSessionService } from "@dvgmu/fesmu/service/v1/test_session.service_pb";
 import { connectTransport } from "@/shared/config/api";
 import { TestVersion } from "./test-session.schema";
 import type { TestAttempt, TestSession, TestSessionForm, TestSessionResults } from "./test-session.schema";

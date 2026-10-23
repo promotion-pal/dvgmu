@@ -7,8 +7,8 @@
 package servicev1
 
 import (
-	entity "dvgmu/api/contract/gen/go/packages/analytics/entity"
-	service "dvgmu/api/contract/gen/go/packages/analytics/service"
+	entity "dvgmu/api/contract/gen/go/analytics/entity"
+	service "dvgmu/api/contract/gen/go/analytics/service"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -124,7 +124,7 @@ var File_service_v1_questionnaire_service_proto protoreflect.FileDescriptor
 
 const file_service_v1_questionnaire_service_proto_rawDesc = "" +
 	"\n" +
-	"&service/v1/questionnaire.service.proto\x12\x13contract.service.v1\x1a/packages/analytics/entity/analytic.entity.proto\x1a1packages/analytics/service/analytic.service.proto\";\n" +
+	"&service/v1/questionnaire.service.proto\x12\x13contract.service.v1\x1a\x1centity/analytic.entity.proto\x1a\x1eservice/analytic.service.proto\";\n" +
 	"\x19QuestionnaireFetchRequest\x12\x0e\n" +
 	"\x02qr\x18\x01 \x01(\x03R\x02qr\x12\x0e\n" +
 	"\x02id\x18\x02 \x01(\x03R\x02id\"]\n" +

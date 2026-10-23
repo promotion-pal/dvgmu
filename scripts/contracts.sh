@@ -1,106 +1,138 @@
 #!/usr/bin/env bash
-# Единая схема данных монорепо.
+# Единая схема данных — один генератор и одна настройка (корневой buf.yaml).
 #
-# Источник правды — контракт каждого сервиса: services/<svc>/api/contract.
-# proto/<имя>/packages/<имя>/… — его зеркало с уникальными путями файлов, общее
-# для всех приложений (руками не правим). У mdm, dormitory и mentor одинаковые
-# имена proto-пакетов (contract.entity…), поэтому каждый модуль proto/<имя>
-# генерируется отдельно и в одной сборке они не встречаются; имена пакетов не
-# трогаем — они часть адреса вызова (/contract.service.UserService/…) на проде.
+# Схемы лежат плоско у владельца: services/<svc>/api/contract/{entity,enum,service},
+# apps/fesmu/api/contract/{entity,enum,service}/vN. Пути файлов во всём workspace
+# уникальны, поэтому схемы ссылаются друг на друга напрямую.
 #
-#   scripts/contracts.sh sync    — обновить proto/ из сервисов
-#   scripts/contracts.sh check   — proto/ совпадает с сервисами (CI)
-#   scripts/contracts.sh gen     — sync + генерация:
-#        TS всех сервисов и fesmu → packages/contract (@dvgmu/contract)
-#        Go fesmu api (свои схемы + схемы сервисов, в которые он ходит) →
-#        apps/fesmu/api/contract/gen/go — api по-прежнему собирается из своей папки
+# Что получается:
+#   TypeScript → packages/<имя> (@dvgmu/<имя>), плоско: packages/mdm/entity/…
+#                ссылки на чужие схемы — импорт пакета (@dvgmu/mdm/…), не копия
+#   Go         → <модуль>/gen/go; чужие схемы, нужные модулю, — в подпапку
+#                gen/go/<сервис>, бэкенд по-прежнему собирается из своей папки
+#
+# dormitory, mentor и ojs — отдельные модули со своей генерацией, сюда не входят.
+#
+#   scripts/contracts.sh gen     — сгенерировать всё
+#   scripts/contracts.sh check   — сгенерировать и убедиться, что ничего не изменилось (CI)
 set -euo pipefail
 
 root="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$root"
-export PATH="$root/node_modules/.bin:$PATH"
+export PATH="$root/node_modules/.bin:$HOME/go/bin:$PATH"
 
-# имя в общей схеме | папка контракта сервиса | что берём
-MAP=(
-  "analytics|services/analytics/api/contract|entity enum service"
-  "auth|services/auth/api/contract/auth|v1 v2"
-  "dormitory|services/dormitory/api/contract|entity enum service"
-  "files|services/file/api/contract|entity enum service"
-  "mdm|services/mdm/api/contract|entity enum service"
-  "mentor|services/mentor/api/contract|entity enum service"
-  "notification|services/notification/api/contract|entity enum service"
-  "tasks|services/tickets/api/contract|entity enum service"
+# имя | папка контракта | префикс Go (= module из go.mod + /contract/gen/go) | вывод TS | корень пакета TS
+# У auth пути уже начинаются с auth/ (auth/v1, auth/v2) — его TS ложится в packages/ напрямую.
+MODULES=(
+  "fesmu|apps/fesmu/api/contract|dvgmu/api/contract/gen/go|packages/fesmu|@dvgmu/fesmu"
+  "analytics|services/analytics/api/contract|dvgmu/analytics/contract/gen/go|packages/analytics|@dvgmu/analytics"
+  "auth|services/auth/api/contract|dvgmu/auth/contract/gen/go|packages|@dvgmu"
+  "file|services/file/api/contract|dvgmu/file/contract/gen/go|packages/file|@dvgmu/file"
+  "mdm|services/mdm/api/contract|dvgmu/api/contract/gen/go|packages/mdm|@dvgmu/mdm"
+  "notification|services/notification/api/contract|dvgmu/notification/contract/gen/go|packages/notification|@dvgmu/notification"
+  "tickets|services/tickets/api/contract|dvgmu/tickets/contract/gen/go|packages/tickets|@dvgmu/tickets"
 )
 
-mirror() { # $1: sync|check
-  local stale=0 row name src parts part f want target dst
-  for row in "${MAP[@]}"; do
-    IFS='|' read -r name src parts <<<"$row"
-    dst="proto/$name/packages/$name"
-    local seen=" "
-    for part in $parts; do
-      [ -d "$src/$part" ] || continue
-      for f in $(cd "$src" && find "$part" -name '*.proto' | sort); do
-        seen+="$f "
-        # Импорты внутри сервиса ("enum/…", "api/contract/enum/…" у dormitory,
-        # "auth/v1/…") → пути общей схемы
-        # ("packages/<имя>/enum/…"); "packages/mdm/…" (файлы ходят в mdm) уже такие.
-        want=$(sed -E \
-          -e "s#^import \"(api/contract/)?(entity|enum|service)/#import \"packages/$name/\2/#" \
-          -e "s#^import \"auth/#import \"packages/auth/#" \
-          "$src/$f")
-        target="$dst/$f"
-        if [ -f "$target" ] && [ "$want" = "$(cat "$target")" ]; then continue; fi
-        stale=1
-        if [ "$1" = check ]; then
-          echo "отстало: $target  (источник $src/$f)"
-        else
-          mkdir -p "$(dirname "$target")"
-          printf '%s\n' "$want" >"$target"
-          echo "обновлено: $target"
-        fi
-      done
-    done
-    # Файлы, которых в сервисе больше нет.
-    if [ -d "$dst" ]; then
-      for f in $(cd "$dst" && find . -name '*.proto' | sed 's#^\./##' | sort); do
-        if [[ "$seen" != *" $f "* ]]; then
-          stale=1
-          if [ "$1" = check ]; then echo "лишнее: $dst/$f"; else rm "$dst/$f"; echo "удалено: $dst/$f"; fi
-        fi
-      done
-    fi
+# Чьи Go-клиенты нужны модулю: "чужой_модуль:подпапка" (пустая подпапка — пути
+# схемы уже со своим префиксом, как у auth).
+# (функция, а не массив: bash 3.2 на macOS не знает ассоциативных массивов)
+go_deps() {
+  case "$1" in
+    fesmu) echo "analytics:analytics auth: file:file mdm:mdm tickets:tickets" ;;
+    file) echo "mdm:mdm" ;;
+  esac
+}
+
+field() { # $1 имя, $2 номер поля
+  local row
+  for row in "${MODULES[@]}"; do
+    [ "${row%%|*}" = "$1" ] && { echo "$row" | cut -d'|' -f"$2"; return; }
   done
-  if [ "$1" = check ]; then
-    if [ $stale -eq 0 ]; then echo "общая схема proto/ совпадает с сервисами"; return 0; fi
-    echo "proto/ отстала от сервисов — scripts/contracts.sh gen" >&2
-    return 1
-  fi
+  echo "нет модуля $1" >&2; exit 1
+}
+protos() { (cd "$(field "$1" 2)" && find . -name '*.proto' -not -path './gen/*' | sed 's#^\./##' | sort); }
+
+# Go одного модуля ($1) в папку модуля-потребителя ($2) с его префиксом.
+gen_go() {
+  local target=$1 owner=$2 sub=${3:-}
+  local prefix out dep name dir f overrides=""
+  prefix=$(field "$owner" 3)
+  out="$(field "$owner" 2)/gen/go"
+  if [ -n "$sub" ]; then prefix="$prefix/$sub"; out="$out/$sub"; fi
+  # Схемы, на которые ссылается target, — по своим подпапкам у потребителя.
+  for dep in $(go_deps "$owner"); do
+    name=${dep%%:*}; dir=${dep#*:}
+    [ "$name" = "$target" ] && continue
+    for f in $(protos "$name"); do
+      overrides+=",{\"file_option\":\"go_package_prefix\",\"path\":\"$f\",\"value\":\"$(field "$owner" 3)${dir:+/$dir}\"}"
+    done
+  done
+  buf generate "$(field "$target" 2)" --template "{\"version\":\"v2\",
+    \"managed\":{\"enabled\":true,\"override\":[{\"file_option\":\"go_package_prefix\",\"value\":\"$prefix\"}$overrides]},
+    \"plugins\":[{\"local\":\"protoc-gen-go\",\"out\":\"$out\",\"opt\":\"paths=source_relative\"},
+                 {\"local\":\"protoc-gen-connect-go\",\"out\":\"$out\",\"opt\":\"paths=source_relative\"}]}"
+}
+
+# TS одного модуля: свои схемы — относительно, чужие — импортом пакета @dvgmu/<имя>.
+gen_ts() {
+  local name=$1 row other f opts="\"target=ts\",\"import_extension=none\""
+  for row in "${MODULES[@]}"; do
+    other=${row%%|*}
+    [ "$other" = "$name" ] && continue
+    for f in $(protos "$other"); do
+      opts+=",\"rewrite_imports=./${f%.proto}_pb.js:$(field "$other" 5)\""
+    done
+  done
+  buf generate "$(field "$name" 2)" --template "{\"version\":\"v2\",
+    \"plugins\":[{\"local\":\"protoc-gen-es\",\"out\":\"$(field "$name" 4)\",\"opt\":[$opts]}]}"
 }
 
 # Поменялась только строка-заголовок с версией генератора — откатываем.
 revert_header_only() {
-  local f
-  for f in $(git diff --name-only -- packages/contract apps/fesmu/api/contract/gen); do
-    if ! git diff -U0 -- "$f" | grep -E '^[-+]' | grep -vE '^(\+\+\+|---)' \
-      | grep -vqE '^[-+]// (@generated by|versions:|\s*protoc(-gen-[a-z-]+)?\s+v)'; then
-      git checkout -q -- "$f"
-    fi
+  local f changed
+  for f in $(git diff --name-only --diff-filter=M -- packages services apps | grep -E '(_pb\.ts|\.pb\.go|\.connect\.go)$' || true); do
+    # diff целиком в переменную: с pipefail ранний выход grep -q рвал бы git diff.
+    changed=$(git diff -U0 -- "$f" | grep -E '^[-+]' | grep -vE '^(\+\+\+ |--- )' \
+      | grep -vE '^[-+]// (@generated by|versions:|\s*protoc(-gen-[a-z-]+)?\s+v)' || true)
+    if [ -z "$changed" ]; then git checkout -q -- "$f"; fi
   done
 }
 
-case "${1:-}" in
-  sync) mirror sync ;;
-  check) mirror check ;;
-  gen)
-    mirror sync
-    for row in "${MAP[@]}"; do
-      IFS='|' read -r name _ <<<"$row"
-      buf generate "proto/$name" --template proto/buf.gen.ts.yaml
+gen() {
+  local row name dep
+  # Старый вывод — целиком: удалённые из схемы файлы не остаются висеть.
+  for row in "${MODULES[@]}"; do
+    rm -rf "$(echo "$row" | cut -d'|' -f2)/gen/go"
+  done
+  find packages -name '*_pb.ts' -not -path '*/node_modules/*' -delete
+
+  for row in "${MODULES[@]}"; do
+    name=${row%%|*}
+    gen_go "$name" "$name"
+    for dep in $(go_deps "$name"); do
+      gen_go "${dep%%:*}" "$name" "${dep#*:}"
     done
-    buf generate apps/fesmu/api/contract --template apps/fesmu/api/contract/buf.gen.yaml --include-imports
-    revert_header_only
-    git status --short -- proto packages/contract apps/fesmu/api/contract
+    gen_ts "$name"
+  done
+  revert_header_only
+}
+
+# Что генерация поменяла относительно индекса git (в CI — относительно коммита).
+generated() {
+  { git diff --name-only -- packages services apps; git ls-files --others --exclude-standard -- packages services apps; } \
+    | grep -E '(_pb\.ts|\.pb\.go|\.connect\.go)$' || true
+}
+
+case "${1:-}" in
+  gen) gen; generated ;;
+  check)
+    gen
+    if [ -n "$(generated)" ]; then
+      generated
+      echo "сгенерированный код отстал от схем — scripts/contracts.sh gen и закоммитить" >&2
+      exit 1
+    fi
+    echo "сгенерированный код совпадает со схемами"
     ;;
-  *) sed -n '2,16p' "$0"; exit 2 ;;
+  *) sed -n '2,19p' "$0"; exit 2 ;;
 esac

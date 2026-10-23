@@ -1,4 +1,4 @@
-import { UserRole } from "@dvgmu/contract/enum/v1/user.enum_pb";
+import { UserRole } from "@dvgmu/fesmu/enum/v1/user.enum_pb";
 
 /* Кто в какой раздел. Роли назначаются в MDM (страница «Роли»); ADMIN
  * проходит любую проверку. Та же раскладка — в api (auth.Interceptor.Access

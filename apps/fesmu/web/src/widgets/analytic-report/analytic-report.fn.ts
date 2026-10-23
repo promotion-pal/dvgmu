@@ -6,9 +6,9 @@ import { connectTransport } from "@/shared/config/api";
 import {
   AnalyticService,
   AnalyticFetchRequestSchema,
-} from "@dvgmu/contract/packages/analytics/service/analytic.service_pb";
-import type { AnalyticType } from "@dvgmu/contract/packages/analytics/enum/analytic.enum_pb";
-import type { Analytic } from "@dvgmu/contract/packages/analytics/entity/analytic.entity_pb";
+} from "@dvgmu/analytics/service/analytic.service_pb";
+import type { AnalyticType } from "@dvgmu/analytics/enum/analytic.enum_pb";
+import type { Analytic } from "@dvgmu/analytics/entity/analytic.entity_pb";
 
 import { analyticCategoryLabel, extractAnalyticCategory, isAnalyticTypeEnabled } from "@/widgets/analytic";
 

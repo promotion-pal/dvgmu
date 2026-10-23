@@ -1,6 +1,6 @@
 import { create } from "@bufbuild/protobuf";
-import type { Analytic } from "@dvgmu/contract/packages/analytics/entity/analytic.entity_pb";
-import { AnalyticFetchRequestSchema } from "@dvgmu/contract/packages/analytics/service/analytic.service_pb";
+import type { Analytic } from "@dvgmu/analytics/entity/analytic.entity_pb";
+import { AnalyticFetchRequestSchema } from "@dvgmu/analytics/service/analytic.service_pb";
 
 import { analyticClient } from "./analytic.fn";
 

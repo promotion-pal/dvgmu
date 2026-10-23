@@ -1,6 +1,6 @@
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { Layout } from "./widgets/layout";
-import type { UserRole } from "@dvgmu/contract/enum/v1/user.enum_pb";
+import type { UserRole } from "@dvgmu/fesmu/enum/v1/user.enum_pb";
 import { PermissionGate, RoleGate, UserGate } from "./widgets/user-gate";
 import { PermissionAction, PermissionSection, PURCHASE_SECTIONS, PURCHASE_V3_PERMS, permsFor, permsForAny } from "./shared/config/permissions";
 import CertificatesPage from "./page/admin/certificates/Certificates";
@@ -20,7 +20,7 @@ import ScheduleEditorPage from "./page/ScheduleEditor";
 import ScheduleHallPage from "./page/ScheduleHall";
 import ComputerClassPage from "./page/ComputerClass";
 import TestBuilderPage from "./page/TestBuilder";
-import { TestVersion } from "@dvgmu/contract/enum/v1/test.enum_pb";
+import { TestVersion } from "@dvgmu/fesmu/enum/v1/test.enum_pb";
 import TestSessionsPage from "./page/TestSessions";
 import TestSessionResultsPage from "./page/TestSessionResults";
 import PurchaseV2Page from "./page/PurchaseV2";

@@ -9,7 +9,7 @@ package servicev3
 import (
 	v3 "dvgmu/api/contract/gen/go/entity/v3"
 	v31 "dvgmu/api/contract/gen/go/enum/v3"
-	enum "dvgmu/api/contract/gen/go/packages/mdm/enum"
+	enum "dvgmu/api/contract/gen/go/mdm/enum"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -3838,7 +3838,7 @@ var File_service_v3_purchase_service_proto protoreflect.FileDescriptor
 
 const file_service_v3_purchase_service_proto_rawDesc = "" +
 	"\n" +
-	"!service/v3/purchase.service.proto\x12\x13contract.service.v3\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1benum/v3/purchase.enum.proto\x1a\x1fentity/v3/purchase.entity.proto\x1a!packages/mdm/enum/user.enum.proto\";\n" +
+	"!service/v3/purchase.service.proto\x12\x13contract.service.v3\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1benum/v3/purchase.enum.proto\x1a\x1fentity/v3/purchase.entity.proto\x1a\x14enum/user.enum.proto\";\n" +
 	"\x1cPurchaseOverviewFetchRequest\x12\x1b\n" +
 	"\tplan_year\x18\x01 \x01(\x05R\bplanYear\"\xda\x03\n" +
 	"\x1dPurchaseOverviewFetchResponse\x12?\n" +

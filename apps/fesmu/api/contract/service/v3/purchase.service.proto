@@ -5,7 +5,7 @@ package contract.service.v3;
 import "google/protobuf/timestamp.proto";
 import "enum/v3/purchase.enum.proto";
 import "entity/v3/purchase.entity.proto";
-import "packages/mdm/enum/user.enum.proto";
+import "enum/user.enum.proto";
 
 option go_package = "service_v3;service_pb";
 

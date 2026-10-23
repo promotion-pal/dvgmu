@@ -7,7 +7,7 @@
 package servicev1
 
 import (
-	enum "dvgmu/api/contract/gen/go/packages/files/enum"
+	enum "dvgmu/api/contract/gen/go/file/enum"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -517,7 +517,7 @@ var File_service_v1_certificate_service_proto protoreflect.FileDescriptor
 
 const file_service_v1_certificate_service_proto_rawDesc = "" +
 	"\n" +
-	"$service/v1/certificate.service.proto\x12\x13contract.service.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a#packages/files/enum/file.enum.proto\"\xca\x03\n" +
+	"$service/v1/certificate.service.proto\x12\x13contract.service.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x14enum/file.enum.proto\"\xca\x03\n" +
 	"\x15CertificateOrderEntry\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12$\n" +
 	"\x0estudent_mdm_id\x18\x02 \x01(\x03R\fstudentMdmId\x12!\n" +

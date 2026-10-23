@@ -6,55 +6,49 @@
 ## Устройство
 
 ```
-apps/                 приложения — то, что видит пользователь
-  fesmu/
-    api/              бэкенд портала (Go, Connect-RPC) — свой go.mod, свой Dockerfile
-    web/              фронтенд портала (React + Vite)
-    docker-compose.yml, stand.sh, docs/
+apps/
+  fesmu/api           бэкенд портала (Go) — свой go.mod и Dockerfile
+  fesmu/web           фронтенд портала (React + Vite)
   ksm, guide, profile, unistom, course   статические сайты
-services/             общие сервисы — у каждого своя БД, compose и .env
-  auth/ mdm/ analytics/ tickets/ file/ notification/ sync/ dormitory/ mentor/ ojs/ dvgmu_wiki/
-proto/                единая схема данных — зеркало контрактов всех сервисов (генерируется)
-packages/             общие фронтовые пакеты (pnpm workspace)
-  contract/           @dvgmu/contract — TS всех сервисов и fesmu, один на все фронты
-scripts/              служебные скрипты (contracts.sh)
-buf.yaml              buf workspace: контракт fesmu + модули proto/<имя>
-utils/                разовые утилиты
+services/             сервисы — у каждого своя БД, compose, .env и контракт в api/contract
+packages/             сгенерированный TS контрактов — по пакету на модуль:
+  fesmu/              @dvgmu/fesmu        (apps/fesmu/api/contract)
+  analytics/ auth/ file/ mdm/ notification/ tickets/   @dvgmu/<имя>
+buf.yaml              общий buf workspace всех контрактов
+Makefile              make proto — генерация всего
+scripts/contracts.sh  генератор (его вызывает make proto)
 ```
 
-## Правила, ради которых всё так устроено
+## Контракты — одна схема, один генератор
 
-**Каждый бэкенд собирается из своей папки.** `services/<svc>/api` и `apps/fesmu/api` —
-отдельные Go-модули с собственным Dockerfile и контекстом сборки. Ничего из соседних папок им
-не нужно, поэтому любой бэкенд можно унести на другой сервер (или в свой репозиторий),
-скопировав одну папку.
-
-**Единая схема данных.** Источник правды — контракт сервиса: `services/<svc>/api/contract`.
-
-- `proto/<имя>/packages/<имя>/…` — зеркало контракта каждого сервиса с уникальными путями
-  файлов. Общее для всех приложений, руками не правится.
-- `@dvgmu/contract` (`packages/contract`) — один TS на всё: `@dvgmu/contract/packages/<имя>/…`
-  для сервисов (analytics, auth, dormitory, files, mdm, mentor, notification, tasks) и
-  `@dvgmu/contract/{entity,enum,service}/v1…` для fesmu.
-- Бэкенд приложения получает Go-клиенты нужных сервисов генерацией прямо в свою папку
-  (`apps/fesmu/api/contract/gen/go/packages/<имя>`) — копий `.proto` у приложений нет, а
-  собирается бэкенд по-прежнему из своей папки.
+- Схема живёт только у владельца и лежит плоско:
+  `services/<svc>/api/contract/{entity,enum,service}`, `apps/fesmu/api/contract/{entity,enum,service}/vN`.
+- Корневой `buf.yaml` собирает все контракты в один workspace. Пути файлов уникальны,
+  поэтому схемы ссылаются друг на друга напрямую: `import "entity/user.entity.proto"` — это mdm.
+- Одна команда обновляет всё:
 
 ```bash
-scripts/contracts.sh gen     # после правки контракта сервиса или fesmu: зеркало + TS + Go fesmu
-scripts/contracts.sh check   # зеркало совпадает с сервисами (это же проверяет CI)
+make proto         # Go → services/*/api/contract/gen/go и apps/fesmu/api/contract/gen/go
+                   # TS → packages/<имя> (@dvgmu/<имя>)
+make proto-check   # сгенерированный код совпадает со схемами (это же в CI)
 ```
 
-Имена proto-пакетов у mdm, dormitory и mentor совпадают (`contract.entity`, `contract.service`),
-поэтому модули `proto/<имя>` генерируются по одному, а не всем workspace разом. Переименовывать
-их нельзя без новой версии API: имя пакета — часть адреса вызова на проде.
+Что делает генератор:
 
-Сервис со своим сайтом (dormitory, mentor) пока держит и собственный TS в
-`services/<svc>/packages` — сайт собирается вместе с сервисом. Новые фронты берут
-`@dvgmu/contract`.
+- **Go сервиса** — в папку сервиса. Если сервису нужны чужие схемы (file → mdm), их Go
+  ложится в подпапку `gen/go/<сервис>`. Бэкенд собирается из своей папки.
+- **Go fesmu** — свои схемы и клиенты сервисов (analytics, auth, file, mdm, tickets) в
+  `apps/fesmu/api/contract/gen/go/<сервис>`.
+- **TS** — плоско в `packages/<имя>`. Ссылка на чужую схему — импорт пакета
+  (`@dvgmu/mdm/entity/user.entity_pb`), копий нет. `exports` в `package.json` пакета
+  разрешает пути и с `.js`, и без.
+
+dormitory, mentor и ojs — отдельные модули со своей генерацией, в общую схему не входят.
+У dormitory и mentor имена proto-пакетов совпадают с mdm (`contract.entity`), поэтому
+в один workspace с mdm их не добавлять без новой версии API.
 
 **Фронт — один pnpm workspace.** В корне `package.json`, `pnpm-workspace.yaml`,
-`pnpm-lock.yaml`. Веб fesmu берёт `@dvgmu/contract` из `packages/`. Docker-образ веба
+`pnpm-lock.yaml`. Веб fesmu берёт `@dvgmu/*` из `packages/`. Docker-образ веба
 собирается из корня, но в контекст попадает только нужное — см.
 `apps/fesmu/web/Dockerfile.dockerignore`.
 

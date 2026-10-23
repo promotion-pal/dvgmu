@@ -1,6 +1,6 @@
 import { urlCodec, useUrlState } from "@/features/lib/url-state";
 import type { UrlStateSchema } from "@/features/lib/url-state";
-import type { Infrastructure } from "@dvgmu/contract/entity/v1/infrastructure.entity_pb";
+import type { Infrastructure } from "@dvgmu/fesmu/entity/v1/infrastructure.entity_pb";
 import { useMemo } from "react";
 
 interface InfrastructureFilter {

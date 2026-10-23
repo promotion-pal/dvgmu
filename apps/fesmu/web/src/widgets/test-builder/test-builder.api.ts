@@ -1,6 +1,6 @@
 import { createClient } from "@connectrpc/connect";
-import type { Test as TestMessage } from "@dvgmu/contract/entity/v1/test.entity_pb";
-import { TestService } from "@dvgmu/contract/service/v1/test.service_pb";
+import type { Test as TestMessage } from "@dvgmu/fesmu/entity/v1/test.entity_pb";
+import { TestService } from "@dvgmu/fesmu/service/v1/test.service_pb";
 import { connectTransport } from "@/shared/config/api";
 import { TestVersion } from "./test-builder.schema";
 import type { Test, TestForm, TestImage } from "./test-builder.schema";

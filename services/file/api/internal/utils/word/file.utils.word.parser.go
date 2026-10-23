@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	mdmentity "dvgmu/file/contract/gen/go/packages/mdm/entity"
-	mdmenum "dvgmu/file/contract/gen/go/packages/mdm/enum"
+	mdmentity "dvgmu/file/contract/gen/go/mdm/entity"
+	mdmenum "dvgmu/file/contract/gen/go/mdm/enum"
 )
 
 const dateLayout = "02.01.2006"

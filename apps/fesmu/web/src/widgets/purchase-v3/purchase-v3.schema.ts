@@ -1,6 +1,6 @@
 import { timestampDate } from "@bufbuild/protobuf/wkt";
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
-import type { PurchaseLot, PurchaseRequest } from "@dvgmu/contract/entity/v3/purchase.entity_pb";
+import type { PurchaseLot, PurchaseRequest } from "@dvgmu/fesmu/entity/v3/purchase.entity_pb";
 import {
     PurchaseCommissionDecision,
     PurchaseDocumentKind,
@@ -14,7 +14,7 @@ import {
     PurchasePlanType,
     PurchaseRequestStatus,
     PurchaseRole,
-} from "@dvgmu/contract/enum/v3/purchase.enum_pb";
+} from "@dvgmu/fesmu/enum/v3/purchase.enum_pb";
 
 export {
     PurchaseCommissionDecision,

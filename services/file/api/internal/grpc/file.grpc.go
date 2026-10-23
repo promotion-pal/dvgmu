@@ -9,7 +9,7 @@ import (
 	"connectrpc.com/connect"
 
 	"dvgmu/file/contract/gen/go/entity"
-	mdmentity "dvgmu/file/contract/gen/go/packages/mdm/entity"
+	mdmentity "dvgmu/file/contract/gen/go/mdm/entity"
 	servicepb "dvgmu/file/contract/gen/go/service"
 	"dvgmu/file/contract/gen/go/service/serviceconnect"
 	"dvgmu/file/internal/service"

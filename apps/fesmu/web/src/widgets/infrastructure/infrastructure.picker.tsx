@@ -1,4 +1,4 @@
-import type { Infrastructure } from "@dvgmu/contract/entity/v1/infrastructure.entity_pb";
+import type { Infrastructure } from "@dvgmu/fesmu/entity/v1/infrastructure.entity_pb";
 import { cn } from "@/shared/lib/utils";
 import { Input } from "@/shared/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared/ui/popover";

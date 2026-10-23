@@ -5,8 +5,8 @@ import (
 
 	"connectrpc.com/connect"
 
-	analyticsentity "dvgmu/api/contract/gen/go/packages/analytics/entity"
-	analyticspb "dvgmu/api/contract/gen/go/packages/analytics/service"
+	analyticsentity "dvgmu/api/contract/gen/go/analytics/entity"
+	analyticspb "dvgmu/api/contract/gen/go/analytics/service"
 )
 
 // Reader — чтение объектов из сервиса аналитики (его клиент подходит как есть).

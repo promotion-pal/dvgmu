@@ -1,4 +1,4 @@
-import { UserEmployeeDepartment } from "@dvgmu/contract/packages/mdm/enum/user.enum_pb";
+import { UserEmployeeDepartment } from "@dvgmu/mdm/enum/user.enum_pb";
 
 /** Подразделения сотрудников (MDM UserEmployeeDepartment) — названия из
  * комментариев enum в services/mdm/api/contract/enum/user.enum.proto. */

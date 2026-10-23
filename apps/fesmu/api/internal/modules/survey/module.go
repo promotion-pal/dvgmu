@@ -18,9 +18,9 @@ import (
 	"connectrpc.com/connect"
 	"google.golang.org/protobuf/proto"
 
-	analyticsentity "dvgmu/api/contract/gen/go/packages/analytics/entity"
-	analyticspb "dvgmu/api/contract/gen/go/packages/analytics/service"
-	analyticsconnect "dvgmu/api/contract/gen/go/packages/analytics/service/serviceconnect"
+	analyticsentity "dvgmu/api/contract/gen/go/analytics/entity"
+	analyticspb "dvgmu/api/contract/gen/go/analytics/service"
+	analyticsconnect "dvgmu/api/contract/gen/go/analytics/service/serviceconnect"
 	pb "dvgmu/api/contract/gen/go/service/v1"
 	serviceconnect "dvgmu/api/contract/gen/go/service/v1/servicev1connect"
 )

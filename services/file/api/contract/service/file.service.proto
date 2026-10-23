@@ -5,7 +5,7 @@ package contract.file.service;
 import "google/protobuf/timestamp.proto";
 import "entity/file.entity.proto";
 import "enum/file.enum.proto";
-import "packages/mdm/entity/user.entity.proto";
+import "entity/user.entity.proto";
 
 option go_package = "service;service_pb";
 

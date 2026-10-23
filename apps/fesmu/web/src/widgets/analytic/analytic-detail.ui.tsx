@@ -14,7 +14,7 @@ import { Badge } from "@/shared/ui/badge";
 import { Card } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
 
-import type { Analytic } from "@dvgmu/contract/packages/analytics/entity/analytic.entity_pb";
+import type { Analytic } from "@dvgmu/analytics/entity/analytic.entity_pb";
 
 import { analyticClient } from "./analytic.fn";
 import { extractAnalyticCategory } from "./analytic.utils";

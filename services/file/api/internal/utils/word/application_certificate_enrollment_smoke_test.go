@@ -5,8 +5,8 @@ import (
 	"os"
 	"testing"
 
-	mdmentity "dvgmu/file/contract/gen/go/packages/mdm/entity"
-	mdmenum "dvgmu/file/contract/gen/go/packages/mdm/enum"
+	mdmentity "dvgmu/file/contract/gen/go/mdm/entity"
+	mdmenum "dvgmu/file/contract/gen/go/mdm/enum"
 )
 
 func TestApplicationCertificateEnrollmentSmoke(t *testing.T) {

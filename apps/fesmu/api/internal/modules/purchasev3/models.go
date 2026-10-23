@@ -8,7 +8,7 @@ import (
 
 	entity "dvgmu/api/contract/gen/go/entity/v3"
 	enum "dvgmu/api/contract/gen/go/enum/v3"
-	mdm "dvgmu/api/contract/gen/go/packages/mdm/enum"
+	mdm "dvgmu/api/contract/gen/go/mdm/enum"
 )
 
 // Curator is a vice-rector's direction ("Проректор по цифровой

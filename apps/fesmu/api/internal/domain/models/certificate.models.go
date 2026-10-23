@@ -6,7 +6,7 @@ import (
 
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	fileenum "dvgmu/api/contract/gen/go/packages/files/enum"
+	fileenum "dvgmu/api/contract/gen/go/file/enum"
 	pb "dvgmu/api/contract/gen/go/service/v1"
 )
 

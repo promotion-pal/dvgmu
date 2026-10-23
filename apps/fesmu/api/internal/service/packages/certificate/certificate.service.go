@@ -14,10 +14,10 @@ import (
 
 	"connectrpc.com/connect"
 
-	fileenum "dvgmu/api/contract/gen/go/packages/files/enum"
-	filespb "dvgmu/api/contract/gen/go/packages/files/service"
-	entity "dvgmu/api/contract/gen/go/packages/mdm/entity"
-	mdmpb "dvgmu/api/contract/gen/go/packages/mdm/service"
+	fileenum "dvgmu/api/contract/gen/go/file/enum"
+	filespb "dvgmu/api/contract/gen/go/file/service"
+	entity "dvgmu/api/contract/gen/go/mdm/entity"
+	mdmpb "dvgmu/api/contract/gen/go/mdm/service"
 	pb "dvgmu/api/contract/gen/go/service/v1"
 	"dvgmu/api/internal/auth"
 	"dvgmu/api/internal/domain/models"

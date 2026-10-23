@@ -1,7 +1,7 @@
 import { useFetchState } from "@/features/lib/fetch";
-import type { Infrastructure } from "@dvgmu/contract/entity/v1/infrastructure.entity_pb";
-import { LocationCommonType } from "@dvgmu/contract/enum/v1/location.enum_pb";
-import { InfrastructureService } from "@dvgmu/contract/service/v1/infrastructure.service_pb";
+import type { Infrastructure } from "@dvgmu/fesmu/entity/v1/infrastructure.entity_pb";
+import { LocationCommonType } from "@dvgmu/fesmu/enum/v1/location.enum_pb";
+import { InfrastructureService } from "@dvgmu/fesmu/service/v1/infrastructure.service_pb";
 import { useCommonModal } from "@/shared/components/modal";
 import type { CommonModalType } from "@/shared/components/modal";
 import type { CommonPopoverProps } from "@/shared/components/menu";

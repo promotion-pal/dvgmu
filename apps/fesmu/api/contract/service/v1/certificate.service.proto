@@ -3,7 +3,7 @@ syntax = "proto3";
 package contract.service.v1;
 
 import "google/protobuf/timestamp.proto";
-import "packages/files/enum/file.enum.proto";
+import "enum/file.enum.proto";
 
 option go_package = "service_v1;service_pb";
 

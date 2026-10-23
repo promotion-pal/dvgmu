@@ -7,8 +7,8 @@ import { connectTransport } from "@/shared/config/api";
 import { useFetchState } from "@/features/lib/fetch";
 import { useCommonModal } from "@/shared/components/modal";
 
-import type { TicketBuild, TicketDormitory } from "@dvgmu/contract/packages/tasks/entity/ticket.entity_pb";
-import type { TicketStatus } from "@dvgmu/contract/packages/tasks/enum/ticket.enum_pb";
+import type { TicketBuild, TicketDormitory } from "@dvgmu/tickets/entity/ticket.entity_pb";
+import type { TicketStatus } from "@dvgmu/tickets/enum/ticket.enum_pb";
 import {
   TicketBuildService,
   TicketBuildCreateRequestSchema,
@@ -16,7 +16,7 @@ import {
   TicketDormitoryService,
   TicketDormitoryCreateRequestSchema,
   TicketDormitoryFetchRequestSchema,
-} from "@dvgmu/contract/packages/tasks/service/ticket.service_pb";
+} from "@dvgmu/tickets/service/ticket.service_pb";
 
 const dormitoryClient = createClient(TicketDormitoryService, connectTransport);
 const buildClient = createClient(TicketBuildService, connectTransport);

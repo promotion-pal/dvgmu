@@ -1,7 +1,7 @@
 import { useFetchState } from "@/features/lib/fetch";
-import type { EmployeeWithUser } from "@dvgmu/contract/packages/mdm/service/user.service_pb";
-import { EmployeeWithUserSchema, UserService } from "@dvgmu/contract/packages/mdm/service/user.service_pb";
-import { UserEmployeeDepartment, UserRole } from "@dvgmu/contract/packages/mdm/enum/user.enum_pb";
+import type { EmployeeWithUser } from "@dvgmu/mdm/service/user.service_pb";
+import { EmployeeWithUserSchema, UserService } from "@dvgmu/mdm/service/user.service_pb";
+import { UserEmployeeDepartment, UserRole } from "@dvgmu/mdm/enum/user.enum_pb";
 import { create } from "@bufbuild/protobuf";
 import { withRoleMembers } from "@/shared/lib/role-members";
 import { useCommonModal } from "@/shared/components/modal";

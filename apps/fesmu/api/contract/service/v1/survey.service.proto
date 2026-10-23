@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package contract.service.v1;
 
-import "packages/analytics/entity/analytic.entity.proto";
-import "packages/analytics/enum/analytic.enum.proto";
+import "entity/analytic.entity.proto";
+import "enum/analytic.enum.proto";
 
 option go_package = "service_v1;service_pb";
 

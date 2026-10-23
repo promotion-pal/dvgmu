@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { createClient } from "@connectrpc/connect";
 import { toast } from "sonner";
-import { CertificateService } from "@dvgmu/contract/service/v1/certificate.service_pb";
-import type { FileGenerateType } from "@dvgmu/contract/packages/files/enum/file.enum_pb";
+import { CertificateService } from "@dvgmu/fesmu/service/v1/certificate.service_pb";
+import type { FileGenerateType } from "@dvgmu/file/enum/file.enum_pb";
 import { connectTransport } from "@/shared/config/api";
 
 const certificateClient = createClient(CertificateService, connectTransport);

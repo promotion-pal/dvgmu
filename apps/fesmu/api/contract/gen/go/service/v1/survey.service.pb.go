@@ -7,8 +7,8 @@
 package servicev1
 
 import (
-	entity "dvgmu/api/contract/gen/go/packages/analytics/entity"
-	enum "dvgmu/api/contract/gen/go/packages/analytics/enum"
+	entity "dvgmu/api/contract/gen/go/analytics/entity"
+	enum "dvgmu/api/contract/gen/go/analytics/enum"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -324,7 +324,7 @@ var File_service_v1_survey_service_proto protoreflect.FileDescriptor
 
 const file_service_v1_survey_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1fservice/v1/survey.service.proto\x12\x13contract.service.v1\x1a/packages/analytics/entity/analytic.entity.proto\x1a+packages/analytics/enum/analytic.enum.proto\"K\n" +
+	"\x1fservice/v1/survey.service.proto\x12\x13contract.service.v1\x1a\x1centity/analytic.entity.proto\x1a\x18enum/analytic.enum.proto\"K\n" +
 	"\x14SurveyQrFetchRequest\x12\x14\n" +
 	"\x05check\x18\x01 \x01(\x03R\x05check\x12\x1d\n" +
 	"\n" +

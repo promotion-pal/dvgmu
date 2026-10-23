@@ -12,7 +12,7 @@ import (
 
 	entity "dvgmu/api/contract/gen/go/entity/v2"
 	enum "dvgmu/api/contract/gen/go/enum/v2"
-	filesenum "dvgmu/api/contract/gen/go/packages/files/enum"
+	filesenum "dvgmu/api/contract/gen/go/file/enum"
 	pb "dvgmu/api/contract/gen/go/service/v2"
 	"dvgmu/api/internal/auth"
 )

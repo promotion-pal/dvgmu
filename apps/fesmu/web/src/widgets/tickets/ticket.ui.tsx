@@ -13,8 +13,8 @@ import { Button } from "@/shared/ui/button";
 import { cn } from "@/shared/lib/utils";
 import { formatDate } from "@/features/utils/date";
 
-import { TicketStatus, TicketType } from "@dvgmu/contract/packages/tasks/enum/ticket.enum_pb";
-import type { TicketBuild, TicketDormitory } from "@dvgmu/contract/packages/tasks/entity/ticket.entity_pb";
+import { TicketStatus, TicketType } from "@dvgmu/tickets/enum/ticket.enum_pb";
+import type { TicketBuild, TicketDormitory } from "@dvgmu/tickets/entity/ticket.entity_pb";
 
 import { useBuildTicket, useDormitoryTicket } from "./ticket.fn";
 import {

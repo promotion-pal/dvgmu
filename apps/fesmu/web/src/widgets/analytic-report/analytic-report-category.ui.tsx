@@ -9,9 +9,9 @@ import { AnalyticQrBatchButton } from "@/widgets/analytic";
 import { CommonWrapper } from "@/shared/components/wrapper";
 import { CommonControlState, CommonServiceError } from "@/shared/components/state";
 import { Button } from "@/shared/ui/button";
-import { AnalyticFetchRequestSchema } from "@dvgmu/contract/packages/analytics/service/analytic.service_pb";
-import type { Analytic } from "@dvgmu/contract/packages/analytics/entity/analytic.entity_pb";
-import type { AnalyticType } from "@dvgmu/contract/packages/analytics/enum/analytic.enum_pb";
+import { AnalyticFetchRequestSchema } from "@dvgmu/analytics/service/analytic.service_pb";
+import type { Analytic } from "@dvgmu/analytics/entity/analytic.entity_pb";
+import type { AnalyticType } from "@dvgmu/analytics/enum/analytic.enum_pb";
 
 import { analyticClient } from "./analytic-report.fn";
 import { resolveActiveFields } from "./field-registry";

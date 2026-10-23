@@ -7,9 +7,9 @@ import (
 
 	"connectrpc.com/connect"
 
-	filesenum "dvgmu/api/contract/gen/go/packages/files/enum"
-	filespb "dvgmu/api/contract/gen/go/packages/files/service"
-	"dvgmu/api/contract/gen/go/packages/files/service/serviceconnect"
+	filesenum "dvgmu/api/contract/gen/go/file/enum"
+	filespb "dvgmu/api/contract/gen/go/file/service"
+	"dvgmu/api/contract/gen/go/file/service/serviceconnect"
 )
 
 // testImageFiles keeps the tests' pictures in the files service, in their own

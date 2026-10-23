@@ -7,7 +7,7 @@ package servicev1connect
 import (
 	connect "connectrpc.com/connect"
 	context "context"
-	service "dvgmu/api/contract/gen/go/packages/analytics/service"
+	service "dvgmu/api/contract/gen/go/analytics/service"
 	v1 "dvgmu/api/contract/gen/go/service/v1"
 	errors "errors"
 	http "net/http"

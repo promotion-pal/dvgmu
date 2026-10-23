@@ -11,8 +11,8 @@ import (
 	"gorm.io/gorm"
 
 	"dvgmu/api"
-	filesserviceconnect "dvgmu/api/contract/gen/go/packages/files/service/serviceconnect"
-	mdmserviceconnect "dvgmu/api/contract/gen/go/packages/mdm/service/serviceconnect"
+	filesserviceconnect "dvgmu/api/contract/gen/go/file/service/serviceconnect"
+	mdmserviceconnect "dvgmu/api/contract/gen/go/mdm/service/serviceconnect"
 	serviceconnect "dvgmu/api/contract/gen/go/service/v1/servicev1connect"
 	"dvgmu/api/contract/gen/go/service/v2/servicev2connect"
 	"dvgmu/api/contract/gen/go/service/v3/servicev3connect"

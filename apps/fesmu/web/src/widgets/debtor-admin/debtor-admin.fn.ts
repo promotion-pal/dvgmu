@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { Code, ConnectError, createClient } from "@connectrpc/connect";
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
-import type { Debtor, DebtorOperation } from "@dvgmu/contract/entity/v1/debtor.entity_pb";
-import { DebtorKind } from "@dvgmu/contract/enum/v1/debtor.enum_pb";
-import { DebtorService } from "@dvgmu/contract/service/v1/debtor.service_pb";
+import type { Debtor, DebtorOperation } from "@dvgmu/fesmu/entity/v1/debtor.entity_pb";
+import { DebtorKind } from "@dvgmu/fesmu/enum/v1/debtor.enum_pb";
+import { DebtorService } from "@dvgmu/fesmu/service/v1/debtor.service_pb";
 import { useFetchState } from "@/features/lib/fetch";
 import { connectTransport } from "@/shared/config/api";
 
