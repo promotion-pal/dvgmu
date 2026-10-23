@@ -7,7 +7,7 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
-	"dvgmu/api/contract/gen/go/enum"
+	"fesmu/contract/mdm/enum"
 	"dvgmu/api/internal/domain/models"
 )
 

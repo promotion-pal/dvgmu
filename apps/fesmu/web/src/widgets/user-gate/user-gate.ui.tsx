@@ -1,6 +1,6 @@
 import type { FC, ReactNode } from "react";
 import { ExternalLinkIcon, LogInIcon, LogOutIcon, RefreshCwIcon, ShieldXIcon, UserXIcon } from "lucide-react";
-import type { UserRole } from "@fesmu/contract/fesmu/enum/v1/user.enum_pb";
+import type { UserRole } from "@fesmu/contract/enum/v1/user.enum_pb";
 import { appConfig } from "@/shared/config/app";
 import { signIn, signOut } from "@/shared/config/session";
 import { Button } from "@/shared/ui/button";

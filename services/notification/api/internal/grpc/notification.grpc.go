@@ -7,9 +7,9 @@ import (
 
 	"connectrpc.com/connect"
 
-	"dvgmu/notification/contract/gen/go/enum"
-	servicepb "dvgmu/notification/contract/gen/go/service"
-	"dvgmu/notification/contract/gen/go/service/serviceconnect"
+	"fesmu/contract/notification/enum"
+	servicepb "fesmu/contract/notification/service"
+	"fesmu/contract/notification/service/serviceconnect"
 	"dvgmu/notification/internal/service"
 	"dvgmu/notification/internal/utils"
 )

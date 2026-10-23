@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	entity "dvgmu/api/contract/gen/go/entity/v2"
+	entity "fesmu/contract/fesmu/entity/v2"
 )
 
 func text(id, s string) *entity.ManualBlock {

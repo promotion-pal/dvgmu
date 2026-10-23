@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	enum "dvgmu/api/contract/gen/go/enum/v3"
+	enum "fesmu/contract/fesmu/enum/v3"
 )
 
 // Every stage leads somewhere that is itself on the route or final, and

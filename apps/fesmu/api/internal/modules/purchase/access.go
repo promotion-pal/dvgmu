@@ -6,7 +6,7 @@ import (
 
 	"connectrpc.com/connect"
 
-	enum "dvgmu/api/contract/gen/go/enum/v2"
+	enum "fesmu/contract/fesmu/enum/v2"
 	"dvgmu/api/internal/auth"
 )
 

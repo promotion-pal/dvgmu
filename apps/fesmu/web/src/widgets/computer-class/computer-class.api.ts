@@ -1,6 +1,6 @@
 import { createClient } from "@connectrpc/connect";
-import type { ComputerClassSession as SessionMessage } from "@fesmu/contract/fesmu/entity/v1/computer_class.entity_pb";
-import { ComputerClassService } from "@fesmu/contract/fesmu/service/v1/computer_class.service_pb";
+import type { ComputerClassSession as SessionMessage } from "@fesmu/contract/entity/v1/computer_class.entity_pb";
+import { ComputerClassService } from "@fesmu/contract/service/v1/computer_class.service_pb";
 import { connectTransport } from "@/shared/config/api";
 import type { ComputerClassSession, ComputerClassSessionForm } from "./computer-class.schema";
 

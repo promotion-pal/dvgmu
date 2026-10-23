@@ -11,7 +11,7 @@ import {
   PhoneIcon,
   UsersIcon,
 } from "lucide-react";
-import { FileGenerateType } from "@fesmu/contract/file/enum/file.enum_pb";
+import { FileGenerateType } from "@fesmu/contract/enum/file.enum_pb";
 import { useCertificateOrder } from "@/features/certificate/certificate.fn";
 import { useLoadUser } from "@/features/provider/user.provider";
 import { CommonWrapper } from "@/shared/components/wrapper";

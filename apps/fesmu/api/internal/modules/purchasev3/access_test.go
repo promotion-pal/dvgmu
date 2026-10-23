@@ -5,7 +5,7 @@ import (
 	"slices"
 	"testing"
 
-	enum "dvgmu/api/contract/gen/go/enum/v3"
+	enum "fesmu/contract/fesmu/enum/v3"
 )
 
 const (

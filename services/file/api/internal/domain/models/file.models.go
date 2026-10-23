@@ -1,8 +1,8 @@
 package models
 
 import (
-	"dvgmu/file/contract/gen/go/entity"
-	"dvgmu/file/contract/gen/go/enum"
+	"fesmu/contract/file/entity"
+	"fesmu/contract/file/enum"
 	"time"
 
 	"google.golang.org/protobuf/types/known/timestamppb"

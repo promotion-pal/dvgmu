@@ -8,8 +8,8 @@ import (
 
 	"connectrpc.com/connect"
 
-	enum "dvgmu/api/contract/gen/go/enum/v1"
-	pb "dvgmu/api/contract/gen/go/service/v1"
+	enum "fesmu/contract/fesmu/enum/v1"
+	pb "fesmu/contract/fesmu/service/v1"
 	"dvgmu/api/internal/domain/models"
 	"dvgmu/api/internal/service"
 )

@@ -9,8 +9,8 @@ import (
 
 	"connectrpc.com/connect"
 
-	pb "dvgmu/api/contract/gen/go/service/v1"
-	serviceconnect "dvgmu/api/contract/gen/go/service/v1/servicev1connect"
+	pb "fesmu/contract/fesmu/service/v1"
+	serviceconnect "fesmu/contract/fesmu/service/v1/servicev1connect"
 	onec "dvgmu/api/internal/utils/1c"
 )
 

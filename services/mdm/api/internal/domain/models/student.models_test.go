@@ -1,7 +1,7 @@
 package models
 
 import (
-	"dvgmu/api/contract/gen/go/enum"
+	"fesmu/contract/mdm/enum"
 	"fmt"
 	"testing"
 	"time"

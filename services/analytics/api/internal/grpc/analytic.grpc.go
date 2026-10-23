@@ -8,9 +8,9 @@ import (
 	"connectrpc.com/connect"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	"dvgmu/analytics/contract/gen/go/entity"
-	"dvgmu/analytics/contract/gen/go/enum"
-	pb "dvgmu/analytics/contract/gen/go/service"
+	"fesmu/contract/analytics/entity"
+	"fesmu/contract/analytics/enum"
+	pb "fesmu/contract/analytics/service"
 	"dvgmu/analytics/internal/domain/models"
 	"dvgmu/analytics/internal/service"
 )

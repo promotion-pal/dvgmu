@@ -9,12 +9,12 @@ import type {
     PurchaseProtocol,
     PurchaseQuotation,
     PurchaseRequest,
-} from "@fesmu/contract/fesmu/entity/v3/purchase.entity_pb";
-import type { UserEmployeeDepartment } from "@fesmu/contract/mdm/enum/user.enum_pb";
-import type { PurchaseOverviewFetchResponse, PurchaseProtocolDecisionInput } from "@fesmu/contract/fesmu/service/v3/purchase.service_pb";
-import { PurchaseService } from "@fesmu/contract/fesmu/service/v3/purchase.service_pb";
+} from "@fesmu/contract/entity/v3/purchase.entity_pb";
+import type { UserEmployeeDepartment } from "@fesmu/contract/enum/user.enum_pb";
+import type { PurchaseOverviewFetchResponse, PurchaseProtocolDecisionInput } from "@fesmu/contract/service/v3/purchase.service_pb";
+import { PurchaseService } from "@fesmu/contract/service/v3/purchase.service_pb";
 import type { MessageInitShape } from "@bufbuild/protobuf";
-import type { PurchaseLotUpdateRequestSchema, PurchaseProtocolDecisionInputSchema } from "@fesmu/contract/fesmu/service/v3/purchase.service_pb";
+import type { PurchaseLotUpdateRequestSchema, PurchaseProtocolDecisionInputSchema } from "@fesmu/contract/service/v3/purchase.service_pb";
 import { connectTransport } from "@/shared/config/api";
 import { DEPARTMENT_LABEL } from "@/shared/config/departments";
 import { isOverdue, isTask, LOT_STAGES, lotKey, lotStage, PurchaseLotStatus, PurchaseMove, PurchaseRequestStatus, requestKey } from "./purchase-v3.schema";

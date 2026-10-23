@@ -5,8 +5,5 @@
   "type": "module",
   "devDependencies": {
     "@bufbuild/protoc-gen-es": "^2.12.1"
-  },
-  "dependencies": {
-    "@fesmu/contract": "workspace:*"
   }
 }

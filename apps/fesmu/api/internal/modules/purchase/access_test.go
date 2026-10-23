@@ -10,9 +10,9 @@ import (
 
 	"connectrpc.com/connect"
 
-	entity "dvgmu/api/contract/gen/go/entity/v2"
-	enum "dvgmu/api/contract/gen/go/enum/v2"
-	pb "dvgmu/api/contract/gen/go/service/v2"
+	entity "fesmu/contract/fesmu/entity/v2"
+	enum "fesmu/contract/fesmu/enum/v2"
+	pb "fesmu/contract/fesmu/service/v2"
 	"dvgmu/api/internal/auth"
 )
 

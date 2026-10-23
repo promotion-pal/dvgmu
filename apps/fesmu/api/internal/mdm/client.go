@@ -14,7 +14,7 @@ import (
 	"strings"
 	"time"
 
-	mdmenum "dvgmu/api/contract/gen/go/mdm/enum"
+	mdmenum "fesmu/contract/mdm/enum"
 )
 
 var ErrNotFound = errors.New("mdm: user not found")

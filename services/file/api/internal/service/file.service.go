@@ -12,8 +12,8 @@ import (
 	"strings"
 	"time"
 
-	"dvgmu/file/contract/gen/go/enum"
-	mdmentity "dvgmu/file/contract/gen/go/mdm/entity"
+	"fesmu/contract/file/enum"
+	mdmentity "fesmu/contract/mdm/entity"
 	"dvgmu/file/internal/domain/models"
 	"dvgmu/file/internal/utils"
 	"dvgmu/file/internal/utils/excel"

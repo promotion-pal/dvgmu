@@ -1,6 +1,6 @@
 import { createClient } from "@connectrpc/connect";
-import type { VaccinationDay as DayMessage } from "@fesmu/contract/fesmu/entity/v1/vaccination.entity_pb";
-import { VaccinationService } from "@fesmu/contract/fesmu/service/v1/vaccination.service_pb";
+import type { VaccinationDay as DayMessage } from "@fesmu/contract/entity/v1/vaccination.entity_pb";
+import { VaccinationService } from "@fesmu/contract/service/v1/vaccination.service_pb";
 import { connectTransport } from "@/shared/config/api";
 import type { VaccinationDay, VaccinationDayForm } from "./vaccination.schema";
 

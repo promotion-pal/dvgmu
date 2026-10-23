@@ -6,9 +6,9 @@ import (
 
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	entity "dvgmu/api/contract/gen/go/entity/v3"
-	enum "dvgmu/api/contract/gen/go/enum/v3"
-	mdm "dvgmu/api/contract/gen/go/mdm/enum"
+	entity "fesmu/contract/fesmu/entity/v3"
+	enum "fesmu/contract/fesmu/enum/v3"
+	mdm "fesmu/contract/mdm/enum"
 )
 
 // Curator is a vice-rector's direction ("Проректор по цифровой

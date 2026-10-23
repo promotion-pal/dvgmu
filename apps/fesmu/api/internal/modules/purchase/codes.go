@@ -4,7 +4,7 @@ import (
 	"strings"
 	"unicode"
 
-	entity "dvgmu/api/contract/gen/go/entity/v2"
+	entity "fesmu/contract/fesmu/entity/v2"
 )
 
 var classifier = []struct {

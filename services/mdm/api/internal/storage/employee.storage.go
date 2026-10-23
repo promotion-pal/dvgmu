@@ -2,7 +2,7 @@ package storage
 
 import (
 	"context"
-	"dvgmu/api/contract/gen/go/enum"
+	"fesmu/contract/mdm/enum"
 	"dvgmu/api/internal/domain/models"
 
 	"gorm.io/gorm"

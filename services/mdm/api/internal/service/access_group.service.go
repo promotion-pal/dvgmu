@@ -6,7 +6,7 @@ import (
 	"log/slog"
 	"strings"
 
-	"dvgmu/api/contract/gen/go/enum"
+	"fesmu/contract/mdm/enum"
 	"dvgmu/api/internal/domain/models"
 )
 

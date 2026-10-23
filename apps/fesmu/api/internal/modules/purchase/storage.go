@@ -7,7 +7,7 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
-	enum "dvgmu/api/contract/gen/go/enum/v2"
+	enum "fesmu/contract/fesmu/enum/v2"
 )
 
 // storage reads and writes purchase_db. Inside tx, db is the transaction.

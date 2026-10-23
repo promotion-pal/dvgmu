@@ -1,0 +1,51 @@
+# Генерация всех схем одной командой: make proto (= buf generate).
+#
+#   Go → packages/go/<модуль>/…   один Go-модуль fesmu/contract (packages/go/go.mod);
+#        сервисы подключают его через replace в своём go.mod
+#   TS → packages/ts/…            пакет @fesmu/contract, плоско по путям схем
+#
+# Go-пакет схемы = fesmu/contract/<модуль>/<папка схемы>; у auth пути уже
+# начинаются с auth/ (auth/v1, auth/v2), поэтому у него префикс без имени модуля.
+version: v2
+
+managed:
+  enabled: true
+  override:
+    - file_option: go_package_prefix
+      module: buf.build/fesmu/fesmu
+      value: fesmu/contract/fesmu
+    - file_option: go_package_prefix
+      module: buf.build/fesmu/analytics
+      value: fesmu/contract/analytics
+    - file_option: go_package_prefix
+      module: buf.build/fesmu/auth
+      value: fesmu/contract
+    - file_option: go_package_prefix
+      module: buf.build/fesmu/file
+      value: fesmu/contract/file
+    - file_option: go_package_prefix
+      module: buf.build/fesmu/mdm
+      value: fesmu/contract/mdm
+    - file_option: go_package_prefix
+      module: buf.build/fesmu/notification
+      value: fesmu/contract/notification
+    - file_option: go_package_prefix
+      module: buf.build/fesmu/tickets
+      value: fesmu/contract/tickets
+
+plugins:
+  - local: protoc-gen-go
+    out: packages/go
+    opt:
+      - paths=import
+      - module=fesmu/contract
+  - local: protoc-gen-connect-go
+    out: packages/go
+    opt:
+      - paths=import
+      - module=fesmu/contract
+  - local: protoc-gen-es
+    out: packages/ts
+    opt:
+      - target=ts
+      - import_extension=none

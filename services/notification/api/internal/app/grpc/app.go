@@ -13,7 +13,7 @@ import (
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 
-	"dvgmu/notification/contract/gen/go/service/serviceconnect"
+	"fesmu/contract/notification/service/serviceconnect"
 	"dvgmu/notification/internal/grpc"
 )
 

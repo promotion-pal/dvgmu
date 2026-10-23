@@ -1,8 +1,8 @@
 package models
 
 import (
-	"dvgmu/api/contract/gen/go/entity"
-	"dvgmu/api/contract/gen/go/enum"
+	"fesmu/contract/mdm/entity"
+	"fesmu/contract/mdm/enum"
 	"errors"
 	"strings"
 	"time"

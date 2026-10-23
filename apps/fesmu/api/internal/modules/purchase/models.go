@@ -6,8 +6,8 @@ import (
 
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	entity "dvgmu/api/contract/gen/go/entity/v2"
-	enum "dvgmu/api/contract/gen/go/enum/v2"
+	entity "fesmu/contract/fesmu/entity/v2"
+	enum "fesmu/contract/fesmu/enum/v2"
 )
 
 // Curator is a vice-rector who curates purchases. The list is seeded by the

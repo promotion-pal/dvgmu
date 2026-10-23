@@ -7,51 +7,55 @@
 
 ```
 apps/
-  fesmu/api           бэкенд портала (Go) — свой go.mod и Dockerfile
+  fesmu/api           бэкенд портала (Go)
   fesmu/web           фронтенд портала (React + Vite)
   ksm, guide, profile, unistom, course   статические сайты
-services/             сервисы — у каждого своя БД, compose, .env и контракт в api/contract
-packages/             @fesmu/contract — сгенерированный TS всех схем, один пакет:
-  package.json        единственный: имя, exports, @bufbuild/protobuf
-  fesmu/              схемы apps/fesmu/api/contract
-  analytics/ auth/ file/ mdm/ notification/ tickets/   схемы сервисов
-buf.yaml              общий buf workspace всех контрактов
-Makefile              make proto — генерация всего
-scripts/contracts.sh  генератор (его вызывает make proto)
+services/             сервисы — у каждого своя БД, compose, .env; схемы в api/contract
+packages/
+  go/                 Go-модуль fesmu/contract — сгенерированный Go всех схем
+  ts/                 пакет @fesmu/contract — сгенерированный TS всех схем
+buf.yaml              workspace всех схем
+buf.gen.yaml          генерация всех схем
+Makefile              make proto, make proto-check
 ```
 
-## Контракты — одна схема, один генератор
+## Схемы — только buf
 
-- Схема живёт только у владельца и лежит плоско:
-  `services/<svc>/api/contract/{entity,enum,service}`, `apps/fesmu/api/contract/{entity,enum,service}/vN`.
-- Корневой `buf.yaml` собирает все контракты в один workspace. Пути файлов уникальны,
-  поэтому схемы ссылаются друг на друга напрямую: `import "entity/user.entity.proto"` — это mdm.
-- Одна команда обновляет всё:
+- Схема лежит у владельца, плоско: `services/<svc>/api/contract/{entity,enum,service}`,
+  `apps/fesmu/api/contract/{entity,enum,service}/vN`. Пути файлов во всём workspace
+  уникальны, поэтому схемы ссылаются друг на друга напрямую:
+  `import "entity/user.entity.proto"` — это mdm.
+- Сгенерированный код лежит только в `packages/`. В сервисах сгенерированного кода нет.
 
 ```bash
-make proto         # Go → services/*/api/contract/gen/go и apps/fesmu/api/contract/gen/go
-                   # TS → packages/<имя> (@fesmu/contract/<имя>/…)
+make proto         # buf generate: Go → packages/go, TS → packages/ts
 make proto-check   # сгенерированный код совпадает со схемами (это же в CI)
 ```
 
-Что делает генератор:
+**Go.** Один модуль `fesmu/contract` в `packages/go`. Пакет схемы —
+`fesmu/contract/<модуль>/<папка>`: `fesmu/contract/mdm/entity`,
+`fesmu/contract/fesmu/service/v1`, `fesmu/contract/auth/v2`. Бэкенд подключает модуль в
+своём `go.mod`:
 
-- **Go сервиса** — в папку сервиса. Если сервису нужны чужие схемы (file → mdm), их Go
-  ложится в подпапку `gen/go/<сервис>`. Бэкенд собирается из своей папки.
-- **Go fesmu** — свои схемы и клиенты сервисов (analytics, auth, file, mdm, tickets) в
-  `apps/fesmu/api/contract/gen/go/<сервис>`.
-- **TS** — плоско в `packages/<имя>`. Все папки — один пакет `@fesmu/contract` с одним
-  `packages/package.json`. Приложение подключает одну зависимость и видит все схемы:
-  `@fesmu/contract/mdm/entity/user.entity_pb`. Ссылка на чужую схему внутри пакета — тот же
-  путь, копий нет. `exports` разрешает пути и с `.js`, и без. Корневой `package.json`
-  зависит от `@fesmu/contract`, чтобы этот путь находился из любой папки репозитория.
+```
+require fesmu/contract v0.0.0
+replace fesmu/contract => ../../../packages/go
+```
+
+Поэтому Docker-образ бэкенда собирается из корня репозитория: ему нужны и папка api, и
+`packages/go`.
+
+**TS.** Пакет `@fesmu/contract` в `packages/ts`, файлы плоско по путям схем:
+`@fesmu/contract/entity/user.entity_pb` (mdm), `@fesmu/contract/entity/v1/…` (fesmu),
+`@fesmu/contract/auth/v2/…`. Приложение подключает одну зависимость
+`"@fesmu/contract": "workspace:*"`.
 
 dormitory, mentor и ojs — отдельные модули со своей генерацией, в общую схему не входят.
-У dormitory и mentor имена proto-пакетов совпадают с mdm (`contract.entity`), поэтому
-в один workspace с mdm их не добавлять без новой версии API.
+У dormitory и mentor имена proto-пакетов совпадают с mdm (`contract.entity`), поэтому их
+нельзя добавить в один workspace с mdm без новой версии API.
 
 **Фронт — один pnpm workspace.** В корне `package.json`, `pnpm-workspace.yaml`,
-`pnpm-lock.yaml`. Веб fesmu берёт `@fesmu/contract` из `packages/`. Docker-образ веба
+`pnpm-lock.yaml`. Веб fesmu берёт `@fesmu/contract` из `packages/ts`. Docker-образ веба
 собирается из корня, но в контекст попадает только нужное — см.
 `apps/fesmu/web/Dockerfile.dockerignore`.
 

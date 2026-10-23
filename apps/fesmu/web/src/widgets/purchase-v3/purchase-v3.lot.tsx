@@ -4,7 +4,7 @@ import { ArrowRightIcon, CalendarIcon, TriangleAlertIcon, CheckCircle2Icon, Circ
 import { cn } from "@/shared/lib/utils";
 import { Card } from "@/shared/ui/card";
 import { timestampFromDate } from "@bufbuild/protobuf/wkt";
-import type { PurchaseLot } from "@fesmu/contract/fesmu/entity/v3/purchase.entity_pb";
+import type { PurchaseLot } from "@fesmu/contract/entity/v3/purchase.entity_pb";
 import { Button } from "@/shared/ui/button";
 import type { LotPatch, PurchaseV3State } from "./purchase-v3.fn";
 import {

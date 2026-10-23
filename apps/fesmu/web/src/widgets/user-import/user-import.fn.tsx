@@ -7,8 +7,8 @@ import { toast } from "sonner";
 import { connectTransport } from "@/shared/config/api";
 import { ROUTE } from "@/shared/config/path";
 import { useCommonModal } from "@/shared/components/modal";
-import { UserImportService } from "@fesmu/contract/fesmu/service/v1/user_import.service_pb";
-import type { UserImportFromExcelResponse } from "@fesmu/contract/fesmu/service/v1/user_import.service_pb";
+import { UserImportService } from "@fesmu/contract/service/v1/user_import.service_pb";
+import type { UserImportFromExcelResponse } from "@fesmu/contract/service/v1/user_import.service_pb";
 import { userImportSchema } from "./user-import.schema";
 import type { UserImportSchema } from "./user-import.schema";
 

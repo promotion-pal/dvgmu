@@ -11,7 +11,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	authv1connect "dvgmu/auth/contract/gen/go/auth/v1/v1connect"
+	authv1connect "fesmu/contract/auth/v1/v1connect"
 	"dvgmu/auth/internal/domain/models"
 	"dvgmu/auth/internal/service"
 	"dvgmu/auth/internal/utils"

@@ -8,7 +8,7 @@ import (
 
 	"github.com/google/uuid"
 
-	entity "dvgmu/api/contract/gen/go/entity/v1"
+	entity "fesmu/contract/fesmu/entity/v1"
 	"dvgmu/api/internal/domain/models"
 	"dvgmu/api/internal/utils"
 )

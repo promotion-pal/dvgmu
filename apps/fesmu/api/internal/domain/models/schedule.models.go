@@ -9,7 +9,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	entity "dvgmu/api/contract/gen/go/entity/v1"
+	entity "fesmu/contract/fesmu/entity/v1"
 )
 
 var (

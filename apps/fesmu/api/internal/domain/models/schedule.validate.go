@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	entity "dvgmu/api/contract/gen/go/entity/v1"
-	enum "dvgmu/api/contract/gen/go/enum/v1"
+	entity "fesmu/contract/fesmu/entity/v1"
+	enum "fesmu/contract/fesmu/enum/v1"
 )
 
 var scheduleClockRe = regexp.MustCompile(`^([01]?\d|2[0-3]):[0-5]\d$`)

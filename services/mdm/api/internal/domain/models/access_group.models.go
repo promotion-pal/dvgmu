@@ -7,8 +7,8 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"dvgmu/api/contract/gen/go/entity"
-	"dvgmu/api/contract/gen/go/enum"
+	"fesmu/contract/mdm/entity"
+	"fesmu/contract/mdm/enum"
 )
 
 var (

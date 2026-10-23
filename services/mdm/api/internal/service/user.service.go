@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	"dvgmu/api/contract/gen/go/enum"
+	"fesmu/contract/mdm/enum"
 	"dvgmu/api/internal/domain/models"
 	"dvgmu/api/internal/utils"
 	"errors"

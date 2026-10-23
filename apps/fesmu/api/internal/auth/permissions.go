@@ -8,9 +8,9 @@ import (
 
 	"connectrpc.com/connect"
 
-	enum "dvgmu/api/contract/gen/go/enum/v1"
-	serviceconnect "dvgmu/api/contract/gen/go/service/v1/servicev1connect"
-	"dvgmu/api/contract/gen/go/service/v2/servicev2connect"
+	enum "fesmu/contract/fesmu/enum/v1"
+	serviceconnect "fesmu/contract/fesmu/service/v1/servicev1connect"
+	"fesmu/contract/fesmu/service/v2/servicev2connect"
 )
 
 // Разделы и действия — enum контракта (contract/enum/v1/permission.enum.proto),

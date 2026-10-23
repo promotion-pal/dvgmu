@@ -92,3 +92,8 @@ require (
 	gorm.io/driver/sqlserver v1.5.4 // indirect
 	olympos.io/encoding/edn v0.0.0-20201019073823-d3554ca0b0a3 // indirect
 )
+
+require fesmu/contract v0.0.0
+
+// Сгенерированный Go всех схем — make proto в корне монорепо.
+replace fesmu/contract => ../../../packages/go

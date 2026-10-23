@@ -10,8 +10,8 @@ import (
 
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	enum "dvgmu/api/contract/gen/go/enum/v3"
-	pb "dvgmu/api/contract/gen/go/service/v3"
+	enum "fesmu/contract/fesmu/enum/v3"
+	pb "fesmu/contract/fesmu/service/v3"
 	"dvgmu/api/internal/modules/purchase"
 )
 

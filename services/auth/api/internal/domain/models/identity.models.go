@@ -5,7 +5,7 @@ import (
 
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	"dvgmu/auth/contract/gen/go/auth/v2"
+	"fesmu/contract/auth/v2"
 )
 
 type Identity struct {

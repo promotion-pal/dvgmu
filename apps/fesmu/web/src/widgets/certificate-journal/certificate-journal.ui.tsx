@@ -1,10 +1,10 @@
 import { useMemo, useState } from "react";
 import type { ComponentProps, FC } from "react";
 import { PrinterIcon } from "lucide-react";
-import { CertificateOrderStatus } from "@fesmu/contract/fesmu/service/v1/certificate.service_pb";
-import type { CertificateOrderEntry } from "@fesmu/contract/fesmu/service/v1/certificate.service_pb";
-import type { FileGenerateType } from "@fesmu/contract/file/enum/file.enum_pb";
-import type { User } from "@fesmu/contract/mdm/entity/user.entity_pb";
+import { CertificateOrderStatus } from "@fesmu/contract/service/v1/certificate.service_pb";
+import type { CertificateOrderEntry } from "@fesmu/contract/service/v1/certificate.service_pb";
+import type { FileGenerateType } from "@fesmu/contract/enum/file.enum_pb";
+import type { User } from "@fesmu/contract/entity/user.entity_pb";
 import { formatDate } from "@/features/utils/date";
 import { CommonControlState } from "@/shared/components/state/control-state";
 import { Badge } from "@/shared/ui/badge";

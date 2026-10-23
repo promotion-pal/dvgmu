@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	enum "dvgmu/api/contract/gen/go/enum/v1"
+	enum "fesmu/contract/fesmu/enum/v1"
 )
 
 func sessionTest(questions int) *Test {

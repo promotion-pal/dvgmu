@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	"dvgmu/file/contract/gen/go/enum"
+	"fesmu/contract/file/enum"
 	"dvgmu/file/internal/domain/models"
 	"dvgmu/file/internal/utils"
 )

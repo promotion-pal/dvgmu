@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { ComponentProps, FC } from "react";
 import { Building2Icon, PencilIcon, Trash2Icon, UsersIcon } from "lucide-react";
-import type { AccessGroup } from "@fesmu/contract/mdm/entity/user.entity_pb";
+import type { AccessGroup } from "@fesmu/contract/entity/user.entity_pb";
 import {
     ACTION_LABEL,
     PURCHASE_PERMISSIONS,

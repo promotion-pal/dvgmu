@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"dvgmu/api/contract/gen/go/enum"
+	"fesmu/contract/mdm/enum"
 )
 
 var ErrInvalidRole = errors.New("invalid user role")

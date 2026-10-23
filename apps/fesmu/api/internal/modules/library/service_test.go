@@ -14,13 +14,13 @@ import (
 	"gorm.io/gorm"
 
 	"dvgmu/api"
-	entity "dvgmu/api/contract/gen/go/entity/v2"
-	enum "dvgmu/api/contract/gen/go/enum/v2"
-	filesentity "dvgmu/api/contract/gen/go/file/entity"
-	filesenum "dvgmu/api/contract/gen/go/file/enum"
-	filespb "dvgmu/api/contract/gen/go/file/service"
-	"dvgmu/api/contract/gen/go/file/service/serviceconnect"
-	pb "dvgmu/api/contract/gen/go/service/v2"
+	entity "fesmu/contract/fesmu/entity/v2"
+	enum "fesmu/contract/fesmu/enum/v2"
+	filesentity "fesmu/contract/file/entity"
+	filesenum "fesmu/contract/file/enum"
+	filespb "fesmu/contract/file/service"
+	"fesmu/contract/file/service/serviceconnect"
+	pb "fesmu/contract/fesmu/service/v2"
 	"dvgmu/api/internal/auth"
 )
 

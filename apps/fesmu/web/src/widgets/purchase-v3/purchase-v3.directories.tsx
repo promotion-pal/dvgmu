@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { FC } from "react";
 import { PlusIcon, TrashIcon } from "lucide-react";
-import type { PurchaseCategory, PurchaseCurator } from "@fesmu/contract/fesmu/entity/v3/purchase.entity_pb";
+import type { PurchaseCategory, PurchaseCurator } from "@fesmu/contract/entity/v3/purchase.entity_pb";
 import { CommonSearchInput } from "@/shared/components/filter";
 import { Button } from "@/shared/ui/button";
 import type { PurchaseV3State } from "./purchase-v3.fn";

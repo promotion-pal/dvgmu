@@ -1,6 +1,6 @@
 import { createClient } from "@connectrpc/connect";
-import type { Hall as HallMessage, HallBooking as HallBookingMessage } from "@fesmu/contract/fesmu/entity/v1/hall.entity_pb";
-import { HallService } from "@fesmu/contract/fesmu/service/v1/hall.service_pb";
+import type { Hall as HallMessage, HallBooking as HallBookingMessage } from "@fesmu/contract/entity/v1/hall.entity_pb";
+import { HallService } from "@fesmu/contract/service/v1/hall.service_pb";
 import { connectTransport } from "@/shared/config/api";
 import { scheduleToneSchema } from "../schedule.schema";
 import { hallEventSchema, hallSchema } from "./schedule_hall.schema";

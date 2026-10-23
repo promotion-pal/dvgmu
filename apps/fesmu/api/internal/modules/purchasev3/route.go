@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	enum "dvgmu/api/contract/gen/go/enum/v3"
+	enum "fesmu/contract/fesmu/enum/v3"
 )
 
 // The route, by the regulation (Регламент закупок, п. 4): for every stage,

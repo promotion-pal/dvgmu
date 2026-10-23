@@ -6,9 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ClipboardListIcon } from "lucide-react";
 import { create } from "@bufbuild/protobuf";
 
-import { AnalyticType } from "@fesmu/contract/analytics/enum/analytic.enum_pb";
-import { AnalyticSchema } from "@fesmu/contract/analytics/entity/analytic.entity_pb";
-import type { Analytic } from "@fesmu/contract/analytics/entity/analytic.entity_pb";
+import { AnalyticType } from "@fesmu/contract/enum/analytic.enum_pb";
+import { AnalyticSchema } from "@fesmu/contract/entity/analytic.entity_pb";
+import type { Analytic } from "@fesmu/contract/entity/analytic.entity_pb";
 import { isAnalyticTypeEnabled } from "@/widgets/analytic";
 import {
   analyticQuestionGroups,

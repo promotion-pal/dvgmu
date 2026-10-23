@@ -13,8 +13,8 @@ import (
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 
-	authv1connect "dvgmu/auth/contract/gen/go/auth/v1/v1connect"
-	"dvgmu/auth/contract/gen/go/auth/v2/authv2connect"
+	authv1connect "fesmu/contract/auth/v1/v1connect"
+	"fesmu/contract/auth/v2/authv2connect"
 	"dvgmu/auth/internal/grpc"
 	authsaml "dvgmu/auth/internal/saml"
 	"dvgmu/auth/internal/session"

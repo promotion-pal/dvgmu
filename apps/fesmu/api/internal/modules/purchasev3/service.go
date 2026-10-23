@@ -10,9 +10,9 @@ import (
 	"time"
 	"unicode/utf8"
 
-	entity "dvgmu/api/contract/gen/go/entity/v3"
-	enum "dvgmu/api/contract/gen/go/enum/v3"
-	pb "dvgmu/api/contract/gen/go/service/v3"
+	entity "fesmu/contract/fesmu/entity/v3"
+	enum "fesmu/contract/fesmu/enum/v3"
+	pb "fesmu/contract/fesmu/service/v3"
 	"dvgmu/api/internal/modules/purchase"
 )
 

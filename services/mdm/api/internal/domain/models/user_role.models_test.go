@@ -5,7 +5,7 @@ import (
 	"slices"
 	"testing"
 
-	"dvgmu/api/contract/gen/go/enum"
+	"fesmu/contract/mdm/enum"
 )
 
 func TestNormalizeRoles(t *testing.T) {

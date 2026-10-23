@@ -7,7 +7,7 @@ import (
 	"connectrpc.com/connect"
 	"gorm.io/gorm"
 
-	serviceconnect "dvgmu/api/contract/gen/go/service/v2/servicev2connect"
+	serviceconnect "fesmu/contract/fesmu/service/v2/servicev2connect"
 )
 
 // Module is the library module's public face: build it with New and attach

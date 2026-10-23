@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { TestVersion } from "@fesmu/contract/fesmu/enum/v1/test.enum_pb";
+import { TestVersion } from "@fesmu/contract/enum/v1/test.enum_pb";
 
 export { TestVersion };
 

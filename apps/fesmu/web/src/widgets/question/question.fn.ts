@@ -2,9 +2,9 @@ import { useState } from "react";
 import type { MessageInitShape } from "@bufbuild/protobuf";
 import { Code, ConnectError, createClient } from "@connectrpc/connect";
 import { toast } from "sonner";
-import type { Analytic } from "@fesmu/contract/analytics/entity/analytic.entity_pb";
-import type { AnalyticRatingCreateRequestSchema } from "@fesmu/contract/analytics/service/analytic.service_pb";
-import { QuestionnaireService } from "@fesmu/contract/fesmu/service/v1/questionnaire.service_pb";
+import type { Analytic } from "@fesmu/contract/entity/analytic.entity_pb";
+import type { AnalyticRatingCreateRequestSchema } from "@fesmu/contract/service/analytic.service_pb";
+import { QuestionnaireService } from "@fesmu/contract/service/v1/questionnaire.service_pb";
 import { connectTransport } from "@/shared/config/api";
 
 /* Анкета по QR без входа — через открытый QuestionnaireService api fesmu:

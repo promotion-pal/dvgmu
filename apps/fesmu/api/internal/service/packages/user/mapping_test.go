@@ -3,7 +3,7 @@ package user
 import (
 	"testing"
 
-	mdmenum "dvgmu/api/contract/gen/go/mdm/enum"
+	mdmenum "fesmu/contract/mdm/enum"
 )
 
 // Titles taken from the distinct values of a real student export, including

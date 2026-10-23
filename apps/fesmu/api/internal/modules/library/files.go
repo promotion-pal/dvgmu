@@ -7,9 +7,9 @@ import (
 
 	"connectrpc.com/connect"
 
-	filesenum "dvgmu/api/contract/gen/go/file/enum"
-	filespb "dvgmu/api/contract/gen/go/file/service"
-	"dvgmu/api/contract/gen/go/file/service/serviceconnect"
+	filesenum "fesmu/contract/file/enum"
+	filespb "fesmu/contract/file/service"
+	"fesmu/contract/file/service/serviceconnect"
 )
 
 // Files is the files service client (filesserviceconnect.FilesServiceClient).

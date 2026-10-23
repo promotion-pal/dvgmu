@@ -8,10 +8,10 @@ import (
 
 	"connectrpc.com/connect"
 
-	"dvgmu/file/contract/gen/go/entity"
-	mdmentity "dvgmu/file/contract/gen/go/mdm/entity"
-	servicepb "dvgmu/file/contract/gen/go/service"
-	"dvgmu/file/contract/gen/go/service/serviceconnect"
+	"fesmu/contract/file/entity"
+	mdmentity "fesmu/contract/mdm/entity"
+	servicepb "fesmu/contract/file/service"
+	"fesmu/contract/file/service/serviceconnect"
 	"dvgmu/file/internal/service"
 	"dvgmu/file/internal/utils"
 	"dvgmu/file/internal/utils/excel"

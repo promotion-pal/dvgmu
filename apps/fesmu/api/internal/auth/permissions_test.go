@@ -4,9 +4,9 @@ import (
 	"regexp"
 	"testing"
 
-	enum "dvgmu/api/contract/gen/go/enum/v1"
-	serviceconnect "dvgmu/api/contract/gen/go/service/v1/servicev1connect"
-	"dvgmu/api/contract/gen/go/service/v2/servicev2connect"
+	enum "fesmu/contract/fesmu/enum/v1"
+	serviceconnect "fesmu/contract/fesmu/service/v1/servicev1connect"
+	"fesmu/contract/fesmu/service/v2/servicev2connect"
 )
 
 // Строки прав — те же, что хранит MDM (формат "раздел.действие") и что

@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { FC, ReactNode } from "react";
 import { CheckCircle2Icon, CircleDotIcon, CircleIcon, ClockIcon, LayersIcon, TriangleAlertIcon, PencilIcon, PlusIcon, TrashIcon, UserCheckIcon } from "lucide-react";
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
-import type { PurchaseLog, PurchaseLot, PurchaseRequest, PurchaseSignOff } from "@fesmu/contract/fesmu/entity/v3/purchase.entity_pb";
+import type { PurchaseLog, PurchaseLot, PurchaseRequest, PurchaseSignOff } from "@fesmu/contract/entity/v3/purchase.entity_pb";
 import { CommonModal } from "@/shared/components/modal";
 import { cn } from "@/shared/lib/utils";
 import { Button } from "@/shared/ui/button";

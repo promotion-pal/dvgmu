@@ -7,9 +7,9 @@ import (
 	"connectrpc.com/connect"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	"dvgmu/tickets/contract/gen/go/entity"
-	"dvgmu/tickets/contract/gen/go/enum"
-	pb "dvgmu/tickets/contract/gen/go/service"
+	"fesmu/contract/tickets/entity"
+	"fesmu/contract/tickets/enum"
+	pb "fesmu/contract/tickets/service"
 	"dvgmu/tickets/internal/domain/models"
 	"dvgmu/tickets/internal/service"
 )

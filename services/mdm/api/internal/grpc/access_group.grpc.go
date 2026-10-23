@@ -6,7 +6,7 @@ import (
 
 	"connectrpc.com/connect"
 
-	pb "dvgmu/api/contract/gen/go/service"
+	pb "fesmu/contract/mdm/service"
 	"dvgmu/api/internal/domain/models"
 )
 

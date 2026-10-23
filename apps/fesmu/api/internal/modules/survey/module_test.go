@@ -12,12 +12,12 @@ import (
 	"connectrpc.com/connect"
 	"google.golang.org/protobuf/proto"
 
-	analyticsentity "dvgmu/api/contract/gen/go/analytics/entity"
-	analyticsenum "dvgmu/api/contract/gen/go/analytics/enum"
-	analyticspb "dvgmu/api/contract/gen/go/analytics/service"
-	analyticsconnect "dvgmu/api/contract/gen/go/analytics/service/serviceconnect"
-	pb "dvgmu/api/contract/gen/go/service/v1"
-	serviceconnect "dvgmu/api/contract/gen/go/service/v1/servicev1connect"
+	analyticsentity "fesmu/contract/analytics/entity"
+	analyticsenum "fesmu/contract/analytics/enum"
+	analyticspb "fesmu/contract/analytics/service"
+	analyticsconnect "fesmu/contract/analytics/service/serviceconnect"
+	pb "fesmu/contract/fesmu/service/v1"
+	serviceconnect "fesmu/contract/fesmu/service/v1/servicev1connect"
 	"dvgmu/api/internal/modules/survey"
 )
 

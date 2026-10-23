@@ -9,7 +9,7 @@ import (
 	"connectrpc.com/connect"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	authv1 "dvgmu/auth/contract/gen/go/auth/v1"
+	authv1 "fesmu/contract/auth/v1"
 	"dvgmu/auth/internal/domain/models"
 	"dvgmu/auth/internal/service"
 )

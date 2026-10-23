@@ -7,7 +7,7 @@ import (
 
 	"google.golang.org/protobuf/encoding/protojson"
 
-	entity "dvgmu/api/contract/gen/go/entity/v2"
+	entity "fesmu/contract/fesmu/entity/v2"
 )
 
 // Limits on one manual, so a draft stays a document and not a dump.

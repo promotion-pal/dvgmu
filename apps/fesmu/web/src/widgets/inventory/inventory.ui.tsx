@@ -2,7 +2,7 @@ import type { ComponentProps, FC } from "react";
 import { BoxIcon, MapPinIcon } from "lucide-react";
 import { Card } from "@/shared/ui/card";
 import { Badge } from "@/shared/ui/badge";
-import type { Inventory } from "@fesmu/contract/fesmu/entity/v1/inventory.entity_pb";
+import type { Inventory } from "@fesmu/contract/entity/v1/inventory.entity_pb";
 import { CommonControlState } from "@/shared/components/state/control-state";
 import { CommonModal } from "@/shared/components/modal";
 import { formatDate } from "@/features/utils/date";

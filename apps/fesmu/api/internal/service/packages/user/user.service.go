@@ -17,14 +17,14 @@ import (
 	"connectrpc.com/connect"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	filesenum "dvgmu/api/contract/gen/go/file/enum"
-	filespb "dvgmu/api/contract/gen/go/file/service"
-	filesserviceconnect "dvgmu/api/contract/gen/go/file/service/serviceconnect"
-	mdmentity "dvgmu/api/contract/gen/go/mdm/entity"
-	mdmenum "dvgmu/api/contract/gen/go/mdm/enum"
-	mdmpb "dvgmu/api/contract/gen/go/mdm/service"
-	mdmserviceconnect "dvgmu/api/contract/gen/go/mdm/service/serviceconnect"
-	pb "dvgmu/api/contract/gen/go/service/v1"
+	filesenum "fesmu/contract/file/enum"
+	filespb "fesmu/contract/file/service"
+	filesserviceconnect "fesmu/contract/file/service/serviceconnect"
+	mdmentity "fesmu/contract/mdm/entity"
+	mdmenum "fesmu/contract/mdm/enum"
+	mdmpb "fesmu/contract/mdm/service"
+	mdmserviceconnect "fesmu/contract/mdm/service/serviceconnect"
+	pb "fesmu/contract/fesmu/service/v1"
 )
 
 type ImportService struct {

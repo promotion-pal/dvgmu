@@ -7,7 +7,7 @@ import (
 	"connectrpc.com/connect"
 	"gorm.io/gorm"
 
-	serviceconnect "dvgmu/api/contract/gen/go/service/v3/servicev3connect"
+	serviceconnect "fesmu/contract/fesmu/service/v3/servicev3connect"
 	"dvgmu/api/internal/modules/purchase"
 )
 

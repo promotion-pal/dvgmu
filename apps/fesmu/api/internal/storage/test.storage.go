@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	enum "dvgmu/api/contract/gen/go/enum/v1"
+	enum "fesmu/contract/fesmu/enum/v1"
 	"dvgmu/api/internal/domain/models"
 
 	"gorm.io/gorm"

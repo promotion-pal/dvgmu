@@ -10,12 +10,12 @@ import (
 
 	"connectrpc.com/connect"
 
-	fileentity "dvgmu/api/contract/gen/go/file/entity"
-	fileenum "dvgmu/api/contract/gen/go/file/enum"
-	filespb "dvgmu/api/contract/gen/go/file/service"
-	entity "dvgmu/api/contract/gen/go/mdm/entity"
-	mdmpb "dvgmu/api/contract/gen/go/mdm/service"
-	pb "dvgmu/api/contract/gen/go/service/v1"
+	fileentity "fesmu/contract/file/entity"
+	fileenum "fesmu/contract/file/enum"
+	filespb "fesmu/contract/file/service"
+	entity "fesmu/contract/mdm/entity"
+	mdmpb "fesmu/contract/mdm/service"
+	pb "fesmu/contract/fesmu/service/v1"
 	"dvgmu/api/internal/auth"
 	"dvgmu/api/internal/domain/models"
 )

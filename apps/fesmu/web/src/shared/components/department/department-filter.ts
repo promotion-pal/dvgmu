@@ -1,4 +1,4 @@
-import type { UserEmployeeDepartment } from "@fesmu/contract/mdm/enum/user.enum_pb";
+import type { UserEmployeeDepartment } from "@fesmu/contract/enum/user.enum_pb";
 
 /** Значение фильтра по подразделению: все, без подразделения или одно. */
 export type DepartmentFilterValue = "all" | "none" | UserEmployeeDepartment;

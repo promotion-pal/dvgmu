@@ -11,9 +11,9 @@ import (
 
 	"connectrpc.com/connect"
 
-	filesserviceconnect "dvgmu/api/contract/gen/go/file/service/serviceconnect"
-	mdmserviceconnect "dvgmu/api/contract/gen/go/mdm/service/serviceconnect"
-	pb "dvgmu/api/contract/gen/go/service/v1"
+	filesserviceconnect "fesmu/contract/file/service/serviceconnect"
+	mdmserviceconnect "fesmu/contract/mdm/service/serviceconnect"
+	pb "fesmu/contract/fesmu/service/v1"
 	"dvgmu/api/internal/service/packages/user"
 )
 

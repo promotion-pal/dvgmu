@@ -1,11 +1,11 @@
-import type { Infrastructure } from "@fesmu/contract/fesmu/entity/v1/infrastructure.entity_pb";
+import type { Infrastructure } from "@fesmu/contract/entity/v1/infrastructure.entity_pb";
 import { CommonPopover } from "@/shared/components/menu";
 import { CommonControlState } from "@/shared/components/state/control-state";
 import { CommonModal } from "@/shared/components/modal";
 import { Card } from "@/shared/ui/card";
 import type { ComponentProps, FC } from "react";
 import { Building2Icon, UsersIcon } from "lucide-react";
-import { LocationCommonType } from "@fesmu/contract/fesmu/enum/v1/location.enum_pb";
+import { LocationCommonType } from "@fesmu/contract/enum/v1/location.enum_pb";
 import { LOCATION_COMMON_TYPE_LABEL } from "./infrastructure.fn";
 import type { useInfrastructure } from "./infrastructure.fn";
 import { floorLabel, groupByFloor } from "./infrastructure.filter";

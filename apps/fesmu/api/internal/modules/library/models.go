@@ -5,8 +5,8 @@ import (
 
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	entity "dvgmu/api/contract/gen/go/entity/v2"
-	enum "dvgmu/api/contract/gen/go/enum/v2"
+	entity "fesmu/contract/fesmu/entity/v2"
+	enum "fesmu/contract/fesmu/enum/v2"
 )
 
 // File is a file the module stored in the files service; ID is its id there.

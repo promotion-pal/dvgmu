@@ -6,7 +6,7 @@ import (
 
 	"connectrpc.com/connect"
 
-	pb "dvgmu/api/contract/gen/go/service/v3"
+	pb "fesmu/contract/fesmu/service/v3"
 )
 
 // handler adapts the service to Connect: the caller is the signed-in user,

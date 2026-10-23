@@ -4,7 +4,7 @@ import (
 	"context"
 	"crypto/ed25519"
 	"crypto/rand"
-	"dvgmu/api/contract/gen/go/service/v2/servicev2connect"
+	"fesmu/contract/fesmu/service/v2/servicev2connect"
 	"encoding/base64"
 	"encoding/json"
 	"net/http"

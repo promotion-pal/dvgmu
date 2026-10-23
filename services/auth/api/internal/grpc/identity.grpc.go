@@ -8,7 +8,7 @@ import (
 
 	"connectrpc.com/connect"
 
-	pb "dvgmu/auth/contract/gen/go/auth/v2"
+	pb "fesmu/contract/auth/v2"
 	"dvgmu/auth/internal/domain/models"
 	"dvgmu/auth/internal/service"
 	"dvgmu/auth/internal/utils"

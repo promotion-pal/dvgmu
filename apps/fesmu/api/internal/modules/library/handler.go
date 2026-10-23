@@ -8,7 +8,7 @@ import (
 	"connectrpc.com/connect"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "dvgmu/api/contract/gen/go/service/v2"
+	pb "fesmu/contract/fesmu/service/v2"
 )
 
 type handler struct {

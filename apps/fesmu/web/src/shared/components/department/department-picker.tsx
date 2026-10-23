@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import type { FC, ReactNode } from "react";
 import { CheckIcon, ChevronDownIcon } from "lucide-react";
-import type { UserEmployeeDepartment } from "@fesmu/contract/mdm/enum/user.enum_pb";
+import type { UserEmployeeDepartment } from "@fesmu/contract/enum/user.enum_pb";
 import { DEPARTMENT_LABEL, DEPARTMENT_OPTIONS } from "@/shared/config/departments";
 import { cn } from "@/shared/lib/utils";
 import { Button } from "@/shared/ui/button";
