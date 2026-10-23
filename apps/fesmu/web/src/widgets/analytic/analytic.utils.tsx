@@ -1,4 +1,4 @@
-import { AnalyticType } from "@dvgmu/contract/analytics/enum/analytic.enum_pb";
+import { AnalyticType } from "@fesmu/contract/analytics/enum/analytic.enum_pb";
 
 /** Все виды анкет — подписи, в том числе для ещё не включённых. */
 const ALL_ANALYTIC_CATEGORIES = [

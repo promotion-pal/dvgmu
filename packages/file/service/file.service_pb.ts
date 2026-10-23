@@ -9,8 +9,8 @@ import type { File } from "../entity/file.entity_pb";
 import { file_entity_file_entity } from "../entity/file.entity_pb";
 import type { FileGenerateType, FileType } from "../enum/file.enum_pb";
 import { file_enum_file_enum } from "../enum/file.enum_pb";
-import type { User, UserFull } from "@dvgmu/contract/mdm/entity/user.entity_pb.js";
-import { file_entity_user_entity } from "@dvgmu/contract/mdm/entity/user.entity_pb.js";
+import type { User, UserFull } from "@fesmu/contract/mdm/entity/user.entity_pb.js";
+import { file_entity_user_entity } from "@fesmu/contract/mdm/entity/user.entity_pb.js";
 import type { Message } from "@bufbuild/protobuf";
 
 /**

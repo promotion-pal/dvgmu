@@ -1,5 +1,5 @@
-import type { User } from "@dvgmu/contract/mdm/entity/user.entity_pb";
-import type { UserRole } from "@dvgmu/contract/mdm/enum/user.enum_pb";
+import type { User } from "@fesmu/contract/mdm/entity/user.entity_pb";
+import type { UserRole } from "@fesmu/contract/mdm/enum/user.enum_pb";
 
 /* Раздел «Сотрудники»/«Студенты» = записи раздела плюс люди с его ролью, у
  * которых записи ещё нет: роль, выданная на странице «Роли», сама делает

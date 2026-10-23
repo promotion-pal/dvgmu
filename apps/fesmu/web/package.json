@@ -13,7 +13,7 @@
     "@bufbuild/protobuf": "^2.12.1",
     "@connectrpc/connect": "^2.1.2",
     "@connectrpc/connect-web": "^2.1.2",
-    "@dvgmu/contract": "workspace:*",
+    "@fesmu/contract": "workspace:*",
     "@fontsource-variable/inter": "^5.2.8",
     "@hookform/resolvers": "^5.9.1",
     "class-variance-authority": "^0.7.1",

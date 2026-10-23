@@ -1,9 +1,9 @@
 {
-  "name": "@dvgmu/contract",
+  "name": "@fesmu/contract",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "Сгенерированный TS всех контрактов: packages/<модуль>/… (make proto). Импорт: @dvgmu/contract/<модуль>/…",
+  "description": "Сгенерированный TS всех контрактов: packages/<модуль>/… (make proto). Импорт: @fesmu/contract/<модуль>/…",
   "exports": {
     "./*.js": "./*.ts",
     "./*": "./*.ts"

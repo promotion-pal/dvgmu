@@ -11,7 +11,7 @@ import {
   InformationSecurityInfoType,
   InformationSecurityOs,
   InformationSecurityResource,
-} from "@dvgmu/contract/analytics/enum/analytic.enum_pb";
+} from "@fesmu/contract/analytics/enum/analytic.enum_pb";
 import { enumOptions } from "./question.enum";
 import type { QuestionFieldConfig, QuestionGroup } from "./question.types";
 

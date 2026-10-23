@@ -6,7 +6,7 @@ import { CommonControlState } from "@/shared/components/state/control-state";
 import { CommonWrapper } from "@/shared/components/wrapper";
 import { TestBuilderBulkImportModal, TestBuilderFilters, TestBuilderFormModal, TestBuilderImport, TestBuilderList, askableQuestionCount, useTestBuilder } from "@/widgets/test-builder";
 import { TestSessionCreateModal, useTestSessionCreate } from "@/widgets/test-session";
-import { TestVersion } from "@dvgmu/contract/fesmu/enum/v1/test.enum_pb";
+import { TestVersion } from "@fesmu/contract/fesmu/enum/v1/test.enum_pb";
 
 const PAGE = {
     [TestVersion.V1]: {

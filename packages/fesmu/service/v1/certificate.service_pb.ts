@@ -6,8 +6,8 @@ import type { GenEnum, GenFile, GenMessage, GenService } from "@bufbuild/protobu
 import { enumDesc, fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
-import type { FileGenerateType } from "@dvgmu/contract/file/enum/file.enum_pb.js";
-import { file_enum_file_enum } from "@dvgmu/contract/file/enum/file.enum_pb.js";
+import type { FileGenerateType } from "@fesmu/contract/file/enum/file.enum_pb.js";
+import { file_enum_file_enum } from "@fesmu/contract/file/enum/file.enum_pb.js";
 import type { Message } from "@bufbuild/protobuf";
 
 /**

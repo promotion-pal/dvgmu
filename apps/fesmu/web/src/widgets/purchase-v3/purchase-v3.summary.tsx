@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ChevronRightIcon, ClockIcon } from "lucide-react";
 import type { FC } from "react";
-import type { PurchaseLot } from "@dvgmu/contract/fesmu/entity/v3/purchase.entity_pb";
+import type { PurchaseLot } from "@fesmu/contract/fesmu/entity/v3/purchase.entity_pb";
 import { cn } from "@/shared/lib/utils";
 import { Card } from "@/shared/ui/card";
 import type { PurchaseV3State } from "./purchase-v3.fn";

@@ -4,10 +4,10 @@
 
 import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
-import type { Analytic } from "@dvgmu/contract/analytics/entity/analytic.entity_pb.js";
-import { file_entity_analytic_entity } from "@dvgmu/contract/analytics/entity/analytic.entity_pb.js";
-import type { AnalyticRatingCreateRequestSchema, AnalyticRatingCreateResponseSchema } from "@dvgmu/contract/analytics/service/analytic.service_pb.js";
-import { file_service_analytic_service } from "@dvgmu/contract/analytics/service/analytic.service_pb.js";
+import type { Analytic } from "@fesmu/contract/analytics/entity/analytic.entity_pb.js";
+import { file_entity_analytic_entity } from "@fesmu/contract/analytics/entity/analytic.entity_pb.js";
+import type { AnalyticRatingCreateRequestSchema, AnalyticRatingCreateResponseSchema } from "@fesmu/contract/analytics/service/analytic.service_pb.js";
+import { file_service_analytic_service } from "@fesmu/contract/analytics/service/analytic.service_pb.js";
 import type { Message } from "@bufbuild/protobuf";
 
 /**

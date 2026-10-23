@@ -13,7 +13,7 @@ import { CommonPopover } from "@/shared/components/menu";
 import { Badge } from "@/shared/ui/badge";
 import { Input } from "@/shared/ui/input";
 
-import type { AnalyticType } from "@dvgmu/contract/analytics/enum/analytic.enum_pb";
+import type { AnalyticType } from "@fesmu/contract/analytics/enum/analytic.enum_pb";
 import { useAnalytic, buildAnalyticQrUrl } from "./analytic.fn";
 import { analyticCategoryEmoji, extractAnalyticCategory } from "./analytic.utils";
 

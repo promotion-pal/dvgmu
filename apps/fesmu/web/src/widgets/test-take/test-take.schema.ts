@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { TestAttemptStatus } from "@dvgmu/contract/fesmu/enum/v1/test.enum_pb";
+import { TestAttemptStatus } from "@fesmu/contract/fesmu/enum/v1/test.enum_pb";
 
 export { TestAttemptStatus };
 

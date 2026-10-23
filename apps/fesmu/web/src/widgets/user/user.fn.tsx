@@ -1,7 +1,7 @@
 import { useFetchState } from "@/features/lib/fetch";
-import type { User } from "@dvgmu/contract/mdm/entity/user.entity_pb";
-import { UserStatus } from "@dvgmu/contract/mdm/enum/user.enum_pb";
-import { UserService } from "@dvgmu/contract/mdm/service/user.service_pb";
+import type { User } from "@fesmu/contract/mdm/entity/user.entity_pb";
+import { UserStatus } from "@fesmu/contract/mdm/enum/user.enum_pb";
+import { UserService } from "@fesmu/contract/mdm/service/user.service_pb";
 import { useCommonModal } from "@/shared/components/modal";
 import type { CommonModalType } from "@/shared/components/modal";
 import type { CommonPopoverProps } from "@/shared/components/menu";

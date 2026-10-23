@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { create } from "zustand";
 import { Code, ConnectError, createClient } from "@connectrpc/connect";
-import { UserService } from "@dvgmu/contract/fesmu/service/v1/user.service_pb";
-import type { User } from "@dvgmu/contract/fesmu/entity/v1/user.entity_pb";
-import { UserRole } from "@dvgmu/contract/fesmu/enum/v1/user.enum_pb";
+import { UserService } from "@fesmu/contract/fesmu/service/v1/user.service_pb";
+import type { User } from "@fesmu/contract/fesmu/entity/v1/user.entity_pb";
+import { UserRole } from "@fesmu/contract/fesmu/enum/v1/user.enum_pb";
 import { connectTransport } from "@/shared/config/api";
 import { sessionState } from "@/shared/config/session";
 

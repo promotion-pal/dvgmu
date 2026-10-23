@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { TestAttemptStatus, TestVersion } from "@dvgmu/contract/fesmu/enum/v1/test.enum_pb";
+import { TestAttemptStatus, TestVersion } from "@fesmu/contract/fesmu/enum/v1/test.enum_pb";
 
 export { TestVersion };
 import { ROUTE } from "@/shared/config/path";

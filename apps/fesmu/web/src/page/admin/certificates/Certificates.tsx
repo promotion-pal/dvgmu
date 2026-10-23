@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FilePlusIcon } from "lucide-react";
-import { CertificateOrderStatus } from "@dvgmu/contract/fesmu/service/v1/certificate.service_pb";
+import { CertificateOrderStatus } from "@fesmu/contract/fesmu/service/v1/certificate.service_pb";
 import { CommonWrapper } from "@/shared/components/wrapper";
 import { PermissionAction, PermissionSection } from "@/shared/config/permissions";
 import { Button } from "@/shared/ui/button";

@@ -6,7 +6,7 @@ import { ScanLineIcon } from "lucide-react";
 import { CommonModal } from "@/shared/components/modal";
 import { Html5QrcodePlugin } from "@/shared/components/scanner";
 import { Button } from "@/shared/ui/button";
-import type { Analytic } from "@dvgmu/contract/analytics/entity/analytic.entity_pb";
+import type { Analytic } from "@fesmu/contract/analytics/entity/analytic.entity_pb";
 
 import { parseAnalyticScan, resolveScan } from "./analytic-qr-scan.lib";
 

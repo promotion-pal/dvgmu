@@ -1,5 +1,5 @@
 import type { ComponentType } from "react";
-import type { UserRole } from "@dvgmu/contract/fesmu/enum/v1/user.enum_pb";
+import type { UserRole } from "@fesmu/contract/fesmu/enum/v1/user.enum_pb";
 import { BookOpenTextIcon, ChartColumnIcon, QrCodeIcon, BriefcaseIcon, LibraryIcon, Building2Icon, FileCheckIcon, CalendarDaysIcon, CalendarRangeIcon, ClipboardListIcon, FileTextIcon, GraduationCapIcon, HourglassIcon, KeyRoundIcon, ListChecksIcon, ListTodoIcon, MonitorIcon, ReceiptTextIcon, ShieldCheckIcon, ShoppingBagIcon, ShoppingCartIcon, TicketIcon, UserCogIcon, UsersIcon } from "lucide-react";
 import { ACCESS } from "@/shared/config/access";
 import { PermissionSection, PURCHASE_SECTIONS, PURCHASE_V3_PERMS, permsFor, permsForAny } from "@/shared/config/permissions";

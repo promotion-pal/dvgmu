@@ -1,6 +1,6 @@
 packages:
   - "apps/fesmu/web"
-  # Все сгенерированные схемы — один пакет @dvgmu/contract (packages/package.json).
+  # Все сгенерированные схемы — один пакет @fesmu/contract (packages/package.json).
   - "packages"
 allowBuilds:
   esbuild: true

@@ -1,5 +1,5 @@
 import { ConnectError, createClient } from "@connectrpc/connect";
-import { LibraryService } from "@dvgmu/contract/fesmu/service/v2/library.service_pb";
+import { LibraryService } from "@fesmu/contract/fesmu/service/v2/library.service_pb";
 import { connectTransport } from "@/shared/config/api";
 import type { BlockFile, Section } from "@/shared/blocks";
 import { fromFile, fromItem, fromManual, fromProgress, KIND_TO_PROTO, READER_KIND, toSections } from "./library.convert";

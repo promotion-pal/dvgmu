@@ -1,4 +1,4 @@
-import { AnalyticType } from "@dvgmu/contract/analytics/enum/analytic.enum_pb";
+import { AnalyticType } from "@fesmu/contract/analytics/enum/analytic.enum_pb";
 import type { ZodType } from "zod";
 import z from "zod";
 

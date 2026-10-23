@@ -10,8 +10,8 @@ import type { PurchaseCommissionDecision, PurchaseDocumentKind, PurchaseFundingS
 import { file_enum_v3_purchase_enum } from "../../enum/v3/purchase.enum_pb";
 import type { PurchaseCategory, PurchaseCodeSuggestion, PurchaseCurator, PurchaseDepartment, PurchaseEmployee, PurchaseLot, PurchaseMe, PurchaseProtocol, PurchaseRequest } from "../../entity/v3/purchase.entity_pb";
 import { file_entity_v3_purchase_entity } from "../../entity/v3/purchase.entity_pb";
-import type { UserEmployeeDepartment } from "@dvgmu/contract/mdm/enum/user.enum_pb.js";
-import { file_enum_user_enum } from "@dvgmu/contract/mdm/enum/user.enum_pb.js";
+import type { UserEmployeeDepartment } from "@fesmu/contract/mdm/enum/user.enum_pb.js";
+import { file_enum_user_enum } from "@fesmu/contract/mdm/enum/user.enum_pb.js";
 import type { Message } from "@bufbuild/protobuf";
 
 /**

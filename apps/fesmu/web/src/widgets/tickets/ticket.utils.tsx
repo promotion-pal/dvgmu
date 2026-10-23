@@ -1,8 +1,8 @@
-import { TicketStatus, TicketType } from "@dvgmu/contract/tickets/enum/ticket.enum_pb";
+import { TicketStatus, TicketType } from "@fesmu/contract/tickets/enum/ticket.enum_pb";
 import {
   LocationBuildType,
   LocationDormitoryType,
-} from "@dvgmu/contract/tickets/enum/location.enum_pb";
+} from "@fesmu/contract/tickets/enum/location.enum_pb";
 
 export const extractTicketType = [
   { value: TicketType.PLUMBER, label: "Сантехника" },

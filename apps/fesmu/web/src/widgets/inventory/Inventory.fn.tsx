@@ -1,7 +1,7 @@
 import { useFetchState } from "@/features/lib/fetch";
-import type { Inventory } from "@dvgmu/contract/fesmu/entity/v1/inventory.entity_pb";
-import { InventoryStatus, InventoryType } from "@dvgmu/contract/fesmu/enum/v1/inventory.enum_pb";
-import { InventoryService } from "@dvgmu/contract/fesmu/service/v1/inventory.service_pb";
+import type { Inventory } from "@fesmu/contract/fesmu/entity/v1/inventory.entity_pb";
+import { InventoryStatus, InventoryType } from "@fesmu/contract/fesmu/enum/v1/inventory.enum_pb";
+import { InventoryService } from "@fesmu/contract/fesmu/service/v1/inventory.service_pb";
 import { useCommonModal } from "@/shared/components/modal";
 import type { CommonModalConfig } from "@/shared/components/modal";
 import { connectTransport } from "@/shared/config/api";

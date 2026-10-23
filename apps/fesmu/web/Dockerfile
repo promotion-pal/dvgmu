@@ -19,7 +19,7 @@ RUN npm install -g pnpm
 # что именно попадает в контекст, задаёт Dockerfile.dockerignore рядом.
 COPY .npmrc pnpm-workspace.yaml pnpm-lock.yaml package.json ./
 COPY apps/fesmu/web/package.json apps/fesmu/web/package.json
-# @dvgmu/contract (packages/) — сгенерированный TS всех схем, небольшой:
+# @fesmu/contract (packages/) — сгенерированный TS всех схем, небольшой:
 # берём целиком до install, чтобы pnpm связал его в workspace.
 COPY packages packages
 

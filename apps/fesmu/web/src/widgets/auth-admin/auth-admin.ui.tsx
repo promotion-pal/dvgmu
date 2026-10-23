@@ -1,5 +1,5 @@
 import type { ComponentProps, FC } from "react";
-import type { Identity } from "@dvgmu/contract/auth/v2/identity_pb";
+import type { Identity } from "@fesmu/contract/auth/v2/identity_pb";
 import { CommonControlState } from "@/shared/components/state/control-state";
 import { formatDate } from "@/features/utils/date";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/shared/ui/table";
