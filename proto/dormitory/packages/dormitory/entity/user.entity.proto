@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package contract.entity;
+
+option go_package = "entity;entity_pb";
+
+import "google/protobuf/timestamp.proto";
+
+message User {
+    int64 id = 1;
+
+    string phone = 2;
+    string last_name = 3;
+    string first_name = 4;
+    string patronymic = 5;
+
+    string record_book = 6;
+    string group = 9;
+
+    google.protobuf.Timestamp created_at = 7;
+    google.protobuf.Timestamp updated_at = 8;
+}

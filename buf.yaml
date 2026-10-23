@@ -1,0 +1,22 @@
+# Единая схема данных: контракт fesmu и зеркала контрактов сервисов (proto/<имя>,
+# собирает scripts/contracts.sh). Генерация — только через scripts/contracts.sh gen:
+# модули proto/<имя> генерируются по одному (у mdm/dormitory/mentor пересекаются
+# имена proto-пакетов), сборка всего workspace разом не нужна.
+version: v2
+
+modules:
+  - path: apps/fesmu/api/contract
+    lint:
+      use:
+        - STANDARD
+    breaking:
+      use:
+        - FILE
+  - path: proto/analytics
+  - path: proto/auth
+  - path: proto/dormitory
+  - path: proto/files
+  - path: proto/mdm
+  - path: proto/mentor
+  - path: proto/notification
+  - path: proto/tasks

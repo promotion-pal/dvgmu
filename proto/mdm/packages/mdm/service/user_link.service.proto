@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package contract.service;
+
+import "packages/mdm/entity/user.entity.proto";
+
+option go_package = "service;service_pb";
+
+// UserLinkService — служебные RPC для sync и auth: связки MDM ↔ AD и
+// проверка кодов активации. Отдельно от UserService намеренно: fesmu
+// проксирует наружу только UserService, а здесь — захват чужой учётки
+// (привязать свой GUID к админу, перебрать коды).
+// Все RPC требуют Authorization: Bearer <MDM_INTERNAL_TOKEN>.
+service UserLinkService {
+    // UserADLinkBatch выставляет users.ad_object_id. Уже заполненный другим
+    // GUID и GUID, занятый другим пользователем, не перезаписываются — такие
+    // пары попадают в skipped.
+    rpc UserADLinkBatch (UserADLinkBatchRequest) returns (UserADLinkBatchResponse);
+
+    // ActivationVerify — код верен (не гасит, неудача = попытка).
+    // ActivationConsume — верен и погашен. InvalidArgument — неверный,
+    // истёк или нет такого логина; ResourceExhausted — попытки исчерпаны.
+    rpc ActivationVerify (ActivationCheckRequest) returns (ActivationCheckResponse);
+    rpc ActivationConsume (ActivationCheckRequest) returns (ActivationCheckResponse);
+}
+
+message ActivationCheckRequest {
+    string username = 1;
+    string code = 2;
+}
+
+message ActivationCheckResponse {
+    contract.entity.User user = 1;
+}
+
+message UserADLink {
+    int64 id = 1;
+    string ad_object_id = 2;
+}
+
+message UserADLinkBatchRequest {
+    repeated UserADLink links = 1;
+}
+
+message UserADLinkBatchResponse {
+    int64 linked = 1;
+    repeated UserADLink skipped = 2;
+}

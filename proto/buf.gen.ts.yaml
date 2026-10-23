@@ -1,0 +1,16 @@
+# TS одного модуля общей схемы → @dvgmu/contract (packages/contract/packages/<имя>).
+# Запуск — scripts/contracts.sh gen (из корня монорепо).
+# managed — тот же, что у fesmu (apps/fesmu/api/contract/buf.gen.yaml): описание
+# схемы, вшитое в TS, должно совпадать байт в байт, какой бы проход его ни записал.
+version: v2
+
+managed:
+  enabled: true
+  override:
+    - file_option: go_package_prefix
+      value: dvgmu/api/contract/gen/go
+
+plugins:
+  - local: protoc-gen-es
+    out: packages/contract
+    opt: target=ts

@@ -1,7 +1,7 @@
 import { UserEmployeeDepartment } from "@dvgmu/contract/packages/mdm/enum/user.enum_pb";
 
 /** Подразделения сотрудников (MDM UserEmployeeDepartment) — названия из
- * комментариев enum в api/contract/packages/mdm/enum/user.enum.proto. */
+ * комментариев enum в services/mdm/api/contract/enum/user.enum.proto. */
 export const DEPARTMENT_LABEL: Record<UserEmployeeDepartment, string> = {
     [UserEmployeeDepartment.UNSPECIFIED]: "Не указано",
     [UserEmployeeDepartment.IT]: "ИТ-отдел",

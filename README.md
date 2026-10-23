@@ -14,9 +14,11 @@ apps/                 приложения — то, что видит поль�
   ksm, guide, profile, unistom, course   статические сайты
 services/             общие сервисы — у каждого своя БД, compose и .env
   auth/ mdm/ analytics/ tickets/ file/ notification/ sync/ dormitory/ mentor/ ojs/ dvgmu_wiki/
+proto/                единая схема данных — зеркало контрактов всех сервисов (генерируется)
 packages/             общие фронтовые пакеты (pnpm workspace)
-  contract/           @dvgmu/contract — TS-клиенты контрактов для веба
-scripts/              служебные скрипты (sync-contracts.sh)
+  contract/           @dvgmu/contract — TS всех сервисов и fesmu, один на все фронты
+scripts/              служебные скрипты (contracts.sh)
+buf.yaml              buf workspace: контракт fesmu + модули proto/<имя>
 utils/                разовые утилиты
 ```
 
@@ -27,19 +29,29 @@ utils/                разовые утилиты
 не нужно, поэтому любой бэкенд можно унести на другой сервер (или в свой репозиторий),
 скопировав одну папку.
 
-**Контракт сервиса живёт в сервисе.** Источник правды — `services/<svc>/api/contract`.
-Приложение, которое ходит в сервис, держит копию нужных `.proto` у себя
-(`apps/fesmu/api/contract/packages/<name>/`), чтобы оставаться самостоятельным. Копии руками не
-правим:
+**Единая схема данных.** Источник правды — контракт сервиса: `services/<svc>/api/contract`.
+
+- `proto/<имя>/packages/<имя>/…` — зеркало контракта каждого сервиса с уникальными путями
+  файлов. Общее для всех приложений, руками не правится.
+- `@dvgmu/contract` (`packages/contract`) — один TS на всё: `@dvgmu/contract/packages/<имя>/…`
+  для сервисов (analytics, auth, dormitory, files, mdm, mentor, notification, tasks) и
+  `@dvgmu/contract/{entity,enum,service}/v1…` для fesmu.
+- Бэкенд приложения получает Go-клиенты нужных сервисов генерацией прямо в свою папку
+  (`apps/fesmu/api/contract/gen/go/packages/<имя>`) — копий `.proto` у приложений нет, а
+  собирается бэкенд по-прежнему из своей папки.
 
 ```bash
-scripts/sync-contracts.sh            # подтянуть изменения из сервисов
-cd apps/fesmu/api/contract && buf generate   # Go для api + TS в packages/contract
-scripts/sync-contracts.sh --check    # проверка, её же запускает CI
+scripts/contracts.sh gen     # после правки контракта сервиса или fesmu: зеркало + TS + Go fesmu
+scripts/contracts.sh check   # зеркало совпадает с сервисами (это же проверяет CI)
 ```
 
-После `buf generate` файлы, где поменялась только строка-заголовок с версией генератора,
-откатываем.
+Имена proto-пакетов у mdm, dormitory и mentor совпадают (`contract.entity`, `contract.service`),
+поэтому модули `proto/<имя>` генерируются по одному, а не всем workspace разом. Переименовывать
+их нельзя без новой версии API: имя пакета — часть адреса вызова на проде.
+
+Сервис со своим сайтом (dormitory, mentor) пока держит и собственный TS в
+`services/<svc>/packages` — сайт собирается вместе с сервисом. Новые фронты берут
+`@dvgmu/contract`.
 
 **Фронт — один pnpm workspace.** В корне `package.json`, `pnpm-workspace.yaml`,
 `pnpm-lock.yaml`. Веб fesmu берёт `@dvgmu/contract` из `packages/`. Docker-образ веба

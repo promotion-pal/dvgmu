@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package contract.entity;
+
+option go_package = "entity;entity_pb";
+
+import "google/protobuf/timestamp.proto";
+
+message MentorApplication {
+  int64 id = 1;
+
+  string firstName = 2;
+  string lastName = 3;
+  string patronymic = 4;
+  string email = 5;
+
+  int64 course_id = 6;
+
+  google.protobuf.Timestamp created_at = 7;
+  google.protobuf.Timestamp updated_at = 8;
+  bool is_done = 9;
+}
+
+message MentorCourse {
+  int64 id = 1;
+
+  google.protobuf.Timestamp start_date = 2;
+  google.protobuf.Timestamp end_date = 3;
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp updated_at = 7;
+}
+
+message MentorQuestion {
+  int64 id = 1;
+
+  string firstName = 2;
+  string lastName = 3;
+  string patronymic = 4;
+  string email = 5;
+  string question = 6;
+
+  google.protobuf.Timestamp created_at = 7;
+  google.protobuf.Timestamp updated_at = 8;
+  bool is_done = 9;
+}
+
+message MentorTechnicalQuestion {
+  int64 id = 1;
+
+  string firstName = 2;
+  string lastName = 3;
+  string patronymic = 4;
+  string email = 5;
+
+  int64 course_id = 6;
+  string question = 7;
+
+  google.protobuf.Timestamp created_at = 8;
+  google.protobuf.Timestamp updated_at = 9;
+  bool is_done = 10;
+}
