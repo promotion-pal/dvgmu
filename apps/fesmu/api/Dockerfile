@@ -1,8 +1,13 @@
 FROM golang:1.26-alpine AS build
 
+# Контекст сборки — корень монорепо (см. apps/fesmu/api/Dockerfile.dockerignore):
+# сгенерированный Go всех схем лежит в packages/go, go.mod подключает его через
+# replace fesmu/contract => ../../../packages/go — поэтому раскладка папок в образе
+# повторяет репозиторий.
 WORKDIR /src
-
-COPY . .
+COPY packages/go packages/go
+COPY apps/fesmu/api apps/fesmu/api
+WORKDIR /src/apps/fesmu/api
 
 # No separate `go mod download`: it fetches every module in go.mod (~680 MB,
 # mostly google.golang.org/api pulled in by atlas tooling), while the binary
@@ -20,7 +25,7 @@ RUN apk add --no-cache ca-certificates tzdata
 WORKDIR /app
 
 COPY --from=build /out/dvgmu ./dvgmu
-COPY config ./config
+COPY apps/fesmu/api/config ./config
 
 EXPOSE 4000
 

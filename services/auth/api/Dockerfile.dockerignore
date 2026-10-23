@@ -1,0 +1,13 @@
+# Сборка идёт из корня монорепо — пускаем в контекст только этот api и packages/go.
+*
+!packages/go
+!services/auth/api
+services/auth/api/storage
+services/auth/api/db/postgres
+services/auth/api/auth
+services/auth/api/*.test
+services/auth/api/coverage.out
+services/auth/api/coverage.html
+**/.git
+**/.env
+**/.env.*

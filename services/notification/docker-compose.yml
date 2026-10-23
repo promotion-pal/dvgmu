@@ -2,8 +2,8 @@ services:
   dvgmu_apps_notification_api:
     container_name: "dvgmu_apps_notification_api"
     build:
-      context: "./api"
-      dockerfile: "Dockerfile"
+      context: "../.."  # корень монорепо: нужен packages/go
+      dockerfile: "services/notification/api/Dockerfile"
       network: host
     restart: unless-stopped
     environment:

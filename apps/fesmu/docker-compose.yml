@@ -36,8 +36,8 @@ services:
   core_api:
     container_name: "fesmu_core${STAND:+_${STAND}}_api"
     build:
-      context: "./api"
-      dockerfile: "Dockerfile"
+      context: "../.."  # корень монорепо: нужен packages/go
+      dockerfile: "apps/fesmu/api/Dockerfile"
       args:
         VERSION: ${VERSION:-dev}
     restart: unless-stopped

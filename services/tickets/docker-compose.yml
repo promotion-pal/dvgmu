@@ -20,8 +20,8 @@ services:
   dvgmu_apps_ticket_api:
     container_name: "dvgmu_apps_ticket_api"
     build:
-      context: "./api"
-      dockerfile: "Dockerfile"
+      context: "../.."  # корень монорепо: нужен packages/go
+      dockerfile: "services/tickets/api/Dockerfile"
       network: host
     restart: unless-stopped
     depends_on:

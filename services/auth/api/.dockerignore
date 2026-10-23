@@ -1,7 +1,0 @@
-storage
-db/postgres
-auth
-*.test
-coverage.out
-coverage.html
-.git

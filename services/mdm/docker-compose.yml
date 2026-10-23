@@ -11,8 +11,8 @@ services:
   mdm_api:
     container_name: "dvgmu_apps${STAND:+_${STAND}}_mdm_api"
     build:
-      context: "./api"
-      dockerfile: "Dockerfile"
+      context: "../.."  # корень монорепо: нужен packages/go
+      dockerfile: "services/mdm/api/Dockerfile"
     env_file:
       - .env
     environment:
