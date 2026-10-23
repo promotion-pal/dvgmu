@@ -1,0 +1,145 @@
+syntax = "proto3";
+
+package contract.analytics.service;
+
+import "enum/analytic.enum.proto";
+import "entity/analytic.entity.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "service;service_pb";
+
+service AnalyticService {
+    rpc AnalyticByID (AnalyticByIDRequest) returns (AnalyticByIDResponse);
+    rpc AnalyticFetch (AnalyticFetchRequest) returns (stream AnalyticByIDResponse);
+    rpc AnalyticCreate (AnalyticCreateRequest) returns (AnalyticCreateResponse);
+    // AnalyticUpdate — правка объекта опроса: меняются только переданные поля.
+    // Номер QR, занятый другим объектом, — AlreadyExists.
+    rpc AnalyticUpdate (AnalyticUpdateRequest) returns (AnalyticUpdateResponse);
+
+    rpc AnalyticRatingCreate (AnalyticRatingCreateRequest) returns (AnalyticRatingCreateResponse);
+}
+
+message AnalyticByIDRequest {
+    int64 id = 1;
+}
+
+message AnalyticByIDResponse {
+    contract.analytics.entity.Analytic entity = 1;
+}
+
+message AnalyticFetchRequest {
+    optional string name = 1;
+    optional contract.analytics.enum.AnalyticType type = 2;
+    optional google.protobuf.Timestamp end_date = 3;
+    optional google.protobuf.Timestamp start_date = 4;
+    optional int64 qr = 5;
+}
+
+message AnalyticCreateRequest {
+    string name = 1;
+    string transcript = 2;
+    contract.analytics.enum.AnalyticType type = 3;
+    int64 qr = 4;
+}
+
+message AnalyticCreateResponse {
+    int64 id = 1;
+    bool success = 2;
+    string message = 3;
+}
+
+message AnalyticUpdateRequest {
+    int64 id = 1;
+    optional string name = 2;
+    optional string transcript = 3;
+    optional contract.analytics.enum.AnalyticType type = 4;
+    optional int64 qr = 5;
+}
+
+message AnalyticUpdateResponse {
+    bool success = 1;
+    string message = 2;
+    // entity — объект после правки, без ответов.
+    contract.analytics.entity.Analytic entity = 3;
+}
+
+message AnalyticRatingCreateRequest {
+    int64 analytic_id = 1;
+    string comment = 2;
+
+    reserved 15, 16; // бывшие information_security_full_name / information_security_office
+    reserved 21, 25, 28; // бывшие information_security_nda_signed / _access_method / _pdn_archive_processing
+    reserved "information_security_nda_signed", "information_security_access_method", "information_security_pdn_archive_processing";
+
+    // --- ОБЩИЙ БЛОК: РЕСПОНДЕНТ (для всех опросников) ---
+    string respondent_last_name = 43;   // Фамилия
+    string respondent_first_name = 44;  // Имя
+    string respondent_middle_name = 45; // Отчество
+    string respondent_office = 46;      // Кабинет
+    string respondent_department = 47;  // Отдел
+
+    int32 workplace_pc_power_rating = 3;
+    int32 workplace_os_boot_rating = 4;
+    int32 workplace_software_stable_rating = 5;
+    int32 workplace_network_speed_rating = 6;
+
+    int32 workplace_monitor_rating = 7;
+    int32 workplace_keyboard_mouse_rating = 8;
+    int32 workplace_media_devices_rating = 9;
+    int32 workplace_office_equipment_rating = 10;
+
+    int32 workplace_furniture_rating = 11;
+    int32 workplace_space_org_rating = 12;
+    int32 workplace_environment_rating = 13;
+
+    bool workplace_has_network = 14;
+
+    // --- БЛОК ИНФОРМАЦИОННОЙ БЕЗОПАСНОСТИ (INFORMATION_SECURITY) ---
+    string information_security_position = 17;    // 3. Должность
+    int32  information_security_computer_proficiency = 32; // Уровень владения ПК (1–5)
+
+    contract.analytics.enum.InformationSecurityInfoType information_security_info_type = 18; // 4
+    repeated contract.analytics.enum.InformationSecurityResource information_security_resources = 19;  // 5 — несколько в порядке выбора
+    string information_security_resources_other = 48; // 5a. Другие ресурсы/программы, вписанные вручную
+
+    string information_security_pdn_purpose = 20;   // 6. Цель обработки персональных данных
+    string information_security_storage_form = 22;   // 8. В каком виде ведётся обработка
+    string information_security_pdn_actions = 23;    // 9
+    bool   information_security_third_party_agreements = 24; // 10. Передача ПДн в другие организации
+    bool   information_security_pdn_destroyed_after_term = 26; // 12
+    bool   information_security_pdn_to_archive = 27; // 13
+
+    contract.analytics.enum.InformationSecurityOs information_security_os = 29; // 15
+
+    bool information_security_has_corporate_email = 30;          // 16
+    bool information_security_corporate_email_personal_use = 31; // 17
+
+    // --- БЛОК ТЕХНИЧЕСКОГО СНАБЖЕНИЯ (TECHNICAL_SUPPLY) ---
+    bool technical_supply_has_internet = 33;        // Наличие интернета
+    bool technical_supply_has_headset = 34;         // Наличие гарнитуры
+    bool technical_supply_has_workplace = 35;       // Наличие полноценного рабочего места
+    bool technical_supply_has_corporate_email = 36; // Наличие корпоративной почты
+    bool technical_supply_has_computer = 37;        // Наличие рабочего компьютера
+    bool technical_supply_has_monitor = 38;         // Наличие монитора
+    bool technical_supply_has_phone = 39;           // Наличие рабочего телефона
+    bool technical_supply_has_printer_access = 40;  // Наличие доступа к принтеру/сканеру
+    bool technical_supply_has_software = 41;        // Наличие необходимого программного обеспечения
+    bool technical_supply_has_domain_account = 42;  // Наличие доменной учётной записи
+
+    // Туалет (TOILET)
+    int32 purity_rating = 49;
+    int32 smell_rating = 50;
+    bool has_toilet_paper = 51;
+    bool has_soap = 52;
+
+    // Лекционный зал (LECTURE)
+    int32 comfort = 53;
+    int32 equipment = 54;
+    int32 cleanliness = 55;
+}
+
+message AnalyticRatingCreateResponse {
+    int64 id = 1;
+    bool success = 2;
+    string message = 3;
+}

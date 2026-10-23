@@ -1,0 +1,15 @@
+env: local
+
+reevaluation: 2000
+
+grpc:
+  port: 4040
+  timeout: 5s
+
+database:
+  host: localhost
+  port: 5441
+  user: root
+  password: password
+  dbname: dvgmu_analytics_db
+  sslmode: disable

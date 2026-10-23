@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package contract.service.v1;
+
+import "entity/v1/user.entity.proto";
+
+option go_package = "service_v1;service_pb";
+
+service UserService {
+    // The user behind the session cookie. NotFound: the login is not linked
+    // to MDM yet — the person has to sign in through Yandex 360 first.
+    rpc UserMe (UserMeRequest) returns (UserMeResponse);
+}
+
+message UserMeRequest {
+}
+
+message UserMeResponse {
+    contract.entity.v1.User user = 1;
+    // From the MDM record behind the session; empty if MDM is unreachable.
+    string first_name = 2;
+    string last_name = 3;
+    string email = 4;
+    // Login (sAMAccountName), from the access token.
+    string username = 5;
+}

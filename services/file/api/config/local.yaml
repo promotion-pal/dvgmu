@@ -1,0 +1,23 @@
+env: local
+
+grpc:
+  port: 4000
+  timeout: 5s
+  cors_allowed_origins:
+    - http://localhost:3000
+    - http://localhost:5173
+    - http://localhost:5174
+
+database:
+  host: localhost
+  port: 5442
+  user: root
+  password: password
+  dbname: dvgmu_apps_file_db
+  sslmode: disable
+
+storage:
+  base_path: ./storage
+
+word:
+  templates_dir: ../docs

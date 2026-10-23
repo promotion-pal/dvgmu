@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+package contract.entity;
+
+option go_package = "entity;entity_pb";
+
+import "enum/user.enum.proto";
+import "google/protobuf/timestamp.proto";
+import "entity/passport.entity.proto";
+import "entity/education.entity.proto";
+import "entity/military.entity.proto";
+import "entity/student.entity.proto";
+import "entity/employee.entity.proto";
+
+message User {
+    int64 id = 1;
+    string first_name = 2;
+    string last_name = 3;
+    optional string patronymic = 4;
+    
+    string email = 5;
+    optional string phone = 6;
+    contract.enum.UserStatus status = 7;
+    optional google.protobuf.Timestamp birthday = 8;
+    
+    google.protobuf.Timestamp created_at = 9;
+    google.protobuf.Timestamp updated_at = 10;
+
+    // uuid — публичный идентификатор (mdm_uuid): в JWT sub, AD, других
+    // сервисах. Числовой id остаётся внутренним ключом mdm.
+    string uuid = 11;
+    // username — sAMAccountName в AD и local-part Яндекс-логина.
+    optional string username = 12;
+    // ad_object_id — objectGUID учётки AD; пусто, пока sync её не создал.
+    optional string ad_object_id = 13;
+    repeated contract.enum.UserRole roles = 14;
+    // permissions — собственные права на отдельные действия ("раздел.действие").
+    repeated string permissions = 15;
+    // access_group_ids — выданные наборы доступа (UserService.AccessGroupFetch).
+    repeated int64 access_group_ids = 16;
+    // effective_permissions — итоговые права: собственные и всех наборов.
+    // Именно их кладёт в токен auth.
+    repeated string effective_permissions = 17;
+    // departments — подразделения человека (его записи сотрудника, без «не указано»).
+    repeated contract.enum.UserEmployeeDepartment departments = 18;
+    // department_access_group_ids — доступы, полученные через подразделения
+    // (AccessGroup.departments); их права уже в effective_permissions.
+    repeated int64 department_access_group_ids = 19;
+    // position — должность сотрудника («Начальник отдела»); пусто, пока не задана.
+    string position = 20;
+}
+
+// AccessGroup — набор доступа: именованный набор прав, выдаётся людям.
+message AccessGroup {
+    int64 id = 1;
+    string name = 2;
+    string description = 3;
+    repeated string permissions = 4;
+    // user_count — у скольких людей этот набор (выдан лично).
+    int64 user_count = 5;
+    // departments — подразделения, всем сотрудникам которых доступ выдан сам.
+    repeated contract.enum.UserEmployeeDepartment departments = 6;
+}
+
+message UserFull {
+    User user = 1;
+    contract.entity.Passport passport = 2;
+    repeated contract.entity.Education educations = 3;
+    contract.entity.Military military = 4;
+    contract.entity.Student student = 5;
+    contract.entity.Employee employee = 6;
+}

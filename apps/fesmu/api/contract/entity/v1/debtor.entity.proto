@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package contract.entity.v1;
+
+import "enum/v1/debtor.enum.proto";
+
+option go_package = "entity_v1;entity_pb";
+
+// Debtor is one tuition contract's turnover over a period, read live from 1C
+// (account 205.31), like a row of 1C's trial balance. A balance is what is
+// left to pay over the whole term of the contract, not an overdue amount.
+message Debtor {
+  // Counterparty name in 1C — the student or the paying organization.
+  string kontragent = 1;
+  // Contract description in 1C.
+  string contract = 2;
+  // Balance at the end of the period, roubles.
+  double closing = 3;
+  // Balance at the start of the period.
+  double opening = 4;
+  // Charged over the period (debit turnover).
+  double debit = 5;
+  // Paid over the period (credit turnover).
+  double credit = 6;
+  contract.enum.v1.DebtorKind kind = 7;
+  // Taxpayer number, empty until its 1C column is mapped.
+  string inn = 8;
+
+  // What is left to pay over the whole term of the contract right now
+  // (1C's current totals), regardless of the chosen period.
+  double current = 9;
+  // Whether 1C holds a payment schedule for this contract. Without one,
+  // due_now cannot be computed and the page shows the whole balance.
+  bool has_schedule = 10;
+  // Due today: current minus scheduled payments whose deadline has not come
+  // yet. Never negative; paying ahead gives 0.
+  double due_now = 11;
+  // The payment schedule, earliest first.
+  repeated DebtorPayment schedule = 12;
+  // The latest receipt issued for the contract, if any.
+  DebtorReceipt receipt = 13;
+  // The contract's 1C reference ("0x" + 32 hex), to request its operations.
+  string contract_ref = 14;
+}
+
+// DebtorOperation is one posting on the tuition account: a charge (debit)
+// or a payment/write-off (credit), with its exact date and document.
+message DebtorOperation {
+  // "YYYY-MM-DD".
+  string date = 1;
+  // Document kind, e.g. "Документ.НачислениеЗаУслугиОбразования".
+  string document = 2;
+  // Document number when its kind is known.
+  string number = 3;
+  double debit = 4;
+  double credit = 5;
+}
+
+message DebtorPayment {
+  // Pay-by date, "YYYY-MM-DD".
+  string until = 1;
+  double amount = 2;
+}
+
+// DebtorReceipt is a payment receipt (квитанция) issued in 1C.
+message DebtorReceipt {
+  string number = 1;
+  // "YYYY-MM-DD".
+  string date = 2;
+  double amount = 3;
+  // "YYYY-MM-DD"; empty when 1C has none.
+  string valid_until = 4;
+  // Unique accrual identifier (УИН) to pay by.
+  string uin = 5;
+  string purpose = 6;
+}

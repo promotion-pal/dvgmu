@@ -1,0 +1,27 @@
+import { useEffect } from "react";
+import { CommonControlState } from "@/shared/components/state/control-state";
+import { CommonWrapper } from "@/shared/components/wrapper";
+import { TestSessionFilters, TestSessionList, useTestSessions } from "@/widgets/test-session";
+
+/** Staff: every test handed out to students — the link, open/closed, how
+ * many have taken it; a row leads to its results. */
+export default function TestSessionsPage() {
+    const state = useTestSessions();
+
+    useEffect(() => {
+        state.fetch();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    return (
+        <CommonWrapper
+            title="Сессии тестирования"
+            description="Тесты, выданные студентам по ссылке, и их результаты"
+            filter={{ render: { count: state.visible.length, children: <TestSessionFilters state={state} /> } }}
+        >
+            <CommonControlState isLoading={state.loading} isError={state.error} isEmpty={false}>
+                <TestSessionList state={state} />
+            </CommonControlState>
+        </CommonWrapper>
+    );
+}

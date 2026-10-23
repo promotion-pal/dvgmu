@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package contract.enum.v1;
+
+option go_package = "enum_v1;enum_pb";
+
+enum LocationCommonType {
+  LOCATION_COMMON_TYPE_UNSPECIFIED = 0;
+  LOCATION_COMMON_TYPE_OFFICE = 1;
+  LOCATION_COMMON_TYPE_CLASSROOM = 2;
+  LOCATION_COMMON_TYPE_LABORATORY = 3;
+  LOCATION_COMMON_TYPE_WAREHOUSE = 4;
+  LOCATION_COMMON_TYPE_COMMON_AREA = 5;
+}

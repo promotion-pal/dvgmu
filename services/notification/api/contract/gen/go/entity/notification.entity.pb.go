@@ -1,0 +1,154 @@
+package entity
+
+import (
+	enum "dvgmu/notification/contract/gen/go/enum"
+	reflect "reflect"
+	sync "sync"
+	unsafe "unsafe"
+
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+)
+
+const (
+	_ = protoimpl.EnforceVersion(20 - protoimpl.MinVersion)
+	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
+)
+
+type NotificationMessage struct {
+	state         protoimpl.MessageState   `protogen:"open.v1"`
+	Channel       enum.NotificationChannel `protobuf:"varint,1,opt,name=channel,proto3,enum=contract.notification.enum.NotificationChannel" json:"channel,omitempty"`
+	Recipient     string                   `protobuf:"bytes,2,opt,name=recipient,proto3" json:"recipient,omitempty"`
+	Subject       string                   `protobuf:"bytes,3,opt,name=subject,proto3" json:"subject,omitempty"`
+	Body          string                   `protobuf:"bytes,4,opt,name=body,proto3" json:"body,omitempty"`
+	IsHtml        bool                     `protobuf:"varint,5,opt,name=is_html,json=isHtml,proto3" json:"is_html,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *NotificationMessage) Reset() {
+	*x = NotificationMessage{}
+	mi := &file_entity_notification_entity_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *NotificationMessage) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*NotificationMessage) ProtoMessage() {}
+
+func (x *NotificationMessage) ProtoReflect() protoreflect.Message {
+	mi := &file_entity_notification_entity_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (*NotificationMessage) Descriptor() ([]byte, []int) {
+	return file_entity_notification_entity_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *NotificationMessage) GetChannel() enum.NotificationChannel {
+	if x != nil {
+		return x.Channel
+	}
+	return enum.NotificationChannel(0)
+}
+
+func (x *NotificationMessage) GetRecipient() string {
+	if x != nil {
+		return x.Recipient
+	}
+	return ""
+}
+
+func (x *NotificationMessage) GetSubject() string {
+	if x != nil {
+		return x.Subject
+	}
+	return ""
+}
+
+func (x *NotificationMessage) GetBody() string {
+	if x != nil {
+		return x.Body
+	}
+	return ""
+}
+
+func (x *NotificationMessage) GetIsHtml() bool {
+	if x != nil {
+		return x.IsHtml
+	}
+	return false
+}
+
+var File_entity_notification_entity_proto protoreflect.FileDescriptor
+
+const file_entity_notification_entity_proto_rawDesc = "" +
+	"\n" +
+	" entity/notification.entity.proto\x12\x1ccontract.notification.entity\x1a\x1cenum/notification.enum.proto\"\xc5\x01\n" +
+	"\x13NotificationMessage\x12I\n" +
+	"\achannel\x18\x01 \x01(\x0e2/.contract.notification.enum.NotificationChannelR\achannel\x12\x1c\n" +
+	"\trecipient\x18\x02 \x01(\tR\trecipient\x12\x18\n" +
+	"\asubject\x18\x03 \x01(\tR\asubject\x12\x12\n" +
+	"\x04body\x18\x04 \x01(\tR\x04body\x12\x17\n" +
+	"\ais_html\x18\x05 \x01(\bR\x06isHtmlB\xf8\x01\n" +
+	" com.contract.notification.entityB\x17NotificationEntityProtoP\x01Z)dvgmu/notification/contract/gen/go/entity\xa2\x02\x03CNE\xaa\x02\x1cContract.Notification.Entity\xca\x02\x1cContract\\Notification\\Entity\xe2\x02(Contract\\Notification\\Entity\\GPBMetadata\xea\x02\x1eContract::Notification::Entityb\x06proto3"
+
+var (
+	file_entity_notification_entity_proto_rawDescOnce sync.Once
+	file_entity_notification_entity_proto_rawDescData []byte
+)
+
+func file_entity_notification_entity_proto_rawDescGZIP() []byte {
+	file_entity_notification_entity_proto_rawDescOnce.Do(func() {
+		file_entity_notification_entity_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_entity_notification_entity_proto_rawDesc), len(file_entity_notification_entity_proto_rawDesc)))
+	})
+	return file_entity_notification_entity_proto_rawDescData
+}
+
+var file_entity_notification_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_entity_notification_entity_proto_goTypes = []any{
+	(*NotificationMessage)(nil),
+	(enum.NotificationChannel)(0),
+}
+var file_entity_notification_entity_proto_depIdxs = []int32{
+	1, // 0: contract.notification.entity.NotificationMessage.channel:type_name -> contract.notification.enum.NotificationChannel
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
+}
+
+func init() { file_entity_notification_entity_proto_init() }
+func file_entity_notification_entity_proto_init() {
+	if File_entity_notification_entity_proto != nil {
+		return
+	}
+	type x struct{}
+	out := protoimpl.TypeBuilder{
+		File: protoimpl.DescBuilder{
+			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_entity_notification_entity_proto_rawDesc), len(file_entity_notification_entity_proto_rawDesc)),
+			NumEnums:      0,
+			NumMessages:   1,
+			NumExtensions: 0,
+			NumServices:   0,
+		},
+		GoTypes:           file_entity_notification_entity_proto_goTypes,
+		DependencyIndexes: file_entity_notification_entity_proto_depIdxs,
+		MessageInfos:      file_entity_notification_entity_proto_msgTypes,
+	}.Build()
+	File_entity_notification_entity_proto = out.File
+	file_entity_notification_entity_proto_goTypes = nil
+	file_entity_notification_entity_proto_depIdxs = nil
+}

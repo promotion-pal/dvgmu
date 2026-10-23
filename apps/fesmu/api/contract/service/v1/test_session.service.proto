@@ -1,0 +1,161 @@
+syntax = "proto3";
+
+package contract.service.v1;
+
+import "google/protobuf/timestamp.proto";
+import "entity/v1/test.entity.proto";
+import "enum/v1/test.enum.proto";
+
+option go_package = "service_v1;service_pb";
+
+// Taking tests: staff hand a test out as a session (a link with a time
+// limit) and read the results; students take it by the link without a login.
+// The TestTake* calls are the students' ones and need no login — they never
+// send which options are correct.
+service TestSessionService {
+    rpc TestSessionCreate (TestSessionCreateRequest) returns (TestSessionCreateResponse);
+    rpc TestSessionFetch (TestSessionFetchRequest) returns (TestSessionFetchResponse);
+    // Opens or closes the link for new attempts.
+    rpc TestSessionOpenUpdate (TestSessionOpenUpdateRequest) returns (TestSessionOpenUpdateResponse);
+    // Deletes the session with all its results.
+    rpc TestSessionDelete (TestSessionDeleteRequest) returns (TestSessionDeleteResponse);
+    // The session's results: its questions with the correct options and every attempt.
+    rpc TestAttemptFetch (TestAttemptFetchRequest) returns (TestAttemptFetchResponse);
+    rpc TestAttemptDelete (TestAttemptDeleteRequest) returns (TestAttemptDeleteResponse);
+
+    // What the student sees before starting.
+    rpc TestTakeInfo (TestTakeInfoRequest) returns (TestTakeInfoResponse);
+    // Starts the clock and hands out the questions.
+    rpc TestTakeStart (TestTakeStartRequest) returns (TestTakeStateResponse);
+    // The attempt as it stands, to carry on after a reload.
+    rpc TestTakeState (TestTakeStateRequest) returns (TestTakeStateResponse);
+    // Saves the options picked for one question; refused once time is up.
+    rpc TestTakeAnswer (TestTakeAnswerRequest) returns (TestTakeAnswerResponse);
+    rpc TestTakeFinish (TestTakeFinishRequest) returns (TestTakeStateResponse);
+}
+
+message TestSessionCreateRequest {
+    int64 test_id = 1;
+    int32 duration_minutes = 2;
+    int32 question_count = 3;
+    bool shuffle = 4;
+    bool show_result = 5;
+    string note = 6;
+    google.protobuf.Timestamp closes_at = 7;
+    // Unset: open right away; otherwise attempts can start from this moment.
+    google.protobuf.Timestamp opens_at = 8;
+    // 0 = every option; otherwise a random mix of that many per question.
+    int32 option_count = 9;
+}
+
+message TestSessionCreateResponse {
+    contract.entity.v1.TestSession session = 1;
+}
+
+// 0 means every test's sessions.
+message TestSessionFetchRequest {
+    int64 test_id = 1;
+}
+
+message TestSessionFetchResponse {
+    repeated contract.entity.v1.TestSession list = 1;
+}
+
+message TestSessionOpenUpdateRequest {
+    int64 id = 1;
+    bool is_open = 2;
+}
+
+message TestSessionOpenUpdateResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message TestSessionDeleteRequest {
+    int64 id = 1;
+}
+
+message TestSessionDeleteResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message TestAttemptFetchRequest {
+    int64 session_id = 1;
+}
+
+message TestAttemptFetchResponse {
+    contract.entity.v1.TestSession session = 1;
+    // The frozen copy, with the correct options marked.
+    repeated contract.entity.v1.TestQuestion questions = 2;
+    repeated contract.entity.v1.TestAttempt list = 3;
+}
+
+message TestAttemptDeleteRequest {
+    int64 id = 1;
+}
+
+message TestAttemptDeleteResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message TestTakeInfoRequest {
+    string token = 1;
+}
+
+message TestTakeInfoResponse {
+    string topic = 1;
+    string description = 2;
+    int32 duration_minutes = 3;
+    int32 question_count = 4;
+    // False: the link takes no new attempts — not open yet or closed.
+    bool is_open = 5;
+    // For the student's page: when the test opens and closes, if set.
+    google.protobuf.Timestamp opens_at = 6;
+    google.protobuf.Timestamp closes_at = 7;
+}
+
+message TestTakeStartRequest {
+    string token = 1;
+    string full_name = 2;
+    string student_group = 3;
+}
+
+message TestTakeStateRequest {
+    string attempt_token = 1;
+}
+
+message TestTakeAnswerRequest {
+    string attempt_token = 1;
+    int64 question_id = 2;
+    // Empty clears the answer.
+    repeated int64 answer_ids = 3;
+}
+
+message TestTakeAnswerResponse {
+    bool success = 1;
+}
+
+message TestTakeFinishRequest {
+    string attempt_token = 1;
+}
+
+message TestTakeStateResponse {
+    // The student's key to this attempt; kept by the page to carry on after a reload.
+    string attempt_token = 1;
+    string topic = 2;
+    string full_name = 3;
+    contract.enum.v1.TestAttemptStatus status = 4;
+    google.protobuf.Timestamp deadline = 5;
+    // The server's clock, so the countdown doesn't trust the student's one.
+    google.protobuf.Timestamp server_time = 6;
+    // Empty once the attempt is over.
+    repeated contract.entity.v1.TestTakeQuestion questions = 7;
+    // The options saved so far (is_correct is never set here).
+    repeated contract.entity.v1.TestAttemptAnswer answers = 8;
+    bool show_result = 9;
+    // Only when show_result and the attempt is over.
+    int32 score = 10;
+    int32 total = 11;
+}

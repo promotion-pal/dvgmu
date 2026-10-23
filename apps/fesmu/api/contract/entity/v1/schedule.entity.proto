@@ -1,0 +1,116 @@
+syntax = "proto3";
+
+package contract.entity.v1;
+
+import "google/protobuf/timestamp.proto";
+import "enum/v1/schedule.enum.proto";
+
+option go_package = "entity_v1;entity_pb";
+
+message ScheduleProgram {
+  string id = 1;
+  string code = 2;
+  string name = 3;
+}
+
+message ScheduleSemester {
+  string label = 1;
+  string start = 2;
+  string end = 3;
+}
+
+message ScheduleSubject {
+  string id = 1;
+  string name = 2;
+  string tone = 3;
+}
+
+message ScheduleSlot {
+  string id = 1;
+  string start = 2;
+  string end = 3;
+}
+
+message ScheduleEntry {
+  string id = 1;
+  int32 weekday = 2;
+  string slot_id = 3;
+  int32 span = 4;
+  repeated string group_ids = 5;
+  string subject_id = 6;
+  contract.enum.v1.ScheduleEntryKind kind = 7;
+  string starts_at = 8;
+  int32 hours = 9;
+  int32 total = 10;
+  contract.enum.v1.ScheduleWeeks weeks = 11;
+  repeated string dates = 12;
+  string room = 13;
+  string note = 14;
+}
+
+message SchedulePeriod {
+  string id = 1;
+  contract.enum.v1.SchedulePeriodKind kind = 2;
+  string label = 3;
+  string from = 4;
+  string to = 5;
+}
+
+// A stream lecture of a cycle-based timetable: one discipline at one time on
+// the listed dates, in a hall or remotely.
+message ScheduleLecture {
+  string id = 1;
+  string subject_id = 2;
+  // HH:MM.
+  string start = 3;
+  string end = 4;
+  // ISO dates (YYYY-MM-DD).
+  repeated string dates = 5;
+  string room = 6;
+  // Held with distance learning technologies (ДОТ) instead of in a hall.
+  bool remote = 7;
+  // Empty means the whole timetable; set for an elective only some groups take.
+  repeated string group_ids = 8;
+  string note = 9;
+}
+
+// A block of practical classes: the groups study one discipline every
+// working day from `from` to `to` (both inclusive, ISO dates), following the
+// department's own timetable.
+message ScheduleCycle {
+  string id = 1;
+  string subject_id = 2;
+  repeated string group_ids = 3;
+  string from = 4;
+  string to = 5;
+  string note = 6;
+}
+
+message ScheduleTimetable {
+  string id = 1;
+  string title = 2;
+  string faculty = 3;
+  ScheduleProgram program = 4;
+  int32 course = 5;
+  string stream = 6;
+  ScheduleSemester semester = 7;
+  repeated string groups = 8;
+  repeated ScheduleSlot slots = 9;
+  repeated ScheduleSubject subjects = 10;
+  repeated ScheduleEntry entries = 11;
+  repeated SchedulePeriod periods = 12;
+  repeated string exams = 13;
+  repeated string credits = 14;
+  string note = 15;
+  string approved_by = 16;
+  string approved_on = 17;
+  repeated string agreed_by = 18;
+
+  google.protobuf.Timestamp created_at = 19;
+  google.protobuf.Timestamp updated_at = 20;
+
+  // WEEKLY uses slots and entries; CYCLES uses lectures and cycles instead.
+  contract.enum.v1.ScheduleFormat format = 21;
+  repeated ScheduleLecture lectures = 22;
+  repeated ScheduleCycle cycles = 23;
+}

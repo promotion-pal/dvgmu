@@ -1,0 +1,15 @@
+env: local
+
+grpc:
+  port: 4000
+  timeout: 5s
+  cors_allowed_origins:
+    - http://localhost:4000
+
+database:
+  host: localhost
+  port: 5432
+  user: postgres
+  password: postgres
+  dbname: dvgmu_db
+  sslmode: disable

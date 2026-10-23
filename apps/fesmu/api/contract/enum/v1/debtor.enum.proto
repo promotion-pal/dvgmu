@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package contract.enum.v1;
+
+option go_package = "enum_v1;enum_pb";
+
+enum DebtorKind {
+  DEBTOR_KIND_UNSPECIFIED = 0;
+  // A natural person, including a sole trader (ИП).
+  DEBTOR_KIND_PERSON = 1;
+  DEBTOR_KIND_ORGANIZATION = 2;
+}

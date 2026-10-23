@@ -1,0 +1,10 @@
+**/node_modules
+**/.next
+**/.turbo
+.git
+dvgmu_wiki
+apps/ksm
+apps/unistom
+apps/profile
+**/.env
+**/.env.*

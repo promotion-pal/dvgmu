@@ -1,0 +1,20 @@
+.git
+.dart_tool
+.idea
+coverage
+.DS_Store
+*.iml
+docker-compose*.yml
+# в образ идёт только build/web — остальное из build/ не нужно
+build/*
+!build/web
+# canvaskit грузится с gstatic CDN, в образ не кладём
+build/web/canvaskit
+# нативные платформы к web-раздаче отношения не имеют
+android
+ios
+macos
+linux
+windows
+lib
+test

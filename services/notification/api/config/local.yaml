@@ -1,0 +1,13 @@
+env: local
+
+grpc:
+  port: 4000
+  timeout: 5s
+  cors_allowed_origins:
+    - http://localhost:3000
+
+smtp:
+  host: ""
+  port: "587"
+  from: ""
+  password: ""

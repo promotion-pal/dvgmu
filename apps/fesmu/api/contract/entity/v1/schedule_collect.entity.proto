@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package contract.entity.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "entity_v1;entity_pb";
+
+// ScheduleCollectEntry is one row of the university's schedule exchange
+// format: the columns faculties export/import to keep timetables in sync
+// (Group, StudInLesson, Day, Les, Aud, Week, Subg, Name, CafID, Subject,
+// Subj_type, Date, Subj_CafID, PrepID, Themas), plus the Substitution_*
+// columns used when a substitute teacher covers the lesson.
+message ScheduleCollectEntry {
+  string id = 1;
+
+  string group = 2;
+  int32 stud_in_lesson = 3;
+  // ISO weekday, 1 = Monday.
+  int32 day = 4;
+  // Lesson/period number within the day.
+  int32 les = 5;
+  string aud = 6;
+  // Academic week number.
+  int32 week = 7;
+  int32 subg = 8;
+  // Teacher's position and full name.
+  string name = 9;
+  string caf_id = 10;
+  string subject = 11;
+  // л. / пр. / ... — free text as used in the source format.
+  string subj_type = 12;
+  // ISO date (YYYY-MM-DD).
+  string date = 13;
+  string subj_caf_id = 14;
+  string prep_id = 15;
+  string themas = 16;
+
+  string substitution_name = 17;
+  string substitution_prep_id = 18;
+  string substitution_subject = 19;
+  string substitution_subj_type = 20;
+  string substitution_subj_caf_id = 21;
+  string substitution_themas = 22;
+
+  google.protobuf.Timestamp created_at = 23;
+}

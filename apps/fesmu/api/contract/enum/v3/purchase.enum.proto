@@ -1,0 +1,231 @@
+syntax = "proto3";
+
+package contract.enum.v3;
+
+option go_package = "enum_v3;enum_pb";
+
+// Purchases v3 follow the regulation (Регламент закупок, п. 4) from the
+// employee's request to the purchased goods being put into the inventory.
+// There is no "view as" switch: what a user may see and do comes from their
+// permissions (PurchasePermission), their MDM department and the vice-rector
+// directory, and the stage a record is at.
+
+// Закупки v3: права на отдельные действия. Право — строка "purchase.<имя>":
+// имя значения без префикса в нижнем регистре
+// (PURCHASE_PERMISSION_REQUEST_CREATE → "purchase.request_create"); так права
+// хранятся в MDM и приходят в токене. Из прав администратор собирает доступы
+// (Администрирование → Доступы), например «Проректор по цифровой
+// трансформации» = view_direction + request_curator_review + lot_curator_review.
+//
+// Право говорит, ЧТО можно; ЧЬЁ — профиль: отдел берётся из MDM, направление
+// проректора (какие отделы он курирует) — из справочника проректоров.
+// У ADMIN есть все права.
+enum PurchasePermission {
+  PURCHASE_PERMISSION_UNSPECIFIED = 0;
+
+  // — Просмотр. Свои заявки и порученные закупки видны без отдельного права.
+
+  // Просмотр заявок и закупок своего отдела: поданных его сотрудниками и реализуемых им.
+  PURCHASE_PERMISSION_VIEW_DEPARTMENT = 1;
+  // Просмотр общих страниц закупок своего направления (проректор): заявки и закупки
+  // курируемых отделов, актуальные закупки после бюджетной комиссии, сводка по финансам.
+  PURCHASE_PERMISSION_VIEW_DIRECTION = 2;
+  // Просмотр всех заявок и закупок университета.
+  PURCHASE_PERMISSION_VIEW_ALL = 3;
+  // Просмотр ПФХД и протоколов бюджетной комиссии.
+  PURCHASE_PERMISSION_VIEW_PLAN = 4;
+
+  // — Этап I. Потребность и планирование.
+
+  // Подать заявку на закупку от своего отдела, дорабатывать свои заявки.
+  PURCHASE_PERMISSION_REQUEST_CREATE = 10;
+  // Начальник отдела: рассмотреть заявки своего отдела — править, объединять,
+  // согласовать, вернуть сотруднику, отклонить.
+  PURCHASE_PERMISSION_REQUEST_HEAD_REVIEW = 11;
+  // Проректор: согласовать заявки курируемых отделов и выбрать реализующий отдел,
+  // вернуть начальнику, отклонить.
+  PURCHASE_PERMISSION_REQUEST_CURATOR_REVIEW = 12;
+  // Начальник реализующего отдела: объединять заявки в закупки, назначать исполнителя,
+  // проверять характеристики, КП и ТЗ, расформировывать закупку.
+  PURCHASE_PERMISSION_LOT_MANAGE = 13;
+  // Исполнитель: готовить порученные закупки — характеристики, КП, ТЗ.
+  PURCHASE_PERMISSION_LOT_PREPARE = 14;
+  // Проректор: согласовать закупки курируемых реализующих отделов, дать обоснование
+  // для комиссии, подтвердить ТЗ.
+  PURCHASE_PERMISSION_LOT_CURATOR_REVIEW = 15;
+  // Экономический отдел: коды, источник финансирования, КОСГУ, бюджет и НМЦК;
+  // после ТЗ — конечная стоимость.
+  PURCHASE_PERMISSION_LOT_ECONOMIST = 16;
+  // Бюджетная комиссия: решения по закупкам, протокол заседания, ПФХД.
+  PURCHASE_PERMISSION_LOT_COMMISSION = 17;
+
+  // — Этапы II–III. Подготовка и исполнение.
+
+  // Контрактная служба: закон (44-ФЗ / 223-ФЗ) и способ определения поставщика.
+  PURCHASE_PERMISSION_LOT_CONTRACT_SERVICE = 18;
+  // Отдел закупок: проведение закупки, заключение и исполнение контракта.
+  PURCHASE_PERMISSION_LOT_PROCUREMENT = 19;
+  // Приёмка поставленного товара или оказанной услуги.
+  PURCHASE_PERMISSION_LOT_ACCEPTANCE = 20;
+  // Постановка принятого товара на учёт в инвентаре портала.
+  PURCHASE_PERMISSION_LOT_INVENTORY = 21;
+
+  // — Администрирование.
+
+  // Справочники: проректоры и их направления, отделы, виды закупок.
+  PURCHASE_PERMISSION_DIRECTORIES = 30;
+}
+
+// Who acts at a stage: written into sign-offs and the log. One person may
+// hold several roles; the role is the stage's, not picked by the user.
+enum PurchaseRole {
+  PURCHASE_ROLE_UNSPECIFIED = 0;
+  PURCHASE_ROLE_EMPLOYEE = 1;            // Сотрудник (инициатор)
+  PURCHASE_ROLE_HEAD = 2;                // Начальник отдела инициатора
+  PURCHASE_ROLE_CURATOR = 3;             // Курирующий проректор
+  PURCHASE_ROLE_IMPLEMENTER_HEAD = 4;    // Начальник реализующего отдела
+  PURCHASE_ROLE_ASSIGNEE = 5;            // Исполнитель
+  PURCHASE_ROLE_ECONOMIST = 6;           // Экономический отдел
+  PURCHASE_ROLE_COMMISSION = 7;          // Бюджетная комиссия
+  PURCHASE_ROLE_CONTRACT_SERVICE = 8;    // Контрактная служба
+  PURCHASE_ROLE_PROCUREMENT = 9;         // Отдел закупок
+  PURCHASE_ROLE_ACCEPTANCE = 10;         // Приёмка
+  PURCHASE_ROLE_INVENTORY = 11;          // Учёт инвентаря
+}
+
+// What one does with a record at its stage. Who may, and where it goes,
+// follows from the stage: the server knows the route.
+enum PurchaseMove {
+  PURCHASE_MOVE_UNSPECIFIED = 0;
+  PURCHASE_MOVE_FORWARD = 1;  // Продолжить — передать на следующий этап
+  PURCHASE_MOVE_RETURN = 2;   // Вернуть на предыдущий этап; комментарий обязателен
+  PURCHASE_MOVE_REJECT = 3;   // Отклонить; комментарий обязателен (где этап позволяет)
+}
+
+// An employee's request, until it goes into a purchase (lot).
+//
+//   HEAD_REVIEW ⇄ REWORK
+//   HEAD_REVIEW → CURATOR_REVIEW → IMPLEMENTER_REVIEW → IN_PURCHASE
+//
+// The head and the vice-rector may reject; returns go one stage back.
+enum PurchaseRequestStatus {
+  PURCHASE_REQUEST_STATUS_UNSPECIFIED = 0;
+  PURCHASE_REQUEST_STATUS_HEAD_REVIEW = 1;         // У начальника своего отдела
+  PURCHASE_REQUEST_STATUS_REWORK = 2;              // Возвращена сотруднику на доработку
+  PURCHASE_REQUEST_STATUS_CURATOR_REVIEW = 3;      // У проректора, курирующего отдел
+  PURCHASE_REQUEST_STATUS_IMPLEMENTER_REVIEW = 4;  // В реализующем отделе, ждёт объединения в закупку
+  PURCHASE_REQUEST_STATUS_IN_PURCHASE = 5;         // Включена в закупку — дальше идёт закупка
+  PURCHASE_REQUEST_STATUS_MERGED = 6;              // Объединена начальником в другую заявку
+  PURCHASE_REQUEST_STATUS_REJECTED = 7;            // Отклонена
+}
+
+// A purchase (lot): similar requests the implementing head merged, in flow
+// order. Each stage has one responsible permission; FORWARD goes to the next
+// stage, RETURN to the previous one.
+//
+// Stage I, planning: FORMING → SPECIFICATION → SPECIFICATION_CHECK →
+// CURATOR_REVIEW → ECONOMIST_REVIEW → BUDGET_COMMISSION. The commission's
+// protocol moves a purchase to APPROVED or REJECTED: from APPROVED on, the
+// request has become a purchase and the vice-rectors see it as current.
+//
+// Stage II, preparation: APPROVED → TECH_SPEC → TECH_SPEC_CHECK →
+// TECH_SPEC_CURATOR → FINAL_COST → CONTRACT_SERVICE → PROCUREMENT.
+//
+// Stage III, execution: TENDERING → CONTRACTING → DELIVERY → ACCEPTANCE →
+// INVENTORY → COMPLETED. A service skips INVENTORY.
+enum PurchaseLotStatus {
+  PURCHASE_LOT_STATUS_UNSPECIFIED = 0;
+
+  // Этап I. Планирование.
+  PURCHASE_LOT_STATUS_FORMING = 1;              // У начальника реализующего отдела: состав, исполнитель
+  PURCHASE_LOT_STATUS_SPECIFICATION = 2;        // У исполнителя: характеристики, стандартизация, первые КП
+  PURCHASE_LOT_STATUS_SPECIFICATION_CHECK = 3;  // Начальник проверяет работу исполнителя; коды подставлены по справочнику
+  PURCHASE_LOT_STATUS_CURATOR_REVIEW = 4;       // У проректора: согласование, обоснование для комиссии
+  PURCHASE_LOT_STATUS_ECONOMIST_REVIEW = 5;     // Экономический отдел: бюджет, коды, НМЦК по КП
+  PURCHASE_LOT_STATUS_BUDGET_COMMISSION = 6;    // Ждёт бюджетной комиссии
+  PURCHASE_LOT_STATUS_REJECTED = 7;             // Отклонена комиссией
+
+  // Этап II. Подготовка: заявка стала закупкой.
+  PURCHASE_LOT_STATUS_APPROVED = 10;            // Одобрена комиссией, у начальника реализующего отдела: поручить ТЗ
+  PURCHASE_LOT_STATUS_TECH_SPEC = 11;           // Исполнитель составляет ТЗ
+  PURCHASE_LOT_STATUS_TECH_SPEC_CHECK = 12;     // Начальник реализующего отдела проверяет ТЗ
+  PURCHASE_LOT_STATUS_TECH_SPEC_CURATOR = 13;   // Проректор подтверждает ТЗ
+  PURCHASE_LOT_STATUS_FINAL_COST = 14;          // Экономический отдел: конечная стоимость
+  PURCHASE_LOT_STATUS_CONTRACT_SERVICE = 15;    // Контрактная служба: закон и способ закупки
+  PURCHASE_LOT_STATUS_PROCUREMENT = 16;         // Отдел закупок: данные получены, подготовка к проведению
+
+  // Этап III. Исполнение.
+  PURCHASE_LOT_STATUS_TENDERING = 20;           // Проведение закупки (торги или иной способ)
+  PURCHASE_LOT_STATUS_CONTRACTING = 21;         // Заключение контракта
+  PURCHASE_LOT_STATUS_DELIVERY = 22;            // Исполнение контракта: поставка, оказание услуги
+  PURCHASE_LOT_STATUS_ACCEPTANCE = 23;          // Приёмка
+  PURCHASE_LOT_STATUS_INVENTORY = 24;           // Постановка на учёт в инвентаре портала
+  PURCHASE_LOT_STATUS_COMPLETED = 25;           // Закупка завершена
+}
+
+// What is bought. A purchase holds requests of one type only.
+enum PurchaseItemType {
+  PURCHASE_ITEM_TYPE_UNSPECIFIED = 0;
+  PURCHASE_ITEM_TYPE_PRODUCT = 1;  // Товар
+  PURCHASE_ITEM_TYPE_SERVICE = 2;  // Услуга (работа)
+}
+
+// ПФХД splits approved purchases into planned and unplanned ones.
+enum PurchasePlanType {
+  PURCHASE_PLAN_TYPE_UNSPECIFIED = 0;
+  PURCHASE_PLAN_TYPE_PLANNED = 1;    // Плановая
+  PURCHASE_PLAN_TYPE_UNPLANNED = 2;  // Внеплановая
+}
+
+enum PurchaseFundingSource {
+  PURCHASE_FUNDING_SOURCE_UNSPECIFIED = 0;
+  PURCHASE_FUNDING_SOURCE_STATE_TASK = 1;      // Субсидия на госзадание
+  PURCHASE_FUNDING_SOURCE_TARGET_SUBSIDY = 2;  // Целевая субсидия
+  PURCHASE_FUNDING_SOURCE_INCOME = 3;          // Приносящая доход деятельность
+  PURCHASE_FUNDING_SOURCE_OMS = 4;             // Средства ОМС
+}
+
+// The budget commission's decision on one purchase, in a protocol.
+enum PurchaseCommissionDecision {
+  PURCHASE_COMMISSION_DECISION_UNSPECIFIED = 0;
+  PURCHASE_COMMISSION_DECISION_APPROVE = 1;  // Включить в ПФХД → APPROVED
+  PURCHASE_COMMISSION_DECISION_REJECT = 2;   // Отклонить → REJECTED
+  PURCHASE_COMMISSION_DECISION_RETURN = 3;   // Вернуть экономистам → ECONOMIST_REVIEW
+}
+
+// The law a purchase is carried out under; set by the contract service.
+enum PurchaseLaw {
+  PURCHASE_LAW_UNSPECIFIED = 0;
+  PURCHASE_LAW_FZ44 = 1;   // 44-ФЗ
+  PURCHASE_LAW_FZ223 = 2;  // 223-ФЗ
+}
+
+// How the supplier is chosen; set by the contract service.
+enum PurchaseMethod {
+  PURCHASE_METHOD_UNSPECIFIED = 0;
+  PURCHASE_METHOD_ELECTRONIC_AUCTION = 1;  // Электронный аукцион
+  PURCHASE_METHOD_OPEN_TENDER = 2;         // Открытый конкурс в электронной форме
+  PURCHASE_METHOD_QUOTATION_REQUEST = 3;   // Запрос котировок в электронной форме
+  PURCHASE_METHOD_PROPOSAL_REQUEST = 4;    // Запрос предложений (223-ФЗ)
+  PURCHASE_METHOD_SINGLE_SUPPLIER = 5;     // У единственного поставщика
+  PURCHASE_METHOD_OTHER = 6;               // Иной способ по положению о закупке
+}
+
+// A file attached to a purchase, besides the commercial offers.
+enum PurchaseDocumentKind {
+  PURCHASE_DOCUMENT_KIND_UNSPECIFIED = 0;
+  PURCHASE_DOCUMENT_KIND_SPECIFICATION = 1;   // Характеристики
+  PURCHASE_DOCUMENT_KIND_TECH_SPEC = 2;       // Техническое задание
+  PURCHASE_DOCUMENT_KIND_NOTICE = 3;          // Извещение о закупке
+  PURCHASE_DOCUMENT_KIND_CONTRACT = 4;        // Контракт (договор)
+  PURCHASE_DOCUMENT_KIND_SHIPPING = 5;        // Товарная накладная, УПД
+  PURCHASE_DOCUMENT_KIND_ACCEPTANCE_ACT = 6;  // Акт приёмки
+  PURCHASE_DOCUMENT_KIND_OTHER = 7;           // Прочее
+}
+
+enum PurchaseLogTarget {
+  PURCHASE_LOG_TARGET_UNSPECIFIED = 0;
+  PURCHASE_LOG_TARGET_REQUEST = 1;
+  PURCHASE_LOG_TARGET_LOT = 2;
+  PURCHASE_LOG_TARGET_PROTOCOL = 3;
+}

@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package contract.service.v1;
+
+import "entity/v1/vaccination.entity.proto";
+
+option go_package = "service_v1;service_pb";
+
+// Sign-up for vaccination. Reading the days and signing up are public (no
+// login); adding/removing days and removing a sign-up need a login.
+service VaccinationService {
+    rpc VaccinationDayFetch (VaccinationDayFetchRequest) returns (VaccinationDayFetchResponse);
+    rpc VaccinationDayCreate (VaccinationDayCreateRequest) returns (VaccinationDayCreateResponse);
+    rpc VaccinationDayDelete (VaccinationDayDeleteRequest) returns (VaccinationDayDeleteResponse);
+
+    rpc VaccinationSignupCreate (VaccinationSignupCreateRequest) returns (VaccinationSignupCreateResponse);
+    rpc VaccinationSignupDelete (VaccinationSignupDeleteRequest) returns (VaccinationSignupDeleteResponse);
+}
+
+// Empty date_from means "any". ISO date, inclusive.
+message VaccinationDayFetchRequest {
+    string date_from = 1;
+}
+
+message VaccinationDayFetchResponse {
+    repeated contract.entity.v1.VaccinationDay list = 1;
+}
+
+// A new day gets the standard slots (10:00–12:00 by 30 minutes, 12 places each).
+message VaccinationDayCreateRequest {
+    string date = 1;
+    string title = 2;
+    string place = 3;
+    string note = 4;
+}
+
+message VaccinationDayCreateResponse {
+    bool success = 1;
+    string message = 2;
+    int64 vaccination_day_id = 3;
+}
+
+message VaccinationDayDeleteRequest {
+    int64 id = 1;
+}
+
+message VaccinationDayDeleteResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message VaccinationSignupCreateRequest {
+    int64 slot_id = 1;
+    string full_name = 2;
+    // Consent to publishing the name on the sign-up page and processing it
+    // under the privacy policy; a sign-up without it is rejected.
+    bool personal_data_consent = 3;
+}
+
+message VaccinationSignupCreateResponse {
+    bool success = 1;
+    string message = 2;
+    int64 vaccination_signup_id = 3;
+}
+
+message VaccinationSignupDeleteRequest {
+    int64 id = 1;
+}
+
+message VaccinationSignupDeleteResponse {
+    bool success = 1;
+    string message = 2;
+}

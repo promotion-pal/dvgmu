@@ -1,0 +1,11 @@
+env: dev
+
+interval: 5m
+
+mdm:
+  service_url: http://localhost:7070
+
+ldap:
+  url: ldap://192.168.2.222:389
+  base_dn: "DC=dvgmu,DC=local"
+  bind_dn: "ldapuser@dvgmu.local"

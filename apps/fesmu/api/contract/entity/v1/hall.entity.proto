@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package contract.entity.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "entity_v1;entity_pb";
+
+// Hall is a bookable lecture hall / auditorium.
+message Hall {
+  int64 id = 1;
+
+  // Short label as it appears on the room plate, e.g. "ауд. 238" or "Актовый зал".
+  string name = 2;
+  string building = 3;
+  // Calendar colour: one of the schedule tones (sky, emerald, amber, violet, ...).
+  string tone = 4;
+
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+}
+
+// HallBooking is one entry on a hall's calendar: a lecture, a meeting, a
+// record slot — whatever holds the room from time_start to time_end.
+message HallBooking {
+  int64 id = 1;
+  int64 hall_id = 2;
+
+  // ISO date (YYYY-MM-DD).
+  string date = 3;
+  // HH:MM, time_start < time_end, both within the hall's working day.
+  string time_start = 4;
+  string time_end = 5;
+  string title = 6;
+
+  // Who booked the hall and how to reach them. Personal data: filled in only
+  // by HallBookingFetch (staff), always empty in HallBookingPublicFetch.
+  string organizer = 7;
+  string contact = 8;
+
+  google.protobuf.Timestamp created_at = 9;
+  google.protobuf.Timestamp updated_at = 10;
+}

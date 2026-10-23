@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package contract.entity;
+
+option go_package = "entity;entity_pb";
+
+import "packages/mdm/enum/user.enum.proto";
+import "google/protobuf/timestamp.proto";
+import "packages/mdm/entity/passport.entity.proto";
+import "packages/mdm/entity/education.entity.proto";
+import "packages/mdm/entity/military.entity.proto";
+import "packages/mdm/entity/student.entity.proto";
+import "packages/mdm/entity/employee.entity.proto";
+
+message User {
+    int64 id = 1;
+    string first_name = 2;
+    string last_name = 3;
+    optional string patronymic = 4;
+    
+    string email = 5;
+    optional string phone = 6;
+    contract.enum.UserStatus status = 7;
+    optional google.protobuf.Timestamp birthday = 8;
+    
+    google.protobuf.Timestamp created_at = 9;
+    google.protobuf.Timestamp updated_at = 10;
+}
+
+message UserFull {
+    User user = 1;
+    contract.entity.Passport passport = 2;
+    repeated contract.entity.Education educations = 3;
+    contract.entity.Military military = 4;
+    contract.entity.Student student = 5;
+    contract.entity.Employee employee = 6;
+}

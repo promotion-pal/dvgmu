@@ -1,0 +1,62 @@
+package grpc
+
+import (
+	"context"
+	"errors"
+
+	"connectrpc.com/connect"
+
+	pb "dvgmu/api/contract/gen/go/service/v1"
+	"dvgmu/api/internal/service/packages/certificate"
+)
+
+type CertificateHandler struct {
+	service *certificate.Service
+}
+
+func CertificateNewController(service *certificate.Service) *CertificateHandler {
+	return &CertificateHandler{service: service}
+}
+
+func (h *CertificateHandler) CertificateOrder(
+	ctx context.Context,
+	req *connect.Request[pb.CertificateOrderRequest],
+) (*connect.Response[pb.CertificateOrderResponse], error) {
+	resp, err := h.service.CertificateOrder(ctx, req.Msg)
+	if err != nil {
+		return nil, asConnect(err)
+	}
+	return connect.NewResponse(resp), nil
+}
+
+func (h *CertificateHandler) CertificateFetch(
+	ctx context.Context,
+	req *connect.Request[pb.CertificateFetchRequest],
+) (*connect.Response[pb.CertificateFetchResponse], error) {
+	resp, err := h.service.CertificateFetch(ctx, req.Msg)
+	if err != nil {
+		return nil, asConnect(err)
+	}
+	return connect.NewResponse(resp), nil
+}
+
+func (h *CertificateHandler) CertificateIssue(
+	ctx context.Context,
+	req *connect.Request[pb.CertificateIssueRequest],
+) (*connect.Response[pb.CertificateIssueResponse], error) {
+	resp, err := h.service.CertificateIssue(ctx, req.Msg)
+	if err != nil {
+		return nil, asConnect(err)
+	}
+	return connect.NewResponse(resp), nil
+}
+
+// asConnect keeps a Connect error's code (permission, not found...) and
+// turns anything else into Internal.
+func asConnect(err error) error {
+	var ce *connect.Error
+	if errors.As(err, &ce) {
+		return ce
+	}
+	return connect.NewError(connect.CodeInternal, err)
+}

@@ -1,0 +1,51 @@
+name: ojs
+
+services:
+  db:
+    image: mariadb:11.4
+    container_name: ojs_db
+    environment:
+      MARIADB_ROOT_PASSWORD: ojs
+      MARIADB_DATABASE: ojs
+      MARIADB_USER: ojs
+      MARIADB_PASSWORD: ojs
+    volumes:
+      - db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    restart: unless-stopped
+
+  app:
+    image: pkpofficial/ojs:latest
+    platform: linux/amd64
+    container_name: ojs_app
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8081:80"
+      - "8443:443"
+    environment:
+      SERVERNAME: localhost
+      PKP_CLI_INSTALL: "0"
+      PKP_DB_HOST: db
+      PKP_DB_NAME: ojs
+      PKP_DB_USER: ojs
+      PKP_DB_PASSWORD: ojs
+    volumes:
+      - files:/var/www/files
+      - public:/var/www/html/public
+      - ./config/config.dev.inc.php:/var/www/html/config.inc.php
+      # Apache vhost: /login and /admin short URLs (same file as prod)
+      - ./config/pkp.conf:/etc/apache2/conf-enabled/pkp.conf:ro
+      # PHP limits (same file as prod)
+      - ./config/php.ini:/usr/local/etc/php/conf.d/zz-ojs.ini:ro
+    restart: unless-stopped
+
+volumes:
+  db:
+  files:
+  public:

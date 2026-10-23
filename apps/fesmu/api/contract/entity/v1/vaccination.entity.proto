@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package contract.entity.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "entity_v1;entity_pb";
+
+// VaccinationDay is a day vaccination is held, split into time slots anyone
+// can sign up for.
+message VaccinationDay {
+  int64 id = 1;
+  // ISO date (YYYY-MM-DD).
+  string date = 2;
+  // e.g. "Вакцинация против гриппа".
+  string title = 3;
+  // Where to come, e.g. "Здравпункт, учебный корпус № 1".
+  string place = 4;
+  string note = 5;
+  repeated VaccinationSlot slots = 6;
+
+  google.protobuf.Timestamp created_at = 7;
+}
+
+// VaccinationSlot is one time window of a day with a fixed number of places.
+message VaccinationSlot {
+  int64 id = 1;
+  // HH:MM.
+  string time_start = 2;
+  string time_end = 3;
+  int32 capacity = 4;
+  // Who has signed up, in sign-up order. Names are public on purpose: the
+  // list is shown on the sign-up page as soon as someone signs up.
+  repeated VaccinationSignup signups = 5;
+}
+
+message VaccinationSignup {
+  int64 id = 1;
+  string full_name = 2;
+  google.protobuf.Timestamp created_at = 3;
+}

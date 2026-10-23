@@ -1,0 +1,246 @@
+syntax = "proto3";
+
+package contract.enum;
+
+option go_package = "enum;enum_pb";
+
+// User
+
+enum UserStatus {
+    USER_STATUS_UNSPECIFIED = 0;
+    USER_STATUS_ACTIVE = 1;
+    USER_STATUS_INACTIVE = 2;
+}
+
+// Роль пользователя. Назначается вручную (админка fesmu → UserRolesSet),
+// у пользователя может быть несколько ролей одновременно.
+enum UserRole {
+    USER_ROLE_UNSPECIFIED = 0;
+    USER_ROLE_STUDENT = 1;
+    USER_ROLE_STAFF = 2;
+    USER_ROLE_TEACHER = 3;
+    // ADMIN — доступ к администрированию (в т.ч. назначение ролей).
+    USER_ROLE_ADMIN = 4;
+}
+
+enum UserGender {
+    USER_GENDER_UNSPECIFIED = 0;
+    USER_GENDER_MALE = 1;
+    USER_GENDER_FEMALE = 2;
+}
+
+enum UserNationality {
+    USER_NATIONALITY_UNSPECIFIED = 0;
+    USER_NATIONALITY_RUS = 1;
+    USER_NATIONALITY_BLR = 2;
+    USER_NATIONALITY_KAZ = 3;
+    USER_NATIONALITY_UZB = 4;
+    USER_NATIONALITY_KGZ = 5;
+    USER_NATIONALITY_CHN = 6;
+}
+
+// Student
+
+enum UserStudentStatus {
+    USER_STUDENT_STATUS_UNSPECIFIED = 0;
+    USER_STUDENT_STATUS_STUDYING = 1;         // Учится
+    USER_STUDENT_STATUS_EXPELLED = 2;         // Отчислен
+    USER_STUDENT_STATUS_ACADEMIC_LEAVE = 3;    // В академическом отпуске
+    USER_STUDENT_STATUS_RESTORED = 4;          // Восстановлен
+    USER_STUDENT_STATUS_GRADUATED = 5;         // Выпустился (завершил обучение)
+    USER_STUDENT_STATUS_TRANSFERRED = 6;       // Переведен
+}
+
+enum UserStudentEducationForm {
+    USER_STUDENT_EDUCATION_FORM_UNSPECIFIED = 0;
+    USER_STUDENT_EDUCATION_FORM_BUDGET = 1;
+    USER_STUDENT_EDUCATION_FORM_TARGET = 2;
+    USER_STUDENT_EDUCATION_FORM_CONTRACT = 3;
+    USER_STUDENT_EDUCATION_FORM_SPECIAL_QUOTA = 4;
+}
+
+// Employee
+
+// Подразделение сотрудника — по нему портал направляет заявки на закупку
+// начальнику и курирующему проректору отдела.
+enum UserEmployeeDepartment {
+    USER_EMPLOYEE_DEPARTMENT_UNSPECIFIED = 0;
+    // ИТ-отдел
+    USER_EMPLOYEE_DEPARTMENT_IT = 1;
+    // Кафедра акушерства и гинекологии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_AKUSHERSTVA_I_GINEKOLOGII = 2;
+    // Кафедра анестезиологии-реаниматологии, трансфузиологии и скорой медицинской помощи
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_ANESTEZIOLOGII_REANIMATOLOGII_TRANSFUZIOLOGII_I_SKOROI_MEDITSINSKOI_POMOSHCHI = 3;
+    // Кафедра госпитальной и факультетской педиатрии с курсом пропедевтики детских болезней
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_GOSPITALNOI_I_FAKULTETSKOI_PEDIATRII_S_KURSOM_PROPEDEVTIKI_DETSKIKH_BOLEZNEI = 4;
+    // Кафедра госпитальной терапии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_GOSPITALNOI_TERAPII = 5;
+    // Кафедра дерматовенерологии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_DERMATOVENEROLOGII = 6;
+    // Кафедра детской хирургии, травматологии и ортопедии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_DETSKOI_KHIRURGII_TRAVMATOLOGII_I_ORTOPEDII = 7;
+    // Кафедра инфекционных болезней и эпидемиологии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_INFEKTSIONNYKH_BOLEZNEI_I_EPIDEMIOLOGII = 8;
+    // Кафедра клинической токсикологии и экстремальной медицины
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_KLINICHESKOI_TOKSIKOLOGII_I_EKSTREMALNOI_MEDITSINY = 9;
+    // Кафедра неврологии и нейрохирургии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_NEVROLOGII_I_NEIROKHIRURGII = 10;
+    // Кафедра общей и клинической хирургии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_OBSHCHEI_I_KLINICHESKOI_KHIRURGII = 11;
+    // Кафедра оториноларингологии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_OTORINOLARINGOLOGII = 12;
+    // Кафедра патологической анатомии и судебной медицины
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_PATOLOGICHESKOI_ANATOMII_I_SUDEBNOI_MEDITSINY = 13;
+    // Кафедра поликлинической педиатрии с курсом детских инфекционных болезней
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_POLIKLINICHESKOI_PEDIATRII_S_KURSOM_DETSKIKH_INFEKTSIONNYKH_BOLEZNEI = 14;
+    // Кафедра пропедевтики внутренних болезней с курсом фтизиатрии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_PROPEDEVTIKI_VNUTRENNIKH_BOLEZNEI_S_KURSOM_FTIZIATRII = 15;
+    // Кафедра психиатрии и наркологии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_PSIKHIATRII_I_NARKOLOGII = 16;
+    // Кафедра сестринского дела с курсом социальных дисциплин
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_SESTRINSKOGO_DELA_S_KURSOM_SOTSIALNYKH_DISTSIPLIN = 17;
+    // Кафедра стоматологии детского возраста
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_STOMATOLOGII_DETSKOGO_VOZRASTA = 18;
+    // Кафедра стоматологии ортопедической
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_STOMATOLOGII_ORTOPEDICHESKOI = 19;
+    // Кафедра стоматологии терапевтической
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_STOMATOLOGII_TERAPEVTICHESKOI = 20;
+    // Кафедра стоматологии хирургической и челюстно-лицевой хирургии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_STOMATOLOGII_KHIRURGICHESKOI_I_CHELYUSTNO_LITSEVOI_KHIRURGII = 21;
+    // Кафедра терапии педиатрического и стоматологического факультетов
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_TERAPII_PEDIATRICHESKOGO_I_STOMATOLOGICHESKOGO_FAKULTETOV = 22;
+    // Кафедра травматологии и ортопедии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_TRAVMATOLOGII_I_ORTOPEDII = 23;
+    // Кафедра урологии и нефрологии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_UROLOGII_I_NEFROLOGII = 24;
+    // Кафедра факультетской и поликлинической терапии с курсом эндокринологии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_FAKULTETSKOI_I_POLIKLINICHESKOI_TERAPII_S_KURSOM_ENDOKRINOLOGII = 25;
+    // Кафедра внутренних болезней, гериатрии и инструментальной диагностики
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_VNUTRENNIKH_BOLEZNEI_GERIATRII_I_INSTRUMENTALNOI_DIAGNOSTIKI = 26;
+    // Кафедра педиатрии, неонатологии и перинатологии с курсом неотложной медицины
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_PEDIATRII_NEONATOLOGII_I_PERINATOLOGII_S_KURSOM_NEOTLOZHNOI_MEDITSINY = 27;
+    // Кафедра физической и реабилитационной медицины
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_FIZICHESKOI_I_REABILITATSIONNOI_MEDITSINY = 28;
+    // Кафедра онкологии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_ONKOLOGII = 29;
+    // Кафедра биологической химии и клинической лабораторной диагностики
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_BIOLOGICHESKOI_KHIMII_I_KLINICHESKOI_LABORATORNOI_DIAGNOSTIKI = 30;
+    // Кафедра гистологии, эмбриологии и цитологии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_GISTOLOGII_EMBRIOLOGII_I_TSITOLOGII = 31;
+    // Кафедра иностранных языков
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_INOSTRANNYKH_YAZYKOV = 32;
+    // Кафедра микробиологии, вирусологии и иммунологии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_MIKROBIOLOGII_VIRUSOLOGII_I_IMMUNOLOGII = 33;
+    // Кафедра нормальной и патологической физиологии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_NORMALNOI_I_PATOLOGICHESKOI_FIZIOLOGII = 34;
+    // Кафедра нормальной и топографической анатомии с курсом оперативной хирургии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_NORMALNOI_I_TOPOGRAFICHESKOI_ANATOMII_S_KURSOM_OPERATIVNOI_KHIRURGII = 35;
+    // Кафедра организации и экономики фармации
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_ORGANIZATSII_I_EKONOMIKI_FARMATSII = 36;
+    // Кафедра педагогики и психологии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_PEDAGOGIKI_I_PSIKHOLOGII = 37;
+    // Кафедра фармации и фармакологии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_FARMATSII_I_FARMAKOLOGII = 38;
+    // Кафедра физики, математики и информатики
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_FIZIKI_MATEMATIKI_I_INFORMATIKI = 39;
+    // Кафедра физического воспитания и здоровья
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_FIZICHESKOGO_VOSPITANIYA_I_ZDOROVYA = 40;
+    // Кафедра философии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_FILOSOFII = 41;
+    // Кафедра химии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_KHIMII = 42;
+    // Кафедра гигиены
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_GIGIENY = 43;
+    // Кафедра общественного здоровья и здравоохранения
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_OBSHCHESTVENNOGO_ZDOROVYA_I_ZDRAVOOKHRANENIYA = 44;
+    // Кафедра биологии и генетики
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_BIOLOGII_I_GENETIKI = 45;
+    // Ректорат
+    USER_EMPLOYEE_DEPARTMENT_REKTORAT = 46;
+    // Бухгалтерия
+    USER_EMPLOYEE_DEPARTMENT_BUKHGALTERIYA = 47;
+    // Отдел тестирования
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_TESTIROVANIYA = 48;
+    // Отдел эксплуатации лекционных залов и межкафедральных аудиторий
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_EKSPLUATATSII_LEKTSIONNYKH_ZALOV_I_MEZHKAFEDRALNYKH_AUDITORII = 49;
+    // Издательство учебной литературы и учебных пособий
+    USER_EMPLOYEE_DEPARTMENT_IZDATELSTVO_UCHEBNOI_LITERATURY_I_UCHEBNYKH_POSOBII = 50;
+    // Контрактная служба
+    USER_EMPLOYEE_DEPARTMENT_KONTRAKTNAYA_SLUZHBA = 51;
+    // Канцелярия
+    USER_EMPLOYEE_DEPARTMENT_KANTSELYARIYA = 52;
+    // Отдел планирования и контроля качества образования
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_PLANIROVANIYA_I_KONTROLYA_KACHESTVA_OBRAZOVANIYA = 53;
+    // Медико-фармацевтический колледж
+    USER_EMPLOYEE_DEPARTMENT_MEDIKO_FARMATSEVTICHESKII_KOLLEDZH = 54;
+    // Административно-хозяйственное управление
+    USER_EMPLOYEE_DEPARTMENT_ADMINISTRATIVNO_KHOZYAISTVENNOE_UPRAVLENIE = 55;
+    // Отдел санитарно-хозяйственного обеспечения
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_SANITARNO_KHOZYAISTVENNOGO_OBESPECHENIYA = 56;
+    // Прачечная
+    USER_EMPLOYEE_DEPARTMENT_PRACHECHNAYA = 57;
+    // Учебный корпус №1
+    USER_EMPLOYEE_DEPARTMENT_UCHEBNYI_KORPUS_1 = 58;
+    // Учебный корпус №3
+    USER_EMPLOYEE_DEPARTMENT_UCHEBNYI_KORPUS_3 = 59;
+    // Институт непрерывного профессионального образования и аккредитации
+    USER_EMPLOYEE_DEPARTMENT_INSTITUT_NEPRERYVNOGO_PROFESSIONALNOGO_OBRAZOVANIYA_I_AKKREDITATSII = 60;
+    // Кафедра ДПО
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_DPO = 61;
+    // Редакция газеты "Вестник ДВГМУ"
+    USER_EMPLOYEE_DEPARTMENT_REDAKTSIYA_GAZETY_VESTNIK_DVGMU = 62;
+    // Спецотдел
+    USER_EMPLOYEE_DEPARTMENT_SPETSOTDEL = 63;
+    // Деканат лечебного факультета
+    USER_EMPLOYEE_DEPARTMENT_DEKANAT_LECHEBNOGO_FAKULTETA = 64;
+    // Деканат медико-гуманитарного факультета
+    USER_EMPLOYEE_DEPARTMENT_DEKANAT_MEDIKO_GUMANITARNOGO_FAKULTETA = 65;
+    // Деканат педиатрического факультета
+    USER_EMPLOYEE_DEPARTMENT_DEKANAT_PEDIATRICHESKOGO_FAKULTETA = 66;
+    // Деканат стоматологического факультета
+    USER_EMPLOYEE_DEPARTMENT_DEKANAT_STOMATOLOGICHESKOGO_FAKULTETA = 67;
+    // Деканат факультета фармации и биомедицины
+    USER_EMPLOYEE_DEPARTMENT_DEKANAT_FAKULTETA_FARMATSII_I_BIOMEDITSINY = 68;
+    // Федеральный аккредитационный центр
+    USER_EMPLOYEE_DEPARTMENT_FEDERALNYI_AKKREDITATSIONNYI_TSENTR = 69;
+    // Отдел информационно-технического сопровождения
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_INFORMATSIONNO_TEKHNICHESKOGO_SOPROVOZHDENIYA = 70;
+    // Отдел обеспечения библиотечной деятельности
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_OBESPECHENIYA_BIBLIOTECHNOI_DEYATELNOSTI = 71;
+    // Деканат факультета ординатуры с центром карьеры и трудоустройства
+    USER_EMPLOYEE_DEPARTMENT_DEKANAT_FAKULTETA_ORDINATURY_S_TSENTROM_KARERY_I_TRUDOUSTROISTVA = 72;
+    // Отдел практического обучения
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_PRAKTICHESKOGO_OBUCHENIYA = 73;
+    // Отдел по молодежной политике и воспитательной работе
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_PO_MOLODEZHNOI_POLITIKE_I_VOSPITATELNOI_RABOTE = 74;
+    // Отдел комплектования контингента
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_KOMPLEKTOVANIYA_KONTINGENTA = 75;
+    // Военно-учетный стол
+    USER_EMPLOYEE_DEPARTMENT_VOENNO_UCHETNYI_STOL = 76;
+    // Отдел кадров
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_KADROV = 77;
+    // Департамент проектно-аналитической деятельности
+    USER_EMPLOYEE_DEPARTMENT_DEPARTAMENT_PROEKTNO_ANALITICHESKOI_DEYATELNOSTI = 78;
+    // Проектный офис
+    USER_EMPLOYEE_DEPARTMENT_PROEKTNYI_OFIS = 79;
+    // Планово-экономический отдел
+    USER_EMPLOYEE_DEPARTMENT_PLANOVO_EKONOMICHESKII_OTDEL = 80;
+    // Юридический отдел
+    USER_EMPLOYEE_DEPARTMENT_YURIDICHESKII_OTDEL = 81;
+    // Отдел обеспечения безопасности труда
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_OBESPECHENIYA_BEZOPASNOSTI_TRUDA = 82;
+    // Отдел охраны и дежурных
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_OKHRANY_I_DEZHURNYKH = 83;
+    // Центр довузовской подготовки
+    USER_EMPLOYEE_DEPARTMENT_TSENTR_DOVUZOVSKOI_PODGOTOVKI = 84;
+    // Поликлиники
+    USER_EMPLOYEE_DEPARTMENT_POLIKLINIKI = 85;
+    // Отдел материально-технического снабжения
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_MATERIALNO_TEKHNICHESKOGO_SNABZHENIYA = 86;
+    // Научный отдел
+    USER_EMPLOYEE_DEPARTMENT_NAUCHNYI_OTDEL = 87;
+    // Кафедра анатомии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_ANATOMII = 88;
+    // Архив
+    USER_EMPLOYEE_DEPARTMENT_ARKHIV = 89;
+}

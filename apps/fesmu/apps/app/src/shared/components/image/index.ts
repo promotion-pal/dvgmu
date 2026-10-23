@@ -1,0 +1,1 @@
+export { CommonImage } from "./image";

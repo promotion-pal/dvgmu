@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package contract.enum.v1;
+
+option go_package = "enum_v1;enum_pb";
+
+// Where a test stands in being exported to the testing system; staff set it by hand.
+enum TestExportStatus {
+  TEST_EXPORT_STATUS_UNSPECIFIED = 0;
+  TEST_EXPORT_STATUS_NOT_EXPORTED = 1;
+  TEST_EXPORT_STATUS_READY = 2;
+  TEST_EXPORT_STATUS_EXPORTED = 3;
+}
+
+// How a test's questions are written and asked.
+enum TestVersion {
+  TEST_VERSION_UNSPECIFIED = 0;
+  // A bank of questions on the topic: each attempt gets questions that don't
+  // repeat (variants of one question asked once), every option of a question
+  // shown, as written.
+  TEST_VERSION_V1 = 1;
+  // As V1, plus right and wrong answers kept as two lists: each student sees
+  // a random mix of them (TestSession.option_count), always picking several.
+  TEST_VERSION_V2 = 2;
+}
+
+// Where a student's attempt at a test session stands.
+enum TestAttemptStatus {
+  TEST_ATTEMPT_STATUS_UNSPECIFIED = 0;
+  TEST_ATTEMPT_STATUS_IN_PROGRESS = 1;
+  // The student pressed "Завершить" in time.
+  TEST_ATTEMPT_STATUS_FINISHED = 2;
+  // Time ran out; graded on the answers saved before the deadline.
+  TEST_ATTEMPT_STATUS_EXPIRED = 3;
+}

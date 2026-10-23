@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package contract.service.v1;
+
+import "entity/v1/schedule_collect.entity.proto";
+
+option go_package = "service_v1;service_pb";
+
+// ScheduleCollectService collects raw schedule rows from teachers, one
+// lesson at a time, in the university's schedule exchange format. It is
+// served without authentication (see internal/modules/schedulecollect): a
+// teacher has no account in this system, only the collector page's link.
+service ScheduleCollectService {
+    rpc ScheduleCollectCreate (ScheduleCollectCreateRequest) returns (ScheduleCollectCreateResponse);
+}
+
+message ScheduleCollectCreateRequest {
+    // The id and created_at are assigned by the server; values sent here are ignored.
+    contract.entity.v1.ScheduleCollectEntry item = 1;
+}
+
+message ScheduleCollectCreateResponse {
+    bool success = 1;
+    string message = 2;
+    // Echoed back with its assigned id and created_at, so the page can show
+    // what was just submitted.
+    contract.entity.v1.ScheduleCollectEntry item = 3;
+}

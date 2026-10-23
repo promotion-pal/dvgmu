@@ -1,0 +1,9 @@
+{
+  "name": "dvgmu",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "devDependencies": {
+    "@bufbuild/protoc-gen-es": "^2.12.1"
+  }
+}

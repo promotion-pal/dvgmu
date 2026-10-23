@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package contract.service.v1;
+
+import "packages/analytics/entity/analytic.entity.proto";
+import "packages/analytics/enum/analytic.enum.proto";
+
+option go_package = "service_v1;service_pb";
+
+// SurveyService — объекты опросов (QR-точки) в панели «Аналитика»: заведение,
+// правка и номера QR. Данные лежат в сервисе аналитики; fesmu проверяет права
+// (analytics.post) и правила номеров: номер QR — адрес анкеты в печатных
+// кодах, поэтому он у каждого объекта свой.
+service SurveyService {
+    // SurveyQrFetch — следующий свободный номер QR и занят ли проверяемый.
+    rpc SurveyQrFetch (SurveyQrFetchRequest) returns (SurveyQrFetchResponse);
+    // SurveyCreate — новый объект; qr = 0 — номер подберётся сам.
+    rpc SurveyCreate (SurveyCreateRequest) returns (SurveyResponse);
+    // SurveyUpdate — правка: меняются только переданные поля.
+    rpc SurveyUpdate (SurveyUpdateRequest) returns (SurveyResponse);
+}
+
+message SurveyQrFetchRequest {
+    // check — номер, который проверить на занятость (0 — не проверять).
+    int64 check = 1;
+    // exclude_id — свой объект при правке: его номер занятым не считается.
+    int64 exclude_id = 2;
+}
+
+message SurveyQrFetchResponse {
+    // next — свободный номер: на один больше самого большого.
+    int64 next = 1;
+    // taken_by — название объекта, у которого уже есть номер check ("" — свободен).
+    string taken_by = 2;
+}
+
+message SurveyCreateRequest {
+    string name = 1;
+    string transcript = 2;
+    contract.analytics.enum.AnalyticType type = 3;
+    int64 qr = 4;
+}
+
+message SurveyUpdateRequest {
+    int64 id = 1;
+    optional string name = 2;
+    optional string transcript = 3;
+    optional contract.analytics.enum.AnalyticType type = 4;
+    optional int64 qr = 5;
+}
+
+message SurveyResponse {
+    // survey — объект после изменения, без ответов.
+    contract.analytics.entity.Analytic survey = 1;
+}

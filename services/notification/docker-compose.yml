@@ -1,0 +1,23 @@
+services:
+  dvgmu_apps_notification_api:
+    container_name: "dvgmu_apps_notification_api"
+    build:
+      context: "./api"
+      dockerfile: "Dockerfile"
+      network: host
+    restart: unless-stopped
+    environment:
+      GRPC_PORT: "4000"
+      CORS_ALLOWED_ORIGINS: ${NOTIFICATION_CORS_ALLOWED_ORIGINS:-http://localhost:3000}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_FROM: ${SMTP_FROM}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      SMTP_TLS_SKIP_VERIFY: ${SMTP_TLS_SKIP_VERIFY:-false}
+      TZ: ${NOTIFICATION_TZ:-Asia/Vladivostok}
+    networks:
+      - traefik-network
+
+networks:
+  traefik-network:
+    external: true

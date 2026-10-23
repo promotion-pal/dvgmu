@@ -1,0 +1,95 @@
+name: ojs
+
+services:
+  db:
+    image: mariadb:11.4
+    container_name: ojs_db
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-ojs}
+      MARIADB_DATABASE: ${DB_NAME:-ojs}
+      MARIADB_USER: ${DB_USER:-ojs}
+      MARIADB_PASSWORD: ${DB_PASSWORD:-ojs}
+    volumes:
+      - db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    restart: unless-stopped
+    networks:
+      - internal
+
+  app:
+    image: pkpofficial/ojs:${OJS_IMAGE_TAG:-latest}
+    platform: linux/amd64
+    container_name: ojs_app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # Apache ServerName + self-signed cert CN inside the container
+      SERVERNAME: ${OJS_DOMAIN:?set OJS_DOMAIN in .env}
+      PKP_CLI_INSTALL: "0"
+      # Feeds the installer only; the running site uses config/config.inc.php
+      PKP_DB_HOST: db
+      PKP_DB_NAME: ${DB_NAME:-ojs}
+      PKP_DB_USER: ${DB_USER:-ojs}
+      PKP_DB_PASSWORD: ${DB_PASSWORD:-ojs}
+    volumes:
+      - files:/var/www/files
+      - public:/var/www/html/public
+      - ./config/config.inc.php:/var/www/html/config.inc.php
+      # Apache vhost: X-Forwarded-Proto handling + /login /admin short URLs
+      - ./config/pkp.conf:/etc/apache2/conf-enabled/pkp.conf:ro
+      # PHP limits (base image ships 2M upload / 128M memory)
+      - ./config/php.ini:/usr/local/etc/php/conf.d/zz-ojs.ini:ro
+    restart: unless-stopped
+    networks:
+      - internal   # talk to db
+      - proxy      # reachable by Traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=${TRAEFIK_NETWORK:-traefik-network}"
+      # HTTPS router
+      - "traefik.http.routers.ojs.rule=Host(`${OJS_DOMAIN}`)"
+      - "traefik.http.routers.ojs.entrypoints=${TRAEFIK_ENTRYPOINT:-websecure}"
+      - "traefik.http.routers.ojs.tls=true"
+      - "traefik.http.routers.ojs.tls.certresolver=${TRAEFIK_CERTRESOLVER:-le}"
+      - "traefik.http.services.ojs.loadbalancer.server.port=80"
+      # HTTP → HTTPS redirect
+      - "traefik.http.routers.ojs-http.rule=Host(`${OJS_DOMAIN}`)"
+      - "traefik.http.routers.ojs-http.entrypoints=${TRAEFIK_ENTRYPOINT_HTTP:-web}"
+      - "traefik.http.routers.ojs-http.middlewares=ojs-https-redirect"
+      - "traefik.http.middlewares.ojs-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.ojs-https-redirect.redirectscheme.permanent=true"
+
+  cron:
+    image: pkpofficial/ojs:${OJS_IMAGE_TAG:-latest}
+    platform: linux/amd64
+    container_name: ojs_cron
+    depends_on:
+      app:
+        condition: service_started
+    working_dir: /var/www/html
+    entrypoint: ["/bin/sh", "-c"]
+    command: ["exec php lib/pkp/tools/scheduler.php work"]
+    volumes:
+      - files:/var/www/files
+      - public:/var/www/html/public
+      - ./config/config.inc.php:/var/www/html/config.inc.php
+      - ./config/php.ini:/usr/local/etc/php/conf.d/zz-ojs.ini:ro
+    networks:
+      - internal
+    restart: unless-stopped
+
+volumes:
+  db:
+  files:
+  public:
+
+networks:
+  internal:
+  proxy:
+    external: true
+    name: ${TRAEFIK_NETWORK:-traefik-network}

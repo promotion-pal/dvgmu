@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+package contract.service.v1;
+
+import "entity/v1/debtor.entity.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "service_v1;service_pb";
+
+// DebtorService reads students' tuition turnovers straight from 1C on every
+// call — nothing is cached, so the list is always as fresh as 1C itself.
+// See internal/modules/debtor.
+service DebtorService {
+    rpc DebtorFetch (DebtorFetchRequest) returns (DebtorFetchResponse);
+    // Every posting on the tuition account for one contract, oldest first:
+    // charges and payments with exact dates and documents.
+    rpc DebtorOperations (DebtorOperationsRequest) returns (DebtorOperationsResponse);
+    // Reads 1C's metadata map and probes accounting tables to locate where
+    // the payment schedule, deferred income (401.40) and counterparty and
+    // contract attributes live. Read-only; slow (up to a few minutes), meant
+    // to be run by hand, not on every page load.
+    rpc DebtorDiagnose (DebtorDiagnoseRequest) returns (DebtorDiagnoseResponse);
+}
+
+message DebtorFetchRequest {
+    // Period bounds as "YYYY-MM-DD". 1C keeps totals by month, so the period
+    // is widened to whole months. Empty: from January 1 of this year / today.
+    string date_from = 1;
+    string date_to = 2;
+}
+
+message DebtorFetchResponse {
+    reserved 2;
+    reserved "total";
+
+    // Sorted by closing balance, largest first.
+    repeated contract.entity.v1.Debtor debtors = 1;
+    // When 1C was read, so the page can show how fresh the data is.
+    google.protobuf.Timestamp fetched_at = 3;
+    // The 1C database the data came from, e.g. "bgu2".
+    string source = 4;
+    // The period actually used, whole months, "YYYY-MM-DD".
+    string period_from = 5;
+    string period_to = 6;
+    // True when kind comes from the taxpayer number; false while it is
+    // guessed from the name.
+    bool kind_by_inn = 7;
+    // Set when payment schedules or receipts could not be read; the turnovers
+    // are still returned, without due_now or receipts.
+    string schedule_error = 8;
+    string receipt_error = 9;
+}
+
+message DebtorDiagnoseRequest {
+    // Also read 1C's metadata map: slow (minutes), needed only to look for
+    // new objects.
+    bool include_metadata = 1;
+}
+
+message DebtorDiagnoseResponse {
+    repeated DiagnoseSection sections = 1;
+    google.protobuf.Timestamp finished_at = 2;
+}
+
+// DiagnoseSection is one table of the diagnostics report.
+message DiagnoseSection {
+    string title = 1;
+    repeated string columns = 2;
+    repeated DiagnoseRow rows = 3;
+    // Set when this probe failed; the other sections are still filled.
+    string error = 4;
+}
+
+message DiagnoseRow {
+    repeated string cells = 1;
+}
+
+message DebtorOperationsRequest {
+    // Debtor.contract_ref.
+    string contract_ref = 1;
+}
+
+message DebtorOperationsResponse {
+    repeated contract.entity.v1.DebtorOperation operations = 1;
+}

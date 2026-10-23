@@ -1,0 +1,10 @@
+env: prod
+
+reevaluation: 0
+
+grpc:
+  port: 4000
+  timeout: 5s
+
+database:
+  sslmode: disable

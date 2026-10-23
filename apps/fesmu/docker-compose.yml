@@ -1,0 +1,60 @@
+# Один файл и для прода, и для тестового стенда рядом с ним.
+# STAND пустой (прод) → проект fesmu, контейнеры fesmu_core_*, core.fesmu.ru / api.core.fesmu.ru.
+# STAND=3_0 (стенд)   → проект fesmu_3_0, контейнеры fesmu_core_3_0_*, домены из
+#                       APP_DOMAIN / API_DOMAIN. См. docs/stand.md.
+name: fesmu${STAND:+_${STAND}}
+
+services:
+  # Ключи сервисов (core_app/core_api) намеренно НЕ совпадают с именами
+  # контейнеров: имя сервиса — DNS-алиас в traefik-network, и у стенда оно
+  # не должно перехватывать прод-имя fesmu_core_api.
+  core_app:
+    container_name: "fesmu_core${STAND:+_${STAND}}_app"
+    build:
+      context: "."
+      dockerfile: "apps/app/Dockerfile"
+      args:
+        VERSION: ${VERSION:-dev}
+        API_URL: ${VITE_API_URL:-https://api.core.fesmu.ru}
+        AUTH_URL: ${VITE_AUTH_URL:-https://auth.fesmu.ru}
+    restart: unless-stopped
+    ports:
+      - "3000"
+    networks:
+      - traefik-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-network"
+      - "traefik.http.routers.fesmu-core-app${STAND:+-${STAND}}-secure.rule=Host(`${APP_DOMAIN:-core.fesmu.ru}`)"
+      - "traefik.http.routers.fesmu-core-app${STAND:+-${STAND}}-secure.entrypoints=websecure"
+      - "traefik.http.routers.fesmu-core-app${STAND:+-${STAND}}-secure.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.fesmu-core-app${STAND:+-${STAND}}-secure.service=fesmu-core-app${STAND:+-${STAND}}"
+      - "traefik.http.services.fesmu-core-app${STAND:+-${STAND}}.loadbalancer.server.port=3000"
+
+
+  core_api:
+    container_name: "fesmu_core${STAND:+_${STAND}}_api"
+    build:
+      context: "./api"
+      dockerfile: "Dockerfile"
+      args:
+        VERSION: ${VERSION:-dev}
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "4000"
+    networks:
+      - traefik-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-network"
+      - "traefik.http.routers.fesmu-core-api${STAND:+-${STAND}}-secure.rule=Host(`${API_DOMAIN:-api.core.fesmu.ru}`)"
+      - "traefik.http.routers.fesmu-core-api${STAND:+-${STAND}}-secure.entrypoints=websecure"
+      - "traefik.http.routers.fesmu-core-api${STAND:+-${STAND}}-secure.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.fesmu-core-api${STAND:+-${STAND}}-secure.service=fesmu-core-api${STAND:+-${STAND}}"
+      - "traefik.http.services.fesmu-core-api${STAND:+-${STAND}}.loadbalancer.server.port=4000"
+
+networks:
+  traefik-network:
+    external: true

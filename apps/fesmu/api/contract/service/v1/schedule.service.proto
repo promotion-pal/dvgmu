@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package contract.service.v1;
+
+import "entity/v1/schedule.entity.proto";
+
+option go_package = "service_v1;service_pb";
+
+service ScheduleService {
+    rpc ScheduleFetch (ScheduleFetchRequest) returns (ScheduleFetchResponse);
+    rpc ScheduleByID (ScheduleByIDRequest) returns (ScheduleByIDResponse);
+    rpc ScheduleCreate (ScheduleCreateRequest) returns (ScheduleCreateResponse);
+    rpc ScheduleUpdate (ScheduleUpdateRequest) returns (ScheduleUpdateResponse);
+    rpc ScheduleDelete (ScheduleDeleteRequest) returns (ScheduleDeleteResponse);
+}
+
+message ScheduleFetchRequest {
+    string program_id = 1;
+    int32 course = 2;
+}
+
+message ScheduleFetchResponse {
+    repeated contract.entity.v1.ScheduleTimetable list = 1;
+}
+
+message ScheduleByIDRequest {
+    string id = 1;
+}
+
+message ScheduleByIDResponse {
+    contract.entity.v1.ScheduleTimetable item = 1;
+}
+
+// A timetable is written as a whole: the editor sends the full aggregate and the
+// server validates the references between its parts (slots, groups, subjects).
+message ScheduleCreateRequest {
+    // The id is assigned by the server; a value sent here is ignored.
+    contract.entity.v1.ScheduleTimetable item = 1;
+}
+
+message ScheduleCreateResponse {
+    bool success = 1;
+    string message = 2;
+    string schedule_id = 3;
+}
+
+message ScheduleUpdateRequest {
+    // item.id selects the timetable to replace.
+    contract.entity.v1.ScheduleTimetable item = 1;
+}
+
+message ScheduleUpdateResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message ScheduleDeleteRequest {
+    string id = 1;
+}
+
+message ScheduleDeleteResponse {
+    bool success = 1;
+    string message = 2;
+}

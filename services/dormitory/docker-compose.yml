@@ -1,0 +1,72 @@
+services:
+  dvgmu_apps_dormitory_db:
+    container_name: "dvgmu_apps_dormitory_db"
+    image: postgres:17
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - dvgmu_dormitory_pgdata:/var/lib/postgresql/data
+    networks:
+      - traefik-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  dvgmu_apps_dormitory_api:
+    container_name: "dvgmu_apps_dormitory_api"
+    build:
+      context: "./api"
+      dockerfile: "Dockerfile"
+      network: host
+    restart: unless-stopped
+    depends_on:
+      dvgmu_apps_dormitory_db:
+        condition: service_healthy
+    environment:
+      DB_HOST: ${POSTGRES_HOST:-dvgmu_apps_dormitory_db}
+      DB_PORT: 5432
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_NAME: ${POSTGRES_DB}
+      DB_SSLMODE: disable
+      GRPC_PORT: 4000
+      CORS_ALLOWED_ORIGINS: ${DORMITORY_CORS_ALLOWED_ORIGINS}
+      ADMIN_PASSWORD: ${DORMITORY_ADMIN_PASSWORD}
+      TZ: ${DORMITORY_TZ:-Asia/Vladivostok}
+    networks:
+      - traefik-network
+
+  dvgmu_apps_dormitory_web:
+    container_name: "dvgmu_apps_dormitory_web"
+    build:
+      context: "."
+      dockerfile: "site/Dockerfile"
+      network: host
+      args:
+        NEXT_PUBLIC_API: "/api"
+        NEXT_PUBLIC_ADMIN_PASSWORD: ${DORMITORY_ADMIN_PASSWORD}
+        API_INTERNAL_URL: "http://dvgmu_apps_dormitory_api:4000"
+    restart: unless-stopped
+    depends_on:
+      - dvgmu_apps_dormitory_api
+    networks:
+      - traefik-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-network"
+      - "traefik.http.routers.dormitory-secure.rule=Host(`dormitory.dvgmu.promotion-pal.ru`)"
+      - "traefik.http.routers.dormitory-secure.entrypoints=websecure"
+      - "traefik.http.routers.dormitory-secure.tls.certresolver=letsencrypt"
+      - "traefik.http.services.dormitory-web.loadbalancer.server.port=3000"
+
+networks:
+  traefik-network:
+    external: true
+
+volumes:
+  dvgmu_dormitory_pgdata:

@@ -1,0 +1,394 @@
+syntax = "proto3";
+
+package contract.service;
+
+import "google/protobuf/timestamp.proto";
+import "packages/mdm/enum/user.enum.proto";
+import "packages/mdm/enum/doc.enum.proto";
+import "packages/mdm/entity/user.entity.proto";
+import "packages/mdm/entity/student.entity.proto";
+import "packages/mdm/entity/employee.entity.proto";
+
+option go_package = "service;service_pb";
+
+service UserService {
+    rpc UserFetch (UserFetchRequest) returns (UserFetchResponse);
+    rpc UserCreate (UserCreateRequest) returns (UserCreateResponse);
+    rpc UserFetchByID (UserFetchByIDRequest) returns (UserFetchByIDResponse);
+    rpc UserCreateBatch (UserCreateBatchRequest) returns (UserCreateBatchResponse);
+    rpc UserUpdate (UserUpdateRequest) returns (UserUpdateResponse);
+    rpc UserDelete (UserDeleteRequest) returns (UserDeleteResponse);
+    rpc UserDeleteBatch (UserDeleteBatchRequest) returns (UserDeleteBatchResponse);
+    rpc UserFetchByUUID (UserFetchByUUIDRequest) returns (UserFetchByUUIDResponse);
+    // UserFetchByADObjectID — пользователь по objectGUID учётки AD (для auth
+    // после входа через AD FS). NotFound — учётка ещё не связана с MDM.
+    rpc UserFetchByADObjectID (UserFetchByADObjectIDRequest) returns (UserFetchByADObjectIDResponse);
+    // ActivationIssue — новый код активации учётки (прежний перестаёт
+    // действовать). Открытый код отдаётся только здесь, один раз.
+    rpc ActivationIssue (ActivationIssueRequest) returns (ActivationIssueResponse);
+    // UserRolesSet заменяет набор ролей пользователя целиком (пустой — снять все).
+    rpc UserRolesSet (UserRolesSetRequest) returns (UserRolesSetResponse);
+    // UserPermissionsSet заменяет набор прав пользователя целиком.
+    rpc UserPermissionsSet (UserPermissionsSetRequest) returns (UserPermissionsSetResponse);
+    // UserAccessGroupsSet заменяет выданные пользователю наборы доступа целиком.
+    rpc UserAccessGroupsSet (UserAccessGroupsSetRequest) returns (UserAccessGroupsSetResponse);
+    // UserDepartmentsSet заменяет подразделения человека (его записи сотрудника)
+    // целиком; пустой набор — убрать все.
+    rpc UserDepartmentsSet (UserDepartmentsSetRequest) returns (UserDepartmentsSetResponse);
+    // UserPositionSet задаёт должность человека; пустая строка — снять.
+    rpc UserPositionSet (UserPositionSetRequest) returns (UserPositionSetResponse);
+
+    // Наборы доступа: права, собранные администратором под общим именем.
+    rpc AccessGroupFetch (AccessGroupFetchRequest) returns (AccessGroupFetchResponse);
+    // AccessGroupSave: id = 0 — создать, иначе изменить (состав прав заменяется целиком).
+    rpc AccessGroupSave (AccessGroupSaveRequest) returns (AccessGroupSaveResponse);
+    // AccessGroupDelete: набор снимается и со всех, кому выдан.
+    rpc AccessGroupDelete (AccessGroupDeleteRequest) returns (AccessGroupDeleteResponse);
+
+    rpc PassportCreate (PassportCreateRequest) returns (PassportCreateResponse);
+    rpc EducationCreate (EducationCreateRequest) returns (EducationCreateResponse);
+    rpc MilitaryCreate (MilitaryCreateRequest) returns (MilitaryCreateResponse);
+    rpc StudentCreate (StudentCreateRequest) returns (StudentCreateResponse);
+    rpc StudentFetch (StudentFetchRequest) returns (StudentFetchResponse);
+    rpc EmployeeCreate (EmployeeCreateRequest) returns (EmployeeCreateResponse);
+    rpc EmployeeFetch (EmployeeFetchRequest) returns (EmployeeFetchResponse);
+}
+
+message UserFetchRequest {
+}
+
+message UserFetchResponse {
+    repeated contract.entity.User users = 1;
+}
+
+message UserCreateRequest {
+    int64 id = 1;
+    string last_name = 2;
+    string first_name = 3;
+    optional string patronymic = 4;
+
+    optional string email = 5;
+    optional string phone = 6;
+    optional google.protobuf.Timestamp birthday = 7;
+}
+
+message UserCreateResponse {
+    int64 id = 1;
+    bool success = 2;
+    string message = 3;
+    string email = 4;
+    string temporary_password = 5;
+}
+
+message UserUpdateRequest {
+    int64 id = 1;
+    string last_name = 2;
+    string first_name = 3;
+    optional string patronymic = 4;
+    optional string email = 5;
+    optional string phone = 6;
+    optional google.protobuf.Timestamp birthday = 7;
+}
+
+message UserUpdateResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message UserDeleteRequest {
+    int64 id = 1;
+}
+
+message UserDeleteResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message UserDeleteBatchRequest {
+    repeated int64 ids = 1;
+}
+
+message UserDeleteBatchResponse {
+    bool success = 1;
+    string message = 2;
+    int64 deleted_count = 3;
+}
+
+message UserFetchByIDRequest {
+    int64 id = 1;
+}
+
+message UserFetchByIDResponse {
+    contract.entity.UserFull profile = 1;
+}
+
+message UserFetchByUUIDRequest {
+    string uuid = 1;
+}
+
+message UserFetchByUUIDResponse {
+    contract.entity.User user = 1;
+}
+
+message UserFetchByADObjectIDRequest {
+    string ad_object_id = 1;
+}
+
+message UserFetchByADObjectIDResponse {
+    contract.entity.User user = 1;
+}
+
+message ActivationIssueRequest {
+    int64 id = 1;
+}
+
+message ActivationIssueResponse {
+    string code = 1;
+    google.protobuf.Timestamp expires_at = 2;
+}
+
+message UserPermissionsSetRequest {
+    int64 id = 1;
+    repeated string permissions = 2;
+}
+
+message UserPermissionsSetResponse {
+    contract.entity.User user = 1;
+}
+
+message UserAccessGroupsSetRequest {
+    int64 id = 1;
+    repeated int64 group_ids = 2;
+}
+
+message UserAccessGroupsSetResponse {
+    contract.entity.User user = 1;
+}
+
+message UserDepartmentsSetRequest {
+    int64 id = 1;
+    repeated contract.enum.UserEmployeeDepartment departments = 2;
+}
+
+message UserDepartmentsSetResponse {
+    contract.entity.User user = 1;
+}
+
+message UserPositionSetRequest {
+    int64 id = 1;
+    string position = 2;
+}
+
+message UserPositionSetResponse {
+    contract.entity.User user = 1;
+}
+
+message AccessGroupFetchRequest {
+}
+
+message AccessGroupFetchResponse {
+    repeated contract.entity.AccessGroup groups = 1;
+}
+
+message AccessGroupSaveRequest {
+    int64 id = 1;
+    string name = 2;
+    string description = 3;
+    repeated string permissions = 4;
+    // departments — выдавать доступ всем сотрудникам этих подразделений.
+    repeated contract.enum.UserEmployeeDepartment departments = 5;
+}
+
+message AccessGroupSaveResponse {
+    contract.entity.AccessGroup group = 1;
+}
+
+message AccessGroupDeleteRequest {
+    int64 id = 1;
+}
+
+message AccessGroupDeleteResponse {
+}
+
+message UserRolesSetRequest {
+    int64 id = 1;
+    repeated contract.enum.UserRole roles = 2;
+}
+
+message UserRolesSetResponse {
+    contract.entity.User user = 1;
+}
+
+message UserCreateBatchRequest {
+    repeated UserCreateBatchItem users = 1;
+}
+
+message UserCreateBatchItem {
+    string last_name = 1;
+    string first_name = 2;
+    optional string patronymic = 3;
+
+    optional string email = 4;
+    optional string phone = 5;
+    optional google.protobuf.Timestamp birthday = 6;
+
+    optional PassportCreateRequest passport = 7;
+    repeated EducationCreateRequest educations = 8;
+    optional MilitaryCreateRequest military = 9;
+}
+
+message UserCreateBatchResponse {
+    repeated UserCreateBatchResult results = 1;
+}
+
+message UserCreateBatchResult {
+    int32 index = 1;
+    bool success = 2;
+    string message = 3;
+    int64 user_id = 4;
+    string email = 5;
+    string temporary_password = 6;
+}
+
+// Passport
+
+message PassportCreateRequest {
+    int64 user_id = 1;
+    string series = 2;
+    string number = 3;
+
+    string authority = 4;
+    string issue_date = 5;
+    string expiry_date = 6;
+    string department_code = 7;
+
+    string snils = 8;
+    string birth_place = 9;
+    contract.enum.UserGender gender = 10;
+    contract.enum.UserNationality nationality = 11;
+
+    string registration_date = 12;
+    string residential_address = 13;
+    string registration_address = 14;
+}
+
+message PassportCreateResponse {
+    bool success = 1;
+    string message = 2;
+    int64 passport_id = 3;
+}
+
+// Education
+
+message EducationCreateRequest {
+    int64 user_id = 1;
+    contract.enum.EducationType type = 2;
+    contract.enum.EducationStatus status = 3;
+
+    string series = 4;
+    string number = 5;
+    string registration_number = 6;
+    google.protobuf.Timestamp issue_date = 7;
+
+    string institution_inn = 8;
+    string institution_name = 9;
+    string institution_city = 10;
+    string institution_region = 11;
+    string institution_country_code = 12;
+
+    string specialty_code = 13;
+    string specialty_name = 14;
+    string qualification = 15;
+    string honors = 16;
+
+    string supplement_series = 17;
+    string supplement_number = 18;
+
+    bool is_original = 19;
+    bool is_verified_via_frdo = 20;
+}
+
+message EducationCreateResponse {
+    bool success = 1;
+    string message = 2;
+    int64 education_id = 3;
+}
+
+// Military
+
+message MilitaryCreateRequest {
+    int64 user_id = 1;
+    string commissariat = 2;
+    string vus_code = 3;
+
+    contract.enum.MilitaryRank rank = 4;
+    contract.enum.MilitaryDocument document = 5;
+    contract.enum.MilitaryValidity validity = 6;
+
+    bool has_deferment = 7;
+    google.protobuf.Timestamp deferment_expires_at = 8;
+}
+
+message MilitaryCreateResponse {
+    bool success = 1;
+    string message = 2;
+    int64 military_id = 3;
+}
+
+// Student
+
+message StudentCreateRequest {
+    int64 user_id = 1;
+
+    string group = 2;
+    string record_book = 3;
+    contract.enum.UserStudentStatus status = 4;
+    contract.enum.UserStudentEducationForm education_form = 5;
+
+    bool needs_dormitory = 6;
+}
+
+message StudentCreateResponse {
+    bool success = 1;
+    string message = 2;
+    int64 student_id = 3;
+}
+
+message StudentFetchRequest {
+}
+
+// Данные учащегося вместе с его профилем пользователя — одним запросом,
+// без отдельного похода за каждым User по отдельности.
+message StudentWithUser {
+    contract.entity.Student student = 1;
+    contract.entity.User user = 2;
+}
+
+message StudentFetchResponse {
+    repeated StudentWithUser students = 1;
+}
+
+// Employee
+
+message EmployeeCreateRequest {
+    int64 user_id = 1;
+    contract.enum.UserEmployeeDepartment department = 2;
+}
+
+message EmployeeCreateResponse {
+    bool success = 1;
+    string message = 2;
+    int64 employee_id = 3;
+}
+
+message EmployeeFetchRequest {
+}
+
+message EmployeeWithUser {
+    contract.entity.Employee employee = 1;
+    contract.entity.User user = 2;
+}
+
+message EmployeeFetchResponse {
+    repeated EmployeeWithUser employees = 1;
+}

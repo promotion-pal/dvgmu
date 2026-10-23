@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package contract.service.v1;
+
+option go_package = "service_v1;service_pb";
+
+// UserImportService is this api's own capability, not a passthrough to an
+// external package: it uploads an Excel file to the files service, then
+// creates the parsed rows in the mdm service — as plain users (employee
+// sheet) or as users with an attached student record (student sheet). See
+// internal/service/packages/user.
+service UserImportService {
+    rpc EmployeeImportFromExcel (EmployeeImportFromExcelRequest) returns (UserImportFromExcelResponse);
+    rpc StudentImportFromExcel (StudentImportFromExcelRequest) returns (UserImportFromExcelResponse);
+}
+
+message EmployeeImportFromExcelRequest {
+    string file_name = 1;
+    bytes content = 2;
+}
+
+message StudentImportFromExcelRequest {
+    string file_name = 1;
+    bytes content = 2;
+}
+
+message UserImportFromExcelResponse {
+    bool success = 1;
+    string message = 2;
+    int32 created_count = 3;
+    repeated UserImportError errors = 4;
+    // mdm auto-generates email/password per user when not supplied — the
+    // admin running the import needs these to actually hand accounts out.
+    repeated UserImportCreated created = 5;
+}
+
+message UserImportError {
+    int32 index = 1;
+    string message = 2;
+}
+
+message UserImportCreated {
+    int64 user_id = 1;
+    string first_name = 2;
+    string last_name = 3;
+    string email = 4;
+    string temporary_password = 5;
+}

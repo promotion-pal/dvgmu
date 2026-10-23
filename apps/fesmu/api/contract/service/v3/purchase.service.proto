@@ -1,0 +1,518 @@
+syntax = "proto3";
+
+package contract.service.v3;
+
+import "google/protobuf/timestamp.proto";
+import "enum/v3/purchase.enum.proto";
+import "entity/v3/purchase.entity.proto";
+import "packages/mdm/enum/user.enum.proto";
+
+option go_package = "service_v3;service_pb";
+
+// Purchases v3, by the regulation (Регламент закупок):
+//
+//   I.   employee → head of their department → vice-rector over it →
+//        implementing department's head (merges requests into a purchase) →
+//        assignee (characteristics, offers) → head checks (codes filled) →
+//        vice-rector over the implementing department → economists (budget,
+//        НМЦК) → budget commission (protocol, ПФХД)
+//   II.  implementing head → assignee (ТЗ) → head checks → vice-rector
+//        confirms → economists (final cost) → contract service (law, method)
+//        → procurement department
+//   III. tendering → contract → delivery → acceptance → inventory → done
+//
+// Nobody picks a role. The caller is the signed-in user; a call is let
+// through when the user holds the permission of the record's current stage
+// (PurchasePermission) and the record is theirs to act on: their department
+// (MDM), their vice-rector direction (directory), a purchase given to them.
+// Every stage may FORWARD the record or RETURN it one stage back with a
+// comment. Every change is written to the log.
+//
+// Reads are named ...Fetch, so the auth interceptor counts them as viewing.
+service PurchaseService {
+    // Everything the user may see, with what they may do to each record.
+    rpc PurchaseOverviewFetch (PurchaseOverviewFetchRequest) returns (PurchaseOverviewFetchResponse);
+
+    // — Requests.
+    rpc PurchaseRequestCreate (PurchaseRequestCreateRequest) returns (PurchaseRequestCreateResponse);
+    rpc PurchaseRequestUpdate (PurchaseRequestUpdateRequest) returns (PurchaseRequestUpdateResponse);
+    rpc PurchaseRequestDelete (PurchaseRequestDeleteRequest) returns (PurchaseRequestDeleteResponse);
+    rpc PurchaseRequestMove (PurchaseRequestMoveRequest) returns (PurchaseRequestMoveResponse);
+    rpc PurchaseRequestMerge (PurchaseRequestMergeRequest) returns (PurchaseRequestMergeResponse);
+
+    // — Purchases.
+    rpc PurchaseLotCreate (PurchaseLotCreateRequest) returns (PurchaseLotCreateResponse);
+    rpc PurchaseLotRequests (PurchaseLotRequestsRequest) returns (PurchaseLotRequestsResponse);
+    rpc PurchaseLotDisband (PurchaseLotDisbandRequest) returns (PurchaseLotDisbandResponse);
+    rpc PurchaseLotUpdate (PurchaseLotUpdateRequest) returns (PurchaseLotUpdateResponse);
+    rpc PurchaseLotMove (PurchaseLotMoveRequest) returns (PurchaseLotMoveResponse);
+
+    rpc PurchaseQuotationCreate (PurchaseQuotationCreateRequest) returns (PurchaseQuotationCreateResponse);
+    rpc PurchaseQuotationDelete (PurchaseQuotationDeleteRequest) returns (PurchaseQuotationDeleteResponse);
+    rpc PurchaseQuotationFileFetch (PurchaseQuotationFileFetchRequest) returns (PurchaseQuotationFileFetchResponse);
+
+    rpc PurchaseDocumentCreate (PurchaseDocumentCreateRequest) returns (PurchaseDocumentCreateResponse);
+    rpc PurchaseDocumentDelete (PurchaseDocumentDeleteRequest) returns (PurchaseDocumentDeleteResponse);
+    rpc PurchaseDocumentFileFetch (PurchaseDocumentFileFetchRequest) returns (PurchaseDocumentFileFetchResponse);
+
+    // — Budget commission: a meeting's protocol decides its purchases at once.
+    rpc PurchaseProtocolCreate (PurchaseProtocolCreateRequest) returns (PurchaseProtocolCreateResponse);
+    rpc PurchaseProtocolUpdate (PurchaseProtocolUpdateRequest) returns (PurchaseProtocolUpdateResponse);
+    rpc PurchaseProtocolFileFetch (PurchaseProtocolFileFetchRequest) returns (PurchaseProtocolFileFetchResponse);
+
+    // ОКПД2 / КТРУ / ОКВЭД2 and the implementing department guessed from a title.
+    rpc PurchaseCodeSuggestFetch (PurchaseCodeSuggestFetchRequest) returns (PurchaseCodeSuggestFetchResponse);
+    // Employees of a department (UNSPECIFIED — everyone), from MDM: whom a head
+    // gives a purchase to, whom the administrator binds to a vice-rector.
+    rpc PurchaseEmployeeFetch (PurchaseEmployeeFetchRequest) returns (PurchaseEmployeeFetchResponse);
+
+    // — Directories: PurchasePermission DIRECTORIES.
+    rpc PurchaseCuratorSave (PurchaseCuratorSaveRequest) returns (PurchaseCuratorSaveResponse);
+    rpc PurchaseCuratorDelete (PurchaseCuratorDeleteRequest) returns (PurchaseCuratorDeleteResponse);
+    rpc PurchaseDepartmentSave (PurchaseDepartmentSaveRequest) returns (PurchaseDepartmentSaveResponse);
+    rpc PurchaseCategorySave (PurchaseCategorySaveRequest) returns (PurchaseCategorySaveResponse);
+    rpc PurchaseCategoryDelete (PurchaseCategoryDeleteRequest) returns (PurchaseCategoryDeleteResponse);
+}
+
+message PurchaseOverviewFetchRequest {
+    // 0 — every year; otherwise purchases of that plan year and the requests
+    // and purchases not yet before the commission.
+    int32 plan_year = 1;
+}
+
+// What the user sees: own requests and assigned purchases always; their
+// department's, direction's or everything by the VIEW_* permissions;
+// protocols with VIEW_PLAN or LOT_COMMISSION.
+message PurchaseOverviewFetchResponse {
+    repeated contract.entity.v3.PurchaseRequest requests = 1;
+    repeated contract.entity.v3.PurchaseLot lots = 2;
+    repeated contract.entity.v3.PurchaseProtocol protocols = 3;
+    repeated contract.entity.v3.PurchaseCurator curators = 4;
+    repeated contract.entity.v3.PurchaseDepartment departments = 5;
+    repeated contract.entity.v3.PurchaseCategory categories = 6;
+    contract.entity.v3.PurchaseMe me = 7;
+}
+
+// REQUEST_CREATE. The request goes straight to the head of the author's
+// department, which comes from the MDM profile.
+message PurchaseRequestCreateRequest {
+    string title = 1;
+    contract.enum.v3.PurchaseItemType item_type = 2;
+    double quantity = 3;
+    string unit = 4;
+    string description = 5;
+    // Only when the author is in several departments: which one asks.
+    contract.enum.UserEmployeeDepartment department = 6;
+}
+
+message PurchaseRequestCreateResponse {
+    int64 id = 1;
+}
+
+// The author edits a request in REWORK, the head one in HEAD_REVIEW.
+message PurchaseRequestUpdateRequest {
+    int64 id = 1;
+    string title = 2;
+    contract.enum.v3.PurchaseItemType item_type = 3;
+    double quantity = 4;
+    string unit = 5;
+    string description = 6;
+}
+
+message PurchaseRequestUpdateResponse {
+}
+
+// The author, while the request is in HEAD_REVIEW or REWORK.
+message PurchaseRequestDeleteRequest {
+    int64 id = 1;
+}
+
+message PurchaseRequestDeleteResponse {
+}
+
+// FORWARD / RETURN / REJECT at the request's stage:
+//   REWORK             author      FORWARD → HEAD_REVIEW
+//   HEAD_REVIEW        head        FORWARD → CURATOR_REVIEW, RETURN → REWORK, REJECT
+//   CURATOR_REVIEW     curator     FORWARD → IMPLEMENTER_REVIEW, RETURN → HEAD_REVIEW, REJECT
+//   IMPLEMENTER_REVIEW impl. head  RETURN → CURATOR_REVIEW (FORWARD is PurchaseLotCreate)
+message PurchaseRequestMoveRequest {
+    int64 id = 1;
+    contract.enum.v3.PurchaseMove move = 2;
+    string comment = 3;
+    // CURATOR_REVIEW FORWARD: the implementing department; UNSPECIFIED takes
+    // the suggested one.
+    contract.enum.UserEmployeeDepartment implementing_department = 4;
+    // HEAD_REVIEW FORWARD, administrator only: the vice-rector direction when
+    // the directory puts the department in none; 0 — by the directory.
+    int64 curator_id = 5;
+}
+
+message PurchaseRequestMoveResponse {
+}
+
+// The head merges requests of their department, of one type, under review
+// into a new one; the originals stay, marked MERGED.
+message PurchaseRequestMergeRequest {
+    repeated int64 request_ids = 1;
+    string title = 2;
+    string description = 3;
+}
+
+message PurchaseRequestMergeResponse {
+    int64 id = 1;
+}
+
+// LOT_MANAGE. The implementing head merges requests in IMPLEMENTER_REVIEW of
+// their department, of one type, into a purchase (FORMING).
+message PurchaseLotCreateRequest {
+    repeated int64 request_ids = 1;
+    string title = 2;
+    string description = 3;
+    // Administrator only: the direction when the directory puts the
+    // implementing department in none; 0 — by the directory.
+    int64 curator_id = 4;
+}
+
+message PurchaseLotCreateResponse {
+    int64 id = 1;
+}
+
+// LOT_MANAGE, while FORMING: add requests to the purchase or take them out
+// (back to IMPLEMENTER_REVIEW).
+message PurchaseLotRequestsRequest {
+    int64 lot_id = 1;
+    repeated int64 add_ids = 2;
+    repeated int64 remove_ids = 3;
+}
+
+message PurchaseLotRequestsResponse {
+}
+
+// LOT_MANAGE, while FORMING: the purchase is deleted, its requests go back
+// to IMPLEMENTER_REVIEW.
+message PurchaseLotDisbandRequest {
+    int64 id = 1;
+    string comment = 2;
+}
+
+message PurchaseLotDisbandResponse {
+}
+
+// Each stage saves its own fields only; the server rejects a patch that is
+// not the current stage's or not the user's to make.
+message PurchaseLotUpdateRequest {
+    int64 id = 1;
+    oneof patch {
+        // FORMING, APPROVED — implementing head; SPECIFICATION, TECH_SPEC — assignee;
+        // SPECIFICATION_CHECK, TECH_SPEC_CHECK — implementing head.
+        PurchaseLotContentPatch content = 2;
+        // CURATOR_REVIEW — vice-rector.
+        PurchaseLotCuratorPatch curator = 3;
+        // ECONOMIST_REVIEW — economist.
+        PurchaseLotBudgetPatch budget = 4;
+        // FINAL_COST — economist.
+        PurchaseLotFinalCostPatch final_cost = 5;
+        // CONTRACT_SERVICE — contract service.
+        PurchaseLotLawPatch law = 6;
+        // PROCUREMENT, TENDERING, CONTRACTING, DELIVERY — procurement.
+        PurchaseLotExecutionPatch execution = 7;
+        // ACCEPTANCE — acceptance.
+        PurchaseLotAcceptancePatch acceptance = 8;
+        // INVENTORY — inventory.
+        PurchaseLotInventoryPatch inventory = 9;
+        // Any stage — the implementing head, or whoever acts at the stage.
+        PurchaseLotDeadlinePatch deadline = 10;
+        // Any stage — like deadline: the remarks to check after the transfer;
+        // empty — checked.
+        PurchaseLotReviewPatch review = 11;
+    }
+}
+
+message PurchaseLotContentPatch {
+    string title = 1;
+    string description = 2;
+    double quantity = 3;
+    string unit = 4;
+    string specification = 5;
+    string tech_spec = 6;
+    // The implementing head may correct the filled codes at the check.
+    string okpd2 = 7;
+    string ktru = 8;
+    string okved = 9;
+}
+
+message PurchaseLotCuratorPatch {
+    string curator_justification = 1;
+}
+
+message PurchaseLotBudgetPatch {
+    string okpd2 = 1;
+    string ktru = 2;
+    string okved = 3;
+    contract.enum.v3.PurchaseFundingSource funding_source = 4;
+    string kosgu = 5;
+    // 0 leaves it unset: the average-based amount applies.
+    int64 nmck = 6;
+    string economist_comment = 7;
+}
+
+message PurchaseLotFinalCostPatch {
+    int64 final_cost = 1;
+    string final_cost_comment = 2;
+}
+
+message PurchaseLotLawPatch {
+    contract.enum.v3.PurchaseLaw law = 1;
+    contract.enum.v3.PurchaseMethod method = 2;
+    string contract_service_comment = 3;
+}
+
+message PurchaseLotExecutionPatch {
+    string notice_number = 1;
+    google.protobuf.Timestamp notice_at = 2;
+    string supplier = 3;
+    string supplier_inn = 4;
+    string contract_number = 5;
+    google.protobuf.Timestamp contract_at = 6;
+    int64 contract_amount = 7;
+    google.protobuf.Timestamp delivery_due = 8;
+    google.protobuf.Timestamp delivered_at = 9;
+}
+
+message PurchaseLotAcceptancePatch {
+    google.protobuf.Timestamp accepted_at = 1;
+    string acceptance_comment = 2;
+}
+
+message PurchaseLotInventoryPatch {
+    // Replaces the list: inventory numbers of the items this purchase brought.
+    repeated string inventory_numbers = 1;
+}
+
+message PurchaseLotDeadlinePatch {
+    // Unset clears the control date.
+    google.protobuf.Timestamp due_at = 1;
+    string due_comment = 2;
+}
+
+message PurchaseLotReviewPatch {
+    string review_note = 1;
+}
+
+message PurchaseLotUpdateResponse {
+}
+
+// FORWARD / RETURN at the purchase's stage; FORWARD checks that the stage's
+// work is done:
+//   FORMING              impl. head  FORWARD (assignee given) → SPECIFICATION
+//   SPECIFICATION        assignee    FORWARD (characteristics, ≥1 КП) → SPECIFICATION_CHECK; RETURN → FORMING
+//   SPECIFICATION_CHECK  impl. head  FORWARD (codes filled) → CURATOR_REVIEW; RETURN → SPECIFICATION
+//   CURATOR_REVIEW       curator     FORWARD (justification) → ECONOMIST_REVIEW; RETURN → SPECIFICATION_CHECK
+//   ECONOMIST_REVIEW     economist   FORWARD (funding, КОСГУ, НМЦК) → BUDGET_COMMISSION; RETURN → CURATOR_REVIEW
+//   BUDGET_COMMISSION    commission  only by PurchaseProtocolCreate
+//   APPROVED             impl. head  FORWARD (assignee given) → TECH_SPEC
+//   TECH_SPEC            assignee    FORWARD (ТЗ) → TECH_SPEC_CHECK; RETURN → APPROVED
+//   TECH_SPEC_CHECK      impl. head  FORWARD → TECH_SPEC_CURATOR; RETURN → TECH_SPEC
+//   TECH_SPEC_CURATOR    curator     FORWARD → FINAL_COST; RETURN → TECH_SPEC_CHECK
+//   FINAL_COST           economist   FORWARD (final cost) → CONTRACT_SERVICE; RETURN → TECH_SPEC_CURATOR
+//   CONTRACT_SERVICE     contract    FORWARD (law, method) → PROCUREMENT; RETURN → FINAL_COST
+//   PROCUREMENT          procurement FORWARD → TENDERING; RETURN → CONTRACT_SERVICE
+//   TENDERING            procurement FORWARD (supplier) → CONTRACTING; RETURN → PROCUREMENT
+//   CONTRACTING          procurement FORWARD (contract №, date, amount) → DELIVERY; RETURN → TENDERING
+//   DELIVERY             procurement FORWARD (delivered) → ACCEPTANCE; RETURN → CONTRACTING
+//   ACCEPTANCE           acceptance  FORWARD (accepted) → INVENTORY, a service → COMPLETED; RETURN → DELIVERY
+//   INVENTORY            inventory   FORWARD (≥1 item) → COMPLETED; RETURN → ACCEPTANCE
+message PurchaseLotMoveRequest {
+    int64 id = 1;
+    contract.enum.v3.PurchaseMove move = 2;
+    string comment = 3;
+    // FORMING and APPROVED FORWARD: who prepares; empty keeps the one given.
+    string assignee_uuid = 4;
+}
+
+message PurchaseLotMoveResponse {
+}
+
+// LOT_PREPARE, the assignee, while SPECIFICATION (also LOT_MANAGE at the check).
+message PurchaseQuotationCreateRequest {
+    int64 lot_id = 1;
+    string supplier = 2;
+    string supplier_inn = 3;
+    int64 unit_price = 4;
+    string note = 5;
+    string file_name = 6;
+    bytes file_content = 7;
+}
+
+message PurchaseQuotationCreateResponse {
+    int64 id = 1;
+}
+
+message PurchaseQuotationDeleteRequest {
+    int64 id = 1;
+}
+
+message PurchaseQuotationDeleteResponse {
+}
+
+message PurchaseQuotationFileFetchRequest {
+    int64 id = 1;
+}
+
+message PurchaseQuotationFileFetchResponse {
+    string file_name = 1;
+    bytes content = 2;
+}
+
+// Whoever may edit the purchase at its stage attaches that stage's files:
+// the assignee the ТЗ, procurement the notice and contract, acceptance the act.
+message PurchaseDocumentCreateRequest {
+    int64 lot_id = 1;
+    contract.enum.v3.PurchaseDocumentKind kind = 2;
+    string note = 3;
+    string file_name = 4;
+    bytes file_content = 5;
+}
+
+message PurchaseDocumentCreateResponse {
+    int64 id = 1;
+}
+
+message PurchaseDocumentDeleteRequest {
+    int64 id = 1;
+}
+
+message PurchaseDocumentDeleteResponse {
+}
+
+message PurchaseDocumentFileFetchRequest {
+    int64 id = 1;
+}
+
+message PurchaseDocumentFileFetchResponse {
+    string file_name = 1;
+    bytes content = 2;
+}
+
+// LOT_COMMISSION. Records a meeting and applies its decisions together:
+// APPROVE → APPROVED (into ПФХД; back to the implementing head for the ТЗ),
+// REJECT → REJECTED, RETURN → ECONOMIST_REVIEW. A purchase may be decided if
+// it is at BUDGET_COMMISSION; a decision may be revised while it is REJECTED
+// or APPROVED and the ТЗ has not been started.
+message PurchaseProtocolCreateRequest {
+    string number = 1;
+    google.protobuf.Timestamp held_at = 2;
+    string chairman = 3;
+    string secretary = 4;
+    string comment = 5;
+    repeated PurchaseProtocolDecisionInput decisions = 6;
+    string file_name = 7;
+    bytes file_content = 8;
+}
+
+message PurchaseProtocolDecisionInput {
+    int64 lot_id = 1;
+    contract.enum.v3.PurchaseCommissionDecision decision = 2;
+    // APPROVE: required.
+    contract.enum.v3.PurchasePlanType plan_type = 3;
+    int32 plan_year = 4;
+    // REJECT and RETURN: required.
+    string comment = 5;
+}
+
+message PurchaseProtocolCreateResponse {
+    int64 id = 1;
+}
+
+// LOT_COMMISSION: the protocol's details and signed file; decisions are not
+// changed here — a new protocol revises them.
+message PurchaseProtocolUpdateRequest {
+    int64 id = 1;
+    string number = 2;
+    google.protobuf.Timestamp held_at = 3;
+    string chairman = 4;
+    string secretary = 5;
+    string comment = 6;
+    // Empty keeps the uploaded file.
+    string file_name = 7;
+    bytes file_content = 8;
+}
+
+message PurchaseProtocolUpdateResponse {
+}
+
+message PurchaseProtocolFileFetchRequest {
+    int64 id = 1;
+}
+
+message PurchaseProtocolFileFetchResponse {
+    string file_name = 1;
+    bytes content = 2;
+}
+
+message PurchaseCodeSuggestFetchRequest {
+    string title = 1;
+}
+
+message PurchaseCodeSuggestFetchResponse {
+    contract.entity.v3.PurchaseCodeSuggestion suggestion = 1;
+}
+
+message PurchaseEmployeeFetchRequest {
+    contract.enum.UserEmployeeDepartment department = 1;
+}
+
+message PurchaseEmployeeFetchResponse {
+    repeated contract.entity.v3.PurchaseEmployee list = 1;
+}
+
+message PurchaseCuratorSaveRequest {
+    // 0 adds a direction.
+    int64 id = 1;
+    string title = 2;
+    string short_title = 3;
+    string person_name = 4;
+    string user_uuid = 5;
+    string user_name = 6;
+    int32 sort_order = 7;
+}
+
+message PurchaseCuratorSaveResponse {
+    int64 id = 1;
+}
+
+// Refused while departments, requests or purchases refer to the direction.
+message PurchaseCuratorDeleteRequest {
+    int64 id = 1;
+}
+
+message PurchaseCuratorDeleteResponse {
+}
+
+message PurchaseDepartmentSaveRequest {
+    contract.enum.UserEmployeeDepartment department = 1;
+    // 0 — no vice-rector.
+    int64 curator_id = 2;
+}
+
+message PurchaseDepartmentSaveResponse {
+}
+
+message PurchaseCategorySaveRequest {
+    // 0 adds a category.
+    int64 id = 1;
+    string name = 2;
+    string okpd2_prefix = 3;
+    contract.enum.UserEmployeeDepartment implementing_department = 4;
+}
+
+message PurchaseCategorySaveResponse {
+    int64 id = 1;
+}
+
+message PurchaseCategoryDeleteRequest {
+    int64 id = 1;
+}
+
+message PurchaseCategoryDeleteResponse {
+}

@@ -1,0 +1,3 @@
+env: prod
+
+interval: 1h

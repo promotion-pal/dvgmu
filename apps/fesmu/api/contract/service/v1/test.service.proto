@@ -1,0 +1,144 @@
+syntax = "proto3";
+
+package contract.service.v1;
+
+import "entity/v1/test.entity.proto";
+import "enum/v1/test.enum.proto";
+
+option go_package = "service_v1;service_pb";
+
+// The test builder: staff create tests (a topic, questions and answer
+// options with the correct ones marked). Every call needs a login — the
+// correct answers must not leak to students.
+service TestService {
+    rpc TestFetch (TestFetchRequest) returns (TestFetchResponse);
+    rpc TestByID (TestByIDRequest) returns (TestByIDResponse);
+    rpc TestCreate (TestCreateRequest) returns (TestCreateResponse);
+    rpc TestUpdate (TestUpdateRequest) returns (TestUpdateResponse);
+    rpc TestDelete (TestDeleteRequest) returns (TestDeleteResponse);
+    // The test as an .rtf in the testing system's template format.
+    rpc TestExport (TestExportRequest) returns (TestExportResponse);
+    // Reads a supplied .docx (question, options, "@" before the correct ones)
+    // or .txt ("1. вопрос", "#1." options, "@2." the correct ones) into a
+    // draft for the create form. Saves nothing.
+    rpc TestImportParse (TestImportParseRequest) returns (TestImportParseResponse);
+    // Sets the export status by hand; nothing else about the test changes.
+    rpc TestExportStatusUpdate (TestExportStatusUpdateRequest) returns (TestExportStatusUpdateResponse);
+    // Stores a question's picture (JPEG or PNG, up to 5 MB); the same picture
+    // twice gives the same id. Served at GET /test-images/{image}.
+    rpc TestImageUpload (TestImageUploadRequest) returns (TestImageUploadResponse);
+}
+
+// A question as the client sends it: no ids, the order is the list's order.
+message TestQuestionInput {
+    string text = 1;
+    repeated TestAnswerInput answers = 2;
+    // A picture uploaded before (TestImageUpload) or read by TestImportParse; empty — none.
+    string image = 3;
+}
+
+message TestAnswerInput {
+    string text = 1;
+    bool is_correct = 2;
+}
+
+// Empty topic means "any"; otherwise a case-insensitive substring match.
+message TestFetchRequest {
+    string topic = 1;
+}
+
+message TestFetchResponse {
+    repeated contract.entity.v1.Test list = 1;
+}
+
+message TestByIDRequest {
+    int64 id = 1;
+}
+
+message TestByIDResponse {
+    contract.entity.v1.Test test = 1;
+}
+
+message TestCreateRequest {
+    string topic = 1;
+    string description = 2;
+    repeated TestQuestionInput questions = 3;
+    string department = 4;
+    string discipline = 5;
+    // Unspecified — V1.
+    contract.enum.v1.TestVersion version = 6;
+}
+
+message TestCreateResponse {
+    bool success = 1;
+    string message = 2;
+    int64 test_id = 3;
+}
+
+// Replaces the whole test: topic, description and all questions.
+message TestUpdateRequest {
+    int64 id = 1;
+    string topic = 2;
+    string description = 3;
+    repeated TestQuestionInput questions = 4;
+    string department = 5;
+    string discipline = 6;
+    // Unspecified — V1.
+    contract.enum.v1.TestVersion version = 7;
+}
+
+message TestUpdateResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message TestDeleteRequest {
+    int64 id = 1;
+}
+
+message TestDeleteResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message TestExportRequest {
+    int64 id = 1;
+}
+
+message TestExportResponse {
+    string file_name = 1;
+    bytes content = 2;
+}
+
+message TestImportParseRequest {
+    string file_name = 1;
+    bytes content = 2;
+}
+
+message TestImportParseResponse {
+    // From the file name, e.g. "Т-1".
+    string topic = 1;
+    repeated TestQuestionInput questions = 2;
+    // What to check before saving, e.g. "вопрос 3: в файле есть изображение...".
+    repeated string warnings = 3;
+}
+
+message TestExportStatusUpdateRequest {
+    int64 id = 1;
+    contract.enum.v1.TestExportStatus export_status = 2;
+}
+
+message TestExportStatusUpdateResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message TestImageUploadRequest {
+    bytes content = 1;
+}
+
+message TestImageUploadResponse {
+    string image = 1;
+    int32 width = 2;
+    int32 height = 3;
+}

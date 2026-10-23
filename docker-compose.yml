@@ -1,0 +1,78 @@
+name: dvgmu_apps
+
+services:
+  dvgmu_apps_ksm_web:
+    container_name: "dvgmu_apps_ksm_web"
+    image: "dvgmu_apps_ksm_web:latest"
+    build:
+      context: "./apps/ksm"
+      dockerfile: "Dockerfile"
+      network: host
+    restart: unless-stopped
+    networks:
+      - traefik-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-network"
+      - "traefik.http.routers.ksm-secure.rule=Host(`ksm.dvgmu.promotion-pal.ru`)"
+      - "traefik.http.routers.ksm-secure.entrypoints=websecure"
+      - "traefik.http.routers.ksm-secure.tls.certresolver=letsencrypt"
+      - "traefik.http.services.ksm-web.loadbalancer.server.port=3000"
+
+  dvgmu_apps_unistom_web:
+    container_name: "dvgmu_apps_unistom_web"
+    image: "dvgmu_apps_unistom_web:latest"
+    build:
+      context: "./apps/unistom"
+      dockerfile: "Dockerfile"
+      network: host
+    restart: unless-stopped
+    networks:
+      - traefik-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-network"
+      - "traefik.http.routers.unistom-secure.rule=Host(`unistom.dvgmu.promotion-pal.ru`)"
+      - "traefik.http.routers.unistom-secure.entrypoints=websecure"
+      - "traefik.http.routers.unistom-secure.tls.certresolver=letsencrypt"
+      - "traefik.http.services.unistom-web.loadbalancer.server.port=3000"
+
+  dvgmu_apps_profile_web:
+    container_name: "dvgmu_apps_profile_web"
+    image: "dvgmu_apps_profile_web:latest"
+    build:
+      context: "./apps/profile"
+      dockerfile: "Dockerfile"
+      network: host
+    restart: unless-stopped
+    networks:
+      - traefik-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-network"
+      - "traefik.http.routers.profile-secure.rule=Host(`profile.dvgmu.promotion-pal.ru`)"
+      - "traefik.http.routers.profile-secure.entrypoints=websecure"
+      - "traefik.http.routers.profile-secure.tls.certresolver=letsencrypt"
+      - "traefik.http.services.profile-web.loadbalancer.server.port=3000"
+
+  dvgmu_apps_guide_web:
+    container_name: "dvgmu_apps_guide_web"
+    image: "dvgmu_apps_guide_web:latest"
+    build:
+      context: "./apps/guide"
+      dockerfile: "Dockerfile"
+      network: host
+    restart: unless-stopped
+    networks:
+      - traefik-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-network"
+      - "traefik.http.routers.guide-secure.rule=Host(`guide.dvgmu.promotion-pal.ru`)"
+      - "traefik.http.routers.guide-secure.entrypoints=websecure"
+      - "traefik.http.routers.guide-secure.tls.certresolver=letsencrypt"
+      - "traefik.http.services.guide-web.loadbalancer.server.port=3000"
+
+networks:
+  traefik-network:
+    external: true

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package contract.enum.v1;
+
+option go_package = "enum_v1;enum_pb";
+
+// ComputerClassSessionKind — что проходит в компьютерном классе.
+enum ComputerClassSessionKind {
+  COMPUTER_CLASS_SESSION_KIND_UNSPECIFIED = 0;
+  // Учебное занятие группы.
+  COMPUTER_CLASS_SESSION_KIND_LESSON = 1;
+  // Компьютерное тестирование студентов.
+  COMPUTER_CLASS_SESSION_KIND_TESTING = 2;
+}
