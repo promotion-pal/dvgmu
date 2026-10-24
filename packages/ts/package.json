@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "Сгенерированный TS всех схем (make proto), плоско по путям схем: @fesmu/contract/entity/…, @fesmu/contract/entity/v1/… (fesmu), @fesmu/contract/auth/v2/…",
+  "description": "Сгенерированный TS всех схем (make proto) по владельцам: @fesmu/contract/mdm/entity/…, @fesmu/contract/fesmu/entity/v1/…, @fesmu/contract/auth/v2/…",
   "exports": {
     "./*.js": "./*.ts",
     "./*": "./*.ts"
