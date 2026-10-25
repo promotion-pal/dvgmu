@@ -1,13 +1,13 @@
 import { PermissionAction, PermissionSection } from "@fesmu/contract/fesmu/enum/v1/permission.enum_pb";
 import { PurchasePermission } from "@fesmu/contract/fesmu/enum/v3/purchase.enum_pb";
 
-/* Разделы и действия — enum контракта (api/contract/enum/v1/permission.enum.proto),
+/* Разделы и действия — enum контракта (apps/fesmu/api/contract/fesmu/enum/v1/permission.enum.proto),
  * общий с api. Право — строка "раздел.действие" (так оно в MDM и в токене):
  * имя значения в нижнем регистре, perm(PermissionSection.SCHEDULE,
  * PermissionAction.POST) = "schedule.post". Изменение (POST) включает
  * просмотр (FETCH); api сам считает методы ...Fetch/...ByID просмотром.
  *
- * Новый раздел: значение в .proto → buf generate → подпись в SECTIONS, пункт
+ * Новый раздел: значение в .proto → make proto → подпись в SECTIONS, пункт
  * меню с permsFor(), кнопки изменения в <Can section={PermissionSection.X}>. */
 
 export { PermissionAction, PermissionSection };

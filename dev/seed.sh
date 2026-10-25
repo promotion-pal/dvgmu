@@ -1,7 +1,3 @@
-#!/usr/bin/env bash
-# Тестовые люди в MDM для входа через adfs-mock (make dev-seed).
-# admin — ADMIN, staff — STAFF; nolink в MDM нет (проверка «не связан с MDM»).
-# Повторный запуск безопасен: существующие записи не дублируются.
 set -euo pipefail
 cd "$(dirname "$0")"
 
@@ -9,7 +5,7 @@ MDM=http://localhost:18205/contract.service.UserService
 call() { curl -sf -X POST -H 'Content-Type: application/json' -H 'Authorization: Bearer dev-mdm-token' "$MDM/$1" -d "$2"; }
 psql_mdm() { docker compose exec -T postgres psql -U postgres -d mdm -tAc "$1"; }
 
-add() { # email, фамилия, имя, objectGUID, роль
+add() {
   local id
   id=$(psql_mdm "select id from users where email = '$1'")
   if [ -z "$id" ]; then

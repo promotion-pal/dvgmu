@@ -18,8 +18,6 @@ proto-check: proto
 		|| { git status --short -- $(GENERATED); echo "сгенерированный код отстал от схем — make proto и закоммитить" >&2; exit 1; }
 	@echo "сгенерированный код совпадает со схемами"
 
-# ── Локальный портал целиком (dev/docker-compose.yml) ─────────────────────────
-# Вместо AD — dev/adfs-mock. Вход: admin/admin123 (ADMIN), staff/staff123 (STAFF).
 .PHONY: dev-up dev-seed dev-down dev-logs
 
 dev-up:
