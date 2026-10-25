@@ -32,6 +32,7 @@ var permLabel = map[enum.PurchasePermission]string{
 	permViewDirection:  "Просмотр общих страниц закупок проректором",
 	permViewAll:        "Просмотр всех закупок университета",
 	permViewPlan:       "Просмотр ПФХД и протоколов",
+	permViewActivity:   "Статистика работы сотрудников",
 	permRequestCreate:  "Подача заявки на закупку",
 	permHeadReview:     "Согласование заявок отдела начальником",
 	permRequestCurator: "Согласование заявок проректором",

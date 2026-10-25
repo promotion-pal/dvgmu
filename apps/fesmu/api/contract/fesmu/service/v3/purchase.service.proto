@@ -66,6 +66,9 @@ service PurchaseService {
     // gives a purchase to, whom the administrator binds to a vice-rector.
     rpc PurchaseEmployeeFetch (PurchaseEmployeeFetchRequest) returns (PurchaseEmployeeFetchResponse);
 
+    // Who works in the module: actions per employee (VIEW_ACTIVITY).
+    rpc PurchaseActivityFetch (PurchaseActivityFetchRequest) returns (PurchaseActivityFetchResponse);
+
     // — Directories: PurchasePermission DIRECTORIES.
     rpc PurchaseCuratorSave (PurchaseCuratorSaveRequest) returns (PurchaseCuratorSaveResponse);
     rpc PurchaseCuratorDelete (PurchaseCuratorDeleteRequest) returns (PurchaseCuratorDeleteResponse);
@@ -464,6 +467,17 @@ message PurchaseEmployeeFetchRequest {
 
 message PurchaseEmployeeFetchResponse {
     repeated contract.entity.v3.PurchaseEmployee list = 1;
+}
+
+// VIEW_ACTIVITY. Actions on the requests and purchases the user sees (an
+// administrator — on all), per employee, most active first.
+message PurchaseActivityFetchRequest {
+    // The last N days; 0 — all time.
+    int32 days = 1;
+}
+
+message PurchaseActivityFetchResponse {
+    repeated contract.entity.v3.PurchaseActivity list = 1;
 }
 
 message PurchaseCuratorSaveRequest {

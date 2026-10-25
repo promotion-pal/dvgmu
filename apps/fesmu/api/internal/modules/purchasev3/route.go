@@ -48,6 +48,7 @@ const (
 	permViewDirection  = enum.PurchasePermission_PURCHASE_PERMISSION_VIEW_DIRECTION
 	permViewAll        = enum.PurchasePermission_PURCHASE_PERMISSION_VIEW_ALL
 	permViewPlan       = enum.PurchasePermission_PURCHASE_PERMISSION_VIEW_PLAN
+	permViewActivity   = enum.PurchasePermission_PURCHASE_PERMISSION_VIEW_ACTIVITY
 	permRequestCreate  = enum.PurchasePermission_PURCHASE_PERMISSION_REQUEST_CREATE
 	permHeadReview     = enum.PurchasePermission_PURCHASE_PERMISSION_REQUEST_HEAD_REVIEW
 	permRequestCurator = enum.PurchasePermission_PURCHASE_PERMISSION_REQUEST_CURATOR_REVIEW

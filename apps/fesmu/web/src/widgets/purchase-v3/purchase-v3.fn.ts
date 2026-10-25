@@ -52,7 +52,7 @@ export interface PurchaseFilters {
 
 export const NO_FILTERS: PurchaseFilters = { curatorId: "", department: 0, itemType: 0, phase: 0, status: "", overdueOnly: false, reviewOnly: false };
 
-export type PurchaseView = "tasks" | "requests" | "lots" | "summary" | "commission" | "directories";
+export type PurchaseView = "tasks" | "requests" | "lots" | "summary" | "activity" | "commission" | "directories";
 
 export type LotPatch = MessageInitShape<typeof PurchaseLotUpdateRequestSchema>["patch"];
 export type DecisionInit = MessageInitShape<typeof PurchaseProtocolDecisionInputSchema>;
@@ -240,6 +240,14 @@ export const usePurchaseV3 = () => {
         needsDirection,
         employees,
         loadEmployees,
+        /** Who works in the module over the last days (0 — all time). */
+        fetchActivity: async (days: number) => {
+            try {
+                return (await client.purchaseActivityFetch({ days })).list;
+            } catch (err) {
+                throw new Error(errorText(err, "Не удалось получить статистику"), { cause: err });
+            }
+        },
 
         // ── Requests
         createRequest: (v: RequestFormValue) =>

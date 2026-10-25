@@ -15,6 +15,7 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 
+	entity "fesmu/contract/fesmu/entity/v3"
 	enum "fesmu/contract/fesmu/enum/v3"
 	pb "fesmu/contract/fesmu/service/v3"
 	"dvgmu/api/internal/auth"
@@ -193,6 +194,24 @@ func TestFlowAgainstDatabase(t *testing.T) {
 	}
 	if n := len(l.Logs); n < 25 {
 		t.Errorf("only %d log entries", n)
+	}
+
+	// Who works in the module: the employee filed one request; the statistics
+	// need their own right.
+	if _, err := s.ActivityFetch(vr, 0); !errors.Is(err, ErrForbidden) {
+		t.Errorf("activity without the right: %v", err)
+	}
+	stats, err := s.ActivityFetch(as("vr", permViewDirection, permViewActivity), 30)
+	must(err)
+	byUUID := map[string]*entity.PurchaseActivity{}
+	for _, a := range stats {
+		byUUID[a.Uuid] = a
+	}
+	if e := byUUID["emp"]; e == nil || e.Created != 1 || e.Total < 1 {
+		t.Errorf("employee activity: %+v", e)
+	}
+	if e := byUUID["eco"]; e == nil || e.Forwards < 1 {
+		t.Errorf("economist activity: %+v", e)
 	}
 
 	// An administrator is not held up by an unfilled directory: АХУ (55) has

@@ -165,6 +165,11 @@ func (h *handler) PurchaseEmployeeFetch(ctx context.Context, req *connect.Reques
 	return reply(&pb.PurchaseEmployeeFetchResponse{List: list}, err)
 }
 
+func (h *handler) PurchaseActivityFetch(ctx context.Context, req *connect.Request[pb.PurchaseActivityFetchRequest]) (*connect.Response[pb.PurchaseActivityFetchResponse], error) {
+	list, err := h.service.ActivityFetch(ctx, req.Msg.GetDays())
+	return reply(&pb.PurchaseActivityFetchResponse{List: list}, err)
+}
+
 func (h *handler) PurchaseCuratorSave(ctx context.Context, req *connect.Request[pb.PurchaseCuratorSaveRequest]) (*connect.Response[pb.PurchaseCuratorSaveResponse], error) {
 	m := req.Msg
 	id, err := h.service.CuratorSave(ctx, curatorInput{

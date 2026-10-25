@@ -34,6 +34,9 @@ enum PurchasePermission {
   PURCHASE_PERMISSION_VIEW_ALL = 3;
   // Просмотр ПФХД и протоколов бюджетной комиссии.
   PURCHASE_PERMISSION_VIEW_PLAN = 4;
+  // Статистика работы сотрудников в модуле: кто и сколько действий совершил
+  // (по видимым заявкам и закупкам; администратору — по всем).
+  PURCHASE_PERMISSION_VIEW_ACTIVITY = 5;
 
   // — Этап I. Потребность и планирование.
 

@@ -3,6 +3,7 @@ export type { PurchaseView } from "./purchase-v3.fn";
 export { LotDetail } from "./purchase-v3.lot";
 export { CommissionView } from "./purchase-v3.commission";
 export { SummaryView } from "./purchase-v3.summary";
+export { ActivityView } from "./purchase-v3.activity";
 export { DirectoriesView } from "./purchase-v3.directories";
 export { MergeModal, PurchaseList, PurchaseMeCard, RequestDetail, RequestFormModal } from "./purchase-v3.ui";
 export type { MergeMode } from "./purchase-v3.ui";

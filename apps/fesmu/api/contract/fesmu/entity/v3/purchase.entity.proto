@@ -70,6 +70,37 @@ message PurchaseEmployee {
   contract.enum.UserEmployeeDepartment department = 3;
 }
 
+// One employee's work in the module over a period, from the log.
+message PurchaseActivity {
+  string uuid = 1;
+  string name = 2;
+  // From MDM; empty when unknown.
+  string position = 3;
+  repeated contract.enum.UserEmployeeDepartment departments = 4;
+  // Every logged action.
+  int32 total = 5;
+  // Requests filed.
+  int32 created = 6;
+  // Stages passed on ("Продолжить").
+  int32 forwards = 7;
+  // Records returned or rejected.
+  int32 returns = 8;
+  // Edits: content, terms, codes, merges.
+  int32 edits = 9;
+  // Files added: КП, documents, protocols.
+  int32 files = 10;
+  // Distinct requests and purchases touched.
+  int32 records = 11;
+  // Days with at least one action.
+  int32 active_days = 12;
+  google.protobuf.Timestamp first_at = 13;
+  google.protobuf.Timestamp last_at = 14;
+  // Roles acted in.
+  repeated contract.enum.v3.PurchaseRole roles = 15;
+  // The latest actions, newest first.
+  repeated PurchaseLog recent = 16;
+}
+
 // A stage's latest sign-off, shown to the next stages as "who approved".
 // Going back to a stage drops the sign-offs of it and every later one.
 message PurchaseSignOff {

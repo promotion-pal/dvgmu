@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ROUTE } from "@/shared/config/path";
-import { BookMarkedIcon, BookOpenIcon, ClipboardListIcon, InboxIcon, LandmarkIcon, LayersIcon, PieChartIcon, PlayCircleIcon, RefreshCwIcon } from "lucide-react";
+import { BookMarkedIcon, BookOpenIcon, ClipboardListIcon, InboxIcon, LandmarkIcon, LayersIcon, PieChartIcon, PlayCircleIcon, RefreshCwIcon, UsersIcon } from "lucide-react";
 import type { ComponentType } from "react";
 import { CommonControlState } from "@/shared/components/state/control-state";
 import { CommonWrapper } from "@/shared/components/wrapper";
@@ -9,6 +9,7 @@ import { cn } from "@/shared/lib/utils";
 import { Button } from "@/shared/ui/button";
 import { Card } from "@/shared/ui/card";
 import {
+    ActivityView,
     CodeTree,
     CommissionView,
     DirectoriesView,
@@ -53,6 +54,7 @@ export default function PurchaseV3Page() {
             icon: PieChartIcon,
             shown: can(PurchasePermission.VIEW_DIRECTION) || can(PurchasePermission.VIEW_ALL) || can(PurchasePermission.VIEW_DEPARTMENT),
         },
+        { key: "activity", label: "Сотрудники", icon: UsersIcon, shown: can(PurchasePermission.VIEW_ACTIVITY) },
         { key: "commission", label: "Комиссия и ПФХД", icon: LandmarkIcon, shown: can(PurchasePermission.LOT_COMMISSION) || can(PurchasePermission.VIEW_PLAN) },
         { key: "directories", label: "Справочники", icon: BookMarkedIcon, shown: can(PurchasePermission.DIRECTORIES) },
     ];
@@ -127,6 +129,7 @@ export default function PurchaseV3Page() {
                         </div>
                     )}
                     {view === "summary" && <SummaryView state={state} />}
+                    {view === "activity" && <ActivityView state={state} />}
                     {view === "commission" && <CommissionView state={state} />}
                     {view === "directories" && <DirectoriesView state={state} />}
                 </div>
