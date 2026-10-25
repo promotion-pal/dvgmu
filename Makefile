@@ -17,3 +17,20 @@ proto-check: proto
 	@git diff --exit-code -- $(GENERATED) >/dev/null && [ -z "$$(git ls-files --others --exclude-standard -- $(GENERATED))" ] \
 		|| { git status --short -- $(GENERATED); echo "сгенерированный код отстал от схем — make proto и закоммитить" >&2; exit 1; }
 	@echo "сгенерированный код совпадает со схемами"
+
+# ── Локальный портал целиком (dev/docker-compose.yml) ─────────────────────────
+# Вместо AD — dev/adfs-mock. Вход: admin/admin123 (ADMIN), staff/staff123 (STAFF).
+.PHONY: dev-up dev-seed dev-down dev-logs
+
+dev-up:
+	@docker compose -f dev/docker-compose.yml up -d --build
+	@echo "$(GREEN)веб http://localhost:18300 · api :18200 · auth :18201$(NC) — затем make dev-seed"
+
+dev-seed:
+	@dev/seed.sh
+
+dev-logs:
+	@docker compose -f dev/docker-compose.yml logs -f --tail=50
+
+dev-down:
+	@docker compose -f dev/docker-compose.yml down
