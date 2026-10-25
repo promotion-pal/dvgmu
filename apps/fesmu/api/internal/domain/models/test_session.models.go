@@ -101,8 +101,8 @@ type TestSnapshotQuestion struct {
 	ImageWidth  int                  `json:"image_width,omitempty"`
 	ImageHeight int                  `json:"image_height,omitempty"`
 	Answers     []TestSnapshotAnswer `json:"answers"`
-	// Set per attempt, never stored: in a V2 test every question takes
-	// several picks (checkboxes), so their number gives nothing away.
+	// Set per attempt, never stored: since pick version 1 every question
+	// takes several picks (checkboxes), so their number gives nothing away.
 	Multiple bool `json:"-"`
 }
 
@@ -309,10 +309,11 @@ func QuestionKey(text string) string {
 // Version 1: as version 0, but over distinct questions — one with several
 // variants (same text) is asked once, as a random one of them. Then by the
 // test's version:
-//   - V1, a bank of questions: every option shown, as written; radio buttons
-//     when one is right, checkboxes when several are;
-//   - V2, right and wrong answers: every question takes several picks, and
-//     with OptionCount shows a random mix of that many of its options.
+//   - V1, a bank of questions: every option shown, as written;
+//   - V2, right and wrong answers: with OptionCount each question shows a
+//     random mix of that many of its options.
+//
+// Either way every question takes several picks (checkboxes).
 func (s *TestSession) AttemptQuestions(seed int64) []TestSnapshotQuestion {
 	rng := rand.New(rand.NewPCG(uint64(seed), 0))
 	if s.PickVersion < 1 {
@@ -340,12 +341,10 @@ func (s *TestSession) AttemptQuestions(seed int64) []TestSnapshotQuestion {
 		variants := groups[g]
 		q := s.Questions[variants[rng.IntN(len(variants))]]
 		q.Answers = slices.Clone(q.Answers)
+		// Every question, V1 and V2, takes several picks: whether one option
+		// or more is right is not given away by radio buttons.
+		q.Multiple = true
 		mixed := false
-		if s.mixes() {
-			// Every question takes several picks: whether one option or more
-			// is right is not given away by radio buttons.
-			q.Multiple = true
-		}
 		if s.mixes() && s.OptionCount > 0 {
 			q.Answers, mixed = mixOptions(rng, q.Answers, s.OptionCount)
 		}

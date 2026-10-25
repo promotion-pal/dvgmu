@@ -99,12 +99,11 @@ func TestAttemptAnswerAndGrade(t *testing.T) {
 	}
 	qs := s.AttemptQuestions(a.Seed)
 
-	// Question 100 has one correct option (1001). A V1 test asks it with radio
-	// buttons, so two picks are refused, as in a version-0 session; a V2 test
-	// takes several picks on any question (it doesn't give away how many are
-	// right), and two picks are simply wrong.
-	if err := a.SetAnswer(qs, 100, []int64{1001, 1002}, now); !errors.Is(err, ErrTestInvalid) {
-		t.Errorf("a V1 session must refuse two picks on a single-answer question, got %v", err)
+	// Question 100 has one correct option (1001). V1 and V2 sessions take
+	// several picks on any question (they don't give away how many are
+	// right), and two picks are simply wrong; a version-0 session refuses them.
+	if err := a.SetAnswer(qs, 100, []int64{1001, 1002}, now); err != nil {
+		t.Errorf("a V1 session must take two picks on any question, got %v", err)
 	}
 	if !qs[0].IsCorrect([]int64{1001}) || qs[0].IsCorrect([]int64{1001, 1002}) {
 		t.Error("only exactly the correct options count as right")
@@ -285,8 +284,8 @@ func TestAttemptAsksVariantsOnce(t *testing.T) {
 	}
 	asked := map[int64]bool{}
 	for _, q := range v1.AttemptQuestions(3) {
-		if asked[q.ID] || q.multiple() {
-			t.Fatalf("a V1 question is asked once, with one pick when one option is right: %+v", q)
+		if asked[q.ID] || !q.multiple() {
+			t.Fatalf("a V1 question is asked once, taking several picks: %+v", q)
 		}
 		asked[q.ID] = true
 	}

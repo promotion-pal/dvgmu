@@ -175,9 +175,9 @@ func TestTestSessionTakeFlow(t *testing.T) {
 	}
 	attemptToken := started.Msg.GetAttemptToken()
 	questions := started.Msg.GetQuestions()
-	// A V1 test: one right option — one pick (radio buttons).
-	if len(questions) != 1 || len(questions[0].GetAnswers()) != 3 || questions[0].GetMultiple() {
-		t.Fatalf("expected the one question with 3 options taking one pick, got %v", questions)
+	// Every question takes several picks, even with one right option.
+	if len(questions) != 1 || len(questions[0].GetAnswers()) != 3 || !questions[0].GetMultiple() {
+		t.Fatalf("expected the one question with 3 options taking several picks, got %v", questions)
 	}
 
 	// Editing the test after the session was made must not change the session.
