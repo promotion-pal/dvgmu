@@ -86,3 +86,4 @@ cd apps/fesmu/web && pnpm dev
   прод из `/home/rostik/work/dvgmu_apps`. До переключения прода на этот репозиторий его нужно
   перенастроить (путь `ROOT`, фильтры путей, выкатку fesmu).
 - Подробности по старым частям: `docs/PROJECT_OVERVIEW.md`, `docs/stand.md`, `apps/fesmu/docs/`.
+# dvgmu
