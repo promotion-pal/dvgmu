@@ -40,6 +40,17 @@ AD локально недоступен. Вместо AD FS работает `d
 
 **Не работает локально:** запись пароля в AD (`/activate`, `/password` — режим заглушки), SAML для Yandex 360, сверка `sync`.
 
+## Реальные данные
+
+Локальные базы пустые. Копия боевой базы:
+
+```bash
+docker exec dvgmu_apps_analytic_db sh -c 'pg_dump -U "$POSTGRES_USER" -d "$POSTGRES_DB" -Fc' > analytics.dump   # на сервере
+make dev-import DB=analytics FILE=analytics.dump                                                          # локально
+```
+
+`dev/import.sh` заменяет данные одной локальной базы и перезапускает её сервис. Копии mdm и analytics содержат персональные данные: не коммить, удалить после загрузки.
+
 ## Добавить сервис в локальный портал
 
 В `dev/docker-compose.yml`:

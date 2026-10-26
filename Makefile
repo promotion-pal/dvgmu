@@ -18,7 +18,7 @@ proto-check: proto
 		|| { git status --short -- $(GENERATED); echo "сгенерированный код отстал от схем — make proto и закоммитить" >&2; exit 1; }
 	@echo "сгенерированный код совпадает со схемами"
 
-.PHONY: dev-up dev-seed dev-down dev-logs
+.PHONY: dev-up dev-seed dev-down dev-logs dev-import
 
 dev-up:
 	@docker compose -f dev/docker-compose.yml up -d --build
@@ -26,6 +26,10 @@ dev-up:
 
 dev-seed:
 	@dev/seed.sh
+
+# Копия боевой базы в локальный портал: make dev-import DB=analytics FILE=~/Downloads/analytics.dump
+dev-import:
+	@dev/import.sh $(DB) $(FILE)
 
 dev-logs:
 	@docker compose -f dev/docker-compose.yml logs -f --tail=50

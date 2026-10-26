@@ -121,6 +121,17 @@ make dev-seed    # тестовые люди в MDM
 make dev-down
 ```
 
+**Данные.** Локальные базы новые и пустые: боевые опросы, заявки и люди лежат в базах на сервере. Чтобы работать с реальными данными, загрузите копию базы:
+
+```bash
+# на сервере — копия базы сервиса (пример: analytics)
+docker exec dvgmu_apps_analytic_db sh -c 'pg_dump -U "$POSTGRES_USER" -d "$POSTGRES_DB" -Fc' > analytics.dump
+# локально — загрузить в портал (заменяет локальные данные этой базы)
+make dev-import DB=analytics FILE=~/Downloads/analytics.dump
+```
+
+В копиях mdm и analytics есть персональные данные. Храните файлы копий только у себя и удаляйте после загрузки.
+
 **AD локально недоступен** — вместо AD FS работает `dev/adfs-mock`:
 - тот же протокол WS-Trust, что у AD FS, поэтому код auth не меняется;
 - пользователи — в `dev/adfs-mock/users.json`;
