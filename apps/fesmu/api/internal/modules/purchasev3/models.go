@@ -251,9 +251,19 @@ type Log struct {
 
 func (Log) TableName() string { return "purchase_v3_logs" }
 
+// Visit is one opening of the «Закупки» page.
+type Visit struct {
+	ID        int64     `gorm:"primaryKey;autoIncrement"`
+	UserUUID  string    `gorm:"size:64;not null;index:idx_purchase_v3_visits_user,priority:1"`
+	UserName  string    `gorm:"size:255;not null;default:''"`
+	CreatedAt time.Time `gorm:"not null;index:idx_purchase_v3_visits_user,priority:2;index"`
+}
+
+func (Visit) TableName() string { return "purchase_v3_visits" }
+
 // Tables lists the module's gorm models, for the migration loader.
 func Tables() []any {
-	return []any{&Curator{}, &Department{}, &Category{}, &Protocol{}, &Request{}, &Lot{}, &Quotation{}, &Document{}, &Log{}}
+	return []any{&Curator{}, &Department{}, &Category{}, &Protocol{}, &Request{}, &Lot{}, &Quotation{}, &Document{}, &Log{}, &Visit{}}
 }
 
 // ── Money ───────────────────────────────────────────────────────────────

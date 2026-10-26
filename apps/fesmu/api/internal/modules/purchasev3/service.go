@@ -154,13 +154,19 @@ func directionOf(ctx context.Context, st *storage, a actor, department int32, pi
 
 // ── Overview ────────────────────────────────────────────────────────────
 
-func (s *Service) Overview(ctx context.Context, planYear int32) (*pb.PurchaseOverviewFetchResponse, error) {
+func (s *Service) Overview(ctx context.Context, planYear int32, visit bool) (*pb.PurchaseOverviewFetchResponse, error) {
 	a, err := s.begin(ctx)
 	if err != nil {
 		return nil, err
 	}
 	if !a.anyPerm() {
 		return nil, forbidden("нет доступа к закупкам — обратитесь к администратору")
+	}
+	// A visit that is not recorded must not keep the page from opening.
+	if visit && a.uuid != "" {
+		if err := s.store.addVisit(ctx, &Visit{UserUUID: a.uuid, UserName: a.name, CreatedAt: s.now()}); err != nil {
+			s.log.WarnContext(ctx, "purchase v3: visit", "err", err)
+		}
 	}
 	curators, err := s.store.curators(ctx)
 	if err != nil {

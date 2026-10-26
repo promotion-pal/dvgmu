@@ -40,7 +40,7 @@ export default function PurchaseV3Page() {
     const { can, view, setView } = state;
 
     useEffect(() => {
-        state.fetch();
+        state.fetch(false, true);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

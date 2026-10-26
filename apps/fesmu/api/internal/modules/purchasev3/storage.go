@@ -3,6 +3,7 @@ package purchasev3
 import (
 	"context"
 	"errors"
+	"time"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -278,6 +279,24 @@ func (s *storage) saveProtocol(ctx context.Context, p *Protocol, withFile bool) 
 func (s *storage) logs(ctx context.Context) ([]*Log, error) {
 	var list []*Log
 	err := s.db.WithContext(ctx).Order("created_at, id").Find(&list).Error
+	return list, err
+}
+
+// addVisit records an opening of the page, once per user in a minute: a
+// double mount or a quick reload is one visit.
+func (s *storage) addVisit(ctx context.Context, v *Visit) error {
+	var recent int64
+	err := s.db.WithContext(ctx).Model(&Visit{}).
+		Where("user_uuid = ? AND created_at > ?", v.UserUUID, v.CreatedAt.Add(-time.Minute)).Count(&recent).Error
+	if err != nil || recent > 0 {
+		return err
+	}
+	return s.db.WithContext(ctx).Create(v).Error
+}
+
+func (s *storage) visits(ctx context.Context, since time.Time) ([]*Visit, error) {
+	var list []*Visit
+	err := s.db.WithContext(ctx).Where("created_at >= ?", since).Order("created_at, id").Find(&list).Error
 	return list, err
 }
 

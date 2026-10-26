@@ -99,6 +99,9 @@ message PurchaseActivity {
   repeated contract.enum.v3.PurchaseRole roles = 15;
   // The latest actions, newest first.
   repeated PurchaseLog recent = 16;
+  // Times the «Закупки» page was opened, and the latest.
+  int32 visits = 17;
+  google.protobuf.Timestamp last_visit_at = 18;
 }
 
 // A stage's latest sign-off, shown to the next stages as "who approved".

@@ -1,4 +1,4 @@
-h1:gMhiPAGRPHCnaCfYQ7QFqCIJZZKvh69h3tMJ25/mADY=
+h1:cxAdSwzgpTqhr0/4NlMpw1GqvwHAem5mdMakhbirkfM=
 20261005233150_purchase_v2.sql h1:FyOZkth6yfVrsqhzvQLvlGUYLR5SDKTfaIWSuDZQ6iM=
 20261005233200_purchase_v2_curators_seed.sql h1:NujHiQg0QzQ6mqZidjRjwpqPReRXaKpPMx8NaDCvj0k=
 20261006004206_purchase_v2_item_type.sql h1:5m9dVnyxOFziUdTGfwwwGb+M9zC1ldY4OD9rMCWOZSE=
@@ -11,3 +11,4 @@ h1:gMhiPAGRPHCnaCfYQ7QFqCIJZZKvh69h3tMJ25/mADY=
 20261019031335_purchase_v3_terms.sql h1:BYzckAsNpmdOGQjThkK7eAjY/EIR4hVlVnjje7bgNCA=
 20261021024144_purchase_v3_review.sql h1:y+Tc1Iezvf5bjj7uHgdJichb6l9QdL0gGcR36CVUl6g=
 20261021050000_purchase_v3_cfo_plan_seed.sql h1:nHQRq6d0hnt5A0RGh7Fwo0WWCfZC+WoK4MBVQxUPUz0=
+20261026001913_purchase_v3_visits.sql h1:ReqwzOIV27WU3BOkENrXokNjrvepCX759r3P24IH1LU=

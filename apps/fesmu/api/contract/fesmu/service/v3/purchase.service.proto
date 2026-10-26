@@ -81,6 +81,9 @@ message PurchaseOverviewFetchRequest {
     // 0 — every year; otherwise purchases of that plan year and the requests
     // and purchases not yet before the commission.
     int32 plan_year = 1;
+    // The page was opened (not a reload after a change): counted as a visit
+    // for the «Сотрудники» statistics.
+    bool visit = 2;
 }
 
 // What the user sees: own requests and assigned purchases always; their

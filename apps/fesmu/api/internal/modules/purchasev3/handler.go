@@ -23,7 +23,7 @@ func reply[T any](msg *T, err error) (*connect.Response[T], error) {
 }
 
 func (h *handler) PurchaseOverviewFetch(ctx context.Context, req *connect.Request[pb.PurchaseOverviewFetchRequest]) (*connect.Response[pb.PurchaseOverviewFetchResponse], error) {
-	return reply(h.service.Overview(ctx, req.Msg.GetPlanYear()))
+	return reply(h.service.Overview(ctx, req.Msg.GetPlanYear(), req.Msg.GetVisit()))
 }
 
 func (h *handler) PurchaseRequestCreate(ctx context.Context, req *connect.Request[pb.PurchaseRequestCreateRequest]) (*connect.Response[pb.PurchaseRequestCreateResponse], error) {

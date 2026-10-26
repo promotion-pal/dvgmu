@@ -20,7 +20,8 @@ var university = time.FixedZone("Владивосток", 10*60*60)
 
 // ActivityFetch is who works in the module: the log of the requests and
 // purchases the user sees (an administrator — of all), per employee, over the
-// last days (0 — all time), most active first. Imported records have no
+// last days (0 — all time), with the openings of the page, most active
+// first. Imported records have no
 // author and are not counted.
 func (s *Service) ActivityFetch(ctx context.Context, days int32) ([]*entity.PurchaseActivity, error) {
 	a, err := s.begin(ctx)
@@ -63,6 +64,28 @@ func (s *Service) ActivityFetch(ctx context.Context, days int32) ([]*entity.Purc
 		since = s.now().AddDate(0, 0, -int(days))
 	}
 
+	// Position and departments from MDM, when it answers.
+	profiles := map[string]*profile{}
+	if s.profiles != nil {
+		if list, err := s.profiles.Employees(ctx); err == nil {
+			for _, e := range list {
+				p := profiles[e.UUID]
+				if p == nil {
+					p = &profile{}
+					profiles[e.UUID] = p
+				}
+				if e.Position != "" {
+					p.position = e.Position
+				}
+				if e.Department != 0 && !slices.Contains(p.departments, e.Department) {
+					p.departments = append(p.departments, e.Department)
+				}
+			}
+		} else {
+			s.log.WarnContext(ctx, "purchase v3: employees for activity", "err", err)
+		}
+	}
+
 	type tally struct {
 		out     *entity.PurchaseActivity
 		records map[[2]int64]bool
@@ -70,6 +93,20 @@ func (s *Service) ActivityFetch(ctx context.Context, days int32) ([]*entity.Purc
 		roles   map[enum.PurchaseRole]bool
 	}
 	byUser := map[string]*tally{}
+	of := func(uuid, name string) *tally {
+		t := byUser[uuid]
+		if t == nil {
+			t = &tally{
+				out:     &entity.PurchaseActivity{Uuid: uuid, Name: name},
+				records: map[[2]int64]bool{}, days: map[string]bool{}, roles: map[enum.PurchaseRole]bool{},
+			}
+			byUser[uuid] = t
+		}
+		if name != "" {
+			t.out.Name = name
+		}
+		return t
+	}
 	for _, l := range logs {
 		if l.ActorUUID == "" || l.CreatedAt.Before(since) {
 			continue
@@ -77,16 +114,11 @@ func (s *Service) ActivityFetch(ctx context.Context, days int32) ([]*entity.Purc
 		if !v.all && (l.Target == logProtocol && !v.plan || l.Target != logProtocol && !seen[l.Target][l.TargetID]) {
 			continue
 		}
-		t := byUser[l.ActorUUID]
-		if t == nil {
-			t = &tally{
-				out:     &entity.PurchaseActivity{Uuid: l.ActorUUID, FirstAt: timestamppb.New(l.CreatedAt)},
-				records: map[[2]int64]bool{}, days: map[string]bool{}, roles: map[enum.PurchaseRole]bool{},
-			}
-			byUser[l.ActorUUID] = t
-		}
+		t := of(l.ActorUUID, l.ActorName)
 		o := t.out
-		o.Name = l.ActorName
+		if o.FirstAt == nil {
+			o.FirstAt = timestamppb.New(l.CreatedAt)
+		}
 		o.Total++
 		switch {
 		case l.Action == "create" && l.Target == logRequest:
@@ -114,30 +146,20 @@ func (s *Service) ActivityFetch(ctx context.Context, days int32) ([]*entity.Purc
 		}
 	}
 
-	// Position and departments from MDM, when it answers.
-	type profile struct {
-		position    string
-		departments []int32
+	// Openings of the page: everyone's for whoever sees everything, otherwise
+	// of the employees of the user's departments or direction, and their own.
+	visits, err := s.store.visits(ctx, since)
+	if err != nil {
+		return nil, err
 	}
-	profiles := map[string]*profile{}
-	if s.profiles != nil {
-		if list, err := s.profiles.Employees(ctx); err == nil {
-			for _, e := range list {
-				p := profiles[e.UUID]
-				if p == nil {
-					p = &profile{}
-					profiles[e.UUID] = p
-				}
-				if e.Position != "" {
-					p.position = e.Position
-				}
-				if e.Department != 0 && !slices.Contains(p.departments, e.Department) {
-					p.departments = append(p.departments, e.Department)
-				}
-			}
-		} else {
-			s.log.WarnContext(ctx, "purchase v3: employees for activity", "err", err)
+	for _, vis := range visits {
+		if !v.all && vis.UserUUID != a.uuid && !v.seesEmployee(profiles[vis.UserUUID].departmentsOrNil()) {
+			continue
 		}
+		t := of(vis.UserUUID, vis.UserName)
+		t.out.Visits++
+		t.out.LastVisitAt = timestamppb.New(vis.CreatedAt)
+		t.days[vis.CreatedAt.In(university).Format(time.DateOnly)] = true
 	}
 
 	out := make([]*entity.PurchaseActivity, 0, len(byUser))
@@ -162,7 +184,34 @@ func (s *Service) ActivityFetch(ctx context.Context, days int32) ([]*entity.Purc
 		if x.Total != y.Total {
 			return int(y.Total - x.Total)
 		}
+		if x.Visits != y.Visits {
+			return int(y.Visits - x.Visits)
+		}
 		return strings.Compare(x.Name, y.Name)
 	})
 	return out, nil
+}
+
+type profile struct {
+	position    string
+	departments []int32
+}
+
+func (p *profile) departmentsOrNil() []int32 {
+	if p == nil {
+		return nil
+	}
+	return p.departments
+}
+
+// seesEmployee: an employee of departments is in the user's department or
+// direction.
+func (v viewer) seesEmployee(departments []int32) bool {
+	for _, d := range departments {
+		if v.department && slices.Contains(v.departments, d) ||
+			v.direction && slices.Contains(v.curators, v.curatorOf[d]) && v.curatorOf[d] != 0 {
+			return true
+		}
+	}
+	return false
 }

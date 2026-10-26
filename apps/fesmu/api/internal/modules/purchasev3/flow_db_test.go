@@ -42,7 +42,7 @@ func TestFlowAgainstDatabase(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, table := range []string{"purchase_v3_logs", "purchase_v3_documents", "purchase_v3_quotations", "purchase_v3_requests", "purchase_v3_lots", "purchase_v3_protocols"} {
+	for _, table := range []string{"purchase_v3_logs", "purchase_v3_documents", "purchase_v3_quotations", "purchase_v3_requests", "purchase_v3_lots", "purchase_v3_protocols", "purchase_v3_visits"} {
 		db.Exec("DELETE FROM " + table)
 	}
 	// Labs (30) and IT (1) belong to the digital direction, bound to "vr".
@@ -162,7 +162,7 @@ func TestFlowAgainstDatabase(t *testing.T) {
 	must(s.LotMove(procurement, lotID, moveForward, "", ""))
 
 	// What each sees.
-	ov, err := s.Overview(vr, 0)
+	ov, err := s.Overview(vr, 0, true)
 	must(err)
 	if len(ov.Lots) != 1 {
 		t.Fatalf("vice-rector sees %d purchases", len(ov.Lots))
@@ -180,10 +180,10 @@ func TestFlowAgainstDatabase(t *testing.T) {
 	if len(ov.Requests[0].GetAllowed().GetMoves()) != 0 {
 		t.Error("vice-rector may still move the request")
 	}
-	if ov, err := s.Overview(other, 0); err != nil || len(ov.Lots) != 0 || len(ov.Requests) != 0 {
+	if ov, err := s.Overview(other, 0, false); err != nil || len(ov.Lots) != 0 || len(ov.Requests) != 0 {
 		t.Errorf("head of another department sees %d/%d (%v)", len(ov.Requests), len(ov.Lots), err)
 	}
-	if _, err := s.Overview(as("nobody"), 0); !errors.Is(err, ErrForbidden) {
+	if _, err := s.Overview(as("nobody"), 0, false); !errors.Is(err, ErrForbidden) {
 		t.Errorf("a user without rights opened purchases: %v", err)
 	}
 	if _, err := s.QuotationFile(other, l.Quotations[0].Id); !errors.Is(err, ErrNotFound) {
@@ -212,6 +212,18 @@ func TestFlowAgainstDatabase(t *testing.T) {
 	}
 	if e := byUUID["eco"]; e == nil || e.Forwards < 1 {
 		t.Errorf("economist activity: %+v", e)
+	}
+	// The vice-rector opened the page once above; a reload a moment later is
+	// the same visit.
+	if _, err := s.Overview(vr, 0, true); err != nil {
+		t.Fatal(err)
+	}
+	stats, err = s.ActivityFetch(as("adm-stats", permViewActivity, permViewAll), 0)
+	must(err)
+	for _, a := range stats {
+		if a.Uuid == "vr" && (a.Visits != 1 || a.LastVisitAt == nil) {
+			t.Errorf("vice-rector visits: %d", a.Visits)
+		}
 	}
 
 	// An administrator is not held up by an unfilled directory: АХУ (55) has

@@ -99,11 +99,12 @@ export const usePurchaseV3 = () => {
     };
     const can = (p: PurchasePermission) => Boolean(me && (me.admin || me.permissions.includes(p)));
 
-    const fetch = async (quiet = false) => {
+    /** Loads everything; visit — the page was opened, counted for «Сотрудники». */
+    const fetch = async (quiet = false, visit = false) => {
         if (!quiet) setLoading(true);
         setError(undefined);
         try {
-            setOverview(await client.purchaseOverviewFetch({}));
+            setOverview(await client.purchaseOverviewFetch({ visit }));
         } catch (err) {
             console.error("Ошибка при получении закупок:", err);
             setError(errorText(err, "Не удалось загрузить закупки"));
