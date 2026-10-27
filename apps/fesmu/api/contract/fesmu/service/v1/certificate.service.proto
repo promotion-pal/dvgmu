@@ -12,21 +12,38 @@ option go_package = "service_v1;service_pb";
 // call — the same shape as UserImportService. See
 // internal/service/packages/certificate.
 //
-// Every order lands in the certificate journal. A student orders for
-// themselves only; ordering for someone else, seeing the journal and
-// issuing need the rights certificate.issue / certificate.view (from MDM).
+// Путь справки: студент заказывает (ORDERED) → деканат его факультета печатает
+// (READY, «готова к выдаче») → студент расписывается и забирает (ISSUED).
+// Деканат может отклонить заказ с причиной (CANCELLED). Студент файл не
+// получает — видит только статус своих заказов.
+//
+// Факультет студента — по первым двум цифрам зачётки; деканат — подразделение
+// сотрудника в MDM. Сотрудник с правом certificate.* видит заказы только своих
+// факультетов; без подразделения-деканата (и ADMIN) — все.
 service CertificateService {
+    // Заказ. Студент — только на себя, без файла. Сотрудник с certificate.post —
+    // за любого студента: сразу выдана, файл в ответе.
     rpc CertificateOrder (CertificateOrderRequest) returns (CertificateOrderResponse);
-    // The journal, newest first (certificate.view).
+    // Журнал деканата, новые сверху (certificate.fetch) — только свои факультеты.
     rpc CertificateFetch (CertificateFetchRequest) returns (CertificateFetchResponse);
-    // Mark an order issued and render its document again (certificate.issue).
+    // Отметить выданной: студент расписался и забрал (certificate.post).
     rpc CertificateIssue (CertificateIssueRequest) returns (CertificateIssueResponse);
+    // Свои заказы студента, новые сверху — для статуса в кабинете.
+    rpc CertificateMyFetch (CertificateMyFetchRequest) returns (CertificateFetchResponse);
+    // Сформировать документ для печати; заказ становится «готова к выдаче»
+    // (certificate.post). Повторно — перепечатка, статус не меняется.
+    rpc CertificatePrint (CertificatePrintRequest) returns (CertificatePrintResponse);
+    // Отклонить заказ с причиной — её видит студент (certificate.post).
+    rpc CertificateCancel (CertificateCancelRequest) returns (CertificateCancelResponse);
 }
 
 enum CertificateOrderStatus {
     CERTIFICATE_ORDER_STATUS_UNSPECIFIED = 0;
     CERTIFICATE_ORDER_STATUS_ORDERED = 1;
     CERTIFICATE_ORDER_STATUS_ISSUED = 2;
+    // Напечатана деканатом, ждёт студента.
+    CERTIFICATE_ORDER_STATUS_READY = 3;
+    CERTIFICATE_ORDER_STATUS_CANCELLED = 4;
 }
 
 message CertificateOrderEntry {
@@ -40,6 +57,14 @@ message CertificateOrderEntry {
     google.protobuf.Timestamp created_at = 8;
     string issued_by = 9;
     optional google.protobuf.Timestamp issued_at = 10;
+    // Факультет студента по зачётке; "" — не определён.
+    string faculty = 11;
+    string group = 12;
+    string record_book = 13;
+    // Кто и когда напечатал (READY).
+    string prepared_by = 14;
+    optional google.protobuf.Timestamp ready_at = 15;
+    string cancel_reason = 16;
 }
 
 message CertificateFetchRequest {
@@ -49,6 +74,30 @@ message CertificateFetchRequest {
 
 message CertificateFetchResponse {
     repeated CertificateOrderEntry orders = 1;
+    // Чьи заказы видит сотрудник: его факультеты; all_faculties — все.
+    repeated string faculties = 2;
+    bool all_faculties = 3;
+}
+
+message CertificateMyFetchRequest {}
+
+message CertificatePrintRequest {
+    int64 id = 1;
+}
+
+message CertificatePrintResponse {
+    CertificateOrderEntry order = 1;
+    string file_name = 2;
+    bytes content = 3;
+}
+
+message CertificateCancelRequest {
+    int64 id = 1;
+    string reason = 2;
+}
+
+message CertificateCancelResponse {
+    CertificateOrderEntry order = 1;
 }
 
 message CertificateIssueRequest {
@@ -57,6 +106,7 @@ message CertificateIssueRequest {
 
 message CertificateIssueResponse {
     CertificateOrderEntry order = 1;
+    // Не заполняются: документ печатает CertificatePrint.
     string file_name = 2;
     bytes content = 3;
 }

@@ -1,4 +1,4 @@
-h1:c88zakALlJhSzl4V0Y7ojk0UlsbkQ7Wp4kKJopy+Vjs=
+h1:Kqt2DjrccoE7D4pf0AQvNsLYOKYpOe8uXOGMEFsUXM0=
 20260912063019_init.sql h1:9UEzQ+HHxNKihGYPvA7huFO5jc1OgFOTTSEo1T3FU24=
 20260928120000_schedule.sql h1:c53MryCsTf6qIV1HzwI3I9L9KKKLS1uxsTesngonJaE=
 20260928130000_hall.sql h1:tlojHShXQCvJnVzYAy8meuYM8M/hKGIMhIdboM76Mk8=
@@ -19,3 +19,4 @@ h1:c88zakALlJhSzl4V0Y7ojk0UlsbkQ7Wp4kKJopy+Vjs=
 20261013100000_computer_class_kind.sql h1:gt7p2BFa5OiDBtxd3dW8gnCpiQyZEu2id9VspAiYpDQ=
 20261013110000_computer_class_october_seed.sql h1:gZBGBdmJO4D/XLyeAxGxvQ48QeEDNI3elf4T8CYA9fg=
 20261019100000_infrastructure_building1_seed.sql h1:935UIIBRj57tU3kC49Lj/FmWLmhVpILrwRnRvartZ3w=
+20261027120000_certificate_flow.sql h1:C5fqwcpYdZTcRwM9tgqBP7Tc2RlLgwUgQ+mpx26UZkE=

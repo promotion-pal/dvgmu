@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import type { ComponentProps, FC } from "react";
-import { PrinterIcon } from "lucide-react";
+import { CheckIcon, PrinterIcon, XIcon } from "lucide-react";
 import { CertificateOrderStatus } from "@fesmu/contract/fesmu/service/v1/certificate.service_pb";
 import type { CertificateOrderEntry } from "@fesmu/contract/fesmu/service/v1/certificate.service_pb";
 import type { FileGenerateType } from "@fesmu/contract/file/enum/file.enum_pb";
@@ -13,51 +13,94 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "@/shared/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/shared/ui/table";
-import { CERTIFICATE_TYPES, STATUS_LABEL, typeLabel } from "./certificate-journal.fn";
+import { CERTIFICATE_STATUS } from "@/features/certificate/certificate.fn";
+import { Textarea } from "@/shared/ui/textarea";
+import { CERTIFICATE_TYPES, typeLabel } from "./certificate-journal.fn";
 
 interface CertificateJournalTableProps extends ComponentProps<typeof CommonControlState> {
     list: CertificateOrderEntry[];
     canIssue: boolean;
     busy: bigint | null;
+    onPrint: (order: CertificateOrderEntry) => void;
     onIssue: (order: CertificateOrderEntry) => void;
+    onCancel: (order: CertificateOrderEntry) => void;
 }
-const CertificateJournalTable: FC<CertificateJournalTableProps> = ({ list, canIssue, busy, onIssue, ...state }) => (
+
+/** Кто и когда сдвинул заказ по пути «заказана → готова → выдана». */
+const progress = (o: CertificateOrderEntry) => {
+    if (o.status === CertificateOrderStatus.ISSUED) return `${o.issuedBy}, ${formatDate("datetime", o.issuedAt)}`;
+    if (o.status === CertificateOrderStatus.READY) return `напечатал ${o.preparedBy}, ${formatDate("datetime", o.readyAt)}`;
+    if (o.status === CertificateOrderStatus.CANCELLED) return `${o.preparedBy}: ${o.cancelReason}`;
+    return `заказал ${o.orderedBy}`;
+};
+
+const CertificateJournalTable: FC<CertificateJournalTableProps> = ({ list, canIssue, busy, onPrint, onIssue, onCancel, ...state }) => (
     <CommonControlState {...state}>
         <Table>
             <TableHeader>
                 <TableRow>
                     <TableHead>Заказана</TableHead>
                     <TableHead>Студент</TableHead>
+                    <TableHead>Факультет</TableHead>
                     <TableHead>Справка</TableHead>
                     <TableHead className="text-center">Экз.</TableHead>
                     <TableHead>Статус</TableHead>
-                    <TableHead>Кто заказал</TableHead>
-                    <TableHead>Кто выдал</TableHead>
                     {canIssue && <TableHead />}
                 </TableRow>
             </TableHeader>
             <TableBody>
                 {list.map((order) => {
-                    const issued = order.status === CertificateOrderStatus.ISSUED;
+                    const st = CERTIFICATE_STATUS[order.status];
+                    const ordered = order.status === CertificateOrderStatus.ORDERED;
+                    const ready = order.status === CertificateOrderStatus.READY;
+                    const cancelled = order.status === CertificateOrderStatus.CANCELLED;
+                    const disabled = busy === order.id;
                     return (
                         <TableRow key={order.id.toString()}>
                             <TableCell className="whitespace-nowrap">{formatDate("datetime", order.createdAt)}</TableCell>
-                            <TableCell>{order.studentName}</TableCell>
+                            <TableCell>
+                                <div className="flex flex-col">
+                                    <span>{order.studentName}</span>
+                                    {(order.group || order.recordBook) && (
+                                        <span className="text-xs text-muted-foreground">
+                                            {[order.group && `гр. ${order.group}`, order.recordBook && `зач. ${order.recordBook}`].filter(Boolean).join(" · ")}
+                                        </span>
+                                    )}
+                                </div>
+                            </TableCell>
+                            <TableCell>
+                                {order.faculty || <span className="text-muted-foreground">не определён</span>}
+                            </TableCell>
                             <TableCell>{typeLabel(order.type)}</TableCell>
                             <TableCell className="text-center">{order.copies}</TableCell>
                             <TableCell>
-                                <Badge variant={issued ? "secondary" : "default"}>{STATUS_LABEL[order.status]}</Badge>
-                            </TableCell>
-                            <TableCell>{order.orderedBy}</TableCell>
-                            <TableCell>
-                                {issued ? `${order.issuedBy}, ${formatDate("datetime", order.issuedAt)}` : "—"}
+                                <div className="flex flex-col gap-1">
+                                    <Badge variant={st.tone} className="w-fit">{st.label}</Badge>
+                                    <span className="max-w-64 text-xs text-muted-foreground">{progress(order)}</span>
+                                </div>
                             </TableCell>
                             {canIssue && (
-                                <TableCell className="text-right">
-                                    <Button size="sm" variant={issued ? "outline" : "default"} disabled={busy === order.id} onClick={() => onIssue(order)}>
-                                        <PrinterIcon className="size-4" />
-                                        {issued ? "Печать" : "Выдать"}
-                                    </Button>
+                                <TableCell>
+                                    <div className="flex flex-wrap justify-end gap-1.5">
+                                        {!cancelled && (
+                                            <Button size="sm" variant={ordered ? "default" : "outline"} disabled={disabled} onClick={() => onPrint(order)}>
+                                                <PrinterIcon className="size-4" />
+                                                {ordered ? "Печать" : "Перепечатать"}
+                                            </Button>
+                                        )}
+                                        {ready && (
+                                            <Button size="sm" disabled={disabled} onClick={() => onIssue(order)}>
+                                                <CheckIcon className="size-4" />
+                                                Выдана
+                                            </Button>
+                                        )}
+                                        {(ordered || ready) && (
+                                            <Button size="sm" variant="ghost" disabled={disabled} onClick={() => onCancel(order)}>
+                                                <XIcon className="size-4" />
+                                                Отклонить
+                                            </Button>
+                                        )}
+                                    </div>
                                 </TableCell>
                             )}
                         </TableRow>
@@ -67,6 +110,52 @@ const CertificateJournalTable: FC<CertificateJournalTableProps> = ({ list, canIs
         </Table>
     </CommonControlState>
 );
+
+interface CancelDialogProps {
+    order: CertificateOrderEntry | null;
+    onClose: () => void;
+    onSubmit: (order: CertificateOrderEntry, reason: string) => Promise<void>;
+}
+/** Отклонение заказа: причину увидит студент в кабинете. */
+const CancelDialog: FC<CancelDialogProps> = ({ order, onClose, onSubmit }) => {
+    const [reason, setReason] = useState("");
+    const [sending, setSending] = useState(false);
+    const close = () => {
+        setReason("");
+        onClose();
+    };
+    const submit = async () => {
+        if (!order || !reason.trim()) return;
+        setSending(true);
+        await onSubmit(order, reason.trim());
+        setSending(false);
+        close();
+    };
+    return (
+        <Dialog open={order !== null} onOpenChange={(next) => !next && close()}>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Отклонить заказ</DialogTitle>
+                    <DialogDescription>
+                        {order?.studentName}. Причину студент увидит в кабинете — напишите, что ему сделать.
+                    </DialogDescription>
+                </DialogHeader>
+                <Textarea
+                    autoFocus
+                    rows={3}
+                    maxLength={500}
+                    placeholder="Например: нет приказа о зачислении — обратитесь в деканат"
+                    value={reason}
+                    onChange={(e) => setReason(e.target.value)}
+                />
+                <DialogFooter>
+                    <Button variant="outline" onClick={close}>Отмена</Button>
+                    <Button variant="destructive" disabled={!reason.trim() || sending} onClick={submit}>Отклонить</Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    );
+};
 
 const fullName = (u: User) => `${u.lastName} ${u.firstName} ${u.patronymic ?? ""}`.trim();
 
@@ -172,4 +261,4 @@ const OrderForDialog: FC<OrderForDialogProps> = ({ open, users, loading, onClose
     );
 };
 
-export { CertificateJournalTable, OrderForDialog };
+export { CancelDialog, CertificateJournalTable, OrderForDialog };

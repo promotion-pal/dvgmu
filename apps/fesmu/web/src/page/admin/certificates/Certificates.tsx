@@ -1,14 +1,21 @@
 import { useEffect, useState } from "react";
 import { FilePlusIcon } from "lucide-react";
 import { CertificateOrderStatus } from "@fesmu/contract/fesmu/service/v1/certificate.service_pb";
+import type { CertificateOrderEntry } from "@fesmu/contract/fesmu/service/v1/certificate.service_pb";
 import { CommonWrapper } from "@/shared/components/wrapper";
 import { PermissionAction, PermissionSection } from "@/shared/config/permissions";
 import { Button } from "@/shared/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/ui/select";
 import { useCan } from "@/features/access";
-import { CertificateJournalTable, OrderForDialog, STATUS_LABEL, useCertificateJournal, useStudentPicker } from "@/widgets/certificate-journal";
+import { CancelDialog, CertificateJournalTable, OrderForDialog, STATUS_LABEL, useCertificateJournal, useStudentPicker } from "@/widgets/certificate-journal";
 
-const STATUSES = [CertificateOrderStatus.ORDERED, CertificateOrderStatus.ISSUED, CertificateOrderStatus.UNSPECIFIED];
+const STATUSES = [
+    CertificateOrderStatus.ORDERED,
+    CertificateOrderStatus.READY,
+    CertificateOrderStatus.ISSUED,
+    CertificateOrderStatus.CANCELLED,
+    CertificateOrderStatus.UNSPECIFIED,
+];
 
 export default function CertificatesPage() {
     const journal = useCertificateJournal();
@@ -16,6 +23,10 @@ export default function CertificatesPage() {
     const canView = useCan(PermissionSection.CERTIFICATE, PermissionAction.FETCH);
     const canIssue = useCan(PermissionSection.CERTIFICATE, PermissionAction.POST);
     const [orderOpen, setOrderOpen] = useState(false);
+    const [cancelling, setCancelling] = useState<CertificateOrderEntry | null>(null);
+    const scopeText = journal.scope.all
+        ? "все факультеты"
+        : journal.scope.faculties.join(", ");
 
     useEffect(() => {
         // Журнал — по праву просмотра; без него остаётся только «Сформировать».
@@ -31,7 +42,11 @@ export default function CertificatesPage() {
     return (
         <CommonWrapper
             title="Справки"
-            description={canView ? "Журнал заказанных справок" : "Формирование справок за студентов"}
+            description={
+                canView
+                    ? `Заказы студентов: напечатайте справку («Печать» — студент увидит «Готова к выдаче»), после подписи студента отметьте «Выдана». Видны заказы: ${scopeText}.`
+                    : "Формирование справок за студентов"
+            }
             action={
                 canIssue && (
                     <Button onClick={openOrder}>
@@ -68,12 +83,15 @@ export default function CertificatesPage() {
                         list={journal.orders.list}
                         canIssue={canIssue}
                         busy={journal.busy}
+                        onPrint={journal.print}
                         onIssue={journal.issue}
+                        onCancel={setCancelling}
                         isLoading={journal.orders.loading}
                         isError={journal.orders.error}
                         isEmpty={journal.orders.list.length === 0}
                     />
                 )}
+                <CancelDialog order={cancelling} onClose={() => setCancelling(null)} onSubmit={journal.cancel} />
                 <OrderForDialog
                     open={orderOpen}
                     users={picker.users.list}

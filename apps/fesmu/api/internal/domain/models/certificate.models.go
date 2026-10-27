@@ -24,11 +24,21 @@ type CertificateOrder struct {
 	IssuedBy     string
 	IssuedAt     *time.Time
 	CreatedAt    time.Time
+
+	// Факультет по зачётке на момент заказа (0 — не определён), снимок группы
+	// и зачётки — для журнала деканата.
+	FacultyCode  int32
+	Group        string
+	RecordBook   string
+	PreparedBy   string
+	ReadyAt      *time.Time
+	CancelReason string
 }
 
 func (CertificateOrder) TableName() string { return "certificate_orders" }
 
-func (o *CertificateOrder) ToProto() *pb.CertificateOrderEntry {
+// ToProto — facultyLabel передаёт пакет certificate (там правило факультетов).
+func (o *CertificateOrder) ToProto(facultyLabel func(int32) string) *pb.CertificateOrderEntry {
 	e := &pb.CertificateOrderEntry{
 		Id:           o.ID,
 		StudentMdmId: o.StudentMdmID,
@@ -39,9 +49,17 @@ func (o *CertificateOrder) ToProto() *pb.CertificateOrderEntry {
 		OrderedBy:    o.OrderedBy,
 		CreatedAt:    timestamppb.New(o.CreatedAt),
 		IssuedBy:     o.IssuedBy,
+		Faculty:      facultyLabel(o.FacultyCode),
+		Group:        o.Group,
+		RecordBook:   o.RecordBook,
+		PreparedBy:   o.PreparedBy,
+		CancelReason: o.CancelReason,
 	}
 	if o.IssuedAt != nil {
 		e.IssuedAt = timestamppb.New(*o.IssuedAt)
+	}
+	if o.ReadyAt != nil {
+		e.ReadyAt = timestamppb.New(*o.ReadyAt)
 	}
 	return e
 }

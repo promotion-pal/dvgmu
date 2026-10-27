@@ -51,6 +51,39 @@ func (h *CertificateHandler) CertificateIssue(
 	return connect.NewResponse(resp), nil
 }
 
+func (h *CertificateHandler) CertificateMyFetch(
+	ctx context.Context,
+	req *connect.Request[pb.CertificateMyFetchRequest],
+) (*connect.Response[pb.CertificateFetchResponse], error) {
+	resp, err := h.service.CertificateMyFetch(ctx, req.Msg)
+	if err != nil {
+		return nil, asConnect(err)
+	}
+	return connect.NewResponse(resp), nil
+}
+
+func (h *CertificateHandler) CertificatePrint(
+	ctx context.Context,
+	req *connect.Request[pb.CertificatePrintRequest],
+) (*connect.Response[pb.CertificatePrintResponse], error) {
+	resp, err := h.service.CertificatePrint(ctx, req.Msg)
+	if err != nil {
+		return nil, asConnect(err)
+	}
+	return connect.NewResponse(resp), nil
+}
+
+func (h *CertificateHandler) CertificateCancel(
+	ctx context.Context,
+	req *connect.Request[pb.CertificateCancelRequest],
+) (*connect.Response[pb.CertificateCancelResponse], error) {
+	resp, err := h.service.CertificateCancel(ctx, req.Msg)
+	if err != nil {
+		return nil, asConnect(err)
+	}
+	return connect.NewResponse(resp), nil
+}
+
 // asConnect keeps a Connect error's code (permission, not found...) and
 // turns anything else into Internal.
 func asConnect(err error) error {

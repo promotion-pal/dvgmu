@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   BookOpenIcon,
   CalendarIcon,
@@ -12,7 +12,9 @@ import {
   UsersIcon,
 } from "lucide-react";
 import { FileGenerateType } from "@fesmu/contract/file/enum/file.enum_pb";
-import { useCertificateOrder } from "@/features/certificate/certificate.fn";
+import { CertificateOrderStatus } from "@fesmu/contract/fesmu/service/v1/certificate.service_pb";
+import { CERTIFICATE_STATUS, useCertificateOrder, useMyCertificates } from "@/features/certificate/certificate.fn";
+import { formatDate } from "@/features/utils/date";
 import { useLoadUser } from "@/features/provider/user.provider";
 import { CommonWrapper } from "@/shared/components/wrapper";
 import { CommonLoadingOverlay } from "@/shared/components/state";
@@ -33,10 +35,16 @@ import { Input } from "@/shared/ui/input";
 import { Label } from "@/shared/ui/label";
 
 export function StudentCabinet() {
-  const { userId, profile, student, status } = useLoadUser();
-  const { step, order, reset } = useCertificateOrder();
+  const { profile, student, status } = useLoadUser();
+  const mine = useMyCertificates();
+  const { step, order, reset } = useCertificateOrder(() => void mine.fetch());
   const [open, setOpen] = useState(false);
   const [copies, setCopies] = useState(1);
+
+  useEffect(() => {
+    if (status === "ready") void mine.fetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status]);
 
   if (status !== "ready" || !profile) return null;
 
@@ -52,7 +60,7 @@ export function StudentCabinet() {
   };
 
   const handleSubmit = async () => {
-    const success = await order(userId, FileGenerateType.WORD_GEN_APPLICATION_CERTIFICATE_ENROLLMENT, copies);
+    const success = await order(FileGenerateType.WORD_GEN_APPLICATION_CERTIFICATE_ENROLLMENT, copies);
     if (success) handleOpenChange(false);
   };
 
@@ -112,7 +120,7 @@ export function StudentCabinet() {
         <Card className="p-5">
           <CardHeader className="px-0 pt-0">
             <CardTitle>Услуги</CardTitle>
-            <CardDescription>Закажите документ — он сформируется автоматически и сразу скачается</CardDescription>
+            <CardDescription>Закажите справку — её подготовит деканат вашего факультета. Когда она будет готова, статус ниже сменится на «Готова к выдаче».</CardDescription>
           </CardHeader>
           <CardContent className="px-0">
             <div className="flex flex-wrap items-center justify-between gap-4 rounded-lg border border-border p-4">
@@ -127,20 +135,61 @@ export function StudentCabinet() {
             </div>
           </CardContent>
         </Card>
+
+        <Card className="p-5">
+          <CardHeader className="px-0 pt-0">
+            <CardTitle>Мои справки</CardTitle>
+            <CardDescription>Статус заказов. Готовую справку заберите в деканате и распишитесь в получении.</CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-3 px-0">
+            {mine.orders.loading && mine.orders.list.length === 0 && (
+              <p className="text-sm text-muted-foreground">Загрузка…</p>
+            )}
+            {mine.orders.error && <p className="text-sm text-destructive">Не удалось загрузить заказы. Обновите страницу.</p>}
+            {!mine.orders.loading && !mine.orders.error && mine.orders.list.length === 0 && (
+              <p className="text-sm text-muted-foreground">Заказов пока нет.</p>
+            )}
+            {mine.orders.list.map((o) => {
+              const st = CERTIFICATE_STATUS[o.status];
+              return (
+                <div key={o.id.toString()} className="flex flex-col gap-1.5 rounded-lg border border-border p-4">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <p className="text-sm font-medium text-slate-800">
+                      Справка об обучении · {o.copies} экз.
+                    </p>
+                    <Badge variant={st.tone}>{st.label}</Badge>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Заказана {formatDate("datetime", o.createdAt)}
+                    {o.readyAt && ` · готова ${formatDate("datetime", o.readyAt)}`}
+                    {o.issuedAt && ` · выдана ${formatDate("datetime", o.issuedAt)}`}
+                  </p>
+                  <p className="text-sm">
+                    {st.hint}
+                    {o.status === CertificateOrderStatus.READY && o.faculty && ` Деканат: ${o.faculty}.`}
+                  </p>
+                  {o.status === CertificateOrderStatus.CANCELLED && o.cancelReason && (
+                    <p className="text-sm text-destructive">Причина: {o.cancelReason}</p>
+                  )}
+                </div>
+              );
+            })}
+          </CardContent>
+        </Card>
       </div>
 
       <Dialog open={open} onOpenChange={handleOpenChange}>
         <DialogContent>
           {step === "loading" ? (
             <CommonLoadingOverlay
-              title="Формируем справку..."
-              description="Получаем данные студента и готовим документ"
+              title="Отправляем заказ..."
+              description="Заказ уйдёт в деканат вашего факультета"
             />
           ) : (
             <>
               <DialogHeader>
                 <DialogTitle>Заказ справки</DialogTitle>
-                <DialogDescription>Справка об обучении — документ сформируется и сразу скачается</DialogDescription>
+                <DialogDescription>Справку подготовит деканат. Статус заказа появится в разделе «Мои справки».</DialogDescription>
               </DialogHeader>
 
               <div className="flex flex-col gap-4">
