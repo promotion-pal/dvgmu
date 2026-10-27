@@ -87,3 +87,4 @@ cd apps/fesmu/web && pnpm dev
   перенастроить (путь `ROOT`, фильтры путей, выкатку fesmu).
 - Подробности по старым частям: `docs/PROJECT_OVERVIEW.md`, `docs/stand.md`, `apps/fesmu/docs/`.
 # dvgmu
+# dvgmu
