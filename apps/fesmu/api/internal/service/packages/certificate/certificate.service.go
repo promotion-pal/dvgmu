@@ -8,6 +8,8 @@
 package certificate
 
 import (
+	"dvgmu/api/internal/faculty"
+
 	"context"
 	"errors"
 	"log/slog"
@@ -117,7 +119,7 @@ func (a *actor) scope() scope {
 	if a.token.HasRole(auth.RoleAdmin) {
 		return scope{all: true}
 	}
-	f := FacultiesOfDepartments(a.mdm.GetDepartments())
+	f := faculty.OfDepartments(a.mdm.GetDepartments())
 	if len(f) == 0 {
 		return scope{all: true}
 	}
@@ -130,9 +132,9 @@ func (sc scope) allows(faculty int32) bool { return sc.all || sc.faculties[facul
 
 func (sc scope) labels() []string {
 	var out []string
-	for _, code := range []int32{FacultyMedical, FacultyPediatric, FacultyDental, FacultyPharmacy, FacultyHumanities} {
+	for _, code := range faculty.All {
 		if sc.faculties[code] {
-			out = append(out, FacultyLabel(code))
+			out = append(out, faculty.Label(code))
 		}
 	}
 	return out
@@ -227,7 +229,7 @@ func (s *Service) CertificateMyFetch(ctx context.Context, _ *pb.CertificateMyFet
 	}
 	resp := &pb.CertificateFetchResponse{}
 	for _, o := range orders {
-		resp.Orders = append(resp.Orders, o.ToProto(FacultyLabel))
+		resp.Orders = append(resp.Orders, o.ToProto(faculty.Label))
 	}
 	return resp, nil
 }
@@ -254,7 +256,7 @@ func (s *Service) CertificateFetch(ctx context.Context, req *pb.CertificateFetch
 	for _, o := range orders {
 		s.backfillFaculty(ctx, o)
 		if sc.allows(o.FacultyCode) {
-			resp.Orders = append(resp.Orders, o.ToProto(FacultyLabel))
+			resp.Orders = append(resp.Orders, o.ToProto(faculty.Label))
 		}
 	}
 	return resp, nil
@@ -284,7 +286,7 @@ func (s *Service) CertificatePrint(ctx context.Context, req *pb.CertificatePrint
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 	log.Info("certificate printed", slog.String("by", me.name))
-	return &pb.CertificatePrintResponse{Order: order.ToProto(FacultyLabel), FileName: doc.fileName, Content: doc.content}, nil
+	return &pb.CertificatePrintResponse{Order: order.ToProto(faculty.Label), FileName: doc.fileName, Content: doc.content}, nil
 }
 
 // CertificateIssue — студент расписался и забрал справку.
@@ -303,7 +305,7 @@ func (s *Service) CertificateIssue(ctx context.Context, req *pb.CertificateIssue
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 	s.log.Info("certificate issued", slog.Int64("order_id", order.ID), slog.String("by", me.name))
-	return &pb.CertificateIssueResponse{Order: order.ToProto(FacultyLabel)}, nil
+	return &pb.CertificateIssueResponse{Order: order.ToProto(faculty.Label)}, nil
 }
 
 // CertificateCancel — отклонить заказ; причину видит студент.
@@ -329,7 +331,7 @@ func (s *Service) CertificateCancel(ctx context.Context, req *pb.CertificateCanc
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 	s.log.Info("certificate cancelled", slog.Int64("order_id", order.ID), slog.String("by", me.name))
-	return &pb.CertificateCancelResponse{Order: order.ToProto(FacultyLabel)}, nil
+	return &pb.CertificateCancelResponse{Order: order.ToProto(faculty.Label)}, nil
 }
 
 // ownOrder — заказ, который сотрудник с certificate.post вправе обрабатывать:
@@ -362,7 +364,7 @@ func (s *Service) ownOrder(ctx context.Context, id int64) (*models.CertificateOr
 // backfillFaculty — заказы, заведённые до учёта факультета: берём зачётку из
 // MDM один раз и сохраняем. Не вышло — заказ остаётся «факультет не определён».
 func (s *Service) backfillFaculty(ctx context.Context, o *models.CertificateOrder) {
-	if o.FacultyCode != FacultyUnknown || o.RecordBook != "" {
+	if o.FacultyCode != faculty.Unknown || o.RecordBook != "" {
 		return
 	}
 	profile, err := s.profile(ctx, o.StudentMdmID)
@@ -384,7 +386,7 @@ func fillStudent(o *models.CertificateOrder, profile *entity.UserFull) {
 	st := profile.GetStudent()
 	o.Group = st.GetGroup()
 	o.RecordBook = st.GetRecordBook()
-	o.FacultyCode = FacultyFromRecordBook(o.RecordBook)
+	o.FacultyCode = faculty.FromRecordBook(o.RecordBook)
 }
 
 func (s *Service) profile(ctx context.Context, studentID int64) (*entity.UserFull, error) {

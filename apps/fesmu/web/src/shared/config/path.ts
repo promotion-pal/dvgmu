@@ -49,6 +49,10 @@ const ROUTE = {
     /** Сводка по категории (типу опроса): общая оценка + каждый объект. */
     REPORT_CATEGORY: "/analytics/report/type/:type",
   },
+  /** Деканат: студенты своего факультета и коды первого входа. */
+  DEANERY: {
+    STUDENTS: "/deanery/students",
+  },
   ADMIN: {
     CERTIFICATES: "/admin/certificates",
     AUTH: "/admin/auth",

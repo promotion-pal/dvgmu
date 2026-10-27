@@ -4,6 +4,7 @@ import type { UserRole } from "@fesmu/contract/fesmu/enum/v1/user.enum_pb";
 import { PermissionGate, RoleGate, UserGate } from "./widgets/user-gate";
 import { PermissionAction, PermissionSection, PURCHASE_SECTIONS, PURCHASE_V3_PERMS, permsFor, permsForAny } from "./shared/config/permissions";
 import CertificatesPage from "./page/admin/certificates/Certificates";
+import DeaneryStudentsPage from "./page/deanery/DeaneryStudents";
 import { firstAllowedUrl } from "./widgets/layout/sidebar";
 import { ACCESS } from "./shared/config/access";
 import { useUserProvider } from "./features/provider/user.provider";
@@ -122,6 +123,11 @@ function App() {
           </Route>
           <Route element={<AllowSection section={PermissionSection.COMPUTER_CLASSES} />}>
             <Route path={ROUTE.STUDY.COMPUTER_CLASS} element={<ComputerClassPage />} />
+          </Route>
+
+          {/* Деканат: студенты своего факультета, коды первого входа (выдача — deanery.post) */}
+          <Route element={<AllowSection section={PermissionSection.DEANERY} />}>
+            <Route path={ROUTE.DEANERY.STUDENTS} element={<DeaneryStudentsPage />} />
           </Route>
 
           {/* По правам: журнал и выдача справок */}

@@ -21,6 +21,7 @@ import (
 	"dvgmu/api/internal/config"
 	"dvgmu/api/internal/grpc"
 	"dvgmu/api/internal/mdm"
+	"dvgmu/api/internal/modules/deanery"
 	"dvgmu/api/internal/modules/debtor"
 	"dvgmu/api/internal/modules/library"
 	"dvgmu/api/internal/modules/purchase"
@@ -197,6 +198,9 @@ func New(
 			serviceconnect.TestSessionServiceName:     {auth.SectionTests},
 			// Опросы: номер QR — просмотр раздела, создание и правка — analytics.post.
 			serviceconnect.SurveyServiceName: {auth.SectionAnalytics},
+			// Деканат: студенты своего факультета — просмотр, коды первого
+			// входа — deanery.post; факультет модуль проверяет сам.
+			serviceconnect.DeaneryServiceName: {auth.SectionDeanery},
 			// Закупки: просмотр любого раздела закупок открывает сервис; в какой
 			// роли действовать, модуль проверяет по праву на её раздел.
 			servicev2connect.PurchaseServiceName: auth.PurchaseSections,
@@ -287,6 +291,7 @@ func New(
 		libraryModule,
 		questionnaire.New(log, cfg.Packages.Analytics),
 		survey.New(log, cfg.Packages.Analytics),
+		deanery.New(log, cfg.Packages.MDM),
 	)
 
 	return &App{

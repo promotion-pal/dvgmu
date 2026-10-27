@@ -38,6 +38,7 @@ const (
 	SectionLibrary         = enum.PermissionSection_PERMISSION_SECTION_LIBRARY
 	SectionManuals         = enum.PermissionSection_PERMISSION_SECTION_MANUALS
 	SectionAnalytics       = enum.PermissionSection_PERMISSION_SECTION_ANALYTICS
+	SectionDeanery         = enum.PermissionSection_PERMISSION_SECTION_DEANERY
 
 	// Закупки v2: по разделу на роль в процессе.
 	SectionPurchaseRequest    = enum.PermissionSection_PERMISSION_SECTION_PURCHASE_REQUEST

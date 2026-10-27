@@ -82,6 +82,12 @@ const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
         ],
     },
     {
+        label: "Деканат",
+        items: [
+            { title: "Студенты и входы", url: ROUTE.DEANERY.STUDENTS, icon: UsersIcon, permissions: permsFor(PermissionSection.DEANERY) },
+        ],
+    },
+    {
         label: "Администрирование",
         items: [
             { title: "Справки", url: ROUTE.ADMIN.CERTIFICATES, icon: FileCheckIcon, permissions: permsFor(PermissionSection.CERTIFICATE) },

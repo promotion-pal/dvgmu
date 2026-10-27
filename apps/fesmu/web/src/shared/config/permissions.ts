@@ -64,6 +64,7 @@ export const SECTIONS: {
     { key: PermissionSection.LIBRARY, group: "Библиотека", label: "Библиотека: каталог", short: "Каталог", description: "Изменение — добавлять, править и удалять издания; читать каталог может любой, кто вошёл" },
     { key: PermissionSection.MANUALS, group: "Библиотека", label: "Библиотека: методички", short: "Методички", description: "Изменение — писать, править, публиковать и снимать методички; опубликованные читает любой, кто вошёл" },
     { key: PermissionSection.CERTIFICATE, group: "Студентам", label: "Справки", description: "Просмотр — журнал; изменение — выдача, справка за любого студента" },
+    { key: PermissionSection.DEANERY, group: "Студентам", label: "Деканат: студенты и входы", short: "Деканат", description: "Просмотр — студенты своего факультета по группам и курсам; изменение — выдача кодов первого входа (лист на группу для печати)" },
     { key: PermissionSection.VACCINATION, group: "Студентам", label: "Вакцинация", description: "Дни и записи на вакцинацию" },
     { key: PermissionSection.ANALYTICS, group: "Аналитика", label: "Аналитика опросов", short: "Опросы", description: "Просмотр — сводки, ответы и выгрузка по опросам; изменение — заводить опросы и QR-точки" },
     { key: PermissionSection.PURCHASE_REQUEST, group: "Демо", label: "Демо закупок: заявки", short: "Заявки", description: "Старый демо-процесс закупок (v2), роль «Сотрудник»: просмотр — открыть демо, изменение — подавать заявки" },

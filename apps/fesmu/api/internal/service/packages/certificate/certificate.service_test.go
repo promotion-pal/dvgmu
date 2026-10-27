@@ -1,6 +1,8 @@
 package certificate
 
 import (
+	"dvgmu/api/internal/faculty"
+
 	"context"
 	"errors"
 	"io"
@@ -172,10 +174,10 @@ func mustOrder(t *testing.T, s *Service, who string) {
 }
 
 func TestFacultyFromRecordBook(t *testing.T) {
-	cases := map[string]int32{"1023001": FacultyMedical, "2024015": FacultyPediatric, "3021001": FacultyDental,
-		"4020001": FacultyPharmacy, "7120001": FacultyHumanities, "9920001": FacultyUnknown, "": FacultyUnknown, "1": FacultyUnknown, "ab12": FacultyUnknown}
+	cases := map[string]int32{"1023001": faculty.Medical, "2024015": faculty.Pediatric, "3021001": faculty.Dental,
+		"4020001": faculty.Pharmacy, "7120001": faculty.Humanities, "9920001": faculty.Unknown, "": faculty.Unknown, "1": faculty.Unknown, "ab12": faculty.Unknown}
 	for book, want := range cases {
-		if got := FacultyFromRecordBook(book); got != want {
+		if got := faculty.FromRecordBook(book); got != want {
 			t.Errorf("%q: got %d, want %d", book, got, want)
 		}
 	}
@@ -188,7 +190,7 @@ func TestOrder_StudentGetsNoFileOnlyStatus(t *testing.T) {
 		t.Fatalf("student order must succeed without a file: %v %v", resp, err)
 	}
 	o := store.rows[0]
-	if o.StudentMdmID != studentID || o.Status != statusOrdered || o.Copies != 2 || o.FacultyCode != FacultyMedical || o.Group != "101" {
+	if o.StudentMdmID != studentID || o.Status != statusOrdered || o.Copies != 2 || o.FacultyCode != faculty.Medical || o.Group != "101" {
 		t.Fatalf("journal row: %+v", o)
 	}
 
@@ -216,7 +218,7 @@ func TestOrder_OnBehalfIssuedWithFile(t *testing.T) {
 	if err != nil || !resp.GetSuccess() || len(resp.GetContent()) == 0 {
 		t.Fatalf("on behalf: %v %v", resp, err)
 	}
-	if o := store.rows[0]; o.Status != statusIssued || o.IssuedAt == nil || o.FacultyCode != FacultyPediatric {
+	if o := store.rows[0]; o.Status != statusIssued || o.IssuedAt == nil || o.FacultyCode != faculty.Pediatric {
 		t.Fatalf("on-behalf order must be issued at once: %+v", o)
 	}
 }
@@ -339,7 +341,7 @@ func TestJournal_UnknownFacultyOnlyForAll(t *testing.T) {
 	if len(dean.GetOrders()) != 1 || dean.GetOrders()[0].GetId() != 2 {
 		t.Fatalf("deanery sees only the backfilled medical order: %v", dean.GetOrders())
 	}
-	if store.rows[1].FacultyCode != FacultyMedical {
+	if store.rows[1].FacultyCode != faculty.Medical {
 		t.Fatalf("backfill not saved: %+v", store.rows[1])
 	}
 	all, _ := s.CertificateFetch(as("u-clerk", view), &pb.CertificateFetchRequest{})
