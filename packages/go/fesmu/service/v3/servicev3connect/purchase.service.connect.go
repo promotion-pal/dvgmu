@@ -99,6 +99,9 @@ const (
 	// PurchaseServicePurchaseEmployeeFetchProcedure is the fully-qualified name of the
 	// PurchaseService's PurchaseEmployeeFetch RPC.
 	PurchaseServicePurchaseEmployeeFetchProcedure = "/contract.service.v3.PurchaseService/PurchaseEmployeeFetch"
+	// PurchaseServicePurchaseActivityFetchProcedure is the fully-qualified name of the
+	// PurchaseService's PurchaseActivityFetch RPC.
+	PurchaseServicePurchaseActivityFetchProcedure = "/contract.service.v3.PurchaseService/PurchaseActivityFetch"
 	// PurchaseServicePurchaseCuratorSaveProcedure is the fully-qualified name of the PurchaseService's
 	// PurchaseCuratorSave RPC.
 	PurchaseServicePurchaseCuratorSaveProcedure = "/contract.service.v3.PurchaseService/PurchaseCuratorSave"
@@ -147,6 +150,8 @@ type PurchaseServiceClient interface {
 	// Employees of a department (UNSPECIFIED — everyone), from MDM: whom a head
 	// gives a purchase to, whom the administrator binds to a vice-rector.
 	PurchaseEmployeeFetch(context.Context, *connect.Request[v3.PurchaseEmployeeFetchRequest]) (*connect.Response[v3.PurchaseEmployeeFetchResponse], error)
+	// Who works in the module: actions per employee (VIEW_ACTIVITY).
+	PurchaseActivityFetch(context.Context, *connect.Request[v3.PurchaseActivityFetchRequest]) (*connect.Response[v3.PurchaseActivityFetchResponse], error)
 	// — Directories: PurchasePermission DIRECTORIES.
 	PurchaseCuratorSave(context.Context, *connect.Request[v3.PurchaseCuratorSaveRequest]) (*connect.Response[v3.PurchaseCuratorSaveResponse], error)
 	PurchaseCuratorDelete(context.Context, *connect.Request[v3.PurchaseCuratorDeleteRequest]) (*connect.Response[v3.PurchaseCuratorDeleteResponse], error)
@@ -298,6 +303,12 @@ func NewPurchaseServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 			connect.WithSchema(purchaseServiceMethods.ByName("PurchaseEmployeeFetch")),
 			connect.WithClientOptions(opts...),
 		),
+		purchaseActivityFetch: connect.NewClient[v3.PurchaseActivityFetchRequest, v3.PurchaseActivityFetchResponse](
+			httpClient,
+			baseURL+PurchaseServicePurchaseActivityFetchProcedure,
+			connect.WithSchema(purchaseServiceMethods.ByName("PurchaseActivityFetch")),
+			connect.WithClientOptions(opts...),
+		),
 		purchaseCuratorSave: connect.NewClient[v3.PurchaseCuratorSaveRequest, v3.PurchaseCuratorSaveResponse](
 			httpClient,
 			baseURL+PurchaseServicePurchaseCuratorSaveProcedure,
@@ -355,6 +366,7 @@ type purchaseServiceClient struct {
 	purchaseProtocolFileFetch  *connect.Client[v3.PurchaseProtocolFileFetchRequest, v3.PurchaseProtocolFileFetchResponse]
 	purchaseCodeSuggestFetch   *connect.Client[v3.PurchaseCodeSuggestFetchRequest, v3.PurchaseCodeSuggestFetchResponse]
 	purchaseEmployeeFetch      *connect.Client[v3.PurchaseEmployeeFetchRequest, v3.PurchaseEmployeeFetchResponse]
+	purchaseActivityFetch      *connect.Client[v3.PurchaseActivityFetchRequest, v3.PurchaseActivityFetchResponse]
 	purchaseCuratorSave        *connect.Client[v3.PurchaseCuratorSaveRequest, v3.PurchaseCuratorSaveResponse]
 	purchaseCuratorDelete      *connect.Client[v3.PurchaseCuratorDeleteRequest, v3.PurchaseCuratorDeleteResponse]
 	purchaseDepartmentSave     *connect.Client[v3.PurchaseDepartmentSaveRequest, v3.PurchaseDepartmentSaveResponse]
@@ -472,6 +484,11 @@ func (c *purchaseServiceClient) PurchaseEmployeeFetch(ctx context.Context, req *
 	return c.purchaseEmployeeFetch.CallUnary(ctx, req)
 }
 
+// PurchaseActivityFetch calls contract.service.v3.PurchaseService.PurchaseActivityFetch.
+func (c *purchaseServiceClient) PurchaseActivityFetch(ctx context.Context, req *connect.Request[v3.PurchaseActivityFetchRequest]) (*connect.Response[v3.PurchaseActivityFetchResponse], error) {
+	return c.purchaseActivityFetch.CallUnary(ctx, req)
+}
+
 // PurchaseCuratorSave calls contract.service.v3.PurchaseService.PurchaseCuratorSave.
 func (c *purchaseServiceClient) PurchaseCuratorSave(ctx context.Context, req *connect.Request[v3.PurchaseCuratorSaveRequest]) (*connect.Response[v3.PurchaseCuratorSaveResponse], error) {
 	return c.purchaseCuratorSave.CallUnary(ctx, req)
@@ -528,6 +545,8 @@ type PurchaseServiceHandler interface {
 	// Employees of a department (UNSPECIFIED — everyone), from MDM: whom a head
 	// gives a purchase to, whom the administrator binds to a vice-rector.
 	PurchaseEmployeeFetch(context.Context, *connect.Request[v3.PurchaseEmployeeFetchRequest]) (*connect.Response[v3.PurchaseEmployeeFetchResponse], error)
+	// Who works in the module: actions per employee (VIEW_ACTIVITY).
+	PurchaseActivityFetch(context.Context, *connect.Request[v3.PurchaseActivityFetchRequest]) (*connect.Response[v3.PurchaseActivityFetchResponse], error)
 	// — Directories: PurchasePermission DIRECTORIES.
 	PurchaseCuratorSave(context.Context, *connect.Request[v3.PurchaseCuratorSaveRequest]) (*connect.Response[v3.PurchaseCuratorSaveResponse], error)
 	PurchaseCuratorDelete(context.Context, *connect.Request[v3.PurchaseCuratorDeleteRequest]) (*connect.Response[v3.PurchaseCuratorDeleteResponse], error)
@@ -675,6 +694,12 @@ func NewPurchaseServiceHandler(svc PurchaseServiceHandler, opts ...connect.Handl
 		connect.WithSchema(purchaseServiceMethods.ByName("PurchaseEmployeeFetch")),
 		connect.WithHandlerOptions(opts...),
 	)
+	purchaseServicePurchaseActivityFetchHandler := connect.NewUnaryHandler(
+		PurchaseServicePurchaseActivityFetchProcedure,
+		svc.PurchaseActivityFetch,
+		connect.WithSchema(purchaseServiceMethods.ByName("PurchaseActivityFetch")),
+		connect.WithHandlerOptions(opts...),
+	)
 	purchaseServicePurchaseCuratorSaveHandler := connect.NewUnaryHandler(
 		PurchaseServicePurchaseCuratorSaveProcedure,
 		svc.PurchaseCuratorSave,
@@ -751,6 +776,8 @@ func NewPurchaseServiceHandler(svc PurchaseServiceHandler, opts ...connect.Handl
 			purchaseServicePurchaseCodeSuggestFetchHandler.ServeHTTP(w, r)
 		case PurchaseServicePurchaseEmployeeFetchProcedure:
 			purchaseServicePurchaseEmployeeFetchHandler.ServeHTTP(w, r)
+		case PurchaseServicePurchaseActivityFetchProcedure:
+			purchaseServicePurchaseActivityFetchHandler.ServeHTTP(w, r)
 		case PurchaseServicePurchaseCuratorSaveProcedure:
 			purchaseServicePurchaseCuratorSaveHandler.ServeHTTP(w, r)
 		case PurchaseServicePurchaseCuratorDeleteProcedure:
@@ -856,6 +883,10 @@ func (UnimplementedPurchaseServiceHandler) PurchaseCodeSuggestFetch(context.Cont
 
 func (UnimplementedPurchaseServiceHandler) PurchaseEmployeeFetch(context.Context, *connect.Request[v3.PurchaseEmployeeFetchRequest]) (*connect.Response[v3.PurchaseEmployeeFetchResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.v3.PurchaseService.PurchaseEmployeeFetch is not implemented"))
+}
+
+func (UnimplementedPurchaseServiceHandler) PurchaseActivityFetch(context.Context, *connect.Request[v3.PurchaseActivityFetchRequest]) (*connect.Response[v3.PurchaseActivityFetchResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.v3.PurchaseService.PurchaseActivityFetch is not implemented"))
 }
 
 func (UnimplementedPurchaseServiceHandler) PurchaseCuratorSave(context.Context, *connect.Request[v3.PurchaseCuratorSaveRequest]) (*connect.Response[v3.PurchaseCuratorSaveResponse], error) {

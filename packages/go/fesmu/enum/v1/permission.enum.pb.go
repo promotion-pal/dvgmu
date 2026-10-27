@@ -65,6 +65,9 @@ const (
 	// Аналитика: просмотр — результаты опросов (сводки, ответы, выгрузка);
 	// изменение — заводить опросы и QR-точки.
 	PermissionSection_PERMISSION_SECTION_ANALYTICS PermissionSection = 17
+	// Деканат: просмотр — студенты своего факультета по группам и курсам;
+	// изменение — выдача кодов первого входа (лист на группу для печати).
+	PermissionSection_PERMISSION_SECTION_DEANERY PermissionSection = 18
 )
 
 // Enum value maps for PermissionSection.
@@ -88,6 +91,7 @@ var (
 		15: "PERMISSION_SECTION_LIBRARY",
 		16: "PERMISSION_SECTION_MANUALS",
 		17: "PERMISSION_SECTION_ANALYTICS",
+		18: "PERMISSION_SECTION_DEANERY",
 	}
 	PermissionSection_value = map[string]int32{
 		"PERMISSION_SECTION_UNSPECIFIED":          0,
@@ -108,6 +112,7 @@ var (
 		"PERMISSION_SECTION_LIBRARY":              15,
 		"PERMISSION_SECTION_MANUALS":              16,
 		"PERMISSION_SECTION_ANALYTICS":            17,
+		"PERMISSION_SECTION_DEANERY":              18,
 	}
 )
 
@@ -194,7 +199,7 @@ var File_fesmu_enum_v1_permission_enum_proto protoreflect.FileDescriptor
 
 const file_fesmu_enum_v1_permission_enum_proto_rawDesc = "" +
 	"\n" +
-	"#fesmu/enum/v1/permission.enum.proto\x12\x10contract.enum.v1*\xa3\x05\n" +
+	"#fesmu/enum/v1/permission.enum.proto\x12\x10contract.enum.v1*\xc3\x05\n" +
 	"\x11PermissionSection\x12\"\n" +
 	"\x1ePERMISSION_SECTION_UNSPECIFIED\x10\x00\x12%\n" +
 	"!PERMISSION_SECTION_INFRASTRUCTURE\x10\x01\x12 \n" +
@@ -214,7 +219,8 @@ const file_fesmu_enum_v1_permission_enum_proto_rawDesc = "" +
 	"\x18PERMISSION_SECTION_TESTS\x10\x0e\x12\x1e\n" +
 	"\x1aPERMISSION_SECTION_LIBRARY\x10\x0f\x12\x1e\n" +
 	"\x1aPERMISSION_SECTION_MANUALS\x10\x10\x12 \n" +
-	"\x1cPERMISSION_SECTION_ANALYTICS\x10\x11*n\n" +
+	"\x1cPERMISSION_SECTION_ANALYTICS\x10\x11\x12\x1e\n" +
+	"\x1aPERMISSION_SECTION_DEANERY\x10\x12*n\n" +
 	"\x10PermissionAction\x12!\n" +
 	"\x1dPERMISSION_ACTION_UNSPECIFIED\x10\x00\x12\x1b\n" +
 	"\x17PERMISSION_ACTION_FETCH\x10\x01\x12\x1a\n" +

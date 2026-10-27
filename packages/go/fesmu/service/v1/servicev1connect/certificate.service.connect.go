@@ -42,15 +42,33 @@ const (
 	// CertificateServiceCertificateIssueProcedure is the fully-qualified name of the
 	// CertificateService's CertificateIssue RPC.
 	CertificateServiceCertificateIssueProcedure = "/contract.service.v1.CertificateService/CertificateIssue"
+	// CertificateServiceCertificateMyFetchProcedure is the fully-qualified name of the
+	// CertificateService's CertificateMyFetch RPC.
+	CertificateServiceCertificateMyFetchProcedure = "/contract.service.v1.CertificateService/CertificateMyFetch"
+	// CertificateServiceCertificatePrintProcedure is the fully-qualified name of the
+	// CertificateService's CertificatePrint RPC.
+	CertificateServiceCertificatePrintProcedure = "/contract.service.v1.CertificateService/CertificatePrint"
+	// CertificateServiceCertificateCancelProcedure is the fully-qualified name of the
+	// CertificateService's CertificateCancel RPC.
+	CertificateServiceCertificateCancelProcedure = "/contract.service.v1.CertificateService/CertificateCancel"
 )
 
 // CertificateServiceClient is a client for the contract.service.v1.CertificateService service.
 type CertificateServiceClient interface {
+	// Заказ. Студент — только на себя, без файла. Сотрудник с certificate.post —
+	// за любого студента: сразу выдана, файл в ответе.
 	CertificateOrder(context.Context, *connect.Request[v1.CertificateOrderRequest]) (*connect.Response[v1.CertificateOrderResponse], error)
-	// The journal, newest first (certificate.view).
+	// Журнал деканата, новые сверху (certificate.fetch) — только свои факультеты.
 	CertificateFetch(context.Context, *connect.Request[v1.CertificateFetchRequest]) (*connect.Response[v1.CertificateFetchResponse], error)
-	// Mark an order issued and render its document again (certificate.issue).
+	// Отметить выданной: студент расписался и забрал (certificate.post).
 	CertificateIssue(context.Context, *connect.Request[v1.CertificateIssueRequest]) (*connect.Response[v1.CertificateIssueResponse], error)
+	// Свои заказы студента, новые сверху — для статуса в кабинете.
+	CertificateMyFetch(context.Context, *connect.Request[v1.CertificateMyFetchRequest]) (*connect.Response[v1.CertificateFetchResponse], error)
+	// Сформировать документ для печати; заказ становится «готова к выдаче»
+	// (certificate.post). Повторно — перепечатка, статус не меняется.
+	CertificatePrint(context.Context, *connect.Request[v1.CertificatePrintRequest]) (*connect.Response[v1.CertificatePrintResponse], error)
+	// Отклонить заказ с причиной — её видит студент (certificate.post).
+	CertificateCancel(context.Context, *connect.Request[v1.CertificateCancelRequest]) (*connect.Response[v1.CertificateCancelResponse], error)
 }
 
 // NewCertificateServiceClient constructs a client for the contract.service.v1.CertificateService
@@ -82,14 +100,35 @@ func NewCertificateServiceClient(httpClient connect.HTTPClient, baseURL string, 
 			connect.WithSchema(certificateServiceMethods.ByName("CertificateIssue")),
 			connect.WithClientOptions(opts...),
 		),
+		certificateMyFetch: connect.NewClient[v1.CertificateMyFetchRequest, v1.CertificateFetchResponse](
+			httpClient,
+			baseURL+CertificateServiceCertificateMyFetchProcedure,
+			connect.WithSchema(certificateServiceMethods.ByName("CertificateMyFetch")),
+			connect.WithClientOptions(opts...),
+		),
+		certificatePrint: connect.NewClient[v1.CertificatePrintRequest, v1.CertificatePrintResponse](
+			httpClient,
+			baseURL+CertificateServiceCertificatePrintProcedure,
+			connect.WithSchema(certificateServiceMethods.ByName("CertificatePrint")),
+			connect.WithClientOptions(opts...),
+		),
+		certificateCancel: connect.NewClient[v1.CertificateCancelRequest, v1.CertificateCancelResponse](
+			httpClient,
+			baseURL+CertificateServiceCertificateCancelProcedure,
+			connect.WithSchema(certificateServiceMethods.ByName("CertificateCancel")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // certificateServiceClient implements CertificateServiceClient.
 type certificateServiceClient struct {
-	certificateOrder *connect.Client[v1.CertificateOrderRequest, v1.CertificateOrderResponse]
-	certificateFetch *connect.Client[v1.CertificateFetchRequest, v1.CertificateFetchResponse]
-	certificateIssue *connect.Client[v1.CertificateIssueRequest, v1.CertificateIssueResponse]
+	certificateOrder   *connect.Client[v1.CertificateOrderRequest, v1.CertificateOrderResponse]
+	certificateFetch   *connect.Client[v1.CertificateFetchRequest, v1.CertificateFetchResponse]
+	certificateIssue   *connect.Client[v1.CertificateIssueRequest, v1.CertificateIssueResponse]
+	certificateMyFetch *connect.Client[v1.CertificateMyFetchRequest, v1.CertificateFetchResponse]
+	certificatePrint   *connect.Client[v1.CertificatePrintRequest, v1.CertificatePrintResponse]
+	certificateCancel  *connect.Client[v1.CertificateCancelRequest, v1.CertificateCancelResponse]
 }
 
 // CertificateOrder calls contract.service.v1.CertificateService.CertificateOrder.
@@ -107,14 +146,38 @@ func (c *certificateServiceClient) CertificateIssue(ctx context.Context, req *co
 	return c.certificateIssue.CallUnary(ctx, req)
 }
 
+// CertificateMyFetch calls contract.service.v1.CertificateService.CertificateMyFetch.
+func (c *certificateServiceClient) CertificateMyFetch(ctx context.Context, req *connect.Request[v1.CertificateMyFetchRequest]) (*connect.Response[v1.CertificateFetchResponse], error) {
+	return c.certificateMyFetch.CallUnary(ctx, req)
+}
+
+// CertificatePrint calls contract.service.v1.CertificateService.CertificatePrint.
+func (c *certificateServiceClient) CertificatePrint(ctx context.Context, req *connect.Request[v1.CertificatePrintRequest]) (*connect.Response[v1.CertificatePrintResponse], error) {
+	return c.certificatePrint.CallUnary(ctx, req)
+}
+
+// CertificateCancel calls contract.service.v1.CertificateService.CertificateCancel.
+func (c *certificateServiceClient) CertificateCancel(ctx context.Context, req *connect.Request[v1.CertificateCancelRequest]) (*connect.Response[v1.CertificateCancelResponse], error) {
+	return c.certificateCancel.CallUnary(ctx, req)
+}
+
 // CertificateServiceHandler is an implementation of the contract.service.v1.CertificateService
 // service.
 type CertificateServiceHandler interface {
+	// Заказ. Студент — только на себя, без файла. Сотрудник с certificate.post —
+	// за любого студента: сразу выдана, файл в ответе.
 	CertificateOrder(context.Context, *connect.Request[v1.CertificateOrderRequest]) (*connect.Response[v1.CertificateOrderResponse], error)
-	// The journal, newest first (certificate.view).
+	// Журнал деканата, новые сверху (certificate.fetch) — только свои факультеты.
 	CertificateFetch(context.Context, *connect.Request[v1.CertificateFetchRequest]) (*connect.Response[v1.CertificateFetchResponse], error)
-	// Mark an order issued and render its document again (certificate.issue).
+	// Отметить выданной: студент расписался и забрал (certificate.post).
 	CertificateIssue(context.Context, *connect.Request[v1.CertificateIssueRequest]) (*connect.Response[v1.CertificateIssueResponse], error)
+	// Свои заказы студента, новые сверху — для статуса в кабинете.
+	CertificateMyFetch(context.Context, *connect.Request[v1.CertificateMyFetchRequest]) (*connect.Response[v1.CertificateFetchResponse], error)
+	// Сформировать документ для печати; заказ становится «готова к выдаче»
+	// (certificate.post). Повторно — перепечатка, статус не меняется.
+	CertificatePrint(context.Context, *connect.Request[v1.CertificatePrintRequest]) (*connect.Response[v1.CertificatePrintResponse], error)
+	// Отклонить заказ с причиной — её видит студент (certificate.post).
+	CertificateCancel(context.Context, *connect.Request[v1.CertificateCancelRequest]) (*connect.Response[v1.CertificateCancelResponse], error)
 }
 
 // NewCertificateServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -142,6 +205,24 @@ func NewCertificateServiceHandler(svc CertificateServiceHandler, opts ...connect
 		connect.WithSchema(certificateServiceMethods.ByName("CertificateIssue")),
 		connect.WithHandlerOptions(opts...),
 	)
+	certificateServiceCertificateMyFetchHandler := connect.NewUnaryHandler(
+		CertificateServiceCertificateMyFetchProcedure,
+		svc.CertificateMyFetch,
+		connect.WithSchema(certificateServiceMethods.ByName("CertificateMyFetch")),
+		connect.WithHandlerOptions(opts...),
+	)
+	certificateServiceCertificatePrintHandler := connect.NewUnaryHandler(
+		CertificateServiceCertificatePrintProcedure,
+		svc.CertificatePrint,
+		connect.WithSchema(certificateServiceMethods.ByName("CertificatePrint")),
+		connect.WithHandlerOptions(opts...),
+	)
+	certificateServiceCertificateCancelHandler := connect.NewUnaryHandler(
+		CertificateServiceCertificateCancelProcedure,
+		svc.CertificateCancel,
+		connect.WithSchema(certificateServiceMethods.ByName("CertificateCancel")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/contract.service.v1.CertificateService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case CertificateServiceCertificateOrderProcedure:
@@ -150,6 +231,12 @@ func NewCertificateServiceHandler(svc CertificateServiceHandler, opts ...connect
 			certificateServiceCertificateFetchHandler.ServeHTTP(w, r)
 		case CertificateServiceCertificateIssueProcedure:
 			certificateServiceCertificateIssueHandler.ServeHTTP(w, r)
+		case CertificateServiceCertificateMyFetchProcedure:
+			certificateServiceCertificateMyFetchHandler.ServeHTTP(w, r)
+		case CertificateServiceCertificatePrintProcedure:
+			certificateServiceCertificatePrintHandler.ServeHTTP(w, r)
+		case CertificateServiceCertificateCancelProcedure:
+			certificateServiceCertificateCancelHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -169,4 +256,16 @@ func (UnimplementedCertificateServiceHandler) CertificateFetch(context.Context, 
 
 func (UnimplementedCertificateServiceHandler) CertificateIssue(context.Context, *connect.Request[v1.CertificateIssueRequest]) (*connect.Response[v1.CertificateIssueResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.v1.CertificateService.CertificateIssue is not implemented"))
+}
+
+func (UnimplementedCertificateServiceHandler) CertificateMyFetch(context.Context, *connect.Request[v1.CertificateMyFetchRequest]) (*connect.Response[v1.CertificateFetchResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.v1.CertificateService.CertificateMyFetch is not implemented"))
+}
+
+func (UnimplementedCertificateServiceHandler) CertificatePrint(context.Context, *connect.Request[v1.CertificatePrintRequest]) (*connect.Response[v1.CertificatePrintResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.v1.CertificateService.CertificatePrint is not implemented"))
+}
+
+func (UnimplementedCertificateServiceHandler) CertificateCancel(context.Context, *connect.Request[v1.CertificateCancelRequest]) (*connect.Response[v1.CertificateCancelResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.v1.CertificateService.CertificateCancel is not implemented"))
 }

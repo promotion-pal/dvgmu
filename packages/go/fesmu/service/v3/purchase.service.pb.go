@@ -29,7 +29,10 @@ type PurchaseOverviewFetchRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// 0 — every year; otherwise purchases of that plan year and the requests
 	// and purchases not yet before the commission.
-	PlanYear      int32 `protobuf:"varint,1,opt,name=plan_year,json=planYear,proto3" json:"plan_year,omitempty"`
+	PlanYear int32 `protobuf:"varint,1,opt,name=plan_year,json=planYear,proto3" json:"plan_year,omitempty"`
+	// The page was opened (not a reload after a change): counted as a visit
+	// for the «Сотрудники» statistics.
+	Visit         bool `protobuf:"varint,2,opt,name=visit,proto3" json:"visit,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -69,6 +72,13 @@ func (x *PurchaseOverviewFetchRequest) GetPlanYear() int32 {
 		return x.PlanYear
 	}
 	return 0
+}
+
+func (x *PurchaseOverviewFetchRequest) GetVisit() bool {
+	if x != nil {
+		return x.Visit
+	}
+	return false
 }
 
 // What the user sees: own requests and assigned purchases always; their
@@ -3334,6 +3344,97 @@ func (x *PurchaseEmployeeFetchResponse) GetList() []*v3.PurchaseEmployee {
 	return nil
 }
 
+// VIEW_ACTIVITY. Actions on the requests and purchases the user sees (an
+// administrator — on all), per employee, most active first.
+type PurchaseActivityFetchRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The last N days; 0 — all time.
+	Days          int32 `protobuf:"varint,1,opt,name=days,proto3" json:"days,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PurchaseActivityFetchRequest) Reset() {
+	*x = PurchaseActivityFetchRequest{}
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[55]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PurchaseActivityFetchRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PurchaseActivityFetchRequest) ProtoMessage() {}
+
+func (x *PurchaseActivityFetchRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[55]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PurchaseActivityFetchRequest.ProtoReflect.Descriptor instead.
+func (*PurchaseActivityFetchRequest) Descriptor() ([]byte, []int) {
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{55}
+}
+
+func (x *PurchaseActivityFetchRequest) GetDays() int32 {
+	if x != nil {
+		return x.Days
+	}
+	return 0
+}
+
+type PurchaseActivityFetchResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	List          []*v3.PurchaseActivity `protobuf:"bytes,1,rep,name=list,proto3" json:"list,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PurchaseActivityFetchResponse) Reset() {
+	*x = PurchaseActivityFetchResponse{}
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[56]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PurchaseActivityFetchResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PurchaseActivityFetchResponse) ProtoMessage() {}
+
+func (x *PurchaseActivityFetchResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[56]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PurchaseActivityFetchResponse.ProtoReflect.Descriptor instead.
+func (*PurchaseActivityFetchResponse) Descriptor() ([]byte, []int) {
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{56}
+}
+
+func (x *PurchaseActivityFetchResponse) GetList() []*v3.PurchaseActivity {
+	if x != nil {
+		return x.List
+	}
+	return nil
+}
+
 type PurchaseCuratorSaveRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// 0 adds a direction.
@@ -3350,7 +3451,7 @@ type PurchaseCuratorSaveRequest struct {
 
 func (x *PurchaseCuratorSaveRequest) Reset() {
 	*x = PurchaseCuratorSaveRequest{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[55]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[57]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3362,7 +3463,7 @@ func (x *PurchaseCuratorSaveRequest) String() string {
 func (*PurchaseCuratorSaveRequest) ProtoMessage() {}
 
 func (x *PurchaseCuratorSaveRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[55]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[57]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3375,7 +3476,7 @@ func (x *PurchaseCuratorSaveRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseCuratorSaveRequest.ProtoReflect.Descriptor instead.
 func (*PurchaseCuratorSaveRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{55}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{57}
 }
 
 func (x *PurchaseCuratorSaveRequest) GetId() int64 {
@@ -3436,7 +3537,7 @@ type PurchaseCuratorSaveResponse struct {
 
 func (x *PurchaseCuratorSaveResponse) Reset() {
 	*x = PurchaseCuratorSaveResponse{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[56]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[58]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3448,7 +3549,7 @@ func (x *PurchaseCuratorSaveResponse) String() string {
 func (*PurchaseCuratorSaveResponse) ProtoMessage() {}
 
 func (x *PurchaseCuratorSaveResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[56]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[58]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3461,7 +3562,7 @@ func (x *PurchaseCuratorSaveResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseCuratorSaveResponse.ProtoReflect.Descriptor instead.
 func (*PurchaseCuratorSaveResponse) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{56}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{58}
 }
 
 func (x *PurchaseCuratorSaveResponse) GetId() int64 {
@@ -3481,7 +3582,7 @@ type PurchaseCuratorDeleteRequest struct {
 
 func (x *PurchaseCuratorDeleteRequest) Reset() {
 	*x = PurchaseCuratorDeleteRequest{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[57]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[59]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3493,7 +3594,7 @@ func (x *PurchaseCuratorDeleteRequest) String() string {
 func (*PurchaseCuratorDeleteRequest) ProtoMessage() {}
 
 func (x *PurchaseCuratorDeleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[57]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[59]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3506,7 +3607,7 @@ func (x *PurchaseCuratorDeleteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseCuratorDeleteRequest.ProtoReflect.Descriptor instead.
 func (*PurchaseCuratorDeleteRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{57}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{59}
 }
 
 func (x *PurchaseCuratorDeleteRequest) GetId() int64 {
@@ -3524,7 +3625,7 @@ type PurchaseCuratorDeleteResponse struct {
 
 func (x *PurchaseCuratorDeleteResponse) Reset() {
 	*x = PurchaseCuratorDeleteResponse{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[58]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[60]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3536,7 +3637,7 @@ func (x *PurchaseCuratorDeleteResponse) String() string {
 func (*PurchaseCuratorDeleteResponse) ProtoMessage() {}
 
 func (x *PurchaseCuratorDeleteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[58]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[60]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3549,7 +3650,7 @@ func (x *PurchaseCuratorDeleteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseCuratorDeleteResponse.ProtoReflect.Descriptor instead.
 func (*PurchaseCuratorDeleteResponse) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{58}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{60}
 }
 
 type PurchaseDepartmentSaveRequest struct {
@@ -3563,7 +3664,7 @@ type PurchaseDepartmentSaveRequest struct {
 
 func (x *PurchaseDepartmentSaveRequest) Reset() {
 	*x = PurchaseDepartmentSaveRequest{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[59]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[61]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3575,7 +3676,7 @@ func (x *PurchaseDepartmentSaveRequest) String() string {
 func (*PurchaseDepartmentSaveRequest) ProtoMessage() {}
 
 func (x *PurchaseDepartmentSaveRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[59]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[61]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3588,7 +3689,7 @@ func (x *PurchaseDepartmentSaveRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseDepartmentSaveRequest.ProtoReflect.Descriptor instead.
 func (*PurchaseDepartmentSaveRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{59}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{61}
 }
 
 func (x *PurchaseDepartmentSaveRequest) GetDepartment() enum.UserEmployeeDepartment {
@@ -3613,7 +3714,7 @@ type PurchaseDepartmentSaveResponse struct {
 
 func (x *PurchaseDepartmentSaveResponse) Reset() {
 	*x = PurchaseDepartmentSaveResponse{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[60]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[62]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3625,7 +3726,7 @@ func (x *PurchaseDepartmentSaveResponse) String() string {
 func (*PurchaseDepartmentSaveResponse) ProtoMessage() {}
 
 func (x *PurchaseDepartmentSaveResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[60]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[62]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3638,7 +3739,7 @@ func (x *PurchaseDepartmentSaveResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseDepartmentSaveResponse.ProtoReflect.Descriptor instead.
 func (*PurchaseDepartmentSaveResponse) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{60}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{62}
 }
 
 type PurchaseCategorySaveRequest struct {
@@ -3654,7 +3755,7 @@ type PurchaseCategorySaveRequest struct {
 
 func (x *PurchaseCategorySaveRequest) Reset() {
 	*x = PurchaseCategorySaveRequest{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[61]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[63]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3666,7 +3767,7 @@ func (x *PurchaseCategorySaveRequest) String() string {
 func (*PurchaseCategorySaveRequest) ProtoMessage() {}
 
 func (x *PurchaseCategorySaveRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[61]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[63]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3679,7 +3780,7 @@ func (x *PurchaseCategorySaveRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseCategorySaveRequest.ProtoReflect.Descriptor instead.
 func (*PurchaseCategorySaveRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{61}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{63}
 }
 
 func (x *PurchaseCategorySaveRequest) GetId() int64 {
@@ -3719,7 +3820,7 @@ type PurchaseCategorySaveResponse struct {
 
 func (x *PurchaseCategorySaveResponse) Reset() {
 	*x = PurchaseCategorySaveResponse{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[62]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[64]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3731,7 +3832,7 @@ func (x *PurchaseCategorySaveResponse) String() string {
 func (*PurchaseCategorySaveResponse) ProtoMessage() {}
 
 func (x *PurchaseCategorySaveResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[62]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[64]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3744,7 +3845,7 @@ func (x *PurchaseCategorySaveResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseCategorySaveResponse.ProtoReflect.Descriptor instead.
 func (*PurchaseCategorySaveResponse) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{62}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{64}
 }
 
 func (x *PurchaseCategorySaveResponse) GetId() int64 {
@@ -3763,7 +3864,7 @@ type PurchaseCategoryDeleteRequest struct {
 
 func (x *PurchaseCategoryDeleteRequest) Reset() {
 	*x = PurchaseCategoryDeleteRequest{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[63]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[65]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3775,7 +3876,7 @@ func (x *PurchaseCategoryDeleteRequest) String() string {
 func (*PurchaseCategoryDeleteRequest) ProtoMessage() {}
 
 func (x *PurchaseCategoryDeleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[63]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[65]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3788,7 +3889,7 @@ func (x *PurchaseCategoryDeleteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseCategoryDeleteRequest.ProtoReflect.Descriptor instead.
 func (*PurchaseCategoryDeleteRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{63}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{65}
 }
 
 func (x *PurchaseCategoryDeleteRequest) GetId() int64 {
@@ -3806,7 +3907,7 @@ type PurchaseCategoryDeleteResponse struct {
 
 func (x *PurchaseCategoryDeleteResponse) Reset() {
 	*x = PurchaseCategoryDeleteResponse{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[64]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[66]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3818,7 +3919,7 @@ func (x *PurchaseCategoryDeleteResponse) String() string {
 func (*PurchaseCategoryDeleteResponse) ProtoMessage() {}
 
 func (x *PurchaseCategoryDeleteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[64]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[66]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3831,16 +3932,17 @@ func (x *PurchaseCategoryDeleteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseCategoryDeleteResponse.ProtoReflect.Descriptor instead.
 func (*PurchaseCategoryDeleteResponse) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{64}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{66}
 }
 
 var File_fesmu_service_v3_purchase_service_proto protoreflect.FileDescriptor
 
 const file_fesmu_service_v3_purchase_service_proto_rawDesc = "" +
 	"\n" +
-	"'fesmu/service/v3/purchase.service.proto\x12\x13contract.service.v3\x1a\x1fgoogle/protobuf/timestamp.proto\x1a!fesmu/enum/v3/purchase.enum.proto\x1a%fesmu/entity/v3/purchase.entity.proto\x1a\x18mdm/enum/user.enum.proto\";\n" +
+	"'fesmu/service/v3/purchase.service.proto\x12\x13contract.service.v3\x1a\x1fgoogle/protobuf/timestamp.proto\x1a!fesmu/enum/v3/purchase.enum.proto\x1a%fesmu/entity/v3/purchase.entity.proto\x1a\x18mdm/enum/user.enum.proto\"Q\n" +
 	"\x1cPurchaseOverviewFetchRequest\x12\x1b\n" +
-	"\tplan_year\x18\x01 \x01(\x05R\bplanYear\"\xda\x03\n" +
+	"\tplan_year\x18\x01 \x01(\x05R\bplanYear\x12\x14\n" +
+	"\x05visit\x18\x02 \x01(\bR\x05visit\"\xda\x03\n" +
 	"\x1dPurchaseOverviewFetchResponse\x12?\n" +
 	"\brequests\x18\x01 \x03(\v2#.contract.entity.v3.PurchaseRequestR\brequests\x123\n" +
 	"\x04lots\x18\x02 \x03(\v2\x1f.contract.entity.v3.PurchaseLotR\x04lots\x12B\n" +
@@ -4061,7 +4163,11 @@ const file_fesmu_service_v3_purchase_service_proto_rawDesc = "" +
 	"department\x18\x01 \x01(\x0e2%.contract.enum.UserEmployeeDepartmentR\n" +
 	"department\"Y\n" +
 	"\x1dPurchaseEmployeeFetchResponse\x128\n" +
-	"\x04list\x18\x01 \x03(\v2$.contract.entity.v3.PurchaseEmployeeR\x04list\"\xdd\x01\n" +
+	"\x04list\x18\x01 \x03(\v2$.contract.entity.v3.PurchaseEmployeeR\x04list\"2\n" +
+	"\x1cPurchaseActivityFetchRequest\x12\x12\n" +
+	"\x04days\x18\x01 \x01(\x05R\x04days\"Y\n" +
+	"\x1dPurchaseActivityFetchResponse\x128\n" +
+	"\x04list\x18\x01 \x03(\v2$.contract.entity.v3.PurchaseActivityR\x04list\"\xdd\x01\n" +
 	"\x1aPurchaseCuratorSaveRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12\x1f\n" +
@@ -4094,7 +4200,7 @@ const file_fesmu_service_v3_purchase_service_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\"/\n" +
 	"\x1dPurchaseCategoryDeleteRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\" \n" +
-	"\x1ePurchaseCategoryDeleteResponse2\xa0\x1b\n" +
+	"\x1ePurchaseCategoryDeleteResponse2\xa0\x1c\n" +
 	"\x0fPurchaseService\x12~\n" +
 	"\x15PurchaseOverviewFetch\x121.contract.service.v3.PurchaseOverviewFetchRequest\x1a2.contract.service.v3.PurchaseOverviewFetchResponse\x12~\n" +
 	"\x15PurchaseRequestCreate\x121.contract.service.v3.PurchaseRequestCreateRequest\x1a2.contract.service.v3.PurchaseRequestCreateResponse\x12~\n" +
@@ -4117,7 +4223,8 @@ const file_fesmu_service_v3_purchase_service_proto_rawDesc = "" +
 	"\x16PurchaseProtocolUpdate\x122.contract.service.v3.PurchaseProtocolUpdateRequest\x1a3.contract.service.v3.PurchaseProtocolUpdateResponse\x12\x8a\x01\n" +
 	"\x19PurchaseProtocolFileFetch\x125.contract.service.v3.PurchaseProtocolFileFetchRequest\x1a6.contract.service.v3.PurchaseProtocolFileFetchResponse\x12\x87\x01\n" +
 	"\x18PurchaseCodeSuggestFetch\x124.contract.service.v3.PurchaseCodeSuggestFetchRequest\x1a5.contract.service.v3.PurchaseCodeSuggestFetchResponse\x12~\n" +
-	"\x15PurchaseEmployeeFetch\x121.contract.service.v3.PurchaseEmployeeFetchRequest\x1a2.contract.service.v3.PurchaseEmployeeFetchResponse\x12x\n" +
+	"\x15PurchaseEmployeeFetch\x121.contract.service.v3.PurchaseEmployeeFetchRequest\x1a2.contract.service.v3.PurchaseEmployeeFetchResponse\x12~\n" +
+	"\x15PurchaseActivityFetch\x121.contract.service.v3.PurchaseActivityFetchRequest\x1a2.contract.service.v3.PurchaseActivityFetchResponse\x12x\n" +
 	"\x13PurchaseCuratorSave\x12/.contract.service.v3.PurchaseCuratorSaveRequest\x1a0.contract.service.v3.PurchaseCuratorSaveResponse\x12~\n" +
 	"\x15PurchaseCuratorDelete\x121.contract.service.v3.PurchaseCuratorDeleteRequest\x1a2.contract.service.v3.PurchaseCuratorDeleteResponse\x12\x81\x01\n" +
 	"\x16PurchaseDepartmentSave\x122.contract.service.v3.PurchaseDepartmentSaveRequest\x1a3.contract.service.v3.PurchaseDepartmentSaveResponse\x12{\n" +
@@ -4137,7 +4244,7 @@ func file_fesmu_service_v3_purchase_service_proto_rawDescGZIP() []byte {
 	return file_fesmu_service_v3_purchase_service_proto_rawDescData
 }
 
-var file_fesmu_service_v3_purchase_service_proto_msgTypes = make([]protoimpl.MessageInfo, 65)
+var file_fesmu_service_v3_purchase_service_proto_msgTypes = make([]protoimpl.MessageInfo, 67)
 var file_fesmu_service_v3_purchase_service_proto_goTypes = []any{
 	(*PurchaseOverviewFetchRequest)(nil),       // 0: contract.service.v3.PurchaseOverviewFetchRequest
 	(*PurchaseOverviewFetchResponse)(nil),      // 1: contract.service.v3.PurchaseOverviewFetchResponse
@@ -4194,49 +4301,52 @@ var file_fesmu_service_v3_purchase_service_proto_goTypes = []any{
 	(*PurchaseCodeSuggestFetchResponse)(nil),   // 52: contract.service.v3.PurchaseCodeSuggestFetchResponse
 	(*PurchaseEmployeeFetchRequest)(nil),       // 53: contract.service.v3.PurchaseEmployeeFetchRequest
 	(*PurchaseEmployeeFetchResponse)(nil),      // 54: contract.service.v3.PurchaseEmployeeFetchResponse
-	(*PurchaseCuratorSaveRequest)(nil),         // 55: contract.service.v3.PurchaseCuratorSaveRequest
-	(*PurchaseCuratorSaveResponse)(nil),        // 56: contract.service.v3.PurchaseCuratorSaveResponse
-	(*PurchaseCuratorDeleteRequest)(nil),       // 57: contract.service.v3.PurchaseCuratorDeleteRequest
-	(*PurchaseCuratorDeleteResponse)(nil),      // 58: contract.service.v3.PurchaseCuratorDeleteResponse
-	(*PurchaseDepartmentSaveRequest)(nil),      // 59: contract.service.v3.PurchaseDepartmentSaveRequest
-	(*PurchaseDepartmentSaveResponse)(nil),     // 60: contract.service.v3.PurchaseDepartmentSaveResponse
-	(*PurchaseCategorySaveRequest)(nil),        // 61: contract.service.v3.PurchaseCategorySaveRequest
-	(*PurchaseCategorySaveResponse)(nil),       // 62: contract.service.v3.PurchaseCategorySaveResponse
-	(*PurchaseCategoryDeleteRequest)(nil),      // 63: contract.service.v3.PurchaseCategoryDeleteRequest
-	(*PurchaseCategoryDeleteResponse)(nil),     // 64: contract.service.v3.PurchaseCategoryDeleteResponse
-	(*v3.PurchaseRequest)(nil),                 // 65: contract.entity.v3.PurchaseRequest
-	(*v3.PurchaseLot)(nil),                     // 66: contract.entity.v3.PurchaseLot
-	(*v3.PurchaseProtocol)(nil),                // 67: contract.entity.v3.PurchaseProtocol
-	(*v3.PurchaseCurator)(nil),                 // 68: contract.entity.v3.PurchaseCurator
-	(*v3.PurchaseDepartment)(nil),              // 69: contract.entity.v3.PurchaseDepartment
-	(*v3.PurchaseCategory)(nil),                // 70: contract.entity.v3.PurchaseCategory
-	(*v3.PurchaseMe)(nil),                      // 71: contract.entity.v3.PurchaseMe
-	(v31.PurchaseItemType)(0),                  // 72: contract.enum.v3.PurchaseItemType
-	(enum.UserEmployeeDepartment)(0),           // 73: contract.enum.UserEmployeeDepartment
-	(v31.PurchaseMove)(0),                      // 74: contract.enum.v3.PurchaseMove
-	(v31.PurchaseFundingSource)(0),             // 75: contract.enum.v3.PurchaseFundingSource
-	(v31.PurchaseLaw)(0),                       // 76: contract.enum.v3.PurchaseLaw
-	(v31.PurchaseMethod)(0),                    // 77: contract.enum.v3.PurchaseMethod
-	(*timestamppb.Timestamp)(nil),              // 78: google.protobuf.Timestamp
-	(v31.PurchaseDocumentKind)(0),              // 79: contract.enum.v3.PurchaseDocumentKind
-	(v31.PurchaseCommissionDecision)(0),        // 80: contract.enum.v3.PurchaseCommissionDecision
-	(v31.PurchasePlanType)(0),                  // 81: contract.enum.v3.PurchasePlanType
-	(*v3.PurchaseCodeSuggestion)(nil),          // 82: contract.entity.v3.PurchaseCodeSuggestion
-	(*v3.PurchaseEmployee)(nil),                // 83: contract.entity.v3.PurchaseEmployee
+	(*PurchaseActivityFetchRequest)(nil),       // 55: contract.service.v3.PurchaseActivityFetchRequest
+	(*PurchaseActivityFetchResponse)(nil),      // 56: contract.service.v3.PurchaseActivityFetchResponse
+	(*PurchaseCuratorSaveRequest)(nil),         // 57: contract.service.v3.PurchaseCuratorSaveRequest
+	(*PurchaseCuratorSaveResponse)(nil),        // 58: contract.service.v3.PurchaseCuratorSaveResponse
+	(*PurchaseCuratorDeleteRequest)(nil),       // 59: contract.service.v3.PurchaseCuratorDeleteRequest
+	(*PurchaseCuratorDeleteResponse)(nil),      // 60: contract.service.v3.PurchaseCuratorDeleteResponse
+	(*PurchaseDepartmentSaveRequest)(nil),      // 61: contract.service.v3.PurchaseDepartmentSaveRequest
+	(*PurchaseDepartmentSaveResponse)(nil),     // 62: contract.service.v3.PurchaseDepartmentSaveResponse
+	(*PurchaseCategorySaveRequest)(nil),        // 63: contract.service.v3.PurchaseCategorySaveRequest
+	(*PurchaseCategorySaveResponse)(nil),       // 64: contract.service.v3.PurchaseCategorySaveResponse
+	(*PurchaseCategoryDeleteRequest)(nil),      // 65: contract.service.v3.PurchaseCategoryDeleteRequest
+	(*PurchaseCategoryDeleteResponse)(nil),     // 66: contract.service.v3.PurchaseCategoryDeleteResponse
+	(*v3.PurchaseRequest)(nil),                 // 67: contract.entity.v3.PurchaseRequest
+	(*v3.PurchaseLot)(nil),                     // 68: contract.entity.v3.PurchaseLot
+	(*v3.PurchaseProtocol)(nil),                // 69: contract.entity.v3.PurchaseProtocol
+	(*v3.PurchaseCurator)(nil),                 // 70: contract.entity.v3.PurchaseCurator
+	(*v3.PurchaseDepartment)(nil),              // 71: contract.entity.v3.PurchaseDepartment
+	(*v3.PurchaseCategory)(nil),                // 72: contract.entity.v3.PurchaseCategory
+	(*v3.PurchaseMe)(nil),                      // 73: contract.entity.v3.PurchaseMe
+	(v31.PurchaseItemType)(0),                  // 74: contract.enum.v3.PurchaseItemType
+	(enum.UserEmployeeDepartment)(0),           // 75: contract.enum.UserEmployeeDepartment
+	(v31.PurchaseMove)(0),                      // 76: contract.enum.v3.PurchaseMove
+	(v31.PurchaseFundingSource)(0),             // 77: contract.enum.v3.PurchaseFundingSource
+	(v31.PurchaseLaw)(0),                       // 78: contract.enum.v3.PurchaseLaw
+	(v31.PurchaseMethod)(0),                    // 79: contract.enum.v3.PurchaseMethod
+	(*timestamppb.Timestamp)(nil),              // 80: google.protobuf.Timestamp
+	(v31.PurchaseDocumentKind)(0),              // 81: contract.enum.v3.PurchaseDocumentKind
+	(v31.PurchaseCommissionDecision)(0),        // 82: contract.enum.v3.PurchaseCommissionDecision
+	(v31.PurchasePlanType)(0),                  // 83: contract.enum.v3.PurchasePlanType
+	(*v3.PurchaseCodeSuggestion)(nil),          // 84: contract.entity.v3.PurchaseCodeSuggestion
+	(*v3.PurchaseEmployee)(nil),                // 85: contract.entity.v3.PurchaseEmployee
+	(*v3.PurchaseActivity)(nil),                // 86: contract.entity.v3.PurchaseActivity
 }
 var file_fesmu_service_v3_purchase_service_proto_depIdxs = []int32{
-	65, // 0: contract.service.v3.PurchaseOverviewFetchResponse.requests:type_name -> contract.entity.v3.PurchaseRequest
-	66, // 1: contract.service.v3.PurchaseOverviewFetchResponse.lots:type_name -> contract.entity.v3.PurchaseLot
-	67, // 2: contract.service.v3.PurchaseOverviewFetchResponse.protocols:type_name -> contract.entity.v3.PurchaseProtocol
-	68, // 3: contract.service.v3.PurchaseOverviewFetchResponse.curators:type_name -> contract.entity.v3.PurchaseCurator
-	69, // 4: contract.service.v3.PurchaseOverviewFetchResponse.departments:type_name -> contract.entity.v3.PurchaseDepartment
-	70, // 5: contract.service.v3.PurchaseOverviewFetchResponse.categories:type_name -> contract.entity.v3.PurchaseCategory
-	71, // 6: contract.service.v3.PurchaseOverviewFetchResponse.me:type_name -> contract.entity.v3.PurchaseMe
-	72, // 7: contract.service.v3.PurchaseRequestCreateRequest.item_type:type_name -> contract.enum.v3.PurchaseItemType
-	73, // 8: contract.service.v3.PurchaseRequestCreateRequest.department:type_name -> contract.enum.UserEmployeeDepartment
-	72, // 9: contract.service.v3.PurchaseRequestUpdateRequest.item_type:type_name -> contract.enum.v3.PurchaseItemType
-	74, // 10: contract.service.v3.PurchaseRequestMoveRequest.move:type_name -> contract.enum.v3.PurchaseMove
-	73, // 11: contract.service.v3.PurchaseRequestMoveRequest.implementing_department:type_name -> contract.enum.UserEmployeeDepartment
+	67, // 0: contract.service.v3.PurchaseOverviewFetchResponse.requests:type_name -> contract.entity.v3.PurchaseRequest
+	68, // 1: contract.service.v3.PurchaseOverviewFetchResponse.lots:type_name -> contract.entity.v3.PurchaseLot
+	69, // 2: contract.service.v3.PurchaseOverviewFetchResponse.protocols:type_name -> contract.entity.v3.PurchaseProtocol
+	70, // 3: contract.service.v3.PurchaseOverviewFetchResponse.curators:type_name -> contract.entity.v3.PurchaseCurator
+	71, // 4: contract.service.v3.PurchaseOverviewFetchResponse.departments:type_name -> contract.entity.v3.PurchaseDepartment
+	72, // 5: contract.service.v3.PurchaseOverviewFetchResponse.categories:type_name -> contract.entity.v3.PurchaseCategory
+	73, // 6: contract.service.v3.PurchaseOverviewFetchResponse.me:type_name -> contract.entity.v3.PurchaseMe
+	74, // 7: contract.service.v3.PurchaseRequestCreateRequest.item_type:type_name -> contract.enum.v3.PurchaseItemType
+	75, // 8: contract.service.v3.PurchaseRequestCreateRequest.department:type_name -> contract.enum.UserEmployeeDepartment
+	74, // 9: contract.service.v3.PurchaseRequestUpdateRequest.item_type:type_name -> contract.enum.v3.PurchaseItemType
+	76, // 10: contract.service.v3.PurchaseRequestMoveRequest.move:type_name -> contract.enum.v3.PurchaseMove
+	75, // 11: contract.service.v3.PurchaseRequestMoveRequest.implementing_department:type_name -> contract.enum.UserEmployeeDepartment
 	19, // 12: contract.service.v3.PurchaseLotUpdateRequest.content:type_name -> contract.service.v3.PurchaseLotContentPatch
 	20, // 13: contract.service.v3.PurchaseLotUpdateRequest.curator:type_name -> contract.service.v3.PurchaseLotCuratorPatch
 	21, // 14: contract.service.v3.PurchaseLotUpdateRequest.budget:type_name -> contract.service.v3.PurchaseLotBudgetPatch
@@ -4247,86 +4357,89 @@ var file_fesmu_service_v3_purchase_service_proto_depIdxs = []int32{
 	26, // 19: contract.service.v3.PurchaseLotUpdateRequest.inventory:type_name -> contract.service.v3.PurchaseLotInventoryPatch
 	27, // 20: contract.service.v3.PurchaseLotUpdateRequest.deadline:type_name -> contract.service.v3.PurchaseLotDeadlinePatch
 	28, // 21: contract.service.v3.PurchaseLotUpdateRequest.review:type_name -> contract.service.v3.PurchaseLotReviewPatch
-	75, // 22: contract.service.v3.PurchaseLotBudgetPatch.funding_source:type_name -> contract.enum.v3.PurchaseFundingSource
-	76, // 23: contract.service.v3.PurchaseLotLawPatch.law:type_name -> contract.enum.v3.PurchaseLaw
-	77, // 24: contract.service.v3.PurchaseLotLawPatch.method:type_name -> contract.enum.v3.PurchaseMethod
-	78, // 25: contract.service.v3.PurchaseLotExecutionPatch.notice_at:type_name -> google.protobuf.Timestamp
-	78, // 26: contract.service.v3.PurchaseLotExecutionPatch.contract_at:type_name -> google.protobuf.Timestamp
-	78, // 27: contract.service.v3.PurchaseLotExecutionPatch.delivery_due:type_name -> google.protobuf.Timestamp
-	78, // 28: contract.service.v3.PurchaseLotExecutionPatch.delivered_at:type_name -> google.protobuf.Timestamp
-	78, // 29: contract.service.v3.PurchaseLotAcceptancePatch.accepted_at:type_name -> google.protobuf.Timestamp
-	78, // 30: contract.service.v3.PurchaseLotDeadlinePatch.due_at:type_name -> google.protobuf.Timestamp
-	74, // 31: contract.service.v3.PurchaseLotMoveRequest.move:type_name -> contract.enum.v3.PurchaseMove
-	79, // 32: contract.service.v3.PurchaseDocumentCreateRequest.kind:type_name -> contract.enum.v3.PurchaseDocumentKind
-	78, // 33: contract.service.v3.PurchaseProtocolCreateRequest.held_at:type_name -> google.protobuf.Timestamp
+	77, // 22: contract.service.v3.PurchaseLotBudgetPatch.funding_source:type_name -> contract.enum.v3.PurchaseFundingSource
+	78, // 23: contract.service.v3.PurchaseLotLawPatch.law:type_name -> contract.enum.v3.PurchaseLaw
+	79, // 24: contract.service.v3.PurchaseLotLawPatch.method:type_name -> contract.enum.v3.PurchaseMethod
+	80, // 25: contract.service.v3.PurchaseLotExecutionPatch.notice_at:type_name -> google.protobuf.Timestamp
+	80, // 26: contract.service.v3.PurchaseLotExecutionPatch.contract_at:type_name -> google.protobuf.Timestamp
+	80, // 27: contract.service.v3.PurchaseLotExecutionPatch.delivery_due:type_name -> google.protobuf.Timestamp
+	80, // 28: contract.service.v3.PurchaseLotExecutionPatch.delivered_at:type_name -> google.protobuf.Timestamp
+	80, // 29: contract.service.v3.PurchaseLotAcceptancePatch.accepted_at:type_name -> google.protobuf.Timestamp
+	80, // 30: contract.service.v3.PurchaseLotDeadlinePatch.due_at:type_name -> google.protobuf.Timestamp
+	76, // 31: contract.service.v3.PurchaseLotMoveRequest.move:type_name -> contract.enum.v3.PurchaseMove
+	81, // 32: contract.service.v3.PurchaseDocumentCreateRequest.kind:type_name -> contract.enum.v3.PurchaseDocumentKind
+	80, // 33: contract.service.v3.PurchaseProtocolCreateRequest.held_at:type_name -> google.protobuf.Timestamp
 	45, // 34: contract.service.v3.PurchaseProtocolCreateRequest.decisions:type_name -> contract.service.v3.PurchaseProtocolDecisionInput
-	80, // 35: contract.service.v3.PurchaseProtocolDecisionInput.decision:type_name -> contract.enum.v3.PurchaseCommissionDecision
-	81, // 36: contract.service.v3.PurchaseProtocolDecisionInput.plan_type:type_name -> contract.enum.v3.PurchasePlanType
-	78, // 37: contract.service.v3.PurchaseProtocolUpdateRequest.held_at:type_name -> google.protobuf.Timestamp
-	82, // 38: contract.service.v3.PurchaseCodeSuggestFetchResponse.suggestion:type_name -> contract.entity.v3.PurchaseCodeSuggestion
-	73, // 39: contract.service.v3.PurchaseEmployeeFetchRequest.department:type_name -> contract.enum.UserEmployeeDepartment
-	83, // 40: contract.service.v3.PurchaseEmployeeFetchResponse.list:type_name -> contract.entity.v3.PurchaseEmployee
-	73, // 41: contract.service.v3.PurchaseDepartmentSaveRequest.department:type_name -> contract.enum.UserEmployeeDepartment
-	73, // 42: contract.service.v3.PurchaseCategorySaveRequest.implementing_department:type_name -> contract.enum.UserEmployeeDepartment
-	0,  // 43: contract.service.v3.PurchaseService.PurchaseOverviewFetch:input_type -> contract.service.v3.PurchaseOverviewFetchRequest
-	2,  // 44: contract.service.v3.PurchaseService.PurchaseRequestCreate:input_type -> contract.service.v3.PurchaseRequestCreateRequest
-	4,  // 45: contract.service.v3.PurchaseService.PurchaseRequestUpdate:input_type -> contract.service.v3.PurchaseRequestUpdateRequest
-	6,  // 46: contract.service.v3.PurchaseService.PurchaseRequestDelete:input_type -> contract.service.v3.PurchaseRequestDeleteRequest
-	8,  // 47: contract.service.v3.PurchaseService.PurchaseRequestMove:input_type -> contract.service.v3.PurchaseRequestMoveRequest
-	10, // 48: contract.service.v3.PurchaseService.PurchaseRequestMerge:input_type -> contract.service.v3.PurchaseRequestMergeRequest
-	12, // 49: contract.service.v3.PurchaseService.PurchaseLotCreate:input_type -> contract.service.v3.PurchaseLotCreateRequest
-	14, // 50: contract.service.v3.PurchaseService.PurchaseLotRequests:input_type -> contract.service.v3.PurchaseLotRequestsRequest
-	16, // 51: contract.service.v3.PurchaseService.PurchaseLotDisband:input_type -> contract.service.v3.PurchaseLotDisbandRequest
-	18, // 52: contract.service.v3.PurchaseService.PurchaseLotUpdate:input_type -> contract.service.v3.PurchaseLotUpdateRequest
-	30, // 53: contract.service.v3.PurchaseService.PurchaseLotMove:input_type -> contract.service.v3.PurchaseLotMoveRequest
-	32, // 54: contract.service.v3.PurchaseService.PurchaseQuotationCreate:input_type -> contract.service.v3.PurchaseQuotationCreateRequest
-	34, // 55: contract.service.v3.PurchaseService.PurchaseQuotationDelete:input_type -> contract.service.v3.PurchaseQuotationDeleteRequest
-	36, // 56: contract.service.v3.PurchaseService.PurchaseQuotationFileFetch:input_type -> contract.service.v3.PurchaseQuotationFileFetchRequest
-	38, // 57: contract.service.v3.PurchaseService.PurchaseDocumentCreate:input_type -> contract.service.v3.PurchaseDocumentCreateRequest
-	40, // 58: contract.service.v3.PurchaseService.PurchaseDocumentDelete:input_type -> contract.service.v3.PurchaseDocumentDeleteRequest
-	42, // 59: contract.service.v3.PurchaseService.PurchaseDocumentFileFetch:input_type -> contract.service.v3.PurchaseDocumentFileFetchRequest
-	44, // 60: contract.service.v3.PurchaseService.PurchaseProtocolCreate:input_type -> contract.service.v3.PurchaseProtocolCreateRequest
-	47, // 61: contract.service.v3.PurchaseService.PurchaseProtocolUpdate:input_type -> contract.service.v3.PurchaseProtocolUpdateRequest
-	49, // 62: contract.service.v3.PurchaseService.PurchaseProtocolFileFetch:input_type -> contract.service.v3.PurchaseProtocolFileFetchRequest
-	51, // 63: contract.service.v3.PurchaseService.PurchaseCodeSuggestFetch:input_type -> contract.service.v3.PurchaseCodeSuggestFetchRequest
-	53, // 64: contract.service.v3.PurchaseService.PurchaseEmployeeFetch:input_type -> contract.service.v3.PurchaseEmployeeFetchRequest
-	55, // 65: contract.service.v3.PurchaseService.PurchaseCuratorSave:input_type -> contract.service.v3.PurchaseCuratorSaveRequest
-	57, // 66: contract.service.v3.PurchaseService.PurchaseCuratorDelete:input_type -> contract.service.v3.PurchaseCuratorDeleteRequest
-	59, // 67: contract.service.v3.PurchaseService.PurchaseDepartmentSave:input_type -> contract.service.v3.PurchaseDepartmentSaveRequest
-	61, // 68: contract.service.v3.PurchaseService.PurchaseCategorySave:input_type -> contract.service.v3.PurchaseCategorySaveRequest
-	63, // 69: contract.service.v3.PurchaseService.PurchaseCategoryDelete:input_type -> contract.service.v3.PurchaseCategoryDeleteRequest
-	1,  // 70: contract.service.v3.PurchaseService.PurchaseOverviewFetch:output_type -> contract.service.v3.PurchaseOverviewFetchResponse
-	3,  // 71: contract.service.v3.PurchaseService.PurchaseRequestCreate:output_type -> contract.service.v3.PurchaseRequestCreateResponse
-	5,  // 72: contract.service.v3.PurchaseService.PurchaseRequestUpdate:output_type -> contract.service.v3.PurchaseRequestUpdateResponse
-	7,  // 73: contract.service.v3.PurchaseService.PurchaseRequestDelete:output_type -> contract.service.v3.PurchaseRequestDeleteResponse
-	9,  // 74: contract.service.v3.PurchaseService.PurchaseRequestMove:output_type -> contract.service.v3.PurchaseRequestMoveResponse
-	11, // 75: contract.service.v3.PurchaseService.PurchaseRequestMerge:output_type -> contract.service.v3.PurchaseRequestMergeResponse
-	13, // 76: contract.service.v3.PurchaseService.PurchaseLotCreate:output_type -> contract.service.v3.PurchaseLotCreateResponse
-	15, // 77: contract.service.v3.PurchaseService.PurchaseLotRequests:output_type -> contract.service.v3.PurchaseLotRequestsResponse
-	17, // 78: contract.service.v3.PurchaseService.PurchaseLotDisband:output_type -> contract.service.v3.PurchaseLotDisbandResponse
-	29, // 79: contract.service.v3.PurchaseService.PurchaseLotUpdate:output_type -> contract.service.v3.PurchaseLotUpdateResponse
-	31, // 80: contract.service.v3.PurchaseService.PurchaseLotMove:output_type -> contract.service.v3.PurchaseLotMoveResponse
-	33, // 81: contract.service.v3.PurchaseService.PurchaseQuotationCreate:output_type -> contract.service.v3.PurchaseQuotationCreateResponse
-	35, // 82: contract.service.v3.PurchaseService.PurchaseQuotationDelete:output_type -> contract.service.v3.PurchaseQuotationDeleteResponse
-	37, // 83: contract.service.v3.PurchaseService.PurchaseQuotationFileFetch:output_type -> contract.service.v3.PurchaseQuotationFileFetchResponse
-	39, // 84: contract.service.v3.PurchaseService.PurchaseDocumentCreate:output_type -> contract.service.v3.PurchaseDocumentCreateResponse
-	41, // 85: contract.service.v3.PurchaseService.PurchaseDocumentDelete:output_type -> contract.service.v3.PurchaseDocumentDeleteResponse
-	43, // 86: contract.service.v3.PurchaseService.PurchaseDocumentFileFetch:output_type -> contract.service.v3.PurchaseDocumentFileFetchResponse
-	46, // 87: contract.service.v3.PurchaseService.PurchaseProtocolCreate:output_type -> contract.service.v3.PurchaseProtocolCreateResponse
-	48, // 88: contract.service.v3.PurchaseService.PurchaseProtocolUpdate:output_type -> contract.service.v3.PurchaseProtocolUpdateResponse
-	50, // 89: contract.service.v3.PurchaseService.PurchaseProtocolFileFetch:output_type -> contract.service.v3.PurchaseProtocolFileFetchResponse
-	52, // 90: contract.service.v3.PurchaseService.PurchaseCodeSuggestFetch:output_type -> contract.service.v3.PurchaseCodeSuggestFetchResponse
-	54, // 91: contract.service.v3.PurchaseService.PurchaseEmployeeFetch:output_type -> contract.service.v3.PurchaseEmployeeFetchResponse
-	56, // 92: contract.service.v3.PurchaseService.PurchaseCuratorSave:output_type -> contract.service.v3.PurchaseCuratorSaveResponse
-	58, // 93: contract.service.v3.PurchaseService.PurchaseCuratorDelete:output_type -> contract.service.v3.PurchaseCuratorDeleteResponse
-	60, // 94: contract.service.v3.PurchaseService.PurchaseDepartmentSave:output_type -> contract.service.v3.PurchaseDepartmentSaveResponse
-	62, // 95: contract.service.v3.PurchaseService.PurchaseCategorySave:output_type -> contract.service.v3.PurchaseCategorySaveResponse
-	64, // 96: contract.service.v3.PurchaseService.PurchaseCategoryDelete:output_type -> contract.service.v3.PurchaseCategoryDeleteResponse
-	70, // [70:97] is the sub-list for method output_type
-	43, // [43:70] is the sub-list for method input_type
-	43, // [43:43] is the sub-list for extension type_name
-	43, // [43:43] is the sub-list for extension extendee
-	0,  // [0:43] is the sub-list for field type_name
+	82, // 35: contract.service.v3.PurchaseProtocolDecisionInput.decision:type_name -> contract.enum.v3.PurchaseCommissionDecision
+	83, // 36: contract.service.v3.PurchaseProtocolDecisionInput.plan_type:type_name -> contract.enum.v3.PurchasePlanType
+	80, // 37: contract.service.v3.PurchaseProtocolUpdateRequest.held_at:type_name -> google.protobuf.Timestamp
+	84, // 38: contract.service.v3.PurchaseCodeSuggestFetchResponse.suggestion:type_name -> contract.entity.v3.PurchaseCodeSuggestion
+	75, // 39: contract.service.v3.PurchaseEmployeeFetchRequest.department:type_name -> contract.enum.UserEmployeeDepartment
+	85, // 40: contract.service.v3.PurchaseEmployeeFetchResponse.list:type_name -> contract.entity.v3.PurchaseEmployee
+	86, // 41: contract.service.v3.PurchaseActivityFetchResponse.list:type_name -> contract.entity.v3.PurchaseActivity
+	75, // 42: contract.service.v3.PurchaseDepartmentSaveRequest.department:type_name -> contract.enum.UserEmployeeDepartment
+	75, // 43: contract.service.v3.PurchaseCategorySaveRequest.implementing_department:type_name -> contract.enum.UserEmployeeDepartment
+	0,  // 44: contract.service.v3.PurchaseService.PurchaseOverviewFetch:input_type -> contract.service.v3.PurchaseOverviewFetchRequest
+	2,  // 45: contract.service.v3.PurchaseService.PurchaseRequestCreate:input_type -> contract.service.v3.PurchaseRequestCreateRequest
+	4,  // 46: contract.service.v3.PurchaseService.PurchaseRequestUpdate:input_type -> contract.service.v3.PurchaseRequestUpdateRequest
+	6,  // 47: contract.service.v3.PurchaseService.PurchaseRequestDelete:input_type -> contract.service.v3.PurchaseRequestDeleteRequest
+	8,  // 48: contract.service.v3.PurchaseService.PurchaseRequestMove:input_type -> contract.service.v3.PurchaseRequestMoveRequest
+	10, // 49: contract.service.v3.PurchaseService.PurchaseRequestMerge:input_type -> contract.service.v3.PurchaseRequestMergeRequest
+	12, // 50: contract.service.v3.PurchaseService.PurchaseLotCreate:input_type -> contract.service.v3.PurchaseLotCreateRequest
+	14, // 51: contract.service.v3.PurchaseService.PurchaseLotRequests:input_type -> contract.service.v3.PurchaseLotRequestsRequest
+	16, // 52: contract.service.v3.PurchaseService.PurchaseLotDisband:input_type -> contract.service.v3.PurchaseLotDisbandRequest
+	18, // 53: contract.service.v3.PurchaseService.PurchaseLotUpdate:input_type -> contract.service.v3.PurchaseLotUpdateRequest
+	30, // 54: contract.service.v3.PurchaseService.PurchaseLotMove:input_type -> contract.service.v3.PurchaseLotMoveRequest
+	32, // 55: contract.service.v3.PurchaseService.PurchaseQuotationCreate:input_type -> contract.service.v3.PurchaseQuotationCreateRequest
+	34, // 56: contract.service.v3.PurchaseService.PurchaseQuotationDelete:input_type -> contract.service.v3.PurchaseQuotationDeleteRequest
+	36, // 57: contract.service.v3.PurchaseService.PurchaseQuotationFileFetch:input_type -> contract.service.v3.PurchaseQuotationFileFetchRequest
+	38, // 58: contract.service.v3.PurchaseService.PurchaseDocumentCreate:input_type -> contract.service.v3.PurchaseDocumentCreateRequest
+	40, // 59: contract.service.v3.PurchaseService.PurchaseDocumentDelete:input_type -> contract.service.v3.PurchaseDocumentDeleteRequest
+	42, // 60: contract.service.v3.PurchaseService.PurchaseDocumentFileFetch:input_type -> contract.service.v3.PurchaseDocumentFileFetchRequest
+	44, // 61: contract.service.v3.PurchaseService.PurchaseProtocolCreate:input_type -> contract.service.v3.PurchaseProtocolCreateRequest
+	47, // 62: contract.service.v3.PurchaseService.PurchaseProtocolUpdate:input_type -> contract.service.v3.PurchaseProtocolUpdateRequest
+	49, // 63: contract.service.v3.PurchaseService.PurchaseProtocolFileFetch:input_type -> contract.service.v3.PurchaseProtocolFileFetchRequest
+	51, // 64: contract.service.v3.PurchaseService.PurchaseCodeSuggestFetch:input_type -> contract.service.v3.PurchaseCodeSuggestFetchRequest
+	53, // 65: contract.service.v3.PurchaseService.PurchaseEmployeeFetch:input_type -> contract.service.v3.PurchaseEmployeeFetchRequest
+	55, // 66: contract.service.v3.PurchaseService.PurchaseActivityFetch:input_type -> contract.service.v3.PurchaseActivityFetchRequest
+	57, // 67: contract.service.v3.PurchaseService.PurchaseCuratorSave:input_type -> contract.service.v3.PurchaseCuratorSaveRequest
+	59, // 68: contract.service.v3.PurchaseService.PurchaseCuratorDelete:input_type -> contract.service.v3.PurchaseCuratorDeleteRequest
+	61, // 69: contract.service.v3.PurchaseService.PurchaseDepartmentSave:input_type -> contract.service.v3.PurchaseDepartmentSaveRequest
+	63, // 70: contract.service.v3.PurchaseService.PurchaseCategorySave:input_type -> contract.service.v3.PurchaseCategorySaveRequest
+	65, // 71: contract.service.v3.PurchaseService.PurchaseCategoryDelete:input_type -> contract.service.v3.PurchaseCategoryDeleteRequest
+	1,  // 72: contract.service.v3.PurchaseService.PurchaseOverviewFetch:output_type -> contract.service.v3.PurchaseOverviewFetchResponse
+	3,  // 73: contract.service.v3.PurchaseService.PurchaseRequestCreate:output_type -> contract.service.v3.PurchaseRequestCreateResponse
+	5,  // 74: contract.service.v3.PurchaseService.PurchaseRequestUpdate:output_type -> contract.service.v3.PurchaseRequestUpdateResponse
+	7,  // 75: contract.service.v3.PurchaseService.PurchaseRequestDelete:output_type -> contract.service.v3.PurchaseRequestDeleteResponse
+	9,  // 76: contract.service.v3.PurchaseService.PurchaseRequestMove:output_type -> contract.service.v3.PurchaseRequestMoveResponse
+	11, // 77: contract.service.v3.PurchaseService.PurchaseRequestMerge:output_type -> contract.service.v3.PurchaseRequestMergeResponse
+	13, // 78: contract.service.v3.PurchaseService.PurchaseLotCreate:output_type -> contract.service.v3.PurchaseLotCreateResponse
+	15, // 79: contract.service.v3.PurchaseService.PurchaseLotRequests:output_type -> contract.service.v3.PurchaseLotRequestsResponse
+	17, // 80: contract.service.v3.PurchaseService.PurchaseLotDisband:output_type -> contract.service.v3.PurchaseLotDisbandResponse
+	29, // 81: contract.service.v3.PurchaseService.PurchaseLotUpdate:output_type -> contract.service.v3.PurchaseLotUpdateResponse
+	31, // 82: contract.service.v3.PurchaseService.PurchaseLotMove:output_type -> contract.service.v3.PurchaseLotMoveResponse
+	33, // 83: contract.service.v3.PurchaseService.PurchaseQuotationCreate:output_type -> contract.service.v3.PurchaseQuotationCreateResponse
+	35, // 84: contract.service.v3.PurchaseService.PurchaseQuotationDelete:output_type -> contract.service.v3.PurchaseQuotationDeleteResponse
+	37, // 85: contract.service.v3.PurchaseService.PurchaseQuotationFileFetch:output_type -> contract.service.v3.PurchaseQuotationFileFetchResponse
+	39, // 86: contract.service.v3.PurchaseService.PurchaseDocumentCreate:output_type -> contract.service.v3.PurchaseDocumentCreateResponse
+	41, // 87: contract.service.v3.PurchaseService.PurchaseDocumentDelete:output_type -> contract.service.v3.PurchaseDocumentDeleteResponse
+	43, // 88: contract.service.v3.PurchaseService.PurchaseDocumentFileFetch:output_type -> contract.service.v3.PurchaseDocumentFileFetchResponse
+	46, // 89: contract.service.v3.PurchaseService.PurchaseProtocolCreate:output_type -> contract.service.v3.PurchaseProtocolCreateResponse
+	48, // 90: contract.service.v3.PurchaseService.PurchaseProtocolUpdate:output_type -> contract.service.v3.PurchaseProtocolUpdateResponse
+	50, // 91: contract.service.v3.PurchaseService.PurchaseProtocolFileFetch:output_type -> contract.service.v3.PurchaseProtocolFileFetchResponse
+	52, // 92: contract.service.v3.PurchaseService.PurchaseCodeSuggestFetch:output_type -> contract.service.v3.PurchaseCodeSuggestFetchResponse
+	54, // 93: contract.service.v3.PurchaseService.PurchaseEmployeeFetch:output_type -> contract.service.v3.PurchaseEmployeeFetchResponse
+	56, // 94: contract.service.v3.PurchaseService.PurchaseActivityFetch:output_type -> contract.service.v3.PurchaseActivityFetchResponse
+	58, // 95: contract.service.v3.PurchaseService.PurchaseCuratorSave:output_type -> contract.service.v3.PurchaseCuratorSaveResponse
+	60, // 96: contract.service.v3.PurchaseService.PurchaseCuratorDelete:output_type -> contract.service.v3.PurchaseCuratorDeleteResponse
+	62, // 97: contract.service.v3.PurchaseService.PurchaseDepartmentSave:output_type -> contract.service.v3.PurchaseDepartmentSaveResponse
+	64, // 98: contract.service.v3.PurchaseService.PurchaseCategorySave:output_type -> contract.service.v3.PurchaseCategorySaveResponse
+	66, // 99: contract.service.v3.PurchaseService.PurchaseCategoryDelete:output_type -> contract.service.v3.PurchaseCategoryDeleteResponse
+	72, // [72:100] is the sub-list for method output_type
+	44, // [44:72] is the sub-list for method input_type
+	44, // [44:44] is the sub-list for extension type_name
+	44, // [44:44] is the sub-list for extension extendee
+	0,  // [0:44] is the sub-list for field type_name
 }
 
 func init() { file_fesmu_service_v3_purchase_service_proto_init() }
@@ -4352,7 +4465,7 @@ func file_fesmu_service_v3_purchase_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_fesmu_service_v3_purchase_service_proto_rawDesc), len(file_fesmu_service_v3_purchase_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   65,
+			NumMessages:   67,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

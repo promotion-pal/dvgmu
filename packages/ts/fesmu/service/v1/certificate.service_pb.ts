@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file fesmu/service/v1/certificate.service.proto.
  */
 export const file_fesmu_service_v1_certificate_service: GenFile = /*@__PURE__*/
-  fileDesc("CipmZXNtdS9zZXJ2aWNlL3YxL2NlcnRpZmljYXRlLnNlcnZpY2UucHJvdG8SE2NvbnRyYWN0LnNlcnZpY2UudjEi6wIKFUNlcnRpZmljYXRlT3JkZXJFbnRyeRIKCgJpZBgBIAEoAxIWCg5zdHVkZW50X21kbV9pZBgCIAEoAxIUCgxzdHVkZW50X25hbWUYAyABKAkSMgoEdHlwZRgEIAEoDjIkLmNvbnRyYWN0LmZpbGUuZW51bS5GaWxlR2VuZXJhdGVUeXBlEg4KBmNvcGllcxgFIAEoBRI7CgZzdGF0dXMYBiABKA4yKy5jb250cmFjdC5zZXJ2aWNlLnYxLkNlcnRpZmljYXRlT3JkZXJTdGF0dXMSEgoKb3JkZXJlZF9ieRgHIAEoCRIuCgpjcmVhdGVkX2F0GAggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIRCglpc3N1ZWRfYnkYCSABKAkSMgoJaXNzdWVkX2F0GAogASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgAiAEBQgwKCl9pc3N1ZWRfYXQiVgoXQ2VydGlmaWNhdGVGZXRjaFJlcXVlc3QSOwoGc3RhdHVzGAEgASgOMisuY29udHJhY3Quc2VydmljZS52MS5DZXJ0aWZpY2F0ZU9yZGVyU3RhdHVzIlYKGENlcnRpZmljYXRlRmV0Y2hSZXNwb25zZRI6CgZvcmRlcnMYASADKAsyKi5jb250cmFjdC5zZXJ2aWNlLnYxLkNlcnRpZmljYXRlT3JkZXJFbnRyeSIlChdDZXJ0aWZpY2F0ZUlzc3VlUmVxdWVzdBIKCgJpZBgBIAEoAyJ5ChhDZXJ0aWZpY2F0ZUlzc3VlUmVzcG9uc2USOQoFb3JkZXIYASABKAsyKi5jb250cmFjdC5zZXJ2aWNlLnYxLkNlcnRpZmljYXRlT3JkZXJFbnRyeRIRCglmaWxlX25hbWUYAiABKAkSDwoHY29udGVudBgDIAEoDCJuChdDZXJ0aWZpY2F0ZU9yZGVyUmVxdWVzdBIPCgd1c2VyX2lkGAEgASgDEjIKBHR5cGUYAiABKA4yJC5jb250cmFjdC5maWxlLmVudW0uRmlsZUdlbmVyYXRlVHlwZRIOCgZjb3BpZXMYAyABKAUiYAoYQ2VydGlmaWNhdGVPcmRlclJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRIRCglmaWxlX25hbWUYAyABKAkSDwoHY29udGVudBgEIAEoDCqNAQoWQ2VydGlmaWNhdGVPcmRlclN0YXR1cxIoCiRDRVJUSUZJQ0FURV9PUkRFUl9TVEFUVVNfVU5TUEVDSUZJRUQQABIkCiBDRVJUSUZJQ0FURV9PUkRFUl9TVEFUVVNfT1JERVJFRBABEiMKH0NFUlRJRklDQVRFX09SREVSX1NUQVRVU19JU1NVRUQQAjLnAgoSQ2VydGlmaWNhdGVTZXJ2aWNlEm8KEENlcnRpZmljYXRlT3JkZXISLC5jb250cmFjdC5zZXJ2aWNlLnYxLkNlcnRpZmljYXRlT3JkZXJSZXF1ZXN0Gi0uY29udHJhY3Quc2VydmljZS52MS5DZXJ0aWZpY2F0ZU9yZGVyUmVzcG9uc2USbwoQQ2VydGlmaWNhdGVGZXRjaBIsLmNvbnRyYWN0LnNlcnZpY2UudjEuQ2VydGlmaWNhdGVGZXRjaFJlcXVlc3QaLS5jb250cmFjdC5zZXJ2aWNlLnYxLkNlcnRpZmljYXRlRmV0Y2hSZXNwb25zZRJvChBDZXJ0aWZpY2F0ZUlzc3VlEiwuY29udHJhY3Quc2VydmljZS52MS5DZXJ0aWZpY2F0ZUlzc3VlUmVxdWVzdBotLmNvbnRyYWN0LnNlcnZpY2UudjEuQ2VydGlmaWNhdGVJc3N1ZVJlc3BvbnNlQssBChdjb20uY29udHJhY3Quc2VydmljZS52MUIXQ2VydGlmaWNhdGVTZXJ2aWNlUHJvdG9QAVopZmVzbXUvY29udHJhY3QvZmVzbXUvc2VydmljZS92MTtzZXJ2aWNldjGiAgNDU1iqAhNDb250cmFjdC5TZXJ2aWNlLlYxygITQ29udHJhY3RcU2VydmljZVxWMeICH0NvbnRyYWN0XFNlcnZpY2VcVjFcR1BCTWV0YWRhdGHqAhVDb250cmFjdDo6U2VydmljZTo6VjFiBnByb3RvMw", [file_google_protobuf_timestamp, file_file_enum_file_enum]);
+  fileDesc("CipmZXNtdS9zZXJ2aWNlL3YxL2NlcnRpZmljYXRlLnNlcnZpY2UucHJvdG8SE2NvbnRyYWN0LnNlcnZpY2UudjEijAQKFUNlcnRpZmljYXRlT3JkZXJFbnRyeRIKCgJpZBgBIAEoAxIWCg5zdHVkZW50X21kbV9pZBgCIAEoAxIUCgxzdHVkZW50X25hbWUYAyABKAkSMgoEdHlwZRgEIAEoDjIkLmNvbnRyYWN0LmZpbGUuZW51bS5GaWxlR2VuZXJhdGVUeXBlEg4KBmNvcGllcxgFIAEoBRI7CgZzdGF0dXMYBiABKA4yKy5jb250cmFjdC5zZXJ2aWNlLnYxLkNlcnRpZmljYXRlT3JkZXJTdGF0dXMSEgoKb3JkZXJlZF9ieRgHIAEoCRIuCgpjcmVhdGVkX2F0GAggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIRCglpc3N1ZWRfYnkYCSABKAkSMgoJaXNzdWVkX2F0GAogASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgAiAEBEg8KB2ZhY3VsdHkYCyABKAkSDQoFZ3JvdXAYDCABKAkSEwoLcmVjb3JkX2Jvb2sYDSABKAkSEwoLcHJlcGFyZWRfYnkYDiABKAkSMQoIcmVhZHlfYXQYDyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSAGIAQESFQoNY2FuY2VsX3JlYXNvbhgQIAEoCUIMCgpfaXNzdWVkX2F0QgsKCV9yZWFkeV9hdCJWChdDZXJ0aWZpY2F0ZUZldGNoUmVxdWVzdBI7CgZzdGF0dXMYASABKA4yKy5jb250cmFjdC5zZXJ2aWNlLnYxLkNlcnRpZmljYXRlT3JkZXJTdGF0dXMigAEKGENlcnRpZmljYXRlRmV0Y2hSZXNwb25zZRI6CgZvcmRlcnMYASADKAsyKi5jb250cmFjdC5zZXJ2aWNlLnYxLkNlcnRpZmljYXRlT3JkZXJFbnRyeRIRCglmYWN1bHRpZXMYAiADKAkSFQoNYWxsX2ZhY3VsdGllcxgDIAEoCCIbChlDZXJ0aWZpY2F0ZU15RmV0Y2hSZXF1ZXN0IiUKF0NlcnRpZmljYXRlUHJpbnRSZXF1ZXN0EgoKAmlkGAEgASgDInkKGENlcnRpZmljYXRlUHJpbnRSZXNwb25zZRI5CgVvcmRlchgBIAEoCzIqLmNvbnRyYWN0LnNlcnZpY2UudjEuQ2VydGlmaWNhdGVPcmRlckVudHJ5EhEKCWZpbGVfbmFtZRgCIAEoCRIPCgdjb250ZW50GAMgASgMIjYKGENlcnRpZmljYXRlQ2FuY2VsUmVxdWVzdBIKCgJpZBgBIAEoAxIOCgZyZWFzb24YAiABKAkiVgoZQ2VydGlmaWNhdGVDYW5jZWxSZXNwb25zZRI5CgVvcmRlchgBIAEoCzIqLmNvbnRyYWN0LnNlcnZpY2UudjEuQ2VydGlmaWNhdGVPcmRlckVudHJ5IiUKF0NlcnRpZmljYXRlSXNzdWVSZXF1ZXN0EgoKAmlkGAEgASgDInkKGENlcnRpZmljYXRlSXNzdWVSZXNwb25zZRI5CgVvcmRlchgBIAEoCzIqLmNvbnRyYWN0LnNlcnZpY2UudjEuQ2VydGlmaWNhdGVPcmRlckVudHJ5EhEKCWZpbGVfbmFtZRgCIAEoCRIPCgdjb250ZW50GAMgASgMIm4KF0NlcnRpZmljYXRlT3JkZXJSZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAMSMgoEdHlwZRgCIAEoDjIkLmNvbnRyYWN0LmZpbGUuZW51bS5GaWxlR2VuZXJhdGVUeXBlEg4KBmNvcGllcxgDIAEoBSJgChhDZXJ0aWZpY2F0ZU9yZGVyUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEhEKCWZpbGVfbmFtZRgDIAEoCRIPCgdjb250ZW50GAQgASgMKtkBChZDZXJ0aWZpY2F0ZU9yZGVyU3RhdHVzEigKJENFUlRJRklDQVRFX09SREVSX1NUQVRVU19VTlNQRUNJRklFRBAAEiQKIENFUlRJRklDQVRFX09SREVSX1NUQVRVU19PUkRFUkVEEAESIwofQ0VSVElGSUNBVEVfT1JERVJfU1RBVFVTX0lTU1VFRBACEiIKHkNFUlRJRklDQVRFX09SREVSX1NUQVRVU19SRUFEWRADEiYKIkNFUlRJRklDQVRFX09SREVSX1NUQVRVU19DQU5DRUxMRUQQBDLBBQoSQ2VydGlmaWNhdGVTZXJ2aWNlEm8KEENlcnRpZmljYXRlT3JkZXISLC5jb250cmFjdC5zZXJ2aWNlLnYxLkNlcnRpZmljYXRlT3JkZXJSZXF1ZXN0Gi0uY29udHJhY3Quc2VydmljZS52MS5DZXJ0aWZpY2F0ZU9yZGVyUmVzcG9uc2USbwoQQ2VydGlmaWNhdGVGZXRjaBIsLmNvbnRyYWN0LnNlcnZpY2UudjEuQ2VydGlmaWNhdGVGZXRjaFJlcXVlc3QaLS5jb250cmFjdC5zZXJ2aWNlLnYxLkNlcnRpZmljYXRlRmV0Y2hSZXNwb25zZRJvChBDZXJ0aWZpY2F0ZUlzc3VlEiwuY29udHJhY3Quc2VydmljZS52MS5DZXJ0aWZpY2F0ZUlzc3VlUmVxdWVzdBotLmNvbnRyYWN0LnNlcnZpY2UudjEuQ2VydGlmaWNhdGVJc3N1ZVJlc3BvbnNlEnMKEkNlcnRpZmljYXRlTXlGZXRjaBIuLmNvbnRyYWN0LnNlcnZpY2UudjEuQ2VydGlmaWNhdGVNeUZldGNoUmVxdWVzdBotLmNvbnRyYWN0LnNlcnZpY2UudjEuQ2VydGlmaWNhdGVGZXRjaFJlc3BvbnNlEm8KEENlcnRpZmljYXRlUHJpbnQSLC5jb250cmFjdC5zZXJ2aWNlLnYxLkNlcnRpZmljYXRlUHJpbnRSZXF1ZXN0Gi0uY29udHJhY3Quc2VydmljZS52MS5DZXJ0aWZpY2F0ZVByaW50UmVzcG9uc2UScgoRQ2VydGlmaWNhdGVDYW5jZWwSLS5jb250cmFjdC5zZXJ2aWNlLnYxLkNlcnRpZmljYXRlQ2FuY2VsUmVxdWVzdBouLmNvbnRyYWN0LnNlcnZpY2UudjEuQ2VydGlmaWNhdGVDYW5jZWxSZXNwb25zZULLAQoXY29tLmNvbnRyYWN0LnNlcnZpY2UudjFCF0NlcnRpZmljYXRlU2VydmljZVByb3RvUAFaKWZlc211L2NvbnRyYWN0L2Zlc211L3NlcnZpY2UvdjE7c2VydmljZXYxogIDQ1NYqgITQ29udHJhY3QuU2VydmljZS5WMcoCE0NvbnRyYWN0XFNlcnZpY2VcVjHiAh9Db250cmFjdFxTZXJ2aWNlXFYxXEdQQk1ldGFkYXRh6gIVQ29udHJhY3Q6OlNlcnZpY2U6OlYxYgZwcm90bzM", [file_google_protobuf_timestamp, file_file_enum_file_enum]);
 
 /**
  * @generated from message contract.service.v1.CertificateOrderEntry
@@ -69,6 +69,40 @@ export type CertificateOrderEntry = Message<"contract.service.v1.CertificateOrde
    * @generated from field: optional google.protobuf.Timestamp issued_at = 10;
    */
   issuedAt?: Timestamp | undefined;
+
+  /**
+   * Факультет студента по зачётке; "" — не определён.
+   *
+   * @generated from field: string faculty = 11;
+   */
+  faculty: string;
+
+  /**
+   * @generated from field: string group = 12;
+   */
+  group: string;
+
+  /**
+   * @generated from field: string record_book = 13;
+   */
+  recordBook: string;
+
+  /**
+   * Кто и когда напечатал (READY).
+   *
+   * @generated from field: string prepared_by = 14;
+   */
+  preparedBy: string;
+
+  /**
+   * @generated from field: optional google.protobuf.Timestamp ready_at = 15;
+   */
+  readyAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: string cancel_reason = 16;
+   */
+  cancelReason: string;
 };
 
 /**
@@ -105,6 +139,18 @@ export type CertificateFetchResponse = Message<"contract.service.v1.CertificateF
    * @generated from field: repeated contract.service.v1.CertificateOrderEntry orders = 1;
    */
   orders: CertificateOrderEntry[];
+
+  /**
+   * Чьи заказы видит сотрудник: его факультеты; all_faculties — все.
+   *
+   * @generated from field: repeated string faculties = 2;
+   */
+  faculties: string[];
+
+  /**
+   * @generated from field: bool all_faculties = 3;
+   */
+  allFaculties: boolean;
 };
 
 /**
@@ -115,9 +161,22 @@ export const CertificateFetchResponseSchema: GenMessage<CertificateFetchResponse
   messageDesc(file_fesmu_service_v1_certificate_service, 2);
 
 /**
- * @generated from message contract.service.v1.CertificateIssueRequest
+ * @generated from message contract.service.v1.CertificateMyFetchRequest
  */
-export type CertificateIssueRequest = Message<"contract.service.v1.CertificateIssueRequest"> & {
+export type CertificateMyFetchRequest = Message<"contract.service.v1.CertificateMyFetchRequest"> & {
+};
+
+/**
+ * Describes the message contract.service.v1.CertificateMyFetchRequest.
+ * Use `create(CertificateMyFetchRequestSchema)` to create a new message.
+ */
+export const CertificateMyFetchRequestSchema: GenMessage<CertificateMyFetchRequest> = /*@__PURE__*/
+  messageDesc(file_fesmu_service_v1_certificate_service, 3);
+
+/**
+ * @generated from message contract.service.v1.CertificatePrintRequest
+ */
+export type CertificatePrintRequest = Message<"contract.service.v1.CertificatePrintRequest"> & {
   /**
    * @generated from field: int64 id = 1;
    */
@@ -125,16 +184,16 @@ export type CertificateIssueRequest = Message<"contract.service.v1.CertificateIs
 };
 
 /**
- * Describes the message contract.service.v1.CertificateIssueRequest.
- * Use `create(CertificateIssueRequestSchema)` to create a new message.
+ * Describes the message contract.service.v1.CertificatePrintRequest.
+ * Use `create(CertificatePrintRequestSchema)` to create a new message.
  */
-export const CertificateIssueRequestSchema: GenMessage<CertificateIssueRequest> = /*@__PURE__*/
-  messageDesc(file_fesmu_service_v1_certificate_service, 3);
+export const CertificatePrintRequestSchema: GenMessage<CertificatePrintRequest> = /*@__PURE__*/
+  messageDesc(file_fesmu_service_v1_certificate_service, 4);
 
 /**
- * @generated from message contract.service.v1.CertificateIssueResponse
+ * @generated from message contract.service.v1.CertificatePrintResponse
  */
-export type CertificateIssueResponse = Message<"contract.service.v1.CertificateIssueResponse"> & {
+export type CertificatePrintResponse = Message<"contract.service.v1.CertificatePrintResponse"> & {
   /**
    * @generated from field: contract.service.v1.CertificateOrderEntry order = 1;
    */
@@ -152,11 +211,96 @@ export type CertificateIssueResponse = Message<"contract.service.v1.CertificateI
 };
 
 /**
+ * Describes the message contract.service.v1.CertificatePrintResponse.
+ * Use `create(CertificatePrintResponseSchema)` to create a new message.
+ */
+export const CertificatePrintResponseSchema: GenMessage<CertificatePrintResponse> = /*@__PURE__*/
+  messageDesc(file_fesmu_service_v1_certificate_service, 5);
+
+/**
+ * @generated from message contract.service.v1.CertificateCancelRequest
+ */
+export type CertificateCancelRequest = Message<"contract.service.v1.CertificateCancelRequest"> & {
+  /**
+   * @generated from field: int64 id = 1;
+   */
+  id: bigint;
+
+  /**
+   * @generated from field: string reason = 2;
+   */
+  reason: string;
+};
+
+/**
+ * Describes the message contract.service.v1.CertificateCancelRequest.
+ * Use `create(CertificateCancelRequestSchema)` to create a new message.
+ */
+export const CertificateCancelRequestSchema: GenMessage<CertificateCancelRequest> = /*@__PURE__*/
+  messageDesc(file_fesmu_service_v1_certificate_service, 6);
+
+/**
+ * @generated from message contract.service.v1.CertificateCancelResponse
+ */
+export type CertificateCancelResponse = Message<"contract.service.v1.CertificateCancelResponse"> & {
+  /**
+   * @generated from field: contract.service.v1.CertificateOrderEntry order = 1;
+   */
+  order?: CertificateOrderEntry | undefined;
+};
+
+/**
+ * Describes the message contract.service.v1.CertificateCancelResponse.
+ * Use `create(CertificateCancelResponseSchema)` to create a new message.
+ */
+export const CertificateCancelResponseSchema: GenMessage<CertificateCancelResponse> = /*@__PURE__*/
+  messageDesc(file_fesmu_service_v1_certificate_service, 7);
+
+/**
+ * @generated from message contract.service.v1.CertificateIssueRequest
+ */
+export type CertificateIssueRequest = Message<"contract.service.v1.CertificateIssueRequest"> & {
+  /**
+   * @generated from field: int64 id = 1;
+   */
+  id: bigint;
+};
+
+/**
+ * Describes the message contract.service.v1.CertificateIssueRequest.
+ * Use `create(CertificateIssueRequestSchema)` to create a new message.
+ */
+export const CertificateIssueRequestSchema: GenMessage<CertificateIssueRequest> = /*@__PURE__*/
+  messageDesc(file_fesmu_service_v1_certificate_service, 8);
+
+/**
+ * @generated from message contract.service.v1.CertificateIssueResponse
+ */
+export type CertificateIssueResponse = Message<"contract.service.v1.CertificateIssueResponse"> & {
+  /**
+   * @generated from field: contract.service.v1.CertificateOrderEntry order = 1;
+   */
+  order?: CertificateOrderEntry | undefined;
+
+  /**
+   * Не заполняются: документ печатает CertificatePrint.
+   *
+   * @generated from field: string file_name = 2;
+   */
+  fileName: string;
+
+  /**
+   * @generated from field: bytes content = 3;
+   */
+  content: Uint8Array;
+};
+
+/**
  * Describes the message contract.service.v1.CertificateIssueResponse.
  * Use `create(CertificateIssueResponseSchema)` to create a new message.
  */
 export const CertificateIssueResponseSchema: GenMessage<CertificateIssueResponse> = /*@__PURE__*/
-  messageDesc(file_fesmu_service_v1_certificate_service, 4);
+  messageDesc(file_fesmu_service_v1_certificate_service, 9);
 
 /**
  * @generated from message contract.service.v1.CertificateOrderRequest
@@ -189,7 +333,7 @@ export type CertificateOrderRequest = Message<"contract.service.v1.CertificateOr
  * Use `create(CertificateOrderRequestSchema)` to create a new message.
  */
 export const CertificateOrderRequestSchema: GenMessage<CertificateOrderRequest> = /*@__PURE__*/
-  messageDesc(file_fesmu_service_v1_certificate_service, 5);
+  messageDesc(file_fesmu_service_v1_certificate_service, 10);
 
 /**
  * @generated from message contract.service.v1.CertificateOrderResponse
@@ -221,7 +365,7 @@ export type CertificateOrderResponse = Message<"contract.service.v1.CertificateO
  * Use `create(CertificateOrderResponseSchema)` to create a new message.
  */
 export const CertificateOrderResponseSchema: GenMessage<CertificateOrderResponse> = /*@__PURE__*/
-  messageDesc(file_fesmu_service_v1_certificate_service, 6);
+  messageDesc(file_fesmu_service_v1_certificate_service, 11);
 
 /**
  * @generated from enum contract.service.v1.CertificateOrderStatus
@@ -241,6 +385,18 @@ export enum CertificateOrderStatus {
    * @generated from enum value: CERTIFICATE_ORDER_STATUS_ISSUED = 2;
    */
   ISSUED = 2,
+
+  /**
+   * Напечатана деканатом, ждёт студента.
+   *
+   * @generated from enum value: CERTIFICATE_ORDER_STATUS_READY = 3;
+   */
+  READY = 3,
+
+  /**
+   * @generated from enum value: CERTIFICATE_ORDER_STATUS_CANCELLED = 4;
+   */
+  CANCELLED = 4,
 }
 
 /**
@@ -255,14 +411,22 @@ export const CertificateOrderStatusSchema: GenEnum<CertificateOrderStatus> = /*@
  * call — the same shape as UserImportService. See
  * internal/service/packages/certificate.
  *
- * Every order lands in the certificate journal. A student orders for
- * themselves only; ordering for someone else, seeing the journal and
- * issuing need the rights certificate.issue / certificate.view (from MDM).
+ * Путь справки: студент заказывает (ORDERED) → деканат его факультета печатает
+ * (READY, «готова к выдаче») → студент расписывается и забирает (ISSUED).
+ * Деканат может отклонить заказ с причиной (CANCELLED). Студент файл не
+ * получает — видит только статус своих заказов.
+ *
+ * Факультет студента — по первым двум цифрам зачётки; деканат — подразделение
+ * сотрудника в MDM. Сотрудник с правом certificate.* видит заказы только своих
+ * факультетов; без подразделения-деканата (и ADMIN) — все.
  *
  * @generated from service contract.service.v1.CertificateService
  */
 export const CertificateService: GenService<{
   /**
+   * Заказ. Студент — только на себя, без файла. Сотрудник с certificate.post —
+   * за любого студента: сразу выдана, файл в ответе.
+   *
    * @generated from rpc contract.service.v1.CertificateService.CertificateOrder
    */
   certificateOrder: {
@@ -271,7 +435,7 @@ export const CertificateService: GenService<{
     output: typeof CertificateOrderResponseSchema;
   },
   /**
-   * The journal, newest first (certificate.view).
+   * Журнал деканата, новые сверху (certificate.fetch) — только свои факультеты.
    *
    * @generated from rpc contract.service.v1.CertificateService.CertificateFetch
    */
@@ -281,7 +445,7 @@ export const CertificateService: GenService<{
     output: typeof CertificateFetchResponseSchema;
   },
   /**
-   * Mark an order issued and render its document again (certificate.issue).
+   * Отметить выданной: студент расписался и забрал (certificate.post).
    *
    * @generated from rpc contract.service.v1.CertificateService.CertificateIssue
    */
@@ -289,6 +453,37 @@ export const CertificateService: GenService<{
     methodKind: "unary";
     input: typeof CertificateIssueRequestSchema;
     output: typeof CertificateIssueResponseSchema;
+  },
+  /**
+   * Свои заказы студента, новые сверху — для статуса в кабинете.
+   *
+   * @generated from rpc contract.service.v1.CertificateService.CertificateMyFetch
+   */
+  certificateMyFetch: {
+    methodKind: "unary";
+    input: typeof CertificateMyFetchRequestSchema;
+    output: typeof CertificateFetchResponseSchema;
+  },
+  /**
+   * Сформировать документ для печати; заказ становится «готова к выдаче»
+   * (certificate.post). Повторно — перепечатка, статус не меняется.
+   *
+   * @generated from rpc contract.service.v1.CertificateService.CertificatePrint
+   */
+  certificatePrint: {
+    methodKind: "unary";
+    input: typeof CertificatePrintRequestSchema;
+    output: typeof CertificatePrintResponseSchema;
+  },
+  /**
+   * Отклонить заказ с причиной — её видит студент (certificate.post).
+   *
+   * @generated from rpc contract.service.v1.CertificateService.CertificateCancel
+   */
+  certificateCancel: {
+    methodKind: "unary";
+    input: typeof CertificateCancelRequestSchema;
+    output: typeof CertificateCancelResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_fesmu_service_v1_certificate_service, 0);

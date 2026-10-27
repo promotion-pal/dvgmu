@@ -29,6 +29,9 @@ const (
 	CertificateOrderStatus_CERTIFICATE_ORDER_STATUS_UNSPECIFIED CertificateOrderStatus = 0
 	CertificateOrderStatus_CERTIFICATE_ORDER_STATUS_ORDERED     CertificateOrderStatus = 1
 	CertificateOrderStatus_CERTIFICATE_ORDER_STATUS_ISSUED      CertificateOrderStatus = 2
+	// Напечатана деканатом, ждёт студента.
+	CertificateOrderStatus_CERTIFICATE_ORDER_STATUS_READY     CertificateOrderStatus = 3
+	CertificateOrderStatus_CERTIFICATE_ORDER_STATUS_CANCELLED CertificateOrderStatus = 4
 )
 
 // Enum value maps for CertificateOrderStatus.
@@ -37,11 +40,15 @@ var (
 		0: "CERTIFICATE_ORDER_STATUS_UNSPECIFIED",
 		1: "CERTIFICATE_ORDER_STATUS_ORDERED",
 		2: "CERTIFICATE_ORDER_STATUS_ISSUED",
+		3: "CERTIFICATE_ORDER_STATUS_READY",
+		4: "CERTIFICATE_ORDER_STATUS_CANCELLED",
 	}
 	CertificateOrderStatus_value = map[string]int32{
 		"CERTIFICATE_ORDER_STATUS_UNSPECIFIED": 0,
 		"CERTIFICATE_ORDER_STATUS_ORDERED":     1,
 		"CERTIFICATE_ORDER_STATUS_ISSUED":      2,
+		"CERTIFICATE_ORDER_STATUS_READY":       3,
+		"CERTIFICATE_ORDER_STATUS_CANCELLED":   4,
 	}
 )
 
@@ -73,17 +80,25 @@ func (CertificateOrderStatus) EnumDescriptor() ([]byte, []int) {
 }
 
 type CertificateOrderEntry struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	StudentMdmId  int64                  `protobuf:"varint,2,opt,name=student_mdm_id,json=studentMdmId,proto3" json:"student_mdm_id,omitempty"`
-	StudentName   string                 `protobuf:"bytes,3,opt,name=student_name,json=studentName,proto3" json:"student_name,omitempty"`
-	Type          enum.FileGenerateType  `protobuf:"varint,4,opt,name=type,proto3,enum=contract.file.enum.FileGenerateType" json:"type,omitempty"`
-	Copies        int32                  `protobuf:"varint,5,opt,name=copies,proto3" json:"copies,omitempty"`
-	Status        CertificateOrderStatus `protobuf:"varint,6,opt,name=status,proto3,enum=contract.service.v1.CertificateOrderStatus" json:"status,omitempty"`
-	OrderedBy     string                 `protobuf:"bytes,7,opt,name=ordered_by,json=orderedBy,proto3" json:"ordered_by,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	IssuedBy      string                 `protobuf:"bytes,9,opt,name=issued_by,json=issuedBy,proto3" json:"issued_by,omitempty"`
-	IssuedAt      *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=issued_at,json=issuedAt,proto3,oneof" json:"issued_at,omitempty"`
+	state        protoimpl.MessageState `protogen:"open.v1"`
+	Id           int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	StudentMdmId int64                  `protobuf:"varint,2,opt,name=student_mdm_id,json=studentMdmId,proto3" json:"student_mdm_id,omitempty"`
+	StudentName  string                 `protobuf:"bytes,3,opt,name=student_name,json=studentName,proto3" json:"student_name,omitempty"`
+	Type         enum.FileGenerateType  `protobuf:"varint,4,opt,name=type,proto3,enum=contract.file.enum.FileGenerateType" json:"type,omitempty"`
+	Copies       int32                  `protobuf:"varint,5,opt,name=copies,proto3" json:"copies,omitempty"`
+	Status       CertificateOrderStatus `protobuf:"varint,6,opt,name=status,proto3,enum=contract.service.v1.CertificateOrderStatus" json:"status,omitempty"`
+	OrderedBy    string                 `protobuf:"bytes,7,opt,name=ordered_by,json=orderedBy,proto3" json:"ordered_by,omitempty"`
+	CreatedAt    *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	IssuedBy     string                 `protobuf:"bytes,9,opt,name=issued_by,json=issuedBy,proto3" json:"issued_by,omitempty"`
+	IssuedAt     *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=issued_at,json=issuedAt,proto3,oneof" json:"issued_at,omitempty"`
+	// Факультет студента по зачётке; "" — не определён.
+	Faculty    string `protobuf:"bytes,11,opt,name=faculty,proto3" json:"faculty,omitempty"`
+	Group      string `protobuf:"bytes,12,opt,name=group,proto3" json:"group,omitempty"`
+	RecordBook string `protobuf:"bytes,13,opt,name=record_book,json=recordBook,proto3" json:"record_book,omitempty"`
+	// Кто и когда напечатал (READY).
+	PreparedBy    string                 `protobuf:"bytes,14,opt,name=prepared_by,json=preparedBy,proto3" json:"prepared_by,omitempty"`
+	ReadyAt       *timestamppb.Timestamp `protobuf:"bytes,15,opt,name=ready_at,json=readyAt,proto3,oneof" json:"ready_at,omitempty"`
+	CancelReason  string                 `protobuf:"bytes,16,opt,name=cancel_reason,json=cancelReason,proto3" json:"cancel_reason,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -188,6 +203,48 @@ func (x *CertificateOrderEntry) GetIssuedAt() *timestamppb.Timestamp {
 	return nil
 }
 
+func (x *CertificateOrderEntry) GetFaculty() string {
+	if x != nil {
+		return x.Faculty
+	}
+	return ""
+}
+
+func (x *CertificateOrderEntry) GetGroup() string {
+	if x != nil {
+		return x.Group
+	}
+	return ""
+}
+
+func (x *CertificateOrderEntry) GetRecordBook() string {
+	if x != nil {
+		return x.RecordBook
+	}
+	return ""
+}
+
+func (x *CertificateOrderEntry) GetPreparedBy() string {
+	if x != nil {
+		return x.PreparedBy
+	}
+	return ""
+}
+
+func (x *CertificateOrderEntry) GetReadyAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.ReadyAt
+	}
+	return nil
+}
+
+func (x *CertificateOrderEntry) GetCancelReason() string {
+	if x != nil {
+		return x.CancelReason
+	}
+	return ""
+}
+
 type CertificateFetchRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// UNSPECIFIED — all.
@@ -234,8 +291,11 @@ func (x *CertificateFetchRequest) GetStatus() CertificateOrderStatus {
 }
 
 type CertificateFetchResponse struct {
-	state         protoimpl.MessageState   `protogen:"open.v1"`
-	Orders        []*CertificateOrderEntry `protobuf:"bytes,1,rep,name=orders,proto3" json:"orders,omitempty"`
+	state  protoimpl.MessageState   `protogen:"open.v1"`
+	Orders []*CertificateOrderEntry `protobuf:"bytes,1,rep,name=orders,proto3" json:"orders,omitempty"`
+	// Чьи заказы видит сотрудник: его факультеты; all_faculties — все.
+	Faculties     []string `protobuf:"bytes,2,rep,name=faculties,proto3" json:"faculties,omitempty"`
+	AllFaculties  bool     `protobuf:"varint,3,opt,name=all_faculties,json=allFaculties,proto3" json:"all_faculties,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -277,6 +337,256 @@ func (x *CertificateFetchResponse) GetOrders() []*CertificateOrderEntry {
 	return nil
 }
 
+func (x *CertificateFetchResponse) GetFaculties() []string {
+	if x != nil {
+		return x.Faculties
+	}
+	return nil
+}
+
+func (x *CertificateFetchResponse) GetAllFaculties() bool {
+	if x != nil {
+		return x.AllFaculties
+	}
+	return false
+}
+
+type CertificateMyFetchRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CertificateMyFetchRequest) Reset() {
+	*x = CertificateMyFetchRequest{}
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CertificateMyFetchRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CertificateMyFetchRequest) ProtoMessage() {}
+
+func (x *CertificateMyFetchRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CertificateMyFetchRequest.ProtoReflect.Descriptor instead.
+func (*CertificateMyFetchRequest) Descriptor() ([]byte, []int) {
+	return file_fesmu_service_v1_certificate_service_proto_rawDescGZIP(), []int{3}
+}
+
+type CertificatePrintRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CertificatePrintRequest) Reset() {
+	*x = CertificatePrintRequest{}
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CertificatePrintRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CertificatePrintRequest) ProtoMessage() {}
+
+func (x *CertificatePrintRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CertificatePrintRequest.ProtoReflect.Descriptor instead.
+func (*CertificatePrintRequest) Descriptor() ([]byte, []int) {
+	return file_fesmu_service_v1_certificate_service_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *CertificatePrintRequest) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+type CertificatePrintResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Order         *CertificateOrderEntry `protobuf:"bytes,1,opt,name=order,proto3" json:"order,omitempty"`
+	FileName      string                 `protobuf:"bytes,2,opt,name=file_name,json=fileName,proto3" json:"file_name,omitempty"`
+	Content       []byte                 `protobuf:"bytes,3,opt,name=content,proto3" json:"content,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CertificatePrintResponse) Reset() {
+	*x = CertificatePrintResponse{}
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CertificatePrintResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CertificatePrintResponse) ProtoMessage() {}
+
+func (x *CertificatePrintResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CertificatePrintResponse.ProtoReflect.Descriptor instead.
+func (*CertificatePrintResponse) Descriptor() ([]byte, []int) {
+	return file_fesmu_service_v1_certificate_service_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *CertificatePrintResponse) GetOrder() *CertificateOrderEntry {
+	if x != nil {
+		return x.Order
+	}
+	return nil
+}
+
+func (x *CertificatePrintResponse) GetFileName() string {
+	if x != nil {
+		return x.FileName
+	}
+	return ""
+}
+
+func (x *CertificatePrintResponse) GetContent() []byte {
+	if x != nil {
+		return x.Content
+	}
+	return nil
+}
+
+type CertificateCancelRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Reason        string                 `protobuf:"bytes,2,opt,name=reason,proto3" json:"reason,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CertificateCancelRequest) Reset() {
+	*x = CertificateCancelRequest{}
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CertificateCancelRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CertificateCancelRequest) ProtoMessage() {}
+
+func (x *CertificateCancelRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CertificateCancelRequest.ProtoReflect.Descriptor instead.
+func (*CertificateCancelRequest) Descriptor() ([]byte, []int) {
+	return file_fesmu_service_v1_certificate_service_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *CertificateCancelRequest) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *CertificateCancelRequest) GetReason() string {
+	if x != nil {
+		return x.Reason
+	}
+	return ""
+}
+
+type CertificateCancelResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Order         *CertificateOrderEntry `protobuf:"bytes,1,opt,name=order,proto3" json:"order,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CertificateCancelResponse) Reset() {
+	*x = CertificateCancelResponse{}
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CertificateCancelResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CertificateCancelResponse) ProtoMessage() {}
+
+func (x *CertificateCancelResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CertificateCancelResponse.ProtoReflect.Descriptor instead.
+func (*CertificateCancelResponse) Descriptor() ([]byte, []int) {
+	return file_fesmu_service_v1_certificate_service_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *CertificateCancelResponse) GetOrder() *CertificateOrderEntry {
+	if x != nil {
+		return x.Order
+	}
+	return nil
+}
+
 type CertificateIssueRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -286,7 +596,7 @@ type CertificateIssueRequest struct {
 
 func (x *CertificateIssueRequest) Reset() {
 	*x = CertificateIssueRequest{}
-	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[3]
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -298,7 +608,7 @@ func (x *CertificateIssueRequest) String() string {
 func (*CertificateIssueRequest) ProtoMessage() {}
 
 func (x *CertificateIssueRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[3]
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -311,7 +621,7 @@ func (x *CertificateIssueRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CertificateIssueRequest.ProtoReflect.Descriptor instead.
 func (*CertificateIssueRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v1_certificate_service_proto_rawDescGZIP(), []int{3}
+	return file_fesmu_service_v1_certificate_service_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *CertificateIssueRequest) GetId() int64 {
@@ -322,17 +632,18 @@ func (x *CertificateIssueRequest) GetId() int64 {
 }
 
 type CertificateIssueResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Order         *CertificateOrderEntry `protobuf:"bytes,1,opt,name=order,proto3" json:"order,omitempty"`
-	FileName      string                 `protobuf:"bytes,2,opt,name=file_name,json=fileName,proto3" json:"file_name,omitempty"`
-	Content       []byte                 `protobuf:"bytes,3,opt,name=content,proto3" json:"content,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	Order *CertificateOrderEntry `protobuf:"bytes,1,opt,name=order,proto3" json:"order,omitempty"`
+	// Не заполняются: документ печатает CertificatePrint.
+	FileName      string `protobuf:"bytes,2,opt,name=file_name,json=fileName,proto3" json:"file_name,omitempty"`
+	Content       []byte `protobuf:"bytes,3,opt,name=content,proto3" json:"content,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *CertificateIssueResponse) Reset() {
 	*x = CertificateIssueResponse{}
-	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[4]
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -344,7 +655,7 @@ func (x *CertificateIssueResponse) String() string {
 func (*CertificateIssueResponse) ProtoMessage() {}
 
 func (x *CertificateIssueResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[4]
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -357,7 +668,7 @@ func (x *CertificateIssueResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CertificateIssueResponse.ProtoReflect.Descriptor instead.
 func (*CertificateIssueResponse) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v1_certificate_service_proto_rawDescGZIP(), []int{4}
+	return file_fesmu_service_v1_certificate_service_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *CertificateIssueResponse) GetOrder() *CertificateOrderEntry {
@@ -396,7 +707,7 @@ type CertificateOrderRequest struct {
 
 func (x *CertificateOrderRequest) Reset() {
 	*x = CertificateOrderRequest{}
-	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[5]
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -408,7 +719,7 @@ func (x *CertificateOrderRequest) String() string {
 func (*CertificateOrderRequest) ProtoMessage() {}
 
 func (x *CertificateOrderRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[5]
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -421,7 +732,7 @@ func (x *CertificateOrderRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CertificateOrderRequest.ProtoReflect.Descriptor instead.
 func (*CertificateOrderRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v1_certificate_service_proto_rawDescGZIP(), []int{5}
+	return file_fesmu_service_v1_certificate_service_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *CertificateOrderRequest) GetUserId() int64 {
@@ -457,7 +768,7 @@ type CertificateOrderResponse struct {
 
 func (x *CertificateOrderResponse) Reset() {
 	*x = CertificateOrderResponse{}
-	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[6]
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -469,7 +780,7 @@ func (x *CertificateOrderResponse) String() string {
 func (*CertificateOrderResponse) ProtoMessage() {}
 
 func (x *CertificateOrderResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[6]
+	mi := &file_fesmu_service_v1_certificate_service_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -482,7 +793,7 @@ func (x *CertificateOrderResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CertificateOrderResponse.ProtoReflect.Descriptor instead.
 func (*CertificateOrderResponse) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v1_certificate_service_proto_rawDescGZIP(), []int{6}
+	return file_fesmu_service_v1_certificate_service_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *CertificateOrderResponse) GetSuccess() bool {
@@ -517,7 +828,7 @@ var File_fesmu_service_v1_certificate_service_proto protoreflect.FileDescriptor
 
 const file_fesmu_service_v1_certificate_service_proto_rawDesc = "" +
 	"\n" +
-	"*fesmu/service/v1/certificate.service.proto\x12\x13contract.service.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x19file/enum/file.enum.proto\"\xca\x03\n" +
+	"*fesmu/service/v1/certificate.service.proto\x12\x13contract.service.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x19file/enum/file.enum.proto\"\xaa\x05\n" +
 	"\x15CertificateOrderEntry\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12$\n" +
 	"\x0estudent_mdm_id\x18\x02 \x01(\x03R\fstudentMdmId\x12!\n" +
@@ -531,13 +842,36 @@ const file_fesmu_service_v1_certificate_service_proto_rawDesc = "" +
 	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12\x1b\n" +
 	"\tissued_by\x18\t \x01(\tR\bissuedBy\x12<\n" +
 	"\tissued_at\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampH\x00R\bissuedAt\x88\x01\x01B\f\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampH\x00R\bissuedAt\x88\x01\x01\x12\x18\n" +
+	"\afaculty\x18\v \x01(\tR\afaculty\x12\x14\n" +
+	"\x05group\x18\f \x01(\tR\x05group\x12\x1f\n" +
+	"\vrecord_book\x18\r \x01(\tR\n" +
+	"recordBook\x12\x1f\n" +
+	"\vprepared_by\x18\x0e \x01(\tR\n" +
+	"preparedBy\x12:\n" +
+	"\bready_at\x18\x0f \x01(\v2\x1a.google.protobuf.TimestampH\x01R\areadyAt\x88\x01\x01\x12#\n" +
+	"\rcancel_reason\x18\x10 \x01(\tR\fcancelReasonB\f\n" +
 	"\n" +
-	"_issued_at\"^\n" +
+	"_issued_atB\v\n" +
+	"\t_ready_at\"^\n" +
 	"\x17CertificateFetchRequest\x12C\n" +
-	"\x06status\x18\x01 \x01(\x0e2+.contract.service.v1.CertificateOrderStatusR\x06status\"^\n" +
+	"\x06status\x18\x01 \x01(\x0e2+.contract.service.v1.CertificateOrderStatusR\x06status\"\xa1\x01\n" +
 	"\x18CertificateFetchResponse\x12B\n" +
-	"\x06orders\x18\x01 \x03(\v2*.contract.service.v1.CertificateOrderEntryR\x06orders\")\n" +
+	"\x06orders\x18\x01 \x03(\v2*.contract.service.v1.CertificateOrderEntryR\x06orders\x12\x1c\n" +
+	"\tfaculties\x18\x02 \x03(\tR\tfaculties\x12#\n" +
+	"\rall_faculties\x18\x03 \x01(\bR\fallFaculties\"\x1b\n" +
+	"\x19CertificateMyFetchRequest\")\n" +
+	"\x17CertificatePrintRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"\x93\x01\n" +
+	"\x18CertificatePrintResponse\x12@\n" +
+	"\x05order\x18\x01 \x01(\v2*.contract.service.v1.CertificateOrderEntryR\x05order\x12\x1b\n" +
+	"\tfile_name\x18\x02 \x01(\tR\bfileName\x12\x18\n" +
+	"\acontent\x18\x03 \x01(\fR\acontent\"B\n" +
+	"\x18CertificateCancelRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x16\n" +
+	"\x06reason\x18\x02 \x01(\tR\x06reason\"]\n" +
+	"\x19CertificateCancelResponse\x12@\n" +
+	"\x05order\x18\x01 \x01(\v2*.contract.service.v1.CertificateOrderEntryR\x05order\")\n" +
 	"\x17CertificateIssueRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\"\x93\x01\n" +
 	"\x18CertificateIssueResponse\x12@\n" +
@@ -552,15 +886,20 @@ const file_fesmu_service_v1_certificate_service_proto_rawDesc = "" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x12\x1b\n" +
 	"\tfile_name\x18\x03 \x01(\tR\bfileName\x12\x18\n" +
-	"\acontent\x18\x04 \x01(\fR\acontent*\x8d\x01\n" +
+	"\acontent\x18\x04 \x01(\fR\acontent*\xd9\x01\n" +
 	"\x16CertificateOrderStatus\x12(\n" +
 	"$CERTIFICATE_ORDER_STATUS_UNSPECIFIED\x10\x00\x12$\n" +
 	" CERTIFICATE_ORDER_STATUS_ORDERED\x10\x01\x12#\n" +
-	"\x1fCERTIFICATE_ORDER_STATUS_ISSUED\x10\x022\xe7\x02\n" +
+	"\x1fCERTIFICATE_ORDER_STATUS_ISSUED\x10\x02\x12\"\n" +
+	"\x1eCERTIFICATE_ORDER_STATUS_READY\x10\x03\x12&\n" +
+	"\"CERTIFICATE_ORDER_STATUS_CANCELLED\x10\x042\xc1\x05\n" +
 	"\x12CertificateService\x12o\n" +
 	"\x10CertificateOrder\x12,.contract.service.v1.CertificateOrderRequest\x1a-.contract.service.v1.CertificateOrderResponse\x12o\n" +
 	"\x10CertificateFetch\x12,.contract.service.v1.CertificateFetchRequest\x1a-.contract.service.v1.CertificateFetchResponse\x12o\n" +
-	"\x10CertificateIssue\x12,.contract.service.v1.CertificateIssueRequest\x1a-.contract.service.v1.CertificateIssueResponseB\xcb\x01\n" +
+	"\x10CertificateIssue\x12,.contract.service.v1.CertificateIssueRequest\x1a-.contract.service.v1.CertificateIssueResponse\x12s\n" +
+	"\x12CertificateMyFetch\x12..contract.service.v1.CertificateMyFetchRequest\x1a-.contract.service.v1.CertificateFetchResponse\x12o\n" +
+	"\x10CertificatePrint\x12,.contract.service.v1.CertificatePrintRequest\x1a-.contract.service.v1.CertificatePrintResponse\x12r\n" +
+	"\x11CertificateCancel\x12-.contract.service.v1.CertificateCancelRequest\x1a..contract.service.v1.CertificateCancelResponseB\xcb\x01\n" +
 	"\x17com.contract.service.v1B\x17CertificateServiceProtoP\x01Z)fesmu/contract/fesmu/service/v1;servicev1\xa2\x02\x03CSX\xaa\x02\x13Contract.Service.V1\xca\x02\x13Contract\\Service\\V1\xe2\x02\x1fContract\\Service\\V1\\GPBMetadata\xea\x02\x15Contract::Service::V1b\x06proto3"
 
 var (
@@ -576,39 +915,53 @@ func file_fesmu_service_v1_certificate_service_proto_rawDescGZIP() []byte {
 }
 
 var file_fesmu_service_v1_certificate_service_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_fesmu_service_v1_certificate_service_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_fesmu_service_v1_certificate_service_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_fesmu_service_v1_certificate_service_proto_goTypes = []any{
-	(CertificateOrderStatus)(0),      // 0: contract.service.v1.CertificateOrderStatus
-	(*CertificateOrderEntry)(nil),    // 1: contract.service.v1.CertificateOrderEntry
-	(*CertificateFetchRequest)(nil),  // 2: contract.service.v1.CertificateFetchRequest
-	(*CertificateFetchResponse)(nil), // 3: contract.service.v1.CertificateFetchResponse
-	(*CertificateIssueRequest)(nil),  // 4: contract.service.v1.CertificateIssueRequest
-	(*CertificateIssueResponse)(nil), // 5: contract.service.v1.CertificateIssueResponse
-	(*CertificateOrderRequest)(nil),  // 6: contract.service.v1.CertificateOrderRequest
-	(*CertificateOrderResponse)(nil), // 7: contract.service.v1.CertificateOrderResponse
-	(enum.FileGenerateType)(0),       // 8: contract.file.enum.FileGenerateType
-	(*timestamppb.Timestamp)(nil),    // 9: google.protobuf.Timestamp
+	(CertificateOrderStatus)(0),       // 0: contract.service.v1.CertificateOrderStatus
+	(*CertificateOrderEntry)(nil),     // 1: contract.service.v1.CertificateOrderEntry
+	(*CertificateFetchRequest)(nil),   // 2: contract.service.v1.CertificateFetchRequest
+	(*CertificateFetchResponse)(nil),  // 3: contract.service.v1.CertificateFetchResponse
+	(*CertificateMyFetchRequest)(nil), // 4: contract.service.v1.CertificateMyFetchRequest
+	(*CertificatePrintRequest)(nil),   // 5: contract.service.v1.CertificatePrintRequest
+	(*CertificatePrintResponse)(nil),  // 6: contract.service.v1.CertificatePrintResponse
+	(*CertificateCancelRequest)(nil),  // 7: contract.service.v1.CertificateCancelRequest
+	(*CertificateCancelResponse)(nil), // 8: contract.service.v1.CertificateCancelResponse
+	(*CertificateIssueRequest)(nil),   // 9: contract.service.v1.CertificateIssueRequest
+	(*CertificateIssueResponse)(nil),  // 10: contract.service.v1.CertificateIssueResponse
+	(*CertificateOrderRequest)(nil),   // 11: contract.service.v1.CertificateOrderRequest
+	(*CertificateOrderResponse)(nil),  // 12: contract.service.v1.CertificateOrderResponse
+	(enum.FileGenerateType)(0),        // 13: contract.file.enum.FileGenerateType
+	(*timestamppb.Timestamp)(nil),     // 14: google.protobuf.Timestamp
 }
 var file_fesmu_service_v1_certificate_service_proto_depIdxs = []int32{
-	8,  // 0: contract.service.v1.CertificateOrderEntry.type:type_name -> contract.file.enum.FileGenerateType
+	13, // 0: contract.service.v1.CertificateOrderEntry.type:type_name -> contract.file.enum.FileGenerateType
 	0,  // 1: contract.service.v1.CertificateOrderEntry.status:type_name -> contract.service.v1.CertificateOrderStatus
-	9,  // 2: contract.service.v1.CertificateOrderEntry.created_at:type_name -> google.protobuf.Timestamp
-	9,  // 3: contract.service.v1.CertificateOrderEntry.issued_at:type_name -> google.protobuf.Timestamp
-	0,  // 4: contract.service.v1.CertificateFetchRequest.status:type_name -> contract.service.v1.CertificateOrderStatus
-	1,  // 5: contract.service.v1.CertificateFetchResponse.orders:type_name -> contract.service.v1.CertificateOrderEntry
-	1,  // 6: contract.service.v1.CertificateIssueResponse.order:type_name -> contract.service.v1.CertificateOrderEntry
-	8,  // 7: contract.service.v1.CertificateOrderRequest.type:type_name -> contract.file.enum.FileGenerateType
-	6,  // 8: contract.service.v1.CertificateService.CertificateOrder:input_type -> contract.service.v1.CertificateOrderRequest
-	2,  // 9: contract.service.v1.CertificateService.CertificateFetch:input_type -> contract.service.v1.CertificateFetchRequest
-	4,  // 10: contract.service.v1.CertificateService.CertificateIssue:input_type -> contract.service.v1.CertificateIssueRequest
-	7,  // 11: contract.service.v1.CertificateService.CertificateOrder:output_type -> contract.service.v1.CertificateOrderResponse
-	3,  // 12: contract.service.v1.CertificateService.CertificateFetch:output_type -> contract.service.v1.CertificateFetchResponse
-	5,  // 13: contract.service.v1.CertificateService.CertificateIssue:output_type -> contract.service.v1.CertificateIssueResponse
-	11, // [11:14] is the sub-list for method output_type
-	8,  // [8:11] is the sub-list for method input_type
-	8,  // [8:8] is the sub-list for extension type_name
-	8,  // [8:8] is the sub-list for extension extendee
-	0,  // [0:8] is the sub-list for field type_name
+	14, // 2: contract.service.v1.CertificateOrderEntry.created_at:type_name -> google.protobuf.Timestamp
+	14, // 3: contract.service.v1.CertificateOrderEntry.issued_at:type_name -> google.protobuf.Timestamp
+	14, // 4: contract.service.v1.CertificateOrderEntry.ready_at:type_name -> google.protobuf.Timestamp
+	0,  // 5: contract.service.v1.CertificateFetchRequest.status:type_name -> contract.service.v1.CertificateOrderStatus
+	1,  // 6: contract.service.v1.CertificateFetchResponse.orders:type_name -> contract.service.v1.CertificateOrderEntry
+	1,  // 7: contract.service.v1.CertificatePrintResponse.order:type_name -> contract.service.v1.CertificateOrderEntry
+	1,  // 8: contract.service.v1.CertificateCancelResponse.order:type_name -> contract.service.v1.CertificateOrderEntry
+	1,  // 9: contract.service.v1.CertificateIssueResponse.order:type_name -> contract.service.v1.CertificateOrderEntry
+	13, // 10: contract.service.v1.CertificateOrderRequest.type:type_name -> contract.file.enum.FileGenerateType
+	11, // 11: contract.service.v1.CertificateService.CertificateOrder:input_type -> contract.service.v1.CertificateOrderRequest
+	2,  // 12: contract.service.v1.CertificateService.CertificateFetch:input_type -> contract.service.v1.CertificateFetchRequest
+	9,  // 13: contract.service.v1.CertificateService.CertificateIssue:input_type -> contract.service.v1.CertificateIssueRequest
+	4,  // 14: contract.service.v1.CertificateService.CertificateMyFetch:input_type -> contract.service.v1.CertificateMyFetchRequest
+	5,  // 15: contract.service.v1.CertificateService.CertificatePrint:input_type -> contract.service.v1.CertificatePrintRequest
+	7,  // 16: contract.service.v1.CertificateService.CertificateCancel:input_type -> contract.service.v1.CertificateCancelRequest
+	12, // 17: contract.service.v1.CertificateService.CertificateOrder:output_type -> contract.service.v1.CertificateOrderResponse
+	3,  // 18: contract.service.v1.CertificateService.CertificateFetch:output_type -> contract.service.v1.CertificateFetchResponse
+	10, // 19: contract.service.v1.CertificateService.CertificateIssue:output_type -> contract.service.v1.CertificateIssueResponse
+	3,  // 20: contract.service.v1.CertificateService.CertificateMyFetch:output_type -> contract.service.v1.CertificateFetchResponse
+	6,  // 21: contract.service.v1.CertificateService.CertificatePrint:output_type -> contract.service.v1.CertificatePrintResponse
+	8,  // 22: contract.service.v1.CertificateService.CertificateCancel:output_type -> contract.service.v1.CertificateCancelResponse
+	17, // [17:23] is the sub-list for method output_type
+	11, // [11:17] is the sub-list for method input_type
+	11, // [11:11] is the sub-list for extension type_name
+	11, // [11:11] is the sub-list for extension extendee
+	0,  // [0:11] is the sub-list for field type_name
 }
 
 func init() { file_fesmu_service_v1_certificate_service_proto_init() }
@@ -623,7 +976,7 @@ func file_fesmu_service_v1_certificate_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_fesmu_service_v1_certificate_service_proto_rawDesc), len(file_fesmu_service_v1_certificate_service_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   7,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

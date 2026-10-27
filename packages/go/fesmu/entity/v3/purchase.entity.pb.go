@@ -415,6 +415,199 @@ func (x *PurchaseEmployee) GetDepartment() enum.UserEmployeeDepartment {
 	return enum.UserEmployeeDepartment(0)
 }
 
+// One employee's work in the module over a period, from the log.
+type PurchaseActivity struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	Uuid  string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	Name  string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	// From MDM; empty when unknown.
+	Position    string                        `protobuf:"bytes,3,opt,name=position,proto3" json:"position,omitempty"`
+	Departments []enum.UserEmployeeDepartment `protobuf:"varint,4,rep,packed,name=departments,proto3,enum=contract.enum.UserEmployeeDepartment" json:"departments,omitempty"`
+	// Every logged action.
+	Total int32 `protobuf:"varint,5,opt,name=total,proto3" json:"total,omitempty"`
+	// Requests filed.
+	Created int32 `protobuf:"varint,6,opt,name=created,proto3" json:"created,omitempty"`
+	// Stages passed on ("Продолжить").
+	Forwards int32 `protobuf:"varint,7,opt,name=forwards,proto3" json:"forwards,omitempty"`
+	// Records returned or rejected.
+	Returns int32 `protobuf:"varint,8,opt,name=returns,proto3" json:"returns,omitempty"`
+	// Edits: content, terms, codes, merges.
+	Edits int32 `protobuf:"varint,9,opt,name=edits,proto3" json:"edits,omitempty"`
+	// Files added: КП, documents, protocols.
+	Files int32 `protobuf:"varint,10,opt,name=files,proto3" json:"files,omitempty"`
+	// Distinct requests and purchases touched.
+	Records int32 `protobuf:"varint,11,opt,name=records,proto3" json:"records,omitempty"`
+	// Days with at least one action.
+	ActiveDays int32                  `protobuf:"varint,12,opt,name=active_days,json=activeDays,proto3" json:"active_days,omitempty"`
+	FirstAt    *timestamppb.Timestamp `protobuf:"bytes,13,opt,name=first_at,json=firstAt,proto3" json:"first_at,omitempty"`
+	LastAt     *timestamppb.Timestamp `protobuf:"bytes,14,opt,name=last_at,json=lastAt,proto3" json:"last_at,omitempty"`
+	// Roles acted in.
+	Roles []v3.PurchaseRole `protobuf:"varint,15,rep,packed,name=roles,proto3,enum=contract.enum.v3.PurchaseRole" json:"roles,omitempty"`
+	// The latest actions, newest first.
+	Recent []*PurchaseLog `protobuf:"bytes,16,rep,name=recent,proto3" json:"recent,omitempty"`
+	// Times the «Закупки» page was opened, and the latest.
+	Visits        int32                  `protobuf:"varint,17,opt,name=visits,proto3" json:"visits,omitempty"`
+	LastVisitAt   *timestamppb.Timestamp `protobuf:"bytes,18,opt,name=last_visit_at,json=lastVisitAt,proto3" json:"last_visit_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PurchaseActivity) Reset() {
+	*x = PurchaseActivity{}
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PurchaseActivity) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PurchaseActivity) ProtoMessage() {}
+
+func (x *PurchaseActivity) ProtoReflect() protoreflect.Message {
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PurchaseActivity.ProtoReflect.Descriptor instead.
+func (*PurchaseActivity) Descriptor() ([]byte, []int) {
+	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *PurchaseActivity) GetUuid() string {
+	if x != nil {
+		return x.Uuid
+	}
+	return ""
+}
+
+func (x *PurchaseActivity) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *PurchaseActivity) GetPosition() string {
+	if x != nil {
+		return x.Position
+	}
+	return ""
+}
+
+func (x *PurchaseActivity) GetDepartments() []enum.UserEmployeeDepartment {
+	if x != nil {
+		return x.Departments
+	}
+	return nil
+}
+
+func (x *PurchaseActivity) GetTotal() int32 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+func (x *PurchaseActivity) GetCreated() int32 {
+	if x != nil {
+		return x.Created
+	}
+	return 0
+}
+
+func (x *PurchaseActivity) GetForwards() int32 {
+	if x != nil {
+		return x.Forwards
+	}
+	return 0
+}
+
+func (x *PurchaseActivity) GetReturns() int32 {
+	if x != nil {
+		return x.Returns
+	}
+	return 0
+}
+
+func (x *PurchaseActivity) GetEdits() int32 {
+	if x != nil {
+		return x.Edits
+	}
+	return 0
+}
+
+func (x *PurchaseActivity) GetFiles() int32 {
+	if x != nil {
+		return x.Files
+	}
+	return 0
+}
+
+func (x *PurchaseActivity) GetRecords() int32 {
+	if x != nil {
+		return x.Records
+	}
+	return 0
+}
+
+func (x *PurchaseActivity) GetActiveDays() int32 {
+	if x != nil {
+		return x.ActiveDays
+	}
+	return 0
+}
+
+func (x *PurchaseActivity) GetFirstAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.FirstAt
+	}
+	return nil
+}
+
+func (x *PurchaseActivity) GetLastAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.LastAt
+	}
+	return nil
+}
+
+func (x *PurchaseActivity) GetRoles() []v3.PurchaseRole {
+	if x != nil {
+		return x.Roles
+	}
+	return nil
+}
+
+func (x *PurchaseActivity) GetRecent() []*PurchaseLog {
+	if x != nil {
+		return x.Recent
+	}
+	return nil
+}
+
+func (x *PurchaseActivity) GetVisits() int32 {
+	if x != nil {
+		return x.Visits
+	}
+	return 0
+}
+
+func (x *PurchaseActivity) GetLastVisitAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.LastVisitAt
+	}
+	return nil
+}
+
 // A stage's latest sign-off, shown to the next stages as "who approved".
 // Going back to a stage drops the sign-offs of it and every later one.
 type PurchaseSignOff struct {
@@ -437,7 +630,7 @@ type PurchaseSignOff struct {
 
 func (x *PurchaseSignOff) Reset() {
 	*x = PurchaseSignOff{}
-	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[5]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -449,7 +642,7 @@ func (x *PurchaseSignOff) String() string {
 func (*PurchaseSignOff) ProtoMessage() {}
 
 func (x *PurchaseSignOff) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[5]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -462,7 +655,7 @@ func (x *PurchaseSignOff) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseSignOff.ProtoReflect.Descriptor instead.
 func (*PurchaseSignOff) Descriptor() ([]byte, []int) {
-	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{5}
+	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *PurchaseSignOff) GetRole() v3.PurchaseRole {
@@ -562,7 +755,7 @@ type PurchaseLog struct {
 
 func (x *PurchaseLog) Reset() {
 	*x = PurchaseLog{}
-	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[6]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -574,7 +767,7 @@ func (x *PurchaseLog) String() string {
 func (*PurchaseLog) ProtoMessage() {}
 
 func (x *PurchaseLog) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[6]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -587,7 +780,7 @@ func (x *PurchaseLog) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseLog.ProtoReflect.Descriptor instead.
 func (*PurchaseLog) Descriptor() ([]byte, []int) {
-	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{6}
+	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *PurchaseLog) GetId() int64 {
@@ -679,7 +872,7 @@ type PurchaseAllowed struct {
 
 func (x *PurchaseAllowed) Reset() {
 	*x = PurchaseAllowed{}
-	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[7]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -691,7 +884,7 @@ func (x *PurchaseAllowed) String() string {
 func (*PurchaseAllowed) ProtoMessage() {}
 
 func (x *PurchaseAllowed) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[7]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -704,7 +897,7 @@ func (x *PurchaseAllowed) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseAllowed.ProtoReflect.Descriptor instead.
 func (*PurchaseAllowed) Descriptor() ([]byte, []int) {
-	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{7}
+	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *PurchaseAllowed) GetMoves() []v3.PurchaseMove {
@@ -777,7 +970,7 @@ type PurchaseRequest struct {
 
 func (x *PurchaseRequest) Reset() {
 	*x = PurchaseRequest{}
-	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[8]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -789,7 +982,7 @@ func (x *PurchaseRequest) String() string {
 func (*PurchaseRequest) ProtoMessage() {}
 
 func (x *PurchaseRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[8]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -802,7 +995,7 @@ func (x *PurchaseRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseRequest.ProtoReflect.Descriptor instead.
 func (*PurchaseRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{8}
+	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *PurchaseRequest) GetId() int64 {
@@ -986,7 +1179,7 @@ type PurchaseQuotation struct {
 
 func (x *PurchaseQuotation) Reset() {
 	*x = PurchaseQuotation{}
-	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[9]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -998,7 +1191,7 @@ func (x *PurchaseQuotation) String() string {
 func (*PurchaseQuotation) ProtoMessage() {}
 
 func (x *PurchaseQuotation) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[9]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1011,7 +1204,7 @@ func (x *PurchaseQuotation) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseQuotation.ProtoReflect.Descriptor instead.
 func (*PurchaseQuotation) Descriptor() ([]byte, []int) {
-	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{9}
+	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *PurchaseQuotation) GetId() int64 {
@@ -1101,7 +1294,7 @@ type PurchaseDocument struct {
 
 func (x *PurchaseDocument) Reset() {
 	*x = PurchaseDocument{}
-	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[10]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1113,7 +1306,7 @@ func (x *PurchaseDocument) String() string {
 func (*PurchaseDocument) ProtoMessage() {}
 
 func (x *PurchaseDocument) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[10]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1126,7 +1319,7 @@ func (x *PurchaseDocument) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseDocument.ProtoReflect.Descriptor instead.
 func (*PurchaseDocument) Descriptor() ([]byte, []int) {
-	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{10}
+	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *PurchaseDocument) GetId() int64 {
@@ -1286,7 +1479,7 @@ type PurchaseLot struct {
 
 func (x *PurchaseLot) Reset() {
 	*x = PurchaseLot{}
-	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[11]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1298,7 +1491,7 @@ func (x *PurchaseLot) String() string {
 func (*PurchaseLot) ProtoMessage() {}
 
 func (x *PurchaseLot) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[11]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1311,7 +1504,7 @@ func (x *PurchaseLot) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseLot.ProtoReflect.Descriptor instead.
 func (*PurchaseLot) Descriptor() ([]byte, []int) {
-	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{11}
+	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *PurchaseLot) GetId() int64 {
@@ -1781,7 +1974,7 @@ type PurchaseProtocolDecision struct {
 
 func (x *PurchaseProtocolDecision) Reset() {
 	*x = PurchaseProtocolDecision{}
-	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[12]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1793,7 +1986,7 @@ func (x *PurchaseProtocolDecision) String() string {
 func (*PurchaseProtocolDecision) ProtoMessage() {}
 
 func (x *PurchaseProtocolDecision) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[12]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1806,7 +1999,7 @@ func (x *PurchaseProtocolDecision) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseProtocolDecision.ProtoReflect.Descriptor instead.
 func (*PurchaseProtocolDecision) Descriptor() ([]byte, []int) {
-	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{12}
+	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *PurchaseProtocolDecision) GetLotId() int64 {
@@ -1887,7 +2080,7 @@ type PurchaseProtocol struct {
 
 func (x *PurchaseProtocol) Reset() {
 	*x = PurchaseProtocol{}
-	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[13]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1899,7 +2092,7 @@ func (x *PurchaseProtocol) String() string {
 func (*PurchaseProtocol) ProtoMessage() {}
 
 func (x *PurchaseProtocol) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[13]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1912,7 +2105,7 @@ func (x *PurchaseProtocol) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseProtocol.ProtoReflect.Descriptor instead.
 func (*PurchaseProtocol) Descriptor() ([]byte, []int) {
-	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{13}
+	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *PurchaseProtocol) GetId() int64 {
@@ -2008,7 +2201,7 @@ type PurchaseCodeSuggestion struct {
 
 func (x *PurchaseCodeSuggestion) Reset() {
 	*x = PurchaseCodeSuggestion{}
-	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[14]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2020,7 +2213,7 @@ func (x *PurchaseCodeSuggestion) String() string {
 func (*PurchaseCodeSuggestion) ProtoMessage() {}
 
 func (x *PurchaseCodeSuggestion) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[14]
+	mi := &file_fesmu_entity_v3_purchase_entity_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2033,7 +2226,7 @@ func (x *PurchaseCodeSuggestion) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseCodeSuggestion.ProtoReflect.Descriptor instead.
 func (*PurchaseCodeSuggestion) Descriptor() ([]byte, []int) {
-	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{14}
+	return file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *PurchaseCodeSuggestion) GetFound() bool {
@@ -2121,7 +2314,28 @@ const file_fesmu_entity_v3_purchase_entity_proto_rawDesc = "" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12E\n" +
 	"\n" +
 	"department\x18\x03 \x01(\x0e2%.contract.enum.UserEmployeeDepartmentR\n" +
-	"department\"\xd4\x02\n" +
+	"department\"\x9f\x05\n" +
+	"\x10PurchaseActivity\x12\x12\n" +
+	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1a\n" +
+	"\bposition\x18\x03 \x01(\tR\bposition\x12G\n" +
+	"\vdepartments\x18\x04 \x03(\x0e2%.contract.enum.UserEmployeeDepartmentR\vdepartments\x12\x14\n" +
+	"\x05total\x18\x05 \x01(\x05R\x05total\x12\x18\n" +
+	"\acreated\x18\x06 \x01(\x05R\acreated\x12\x1a\n" +
+	"\bforwards\x18\a \x01(\x05R\bforwards\x12\x18\n" +
+	"\areturns\x18\b \x01(\x05R\areturns\x12\x14\n" +
+	"\x05edits\x18\t \x01(\x05R\x05edits\x12\x14\n" +
+	"\x05files\x18\n" +
+	" \x01(\x05R\x05files\x12\x18\n" +
+	"\arecords\x18\v \x01(\x05R\arecords\x12\x1f\n" +
+	"\vactive_days\x18\f \x01(\x05R\n" +
+	"activeDays\x125\n" +
+	"\bfirst_at\x18\r \x01(\v2\x1a.google.protobuf.TimestampR\afirstAt\x123\n" +
+	"\alast_at\x18\x0e \x01(\v2\x1a.google.protobuf.TimestampR\x06lastAt\x124\n" +
+	"\x05roles\x18\x0f \x03(\x0e2\x1e.contract.enum.v3.PurchaseRoleR\x05roles\x127\n" +
+	"\x06recent\x18\x10 \x03(\v2\x1f.contract.entity.v3.PurchaseLogR\x06recent\x12\x16\n" +
+	"\x06visits\x18\x11 \x01(\x05R\x06visits\x12>\n" +
+	"\rlast_visit_at\x18\x12 \x01(\v2\x1a.google.protobuf.TimestampR\vlastVisitAt\"\xd4\x02\n" +
 	"\x0fPurchaseSignOff\x122\n" +
 	"\x04role\x18\x01 \x01(\x0e2\x1e.contract.enum.v3.PurchaseRoleR\x04role\x12P\n" +
 	"\x0erequest_status\x18\x02 \x01(\x0e2'.contract.enum.v3.PurchaseRequestStatusH\x00R\rrequestStatus\x12D\n" +
@@ -2340,102 +2554,109 @@ func file_fesmu_entity_v3_purchase_entity_proto_rawDescGZIP() []byte {
 	return file_fesmu_entity_v3_purchase_entity_proto_rawDescData
 }
 
-var file_fesmu_entity_v3_purchase_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
+var file_fesmu_entity_v3_purchase_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
 var file_fesmu_entity_v3_purchase_entity_proto_goTypes = []any{
 	(*PurchaseMe)(nil),                 // 0: contract.entity.v3.PurchaseMe
 	(*PurchaseCurator)(nil),            // 1: contract.entity.v3.PurchaseCurator
 	(*PurchaseDepartment)(nil),         // 2: contract.entity.v3.PurchaseDepartment
 	(*PurchaseCategory)(nil),           // 3: contract.entity.v3.PurchaseCategory
 	(*PurchaseEmployee)(nil),           // 4: contract.entity.v3.PurchaseEmployee
-	(*PurchaseSignOff)(nil),            // 5: contract.entity.v3.PurchaseSignOff
-	(*PurchaseLog)(nil),                // 6: contract.entity.v3.PurchaseLog
-	(*PurchaseAllowed)(nil),            // 7: contract.entity.v3.PurchaseAllowed
-	(*PurchaseRequest)(nil),            // 8: contract.entity.v3.PurchaseRequest
-	(*PurchaseQuotation)(nil),          // 9: contract.entity.v3.PurchaseQuotation
-	(*PurchaseDocument)(nil),           // 10: contract.entity.v3.PurchaseDocument
-	(*PurchaseLot)(nil),                // 11: contract.entity.v3.PurchaseLot
-	(*PurchaseProtocolDecision)(nil),   // 12: contract.entity.v3.PurchaseProtocolDecision
-	(*PurchaseProtocol)(nil),           // 13: contract.entity.v3.PurchaseProtocol
-	(*PurchaseCodeSuggestion)(nil),     // 14: contract.entity.v3.PurchaseCodeSuggestion
-	(enum.UserEmployeeDepartment)(0),   // 15: contract.enum.UserEmployeeDepartment
-	(v3.PurchasePermission)(0),         // 16: contract.enum.v3.PurchasePermission
-	(v3.PurchaseRole)(0),               // 17: contract.enum.v3.PurchaseRole
-	(v3.PurchaseRequestStatus)(0),      // 18: contract.enum.v3.PurchaseRequestStatus
-	(v3.PurchaseLotStatus)(0),          // 19: contract.enum.v3.PurchaseLotStatus
-	(*timestamppb.Timestamp)(nil),      // 20: google.protobuf.Timestamp
-	(v3.PurchaseLogTarget)(0),          // 21: contract.enum.v3.PurchaseLogTarget
-	(v3.PurchaseMove)(0),               // 22: contract.enum.v3.PurchaseMove
-	(v3.PurchaseItemType)(0),           // 23: contract.enum.v3.PurchaseItemType
-	(v3.PurchaseDocumentKind)(0),       // 24: contract.enum.v3.PurchaseDocumentKind
-	(v3.PurchaseFundingSource)(0),      // 25: contract.enum.v3.PurchaseFundingSource
-	(v3.PurchasePlanType)(0),           // 26: contract.enum.v3.PurchasePlanType
-	(v3.PurchaseLaw)(0),                // 27: contract.enum.v3.PurchaseLaw
-	(v3.PurchaseMethod)(0),             // 28: contract.enum.v3.PurchaseMethod
-	(v3.PurchaseCommissionDecision)(0), // 29: contract.enum.v3.PurchaseCommissionDecision
+	(*PurchaseActivity)(nil),           // 5: contract.entity.v3.PurchaseActivity
+	(*PurchaseSignOff)(nil),            // 6: contract.entity.v3.PurchaseSignOff
+	(*PurchaseLog)(nil),                // 7: contract.entity.v3.PurchaseLog
+	(*PurchaseAllowed)(nil),            // 8: contract.entity.v3.PurchaseAllowed
+	(*PurchaseRequest)(nil),            // 9: contract.entity.v3.PurchaseRequest
+	(*PurchaseQuotation)(nil),          // 10: contract.entity.v3.PurchaseQuotation
+	(*PurchaseDocument)(nil),           // 11: contract.entity.v3.PurchaseDocument
+	(*PurchaseLot)(nil),                // 12: contract.entity.v3.PurchaseLot
+	(*PurchaseProtocolDecision)(nil),   // 13: contract.entity.v3.PurchaseProtocolDecision
+	(*PurchaseProtocol)(nil),           // 14: contract.entity.v3.PurchaseProtocol
+	(*PurchaseCodeSuggestion)(nil),     // 15: contract.entity.v3.PurchaseCodeSuggestion
+	(enum.UserEmployeeDepartment)(0),   // 16: contract.enum.UserEmployeeDepartment
+	(v3.PurchasePermission)(0),         // 17: contract.enum.v3.PurchasePermission
+	(*timestamppb.Timestamp)(nil),      // 18: google.protobuf.Timestamp
+	(v3.PurchaseRole)(0),               // 19: contract.enum.v3.PurchaseRole
+	(v3.PurchaseRequestStatus)(0),      // 20: contract.enum.v3.PurchaseRequestStatus
+	(v3.PurchaseLotStatus)(0),          // 21: contract.enum.v3.PurchaseLotStatus
+	(v3.PurchaseLogTarget)(0),          // 22: contract.enum.v3.PurchaseLogTarget
+	(v3.PurchaseMove)(0),               // 23: contract.enum.v3.PurchaseMove
+	(v3.PurchaseItemType)(0),           // 24: contract.enum.v3.PurchaseItemType
+	(v3.PurchaseDocumentKind)(0),       // 25: contract.enum.v3.PurchaseDocumentKind
+	(v3.PurchaseFundingSource)(0),      // 26: contract.enum.v3.PurchaseFundingSource
+	(v3.PurchasePlanType)(0),           // 27: contract.enum.v3.PurchasePlanType
+	(v3.PurchaseLaw)(0),                // 28: contract.enum.v3.PurchaseLaw
+	(v3.PurchaseMethod)(0),             // 29: contract.enum.v3.PurchaseMethod
+	(v3.PurchaseCommissionDecision)(0), // 30: contract.enum.v3.PurchaseCommissionDecision
 }
 var file_fesmu_entity_v3_purchase_entity_proto_depIdxs = []int32{
-	15, // 0: contract.entity.v3.PurchaseMe.departments:type_name -> contract.enum.UserEmployeeDepartment
-	16, // 1: contract.entity.v3.PurchaseMe.permissions:type_name -> contract.enum.v3.PurchasePermission
-	15, // 2: contract.entity.v3.PurchaseDepartment.department:type_name -> contract.enum.UserEmployeeDepartment
-	15, // 3: contract.entity.v3.PurchaseCategory.implementing_department:type_name -> contract.enum.UserEmployeeDepartment
-	15, // 4: contract.entity.v3.PurchaseEmployee.department:type_name -> contract.enum.UserEmployeeDepartment
-	17, // 5: contract.entity.v3.PurchaseSignOff.role:type_name -> contract.enum.v3.PurchaseRole
-	18, // 6: contract.entity.v3.PurchaseSignOff.request_status:type_name -> contract.enum.v3.PurchaseRequestStatus
-	19, // 7: contract.entity.v3.PurchaseSignOff.lot_status:type_name -> contract.enum.v3.PurchaseLotStatus
-	20, // 8: contract.entity.v3.PurchaseSignOff.at:type_name -> google.protobuf.Timestamp
-	21, // 9: contract.entity.v3.PurchaseLog.target:type_name -> contract.enum.v3.PurchaseLogTarget
-	17, // 10: contract.entity.v3.PurchaseLog.role:type_name -> contract.enum.v3.PurchaseRole
-	20, // 11: contract.entity.v3.PurchaseLog.created_at:type_name -> google.protobuf.Timestamp
-	22, // 12: contract.entity.v3.PurchaseAllowed.moves:type_name -> contract.enum.v3.PurchaseMove
-	23, // 13: contract.entity.v3.PurchaseRequest.item_type:type_name -> contract.enum.v3.PurchaseItemType
-	15, // 14: contract.entity.v3.PurchaseRequest.department:type_name -> contract.enum.UserEmployeeDepartment
-	15, // 15: contract.entity.v3.PurchaseRequest.implementing_department:type_name -> contract.enum.UserEmployeeDepartment
-	15, // 16: contract.entity.v3.PurchaseRequest.suggested_department:type_name -> contract.enum.UserEmployeeDepartment
-	18, // 17: contract.entity.v3.PurchaseRequest.status:type_name -> contract.enum.v3.PurchaseRequestStatus
-	5,  // 18: contract.entity.v3.PurchaseRequest.sign_offs:type_name -> contract.entity.v3.PurchaseSignOff
-	6,  // 19: contract.entity.v3.PurchaseRequest.logs:type_name -> contract.entity.v3.PurchaseLog
-	7,  // 20: contract.entity.v3.PurchaseRequest.allowed:type_name -> contract.entity.v3.PurchaseAllowed
-	20, // 21: contract.entity.v3.PurchaseRequest.created_at:type_name -> google.protobuf.Timestamp
-	20, // 22: contract.entity.v3.PurchaseRequest.updated_at:type_name -> google.protobuf.Timestamp
-	20, // 23: contract.entity.v3.PurchaseRequest.stage_since:type_name -> google.protobuf.Timestamp
-	20, // 24: contract.entity.v3.PurchaseRequest.stage_due:type_name -> google.protobuf.Timestamp
-	20, // 25: contract.entity.v3.PurchaseQuotation.created_at:type_name -> google.protobuf.Timestamp
-	24, // 26: contract.entity.v3.PurchaseDocument.kind:type_name -> contract.enum.v3.PurchaseDocumentKind
-	20, // 27: contract.entity.v3.PurchaseDocument.created_at:type_name -> google.protobuf.Timestamp
-	23, // 28: contract.entity.v3.PurchaseLot.item_type:type_name -> contract.enum.v3.PurchaseItemType
-	15, // 29: contract.entity.v3.PurchaseLot.implementing_department:type_name -> contract.enum.UserEmployeeDepartment
-	19, // 30: contract.entity.v3.PurchaseLot.status:type_name -> contract.enum.v3.PurchaseLotStatus
-	25, // 31: contract.entity.v3.PurchaseLot.funding_source:type_name -> contract.enum.v3.PurchaseFundingSource
-	26, // 32: contract.entity.v3.PurchaseLot.plan_type:type_name -> contract.enum.v3.PurchasePlanType
-	27, // 33: contract.entity.v3.PurchaseLot.law:type_name -> contract.enum.v3.PurchaseLaw
-	28, // 34: contract.entity.v3.PurchaseLot.method:type_name -> contract.enum.v3.PurchaseMethod
-	20, // 35: contract.entity.v3.PurchaseLot.notice_at:type_name -> google.protobuf.Timestamp
-	20, // 36: contract.entity.v3.PurchaseLot.contract_at:type_name -> google.protobuf.Timestamp
-	20, // 37: contract.entity.v3.PurchaseLot.delivery_due:type_name -> google.protobuf.Timestamp
-	20, // 38: contract.entity.v3.PurchaseLot.delivered_at:type_name -> google.protobuf.Timestamp
-	20, // 39: contract.entity.v3.PurchaseLot.accepted_at:type_name -> google.protobuf.Timestamp
-	20, // 40: contract.entity.v3.PurchaseLot.completed_at:type_name -> google.protobuf.Timestamp
-	9,  // 41: contract.entity.v3.PurchaseLot.quotations:type_name -> contract.entity.v3.PurchaseQuotation
-	10, // 42: contract.entity.v3.PurchaseLot.documents:type_name -> contract.entity.v3.PurchaseDocument
-	5,  // 43: contract.entity.v3.PurchaseLot.sign_offs:type_name -> contract.entity.v3.PurchaseSignOff
-	6,  // 44: contract.entity.v3.PurchaseLot.logs:type_name -> contract.entity.v3.PurchaseLog
-	7,  // 45: contract.entity.v3.PurchaseLot.allowed:type_name -> contract.entity.v3.PurchaseAllowed
-	20, // 46: contract.entity.v3.PurchaseLot.created_at:type_name -> google.protobuf.Timestamp
-	20, // 47: contract.entity.v3.PurchaseLot.updated_at:type_name -> google.protobuf.Timestamp
-	20, // 48: contract.entity.v3.PurchaseLot.stage_since:type_name -> google.protobuf.Timestamp
-	20, // 49: contract.entity.v3.PurchaseLot.stage_due:type_name -> google.protobuf.Timestamp
-	20, // 50: contract.entity.v3.PurchaseLot.due_at:type_name -> google.protobuf.Timestamp
-	29, // 51: contract.entity.v3.PurchaseProtocolDecision.decision:type_name -> contract.enum.v3.PurchaseCommissionDecision
-	26, // 52: contract.entity.v3.PurchaseProtocolDecision.plan_type:type_name -> contract.enum.v3.PurchasePlanType
-	20, // 53: contract.entity.v3.PurchaseProtocol.held_at:type_name -> google.protobuf.Timestamp
-	12, // 54: contract.entity.v3.PurchaseProtocol.decisions:type_name -> contract.entity.v3.PurchaseProtocolDecision
-	20, // 55: contract.entity.v3.PurchaseProtocol.created_at:type_name -> google.protobuf.Timestamp
-	15, // 56: contract.entity.v3.PurchaseCodeSuggestion.implementing_department:type_name -> contract.enum.UserEmployeeDepartment
-	57, // [57:57] is the sub-list for method output_type
-	57, // [57:57] is the sub-list for method input_type
-	57, // [57:57] is the sub-list for extension type_name
-	57, // [57:57] is the sub-list for extension extendee
-	0,  // [0:57] is the sub-list for field type_name
+	16, // 0: contract.entity.v3.PurchaseMe.departments:type_name -> contract.enum.UserEmployeeDepartment
+	17, // 1: contract.entity.v3.PurchaseMe.permissions:type_name -> contract.enum.v3.PurchasePermission
+	16, // 2: contract.entity.v3.PurchaseDepartment.department:type_name -> contract.enum.UserEmployeeDepartment
+	16, // 3: contract.entity.v3.PurchaseCategory.implementing_department:type_name -> contract.enum.UserEmployeeDepartment
+	16, // 4: contract.entity.v3.PurchaseEmployee.department:type_name -> contract.enum.UserEmployeeDepartment
+	16, // 5: contract.entity.v3.PurchaseActivity.departments:type_name -> contract.enum.UserEmployeeDepartment
+	18, // 6: contract.entity.v3.PurchaseActivity.first_at:type_name -> google.protobuf.Timestamp
+	18, // 7: contract.entity.v3.PurchaseActivity.last_at:type_name -> google.protobuf.Timestamp
+	19, // 8: contract.entity.v3.PurchaseActivity.roles:type_name -> contract.enum.v3.PurchaseRole
+	7,  // 9: contract.entity.v3.PurchaseActivity.recent:type_name -> contract.entity.v3.PurchaseLog
+	18, // 10: contract.entity.v3.PurchaseActivity.last_visit_at:type_name -> google.protobuf.Timestamp
+	19, // 11: contract.entity.v3.PurchaseSignOff.role:type_name -> contract.enum.v3.PurchaseRole
+	20, // 12: contract.entity.v3.PurchaseSignOff.request_status:type_name -> contract.enum.v3.PurchaseRequestStatus
+	21, // 13: contract.entity.v3.PurchaseSignOff.lot_status:type_name -> contract.enum.v3.PurchaseLotStatus
+	18, // 14: contract.entity.v3.PurchaseSignOff.at:type_name -> google.protobuf.Timestamp
+	22, // 15: contract.entity.v3.PurchaseLog.target:type_name -> contract.enum.v3.PurchaseLogTarget
+	19, // 16: contract.entity.v3.PurchaseLog.role:type_name -> contract.enum.v3.PurchaseRole
+	18, // 17: contract.entity.v3.PurchaseLog.created_at:type_name -> google.protobuf.Timestamp
+	23, // 18: contract.entity.v3.PurchaseAllowed.moves:type_name -> contract.enum.v3.PurchaseMove
+	24, // 19: contract.entity.v3.PurchaseRequest.item_type:type_name -> contract.enum.v3.PurchaseItemType
+	16, // 20: contract.entity.v3.PurchaseRequest.department:type_name -> contract.enum.UserEmployeeDepartment
+	16, // 21: contract.entity.v3.PurchaseRequest.implementing_department:type_name -> contract.enum.UserEmployeeDepartment
+	16, // 22: contract.entity.v3.PurchaseRequest.suggested_department:type_name -> contract.enum.UserEmployeeDepartment
+	20, // 23: contract.entity.v3.PurchaseRequest.status:type_name -> contract.enum.v3.PurchaseRequestStatus
+	6,  // 24: contract.entity.v3.PurchaseRequest.sign_offs:type_name -> contract.entity.v3.PurchaseSignOff
+	7,  // 25: contract.entity.v3.PurchaseRequest.logs:type_name -> contract.entity.v3.PurchaseLog
+	8,  // 26: contract.entity.v3.PurchaseRequest.allowed:type_name -> contract.entity.v3.PurchaseAllowed
+	18, // 27: contract.entity.v3.PurchaseRequest.created_at:type_name -> google.protobuf.Timestamp
+	18, // 28: contract.entity.v3.PurchaseRequest.updated_at:type_name -> google.protobuf.Timestamp
+	18, // 29: contract.entity.v3.PurchaseRequest.stage_since:type_name -> google.protobuf.Timestamp
+	18, // 30: contract.entity.v3.PurchaseRequest.stage_due:type_name -> google.protobuf.Timestamp
+	18, // 31: contract.entity.v3.PurchaseQuotation.created_at:type_name -> google.protobuf.Timestamp
+	25, // 32: contract.entity.v3.PurchaseDocument.kind:type_name -> contract.enum.v3.PurchaseDocumentKind
+	18, // 33: contract.entity.v3.PurchaseDocument.created_at:type_name -> google.protobuf.Timestamp
+	24, // 34: contract.entity.v3.PurchaseLot.item_type:type_name -> contract.enum.v3.PurchaseItemType
+	16, // 35: contract.entity.v3.PurchaseLot.implementing_department:type_name -> contract.enum.UserEmployeeDepartment
+	21, // 36: contract.entity.v3.PurchaseLot.status:type_name -> contract.enum.v3.PurchaseLotStatus
+	26, // 37: contract.entity.v3.PurchaseLot.funding_source:type_name -> contract.enum.v3.PurchaseFundingSource
+	27, // 38: contract.entity.v3.PurchaseLot.plan_type:type_name -> contract.enum.v3.PurchasePlanType
+	28, // 39: contract.entity.v3.PurchaseLot.law:type_name -> contract.enum.v3.PurchaseLaw
+	29, // 40: contract.entity.v3.PurchaseLot.method:type_name -> contract.enum.v3.PurchaseMethod
+	18, // 41: contract.entity.v3.PurchaseLot.notice_at:type_name -> google.protobuf.Timestamp
+	18, // 42: contract.entity.v3.PurchaseLot.contract_at:type_name -> google.protobuf.Timestamp
+	18, // 43: contract.entity.v3.PurchaseLot.delivery_due:type_name -> google.protobuf.Timestamp
+	18, // 44: contract.entity.v3.PurchaseLot.delivered_at:type_name -> google.protobuf.Timestamp
+	18, // 45: contract.entity.v3.PurchaseLot.accepted_at:type_name -> google.protobuf.Timestamp
+	18, // 46: contract.entity.v3.PurchaseLot.completed_at:type_name -> google.protobuf.Timestamp
+	10, // 47: contract.entity.v3.PurchaseLot.quotations:type_name -> contract.entity.v3.PurchaseQuotation
+	11, // 48: contract.entity.v3.PurchaseLot.documents:type_name -> contract.entity.v3.PurchaseDocument
+	6,  // 49: contract.entity.v3.PurchaseLot.sign_offs:type_name -> contract.entity.v3.PurchaseSignOff
+	7,  // 50: contract.entity.v3.PurchaseLot.logs:type_name -> contract.entity.v3.PurchaseLog
+	8,  // 51: contract.entity.v3.PurchaseLot.allowed:type_name -> contract.entity.v3.PurchaseAllowed
+	18, // 52: contract.entity.v3.PurchaseLot.created_at:type_name -> google.protobuf.Timestamp
+	18, // 53: contract.entity.v3.PurchaseLot.updated_at:type_name -> google.protobuf.Timestamp
+	18, // 54: contract.entity.v3.PurchaseLot.stage_since:type_name -> google.protobuf.Timestamp
+	18, // 55: contract.entity.v3.PurchaseLot.stage_due:type_name -> google.protobuf.Timestamp
+	18, // 56: contract.entity.v3.PurchaseLot.due_at:type_name -> google.protobuf.Timestamp
+	30, // 57: contract.entity.v3.PurchaseProtocolDecision.decision:type_name -> contract.enum.v3.PurchaseCommissionDecision
+	27, // 58: contract.entity.v3.PurchaseProtocolDecision.plan_type:type_name -> contract.enum.v3.PurchasePlanType
+	18, // 59: contract.entity.v3.PurchaseProtocol.held_at:type_name -> google.protobuf.Timestamp
+	13, // 60: contract.entity.v3.PurchaseProtocol.decisions:type_name -> contract.entity.v3.PurchaseProtocolDecision
+	18, // 61: contract.entity.v3.PurchaseProtocol.created_at:type_name -> google.protobuf.Timestamp
+	16, // 62: contract.entity.v3.PurchaseCodeSuggestion.implementing_department:type_name -> contract.enum.UserEmployeeDepartment
+	63, // [63:63] is the sub-list for method output_type
+	63, // [63:63] is the sub-list for method input_type
+	63, // [63:63] is the sub-list for extension type_name
+	63, // [63:63] is the sub-list for extension extendee
+	0,  // [0:63] is the sub-list for field type_name
 }
 
 func init() { file_fesmu_entity_v3_purchase_entity_proto_init() }
@@ -2443,7 +2664,7 @@ func file_fesmu_entity_v3_purchase_entity_proto_init() {
 	if File_fesmu_entity_v3_purchase_entity_proto != nil {
 		return
 	}
-	file_fesmu_entity_v3_purchase_entity_proto_msgTypes[5].OneofWrappers = []any{
+	file_fesmu_entity_v3_purchase_entity_proto_msgTypes[6].OneofWrappers = []any{
 		(*PurchaseSignOff_RequestStatus)(nil),
 		(*PurchaseSignOff_LotStatus)(nil),
 	}
@@ -2453,7 +2674,7 @@ func file_fesmu_entity_v3_purchase_entity_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_fesmu_entity_v3_purchase_entity_proto_rawDesc), len(file_fesmu_entity_v3_purchase_entity_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   15,
+			NumMessages:   16,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -44,6 +44,9 @@ const (
 	PurchasePermission_PURCHASE_PERMISSION_VIEW_ALL PurchasePermission = 3
 	// Просмотр ПФХД и протоколов бюджетной комиссии.
 	PurchasePermission_PURCHASE_PERMISSION_VIEW_PLAN PurchasePermission = 4
+	// Статистика работы сотрудников в модуле: кто и сколько действий совершил
+	// (по видимым заявкам и закупкам; администратору — по всем).
+	PurchasePermission_PURCHASE_PERMISSION_VIEW_ACTIVITY PurchasePermission = 5
 	// Подать заявку на закупку от своего отдела, дорабатывать свои заявки.
 	PurchasePermission_PURCHASE_PERMISSION_REQUEST_CREATE PurchasePermission = 10
 	// Начальник отдела: рассмотреть заявки своего отдела — править, объединять,
@@ -85,6 +88,7 @@ var (
 		2:  "PURCHASE_PERMISSION_VIEW_DIRECTION",
 		3:  "PURCHASE_PERMISSION_VIEW_ALL",
 		4:  "PURCHASE_PERMISSION_VIEW_PLAN",
+		5:  "PURCHASE_PERMISSION_VIEW_ACTIVITY",
 		10: "PURCHASE_PERMISSION_REQUEST_CREATE",
 		11: "PURCHASE_PERMISSION_REQUEST_HEAD_REVIEW",
 		12: "PURCHASE_PERMISSION_REQUEST_CURATOR_REVIEW",
@@ -105,6 +109,7 @@ var (
 		"PURCHASE_PERMISSION_VIEW_DIRECTION":         2,
 		"PURCHASE_PERMISSION_VIEW_ALL":               3,
 		"PURCHASE_PERMISSION_VIEW_PLAN":              4,
+		"PURCHASE_PERMISSION_VIEW_ACTIVITY":          5,
 		"PURCHASE_PERMISSION_REQUEST_CREATE":         10,
 		"PURCHASE_PERMISSION_REQUEST_HEAD_REVIEW":    11,
 		"PURCHASE_PERMISSION_REQUEST_CURATOR_REVIEW": 12,
@@ -911,13 +916,14 @@ var File_fesmu_enum_v3_purchase_enum_proto protoreflect.FileDescriptor
 
 const file_fesmu_enum_v3_purchase_enum_proto_rawDesc = "" +
 	"\n" +
-	"!fesmu/enum/v3/purchase.enum.proto\x12\x10contract.enum.v3*\xe3\x05\n" +
+	"!fesmu/enum/v3/purchase.enum.proto\x12\x10contract.enum.v3*\x8a\x06\n" +
 	"\x12PurchasePermission\x12#\n" +
 	"\x1fPURCHASE_PERMISSION_UNSPECIFIED\x10\x00\x12'\n" +
 	"#PURCHASE_PERMISSION_VIEW_DEPARTMENT\x10\x01\x12&\n" +
 	"\"PURCHASE_PERMISSION_VIEW_DIRECTION\x10\x02\x12 \n" +
 	"\x1cPURCHASE_PERMISSION_VIEW_ALL\x10\x03\x12!\n" +
-	"\x1dPURCHASE_PERMISSION_VIEW_PLAN\x10\x04\x12&\n" +
+	"\x1dPURCHASE_PERMISSION_VIEW_PLAN\x10\x04\x12%\n" +
+	"!PURCHASE_PERMISSION_VIEW_ACTIVITY\x10\x05\x12&\n" +
 	"\"PURCHASE_PERMISSION_REQUEST_CREATE\x10\n" +
 	"\x12+\n" +
 	"'PURCHASE_PERMISSION_REQUEST_HEAD_REVIEW\x10\v\x12.\n" +
