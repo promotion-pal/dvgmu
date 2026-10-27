@@ -36,3 +36,42 @@ dev-logs:
 
 dev-down:
 	@docker compose -f dev/docker-compose.yml down
+
+# Сервер: весь портал — сервисы из services/ и fesmu (базы, api, веб).
+# Имена проектов, контейнеров и томов берутся из .env каждого сервиса (STAND).
+#   make up                 — собрать и запустить всё
+#   make up SERVICES=auth   — только эти сервисы (fesmu тоже по имени: SERVICES=fesmu)
+#   make down / ps / logs S=auth
+SERVICES ?= mdm auth analytics tickets file notification sync fesmu
+
+.PHONY: up down ps logs
+
+up:
+	@for s in $(SERVICES); do \
+		if [ "$$s" = fesmu ]; then \
+			[ -d apps/fesmu/api/db ] || echo "⚠️  нет apps/fesmu/api/db — базы fesmu будут новые, пустые"; \
+			echo "$(CYAN)== fesmu: базы$(NC)"; (cd apps/fesmu && docker compose -f docker-compose.dev.yml up -d) || exit 1; \
+			echo "$(CYAN)== fesmu: api и веб$(NC)"; (cd apps/fesmu && docker compose up -d --build) || exit 1; \
+		else \
+			[ "$$s" != mdm ] || [ -d services/mdm/db ] || echo "⚠️  нет services/mdm/db — база mdm будет новая, пустая"; \
+			echo "$(CYAN)== $$s$(NC)"; (cd services/$$s && docker compose up -d --build) || exit 1; \
+		fi; \
+		docker builder prune -af >/dev/null; \
+	done
+	@docker ps --format '{{.Names}}\t{{.Status}}' | sort
+	@df -h / | tail -1
+
+# Остановить и удалить контейнеры. Тома и папки баз остаются.
+down:
+	@for s in $(SERVICES); do \
+		if [ "$$s" = fesmu ]; then \
+			(cd apps/fesmu && docker compose down && docker compose -f docker-compose.dev.yml down); \
+		else (cd services/$$s && docker compose down); fi; \
+	done
+
+ps:
+	@docker ps -a --format '{{.Names}}\t{{.Status}}' | sort
+
+logs:
+	@if [ "$(S)" = fesmu ]; then cd apps/fesmu && docker compose logs -f --tail=100; \
+	else cd services/$(S) && docker compose logs -f --tail=100; fi
