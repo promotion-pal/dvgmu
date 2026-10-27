@@ -9,19 +9,26 @@
 // учёткой AD и логином. Список студентов и проверки — на сервере, клиенту не
 // верим. Открытые коды не пишутся в лог.
 //
+// Демо-режим (demo): код можно «выдать» всем. Тем, кому настоящий нельзя,
+// модуль сам создаёт демо-код — без MDM, войти по нему нельзя, AD не
+// затрагивается. Подходящие студенты получают настоящий код, как обычно.
+//
 // Права: DeaneryStudentFetch — просмотр раздела, выдача кодов — deanery.post
 // (интерцептор, Sections).
 package deanery
 
 import (
 	"context"
+	"crypto/rand"
 	"errors"
 	"log/slog"
 	"net/http"
 	"sort"
 	"strings"
+	"time"
 
 	"connectrpc.com/connect"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	mdmentity "fesmu/contract/mdm/entity"
 	mdmenum "fesmu/contract/mdm/enum"
@@ -44,13 +51,14 @@ type MDM interface {
 }
 
 type Module struct {
-	log *slog.Logger
-	mdm MDM // nil — MDM не настроен
+	log  *slog.Logger
+	mdm  MDM // nil — MDM не настроен
+	demo bool
 }
 
 // New: пустой url — модуль отвечает «недоступно», остальной api работает.
-func New(log *slog.Logger, mdmURL string) *Module {
-	m := &Module{log: log}
+func New(log *slog.Logger, mdmURL string, demo bool) *Module {
+	m := &Module{log: log, demo: demo}
 	if mdmURL != "" {
 		m.mdm = mdmconnect.NewUserServiceClient(http.DefaultClient, mdmURL)
 	}
@@ -58,8 +66,8 @@ func New(log *slog.Logger, mdmURL string) *Module {
 }
 
 // NewWithMDM — для тестов.
-func NewWithMDM(log *slog.Logger, mdm MDM) *Module {
-	return &Module{log: log, mdm: mdm}
+func NewWithMDM(log *slog.Logger, mdm MDM, demo bool) *Module {
+	return &Module{log: log, mdm: mdm, demo: demo}
 }
 
 func (m *Module) Mount(mux *http.ServeMux, opts ...connect.HandlerOption) []string {
@@ -149,7 +157,9 @@ func issueBlocker(s *mdmentity.Student, u *mdmentity.User) string {
 	return "статус не указан"
 }
 
-func toStudent(sw *mdmpb.StudentWithUser, code int32) *pb.DeaneryStudent {
+// toStudent: в демо-режиме CanIssue у всех, IssueBlocker остаётся — по нему
+// выдача решает, настоящий код или демо.
+func toStudent(sw *mdmpb.StudentWithUser, code int32, demo bool) *pb.DeaneryStudent {
 	s, u := sw.GetStudent(), sw.GetUser()
 	blocker := issueBlocker(s, u)
 	return &pb.DeaneryStudent{
@@ -162,7 +172,7 @@ func toStudent(sw *mdmpb.StudentWithUser, code int32) *pb.DeaneryStudent {
 		Login:        strings.TrimSpace(u.GetUsername()),
 		HasAccount:   strings.TrimSpace(u.GetAdObjectId()) != "",
 		Status:       studentStatusLabels[s.GetStatus()],
-		CanIssue:     blocker == "",
+		CanIssue:     blocker == "" || demo,
 		IssueBlocker: blocker,
 	}
 }
@@ -185,7 +195,7 @@ func (m *Module) students(ctx context.Context, sc scope) ([]*pb.DeaneryStudent, 
 		if !sc.allows(code) {
 			continue
 		}
-		st := toStudent(sw, code)
+		st := toStudent(sw, code, m.demo)
 		if prev, ok := byUser[st.UserId]; ok && (prev.CanIssue || !st.CanIssue) {
 			continue
 		}
@@ -220,6 +230,7 @@ func (m *Module) DeaneryStudentFetch(ctx context.Context, _ *connect.Request[pb.
 		Students:     list,
 		Faculties:    sc.labels(),
 		AllFaculties: sc.all,
+		Demo:         m.demo,
 	}), nil
 }
 
@@ -261,6 +272,15 @@ func (m *Module) DeaneryActivationIssue(ctx context.Context, req *connect.Reques
 			res.Codes = append(res.Codes, out)
 			continue
 		}
+		if st.IssueBlocker != "" { // демо: настоящий код нельзя — MDM не трогаем
+			out.Code, out.Demo = demoCode(), true
+			out.ExpiresAt = timestamppb.New(time.Now().Add(72 * time.Hour))
+			if out.Login == "" {
+				out.Login = st.RecordBook
+			}
+			res.Codes = append(res.Codes, out)
+			continue
+		}
 		code, err := m.mdm.ActivationIssue(ctx, connect.NewRequest(&mdmpb.ActivationIssueRequest{Id: id}))
 		if err != nil {
 			m.log.Warn("deanery: activation issue failed", slog.Int64("user_id", id), slog.String("error", err.Error()))
@@ -287,4 +307,15 @@ func dedup(ids []int64) []int64 {
 		}
 	}
 	return out
+}
+
+// demoCode — похожий на настоящий код, нигде не записан.
+func demoCode() string {
+	const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
+	b := make([]byte, 8)
+	_, _ = rand.Read(b)
+	for i := range b {
+		b[i] = alphabet[int(b[i])%len(alphabet)]
+	}
+	return string(b)
 }

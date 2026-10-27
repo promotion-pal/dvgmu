@@ -80,8 +80,10 @@ const DeaneryGroupCard: FC<GroupCardProps> = ({ group, selected, canIssue, busy,
                             <TableCell>
                                 <div className="flex flex-col gap-1">
                                     <span className="text-sm">{s.status || "—"}</span>
-                                    {!s.canIssue && (
-                                        <Badge variant="outline" className="w-fit text-xs">код нельзя: {s.issueBlocker}</Badge>
+                                    {s.issueBlocker && (
+                                        <Badge variant={s.canIssue ? "secondary" : "outline"} className="w-fit text-xs">
+                                            {s.canIssue ? "демо-код" : "код нельзя"}: {s.issueBlocker}
+                                        </Badge>
                                     )}
                                 </div>
                             </TableCell>
@@ -139,6 +141,7 @@ interface IssuedDialogProps {
 const IssuedDialog: FC<IssuedDialogProps> = ({ codes, onPrint, onClose }) => {
     const ok = codes?.filter((c) => c.code) ?? [];
     const failed = codes?.filter((c) => !c.code) ?? [];
+    const demo = ok.filter((c) => c.demo).length;
     return (
         <Dialog open={codes !== null} onOpenChange={(open) => !open && onClose()}>
             <DialogContent className="sm:max-w-lg">
@@ -146,6 +149,7 @@ const IssuedDialog: FC<IssuedDialogProps> = ({ codes, onPrint, onClose }) => {
                     <DialogTitle>Коды выданы: {ok.length}</DialogTitle>
                     <DialogDescription>
                         Распечатайте лист и раздайте строки студентам. После закрытия окна коды больше не показать — только выдать новые.
+                        {demo > 0 && ` Демо-кодов: ${demo} — на листе они с пометкой «демо», войти по ним нельзя.`}
                     </DialogDescription>
                 </DialogHeader>
                 {failed.length > 0 && (

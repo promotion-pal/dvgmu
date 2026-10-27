@@ -291,7 +291,7 @@ func New(
 		libraryModule,
 		questionnaire.New(log, cfg.Packages.Analytics),
 		survey.New(log, cfg.Packages.Analytics),
-		deanery.New(log, cfg.Packages.MDM),
+		deanery.New(log, cfg.Packages.MDM, cfg.Deanery.Demo),
 	)
 
 	return &App{

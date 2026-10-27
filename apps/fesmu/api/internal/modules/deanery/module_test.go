@@ -82,7 +82,7 @@ func newModule() (*deanery.Module, *fakeMDM) {
 			student(5, "Неизвестный", "501", "9923005", studying, true), // факультет не определён
 		},
 	}
-	return deanery.NewWithMDM(slog.New(slog.NewTextHandler(io.Discard, nil)), f), f
+	return deanery.NewWithMDM(slog.New(slog.NewTextHandler(io.Discard, nil)), f, false), f
 }
 
 func as(uuid string, perms ...string) context.Context {
@@ -203,4 +203,41 @@ func equal(a, b []int64) bool {
 		}
 	}
 	return true
+}
+
+func TestDemoIssuesEveryoneWithoutTouchingMDM(t *testing.T) {
+	_, f := newModule()
+	m := deanery.NewWithMDM(slog.New(slog.NewTextHandler(io.Discard, nil)), f, true)
+	list, err := m.DeaneryStudentFetch(as("meddean"), connect.NewRequest(&pb.DeaneryStudentFetchRequest{}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !list.Msg.GetDemo() {
+		t.Fatal("demo flag not set")
+	}
+	for _, s := range list.Msg.GetStudents() {
+		if !s.GetCanIssue() {
+			t.Fatalf("demo: %d must be issuable", s.GetUserId())
+		}
+	}
+	res, err := m.DeaneryActivationIssue(as("meddean"), connect.NewRequest(&pb.DeaneryActivationIssueRequest{UserIds: []int64{1, 2, 3, 4}}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	// В MDM — только настоящий подходящий студент; чужой факультет — всё так же нельзя.
+	if !equal(f.issued, []int64{1}) {
+		t.Fatalf("mdm issued = %v, want [1]", f.issued)
+	}
+	c := res.Msg.GetCodes()
+	if c[0].GetDemo() || c[0].GetCode() == "" {
+		t.Fatalf("real code = %v", c[0])
+	}
+	for _, x := range c[1:3] {
+		if !x.GetDemo() || x.GetCode() == "" || x.GetError() != "" {
+			t.Fatalf("demo code = %v", x)
+		}
+	}
+	if c[3].GetCode() != "" || c[3].GetError() == "" {
+		t.Fatalf("other faculty in demo = %v", c[3])
+	}
 }

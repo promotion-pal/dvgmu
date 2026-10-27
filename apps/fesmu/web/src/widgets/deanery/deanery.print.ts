@@ -30,7 +30,7 @@ const sheetHtml = (codes: DeaneryActivationCode[], faculty: string) => {
 <td class="n">${i + 1}</td>
 <td>${esc(c.fullName)}</td>
 <td class="mono">${esc(c.login)}</td>
-<td class="mono code">${esc(c.code)}</td>
+<td class="mono code">${esc(c.code)}${c.demo ? '<span class="demo">демо</span>' : ""}</td>
 <td class="exp">${esc(formatDate("datetime", c.expiresAt))}</td>
 </tr>`,
                 )
@@ -50,6 +50,7 @@ const sheetHtml = (codes: DeaneryActivationCode[], faculty: string) => {
 <thead><tr><th class="n">№</th><th>ФИО</th><th>Логин</th><th>Код первого входа</th><th>Действует до</th></tr></thead>
 <tbody>${rows}</tbody>
 </table>
+${list.some((c) => c.demo) ? '<p class="note"><b>Демо:</b> коды с пометкой «демо» — образец листа, войти по ним нельзя.</p>' : ""}
 <p class="note">Код одноразовый и личный. Не передавайте его другим. Код истёк или потерян — обратитесь в деканат за новым; прежний код перестанет действовать.</p>
 </section>`;
         })
@@ -76,6 +77,7 @@ tr{page-break-inside:avoid}
 .code{font-size:15px;font-weight:700;letter-spacing:1px}
 .exp{white-space:nowrap;font-size:11px}
 .note{font-size:10.5px;color:#444;margin-top:10px}
+.demo{margin-left:6px;padding:1px 4px;border:1px solid #888;border-radius:3px;font:10px sans-serif;letter-spacing:0;color:#555;vertical-align:middle}
 </style></head><body>${pages}</body></html>`;
 };
 

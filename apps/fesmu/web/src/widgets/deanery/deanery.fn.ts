@@ -33,6 +33,8 @@ const matches = (s: DeaneryStudent, q: string) =>
 const useDeaneryStudents = () => {
     const students = useFetchState<DeaneryStudent>();
     const [scope, setScope] = useState<{ all: boolean; faculties: string[] }>({ all: true, faculties: [] });
+    // Демо-режим api: выдать можно всем, неподходящим — демо-код.
+    const [demo, setDemo] = useState(false);
     const [filters, setFilters] = useState<DeaneryFilters>({ search: "", onlyIssuable: false });
     const [selected, setSelected] = useState<Set<bigint>>(new Set());
 
@@ -43,6 +45,7 @@ const useDeaneryStudents = () => {
             const res = await deaneryClient.deaneryStudentFetch({});
             students.setList(res.students);
             setScope({ all: res.allFaculties, faculties: res.faculties });
+            setDemo(res.demo);
         } catch (error) {
             console.error("Ошибка при загрузке студентов:", error);
             students.setError(true);
@@ -116,6 +119,7 @@ const useDeaneryStudents = () => {
     return {
         students,
         scope,
+        demo,
         filters,
         changeFilters,
         courses,

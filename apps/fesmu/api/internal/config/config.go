@@ -15,6 +15,14 @@ type Config struct {
 	Packages  PackagesConfig  `yaml:"packages"`
 	Auth      AuthConfig      `yaml:"auth"`
 	OneC      OneCConfig      `yaml:"one_c"`
+	Deanery   DeaneryConfig   `yaml:"deanery"`
+}
+
+// DeaneryConfig — раздел «Деканат». Demo: код можно «выдать» всем студентам;
+// тем, кому настоящий нельзя (нет учётки AD, не учится), — демо-код без
+// записи в MDM. Выключить — DEANERY_DEMO=false.
+type DeaneryConfig struct {
+	Demo bool `yaml:"demo" env:"DEANERY_DEMO" env-default:"true"`
 }
 
 // OneCConfig — доступ к SQL-базе 1С через WinRM-хост (см. internal/utils/1c).

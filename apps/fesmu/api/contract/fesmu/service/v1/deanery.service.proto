@@ -44,6 +44,8 @@ message DeaneryStudentFetchResponse {
     repeated DeaneryStudent students = 1;
     repeated string faculties = 2;
     bool all_faculties = 3;
+    // Демо-режим (DEANERY_DEMO): код «выдаётся» всем, неподходящим — без MDM.
+    bool demo = 4;
 }
 
 message DeaneryActivationIssueRequest {
@@ -59,6 +61,8 @@ message DeaneryActivationCode {
     google.protobuf.Timestamp expires_at = 6;
     // Не выдан — причина; code пустой.
     string error = 7;
+    // Демо-код: не записан в MDM, войти по нему нельзя.
+    bool demo = 8;
 }
 
 message DeaneryActivationIssueResponse {

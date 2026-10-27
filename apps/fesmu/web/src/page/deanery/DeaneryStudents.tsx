@@ -104,6 +104,11 @@ export default function DeaneryStudentsPage() {
                 },
             }}
         >
+            {d.demo && (
+                <div className="mb-4 rounded-xl border border-dashed px-4 py-3 text-sm text-muted-foreground">
+                    Демо-режим: выдать код можно всем. Студентам без учётки AD или не обучающимся выдаётся демо-код — он только на листе, войти по нему нельзя.
+                </div>
+            )}
             <CommonControlState isError={d.students.error} isLoading={d.students.loading} isEmpty={d.filtered.length === 0}>
                 <div className="flex flex-col gap-4">
                     {shown.map((g) => (
