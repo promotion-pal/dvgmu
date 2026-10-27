@@ -43,10 +43,23 @@ const signIn = (returnTo = window.location.href) => {
   window.location.assign(`${ENV.AUTH}/login?return=${encodeURIComponent(returnTo)}`);
 };
 
+/** Первый вход: логин + код активации (выдаёт администратор) → свой пароль в AD.
+ *  После активации auth сразу выполняет вход и возвращает сюда. */
+const activate = (returnTo = window.location.href) => {
+  window.location.assign(`${ENV.AUTH}/activate?return=${encodeURIComponent(returnTo)}`);
+};
+
+/** Смена пароля AD самим пользователем (по текущему паролю) — на стороне auth. */
+const changePassword = (username = "", returnTo = window.location.href) => {
+  const params = new URLSearchParams({ return: returnTo });
+  if (username) params.set("username", username);
+  window.location.assign(`${ENV.AUTH}/password?${params.toString()}`);
+};
+
 const signOut = async () => {
   await call("/api/v1/auth/logout", "POST").catch(() => undefined);
   signIn(window.location.origin + "/");
 };
 
-export { refreshSession, sessionState, signIn, signOut };
+export { activate, changePassword, refreshSession, sessionState, signIn, signOut };
 export type { SessionState };

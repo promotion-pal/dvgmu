@@ -1,9 +1,9 @@
 import type { FC, ReactNode } from "react";
-import { LogOutIcon } from "lucide-react";
+import { KeyRoundIcon, LogOutIcon } from "lucide-react";
 import { UserRole } from "@fesmu/contract/fesmu/enum/v1/user.enum_pb";
 import { CommonWrapper } from "@/shared/components/wrapper";
 import { summarizePermissions } from "@/shared/config/permissions";
-import { signOut } from "@/shared/config/session";
+import { changePassword, signOut } from "@/shared/config/session";
 import { Badge } from "@/shared/ui/badge";
 import { Button } from "@/shared/ui/button";
 import { Card, CardContent } from "@/shared/ui/card";
@@ -37,10 +37,17 @@ export default function ProfilePage() {
             title="Профиль"
             description="Под какой учётной записью вы вошли"
             action={
-                <Button variant="outline" onClick={signOut}>
-                    <LogOutIcon className="size-4" />
-                    Выйти
-                </Button>
+                <div className="flex flex-wrap gap-2">
+                    {/* Пароль меняет сам пользователь в auth (Kerberos, по текущему паролю). */}
+                    <Button variant="outline" onClick={() => changePassword(profile?.username)}>
+                        <KeyRoundIcon className="size-4" />
+                        Сменить пароль
+                    </Button>
+                    <Button variant="outline" onClick={signOut}>
+                        <LogOutIcon className="size-4" />
+                        Выйти
+                    </Button>
+                </div>
             }
         >
             <Card>

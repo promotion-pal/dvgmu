@@ -1,8 +1,9 @@
 import type { FC, ReactNode } from "react";
-import { ExternalLinkIcon, LogInIcon, LogOutIcon, RefreshCwIcon, ShieldXIcon, UserXIcon } from "lucide-react";
+import { ExternalLinkIcon, KeyRoundIcon, LogInIcon, LogOutIcon, RefreshCwIcon, ShieldXIcon, UserXIcon } from "lucide-react";
 import type { UserRole } from "@fesmu/contract/fesmu/enum/v1/user.enum_pb";
 import { appConfig } from "@/shared/config/app";
-import { signIn, signOut } from "@/shared/config/session";
+import { activate, signIn, signOut } from "@/shared/config/session";
+import { ROUTE } from "@/shared/config/path";
 import { Button } from "@/shared/ui/button";
 import { Card, CardContent } from "@/shared/ui/card";
 import { useLoadUser, useUserProvider } from "@/features/provider/user.provider";
@@ -38,7 +39,7 @@ const UserGate: FC<{ children: ReactNode }> = ({ children }) => {
             return (
                 <GateCard
                     icon={<LogInIcon className="size-5" />}
-                    text="Авторизуйтесь доменной учётной записью: на странице входа или через Яндекс 360 под рабочей почтой."
+                    text="Авторизуйтесь доменной учётной записью: на странице входа или через Яндекс 360 под рабочей почтой. Первый раз — войдите по коду активации от администратора и задайте свой пароль."
                 >
                     <Button onClick={() => signIn()}>
                         <LogInIcon className="size-4" />
@@ -49,6 +50,10 @@ const UserGate: FC<{ children: ReactNode }> = ({ children }) => {
                             Войти через Яндекс&nbsp;360
                             <ExternalLinkIcon className="size-4" />
                         </a>
+                    </Button>
+                    <Button variant="outline" onClick={() => activate(window.location.origin + ROUTE.USER.PROFILE)}>
+                        <KeyRoundIcon className="size-4" />
+                        Первый вход по коду
                     </Button>
                     <Button variant="ghost" onClick={() => provider.load(true)}>
                         <RefreshCwIcon className="size-4" />
