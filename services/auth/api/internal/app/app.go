@@ -258,6 +258,7 @@ func buildAccount(log *slog.Logger, cfg *config.Config, deps authsaml.SessionDep
 	}
 	passwords := ldap.NewClient(ldap.Config{
 		URL:                cfg.Password.URL,
+		StartTLS:           cfg.Password.StartTLS,
 		InsecureSkipVerify: cfg.Password.InsecureSkipVerify,
 		BindDN:             cfg.Password.BindDN,
 		BindPassword:       cfg.Password.BindPassword,
@@ -265,7 +266,7 @@ func buildAccount(log *slog.Logger, cfg *config.Config, deps authsaml.SessionDep
 		UserFilter:         cfg.LDAP.UserFilter,
 	})
 	if passwords.Enabled() {
-		log.Info("/activate and /password enabled", "url", cfg.Password.URL, "bind_dn", cfg.Password.BindDN)
+		log.Info("/activate and /password enabled", "url", cfg.Password.URL, "start_tls", cfg.Password.StartTLS, "bind_dn", cfg.Password.BindDN)
 	} else {
 		log.Warn("/activate and /password in stub mode (passwords are not written to AD): AUTH_LDAP_PWD_* is not set")
 	}

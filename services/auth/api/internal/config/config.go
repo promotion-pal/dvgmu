@@ -174,13 +174,17 @@ type MDMConfig struct {
 
 // PasswordConfig — запись паролей в AD (/activate, /password): служебная
 // учётка с правом «Сброс пароля» на OU пользователей и ТОЛЬКО защищённое
-// соединение (ldaps://…:636) — по открытому AD пароль не меняет. Пусто —
+// соединение: ldaps://…:636 или ldap://…:389 со StartTLS (AUTH_LDAP_PWD_START_TLS)
+// — по открытому AD пароль не меняет. Пусто —
 // страницы отвечают «временно недоступно». Поиск — от AUTH_LDAP_BASE_DN.
 type PasswordConfig struct {
-	URL                string `yaml:"url" env:"AUTH_LDAP_PWD_URL"`
-	BindDN             string `yaml:"bind_dn" env:"AUTH_LDAP_PWD_BIND_DN"`
-	BindPassword       string `yaml:"-" env:"AUTH_LDAP_PWD_BIND_PASSWORD"`
-	InsecureSkipVerify bool   `yaml:"insecure_skip_verify" env:"AUTH_LDAP_PWD_INSECURE_SKIP_VERIFY" env-default:"false"`
+	URL          string `yaml:"url" env:"AUTH_LDAP_PWD_URL"`
+	BindDN       string `yaml:"bind_dn" env:"AUTH_LDAP_PWD_BIND_DN"`
+	BindPassword string `yaml:"-" env:"AUTH_LDAP_PWD_BIND_PASSWORD"`
+	// StartTLS — шифрование поверх ldap://…:389, если порт 636 закрыт. Нужен
+	// сертификат на контроллере домена, как и для ldaps.
+	StartTLS           bool `yaml:"start_tls" env:"AUTH_LDAP_PWD_START_TLS" env-default:"false"`
+	InsecureSkipVerify bool `yaml:"insecure_skip_verify" env:"AUTH_LDAP_PWD_INSECURE_SKIP_VERIFY" env-default:"false"`
 }
 
 // SessionConfig — токены fesmu для пользователей, связанных с MDM:
