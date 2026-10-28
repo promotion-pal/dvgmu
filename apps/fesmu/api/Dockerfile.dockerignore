@@ -3,7 +3,7 @@
 !packages/go
 !apps/fesmu/api
 apps/fesmu/api/storage
-apps/fesmu/api/db
+apps/fesmu/api/db*
 apps/fesmu/api/dvgmu
 apps/fesmu/api/*.test
 apps/fesmu/api/coverage.out
