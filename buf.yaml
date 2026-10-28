@@ -11,7 +11,9 @@ modules:
   - path: apps/fesmu/api/contract
   - path: services/analytics/api/contract
   - path: services/auth/api/contract
+  - path: services/dormitory/api/contract
   - path: services/file/api/contract
   - path: services/mdm/api/contract
+  - path: services/mentor/api/contract
   - path: services/notification/api/contract
   - path: services/tickets/api/contract

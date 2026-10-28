@@ -12,7 +12,7 @@ bad()  { echo "FAIL  $*"; fail=1; }
 warn() { echo "warn  $*"; }
 
 # Модули со своей генерацией — правила общей схемы к ним не применяются.
-EXCLUDED="dormitory mentor ojs"
+EXCLUDED="ojs"
 is_excluded() { case " $EXCLUDED " in *" $1 "*) return 0 ;; esac; return 1; }
 
 # 1. Общие пакеты на месте (их удаление ломает все бэкенды и веб).
@@ -81,7 +81,7 @@ done
 
 # 7. Отдельные модули не попали в общую схему.
 for x in $EXCLUDED; do
-  echo "$modules" | grep -q "/$x/" && warn "$x в buf.yaml — у него пакеты пересекаются с mdm, нужна новая версия API"
+  echo "$modules" | grep -q "/$x/" && warn "$x в buf.yaml — у него нет proto-схем"
 done
 
 [ $fail -eq 0 ] && echo "архитектура: нарушений нет" || echo "архитектура: есть нарушения (FAIL выше)"

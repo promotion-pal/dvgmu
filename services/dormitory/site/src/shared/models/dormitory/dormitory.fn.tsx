@@ -19,7 +19,7 @@ import {
   facultyFromRecordBook,
   floorFromRoom,
 } from "@/shared/lib/record-book";
-import { DormitoryRegistration } from "@proto/entity/dormitory.entity_pb";
+import { DormitoryRegistration } from "@fesmu/contract/dormitory/entity/dormitory.entity_pb";
 
 import { DutyRegistrationSchema, dutyRegistrationSchema } from "./dormitory.schema";
 

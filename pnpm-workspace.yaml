@@ -1,5 +1,9 @@
 packages:
   - "apps/fesmu/web"
   - "packages/ts"
+  - "services/dormitory/site"
+  - "services/mentor/site"
 allowBuilds:
   esbuild: true
+  sharp: false
+  unrs-resolver: false

@@ -3,11 +3,11 @@
 import { useFetchState } from "@/features/fetch";
 import { PromCommonFormProps } from "@/features/lib/form";
 import { userServiceClient } from "@/shared/api/user";
-import type { UserCreateRequest } from "@proto/service/user.service_pb";
+import type { UserCreateRequest } from "@fesmu/contract/dormitory/service/user.service_pb";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserCreateSchema, userSchema } from "./user.schema";
-import { User } from "@proto/entity/user.entity_pb";
+import { User } from "@fesmu/contract/dormitory/entity/user.entity_pb";
 
 const useUser = () => {
   const listState = useFetchState<User>();

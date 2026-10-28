@@ -7,7 +7,7 @@ import { TableCell, TableHead } from "@/shared/ui/table";
 import {
   MentorCourse,
   MentorTechnicalQuestion,
-} from "@proto/entity/mentor.entity_pb";
+} from "@fesmu/contract/mentor/entity/mentor.entity_pb";
 import { timestampDate } from "@bufbuild/protobuf/wkt";
 
 interface TechnicalQuestionListProps {

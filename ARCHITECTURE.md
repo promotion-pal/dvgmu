@@ -37,10 +37,11 @@
 | **notification** | `services/notification` | Отправка писем (SMTP) | — | сейчас в репозитории никто не вызывает |
 | **sync** | `services/sync` | Сверка MDM ↔ AD: читает обе стороны и пишет расхождения в лог | — | запускается по таймеру |
 
-**Отдельные модули** (своя генерация схем, в общую схему не входят):
-- `services/dormitory` — общежитие (сайт и api);
-- `services/mentor` — наставничество (сайт и api);
-- `services/ojs` — журналы (Open Journal Systems, PHP).
+**Сайты при сервисах** (Next.js, в общем pnpm workspace, TS схем — из `@fesmu/contract`):
+- `services/dormitory` — общежитие (сайт и api, пакеты `contract.dormitory.*`);
+- `services/mentor` — наставничество (сайт и api, пакеты `contract.mentor.*`).
+
+**Отдельно:** `services/ojs` — журналы (Open Journal Systems, PHP, без схем).
 
 **Статические сайты:** `apps/ksm`, `apps/guide`, `apps/unistom`, `apps/profile`, `apps/course`.
 
@@ -103,7 +104,7 @@ import "mdm/entity/user.entity.proto";   // в схеме file — тип User �
 - Можно: добавить поле с новым номером, добавить метод, добавить значение enum.
 - Нельзя: удалить или перенумеровать поле, сменить тип, переименовать пакет или сервис. Для этого нужна новая версия API (пример — `auth/v1` и `auth/v2`).
 
-**Почему dormitory и mentor вне общей схемы.** Их proto-пакеты называются так же, как у mdm (`contract.entity.User`). В одном workspace это конфликт. Решение — новая версия их API с уникальными пакетами.
+**Имена пакетов.** У каждого владельца свой proto-пакет (`contract.analytics.*`, `contract.dormitory.*`, `contract.mentor.*`); общий `contract.entity` — только у mdm. Иначе в одном workspace имена конфликтуют.
 
 ## 6. Сборка и выкатка
 

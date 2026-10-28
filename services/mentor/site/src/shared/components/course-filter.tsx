@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from "@/shared/ui/select";
 import { formatMentorCourseRange } from "@/shared/models/mentor-course";
-import { MentorCourse } from "@proto/entity/mentor.entity_pb";
+import { MentorCourse } from "@fesmu/contract/mentor/entity/mentor.entity_pb";
 
 const ALL_COURSES = "all";
 

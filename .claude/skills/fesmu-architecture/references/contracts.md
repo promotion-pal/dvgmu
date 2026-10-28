@@ -66,4 +66,4 @@ make proto-check   # то же + проверка, что git не видит и
 
 ## Модули вне общей схемы
 
-`services/dormitory`, `services/mentor`, `services/ojs` генерируют свои схемы сами. У dormitory и mentor proto-пакеты `contract.entity`, `contract.service`, как у mdm, — в одном workspace это конфликт имён. Подключать их к `buf.yaml` можно только после перехода на уникальные пакеты (новая версия API).
+`services/ojs` (PHP) — без proto. dormitory и mentor в общей схеме с пакетами `contract.dormitory.*` и `contract.mentor.*`; их сайты берут TS из `@fesmu/contract/<svc>/…` через общий pnpm workspace.

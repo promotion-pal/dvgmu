@@ -2,7 +2,7 @@
 
 import { useFetchState } from "@/features/lib/fetch";
 import { mentorServiceClient } from "@/shared/api/mentor";
-import { MentorCourse } from "@proto/entity/mentor.entity_pb";
+import { MentorCourse } from "@fesmu/contract/mentor/entity/mentor.entity_pb";
 import { timestampDate, timestampFromDate } from "@bufbuild/protobuf/wkt";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";

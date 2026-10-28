@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package contract.dormitory.service;
+
+import "google/protobuf/timestamp.proto";
+import "dormitory/entity/user.entity.proto";
+
+option go_package = "service;service_pb";
+
+service UserService {
+    rpc UserFetch (UserFetchRequest) returns (UserFetchResponse);
+    rpc UserCreate (UserCreateRequest) returns (UserCreateResponse);
+}
+
+message UserFetchRequest {
+}
+
+message UserFetchResponse {
+    repeated contract.dormitory.entity.User users = 1;
+}
+
+message UserCreateRequest {
+    string phone = 1;
+    string last_name = 2;
+    string first_name = 3;
+    string patronymic = 4;
+    string record_book = 5;
+    string group = 6;
+}
+
+message UserCreateResponse {
+    int64 id = 1;
+    bool success = 2;
+    string message = 3;
+}

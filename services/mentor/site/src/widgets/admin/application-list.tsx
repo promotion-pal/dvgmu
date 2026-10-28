@@ -4,7 +4,7 @@ import { DetailRow } from "@/shared/components/detail-row";
 import { FilterableEntityList } from "@/shared/components/filterable-entity-list";
 import { StatusBadge } from "@/shared/components/status-badge";
 import { TableCell, TableHead } from "@/shared/ui/table";
-import { MentorApplication, MentorCourse } from "@proto/entity/mentor.entity_pb";
+import { MentorApplication, MentorCourse } from "@fesmu/contract/mentor/entity/mentor.entity_pb";
 import { timestampDate } from "@bufbuild/protobuf/wkt";
 
 interface ApplicationListProps {

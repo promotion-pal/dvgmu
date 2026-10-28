@@ -3,7 +3,7 @@ import { createConnectTransport } from "@connectrpc/connect-web";
 
 import { ADMIN_PASSWORD } from "@/shared/config/admin";
 import { ENV } from "@/shared/config/env";
-import { DormitoryService } from "@proto/service/dormitory.service_pb";
+import { DormitoryService } from "@fesmu/contract/dormitory/service/dormitory.service_pb";
 
 const withAdminAuth: Interceptor = (next) => (req) => {
   req.header.set("Authorization", `Bearer ${ADMIN_PASSWORD}`);

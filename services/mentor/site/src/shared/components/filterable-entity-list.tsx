@@ -19,7 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/shared/ui/table";
-import { MentorCourse } from "@proto/entity/mentor.entity_pb";
+import { MentorCourse } from "@fesmu/contract/mentor/entity/mentor.entity_pb";
 import { FileDown } from "lucide-react";
 import { ReactNode, useMemo, useState } from "react";
 import * as XLSX from "xlsx";

@@ -19,7 +19,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/shared/ui/dialog";
-import { MentorCourse } from "@proto/entity/mentor.entity_pb";
+import { MentorCourse } from "@fesmu/contract/mentor/entity/mentor.entity_pb";
 import { PencilIcon, TrashIcon } from "lucide-react";
 import { useState } from "react";
 import { formatMentorCourseRange, useMentorCourseForm } from "./mentor-course.fn";

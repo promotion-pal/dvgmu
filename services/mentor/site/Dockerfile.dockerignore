@@ -1,0 +1,12 @@
+# Сборка сайта идёт из корня монорепо — пускаем в контекст только нужное.
+*
+!package.json
+!pnpm-workspace.yaml
+!pnpm-lock.yaml
+!.npmrc
+!services/mentor/site
+!packages/ts
+**/node_modules
+**/.next
+**/.env
+**/.env.*

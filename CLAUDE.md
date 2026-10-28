@@ -12,4 +12,4 @@ make proto-check  # сгенерированный код совпадает с�
 make dev-up       # весь портал локально, вход без AD (admin/admin123) — затем make dev-seed
 ```
 
-dormitory, mentor и ojs — отдельные модули со своей генерацией, в общую схему (buf.yaml) не входят.
+dormitory и mentor — в общей схеме (пакеты `contract.dormitory.*`, `contract.mentor.*`), их сайты — в общем pnpm workspace. ojs (PHP) — без схем.

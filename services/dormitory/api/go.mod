@@ -33,3 +33,7 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	olympos.io/encoding/edn v0.0.0-20201019073823-d3554ca0b0a3 // indirect
 )
+
+require fesmu/contract v0.0.0
+
+replace fesmu/contract => ../../../packages/go

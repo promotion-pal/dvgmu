@@ -20,8 +20,8 @@ services:
   dvgmu_apps_dormitory_api:
     container_name: "dvgmu_apps_dormitory_api"
     build:
-      context: "./api"
-      dockerfile: "Dockerfile"
+      context: "../.."  # корень монорепо: нужен packages/go
+      dockerfile: "services/dormitory/api/Dockerfile"
       network: host
     restart: unless-stopped
     depends_on:
@@ -44,8 +44,8 @@ services:
   dvgmu_apps_dormitory_web:
     container_name: "dvgmu_apps_dormitory_web"
     build:
-      context: "."
-      dockerfile: "site/Dockerfile"
+      context: "../.."  # корень монорепо: общий pnpm workspace и packages/ts
+      dockerfile: "services/dormitory/site/Dockerfile"
       network: host
       args:
         NEXT_PUBLIC_API: "/api"

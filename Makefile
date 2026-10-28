@@ -42,7 +42,7 @@ dev-down:
 #   make up                 — собрать и запустить всё
 #   make up SERVICES=auth   — только эти сервисы (fesmu тоже по имени: SERVICES=fesmu)
 #   make down / ps / logs S=auth
-SERVICES ?= mdm auth analytics tickets file notification sync fesmu
+SERVICES ?= mdm auth analytics tickets file notification sync dormitory mentor fesmu
 
 .PHONY: up down ps logs
 

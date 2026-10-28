@@ -1,7 +1,7 @@
 "use client";
 
 import { formatMentorCourseRange } from "@/shared/models/mentor-course";
-import { MentorCourse } from "@proto/entity/mentor.entity_pb";
+import { MentorCourse } from "@fesmu/contract/mentor/entity/mentor.entity_pb";
 import Link from "next/link";
 import { UseFormReturn } from "react-hook-form";
 import { MentorApplicationSchema } from "./mentor-application.schema";

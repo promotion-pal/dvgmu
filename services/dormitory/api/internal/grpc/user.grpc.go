@@ -7,8 +7,8 @@ import (
 	"connectrpc.com/connect"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	"dvgmu/analytics/contract/gen/go/entity"
-	pb "dvgmu/analytics/contract/gen/go/service"
+	"fesmu/contract/dormitory/entity"
+	pb "fesmu/contract/dormitory/service"
 	"dvgmu/analytics/internal/domain/models"
 	"dvgmu/analytics/internal/service"
 )
