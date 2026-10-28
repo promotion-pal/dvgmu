@@ -145,6 +145,24 @@ func TestLibraryEndToEnd(t *testing.T) {
 		t.Errorf("figure file name %q, want the stored one", name)
 	}
 
+	// Without a sign-in (the /manuals page): published manuals and their
+	// figures, but not the catalog's files. The fake files service cannot
+	// download, so a passed check ends in ErrFiles, a refused one in
+	// Unauthenticated.
+	anonymous := context.Background()
+	if list, _ := s.Manuals(anonymous, "", ""); len(list) != 1 {
+		t.Fatalf("anonymous list: %v", list)
+	}
+	if _, _, err := s.Manual(anonymous, id, false); err != nil {
+		t.Fatalf("anonymous reads a published manual: %v", err)
+	}
+	if _, _, err := s.FileFetch(anonymous, figure.GetId()); !errors.Is(err, ErrFiles) {
+		t.Fatalf("anonymous fetches a published figure: %v", err)
+	}
+	if _, _, err := s.FileFetch(anonymous, items[0].GetFile().GetId()); connect.CodeOf(err) != connect.CodeUnauthenticated {
+		t.Fatalf("anonymous fetches a catalog book: %v", err)
+	}
+
 	// Editing after publishing changes only the draft.
 	sections[0].Blocks = sections[0].Blocks[:1]
 	must(s.ManualUpdate(teacher, id, in, sections))

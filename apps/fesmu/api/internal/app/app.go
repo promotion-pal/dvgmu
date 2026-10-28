@@ -163,6 +163,12 @@ func New(
 		authInterceptor.Skip[serviceconnect.TestSessionServiceTestTakeStateProcedure] = true
 		authInterceptor.Skip[serviceconnect.TestSessionServiceTestTakeAnswerProcedure] = true
 		authInterceptor.Skip[serviceconnect.TestSessionServiceTestTakeFinishProcedure] = true
+		// Опубликованные методички открыты всем (страница /manuals): анонимно —
+		// только опубликованное и только файлы из него; вошедшему редактору
+		// те же методы отдают и черновики.
+		authInterceptor.Optional[servicev2connect.LibraryServiceManualFetchProcedure] = true
+		authInterceptor.Optional[servicev2connect.LibraryServiceManualByIDProcedure] = true
+		authInterceptor.Optional[servicev2connect.LibraryServiceLibraryFileFetchProcedure] = true
 		// Анкета по QR — без входа (опрос без ответов, ответ с IP респондента).
 		for _, p := range questionnaire.Procedures {
 			authInterceptor.Skip[p] = true
@@ -176,8 +182,8 @@ func New(
 		authInterceptor.Access = map[string][]string{
 			serviceconnect.UserServiceName:        nil, // UserMe — любой, кто вошёл
 			serviceconnect.CertificateServiceName: {auth.RoleStudent},
-			// Библиотеку и опубликованные методички читает любой, кто вошёл;
-			// изменения модуль проверяет сам (library.post, manuals.post).
+			// Каталог читает любой, кто вошёл (методички открыты и без входа —
+			// Optional выше); изменения модуль проверяет сам (library.post, manuals.post).
 			servicev2connect.LibraryServiceName: nil,
 			// Закупки v3: права на действия ("purchase.<имя>"), отдел и
 			// направление модуль проверяет сам — пускает любого, кто вошёл.

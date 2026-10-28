@@ -3,6 +3,7 @@ package library
 import (
 	"context"
 	"errors"
+	"strconv"
 	"strings"
 
 	"gorm.io/gorm"
@@ -84,6 +85,22 @@ func (s *storage) file(ctx context.Context, id int64) (*File, error) {
 		return nil, notFound("файл не найден")
 	}
 	return &f, err
+}
+
+// publishedFilePath finds a block's file by id: any block kind with a file
+// (figure, attachment). protojson keeps int64 ids as strings.
+const publishedFilePath = `$.sections[*].blocks[*].*.file.id ? (@ == $id)`
+
+// inPublishedManual tells whether a published manual shows the file. The
+// path goes as a parameter: gorm would take its "?" for a placeholder.
+func (s *storage) inPublishedManual(ctx context.Context, fileID int64) (bool, error) {
+	var found bool
+	err := s.db.WithContext(ctx).Raw(
+		`SELECT EXISTS (SELECT 1 FROM library_manuals WHERE status = ?
+			AND jsonb_path_exists(published, ?::jsonpath, jsonb_build_object('id', ?::text)))`,
+		int32(enum.ManualStatus_MANUAL_STATUS_PUBLISHED), publishedFilePath, strconv.FormatInt(fileID, 10),
+	).Scan(&found).Error
+	return found, err
 }
 
 func (s *storage) filesByID(ctx context.Context, ids []int64) (map[int64]*File, error) {

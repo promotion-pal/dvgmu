@@ -4,13 +4,17 @@
 //
 // Who does what:
 //
-//	anyone signed in — reads the catalog and published manuals, keeps their
-//	                   own reading positions
+//	anyone           — reads published manuals and their figures and
+//	                   attachments, without signing in (the /manuals page)
+//	anyone signed in — reads the catalog and its files, keeps their own
+//	                   reading positions
 //	library.post     — adds, edits and deletes catalog entries
 //	manuals.post     — writes manuals: the draft, publishing, taking off
 //
-// The auth interceptor lets every signed-in user into the service; the
-// changes check their right here (requireCan).
+// The auth interceptor lets every signed-in user into the service, and
+// ManualFetch, ManualByID and LibraryFileFetch also anonymous visitors
+// (Optional); the changes check their right here (requireCan), and an
+// anonymous FileFetch gets only files of published manuals.
 //
 // A manual keeps two versions as protojson: the draft the editors work on
 // and the published one students read. Publishing copies the draft over.

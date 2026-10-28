@@ -275,10 +275,20 @@ func (s *Service) FileUpload(ctx context.Context, name string, content []byte) (
 	return f.toProto(), nil
 }
 
-// FileFetch hands out a file the module registered, and only such.
+// FileFetch hands out a file the module registered, and only such; an
+// anonymous visitor gets only a figure or attachment of a published manual.
 func (s *Service) FileFetch(ctx context.Context, id int64) (*entity.LibraryFile, []byte, error) {
 	if err := s.ready(); err != nil {
 		return nil, nil, err
+	}
+	if _, ok := auth.UserFromContext(ctx); !ok {
+		published, err := s.store.inPublishedManual(ctx, id)
+		if err != nil {
+			return nil, nil, err
+		}
+		if !published {
+			return nil, nil, connect.NewError(connect.CodeUnauthenticated, errors.New("войдите, чтобы открыть этот файл"))
+		}
 	}
 	f, err := s.store.file(ctx, id)
 	if err != nil {

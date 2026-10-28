@@ -290,3 +290,33 @@ func TestAuthorize_AnyOfSections(t *testing.T) {
 		}
 	}
 }
+
+func TestMaybeAuthenticate(t *testing.T) {
+	f := newFakeAuth(t)
+	priv := f.publish("k1")
+	i := newInterceptor(f)
+
+	header := func(token string) http.Header {
+		h := http.Header{}
+		if token != "" {
+			h.Set("Cookie", "fesmu_at="+token)
+		}
+		return h
+	}
+	cases := []struct {
+		name   string
+		token  string
+		signed bool
+	}{
+		{"no cookie", "", false},
+		{"expired", sign(t, priv, tokenOpts{kid: "k1", expireIn: -time.Minute}), false},
+		{"garbage", "not-a-token", false},
+		{"valid", sign(t, priv, tokenOpts{kid: "k1", roles: []string{"TEACHER"}}), true},
+	}
+	for _, c := range cases {
+		_, ok := UserFromContext(i.maybeAuthenticate(t.Context(), header(c.token)))
+		if ok != c.signed {
+			t.Errorf("%s: signed in = %v, want %v", c.name, ok, c.signed)
+		}
+	}
+}

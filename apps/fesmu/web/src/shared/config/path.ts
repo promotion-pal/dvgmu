@@ -1,65 +1,70 @@
+/** Личный кабинет: всё, что открывается после входа, — под этим префиксом.
+ *  Открытые страницы (PUBLIC, DOCS) — в корне сайта. */
+const LK = "/lk";
+
 const ROUTE = {
-  HOME: "/",
+  HOME: LK,
   USER: {
-    PROFILE: "/profile",
-    INFRASTRUCTURE: "/infrastructure",
-    INVENTORY: "/inventory",
-    USERS: "/users",
-    STUDENTS: "/students",
-    EMPLOYEES: "/employees",
-    TICKETS: "/tickets",
+    PROFILE: `${LK}/profile`,
+    INFRASTRUCTURE: `${LK}/infrastructure`,
+    INVENTORY: `${LK}/inventory`,
+    USERS: `${LK}/users`,
+    STUDENTS: `${LK}/students`,
+    EMPLOYEES: `${LK}/employees`,
+    TICKETS: `${LK}/tickets`,
   },
   /** Разделы студента внутри приложения (с меню). */
   MY: {
-    CERTIFICATE: "/my/certificate",
-    SCHEDULE: "/my/schedule",
+    CERTIFICATE: `${LK}/my/certificate`,
+    SCHEDULE: `${LK}/my/schedule`,
   },
   STUDY: {
-    SCHEDULE: "/study/schedule",
-    SCHEDULE_NEW: "/study/schedule/new",
-    SCHEDULE_EDIT: "/study/schedule/:id/edit",
-    SCHEDULE_HALL: "/study/schedule-hall",
-    COMPUTER_CLASS: "/study/computer-classes",
+    SCHEDULE: `${LK}/study/schedule`,
+    SCHEDULE_NEW: `${LK}/study/schedule/new`,
+    SCHEDULE_EDIT: `${LK}/study/schedule/:id/edit`,
+    SCHEDULE_HALL: `${LK}/study/schedule-hall`,
+    COMPUTER_CLASS: `${LK}/study/computer-classes`,
   },
   TESTS: {
-    BUILDER: "/tests/builder",
-    BUILDER_V2: "/tests/builder-v2",
-    SESSIONS: "/tests/sessions",
-    SESSION_RESULTS: "/tests/sessions/:id",
+    BUILDER: `${LK}/tests/builder`,
+    BUILDER_V2: `${LK}/tests/builder-v2`,
+    SESSIONS: `${LK}/tests/sessions`,
+    SESSION_RESULTS: `${LK}/tests/sessions/:id`,
   },
   PURCHASE: {
-    V2: "/purchases/v2",
-    V3: "/purchases",
+    V2: `${LK}/purchases/v2`,
+    V3: `${LK}/purchases`,
   },
-  /** Библиотека: каталог открыт всем, кто вошёл; методички — опубликованные. */
+  /** Библиотека в кабинете: каталог — всем, кто вошёл; методички с черновиками
+   *  и редактором. Опубликованные методички открыты и без входа — PUBLIC.MANUALS. */
   LIBRARY: {
-    CATALOG: "/library",
-    ITEM: "/library/items/:id",
-    MANUALS: "/library/manuals",
-    MANUAL: "/library/manuals/:id",
-    MANUAL_EDIT: "/library/manuals/:id/edit",
+    CATALOG: `${LK}/library`,
+    ITEM: `${LK}/library/items/:id`,
+    MANUALS: `${LK}/library/manuals`,
+    MANUAL: `${LK}/library/manuals/:id`,
+    MANUAL_EDIT: `${LK}/library/manuals/:id/edit`,
   },
   ANALYTICS: {
     /** Опросы (объекты с QR) и карточка опроса. */
-    SURVEYS: "/analytics",
-    SURVEY: "/analytics/:id",
+    SURVEYS: `${LK}/analytics`,
+    SURVEY: `${LK}/analytics/:id`,
     /** Универсальный отчёт по полям анкет. */
-    REPORT: "/analytics/report",
-    REPORT_DETAIL: "/analytics/report/:id",
+    REPORT: `${LK}/analytics/report`,
+    REPORT_DETAIL: `${LK}/analytics/report/:id`,
     /** Сводка по категории (типу опроса): общая оценка + каждый объект. */
-    REPORT_CATEGORY: "/analytics/report/type/:type",
+    REPORT_CATEGORY: `${LK}/analytics/report/type/:type`,
   },
   /** Деканат: студенты своего факультета и коды первого входа. */
   DEANERY: {
-    STUDENTS: "/deanery/students",
+    STUDENTS: `${LK}/deanery/students`,
   },
   ADMIN: {
-    CERTIFICATES: "/admin/certificates",
-    AUTH: "/admin/auth",
-    ROLES: "/admin/roles",
-    ACCESS: "/admin/access",
-    DEBTORS: "/admin/debtors",
-    VACCINATION: "/admin/vaccination",
+    CERTIFICATES: `${LK}/admin/certificates`,
+    AUTH: `${LK}/admin/auth`,
+    ROLES: `${LK}/admin/roles`,
+    ACCESS: `${LK}/admin/access`,
+    DEBTORS: `${LK}/admin/debtors`,
+    VACCINATION: `${LK}/admin/vaccination`,
   },
   /** Pages open without a login, meant for students/visitors: no app-sidebar.
    * Read-only, except the forms anyone may fill in (collector, hall booking). */
@@ -75,6 +80,9 @@ const ROUTE = {
     QUESTION: "/analytic",
     /** A student takes a test by its session link. */
     TEST_TAKE: "/tests/take/:token",
+    /** Опубликованные методички — без входа. */
+    MANUALS: "/manuals",
+    MANUAL: "/manuals/:id",
   },
   DOCS: {
     COMMON: "/docs",
@@ -88,4 +96,11 @@ const ROUTE = {
   },
 } as const;
 
-export { ROUTE };
+/** Разделы кабинета по старым адресам (до /lk): ссылки и закладки на них
+ *  переводим в кабинет. */
+const LEGACY_LK_PREFIXES = [
+  "/profile", "/infrastructure", "/inventory", "/users", "/students", "/employees", "/tickets",
+  "/my", "/study", "/tests", "/purchases", "/library", "/analytics", "/deanery", "/admin",
+] as const;
+
+export { LEGACY_LK_PREFIXES, LK, ROUTE };

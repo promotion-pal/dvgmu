@@ -1,5 +1,5 @@
-import { Navigate, Outlet, Route, Routes } from "react-router-dom";
-import { Layout } from "./widgets/layout";
+import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
+import { Layout, PublicLayout } from "./widgets/layout";
 import type { UserRole } from "@fesmu/contract/fesmu/enum/v1/user.enum_pb";
 import { PermissionGate, RoleGate, UserGate } from "./widgets/user-gate";
 import { PermissionAction, PermissionSection, PURCHASE_SECTIONS, PURCHASE_V3_PERMS, permsFor, permsForAny } from "./shared/config/permissions";
@@ -8,7 +8,7 @@ import DeaneryStudentsPage from "./page/deanery/DeaneryStudents";
 import { firstAllowedUrl } from "./widgets/layout/sidebar";
 import { ACCESS } from "./shared/config/access";
 import { useUserProvider } from "./features/provider/user.provider";
-import { ROUTE } from "./shared/config/path";
+import { LEGACY_LK_PREFIXES, LK, ROUTE } from "./shared/config/path";
 import { DocsPage } from "./page/Docs";
 import InfrastructurePage from "./page/Infrastructure";
 import InventoryPage from "./page/Inventory";
@@ -36,7 +36,7 @@ import AnalyticSurveyPage from "./page/analytics/Survey";
 import AnalyticReportPage from "./page/analytics/Report";
 import AnalyticReportDetailPage from "./page/analytics/ReportDetail";
 import AnalyticReportCategoryPage from "./page/analytics/ReportCategory";
-import { HallBookingPage, PublicComputerClassPage, PublicSchedulePage, PublicScheduleHallPage, PublicVaccinationPage, ScheduleCollectPage, TestTakePage, QuestionPage } from "./page/public";
+import { HallBookingPage, PublicComputerClassPage, PublicManualReadPage, PublicManualsPage, PublicSchedulePage, PublicScheduleHallPage, PublicVaccinationPage, ScheduleCollectPage, TestTakePage, QuestionPage } from "./page/public";
 import { NotFoundPage } from "./page/state";
 import StudentCabinetPage from "./page/cabinet";
 import ProfilePage from "./page/Profile";
@@ -63,15 +63,26 @@ function HomeRedirect() {
   return <Navigate to={firstAllowedUrl(hasRole, hasPermission)} replace />;
 }
 
+/** Старый адрес раздела кабинета (до /lk) — в кабинет по тому же пути; иначе «не найдено». */
+function LegacyRedirect() {
+  const { pathname, search, hash } = useLocation();
+  const legacy = LEGACY_LK_PREFIXES.some((p) => pathname === p || pathname.startsWith(`${p}/`));
+  return legacy ? <Navigate to={`${LK}${pathname}${search}${hash}`} replace /> : <NotFoundPage />;
+}
+
 function App() {
   return (
     <Routes>
+      {/* Корень сайта ведёт в кабинет: там вход и первый доступный раздел. */}
+      <Route path="/" element={<Navigate to={ROUTE.HOME} replace />} />
+
+      {/* Личный кабинет (/lk): всё после входа. */}
       <Route element={<UserGate><Outlet /></UserGate>}>
         <Route element={<Layout />}>
           <Route path={ROUTE.HOME} element={<HomeRedirect />} />
           <Route path={ROUTE.USER.PROFILE} element={<ProfilePage />} />
 
-          {/* Библиотека и опубликованные методички — всем, кто вошёл. */}
+          {/* Библиотека и методички в кабинете — всем, кто вошёл (опубликованные открыты и на /manuals). */}
           <Route path={ROUTE.LIBRARY.CATALOG} element={<LibraryPage />} />
           <Route path={ROUTE.LIBRARY.ITEM} element={<LibraryItemPage />} />
           <Route path={ROUTE.LIBRARY.MANUALS} element={<ManualsPage />} />
@@ -184,7 +195,13 @@ function App() {
         <Route path={ROUTE.PUBLIC.QUESTION} element={<QuestionPage />} />
       </Route>
 
-      <Route path={"*"} element={<NotFoundPage />} />
+      {/* Опубликованные методички — открыто, без входа. */}
+      <Route element={<PublicLayout />}>
+        <Route path={ROUTE.PUBLIC.MANUALS} element={<PublicManualsPage />} />
+        <Route path={ROUTE.PUBLIC.MANUAL} element={<PublicManualReadPage />} />
+      </Route>
+
+      <Route path={"*"} element={<LegacyRedirect />} />
     </Routes>
   );
 }

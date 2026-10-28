@@ -23,8 +23,9 @@ export const cardOf = (m: ManualCard): ManualCard => ({
     annotation: m.annotation,
 });
 
-/** Методички: список по дисциплинам, поиск, создание. */
-export function useManualList() {
+/** Методички: список по дисциплинам, поиск, создание. На открытой странице
+ *  (open) — только опубликованные, без входа: дисциплины берутся из списка. */
+export function useManualList({ open = false }: { open?: boolean } = {}) {
     const [manuals, setManuals] = useState<Manual[]>([]);
     const [disciplines, setDisciplines] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
@@ -38,10 +39,10 @@ export function useManualList() {
     // Состояние ставится только в колбэках ответа — и при открытии, и при обновлении.
     const fetch = useCallback(
         () =>
-            Promise.all([libraryApi.manuals(), libraryApi.disciplines()]).then(
+            Promise.all([libraryApi.manuals(), open ? undefined : libraryApi.disciplines()]).then(
                 ([list, names]) => {
                     setManuals(list);
-                    setDisciplines(names);
+                    setDisciplines(names ?? [...new Set(list.map((m) => m.discipline))].sort((a, b) => a.localeCompare(b, "ru")));
                     setError(false);
                     setLoading(false);
                 },
@@ -50,7 +51,7 @@ export function useManualList() {
                     setLoading(false);
                 },
             ),
-        [],
+        [open],
     );
 
     useEffect(() => {

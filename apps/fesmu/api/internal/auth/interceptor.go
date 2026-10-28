@@ -60,6 +60,10 @@ type Interceptor struct {
 	cookieName string
 	// Skip — открытые процедуры (публичные страницы): без входа.
 	Skip map[string]bool
+	// Optional — открытые процедуры, которым важно, кто вошёл: сессию
+	// проверяют, если она есть, но без неё (или с просроченной) пускают
+	// анонимно. Что показать каждому, процедура решает сама.
+	Optional map[string]bool
 	// Access — какие роли пускать в сервис (ключ — полное имя сервиса).
 	// nil — любого, кто вошёл; сервиса нет в карте — только ADMIN (новый
 	// сервис не окажется открытым всем по забывчивости). ADMIN — везде.
@@ -79,6 +83,7 @@ func NewInterceptor(keys *JWKS, issuer, audience, cookieName string) *Intercepto
 		audience:   audience,
 		cookieName: cookieName,
 		Skip:       map[string]bool{},
+		Optional:   map[string]bool{},
 		Access:     map[string][]string{},
 		Sections:   map[string][]Section{},
 	}
@@ -88,6 +93,9 @@ func (i *Interceptor) WrapUnary(next connect.UnaryFunc) connect.UnaryFunc {
 	return func(ctx context.Context, req connect.AnyRequest) (connect.AnyResponse, error) {
 		if i.Skip[req.Spec().Procedure] {
 			return next(ctx, req)
+		}
+		if i.Optional[req.Spec().Procedure] {
+			return next(i.maybeAuthenticate(ctx, req.Header()), req)
 		}
 		ctx, err := i.authenticate(ctx, req.Header())
 		if err != nil {
@@ -104,6 +112,9 @@ func (i *Interceptor) WrapStreamingHandler(next connect.StreamingHandlerFunc) co
 	return func(ctx context.Context, conn connect.StreamingHandlerConn) error {
 		if i.Skip[conn.Spec().Procedure] {
 			return next(ctx, conn)
+		}
+		if i.Optional[conn.Spec().Procedure] {
+			return next(i.maybeAuthenticate(ctx, conn.RequestHeader()), conn)
 		}
 		ctx, err := i.authenticate(ctx, conn.RequestHeader())
 		if err != nil {
@@ -153,6 +164,15 @@ func (i *Interceptor) authenticate(ctx context.Context, header http.Header) (con
 		return nil, connect.NewError(connect.CodeUnauthenticated, err)
 	}
 	return context.WithValue(ctx, userKey, user), nil
+}
+
+// maybeAuthenticate adds the user to ctx when the session is valid and
+// leaves ctx anonymous otherwise.
+func (i *Interceptor) maybeAuthenticate(ctx context.Context, header http.Header) context.Context {
+	if authed, err := i.authenticate(ctx, header); err == nil {
+		return authed
+	}
+	return ctx
 }
 
 // Verify checks the access token: EdDSA signature by auth's key, issuer,

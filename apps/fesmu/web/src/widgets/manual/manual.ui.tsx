@@ -37,7 +37,8 @@ export const ManualFilters: FC<{ state: ManualListState }> = ({ state }) => (
     </>
 );
 
-export const ManualList: FC<{ state: ManualListState }> = ({ state }) => (
+/** readPath — куда ведёт «Читать»: в кабинете или на открытой странице. */
+export const ManualList: FC<{ state: ManualListState; readPath?: string }> = ({ state, readPath = ROUTE.LIBRARY.MANUAL }) => (
     <div className="space-y-8">
         {state.groups.map(([discipline, list]) => (
             <section key={discipline}>
@@ -68,7 +69,7 @@ export const ManualList: FC<{ state: ManualListState }> = ({ state }) => (
                                     </Can>
                                     {m.status === "published" && (
                                         <Button size="sm" asChild>
-                                            <Link to={generatePath(ROUTE.LIBRARY.MANUAL, { id: m.id })}>Читать</Link>
+                                            <Link to={generatePath(readPath, { id: m.id })}>Читать</Link>
                                         </Button>
                                     )}
                                 </div>
