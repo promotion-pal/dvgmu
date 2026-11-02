@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package contract.enum.v1;
+
+option go_package = "enum_v1;enum_pb";
+
+// HallBookingStatus — путь заявки на лекционный зал:
+// PENDING → APPROVED | REJECTED; заявитель может отозвать свою заявку (CANCELLED),
+// проверяющий — снять уже одобренную (APPROVED → REJECTED).
+// Время занимает только APPROVED: заявки на проверке зал не держат.
+enum HallBookingStatus {
+  HALL_BOOKING_STATUS_UNSPECIFIED = 0;
+  // Подана, ждёт проверки.
+  HALL_BOOKING_STATUS_PENDING = 1;
+  // Одобрена: зал занят на это время.
+  HALL_BOOKING_STATUS_APPROVED = 2;
+  // Отклонена проверяющим (с комментарием).
+  HALL_BOOKING_STATUS_REJECTED = 3;
+  // Отозвана заявителем.
+  HALL_BOOKING_STATUS_CANCELLED = 4;
+}

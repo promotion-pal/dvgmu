@@ -6,13 +6,15 @@ import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegen
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import type { Hall, HallBooking } from "../../entity/v1/hall.entity_pb";
 import { file_fesmu_entity_v1_hall_entity } from "../../entity/v1/hall.entity_pb";
+import type { HallBookingStatus } from "../../enum/v1/hall.enum_pb";
+import { file_fesmu_enum_v1_hall_enum } from "../../enum/v1/hall.enum_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file fesmu/service/v1/hall.service.proto.
  */
 export const file_fesmu_service_v1_hall_service: GenFile = /*@__PURE__*/
-  fileDesc("CiNmZXNtdS9zZXJ2aWNlL3YxL2hhbGwuc2VydmljZS5wcm90bxITY29udHJhY3Quc2VydmljZS52MSISChBIYWxsRmV0Y2hSZXF1ZXN0IjsKEUhhbGxGZXRjaFJlc3BvbnNlEiYKBGxpc3QYASADKAsyGC5jb250cmFjdC5lbnRpdHkudjEuSGFsbCJOChdIYWxsQm9va2luZ0ZldGNoUmVxdWVzdBIPCgdoYWxsX2lkGAEgASgDEhEKCWRhdGVfZnJvbRgCIAEoCRIPCgdkYXRlX3RvGAMgASgJIkkKGEhhbGxCb29raW5nRmV0Y2hSZXNwb25zZRItCgRsaXN0GAEgAygLMh8uY29udHJhY3QuZW50aXR5LnYxLkhhbGxCb29raW5nIrEBChhIYWxsQm9va2luZ0NyZWF0ZVJlcXVlc3QSDwoHaGFsbF9pZBgBIAEoAxIMCgRkYXRlGAIgASgJEhIKCnRpbWVfc3RhcnQYAyABKAkSEAoIdGltZV9lbmQYBCABKAkSDQoFdGl0bGUYBSABKAkSEQoJb3JnYW5pemVyGAYgASgJEg8KB2NvbnRhY3QYByABKAkSHQoVcGVyc29uYWxfZGF0YV9jb25zZW50GAggASgIIlYKGUhhbGxCb29raW5nQ3JlYXRlUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEhcKD2hhbGxfYm9va2luZ19pZBgDIAEoAyImChhIYWxsQm9va2luZ0RlbGV0ZVJlcXVlc3QSCgoCaWQYASABKAMiPQoZSGFsbEJvb2tpbmdEZWxldGVSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkyuQQKC0hhbGxTZXJ2aWNlEloKCUhhbGxGZXRjaBIlLmNvbnRyYWN0LnNlcnZpY2UudjEuSGFsbEZldGNoUmVxdWVzdBomLmNvbnRyYWN0LnNlcnZpY2UudjEuSGFsbEZldGNoUmVzcG9uc2USbwoQSGFsbEJvb2tpbmdGZXRjaBIsLmNvbnRyYWN0LnNlcnZpY2UudjEuSGFsbEJvb2tpbmdGZXRjaFJlcXVlc3QaLS5jb250cmFjdC5zZXJ2aWNlLnYxLkhhbGxCb29raW5nRmV0Y2hSZXNwb25zZRJ1ChZIYWxsQm9va2luZ1B1YmxpY0ZldGNoEiwuY29udHJhY3Quc2VydmljZS52MS5IYWxsQm9va2luZ0ZldGNoUmVxdWVzdBotLmNvbnRyYWN0LnNlcnZpY2UudjEuSGFsbEJvb2tpbmdGZXRjaFJlc3BvbnNlEnIKEUhhbGxCb29raW5nQ3JlYXRlEi0uY29udHJhY3Quc2VydmljZS52MS5IYWxsQm9va2luZ0NyZWF0ZVJlcXVlc3QaLi5jb250cmFjdC5zZXJ2aWNlLnYxLkhhbGxCb29raW5nQ3JlYXRlUmVzcG9uc2UScgoRSGFsbEJvb2tpbmdEZWxldGUSLS5jb250cmFjdC5zZXJ2aWNlLnYxLkhhbGxCb29raW5nRGVsZXRlUmVxdWVzdBouLmNvbnRyYWN0LnNlcnZpY2UudjEuSGFsbEJvb2tpbmdEZWxldGVSZXNwb25zZULEAQoXY29tLmNvbnRyYWN0LnNlcnZpY2UudjFCEEhhbGxTZXJ2aWNlUHJvdG9QAVopZmVzbXUvY29udHJhY3QvZmVzbXUvc2VydmljZS92MTtzZXJ2aWNldjGiAgNDU1iqAhNDb250cmFjdC5TZXJ2aWNlLlYxygITQ29udHJhY3RcU2VydmljZVxWMeICH0NvbnRyYWN0XFNlcnZpY2VcVjFcR1BCTWV0YWRhdGHqAhVDb250cmFjdDo6U2VydmljZTo6VjFiBnByb3RvMw", [file_fesmu_entity_v1_hall_entity]);
+  fileDesc("CiNmZXNtdS9zZXJ2aWNlL3YxL2hhbGwuc2VydmljZS5wcm90bxITY29udHJhY3Quc2VydmljZS52MSISChBIYWxsRmV0Y2hSZXF1ZXN0IjsKEUhhbGxGZXRjaFJlc3BvbnNlEiYKBGxpc3QYASADKAsyGC5jb250cmFjdC5lbnRpdHkudjEuSGFsbCJOChdIYWxsQm9va2luZ0ZldGNoUmVxdWVzdBIPCgdoYWxsX2lkGAEgASgDEhEKCWRhdGVfZnJvbRgCIAEoCRIPCgdkYXRlX3RvGAMgASgJIkkKGEhhbGxCb29raW5nRmV0Y2hSZXNwb25zZRItCgRsaXN0GAEgAygLMh8uY29udHJhY3QuZW50aXR5LnYxLkhhbGxCb29raW5nIrEBChhIYWxsQm9va2luZ0NyZWF0ZVJlcXVlc3QSDwoHaGFsbF9pZBgBIAEoAxIMCgRkYXRlGAIgASgJEhIKCnRpbWVfc3RhcnQYAyABKAkSEAoIdGltZV9lbmQYBCABKAkSDQoFdGl0bGUYBSABKAkSEQoJb3JnYW5pemVyGAYgASgJEg8KB2NvbnRhY3QYByABKAkSHQoVcGVyc29uYWxfZGF0YV9jb25zZW50GAggASgIIlYKGUhhbGxCb29raW5nQ3JlYXRlUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEhcKD2hhbGxfYm9va2luZ19pZBgDIAEoAyImChhIYWxsQm9va2luZ0RlbGV0ZVJlcXVlc3QSCgoCaWQYASABKAMiPQoZSGFsbEJvb2tpbmdEZWxldGVSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkieQoeSGFsbEJvb2tpbmdTdGF0dXNVcGRhdGVSZXF1ZXN0EgoKAmlkGAEgASgDEjMKBnN0YXR1cxgCIAEoDjIjLmNvbnRyYWN0LmVudW0udjEuSGFsbEJvb2tpbmdTdGF0dXMSFgoOcmV2aWV3X2NvbW1lbnQYAyABKAkiMgofSGFsbEJvb2tpbmdTdGF0dXNVcGRhdGVSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIIh0KG0hhbGxCb29raW5nTWluZUZldGNoUmVxdWVzdDK5BgoLSGFsbFNlcnZpY2USWgoJSGFsbEZldGNoEiUuY29udHJhY3Quc2VydmljZS52MS5IYWxsRmV0Y2hSZXF1ZXN0GiYuY29udHJhY3Quc2VydmljZS52MS5IYWxsRmV0Y2hSZXNwb25zZRJvChBIYWxsQm9va2luZ0ZldGNoEiwuY29udHJhY3Quc2VydmljZS52MS5IYWxsQm9va2luZ0ZldGNoUmVxdWVzdBotLmNvbnRyYWN0LnNlcnZpY2UudjEuSGFsbEJvb2tpbmdGZXRjaFJlc3BvbnNlEnUKFkhhbGxCb29raW5nUHVibGljRmV0Y2gSLC5jb250cmFjdC5zZXJ2aWNlLnYxLkhhbGxCb29raW5nRmV0Y2hSZXF1ZXN0Gi0uY29udHJhY3Quc2VydmljZS52MS5IYWxsQm9va2luZ0ZldGNoUmVzcG9uc2UScgoRSGFsbEJvb2tpbmdDcmVhdGUSLS5jb250cmFjdC5zZXJ2aWNlLnYxLkhhbGxCb29raW5nQ3JlYXRlUmVxdWVzdBouLmNvbnRyYWN0LnNlcnZpY2UudjEuSGFsbEJvb2tpbmdDcmVhdGVSZXNwb25zZRJyChFIYWxsQm9va2luZ0RlbGV0ZRItLmNvbnRyYWN0LnNlcnZpY2UudjEuSGFsbEJvb2tpbmdEZWxldGVSZXF1ZXN0Gi4uY29udHJhY3Quc2VydmljZS52MS5IYWxsQm9va2luZ0RlbGV0ZVJlc3BvbnNlEoQBChdIYWxsQm9va2luZ1N0YXR1c1VwZGF0ZRIzLmNvbnRyYWN0LnNlcnZpY2UudjEuSGFsbEJvb2tpbmdTdGF0dXNVcGRhdGVSZXF1ZXN0GjQuY29udHJhY3Quc2VydmljZS52MS5IYWxsQm9va2luZ1N0YXR1c1VwZGF0ZVJlc3BvbnNlEncKFEhhbGxCb29raW5nTWluZUZldGNoEjAuY29udHJhY3Quc2VydmljZS52MS5IYWxsQm9va2luZ01pbmVGZXRjaFJlcXVlc3QaLS5jb250cmFjdC5zZXJ2aWNlLnYxLkhhbGxCb29raW5nRmV0Y2hSZXNwb25zZULEAQoXY29tLmNvbnRyYWN0LnNlcnZpY2UudjFCEEhhbGxTZXJ2aWNlUHJvdG9QAVopZmVzbXUvY29udHJhY3QvZmVzbXUvc2VydmljZS92MTtzZXJ2aWNldjGiAgNDU1iqAhNDb250cmFjdC5TZXJ2aWNlLlYxygITQ29udHJhY3RcU2VydmljZVxWMeICH0NvbnRyYWN0XFNlcnZpY2VcVjFcR1BCTWV0YWRhdGHqAhVDb250cmFjdDo6U2VydmljZTo6VjFiBnByb3RvMw", [file_fesmu_entity_v1_hall_entity, file_fesmu_enum_v1_hall_enum]);
 
 /**
  * @generated from message contract.service.v1.HallFetchRequest
@@ -214,6 +216,63 @@ export const HallBookingDeleteResponseSchema: GenMessage<HallBookingDeleteRespon
   messageDesc(file_fesmu_service_v1_hall_service, 7);
 
 /**
+ * @generated from message contract.service.v1.HallBookingStatusUpdateRequest
+ */
+export type HallBookingStatusUpdateRequest = Message<"contract.service.v1.HallBookingStatusUpdateRequest"> & {
+  /**
+   * @generated from field: int64 id = 1;
+   */
+  id: bigint;
+
+  /**
+   * @generated from field: contract.enum.v1.HallBookingStatus status = 2;
+   */
+  status: HallBookingStatus;
+
+  /**
+   * @generated from field: string review_comment = 3;
+   */
+  reviewComment: string;
+};
+
+/**
+ * Describes the message contract.service.v1.HallBookingStatusUpdateRequest.
+ * Use `create(HallBookingStatusUpdateRequestSchema)` to create a new message.
+ */
+export const HallBookingStatusUpdateRequestSchema: GenMessage<HallBookingStatusUpdateRequest> = /*@__PURE__*/
+  messageDesc(file_fesmu_service_v1_hall_service, 8);
+
+/**
+ * @generated from message contract.service.v1.HallBookingStatusUpdateResponse
+ */
+export type HallBookingStatusUpdateResponse = Message<"contract.service.v1.HallBookingStatusUpdateResponse"> & {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success: boolean;
+};
+
+/**
+ * Describes the message contract.service.v1.HallBookingStatusUpdateResponse.
+ * Use `create(HallBookingStatusUpdateResponseSchema)` to create a new message.
+ */
+export const HallBookingStatusUpdateResponseSchema: GenMessage<HallBookingStatusUpdateResponse> = /*@__PURE__*/
+  messageDesc(file_fesmu_service_v1_hall_service, 9);
+
+/**
+ * @generated from message contract.service.v1.HallBookingMineFetchRequest
+ */
+export type HallBookingMineFetchRequest = Message<"contract.service.v1.HallBookingMineFetchRequest"> & {
+};
+
+/**
+ * Describes the message contract.service.v1.HallBookingMineFetchRequest.
+ * Use `create(HallBookingMineFetchRequestSchema)` to create a new message.
+ */
+export const HallBookingMineFetchRequestSchema: GenMessage<HallBookingMineFetchRequest> = /*@__PURE__*/
+  messageDesc(file_fesmu_service_v1_hall_service, 10);
+
+/**
  * @generated from service contract.service.v1.HallService
  */
 export const HallService: GenService<{
@@ -260,6 +319,22 @@ export const HallService: GenService<{
     methodKind: "unary";
     input: typeof HallBookingDeleteRequestSchema;
     output: typeof HallBookingDeleteResponseSchema;
+  },
+  /**
+   * @generated from rpc contract.service.v1.HallService.HallBookingStatusUpdate
+   */
+  hallBookingStatusUpdate: {
+    methodKind: "unary";
+    input: typeof HallBookingStatusUpdateRequestSchema;
+    output: typeof HallBookingStatusUpdateResponseSchema;
+  },
+  /**
+   * @generated from rpc contract.service.v1.HallService.HallBookingMineFetch
+   */
+  hallBookingMineFetch: {
+    methodKind: "unary";
+    input: typeof HallBookingMineFetchRequestSchema;
+    output: typeof HallBookingFetchResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_fesmu_service_v1_hall_service, 0);

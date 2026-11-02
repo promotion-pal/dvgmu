@@ -47,6 +47,12 @@ const (
 	// HallServiceHallBookingDeleteProcedure is the fully-qualified name of the HallService's
 	// HallBookingDelete RPC.
 	HallServiceHallBookingDeleteProcedure = "/contract.service.v1.HallService/HallBookingDelete"
+	// HallServiceHallBookingStatusUpdateProcedure is the fully-qualified name of the HallService's
+	// HallBookingStatusUpdate RPC.
+	HallServiceHallBookingStatusUpdateProcedure = "/contract.service.v1.HallService/HallBookingStatusUpdate"
+	// HallServiceHallBookingMineFetchProcedure is the fully-qualified name of the HallService's
+	// HallBookingMineFetch RPC.
+	HallServiceHallBookingMineFetchProcedure = "/contract.service.v1.HallService/HallBookingMineFetch"
 )
 
 // HallServiceClient is a client for the contract.service.v1.HallService service.
@@ -58,6 +64,8 @@ type HallServiceClient interface {
 	HallBookingPublicFetch(context.Context, *connect.Request[v1.HallBookingFetchRequest]) (*connect.Response[v1.HallBookingFetchResponse], error)
 	HallBookingCreate(context.Context, *connect.Request[v1.HallBookingCreateRequest]) (*connect.Response[v1.HallBookingCreateResponse], error)
 	HallBookingDelete(context.Context, *connect.Request[v1.HallBookingDeleteRequest]) (*connect.Response[v1.HallBookingDeleteResponse], error)
+	HallBookingStatusUpdate(context.Context, *connect.Request[v1.HallBookingStatusUpdateRequest]) (*connect.Response[v1.HallBookingStatusUpdateResponse], error)
+	HallBookingMineFetch(context.Context, *connect.Request[v1.HallBookingMineFetchRequest]) (*connect.Response[v1.HallBookingFetchResponse], error)
 }
 
 // NewHallServiceClient constructs a client for the contract.service.v1.HallService service. By
@@ -101,16 +109,30 @@ func NewHallServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(hallServiceMethods.ByName("HallBookingDelete")),
 			connect.WithClientOptions(opts...),
 		),
+		hallBookingStatusUpdate: connect.NewClient[v1.HallBookingStatusUpdateRequest, v1.HallBookingStatusUpdateResponse](
+			httpClient,
+			baseURL+HallServiceHallBookingStatusUpdateProcedure,
+			connect.WithSchema(hallServiceMethods.ByName("HallBookingStatusUpdate")),
+			connect.WithClientOptions(opts...),
+		),
+		hallBookingMineFetch: connect.NewClient[v1.HallBookingMineFetchRequest, v1.HallBookingFetchResponse](
+			httpClient,
+			baseURL+HallServiceHallBookingMineFetchProcedure,
+			connect.WithSchema(hallServiceMethods.ByName("HallBookingMineFetch")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // hallServiceClient implements HallServiceClient.
 type hallServiceClient struct {
-	hallFetch              *connect.Client[v1.HallFetchRequest, v1.HallFetchResponse]
-	hallBookingFetch       *connect.Client[v1.HallBookingFetchRequest, v1.HallBookingFetchResponse]
-	hallBookingPublicFetch *connect.Client[v1.HallBookingFetchRequest, v1.HallBookingFetchResponse]
-	hallBookingCreate      *connect.Client[v1.HallBookingCreateRequest, v1.HallBookingCreateResponse]
-	hallBookingDelete      *connect.Client[v1.HallBookingDeleteRequest, v1.HallBookingDeleteResponse]
+	hallFetch               *connect.Client[v1.HallFetchRequest, v1.HallFetchResponse]
+	hallBookingFetch        *connect.Client[v1.HallBookingFetchRequest, v1.HallBookingFetchResponse]
+	hallBookingPublicFetch  *connect.Client[v1.HallBookingFetchRequest, v1.HallBookingFetchResponse]
+	hallBookingCreate       *connect.Client[v1.HallBookingCreateRequest, v1.HallBookingCreateResponse]
+	hallBookingDelete       *connect.Client[v1.HallBookingDeleteRequest, v1.HallBookingDeleteResponse]
+	hallBookingStatusUpdate *connect.Client[v1.HallBookingStatusUpdateRequest, v1.HallBookingStatusUpdateResponse]
+	hallBookingMineFetch    *connect.Client[v1.HallBookingMineFetchRequest, v1.HallBookingFetchResponse]
 }
 
 // HallFetch calls contract.service.v1.HallService.HallFetch.
@@ -138,6 +160,16 @@ func (c *hallServiceClient) HallBookingDelete(ctx context.Context, req *connect.
 	return c.hallBookingDelete.CallUnary(ctx, req)
 }
 
+// HallBookingStatusUpdate calls contract.service.v1.HallService.HallBookingStatusUpdate.
+func (c *hallServiceClient) HallBookingStatusUpdate(ctx context.Context, req *connect.Request[v1.HallBookingStatusUpdateRequest]) (*connect.Response[v1.HallBookingStatusUpdateResponse], error) {
+	return c.hallBookingStatusUpdate.CallUnary(ctx, req)
+}
+
+// HallBookingMineFetch calls contract.service.v1.HallService.HallBookingMineFetch.
+func (c *hallServiceClient) HallBookingMineFetch(ctx context.Context, req *connect.Request[v1.HallBookingMineFetchRequest]) (*connect.Response[v1.HallBookingFetchResponse], error) {
+	return c.hallBookingMineFetch.CallUnary(ctx, req)
+}
+
 // HallServiceHandler is an implementation of the contract.service.v1.HallService service.
 type HallServiceHandler interface {
 	HallFetch(context.Context, *connect.Request[v1.HallFetchRequest]) (*connect.Response[v1.HallFetchResponse], error)
@@ -147,6 +179,8 @@ type HallServiceHandler interface {
 	HallBookingPublicFetch(context.Context, *connect.Request[v1.HallBookingFetchRequest]) (*connect.Response[v1.HallBookingFetchResponse], error)
 	HallBookingCreate(context.Context, *connect.Request[v1.HallBookingCreateRequest]) (*connect.Response[v1.HallBookingCreateResponse], error)
 	HallBookingDelete(context.Context, *connect.Request[v1.HallBookingDeleteRequest]) (*connect.Response[v1.HallBookingDeleteResponse], error)
+	HallBookingStatusUpdate(context.Context, *connect.Request[v1.HallBookingStatusUpdateRequest]) (*connect.Response[v1.HallBookingStatusUpdateResponse], error)
+	HallBookingMineFetch(context.Context, *connect.Request[v1.HallBookingMineFetchRequest]) (*connect.Response[v1.HallBookingFetchResponse], error)
 }
 
 // NewHallServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -186,6 +220,18 @@ func NewHallServiceHandler(svc HallServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(hallServiceMethods.ByName("HallBookingDelete")),
 		connect.WithHandlerOptions(opts...),
 	)
+	hallServiceHallBookingStatusUpdateHandler := connect.NewUnaryHandler(
+		HallServiceHallBookingStatusUpdateProcedure,
+		svc.HallBookingStatusUpdate,
+		connect.WithSchema(hallServiceMethods.ByName("HallBookingStatusUpdate")),
+		connect.WithHandlerOptions(opts...),
+	)
+	hallServiceHallBookingMineFetchHandler := connect.NewUnaryHandler(
+		HallServiceHallBookingMineFetchProcedure,
+		svc.HallBookingMineFetch,
+		connect.WithSchema(hallServiceMethods.ByName("HallBookingMineFetch")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/contract.service.v1.HallService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case HallServiceHallFetchProcedure:
@@ -198,6 +244,10 @@ func NewHallServiceHandler(svc HallServiceHandler, opts ...connect.HandlerOption
 			hallServiceHallBookingCreateHandler.ServeHTTP(w, r)
 		case HallServiceHallBookingDeleteProcedure:
 			hallServiceHallBookingDeleteHandler.ServeHTTP(w, r)
+		case HallServiceHallBookingStatusUpdateProcedure:
+			hallServiceHallBookingStatusUpdateHandler.ServeHTTP(w, r)
+		case HallServiceHallBookingMineFetchProcedure:
+			hallServiceHallBookingMineFetchHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -225,4 +275,12 @@ func (UnimplementedHallServiceHandler) HallBookingCreate(context.Context, *conne
 
 func (UnimplementedHallServiceHandler) HallBookingDelete(context.Context, *connect.Request[v1.HallBookingDeleteRequest]) (*connect.Response[v1.HallBookingDeleteResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.v1.HallService.HallBookingDelete is not implemented"))
+}
+
+func (UnimplementedHallServiceHandler) HallBookingStatusUpdate(context.Context, *connect.Request[v1.HallBookingStatusUpdateRequest]) (*connect.Response[v1.HallBookingStatusUpdateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.v1.HallService.HallBookingStatusUpdate is not implemented"))
+}
+
+func (UnimplementedHallServiceHandler) HallBookingMineFetch(context.Context, *connect.Request[v1.HallBookingMineFetchRequest]) (*connect.Response[v1.HallBookingFetchResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.v1.HallService.HallBookingMineFetch is not implemented"))
 }

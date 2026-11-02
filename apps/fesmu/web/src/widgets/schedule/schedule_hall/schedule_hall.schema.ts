@@ -32,6 +32,9 @@ export const hallEventSchema = z.object({
     title: z.string(),
     organizer: z.string().optional(),
     contact: z.string().optional(),
+    status: z.enum(["pending", "approved", "rejected", "cancelled"]).default("approved"),
+    reviewComment: z.string().optional(),
+    reviewedBy: z.string().optional(),
 });
 
 export type HallTone = z.infer<typeof scheduleToneSchema>;
@@ -53,6 +56,10 @@ export const hallBookingSchema = z
     .refine((values) => values.timeEnd > values.timeStart, {
         path: ["timeEnd"],
         message: "Окончание должно быть позже начала",
+    })
+    .refine((values) => values.date >= new Date().toLocaleDateString("en-CA"), {
+        path: ["date"],
+        message: "Нельзя выбрать прошедшую дату",
     })
     .refine((values) => values.timeStart >= HALL_DAY_START && values.timeEnd <= HALL_DAY_END, {
         path: ["timeStart"],

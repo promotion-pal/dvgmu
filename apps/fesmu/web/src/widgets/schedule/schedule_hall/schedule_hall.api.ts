@@ -1,5 +1,6 @@
 import { createClient } from "@connectrpc/connect";
 import type { Hall as HallMessage, HallBooking as HallBookingMessage } from "@fesmu/contract/fesmu/entity/v1/hall.entity_pb";
+import { HallBookingStatus } from "@fesmu/contract/fesmu/enum/v1/hall.enum_pb";
 import { HallService } from "@fesmu/contract/fesmu/service/v1/hall.service_pb";
 import { connectTransport } from "@/shared/config/api";
 import { scheduleToneSchema } from "../schedule.schema";
@@ -27,6 +28,14 @@ const fromBookingMessage = (message: HallBookingMessage): HallEvent =>
         title: message.title,
         organizer: message.organizer || undefined,
         contact: message.contact || undefined,
+        status: ({
+            [HallBookingStatus.PENDING]: "pending",
+            [HallBookingStatus.APPROVED]: "approved",
+            [HallBookingStatus.REJECTED]: "rejected",
+            [HallBookingStatus.CANCELLED]: "cancelled",
+        } as Record<number, "pending" | "approved" | "rejected" | "cancelled">)[message.status] ?? "approved",
+        reviewComment: message.reviewComment || undefined,
+        reviewedBy: message.reviewedBy || undefined,
     });
 
 /** Who is looking: staff see who booked a hall, everyone else only when. */
@@ -42,6 +51,10 @@ export const hallApi = {
     async fetchBookings(viewer: HallViewer): Promise<HallEvent[]> {
         const response =
             viewer === "staff" ? await client.hallBookingFetch({}) : await client.hallBookingPublicFetch({});
+        return response.list.map(fromBookingMessage);
+    },
+    async fetchMine(): Promise<HallEvent[]> {
+        const response = await client.hallBookingMineFetch({});
         return response.list.map(fromBookingMessage);
     },
 
@@ -60,5 +73,8 @@ export const hallApi = {
 
     async removeBooking(id: string): Promise<void> {
         await client.hallBookingDelete({ id: BigInt(id) });
+    },
+    async updateStatus(id: string, status: "approved" | "rejected", reviewComment = ""): Promise<void> {
+        await client.hallBookingStatusUpdate({ id: BigInt(id), status: status === "approved" ? HallBookingStatus.APPROVED : HallBookingStatus.REJECTED, reviewComment });
     },
 };

@@ -3,6 +3,7 @@ syntax = "proto3";
 package contract.service.v1;
 
 import "fesmu/entity/v1/hall.entity.proto";
+import "fesmu/enum/v1/hall.enum.proto";
 
 option go_package = "service_v1;service_pb";
 
@@ -15,6 +16,8 @@ service HallService {
     rpc HallBookingPublicFetch (HallBookingFetchRequest) returns (HallBookingFetchResponse);
     rpc HallBookingCreate (HallBookingCreateRequest) returns (HallBookingCreateResponse);
     rpc HallBookingDelete (HallBookingDeleteRequest) returns (HallBookingDeleteResponse);
+    rpc HallBookingStatusUpdate (HallBookingStatusUpdateRequest) returns (HallBookingStatusUpdateResponse);
+    rpc HallBookingMineFetch (HallBookingMineFetchRequest) returns (HallBookingFetchResponse);
 }
 
 message HallFetchRequest {
@@ -63,3 +66,15 @@ message HallBookingDeleteResponse {
     bool success = 1;
     string message = 2;
 }
+
+message HallBookingStatusUpdateRequest {
+    int64 id = 1;
+    contract.enum.v1.HallBookingStatus status = 2;
+    string review_comment = 3;
+}
+
+message HallBookingStatusUpdateResponse {
+    bool success = 1;
+}
+
+message HallBookingMineFetchRequest {}

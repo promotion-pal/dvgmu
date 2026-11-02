@@ -129,9 +129,7 @@ function App() {
             <Route path={ROUTE.STUDY.SCHEDULE_NEW} element={<ScheduleEditorPage />} />
             <Route path={ROUTE.STUDY.SCHEDULE_EDIT} element={<ScheduleEditorPage />} />
           </Route>
-          <Route element={<AllowSection section={PermissionSection.HALLS} />}>
-            <Route path={ROUTE.STUDY.SCHEDULE_HALL} element={<ScheduleHallPage />} />
-          </Route>
+          <Route path={ROUTE.STUDY.SCHEDULE_HALL} element={<ScheduleHallPage />} />
           <Route element={<AllowSection section={PermissionSection.COMPUTER_CLASSES} />}>
             <Route path={ROUTE.STUDY.COMPUTER_CLASS} element={<ComputerClassPage />} />
           </Route>

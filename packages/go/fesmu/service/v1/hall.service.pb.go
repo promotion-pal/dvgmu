@@ -8,6 +8,7 @@ package servicev1
 
 import (
 	v1 "fesmu/contract/fesmu/entity/v1"
+	v11 "fesmu/contract/fesmu/enum/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -466,11 +467,151 @@ func (x *HallBookingDeleteResponse) GetMessage() string {
 	return ""
 }
 
+type HallBookingStatusUpdateRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Status        v11.HallBookingStatus  `protobuf:"varint,2,opt,name=status,proto3,enum=contract.enum.v1.HallBookingStatus" json:"status,omitempty"`
+	ReviewComment string                 `protobuf:"bytes,3,opt,name=review_comment,json=reviewComment,proto3" json:"review_comment,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *HallBookingStatusUpdateRequest) Reset() {
+	*x = HallBookingStatusUpdateRequest{}
+	mi := &file_fesmu_service_v1_hall_service_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *HallBookingStatusUpdateRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HallBookingStatusUpdateRequest) ProtoMessage() {}
+
+func (x *HallBookingStatusUpdateRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_fesmu_service_v1_hall_service_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HallBookingStatusUpdateRequest.ProtoReflect.Descriptor instead.
+func (*HallBookingStatusUpdateRequest) Descriptor() ([]byte, []int) {
+	return file_fesmu_service_v1_hall_service_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *HallBookingStatusUpdateRequest) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *HallBookingStatusUpdateRequest) GetStatus() v11.HallBookingStatus {
+	if x != nil {
+		return x.Status
+	}
+	return v11.HallBookingStatus(0)
+}
+
+func (x *HallBookingStatusUpdateRequest) GetReviewComment() string {
+	if x != nil {
+		return x.ReviewComment
+	}
+	return ""
+}
+
+type HallBookingStatusUpdateResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *HallBookingStatusUpdateResponse) Reset() {
+	*x = HallBookingStatusUpdateResponse{}
+	mi := &file_fesmu_service_v1_hall_service_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *HallBookingStatusUpdateResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HallBookingStatusUpdateResponse) ProtoMessage() {}
+
+func (x *HallBookingStatusUpdateResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_fesmu_service_v1_hall_service_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HallBookingStatusUpdateResponse.ProtoReflect.Descriptor instead.
+func (*HallBookingStatusUpdateResponse) Descriptor() ([]byte, []int) {
+	return file_fesmu_service_v1_hall_service_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *HallBookingStatusUpdateResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+type HallBookingMineFetchRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *HallBookingMineFetchRequest) Reset() {
+	*x = HallBookingMineFetchRequest{}
+	mi := &file_fesmu_service_v1_hall_service_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *HallBookingMineFetchRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HallBookingMineFetchRequest) ProtoMessage() {}
+
+func (x *HallBookingMineFetchRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_fesmu_service_v1_hall_service_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HallBookingMineFetchRequest.ProtoReflect.Descriptor instead.
+func (*HallBookingMineFetchRequest) Descriptor() ([]byte, []int) {
+	return file_fesmu_service_v1_hall_service_proto_rawDescGZIP(), []int{10}
+}
+
 var File_fesmu_service_v1_hall_service_proto protoreflect.FileDescriptor
 
 const file_fesmu_service_v1_hall_service_proto_rawDesc = "" +
 	"\n" +
-	"#fesmu/service/v1/hall.service.proto\x12\x13contract.service.v1\x1a!fesmu/entity/v1/hall.entity.proto\"\x12\n" +
+	"#fesmu/service/v1/hall.service.proto\x12\x13contract.service.v1\x1a!fesmu/entity/v1/hall.entity.proto\x1a\x1dfesmu/enum/v1/hall.enum.proto\"\x12\n" +
 	"\x10HallFetchRequest\"A\n" +
 	"\x11HallFetchResponse\x12,\n" +
 	"\x04list\x18\x01 \x03(\v2\x18.contract.entity.v1.HallR\x04list\"h\n" +
@@ -498,13 +639,22 @@ const file_fesmu_service_v1_hall_service_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\"O\n" +
 	"\x19HallBookingDeleteResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage2\xb9\x04\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\"\x94\x01\n" +
+	"\x1eHallBookingStatusUpdateRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12;\n" +
+	"\x06status\x18\x02 \x01(\x0e2#.contract.enum.v1.HallBookingStatusR\x06status\x12%\n" +
+	"\x0ereview_comment\x18\x03 \x01(\tR\rreviewComment\";\n" +
+	"\x1fHallBookingStatusUpdateResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"\x1d\n" +
+	"\x1bHallBookingMineFetchRequest2\xb9\x06\n" +
 	"\vHallService\x12Z\n" +
 	"\tHallFetch\x12%.contract.service.v1.HallFetchRequest\x1a&.contract.service.v1.HallFetchResponse\x12o\n" +
 	"\x10HallBookingFetch\x12,.contract.service.v1.HallBookingFetchRequest\x1a-.contract.service.v1.HallBookingFetchResponse\x12u\n" +
 	"\x16HallBookingPublicFetch\x12,.contract.service.v1.HallBookingFetchRequest\x1a-.contract.service.v1.HallBookingFetchResponse\x12r\n" +
 	"\x11HallBookingCreate\x12-.contract.service.v1.HallBookingCreateRequest\x1a..contract.service.v1.HallBookingCreateResponse\x12r\n" +
-	"\x11HallBookingDelete\x12-.contract.service.v1.HallBookingDeleteRequest\x1a..contract.service.v1.HallBookingDeleteResponseB\xc4\x01\n" +
+	"\x11HallBookingDelete\x12-.contract.service.v1.HallBookingDeleteRequest\x1a..contract.service.v1.HallBookingDeleteResponse\x12\x84\x01\n" +
+	"\x17HallBookingStatusUpdate\x123.contract.service.v1.HallBookingStatusUpdateRequest\x1a4.contract.service.v1.HallBookingStatusUpdateResponse\x12w\n" +
+	"\x14HallBookingMineFetch\x120.contract.service.v1.HallBookingMineFetchRequest\x1a-.contract.service.v1.HallBookingFetchResponseB\xc4\x01\n" +
 	"\x17com.contract.service.v1B\x10HallServiceProtoP\x01Z)fesmu/contract/fesmu/service/v1;servicev1\xa2\x02\x03CSX\xaa\x02\x13Contract.Service.V1\xca\x02\x13Contract\\Service\\V1\xe2\x02\x1fContract\\Service\\V1\\GPBMetadata\xea\x02\x15Contract::Service::V1b\x06proto3"
 
 var (
@@ -519,37 +669,46 @@ func file_fesmu_service_v1_hall_service_proto_rawDescGZIP() []byte {
 	return file_fesmu_service_v1_hall_service_proto_rawDescData
 }
 
-var file_fesmu_service_v1_hall_service_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_fesmu_service_v1_hall_service_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_fesmu_service_v1_hall_service_proto_goTypes = []any{
-	(*HallFetchRequest)(nil),          // 0: contract.service.v1.HallFetchRequest
-	(*HallFetchResponse)(nil),         // 1: contract.service.v1.HallFetchResponse
-	(*HallBookingFetchRequest)(nil),   // 2: contract.service.v1.HallBookingFetchRequest
-	(*HallBookingFetchResponse)(nil),  // 3: contract.service.v1.HallBookingFetchResponse
-	(*HallBookingCreateRequest)(nil),  // 4: contract.service.v1.HallBookingCreateRequest
-	(*HallBookingCreateResponse)(nil), // 5: contract.service.v1.HallBookingCreateResponse
-	(*HallBookingDeleteRequest)(nil),  // 6: contract.service.v1.HallBookingDeleteRequest
-	(*HallBookingDeleteResponse)(nil), // 7: contract.service.v1.HallBookingDeleteResponse
-	(*v1.Hall)(nil),                   // 8: contract.entity.v1.Hall
-	(*v1.HallBooking)(nil),            // 9: contract.entity.v1.HallBooking
+	(*HallFetchRequest)(nil),                // 0: contract.service.v1.HallFetchRequest
+	(*HallFetchResponse)(nil),               // 1: contract.service.v1.HallFetchResponse
+	(*HallBookingFetchRequest)(nil),         // 2: contract.service.v1.HallBookingFetchRequest
+	(*HallBookingFetchResponse)(nil),        // 3: contract.service.v1.HallBookingFetchResponse
+	(*HallBookingCreateRequest)(nil),        // 4: contract.service.v1.HallBookingCreateRequest
+	(*HallBookingCreateResponse)(nil),       // 5: contract.service.v1.HallBookingCreateResponse
+	(*HallBookingDeleteRequest)(nil),        // 6: contract.service.v1.HallBookingDeleteRequest
+	(*HallBookingDeleteResponse)(nil),       // 7: contract.service.v1.HallBookingDeleteResponse
+	(*HallBookingStatusUpdateRequest)(nil),  // 8: contract.service.v1.HallBookingStatusUpdateRequest
+	(*HallBookingStatusUpdateResponse)(nil), // 9: contract.service.v1.HallBookingStatusUpdateResponse
+	(*HallBookingMineFetchRequest)(nil),     // 10: contract.service.v1.HallBookingMineFetchRequest
+	(*v1.Hall)(nil),                         // 11: contract.entity.v1.Hall
+	(*v1.HallBooking)(nil),                  // 12: contract.entity.v1.HallBooking
+	(v11.HallBookingStatus)(0),              // 13: contract.enum.v1.HallBookingStatus
 }
 var file_fesmu_service_v1_hall_service_proto_depIdxs = []int32{
-	8, // 0: contract.service.v1.HallFetchResponse.list:type_name -> contract.entity.v1.Hall
-	9, // 1: contract.service.v1.HallBookingFetchResponse.list:type_name -> contract.entity.v1.HallBooking
-	0, // 2: contract.service.v1.HallService.HallFetch:input_type -> contract.service.v1.HallFetchRequest
-	2, // 3: contract.service.v1.HallService.HallBookingFetch:input_type -> contract.service.v1.HallBookingFetchRequest
-	2, // 4: contract.service.v1.HallService.HallBookingPublicFetch:input_type -> contract.service.v1.HallBookingFetchRequest
-	4, // 5: contract.service.v1.HallService.HallBookingCreate:input_type -> contract.service.v1.HallBookingCreateRequest
-	6, // 6: contract.service.v1.HallService.HallBookingDelete:input_type -> contract.service.v1.HallBookingDeleteRequest
-	1, // 7: contract.service.v1.HallService.HallFetch:output_type -> contract.service.v1.HallFetchResponse
-	3, // 8: contract.service.v1.HallService.HallBookingFetch:output_type -> contract.service.v1.HallBookingFetchResponse
-	3, // 9: contract.service.v1.HallService.HallBookingPublicFetch:output_type -> contract.service.v1.HallBookingFetchResponse
-	5, // 10: contract.service.v1.HallService.HallBookingCreate:output_type -> contract.service.v1.HallBookingCreateResponse
-	7, // 11: contract.service.v1.HallService.HallBookingDelete:output_type -> contract.service.v1.HallBookingDeleteResponse
-	7, // [7:12] is the sub-list for method output_type
-	2, // [2:7] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	11, // 0: contract.service.v1.HallFetchResponse.list:type_name -> contract.entity.v1.Hall
+	12, // 1: contract.service.v1.HallBookingFetchResponse.list:type_name -> contract.entity.v1.HallBooking
+	13, // 2: contract.service.v1.HallBookingStatusUpdateRequest.status:type_name -> contract.enum.v1.HallBookingStatus
+	0,  // 3: contract.service.v1.HallService.HallFetch:input_type -> contract.service.v1.HallFetchRequest
+	2,  // 4: contract.service.v1.HallService.HallBookingFetch:input_type -> contract.service.v1.HallBookingFetchRequest
+	2,  // 5: contract.service.v1.HallService.HallBookingPublicFetch:input_type -> contract.service.v1.HallBookingFetchRequest
+	4,  // 6: contract.service.v1.HallService.HallBookingCreate:input_type -> contract.service.v1.HallBookingCreateRequest
+	6,  // 7: contract.service.v1.HallService.HallBookingDelete:input_type -> contract.service.v1.HallBookingDeleteRequest
+	8,  // 8: contract.service.v1.HallService.HallBookingStatusUpdate:input_type -> contract.service.v1.HallBookingStatusUpdateRequest
+	10, // 9: contract.service.v1.HallService.HallBookingMineFetch:input_type -> contract.service.v1.HallBookingMineFetchRequest
+	1,  // 10: contract.service.v1.HallService.HallFetch:output_type -> contract.service.v1.HallFetchResponse
+	3,  // 11: contract.service.v1.HallService.HallBookingFetch:output_type -> contract.service.v1.HallBookingFetchResponse
+	3,  // 12: contract.service.v1.HallService.HallBookingPublicFetch:output_type -> contract.service.v1.HallBookingFetchResponse
+	5,  // 13: contract.service.v1.HallService.HallBookingCreate:output_type -> contract.service.v1.HallBookingCreateResponse
+	7,  // 14: contract.service.v1.HallService.HallBookingDelete:output_type -> contract.service.v1.HallBookingDeleteResponse
+	9,  // 15: contract.service.v1.HallService.HallBookingStatusUpdate:output_type -> contract.service.v1.HallBookingStatusUpdateResponse
+	3,  // 16: contract.service.v1.HallService.HallBookingMineFetch:output_type -> contract.service.v1.HallBookingFetchResponse
+	10, // [10:17] is the sub-list for method output_type
+	3,  // [3:10] is the sub-list for method input_type
+	3,  // [3:3] is the sub-list for extension type_name
+	3,  // [3:3] is the sub-list for extension extendee
+	0,  // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_fesmu_service_v1_hall_service_proto_init() }
@@ -563,7 +722,7 @@ func file_fesmu_service_v1_hall_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_fesmu_service_v1_hall_service_proto_rawDesc), len(file_fesmu_service_v1_hall_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

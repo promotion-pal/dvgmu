@@ -155,7 +155,8 @@ func New(
 		authInterceptor.Skip[serviceconnect.VaccinationServiceVaccinationSignupCreateProcedure] = true
 		authInterceptor.Skip[serviceconnect.HallServiceHallFetchProcedure] = true
 		authInterceptor.Skip[serviceconnect.HallServiceHallBookingPublicFetchProcedure] = true
-		authInterceptor.Skip[serviceconnect.HallServiceHallBookingCreateProcedure] = true
+		authInterceptor.Optional[serviceconnect.HallServiceHallBookingCreateProcedure] = true
+		authInterceptor.Optional[serviceconnect.HallServiceHallBookingMineFetchProcedure] = true
 		// Students take a test by its session link, without a login; these
 		// calls never send which options are correct.
 		authInterceptor.Skip[serviceconnect.TestSessionServiceTestTakeInfoProcedure] = true

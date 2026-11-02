@@ -10,6 +10,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	entity "fesmu/contract/fesmu/entity/v1"
+	enum "fesmu/contract/fesmu/enum/v1"
 )
 
 var (
@@ -68,6 +69,12 @@ type HallBooking struct {
 	// ConsentedAt is when the organizer agreed to the processing of their
 	// personal data; empty only for bookings that predate the consent (the seed).
 	ConsentedAt *time.Time
+	Status string `gorm:"size:16;not null;default:'PENDING'"`
+	ApplicantRole string `gorm:"size:64;not null;default:''"`
+	ApplicantID string `gorm:"size:64;not null;default:'';index"`
+	ReviewComment string `gorm:"type:text;not null;default:''"`
+	ReviewedBy string `gorm:"size:255;not null;default:''"`
+	ReviewedAt *time.Time
 
 	CreatedAt time.Time
 	UpdatedAt time.Time
@@ -85,6 +92,20 @@ func (b *HallBooking) ToProto() *entity.HallBooking {
 		Contact:   b.Contact,
 		CreatedAt: timestamppb.New(b.CreatedAt),
 		UpdatedAt: timestamppb.New(b.UpdatedAt),
+		Status: hallStatusProto(b.Status),
+		ApplicantRole: b.ApplicantRole,
+		ReviewComment: b.ReviewComment,
+		ReviewedBy: b.ReviewedBy,
+		ReviewedAt: func() *timestamppb.Timestamp { if b.ReviewedAt == nil { return nil }; return timestamppb.New(*b.ReviewedAt) }(),
+	}
+}
+
+func hallStatusProto(status string) enum.HallBookingStatus {
+	switch status {
+	case "APPROVED": return enum.HallBookingStatus_HALL_BOOKING_STATUS_APPROVED
+	case "REJECTED": return enum.HallBookingStatus_HALL_BOOKING_STATUS_REJECTED
+	case "CANCELLED": return enum.HallBookingStatus_HALL_BOOKING_STATUS_CANCELLED
+	default: return enum.HallBookingStatus_HALL_BOOKING_STATUS_PENDING
 	}
 }
 
@@ -101,6 +122,8 @@ type HallBookingFilter struct {
 	HallID   int64
 	DateFrom string
 	DateTo   string
+	ApprovedOnly bool
+	ApplicantID string
 }
 
 type HallBookingCreateParams struct {
@@ -112,6 +135,8 @@ type HallBookingCreateParams struct {
 	Organizer string
 	Contact   string
 	Consent   bool
+	ApplicantRole string
+	ApplicantID string
 }
 
 var hallClockRe = regexp.MustCompile(`^([01]\d|2[0-3]):[0-5]\d$`)
@@ -129,6 +154,9 @@ func NewHallBooking(params HallBookingCreateParams, now time.Time) (*HallBooking
 		Contact:   strings.TrimSpace(params.Contact),
 		CreatedAt: now,
 		UpdatedAt: now,
+		Status: "PENDING",
+		ApplicantRole: strings.TrimSpace(params.ApplicantRole),
+		ApplicantID: strings.TrimSpace(params.ApplicantID),
 	}
 
 	if err := b.Validate(); err != nil {

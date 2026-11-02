@@ -3,6 +3,7 @@ syntax = "proto3";
 package contract.entity.v1;
 
 import "google/protobuf/timestamp.proto";
+import "fesmu/enum/v1/hall.enum.proto";
 
 option go_package = "entity_v1;entity_pb";
 
@@ -20,8 +21,9 @@ message Hall {
   google.protobuf.Timestamp updated_at = 6;
 }
 
-// HallBooking is one entry on a hall's calendar: a lecture, a meeting, a
-// record slot — whatever holds the room from time_start to time_end.
+// HallBooking is a request for a hall and, once approved, one entry on the
+// hall's calendar: a lecture, a meeting, a record slot — whatever holds the
+// room from time_start to time_end. Only APPROVED bookings hold the room.
 message HallBooking {
   int64 id = 1;
   int64 hall_id = 2;
@@ -31,13 +33,23 @@ message HallBooking {
   // HH:MM, time_start < time_end, both within the hall's working day.
   string time_start = 4;
   string time_end = 5;
+  // What the hall is needed for (the reason of the request).
   string title = 6;
 
-  // Who booked the hall and how to reach them. Personal data: filled in only
-  // by HallBookingFetch (staff), always empty in HallBookingPublicFetch.
+  // The applicant: full name and how to reach them (e-mail), taken from the
+  // signed-in session. Personal data: filled in only for staff and for the
+  // applicant's own requests, always empty in HallBookingPublicFetch.
   string organizer = 7;
   string contact = 8;
 
   google.protobuf.Timestamp created_at = 9;
   google.protobuf.Timestamp updated_at = 10;
+
+  contract.enum.v1.HallBookingStatus status = 11;
+  // The applicant's role(s) at the portal, as a label ("Сотрудник").
+  string applicant_role = 12;
+  // The reviewer's decision: comment, who decided and when (empty while PENDING).
+  string review_comment = 13;
+  string reviewed_by = 14;
+  google.protobuf.Timestamp reviewed_at = 15;
 }

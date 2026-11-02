@@ -79,7 +79,7 @@ const useHallBookingForm = ({ defaultDate, onBooked }: UseHallBookingFormProps) 
     const handleSubmit = form.handleSubmit(async (values) => {
         try {
             await hallApi.createBooking(values);
-            toast.success("Зал забронирован");
+            toast.success("Заявка отправлена на проверку");
             form.reset({
                 ...emptyValues(),
                 hallId: values.hallId,
@@ -107,11 +107,12 @@ const useHallBookingForm = ({ defaultDate, onBooked }: UseHallBookingFormProps) 
 interface UseScheduleHallProps {
     /** Staff see who booked and may book/cancel; the public calendar is read-only. */
     viewer: HallViewer;
+    onBooked?: () => Promise<void> | void;
 }
 
 /** State of the hall-occupancy calendar: the loaded halls/bookings, the month
  * being viewed and the hall filter — plus, for staff, booking and cancelling. */
-const useScheduleHall = ({ viewer }: UseScheduleHallProps) => {
+const useScheduleHall = ({ viewer, onBooked }: UseScheduleHallProps) => {
     const { halls, events, loading, error, fetch } = useHallData(viewer);
 
     const [today] = useState(todayIso);
@@ -124,6 +125,7 @@ const useScheduleHall = ({ viewer }: UseScheduleHallProps) => {
         onBooked: async () => {
             bookingModal.closeModal();
             await fetch();
+        await onBooked?.();
         },
     });
 
@@ -147,7 +149,7 @@ const useScheduleHall = ({ viewer }: UseScheduleHallProps) => {
     };
 
     const weeks = useMemo(
-        () => buildMonthWeeks(cursor, events, halls, filters, today),
+        () => buildMonthWeeks(cursor, events.filter((event) => event.status === "approved"), halls, filters, today),
         [cursor, events, halls, filters, today],
     );
     const hallOptions = useMemo(() => buildHallOptions(halls), [halls]);
@@ -164,6 +166,7 @@ const useScheduleHall = ({ viewer }: UseScheduleHallProps) => {
         error,
         empty: halls.length === 0,
         halls,
+        events,
         hallOptions,
         filters,
         changeHall,

@@ -7,6 +7,7 @@
 package entityv1
 
 import (
+	v1 "fesmu/contract/fesmu/enum/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -109,8 +110,9 @@ func (x *Hall) GetUpdatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
-// HallBooking is one entry on a hall's calendar: a lecture, a meeting, a
-// record slot — whatever holds the room from time_start to time_end.
+// HallBooking is a request for a hall and, once approved, one entry on the
+// hall's calendar: a lecture, a meeting, a record slot — whatever holds the
+// room from time_start to time_end. Only APPROVED bookings hold the room.
 type HallBooking struct {
 	state  protoimpl.MessageState `protogen:"open.v1"`
 	Id     int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -120,13 +122,22 @@ type HallBooking struct {
 	// HH:MM, time_start < time_end, both within the hall's working day.
 	TimeStart string `protobuf:"bytes,4,opt,name=time_start,json=timeStart,proto3" json:"time_start,omitempty"`
 	TimeEnd   string `protobuf:"bytes,5,opt,name=time_end,json=timeEnd,proto3" json:"time_end,omitempty"`
-	Title     string `protobuf:"bytes,6,opt,name=title,proto3" json:"title,omitempty"`
-	// Who booked the hall and how to reach them. Personal data: filled in only
-	// by HallBookingFetch (staff), always empty in HallBookingPublicFetch.
-	Organizer     string                 `protobuf:"bytes,7,opt,name=organizer,proto3" json:"organizer,omitempty"`
-	Contact       string                 `protobuf:"bytes,8,opt,name=contact,proto3" json:"contact,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	// What the hall is needed for (the reason of the request).
+	Title string `protobuf:"bytes,6,opt,name=title,proto3" json:"title,omitempty"`
+	// The applicant: full name and how to reach them (e-mail), taken from the
+	// signed-in session. Personal data: filled in only for staff and for the
+	// applicant's own requests, always empty in HallBookingPublicFetch.
+	Organizer string                 `protobuf:"bytes,7,opt,name=organizer,proto3" json:"organizer,omitempty"`
+	Contact   string                 `protobuf:"bytes,8,opt,name=contact,proto3" json:"contact,omitempty"`
+	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	Status    v1.HallBookingStatus   `protobuf:"varint,11,opt,name=status,proto3,enum=contract.enum.v1.HallBookingStatus" json:"status,omitempty"`
+	// The applicant's role(s) at the portal, as a label ("Сотрудник").
+	ApplicantRole string `protobuf:"bytes,12,opt,name=applicant_role,json=applicantRole,proto3" json:"applicant_role,omitempty"`
+	// The reviewer's decision: comment, who decided and when (empty while PENDING).
+	ReviewComment string                 `protobuf:"bytes,13,opt,name=review_comment,json=reviewComment,proto3" json:"review_comment,omitempty"`
+	ReviewedBy    string                 `protobuf:"bytes,14,opt,name=reviewed_by,json=reviewedBy,proto3" json:"reviewed_by,omitempty"`
+	ReviewedAt    *timestamppb.Timestamp `protobuf:"bytes,15,opt,name=reviewed_at,json=reviewedAt,proto3" json:"reviewed_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -231,11 +242,46 @@ func (x *HallBooking) GetUpdatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
+func (x *HallBooking) GetStatus() v1.HallBookingStatus {
+	if x != nil {
+		return x.Status
+	}
+	return v1.HallBookingStatus(0)
+}
+
+func (x *HallBooking) GetApplicantRole() string {
+	if x != nil {
+		return x.ApplicantRole
+	}
+	return ""
+}
+
+func (x *HallBooking) GetReviewComment() string {
+	if x != nil {
+		return x.ReviewComment
+	}
+	return ""
+}
+
+func (x *HallBooking) GetReviewedBy() string {
+	if x != nil {
+		return x.ReviewedBy
+	}
+	return ""
+}
+
+func (x *HallBooking) GetReviewedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.ReviewedAt
+	}
+	return nil
+}
+
 var File_fesmu_entity_v1_hall_entity_proto protoreflect.FileDescriptor
 
 const file_fesmu_entity_v1_hall_entity_proto_rawDesc = "" +
 	"\n" +
-	"!fesmu/entity/v1/hall.entity.proto\x12\x12contract.entity.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xd0\x01\n" +
+	"!fesmu/entity/v1/hall.entity.proto\x12\x12contract.entity.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1dfesmu/enum/v1/hall.enum.proto\"\xd0\x01\n" +
 	"\x04Hall\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1a\n" +
@@ -244,7 +290,7 @@ const file_fesmu_entity_v1_hall_entity_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
-	"updated_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"\xc8\x02\n" +
+	"updated_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"\xb1\x04\n" +
 	"\vHallBooking\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x17\n" +
 	"\ahall_id\x18\x02 \x01(\x03R\x06hallId\x12\x12\n" +
@@ -259,7 +305,14 @@ const file_fesmu_entity_v1_hall_entity_proto_rawDesc = "" +
 	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
 	"updated_at\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAtB\xbc\x01\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12;\n" +
+	"\x06status\x18\v \x01(\x0e2#.contract.enum.v1.HallBookingStatusR\x06status\x12%\n" +
+	"\x0eapplicant_role\x18\f \x01(\tR\rapplicantRole\x12%\n" +
+	"\x0ereview_comment\x18\r \x01(\tR\rreviewComment\x12\x1f\n" +
+	"\vreviewed_by\x18\x0e \x01(\tR\n" +
+	"reviewedBy\x12;\n" +
+	"\vreviewed_at\x18\x0f \x01(\v2\x1a.google.protobuf.TimestampR\n" +
+	"reviewedAtB\xbc\x01\n" +
 	"\x16com.contract.entity.v1B\x0fHallEntityProtoP\x01Z'fesmu/contract/fesmu/entity/v1;entityv1\xa2\x02\x03CEX\xaa\x02\x12Contract.Entity.V1\xca\x02\x12Contract\\Entity\\V1\xe2\x02\x1eContract\\Entity\\V1\\GPBMetadata\xea\x02\x14Contract::Entity::V1b\x06proto3"
 
 var (
@@ -279,17 +332,20 @@ var file_fesmu_entity_v1_hall_entity_proto_goTypes = []any{
 	(*Hall)(nil),                  // 0: contract.entity.v1.Hall
 	(*HallBooking)(nil),           // 1: contract.entity.v1.HallBooking
 	(*timestamppb.Timestamp)(nil), // 2: google.protobuf.Timestamp
+	(v1.HallBookingStatus)(0),     // 3: contract.enum.v1.HallBookingStatus
 }
 var file_fesmu_entity_v1_hall_entity_proto_depIdxs = []int32{
 	2, // 0: contract.entity.v1.Hall.created_at:type_name -> google.protobuf.Timestamp
 	2, // 1: contract.entity.v1.Hall.updated_at:type_name -> google.protobuf.Timestamp
 	2, // 2: contract.entity.v1.HallBooking.created_at:type_name -> google.protobuf.Timestamp
 	2, // 3: contract.entity.v1.HallBooking.updated_at:type_name -> google.protobuf.Timestamp
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	3, // 4: contract.entity.v1.HallBooking.status:type_name -> contract.enum.v1.HallBookingStatus
+	2, // 5: contract.entity.v1.HallBooking.reviewed_at:type_name -> google.protobuf.Timestamp
+	6, // [6:6] is the sub-list for method output_type
+	6, // [6:6] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_fesmu_entity_v1_hall_entity_proto_init() }

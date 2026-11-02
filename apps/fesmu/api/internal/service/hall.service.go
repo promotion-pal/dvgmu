@@ -13,6 +13,7 @@ import (
 type HallSaver interface {
 	HallBookingCreate(ctx context.Context, booking *models.HallBooking) (int64, error)
 	HallBookingDelete(ctx context.Context, id int64) error
+	HallBookingStatusUpdate(ctx context.Context, id int64, status, comment, reviewer string) error
 }
 
 type HallProvider interface {
@@ -106,4 +107,8 @@ func (s *HallService) HallBookingDelete(ctx context.Context, id int64) error {
 
 	log.Info(utils.MSGDeleteSuccess("hall booking", id))
 	return nil
+}
+
+func (s *HallService) HallBookingStatusUpdate(ctx context.Context, id int64, status, comment, reviewer string) error {
+	return s.saver.HallBookingStatusUpdate(ctx, id, status, comment, reviewer)
 }

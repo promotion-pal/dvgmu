@@ -59,6 +59,13 @@ func (m *memoryHallStorage) HallBookingDelete(_ context.Context, id int64) error
 	return nil
 }
 
+func (m *memoryHallStorage) HallBookingStatusUpdate(_ context.Context, id int64, status, comment, reviewer string) error {
+	booking, ok := m.bookings[id]
+	if !ok || booking.Status != "PENDING" { return models.ErrHallBookingNotFound }
+	booking.Status, booking.ReviewComment, booking.ReviewedBy = status, comment, reviewer
+	return nil
+}
+
 func newTestHallHandler() *HallHandler {
 	store := &memoryHallStorage{bookings: map[int64]*models.HallBooking{}}
 	log := slog.New(slog.NewTextHandler(io.Discard, nil))

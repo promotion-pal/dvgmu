@@ -188,11 +188,12 @@ interface HallBookingFieldsProps {
     withDate?: boolean;
     /** Hides the hall select when the page already has its own. */
     withHall?: boolean;
+    readOnlyApplicant?: boolean;
 }
 
 /** The fields of a booking — one set for the admin modal and the public page.
  * Must be rendered inside the form's FormProvider. */
-const HallBookingFields: FC<HallBookingFieldsProps> = ({ hallOptions, withDate = true, withHall = true }) => {
+const HallBookingFields: FC<HallBookingFieldsProps> = ({ hallOptions, withDate = true, withHall = true, readOnlyApplicant = false }) => {
     const FieldInput = PromFieldInput<HallBookingSchema>;
     const FieldSelect = PromFieldSelect<HallBookingSchema>;
 
@@ -209,8 +210,8 @@ const HallBookingFields: FC<HallBookingFieldsProps> = ({ hallOptions, withDate =
             <FieldInput name="title" label="Мероприятие" placeholder="Например: Учёный совет" maxLength={255} />
 
             <div className="grid gap-4 sm:grid-cols-2">
-                <FieldInput name="organizer" label="Кто бронирует" placeholder="ФИО, подразделение" maxLength={255} />
-                <FieldInput name="contact" label="Телефон или e-mail" placeholder="+7 900 000-00-00" maxLength={255} />
+                <FieldInput name="organizer" label="Кто бронирует" placeholder="ФИО, подразделение" maxLength={255} readOnly={readOnlyApplicant} />
+                <FieldInput name="contact" label="Телефон или e-mail" placeholder="+7 900 000-00-00" maxLength={255} readOnly={readOnlyApplicant} />
             </div>
 
             <PromFieldCheckbox<HallBookingSchema>
@@ -237,25 +238,26 @@ interface HallBookingModalProps {
     modal: ScheduleHall["bookingModal"];
     bookingForm: HallBookingFormState;
     hallOptions: ScheduleHall["hallOptions"];
+    readOnlyApplicant?: boolean;
 }
 
 /** Staff booking from the admin calendar: the same fields as the public page. */
-const HallBookingModal: FC<HallBookingModalProps> = ({ modal, bookingForm, hallOptions }) => {
+const HallBookingModal: FC<HallBookingModalProps> = ({ modal, bookingForm, hallOptions, readOnlyApplicant = false }) => {
     const { form, handleSubmit } = bookingForm;
 
     return (
         <CommonModal
             open={modal.open}
             onOpenChange={modal.onOpenChange}
-            title="Бронирование зала"
-            description="Зал бронируется на интервал времени; пересекаться с другими бронированиями он не может."
+            title={readOnlyApplicant ? "Заявка на лекционный зал" : "Бронирование зала"}
+            description={readOnlyApplicant ? "После отправки заявку проверит ответственный сотрудник." : "Заявки после одобрения занимают выбранное время."}
         >
             <FormProvider {...form}>
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                    <HallBookingFields hallOptions={hallOptions} />
+                    <HallBookingFields hallOptions={hallOptions} readOnlyApplicant={readOnlyApplicant} />
 
                     <Button type="submit" className="ml-auto w-fit" disabled={form.formState.isSubmitting}>
-                        Забронировать
+                        {readOnlyApplicant ? "Отправить заявку" : "Отправить заявку"}
                     </Button>
                 </form>
             </FormProvider>

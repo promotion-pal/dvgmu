@@ -33,6 +33,7 @@ func (s *HallStorage) HallBookingFetch(ctx context.Context, filter models.HallBo
 	if filter.HallID != 0 {
 		q = q.Where("hall_id = ?", filter.HallID)
 	}
+	if filter.ApplicantID != "" { q = q.Where("applicant_id = ?", filter.ApplicantID) }
 	// Dates are stored as ISO strings, so they compare correctly as text.
 	if filter.DateFrom != "" {
 		q = q.Where("date >= ?", filter.DateFrom)
@@ -41,6 +42,7 @@ func (s *HallStorage) HallBookingFetch(ctx context.Context, filter models.HallBo
 		q = q.Where("date <= ?", filter.DateTo)
 	}
 
+	if filter.ApprovedOnly { q = q.Where("status = ? OR status = ''", "APPROVED") }
 	var records []*models.HallBooking
 	if err := q.Order("date, time_start, hall_id").Find(&records).Error; err != nil {
 		return nil, err
@@ -82,6 +84,21 @@ func (s *HallStorage) HallBookingCreate(ctx context.Context, booking *models.Hal
 		return 0, err
 	}
 	return booking.ID, nil
+}
+
+func (s *HallStorage) HallBookingStatusUpdate(ctx context.Context, id int64, status, comment, reviewer string) error {
+	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		var booking models.HallBooking
+		if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).First(&booking, "id = ? AND status = ?", id, "PENDING").Error; err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) { return models.ErrHallBookingNotFound }; return err
+		}
+		if status == "APPROVED" {
+			var overlaps int64
+			if err := tx.Model(&models.HallBooking{}).Where("hall_id = ? AND date = ? AND status = ? AND time_start < ? AND time_end > ?", booking.HallID, booking.Date, "APPROVED", booking.TimeEnd, booking.TimeStart).Count(&overlaps).Error; err != nil { return err }
+			if overlaps > 0 { return models.ErrHallBookingTaken }
+		}
+		return tx.Model(&booking).Updates(map[string]any{"status": status, "review_comment": comment, "reviewed_by": reviewer, "reviewed_at": gorm.Expr("NOW()")}).Error
+	})
 }
 
 func (s *HallStorage) HallBookingDelete(ctx context.Context, id int64) error {

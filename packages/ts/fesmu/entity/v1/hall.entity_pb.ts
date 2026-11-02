@@ -6,13 +6,15 @@ import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
+import type { HallBookingStatus } from "../../enum/v1/hall.enum_pb";
+import { file_fesmu_enum_v1_hall_enum } from "../../enum/v1/hall.enum_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file fesmu/entity/v1/hall.entity.proto.
  */
 export const file_fesmu_entity_v1_hall_entity: GenFile = /*@__PURE__*/
-  fileDesc("CiFmZXNtdS9lbnRpdHkvdjEvaGFsbC5lbnRpdHkucHJvdG8SEmNvbnRyYWN0LmVudGl0eS52MSKgAQoESGFsbBIKCgJpZBgBIAEoAxIMCgRuYW1lGAIgASgJEhAKCGJ1aWxkaW5nGAMgASgJEgwKBHRvbmUYBCABKAkSLgoKY3JlYXRlZF9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKdXBkYXRlZF9hdBgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAi8QEKC0hhbGxCb29raW5nEgoKAmlkGAEgASgDEg8KB2hhbGxfaWQYAiABKAMSDAoEZGF0ZRgDIAEoCRISCgp0aW1lX3N0YXJ0GAQgASgJEhAKCHRpbWVfZW5kGAUgASgJEg0KBXRpdGxlGAYgASgJEhEKCW9yZ2FuaXplchgHIAEoCRIPCgdjb250YWN0GAggASgJEi4KCmNyZWF0ZWRfYXQYCSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnVwZGF0ZWRfYXQYCiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQrwBChZjb20uY29udHJhY3QuZW50aXR5LnYxQg9IYWxsRW50aXR5UHJvdG9QAVonZmVzbXUvY29udHJhY3QvZmVzbXUvZW50aXR5L3YxO2VudGl0eXYxogIDQ0VYqgISQ29udHJhY3QuRW50aXR5LlYxygISQ29udHJhY3RcRW50aXR5XFYx4gIeQ29udHJhY3RcRW50aXR5XFYxXEdQQk1ldGFkYXRh6gIUQ29udHJhY3Q6OkVudGl0eTo6VjFiBnByb3RvMw", [file_google_protobuf_timestamp]);
+  fileDesc("CiFmZXNtdS9lbnRpdHkvdjEvaGFsbC5lbnRpdHkucHJvdG8SEmNvbnRyYWN0LmVudGl0eS52MSKgAQoESGFsbBIKCgJpZBgBIAEoAxIMCgRuYW1lGAIgASgJEhAKCGJ1aWxkaW5nGAMgASgJEgwKBHRvbmUYBCABKAkSLgoKY3JlYXRlZF9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKdXBkYXRlZF9hdBgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAinAMKC0hhbGxCb29raW5nEgoKAmlkGAEgASgDEg8KB2hhbGxfaWQYAiABKAMSDAoEZGF0ZRgDIAEoCRISCgp0aW1lX3N0YXJ0GAQgASgJEhAKCHRpbWVfZW5kGAUgASgJEg0KBXRpdGxlGAYgASgJEhEKCW9yZ2FuaXplchgHIAEoCRIPCgdjb250YWN0GAggASgJEi4KCmNyZWF0ZWRfYXQYCSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnVwZGF0ZWRfYXQYCiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEjMKBnN0YXR1cxgLIAEoDjIjLmNvbnRyYWN0LmVudW0udjEuSGFsbEJvb2tpbmdTdGF0dXMSFgoOYXBwbGljYW50X3JvbGUYDCABKAkSFgoOcmV2aWV3X2NvbW1lbnQYDSABKAkSEwoLcmV2aWV3ZWRfYnkYDiABKAkSLwoLcmV2aWV3ZWRfYXQYDyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQrwBChZjb20uY29udHJhY3QuZW50aXR5LnYxQg9IYWxsRW50aXR5UHJvdG9QAVonZmVzbXUvY29udHJhY3QvZmVzbXUvZW50aXR5L3YxO2VudGl0eXYxogIDQ0VYqgISQ29udHJhY3QuRW50aXR5LlYxygISQ29udHJhY3RcRW50aXR5XFYx4gIeQ29udHJhY3RcRW50aXR5XFYxXEdQQk1ldGFkYXRh6gIUQ29udHJhY3Q6OkVudGl0eTo6VjFiBnByb3RvMw", [file_google_protobuf_timestamp, file_fesmu_enum_v1_hall_enum]);
 
 /**
  * Hall is a bookable lecture hall / auditorium.
@@ -63,8 +65,9 @@ export const HallSchema: GenMessage<Hall> = /*@__PURE__*/
   messageDesc(file_fesmu_entity_v1_hall_entity, 0);
 
 /**
- * HallBooking is one entry on a hall's calendar: a lecture, a meeting, a
- * record slot — whatever holds the room from time_start to time_end.
+ * HallBooking is a request for a hall and, once approved, one entry on the
+ * hall's calendar: a lecture, a meeting, a record slot — whatever holds the
+ * room from time_start to time_end. Only APPROVED bookings hold the room.
  *
  * @generated from message contract.entity.v1.HallBooking
  */
@@ -99,13 +102,16 @@ export type HallBooking = Message<"contract.entity.v1.HallBooking"> & {
   timeEnd: string;
 
   /**
+   * What the hall is needed for (the reason of the request).
+   *
    * @generated from field: string title = 6;
    */
   title: string;
 
   /**
-   * Who booked the hall and how to reach them. Personal data: filled in only
-   * by HallBookingFetch (staff), always empty in HallBookingPublicFetch.
+   * The applicant: full name and how to reach them (e-mail), taken from the
+   * signed-in session. Personal data: filled in only for staff and for the
+   * applicant's own requests, always empty in HallBookingPublicFetch.
    *
    * @generated from field: string organizer = 7;
    */
@@ -125,6 +131,35 @@ export type HallBooking = Message<"contract.entity.v1.HallBooking"> & {
    * @generated from field: google.protobuf.Timestamp updated_at = 10;
    */
   updatedAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: contract.enum.v1.HallBookingStatus status = 11;
+   */
+  status: HallBookingStatus;
+
+  /**
+   * The applicant's role(s) at the portal, as a label ("Сотрудник").
+   *
+   * @generated from field: string applicant_role = 12;
+   */
+  applicantRole: string;
+
+  /**
+   * The reviewer's decision: comment, who decided and when (empty while PENDING).
+   *
+   * @generated from field: string review_comment = 13;
+   */
+  reviewComment: string;
+
+  /**
+   * @generated from field: string reviewed_by = 14;
+   */
+  reviewedBy: string;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp reviewed_at = 15;
+   */
+  reviewedAt?: Timestamp | undefined;
 };
 
 /**

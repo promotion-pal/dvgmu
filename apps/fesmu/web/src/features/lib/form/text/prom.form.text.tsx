@@ -18,6 +18,7 @@ interface PromFieldInputProps<T extends FieldValues> {
   type?: "text" | "email" | "tel" | "password" | "date" | "time";
   /** Suggestions offered while typing (a <datalist>); any other value is allowed too. */
   suggestions?: string[];
+  readOnly?: boolean;
 }
 
 export const PromFieldInput = <T extends FieldValues>({
@@ -31,6 +32,7 @@ export const PromFieldInput = <T extends FieldValues>({
   type = "text",
   className = "border rounded-lg p-2 w-full",
   suggestions,
+  readOnly = false,
 }: PromFieldInputProps<T>) => {
   const { register, error } = useFormField<T>({ name });
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -73,6 +75,7 @@ export const PromFieldInput = <T extends FieldValues>({
           id={name}
           type={isPassword ? (passwordVisible ? "text" : "password") : type}
           {...register}
+          readOnly={readOnly}
           onChange={handleChange}
           placeholder={placeholder}
           className={cn(className, isPassword && "pr-10")}
