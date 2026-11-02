@@ -53,12 +53,19 @@ export const SECTIONS: {
     label: string;
     short?: string;
     description: string;
+    postLabel?: string;
 }[] = [
     { key: PermissionSection.INFRASTRUCTURE, group: "Хозяйство", label: "Инфраструктура", description: "Корпуса, этажи, помещения" },
     { key: PermissionSection.INVENTORY, group: "Хозяйство", label: "Инвентарь", description: "Учёт инвентаря" },
     { key: PermissionSection.TICKETS, group: "Хозяйство", label: "Заявки", description: "Заявки общежития и хозяйственные" },
     { key: PermissionSection.SCHEDULE, group: "Учёба", label: "Расписание", description: "Расписание групп, сбор пожеланий" },
-    { key: PermissionSection.HALLS, group: "Учёба", label: "Лекционные залы", description: "Расписание и бронирование залов" },
+    {
+        key: PermissionSection.HALLS,
+        group: "Учёба",
+        label: "Расписание лекционных залов",
+        description: "Просмотр — общий календарь и заявки; изменение — создавать и снимать бронирования, одобрять и отклонять заявки",
+        postLabel: "Правка и модерация",
+    },
     { key: PermissionSection.COMPUTER_CLASSES, group: "Учёба", label: "Компьютерные классы", description: "Расписание компьютерных классов" },
     { key: PermissionSection.TESTS, group: "Учёба", label: "Тесты", description: "Просмотр — тесты, сессии и результаты, выгрузка в RTF; изменение — создавать, импортировать, выдавать студентам, удалять" },
     { key: PermissionSection.LIBRARY, group: "Библиотека", label: "Библиотека: каталог", short: "Каталог", description: "Изменение — добавлять, править и удалять издания; читать каталог может любой, кто вошёл" },
@@ -130,7 +137,7 @@ export const PURCHASE_V3_PERMS = PURCHASE_PERMISSIONS.map((p) => purchasePerm(p.
 export const summarizePermissions = (codes: string[]) => [
     ...SECTIONS.flatMap((s) =>
         codes.includes(perm(s.key, PermissionAction.POST))
-            ? [`${s.label}: ${ACTION_LABEL[PermissionAction.POST].toLowerCase()}`]
+            ? [`${s.label}: ${(s.postLabel ?? ACTION_LABEL[PermissionAction.POST]).toLowerCase()}`]
             : codes.includes(perm(s.key, PermissionAction.FETCH))
               ? [`${s.label}: ${ACTION_LABEL[PermissionAction.FETCH].toLowerCase()}`]
               : [],

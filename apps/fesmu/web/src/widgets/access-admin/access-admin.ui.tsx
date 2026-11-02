@@ -117,7 +117,7 @@ const SectionsPicker: FC<{ value: string[]; onChange: (codes: string[]) => void 
                                     </span>
                                     {canFetch && (
                                         <label className="flex shrink-0 cursor-pointer items-center gap-2 text-xs text-muted-foreground">
-                                            {ACTION_LABEL[PermissionAction.POST]}
+                                            {section.postLabel ?? ACTION_LABEL[PermissionAction.POST]}
                                             <Switch
                                                 size="sm"
                                                 aria-label={`${section.label}: ${ACTION_LABEL[PermissionAction.POST]}`}
