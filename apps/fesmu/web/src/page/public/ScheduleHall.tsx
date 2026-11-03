@@ -26,7 +26,7 @@ export default function PublicScheduleHallPage() {
                 <Button asChild size="sm">
                     <Link to={ROUTE.PUBLIC.HALL_BOOKING}>
                         <CalendarPlusIcon className="size-4" />
-                        Записаться в зал
+                        Подать заявку
                     </Link>
                 </Button>
             }

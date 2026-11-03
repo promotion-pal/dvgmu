@@ -44,6 +44,17 @@ export const shiftMonth = (cursor: MonthCursor, delta: number): MonthCursor => {
 
 export const formatMonthTitle = ({ year, month }: MonthCursor) => `${MONTH_LABEL[month]} ${year}`;
 
+/** A day heading for the compact monthly hall agenda. */
+export const formatHallDay = (iso: string) => {
+    const [year, month, day] = iso.split("-").map(Number);
+    return new Intl.DateTimeFormat("ru-RU", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        timeZone: "UTC",
+    }).format(new Date(Date.UTC(year, month - 1, day)));
+};
+
 export interface HallCalendarEvent {
     id: string;
     timeStart: string;

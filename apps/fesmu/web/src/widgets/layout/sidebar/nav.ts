@@ -40,7 +40,9 @@ const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
         label: "Учёба",
         items: [
             { title: "Расписание", url: ROUTE.STUDY.SCHEDULE, icon: CalendarDaysIcon, permissions: permsFor(PermissionSection.SCHEDULE) },
-            { title: "Расписание (лекционные залы)", url: ROUTE.STUDY.SCHEDULE_HALL, icon: CalendarRangeIcon, permissions: permsFor(PermissionSection.HALLS) },
+            // Открыто всем сотрудникам: право halls.fetch показывает общий календарь
+            // и очередь, без него страница показывает подачу личной заявки.
+            { title: "Заявка / расписание лекционных залов", url: ROUTE.STUDY.SCHEDULE_HALL, icon: CalendarRangeIcon },
             { title: "Расписание (компьютерные классы)", url: ROUTE.STUDY.COMPUTER_CLASS, icon: MonitorIcon, permissions: permsFor(PermissionSection.COMPUTER_CLASSES) },
         ],
     },

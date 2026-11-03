@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { CheckIcon, PlusIcon, XIcon } from "lucide-react";
+import { CalendarPlusIcon, CheckIcon, XIcon } from "lucide-react";
 import { FormProvider } from "react-hook-form";
 import { CommonWrapper } from "@/shared/components/wrapper";
 import { CommonControlState } from "@/shared/components/state/control-state";
@@ -59,7 +59,12 @@ export default function ScheduleHallPage() {
         <CommonWrapper
             title="Лекционные залы"
             description={isReviewer ? "Расписание залов и заявки на проверку" : "Подайте заявку на использование лекционного зала"}
-            action={isReviewer ? <PlusIcon className="size-4 cursor-pointer" onClick={scheduleHall.openBooking} aria-label="Добавить заявку" /> : undefined}
+            action={isReviewer ? (
+                <Button type="button" size="sm" onClick={scheduleHall.openBooking}>
+                    <CalendarPlusIcon className="size-4" />
+                    Подать заявку
+                </Button>
+            ) : undefined}
         >
             {isReviewer ? (
                 <CommonControlState isLoading={scheduleHall.loading} isError={scheduleHall.error} isEmpty={scheduleHall.empty}>
@@ -67,10 +72,11 @@ export default function ScheduleHallPage() {
                         <section className="flex flex-col gap-4">
                             <h2 className="text-lg font-semibold">Общее расписание</h2>
                             <HallScheduleToolbar monthTitle={scheduleHall.monthTitle} isCurrentMonth={scheduleHall.isCurrentMonth} onPrev={scheduleHall.goPrevMonth} onNext={scheduleHall.goNextMonth} onToday={scheduleHall.goToday} hallOptions={scheduleHall.hallOptions} hallId={scheduleHall.filters.hallId} onChangeHall={scheduleHall.changeHall} />
-                            <HallScheduleCalendar weeks={scheduleHall.weeks} onRemove={scheduleHall.removeBooking} />
+                            <HallScheduleCalendar weeks={scheduleHall.weeks} onRemove={canReview ? scheduleHall.removeBooking : undefined} />
                         </section>
                         <section className="flex flex-col gap-3">
                             <h2 className="text-lg font-semibold">Заявки на проверку ({pending.length})</h2>
+                            {!canReview && <p className="text-sm text-muted-foreground">Заявки доступны для просмотра. Для одобрения и отклонения нужен доступ «Правка и модерация» в разделе «Администрирование → Доступы».</p>}
                             {pending.length === 0 ? <p className="text-sm text-muted-foreground">Новых заявок нет.</p> : pending.map((request) => (
                                 <RequestCard key={request.id} request={request} hallName={scheduleHall.halls.find((hall) => hall.id === request.hallId)?.name ?? "Зал"} onDecision={decide} canReview={canReview} />
                             ))}
