@@ -51,7 +51,6 @@ export const hallBookingSchema = z
         title: z.string().trim().min(1, "Укажите, что проходит в зале"),
         organizer: z.string().trim().min(1, "Укажите, кто бронирует зал"),
         contact: z.string().trim().min(1, "Укажите телефон или e-mail для связи"),
-        consent: z.boolean().refine((value) => value, "Нужно согласие на обработку персональных данных"),
     })
     .refine((values) => values.timeEnd > values.timeStart, {
         path: ["timeEnd"],

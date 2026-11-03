@@ -93,7 +93,6 @@ func (h *HallHandler) HallBookingCreate(
 		Title:     req.Msg.GetTitle(),
 		Organizer: req.Msg.GetOrganizer(),
 		Contact:   req.Msg.GetContact(),
-		Consent:   req.Msg.GetPersonalDataConsent(),
 	}
 	if user, ok := auth.UserFromContext(ctx); ok { params.ApplicantRole = strings.Join(user.Roles, ", "); params.ApplicantID = user.UUID }
 

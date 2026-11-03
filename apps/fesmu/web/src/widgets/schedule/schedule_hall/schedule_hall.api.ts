@@ -39,7 +39,7 @@ const fromBookingMessage = (message: HallBookingMessage): HallEvent =>
     });
 
 /** Who is looking: staff see who booked a hall, everyone else only when. */
-export type HallViewer = "staff" | "public";
+export type HallViewer = "staff" | "public" | "applicant";
 
 /** The only place the hall widgets talk to the hall service. */
 export const hallApi = {
@@ -49,6 +49,7 @@ export const hallApi = {
     },
 
     async fetchBookings(viewer: HallViewer): Promise<HallEvent[]> {
+        if (viewer === "applicant") return [];
         const response =
             viewer === "staff" ? await client.hallBookingFetch({}) : await client.hallBookingPublicFetch({});
         return response.list.map(fromBookingMessage);
@@ -67,7 +68,6 @@ export const hallApi = {
             title: values.title,
             organizer: values.organizer,
             contact: values.contact,
-            personalDataConsent: values.consent,
         });
     },
 

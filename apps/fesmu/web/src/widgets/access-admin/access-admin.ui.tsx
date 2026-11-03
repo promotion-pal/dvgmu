@@ -23,7 +23,7 @@ import { Input } from "@/shared/ui/input";
 import { Label } from "@/shared/ui/label";
 import { Switch } from "@/shared/ui/switch";
 import { Textarea } from "@/shared/ui/textarea";
-import { toggleSectionAction, toggleSections } from "./access-admin.fn";
+import { toggleHallManagement, toggleSectionAction, toggleSections } from "./access-admin.fn";
 import type { AccessGroupDraft } from "./access-admin.fn";
 
 interface AccessGroupListProps extends ComponentProps<typeof CommonControlState> {
@@ -81,7 +81,9 @@ const SectionsPicker: FC<{ value: string[]; onChange: (codes: string[]) => void 
     <div className="flex flex-col gap-3">
         {SECTION_GROUPS.map((group) => {
             const sections = SECTIONS.filter((s) => s.group === group);
-            const opened = sections.filter((s) => value.includes(perm(s.key, PermissionAction.FETCH))).length;
+            const opened = sections.filter((s) =>
+                value.includes(perm(s.key, s.manageOnly ? PermissionAction.POST : PermissionAction.FETCH)),
+            ).length;
             return (
                 <section key={group} className="rounded-lg border">
                     <header className="flex items-center justify-between gap-3 border-b bg-muted/40 px-3 py-2">
@@ -102,6 +104,21 @@ const SectionsPicker: FC<{ value: string[]; onChange: (codes: string[]) => void 
                             const canFetch = value.includes(perm(section.key, PermissionAction.FETCH));
                             const canPost = value.includes(perm(section.key, PermissionAction.POST));
                             const title = section.short ?? section.label;
+                            if (section.manageOnly) {
+                                return (
+                                    <li key={section.key} className="flex items-center gap-3 px-3 py-2.5">
+                                        <Switch
+                                            aria-label={`${section.label}: расписание, заявки и модерация`}
+                                            checked={canPost}
+                                            onCheckedChange={(on) => onChange(toggleHallManagement(value, on))}
+                                        />
+                                        <span className="flex min-w-0 flex-1 flex-col">
+                                            <span className={canPost ? "text-sm font-medium" : "text-sm"}>{title}</span>
+                                            <span className="text-xs text-muted-foreground">Доступ к общему расписанию, всем заявкам, редактированию и модерации</span>
+                                        </span>
+                                    </li>
+                                );
+                            }
                             return (
                                 <li key={section.key} className="flex items-center gap-3 px-3 py-2.5">
                                     <Switch

@@ -12,19 +12,20 @@ import { HallBookingFields, HallBookingModal, HallScheduleCalendar, HallSchedule
 import { hallApi } from "@/widgets/schedule/schedule_hall/schedule_hall.api";
 import type { HallEvent } from "@/widgets/schedule/schedule_hall/schedule_hall.schema";
 
-const fullName = (first = "", last = "") => [first, last].filter(Boolean).join(" ");
+const fullName = (first = "", last = "") => [last, first].filter(Boolean).join(" ");
 
 export default function ScheduleHallPage() {
     const hasPermission = useUserProvider((s) => s.hasPermission);
     const profile = useUserProvider((s) => s.profile);
-    const isReviewer = hasPermission(...permsFor(PermissionSection.HALLS));
-    const canReview = hasPermission(...permsFor(PermissionSection.HALLS, PermissionAction.POST));
+    const canManageHalls = hasPermission(...permsFor(PermissionSection.HALLS, PermissionAction.POST));
+    const isReviewer = canManageHalls;
+    const canReview = canManageHalls;
     const [myRequests, setMyRequests] = useState<HallEvent[]>([]);
     const fetchMine = useCallback(async () => {
         if (isReviewer) return;
         try { setMyRequests(await hallApi.fetchMine()); } catch (error) { console.error("Не удалось загрузить мои заявки:", error); }
     }, [isReviewer]);
-    const scheduleHall = useScheduleHall({ viewer: isReviewer ? "staff" : "public", onBooked: fetchMine });
+    const scheduleHall = useScheduleHall({ viewer: isReviewer ? "staff" : "applicant", onBooked: fetchMine });
 
     useEffect(() => {
         void scheduleHall.fetch();

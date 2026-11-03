@@ -79,6 +79,11 @@ func (u *User) HasPermission(perm string) bool {
 
 // Can — может ли action в разделе: просмотр даёт fetch или post, изменение — post.
 func (u *User) Can(section Section, action Action) bool {
+	// Lecture hall access is deliberately a single bit: halls.post opens the
+	// common schedule and grants moderation; halls.fetch alone grants nothing.
+	if section == SectionHalls {
+		return u.HasPermission(Perm(section, ActionPost))
+	}
 	if action == ActionFetch && u.HasPermission(Perm(section, ActionFetch)) {
 		return true
 	}

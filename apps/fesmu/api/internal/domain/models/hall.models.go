@@ -66,8 +66,7 @@ type HallBooking struct {
 
 	Organizer string `gorm:"size:255;not null;default:''"`
 	Contact   string `gorm:"size:255;not null;default:''"`
-	// ConsentedAt is when the organizer agreed to the processing of their
-	// personal data; empty only for bookings that predate the consent (the seed).
+	// ConsentedAt is retained for compatibility with historical booking rows.
 	ConsentedAt *time.Time
 	Status string `gorm:"size:16;not null;default:'PENDING'"`
 	ApplicantRole string `gorm:"size:64;not null;default:''"`
@@ -134,7 +133,6 @@ type HallBookingCreateParams struct {
 	Title     string
 	Organizer string
 	Contact   string
-	Consent   bool
 	ApplicantRole string
 	ApplicantID string
 }
@@ -165,10 +163,6 @@ func NewHallBooking(params HallBookingCreateParams, now time.Time) (*HallBooking
 	if b.Date < now.Format("2006-01-02") {
 		return nil, hallBookingInvalid("нельзя забронировать зал на прошедшую дату")
 	}
-	if !params.Consent {
-		return nil, hallBookingInvalid("нужно согласие на обработку персональных данных")
-	}
-	b.ConsentedAt = &now
 	return b, nil
 }
 

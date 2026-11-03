@@ -18,7 +18,9 @@ export const perm = (section: PermissionSection, action: PermissionAction) =>
 
 /** Права, с которыми действие доступно: просмотр — fetch или post, изменение — post. */
 export const permsFor = (section: PermissionSection, action: PermissionAction = PermissionAction.FETCH) =>
-    action === PermissionAction.FETCH
+    section === PermissionSection.HALLS
+        ? [perm(section, PermissionAction.POST)]
+        : action === PermissionAction.FETCH
         ? [perm(section, PermissionAction.FETCH), perm(section, PermissionAction.POST)]
         : [perm(section, PermissionAction.POST)];
 
@@ -54,6 +56,8 @@ export const SECTIONS: {
     short?: string;
     description: string;
     postLabel?: string;
+    /** A single permission grants both viewing and management for this section. */
+    manageOnly?: boolean;
 }[] = [
     { key: PermissionSection.INFRASTRUCTURE, group: "Хозяйство", label: "Инфраструктура", description: "Корпуса, этажи, помещения" },
     { key: PermissionSection.INVENTORY, group: "Хозяйство", label: "Инвентарь", description: "Учёт инвентаря" },
@@ -64,7 +68,8 @@ export const SECTIONS: {
         group: "Учёба",
         label: "Расписание лекционных залов",
         description: "Просмотр — общий календарь и заявки; изменение — создавать и снимать бронирования, одобрять и отклонять заявки",
-        postLabel: "Правка и модерация",
+        postLabel: "Расписание, заявки и модерация",
+        manageOnly: true,
     },
     { key: PermissionSection.COMPUTER_CLASSES, group: "Учёба", label: "Компьютерные классы", description: "Расписание компьютерных классов" },
     { key: PermissionSection.TESTS, group: "Учёба", label: "Тесты", description: "Просмотр — тесты, сессии и результаты, выгрузка в RTF; изменение — создавать, импортировать, выдавать студентам, удалять" },

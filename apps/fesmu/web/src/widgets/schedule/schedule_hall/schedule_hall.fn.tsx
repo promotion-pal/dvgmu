@@ -68,7 +68,6 @@ const useHallBookingForm = ({ defaultDate, onBooked }: UseHallBookingFormProps) 
         title: "",
         organizer: "",
         contact: "",
-        consent: false,
     });
 
     const form = useForm<HallBookingSchema>({
@@ -86,7 +85,6 @@ const useHallBookingForm = ({ defaultDate, onBooked }: UseHallBookingFormProps) 
                 date: values.date,
                 organizer: values.organizer,
                 contact: values.contact,
-                consent: values.consent,
             });
             await onBooked();
         } catch (error) {

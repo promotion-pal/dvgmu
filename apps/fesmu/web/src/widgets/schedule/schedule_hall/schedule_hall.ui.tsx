@@ -1,9 +1,7 @@
 import type { FC } from "react";
 import { ChevronLeftIcon, ChevronRightIcon, XIcon } from "lucide-react";
 import { FormProvider } from "react-hook-form";
-import { Link } from "react-router-dom";
-import { PromFieldCheckbox, PromFieldInput, PromFieldSelect } from "@/features/lib/form";
-import { ROUTE } from "@/shared/config/path";
+import { PromFieldInput, PromFieldSelect } from "@/features/lib/form";
 import { cn } from "@/shared/lib/utils";
 import { Button } from "@/shared/ui/button";
 import { LESSON_TONE_STYLES } from "@/shared/components/schedule";
@@ -162,22 +160,6 @@ const HallBookingFields: FC<HallBookingFieldsProps> = ({ hallOptions, withDate =
                 <FieldInput name="contact" label="Телефон или e-mail" placeholder="+7 900 000-00-00" maxLength={255} readOnly={readOnlyApplicant} />
             </div>
 
-            <PromFieldCheckbox<HallBookingSchema>
-                name="consent"
-                label={
-                    <span>
-                        Даю согласие на обработку персональных данных (ФИО и контактов) в соответствии с{" "}
-                        <Link
-                            to={ROUTE.DOCS.LEGAL.PRIVACY}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-primary underline underline-offset-4"
-                        >
-                            политикой конфиденциальности
-                        </Link>
-                    </span>
-                }
-            />
         </>
     );
 };

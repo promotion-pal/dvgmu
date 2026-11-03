@@ -5,14 +5,14 @@ import { UserService } from "@fesmu/contract/mdm/service/user.service_pb";
 import { connectTransport } from "@/shared/config/api";
 import { ConnectError, createClient } from "@connectrpc/connect";
 import { toast } from "sonner";
-import type { PermissionSection } from "@/shared/config/permissions";
-import { PermissionAction, perm } from "@/shared/config/permissions";
+import { PermissionAction, PermissionSection, perm } from "@/shared/config/permissions";
+import type { PermissionSection as PermissionSectionType } from "@/shared/config/permissions";
 
 const userClient = createClient(UserService, connectTransport);
 
 /** Галочка «Просмотр»/«Изменение» раздела: изменение включает просмотр,
  *  снятый просмотр снимает и изменение. */
-const toggleSectionAction = (codes: string[], section: PermissionSection, action: PermissionAction, on: boolean) => {
+const toggleSectionAction = (codes: string[], section: PermissionSectionType, action: PermissionAction, on: boolean) => {
     const fetch = perm(section, PermissionAction.FETCH);
     const post = perm(section, PermissionAction.POST);
     const next = new Set(codes);
@@ -28,15 +28,29 @@ const toggleSectionAction = (codes: string[], section: PermissionSection, action
 
 /** Переключатель группы: включить — открыть все её разделы на просмотр,
  *  выключить — снять с них всё. */
-const toggleSections = (codes: string[], sections: PermissionSection[], on: boolean) => {
+const toggleSections = (codes: string[], sections: PermissionSectionType[], on: boolean) => {
     const next = new Set(codes);
     for (const section of sections) {
+        if (section === PermissionSection.HALLS) {
+            next.delete(perm(section, PermissionAction.FETCH));
+            if (on) next.add(perm(section, PermissionAction.POST));
+            else next.delete(perm(section, PermissionAction.POST));
+            continue;
+        }
         if (on) next.add(perm(section, PermissionAction.FETCH));
         else {
             next.delete(perm(section, PermissionAction.FETCH));
             next.delete(perm(section, PermissionAction.POST));
         }
     }
+    return [...next].sort();
+};
+
+const toggleHallManagement = (codes: string[], on: boolean) => {
+    const next = new Set(codes);
+    next.delete(perm(PermissionSection.HALLS, PermissionAction.FETCH));
+    if (on) next.add(perm(PermissionSection.HALLS, PermissionAction.POST));
+    else next.delete(perm(PermissionSection.HALLS, PermissionAction.POST));
     return [...next].sort();
 };
 
@@ -56,7 +70,9 @@ const toDraft = (g: AccessGroup): AccessGroupDraft => ({
     id: g.id,
     name: g.name,
     description: g.description,
-    permissions: [...g.permissions],
+    // Migrate the legacy view-only hall bit away without silently granting
+    // moderation; halls.post is the sole permission for this section.
+    permissions: g.permissions.filter((permission) => permission !== perm(PermissionSection.HALLS, PermissionAction.FETCH)),
     departments: [...g.departments],
 });
 
@@ -112,5 +128,5 @@ const useAccessGroups = () => {
     return { groups: state, fetch, save, remove };
 };
 
-export { emptyDraft, toDraft, toggleSectionAction, toggleSections, useAccessGroups };
+export { emptyDraft, toDraft, toggleHallManagement, toggleSectionAction, toggleSections, useAccessGroups };
 export type { AccessGroupDraft };

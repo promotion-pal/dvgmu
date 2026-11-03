@@ -29,6 +29,17 @@ func TestPerm(t *testing.T) {
 	}
 }
 
+func TestHallAccessUsesSingleManagePermission(t *testing.T) {
+	viewer := &User{Permissions: []string{Perm(SectionHalls, ActionFetch)}}
+	if viewer.Can(SectionHalls, ActionFetch) || viewer.Can(SectionHalls, ActionPost) {
+		t.Fatal("halls.fetch must not grant access to the common schedule or moderation")
+	}
+	manager := &User{Permissions: []string{Perm(SectionHalls, ActionPost)}}
+	if !manager.Can(SectionHalls, ActionFetch) || !manager.Can(SectionHalls, ActionPost) {
+		t.Fatal("halls.post must grant both schedule viewing and moderation")
+	}
+}
+
 // Чтения закупок названы не по правилу ...Fetch/...ByID — их знает readProcedures;
 // всё остальное в сервисе закупок — изменение.
 func TestActionOf(t *testing.T) {
