@@ -173,3 +173,8 @@ utils/csv2rtf/docs/utestzad.csv
 !.vscode/extensions.json
 .idea/
 .DS_Store
+
+# panel (Plane): секреты, бэкапы и архивы — только на сервере
+panel/**/*.env
+panel/**/*.bak
+panel/**/archive/

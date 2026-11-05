@@ -44,6 +44,18 @@ dev-down:
 #   make down / ps / logs S=auth
 SERVICES ?= mdm auth analytics tickets file notification sync dormitory mentor fesmu
 
+.PHONY: panel-up panel-down panel-logs
+
+# Plane запускается отдельно или в конце общего make up.
+panel-up:
+	@cd panel && ./setup.sh start
+
+panel-down:
+	@cd panel && ./setup.sh stop
+
+panel-logs:
+	@cd panel/plane-app && docker compose --env-file plane.env -f docker-compose.yaml logs -f --tail=100
+
 .PHONY: up down ps logs
 
 up:
@@ -58,6 +70,7 @@ up:
 		fi; \
 		docker builder prune -af >/dev/null; \
 	done
+	@$(MAKE) panel-up
 	@docker ps --format '{{.Names}}\t{{.Status}}' | sort
 	@df -h / | tail -1
 

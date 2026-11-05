@@ -1,0 +1,46 @@
+name: Plane task sync
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize, ready_for_review, closed]
+  workflow_dispatch:
+    inputs:
+      tasks:
+        description: 'Task keys, e.g. FESMU-123, FESMU-124'
+        required: true
+        type: string
+      status:
+        description: Target status
+        type: choice
+        options: [review, done]
+        required: true
+      dry_run:
+        description: Validate without changing tasks
+        type: boolean
+        default: true
+permissions:
+  contents: read
+concurrency:
+  group: plane-sync
+  cancel-in-progress: false
+jobs:
+  sync:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ${{ vars.PLANE_RUNNER || 'ubuntu-latest' }}
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Update Plane tasks
+        env:
+          PLANE_URL: ${{ vars.PLANE_URL }}
+          PLANE_WORKSPACE: ${{ vars.PLANE_WORKSPACE }}
+          PLANE_PROJECT_ID: ${{ vars.PLANE_PROJECT_ID }}
+          PLANE_PROJECT_IDENTIFIER: ${{ vars.PLANE_PROJECT_IDENTIFIER }}
+          PLANE_STATE_REVIEW: ${{ vars.PLANE_STATE_REVIEW }}
+          PLANE_STATE_DONE: ${{ vars.PLANE_STATE_DONE }}
+          PLANE_API_KEY: ${{ secrets.PLANE_API_KEY }}
+        run: python3 panel/scripts/github_sync.py

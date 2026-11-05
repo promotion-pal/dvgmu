@@ -45,6 +45,8 @@
 
 **Статические сайты:** `apps/ksm`, `apps/guide`, `apps/unistom`, `apps/profile`, `apps/course`.
 
+**Панель задач:** `panel/plane-app` — Plane Community со своими PostgreSQL, Redis, RabbitMQ и MinIO. Запуск: `make panel-up` или общий `make up`. Настройки GitHub: `panel/README.md`.
+
 ## 3. Как сервисы связаны
 
 Сервисы общаются только по сети, через **Connect RPC** (HTTP, JSON или protobuf). Общих баз нет.
@@ -63,6 +65,7 @@
 | auth | mdm | `UserFetchByADObjectID` (служебный токен) | человек и роли по objectGUID |
 | sync | mdm, AD (LDAP) | чтение | поиск расхождений |
 | Yandex 360 | auth | SAML | вход в почту по учётке AD |
+| GitHub Actions | Plane | REST API v1, API token | статусы задач по PR и явным маркерам коммитов |
 
 ## 4. Вход пользователя
 
