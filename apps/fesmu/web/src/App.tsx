@@ -110,6 +110,8 @@ function App() {
             <Route path={ROUTE.TESTS.BUILDER_V2} element={<TestBuilderPage version={TestVersion.V2} />} />
             <Route path={ROUTE.TESTS.SESSIONS} element={<TestSessionsPage />} />
             <Route path={ROUTE.TESTS.SESSION_RESULTS} element={<TestSessionResultsPage />} />
+          </Route>
+          <Route element={<AllowSection section={PermissionSection.EXAM_TESTS} />}>
             <Route path={ROUTE.EXAM_TESTS.BUILDER} element={<TestBuilderPage version={TestVersion.V1} exam />} />
             <Route path={ROUTE.EXAM_TESTS.SESSIONS} element={<TestSessionsPage exam />} />
             <Route path={ROUTE.EXAM_TESTS.SESSION_RESULTS} element={<TestSessionResultsPage exam />} />

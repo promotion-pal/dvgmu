@@ -142,7 +142,7 @@ type HandOut = (test: Test) => void;
 
 const TestRow: FC<{ test: Test; state: TestBuilder; onHandOut?: HandOut }> = ({ test, state, onHandOut }) => {
     // Without the right to change tests the row only shows and exports.
-    const canEdit = useCan(PermissionSection.TESTS);
+    const canEdit = useCan(state.exam ? PermissionSection.EXAM_TESTS : PermissionSection.TESTS);
 
     return (
     <AccordionItem value={test.id}>

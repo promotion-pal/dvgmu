@@ -220,8 +220,8 @@ func New(
 			serviceconnect.VaccinationServiceName:         {auth.SectionVaccination},
 			serviceconnect.TestServiceName:                {auth.SectionTests},
 			serviceconnect.TestSessionServiceName:         {auth.SectionTests},
-			examserviceconnect.ExamTestServiceName:        {auth.SectionTests},
-			examserviceconnect.ExamTestSessionServiceName: {auth.SectionTests},
+			examserviceconnect.ExamTestServiceName:        {auth.SectionExamTests},
+			examserviceconnect.ExamTestSessionServiceName: {auth.SectionExamTests},
 			// Опросы: номер QR — просмотр раздела, создание и правка — analytics.post.
 			serviceconnect.SurveyServiceName: {auth.SectionAnalytics},
 			// Деканат: студенты своего факультета — просмотр, коды первого

@@ -9,6 +9,7 @@ import (
 	"connectrpc.com/connect"
 
 	enum "fesmu/contract/fesmu/enum/v1"
+	examserviceconnect "fesmu/contract/fesmu/exam/service/v1/servicev1connect"
 	serviceconnect "fesmu/contract/fesmu/service/v1/servicev1connect"
 	"fesmu/contract/fesmu/service/v2/servicev2connect"
 )
@@ -35,6 +36,7 @@ const (
 	SectionVaccination     = enum.PermissionSection_PERMISSION_SECTION_VACCINATION
 	SectionCertificate     = enum.PermissionSection_PERMISSION_SECTION_CERTIFICATE
 	SectionTests           = enum.PermissionSection_PERMISSION_SECTION_TESTS
+	SectionExamTests       = enum.PermissionSection_PERMISSION_SECTION_EXAM_TESTS
 	SectionLibrary         = enum.PermissionSection_PERMISSION_SECTION_LIBRARY
 	SectionManuals         = enum.PermissionSection_PERMISSION_SECTION_MANUALS
 	SectionAnalytics       = enum.PermissionSection_PERMISSION_SECTION_ANALYTICS
@@ -119,7 +121,8 @@ var readProcedures = map[string]bool{
 	servicev2connect.PurchaseServicePurchaseCodeSuggestProcedure:   true,
 	servicev2connect.PurchaseServicePurchaseEmployeeFetchProcedure: true,
 	// Выгрузка теста в .rtf только читает.
-	serviceconnect.TestServiceTestExportProcedure: true,
+	serviceconnect.TestServiceTestExportProcedure:         true,
+	examserviceconnect.ExamTestServiceTestExportProcedure: true,
 }
 
 // ActionOf — какое действие у процедуры "/pkg.Service/Method": методы

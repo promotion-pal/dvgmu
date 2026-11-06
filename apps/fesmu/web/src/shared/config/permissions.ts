@@ -73,6 +73,7 @@ export const SECTIONS: {
     },
     { key: PermissionSection.COMPUTER_CLASSES, group: "Учёба", label: "Компьютерные классы", description: "Расписание компьютерных классов" },
     { key: PermissionSection.TESTS, group: "Учёба", label: "Тесты", description: "Просмотр — тесты, сессии и результаты, выгрузка в RTF; изменение — создавать, импортировать, выдавать студентам, удалять" },
+    { key: PermissionSection.EXAM_TESTS, group: "Учёба", label: "Экзаменационное тестирование", description: "Просмотр — экзаменационный банк, сессии и результаты; изменение — создавать, импортировать, выдавать доступ по ссылке и удалять" },
     { key: PermissionSection.LIBRARY, group: "Библиотека", label: "Библиотека: каталог", short: "Каталог", description: "Изменение — добавлять, править и удалять издания; читать каталог может любой, кто вошёл" },
     { key: PermissionSection.MANUALS, group: "Библиотека", label: "Библиотека: методички", short: "Методички", description: "Изменение — писать, править, публиковать и снимать методички; опубликованные читает любой, кто вошёл" },
     { key: PermissionSection.CERTIFICATE, group: "Студентам", label: "Справки", description: "Просмотр — журнал; изменение — выдача, справка за любого студента" },

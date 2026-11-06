@@ -37,7 +37,7 @@ export default function TestBuilderPage({ version, exam = false }: { version: Te
             title={exam ? "Экзаменационное тестирование" : PAGE[version].title}
             description={exam ? "Защищённый банк экзаменационных тестов. Создайте сессию и предоставьте студентам ссылку для прохождения." : PAGE[version].description}
             action={
-                <Can section={PermissionSection.TESTS}>
+                <Can section={exam ? PermissionSection.EXAM_TESTS : PermissionSection.TESTS}>
                     <div className="flex items-center gap-4">
                         <TestBuilderImport state={state} />
                         <PlusIcon className="size-4 cursor-pointer" onClick={state.openCreate} aria-label="Создать тест" />

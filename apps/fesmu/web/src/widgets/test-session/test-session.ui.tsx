@@ -241,7 +241,7 @@ const TestSessionFilters: FC<{ state: Sessions }> = ({ state }) => (
 );
 
 const SessionRow: FC<{ session: TestSession; state: Sessions }> = ({ session, state }) => {
-    const canEdit = useCan(PermissionSection.TESTS);
+    const canEdit = useCan(state.exam ? PermissionSection.EXAM_TESTS : PermissionSection.TESTS);
     const navigate = useNavigate();
     return (
     <TableRow>
@@ -395,7 +395,7 @@ const TestSessionResultsHeader: FC<{ state: SessionResults }> = ({ state }) => {
             <div className="flex flex-wrap items-center gap-2">
                 <CommonShareLink url={testTakeUrl(session.token, state.exam)} label="Скопировать ссылку для студентов" />
                 <CommonQrButton url={testTakeUrl(session.token, state.exam)} title={session.topic} subtitle="Отсканируйте и пройдите тест" emoji="📝" fileName={`QR ${session.topic}`} />
-                <Can section={PermissionSection.TESTS}>
+                <Can section={state.exam ? PermissionSection.EXAM_TESTS : PermissionSection.TESTS}>
                     <Button variant="outline" size="sm" onClick={() => state.setOpen(!session.isOpen)}>
                         {session.isOpen ? <LockIcon className="size-4" /> : <LockOpenIcon className="size-4" />}
                         {session.isOpen ? "Закрыть приём" : "Открыть приём"}
@@ -535,7 +535,7 @@ const TestSessionResultsTable: FC<{ state: SessionResults }> = ({ state }) => {
                                             </span>
                                         </TableCell>
                                         <TableCell className="text-right">
-                                            <Can section={PermissionSection.TESTS}>
+                                            <Can section={state.exam ? PermissionSection.EXAM_TESTS : PermissionSection.TESTS}>
                                                 <Button
                                                     variant="ghost"
                                                     size="icon"

@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	enum "fesmu/contract/fesmu/enum/v1"
+	examserviceconnect "fesmu/contract/fesmu/exam/service/v1/servicev1connect"
 	serviceconnect "fesmu/contract/fesmu/service/v1/servicev1connect"
 	"fesmu/contract/fesmu/service/v2/servicev2connect"
 )
@@ -51,6 +52,8 @@ func TestActionOf(t *testing.T) {
 		servicev2connect.PurchaseServicePurchaseQuotationFileProcedure: ActionFetch,
 		servicev2connect.PurchaseServicePurchaseCodeSuggestProcedure:   ActionFetch,
 		serviceconnect.TestServiceTestExportProcedure:                  ActionFetch,
+		examserviceconnect.ExamTestServiceTestExportProcedure:          ActionFetch,
+		examserviceconnect.ExamTestServiceTestImportParseProcedure:     ActionPost,
 		serviceconnect.TestServiceTestImportParseProcedure:             ActionPost,
 		servicev2connect.PurchaseServicePurchaseLotRequestsProcedure:   ActionPost,
 		servicev2connect.PurchaseServicePurchaseLotActionProcedure:     ActionPost,
@@ -58,6 +61,27 @@ func TestActionOf(t *testing.T) {
 	for procedure, want := range cases {
 		if got := ActionOf(procedure); got != want {
 			t.Errorf("ActionOf(%s) = %v, want %v", procedure, got, want)
+		}
+	}
+}
+
+func TestExamPermissionsAreIndependent(t *testing.T) {
+	for _, section := range []Section{SectionTests, SectionExamTests} {
+		other := SectionTests
+		if section == SectionTests {
+			other = SectionExamTests
+		}
+		for _, action := range []Action{ActionFetch, ActionPost} {
+			user := &User{Permissions: []string{Perm(section, action)}}
+			if !user.Can(section, ActionFetch) {
+				t.Fatalf("%v must permit own bank", section)
+			}
+			if user.Can(other, ActionFetch) || user.Can(other, ActionPost) {
+				t.Fatalf("%v leaks access to %v", section, other)
+			}
+			if action == ActionFetch && user.Can(section, ActionPost) {
+				t.Fatal("read access must not grant edits")
+			}
 		}
 	}
 }
