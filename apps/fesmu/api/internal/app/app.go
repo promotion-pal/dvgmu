@@ -177,6 +177,7 @@ func New(
 		authInterceptor.Skip[serviceconnect.TestSessionServiceTestTakeAnswerProcedure] = true
 		authInterceptor.Skip[serviceconnect.TestSessionServiceTestTakeFinishProcedure] = true
 		authInterceptor.Skip[examserviceconnect.ExamTestSessionServiceTestTakeInfoProcedure] = true
+		authInterceptor.Skip[examserviceconnect.ExamTestSessionServiceExamPublicFetchProcedure] = true
 		authInterceptor.Skip[examserviceconnect.ExamTestSessionServiceTestTakeStartProcedure] = true
 		authInterceptor.Skip[examserviceconnect.ExamTestSessionServiceTestTakeStateProcedure] = true
 		authInterceptor.Skip[examserviceconnect.ExamTestSessionServiceTestTakeAnswerProcedure] = true

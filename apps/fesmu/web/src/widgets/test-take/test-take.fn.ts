@@ -38,7 +38,7 @@ const phaseOf = (state: TestTakeState): TestTakePhase => (state.status === TestA
 
 /** A student taking a test by its session link: the intro form, the timed
  * questions (every pick is saved on the server at once) and the result. */
-const useTestTake = (token: string, api: TestTakeApi = testTakeApi, exam = false) => {
+const useTestTake = (token: string, api: TestTakeApi = testTakeApi, exam = false, sharedComputer = false) => {
     const [phase, setPhase] = useState<TestTakePhase>("loading");
     const [info, setInfo] = useState<TestTakeInfo>();
     const [state, setState] = useState<TestTakeState>();
@@ -69,8 +69,14 @@ const useTestTake = (token: string, api: TestTakeApi = testTakeApi, exam = false
         const attemptToken = savedAttempt(token);
         if (attemptToken) {
             try {
-                apply(await api.state(attemptToken));
-                return;
+                const previous = await api.state(attemptToken);
+                if (!sharedComputer || previous.status === TestAttemptStatus.IN_PROGRESS) {
+                    apply(previous);
+                    return;
+                }
+                // A completed student's result stays on the server. The next
+                // person using this classroom computer registers a new attempt.
+                saveAttempt(token, undefined);
             } catch (error) {
                 // A deleted attempt (staff removed the result) starts over.
                 if (codeOf(error) !== Code.NotFound) {

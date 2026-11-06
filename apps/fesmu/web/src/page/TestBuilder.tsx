@@ -7,6 +7,9 @@ import { CommonWrapper } from "@/shared/components/wrapper";
 import { TestBuilderBulkImportModal, TestBuilderFilters, TestBuilderFormModal, TestBuilderImport, TestBuilderList, askableQuestionCount, examTestBuilderApi, testBuilderApi, useTestBuilder } from "@/widgets/test-builder";
 import { TestSessionCreateModal, examTestSessionApi, testSessionApi, useTestSessionCreate } from "@/widgets/test-session";
 import { TestVersion } from "@fesmu/contract/fesmu/enum/v1/test.enum_pb";
+import { CommonShareLink } from "@/shared/components/share";
+import { ROUTE } from "@/shared/config/path";
+import { Button } from "@/shared/ui/button";
 
 const PAGE = {
     [TestVersion.V1]: {
@@ -35,7 +38,7 @@ export default function TestBuilderPage({ version, exam = false }: { version: Te
     return (
         <CommonWrapper
             title={exam ? "Экзаменационное тестирование" : PAGE[version].title}
-            description={exam ? "Защищённый банк экзаменационных тестов. Создайте сессию и предоставьте студентам ссылку для прохождения." : PAGE[version].description}
+            description={exam ? "Одна открытая страница для компьютерного класса. В меню теста выберите «Открыть доступ», чтобы добавить экзамен на общую страницу." : PAGE[version].description}
             action={
                 <Can section={exam ? PermissionSection.EXAM_TESTS : PermissionSection.TESTS}>
                     <div className="flex items-center gap-4">
@@ -46,6 +49,14 @@ export default function TestBuilderPage({ version, exam = false }: { version: Te
             }
             filter={{ render: { count: state.visible.length, children: <TestBuilderFilters state={state} /> } }}
         >
+            {exam && <div className="mb-5 flex flex-wrap items-center gap-3 rounded-xl border bg-muted/30 p-4">
+                <div className="min-w-0 flex-1">
+                    <p className="font-semibold">Общая ссылка для компьютерного класса</p>
+                    <p className="break-all text-sm text-muted-foreground">{window.location.origin}{ROUTE.PUBLIC.EXAM_TESTING}</p>
+                </div>
+                <CommonShareLink url={`${window.location.origin}${ROUTE.PUBLIC.EXAM_TESTING}`} label="Скопировать ссылку" />
+                <Button asChild variant="outline"><a href={ROUTE.PUBLIC.EXAM_TESTING} target="_blank" rel="noreferrer">Открыть страницу</a></Button>
+            </div>}
             <CommonControlState isLoading={state.loading} isError={state.error} isEmpty={false}>
                 <TestBuilderList
                     state={state}

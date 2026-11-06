@@ -2,16 +2,94 @@
 // @generated from file fesmu/exam/service/v1/exam_test_session.service.proto (package contract.fesmu.exam.service.v1, syntax proto3)
 /* eslint-disable */
 
-import type { GenFile, GenService } from "@bufbuild/protobuf/codegenv2";
-import { fileDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
+import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
+import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import type { TestAttemptDeleteRequestSchema, TestAttemptDeleteResponseSchema, TestAttemptFetchRequestSchema, TestAttemptFetchResponseSchema, TestSessionCreateRequestSchema, TestSessionCreateResponseSchema, TestSessionDeleteRequestSchema, TestSessionDeleteResponseSchema, TestSessionFetchRequestSchema, TestSessionFetchResponseSchema, TestSessionOpenUpdateRequestSchema, TestSessionOpenUpdateResponseSchema, TestTakeAnswerRequestSchema, TestTakeAnswerResponseSchema, TestTakeFinishRequestSchema, TestTakeInfoRequestSchema, TestTakeInfoResponseSchema, TestTakeStartRequestSchema, TestTakeStateRequestSchema, TestTakeStateResponseSchema } from "../../../service/v1/test_session.service_pb";
 import { file_fesmu_service_v1_test_session_service } from "../../../service/v1/test_session.service_pb";
+import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file fesmu/exam/service/v1/exam_test_session.service.proto.
  */
 export const file_fesmu_exam_service_v1_exam_test_session_service: GenFile = /*@__PURE__*/
-  fileDesc("CjVmZXNtdS9leGFtL3NlcnZpY2UvdjEvZXhhbV90ZXN0X3Nlc3Npb24uc2VydmljZS5wcm90bxIeY29udHJhY3QuZmVzbXUuZXhhbS5zZXJ2aWNlLnYxMuAJChZFeGFtVGVzdFNlc3Npb25TZXJ2aWNlEnIKEVRlc3RTZXNzaW9uQ3JlYXRlEi0uY29udHJhY3Quc2VydmljZS52MS5UZXN0U2Vzc2lvbkNyZWF0ZVJlcXVlc3QaLi5jb250cmFjdC5zZXJ2aWNlLnYxLlRlc3RTZXNzaW9uQ3JlYXRlUmVzcG9uc2USbwoQVGVzdFNlc3Npb25GZXRjaBIsLmNvbnRyYWN0LnNlcnZpY2UudjEuVGVzdFNlc3Npb25GZXRjaFJlcXVlc3QaLS5jb250cmFjdC5zZXJ2aWNlLnYxLlRlc3RTZXNzaW9uRmV0Y2hSZXNwb25zZRJ+ChVUZXN0U2Vzc2lvbk9wZW5VcGRhdGUSMS5jb250cmFjdC5zZXJ2aWNlLnYxLlRlc3RTZXNzaW9uT3BlblVwZGF0ZVJlcXVlc3QaMi5jb250cmFjdC5zZXJ2aWNlLnYxLlRlc3RTZXNzaW9uT3BlblVwZGF0ZVJlc3BvbnNlEnIKEVRlc3RTZXNzaW9uRGVsZXRlEi0uY29udHJhY3Quc2VydmljZS52MS5UZXN0U2Vzc2lvbkRlbGV0ZVJlcXVlc3QaLi5jb250cmFjdC5zZXJ2aWNlLnYxLlRlc3RTZXNzaW9uRGVsZXRlUmVzcG9uc2USbwoQVGVzdEF0dGVtcHRGZXRjaBIsLmNvbnRyYWN0LnNlcnZpY2UudjEuVGVzdEF0dGVtcHRGZXRjaFJlcXVlc3QaLS5jb250cmFjdC5zZXJ2aWNlLnYxLlRlc3RBdHRlbXB0RmV0Y2hSZXNwb25zZRJyChFUZXN0QXR0ZW1wdERlbGV0ZRItLmNvbnRyYWN0LnNlcnZpY2UudjEuVGVzdEF0dGVtcHREZWxldGVSZXF1ZXN0Gi4uY29udHJhY3Quc2VydmljZS52MS5UZXN0QXR0ZW1wdERlbGV0ZVJlc3BvbnNlEmMKDFRlc3RUYWtlSW5mbxIoLmNvbnRyYWN0LnNlcnZpY2UudjEuVGVzdFRha2VJbmZvUmVxdWVzdBopLmNvbnRyYWN0LnNlcnZpY2UudjEuVGVzdFRha2VJbmZvUmVzcG9uc2USZgoNVGVzdFRha2VTdGFydBIpLmNvbnRyYWN0LnNlcnZpY2UudjEuVGVzdFRha2VTdGFydFJlcXVlc3QaKi5jb250cmFjdC5zZXJ2aWNlLnYxLlRlc3RUYWtlU3RhdGVSZXNwb25zZRJmCg1UZXN0VGFrZVN0YXRlEikuY29udHJhY3Quc2VydmljZS52MS5UZXN0VGFrZVN0YXRlUmVxdWVzdBoqLmNvbnRyYWN0LnNlcnZpY2UudjEuVGVzdFRha2VTdGF0ZVJlc3BvbnNlEmkKDlRlc3RUYWtlQW5zd2VyEiouY29udHJhY3Quc2VydmljZS52MS5UZXN0VGFrZUFuc3dlclJlcXVlc3QaKy5jb250cmFjdC5zZXJ2aWNlLnYxLlRlc3RUYWtlQW5zd2VyUmVzcG9uc2USaAoOVGVzdFRha2VGaW5pc2gSKi5jb250cmFjdC5zZXJ2aWNlLnYxLlRlc3RUYWtlRmluaXNoUmVxdWVzdBoqLmNvbnRyYWN0LnNlcnZpY2UudjEuVGVzdFRha2VTdGF0ZVJlc3BvbnNlQo4CCiJjb20uY29udHJhY3QuZmVzbXUuZXhhbS5zZXJ2aWNlLnYxQhtFeGFtVGVzdFNlc3Npb25TZXJ2aWNlUHJvdG9QAVouZmVzbXUvY29udHJhY3QvZmVzbXUvZXhhbS9zZXJ2aWNlL3YxO3NlcnZpY2V2MaICBENGRVOqAh5Db250cmFjdC5GZXNtdS5FeGFtLlNlcnZpY2UuVjHKAh5Db250cmFjdFxGZXNtdVxFeGFtXFNlcnZpY2VcVjHiAipDb250cmFjdFxGZXNtdVxFeGFtXFNlcnZpY2VcVjFcR1BCTWV0YWRhdGHqAiJDb250cmFjdDo6RmVzbXU6OkV4YW06OlNlcnZpY2U6OlYxYgZwcm90bzM", [file_fesmu_service_v1_test_session_service]);
+  fileDesc("CjVmZXNtdS9leGFtL3NlcnZpY2UvdjEvZXhhbV90ZXN0X3Nlc3Npb24uc2VydmljZS5wcm90bxIeY29udHJhY3QuZmVzbXUuZXhhbS5zZXJ2aWNlLnYxIhgKFkV4YW1QdWJsaWNGZXRjaFJlcXVlc3QiVwoXRXhhbVB1YmxpY0ZldGNoUmVzcG9uc2USPAoEbGlzdBgBIAMoCzIuLmNvbnRyYWN0LmZlc211LmV4YW0uc2VydmljZS52MS5FeGFtUHVibGljVGVzdCKNAQoORXhhbVB1YmxpY1Rlc3QSDwoHdGVzdF9pZBgBIAEoAxINCgV0b2tlbhgCIAEoCRIPCgdmYWN1bHR5GAMgASgJEhAKCHNlbWVzdGVyGAQgASgFEg8KB3N1YmplY3QYBSABKAkSDQoFdGl0bGUYBiABKAkSGAoQZHVyYXRpb25fbWludXRlcxgHIAEoBTLlCgoWRXhhbVRlc3RTZXNzaW9uU2VydmljZRKCAQoPRXhhbVB1YmxpY0ZldGNoEjYuY29udHJhY3QuZmVzbXUuZXhhbS5zZXJ2aWNlLnYxLkV4YW1QdWJsaWNGZXRjaFJlcXVlc3QaNy5jb250cmFjdC5mZXNtdS5leGFtLnNlcnZpY2UudjEuRXhhbVB1YmxpY0ZldGNoUmVzcG9uc2UScgoRVGVzdFNlc3Npb25DcmVhdGUSLS5jb250cmFjdC5zZXJ2aWNlLnYxLlRlc3RTZXNzaW9uQ3JlYXRlUmVxdWVzdBouLmNvbnRyYWN0LnNlcnZpY2UudjEuVGVzdFNlc3Npb25DcmVhdGVSZXNwb25zZRJvChBUZXN0U2Vzc2lvbkZldGNoEiwuY29udHJhY3Quc2VydmljZS52MS5UZXN0U2Vzc2lvbkZldGNoUmVxdWVzdBotLmNvbnRyYWN0LnNlcnZpY2UudjEuVGVzdFNlc3Npb25GZXRjaFJlc3BvbnNlEn4KFVRlc3RTZXNzaW9uT3BlblVwZGF0ZRIxLmNvbnRyYWN0LnNlcnZpY2UudjEuVGVzdFNlc3Npb25PcGVuVXBkYXRlUmVxdWVzdBoyLmNvbnRyYWN0LnNlcnZpY2UudjEuVGVzdFNlc3Npb25PcGVuVXBkYXRlUmVzcG9uc2UScgoRVGVzdFNlc3Npb25EZWxldGUSLS5jb250cmFjdC5zZXJ2aWNlLnYxLlRlc3RTZXNzaW9uRGVsZXRlUmVxdWVzdBouLmNvbnRyYWN0LnNlcnZpY2UudjEuVGVzdFNlc3Npb25EZWxldGVSZXNwb25zZRJvChBUZXN0QXR0ZW1wdEZldGNoEiwuY29udHJhY3Quc2VydmljZS52MS5UZXN0QXR0ZW1wdEZldGNoUmVxdWVzdBotLmNvbnRyYWN0LnNlcnZpY2UudjEuVGVzdEF0dGVtcHRGZXRjaFJlc3BvbnNlEnIKEVRlc3RBdHRlbXB0RGVsZXRlEi0uY29udHJhY3Quc2VydmljZS52MS5UZXN0QXR0ZW1wdERlbGV0ZVJlcXVlc3QaLi5jb250cmFjdC5zZXJ2aWNlLnYxLlRlc3RBdHRlbXB0RGVsZXRlUmVzcG9uc2USYwoMVGVzdFRha2VJbmZvEiguY29udHJhY3Quc2VydmljZS52MS5UZXN0VGFrZUluZm9SZXF1ZXN0GikuY29udHJhY3Quc2VydmljZS52MS5UZXN0VGFrZUluZm9SZXNwb25zZRJmCg1UZXN0VGFrZVN0YXJ0EikuY29udHJhY3Quc2VydmljZS52MS5UZXN0VGFrZVN0YXJ0UmVxdWVzdBoqLmNvbnRyYWN0LnNlcnZpY2UudjEuVGVzdFRha2VTdGF0ZVJlc3BvbnNlEmYKDVRlc3RUYWtlU3RhdGUSKS5jb250cmFjdC5zZXJ2aWNlLnYxLlRlc3RUYWtlU3RhdGVSZXF1ZXN0GiouY29udHJhY3Quc2VydmljZS52MS5UZXN0VGFrZVN0YXRlUmVzcG9uc2USaQoOVGVzdFRha2VBbnN3ZXISKi5jb250cmFjdC5zZXJ2aWNlLnYxLlRlc3RUYWtlQW5zd2VyUmVxdWVzdBorLmNvbnRyYWN0LnNlcnZpY2UudjEuVGVzdFRha2VBbnN3ZXJSZXNwb25zZRJoCg5UZXN0VGFrZUZpbmlzaBIqLmNvbnRyYWN0LnNlcnZpY2UudjEuVGVzdFRha2VGaW5pc2hSZXF1ZXN0GiouY29udHJhY3Quc2VydmljZS52MS5UZXN0VGFrZVN0YXRlUmVzcG9uc2VCjgIKImNvbS5jb250cmFjdC5mZXNtdS5leGFtLnNlcnZpY2UudjFCG0V4YW1UZXN0U2Vzc2lvblNlcnZpY2VQcm90b1ABWi5mZXNtdS9jb250cmFjdC9mZXNtdS9leGFtL3NlcnZpY2UvdjE7c2VydmljZXYxogIEQ0ZFU6oCHkNvbnRyYWN0LkZlc211LkV4YW0uU2VydmljZS5WMcoCHkNvbnRyYWN0XEZlc211XEV4YW1cU2VydmljZVxWMeICKkNvbnRyYWN0XEZlc211XEV4YW1cU2VydmljZVxWMVxHUEJNZXRhZGF0YeoCIkNvbnRyYWN0OjpGZXNtdTo6RXhhbTo6U2VydmljZTo6VjFiBnByb3RvMw", [file_fesmu_service_v1_test_session_service]);
+
+/**
+ * @generated from message contract.fesmu.exam.service.v1.ExamPublicFetchRequest
+ */
+export type ExamPublicFetchRequest = Message<"contract.fesmu.exam.service.v1.ExamPublicFetchRequest"> & {
+};
+
+/**
+ * Describes the message contract.fesmu.exam.service.v1.ExamPublicFetchRequest.
+ * Use `create(ExamPublicFetchRequestSchema)` to create a new message.
+ */
+export const ExamPublicFetchRequestSchema: GenMessage<ExamPublicFetchRequest> = /*@__PURE__*/
+  messageDesc(file_fesmu_exam_service_v1_exam_test_session_service, 0);
+
+/**
+ * @generated from message contract.fesmu.exam.service.v1.ExamPublicFetchResponse
+ */
+export type ExamPublicFetchResponse = Message<"contract.fesmu.exam.service.v1.ExamPublicFetchResponse"> & {
+  /**
+   * @generated from field: repeated contract.fesmu.exam.service.v1.ExamPublicTest list = 1;
+   */
+  list: ExamPublicTest[];
+};
+
+/**
+ * Describes the message contract.fesmu.exam.service.v1.ExamPublicFetchResponse.
+ * Use `create(ExamPublicFetchResponseSchema)` to create a new message.
+ */
+export const ExamPublicFetchResponseSchema: GenMessage<ExamPublicFetchResponse> = /*@__PURE__*/
+  messageDesc(file_fesmu_exam_service_v1_exam_test_session_service, 1);
+
+/**
+ * @generated from message contract.fesmu.exam.service.v1.ExamPublicTest
+ */
+export type ExamPublicTest = Message<"contract.fesmu.exam.service.v1.ExamPublicTest"> & {
+  /**
+   * @generated from field: int64 test_id = 1;
+   */
+  testId: bigint;
+
+  /**
+   * @generated from field: string token = 2;
+   */
+  token: string;
+
+  /**
+   * @generated from field: string faculty = 3;
+   */
+  faculty: string;
+
+  /**
+   * @generated from field: int32 semester = 4;
+   */
+  semester: number;
+
+  /**
+   * @generated from field: string subject = 5;
+   */
+  subject: string;
+
+  /**
+   * @generated from field: string title = 6;
+   */
+  title: string;
+
+  /**
+   * @generated from field: int32 duration_minutes = 7;
+   */
+  durationMinutes: number;
+};
+
+/**
+ * Describes the message contract.fesmu.exam.service.v1.ExamPublicTest.
+ * Use `create(ExamPublicTestSchema)` to create a new message.
+ */
+export const ExamPublicTestSchema: GenMessage<ExamPublicTest> = /*@__PURE__*/
+  messageDesc(file_fesmu_exam_service_v1_exam_test_session_service, 2);
 
 /**
  * The examination-test link, registration and attempt API. Students use the
@@ -20,6 +98,16 @@ export const file_fesmu_exam_service_v1_exam_test_session_service: GenFile = /*@
  * @generated from service contract.fesmu.exam.service.v1.ExamTestSessionService
  */
 export const ExamTestSessionService: GenService<{
+  /**
+   * Public computer-class catalogue: only currently available exams, no questions or results.
+   *
+   * @generated from rpc contract.fesmu.exam.service.v1.ExamTestSessionService.ExamPublicFetch
+   */
+  examPublicFetch: {
+    methodKind: "unary";
+    input: typeof ExamPublicFetchRequestSchema;
+    output: typeof ExamPublicFetchResponseSchema;
+  },
   /**
    * @generated from rpc contract.fesmu.exam.service.v1.ExamTestSessionService.TestSessionCreate
    */

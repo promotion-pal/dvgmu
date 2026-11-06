@@ -81,8 +81,7 @@ const SessionLink: FC<{ session: TestSession; exam?: boolean }> = ({ session, ex
     return (
         <div className="flex flex-col gap-3 rounded-xl border bg-muted/40 p-4">
             <p className="text-sm text-muted-foreground">
-                Ссылка для студентов — по ней тест проходится без входа в систему. QR-код можно показать на экране: студенты отсканируют его
-                телефоном.
+                {exam ? "Общая открытая страница компьютерного класса. Экзамен появится на ней в заданное время. Эта ссылка и QR-код одинаковы для всех экзаменов; студент выбирает нужный тест без входа в ЛК." : "Ссылка для студентов — по ней тест проходится без входа в систему. QR-код можно показать на экране: студенты отсканируют его телефоном."}
             </p>
             <CommonQrCode url={url} fileName={`QR ${session.topic}`} size={220} className="self-center" />
             <code className="break-all rounded-md bg-background px-3 py-2 text-sm">{url}</code>
@@ -132,7 +131,7 @@ const TestSessionCreateModal: FC<{ state: SessionCreate; exam?: boolean }> = ({ 
         <CommonModal
             open={state.modal.open}
             onOpenChange={state.modal.onOpenChange}
-            title={created ? "Сессия создана" : "Новая сессия тестирования"}
+            title={exam ? created ? "Доступ к экзамену настроен" : "Открыть доступ к экзамену" : created ? "Сессия создана" : "Новая сессия тестирования"}
             description={target ? `«${target.topic}» — ${target.questionCount} вопросов в тесте` : undefined}
             className="sm:max-w-xl"
         >
@@ -202,7 +201,7 @@ const TestSessionCreateModal: FC<{ state: SessionCreate; exam?: boolean }> = ({ 
                         </p>
                         <div className="flex justify-end">
                             <Button type="submit" disabled={form.formState.isSubmitting}>
-                                {form.formState.isSubmitting ? "Создание…" : "Создать сессию"}
+                                {form.formState.isSubmitting ? "Создание…" : exam ? "Открыть доступ" : "Создать сессию"}
                             </Button>
                         </div>
                     </form>
@@ -325,7 +324,7 @@ const TestSessionList: FC<{ state: Sessions }> = ({ state }) => {
                 title="Сессий нет"
                 description={
                     state.empty
-                        ? "Создайте сессию в конструкторе тестов: меню теста → «Выдать студентам»."
+                        ? state.exam ? "Откройте доступ в экзаменационном банке: меню теста → «Открыть доступ». Экзамен появится на общей странице компьютерного класса." : "Создайте сессию в конструкторе тестов: меню теста → «Выдать студентам»."
                         : "По выбранным фильтрам ничего не найдено."
                 }
             />

@@ -8,8 +8,8 @@ import (
 	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"
-	v11 "fesmu/contract/fesmu/exam/service/v1"
-	v1 "fesmu/contract/fesmu/service/v1"
+	v1 "fesmu/contract/fesmu/exam/service/v1"
+	v11 "fesmu/contract/fesmu/service/v1"
 	http "net/http"
 	strings "strings"
 )
@@ -34,6 +34,9 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
+	// ExamTestSessionServiceExamPublicFetchProcedure is the fully-qualified name of the
+	// ExamTestSessionService's ExamPublicFetch RPC.
+	ExamTestSessionServiceExamPublicFetchProcedure = "/contract.fesmu.exam.service.v1.ExamTestSessionService/ExamPublicFetch"
 	// ExamTestSessionServiceTestSessionCreateProcedure is the fully-qualified name of the
 	// ExamTestSessionService's TestSessionCreate RPC.
 	ExamTestSessionServiceTestSessionCreateProcedure = "/contract.fesmu.exam.service.v1.ExamTestSessionService/TestSessionCreate"
@@ -72,17 +75,19 @@ const (
 // ExamTestSessionServiceClient is a client for the
 // contract.fesmu.exam.service.v1.ExamTestSessionService service.
 type ExamTestSessionServiceClient interface {
-	TestSessionCreate(context.Context, *connect.Request[v1.TestSessionCreateRequest]) (*connect.Response[v1.TestSessionCreateResponse], error)
-	TestSessionFetch(context.Context, *connect.Request[v1.TestSessionFetchRequest]) (*connect.Response[v1.TestSessionFetchResponse], error)
-	TestSessionOpenUpdate(context.Context, *connect.Request[v1.TestSessionOpenUpdateRequest]) (*connect.Response[v1.TestSessionOpenUpdateResponse], error)
-	TestSessionDelete(context.Context, *connect.Request[v1.TestSessionDeleteRequest]) (*connect.Response[v1.TestSessionDeleteResponse], error)
-	TestAttemptFetch(context.Context, *connect.Request[v1.TestAttemptFetchRequest]) (*connect.Response[v1.TestAttemptFetchResponse], error)
-	TestAttemptDelete(context.Context, *connect.Request[v1.TestAttemptDeleteRequest]) (*connect.Response[v1.TestAttemptDeleteResponse], error)
-	TestTakeInfo(context.Context, *connect.Request[v1.TestTakeInfoRequest]) (*connect.Response[v1.TestTakeInfoResponse], error)
-	TestTakeStart(context.Context, *connect.Request[v1.TestTakeStartRequest]) (*connect.Response[v1.TestTakeStateResponse], error)
-	TestTakeState(context.Context, *connect.Request[v1.TestTakeStateRequest]) (*connect.Response[v1.TestTakeStateResponse], error)
-	TestTakeAnswer(context.Context, *connect.Request[v1.TestTakeAnswerRequest]) (*connect.Response[v1.TestTakeAnswerResponse], error)
-	TestTakeFinish(context.Context, *connect.Request[v1.TestTakeFinishRequest]) (*connect.Response[v1.TestTakeStateResponse], error)
+	// Public computer-class catalogue: only currently available exams, no questions or results.
+	ExamPublicFetch(context.Context, *connect.Request[v1.ExamPublicFetchRequest]) (*connect.Response[v1.ExamPublicFetchResponse], error)
+	TestSessionCreate(context.Context, *connect.Request[v11.TestSessionCreateRequest]) (*connect.Response[v11.TestSessionCreateResponse], error)
+	TestSessionFetch(context.Context, *connect.Request[v11.TestSessionFetchRequest]) (*connect.Response[v11.TestSessionFetchResponse], error)
+	TestSessionOpenUpdate(context.Context, *connect.Request[v11.TestSessionOpenUpdateRequest]) (*connect.Response[v11.TestSessionOpenUpdateResponse], error)
+	TestSessionDelete(context.Context, *connect.Request[v11.TestSessionDeleteRequest]) (*connect.Response[v11.TestSessionDeleteResponse], error)
+	TestAttemptFetch(context.Context, *connect.Request[v11.TestAttemptFetchRequest]) (*connect.Response[v11.TestAttemptFetchResponse], error)
+	TestAttemptDelete(context.Context, *connect.Request[v11.TestAttemptDeleteRequest]) (*connect.Response[v11.TestAttemptDeleteResponse], error)
+	TestTakeInfo(context.Context, *connect.Request[v11.TestTakeInfoRequest]) (*connect.Response[v11.TestTakeInfoResponse], error)
+	TestTakeStart(context.Context, *connect.Request[v11.TestTakeStartRequest]) (*connect.Response[v11.TestTakeStateResponse], error)
+	TestTakeState(context.Context, *connect.Request[v11.TestTakeStateRequest]) (*connect.Response[v11.TestTakeStateResponse], error)
+	TestTakeAnswer(context.Context, *connect.Request[v11.TestTakeAnswerRequest]) (*connect.Response[v11.TestTakeAnswerResponse], error)
+	TestTakeFinish(context.Context, *connect.Request[v11.TestTakeFinishRequest]) (*connect.Response[v11.TestTakeStateResponse], error)
 }
 
 // NewExamTestSessionServiceClient constructs a client for the
@@ -95,69 +100,75 @@ type ExamTestSessionServiceClient interface {
 // http://api.acme.com or https://acme.com/grpc).
 func NewExamTestSessionServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) ExamTestSessionServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
-	examTestSessionServiceMethods := v11.File_fesmu_exam_service_v1_exam_test_session_service_proto.Services().ByName("ExamTestSessionService").Methods()
+	examTestSessionServiceMethods := v1.File_fesmu_exam_service_v1_exam_test_session_service_proto.Services().ByName("ExamTestSessionService").Methods()
 	return &examTestSessionServiceClient{
-		testSessionCreate: connect.NewClient[v1.TestSessionCreateRequest, v1.TestSessionCreateResponse](
+		examPublicFetch: connect.NewClient[v1.ExamPublicFetchRequest, v1.ExamPublicFetchResponse](
+			httpClient,
+			baseURL+ExamTestSessionServiceExamPublicFetchProcedure,
+			connect.WithSchema(examTestSessionServiceMethods.ByName("ExamPublicFetch")),
+			connect.WithClientOptions(opts...),
+		),
+		testSessionCreate: connect.NewClient[v11.TestSessionCreateRequest, v11.TestSessionCreateResponse](
 			httpClient,
 			baseURL+ExamTestSessionServiceTestSessionCreateProcedure,
 			connect.WithSchema(examTestSessionServiceMethods.ByName("TestSessionCreate")),
 			connect.WithClientOptions(opts...),
 		),
-		testSessionFetch: connect.NewClient[v1.TestSessionFetchRequest, v1.TestSessionFetchResponse](
+		testSessionFetch: connect.NewClient[v11.TestSessionFetchRequest, v11.TestSessionFetchResponse](
 			httpClient,
 			baseURL+ExamTestSessionServiceTestSessionFetchProcedure,
 			connect.WithSchema(examTestSessionServiceMethods.ByName("TestSessionFetch")),
 			connect.WithClientOptions(opts...),
 		),
-		testSessionOpenUpdate: connect.NewClient[v1.TestSessionOpenUpdateRequest, v1.TestSessionOpenUpdateResponse](
+		testSessionOpenUpdate: connect.NewClient[v11.TestSessionOpenUpdateRequest, v11.TestSessionOpenUpdateResponse](
 			httpClient,
 			baseURL+ExamTestSessionServiceTestSessionOpenUpdateProcedure,
 			connect.WithSchema(examTestSessionServiceMethods.ByName("TestSessionOpenUpdate")),
 			connect.WithClientOptions(opts...),
 		),
-		testSessionDelete: connect.NewClient[v1.TestSessionDeleteRequest, v1.TestSessionDeleteResponse](
+		testSessionDelete: connect.NewClient[v11.TestSessionDeleteRequest, v11.TestSessionDeleteResponse](
 			httpClient,
 			baseURL+ExamTestSessionServiceTestSessionDeleteProcedure,
 			connect.WithSchema(examTestSessionServiceMethods.ByName("TestSessionDelete")),
 			connect.WithClientOptions(opts...),
 		),
-		testAttemptFetch: connect.NewClient[v1.TestAttemptFetchRequest, v1.TestAttemptFetchResponse](
+		testAttemptFetch: connect.NewClient[v11.TestAttemptFetchRequest, v11.TestAttemptFetchResponse](
 			httpClient,
 			baseURL+ExamTestSessionServiceTestAttemptFetchProcedure,
 			connect.WithSchema(examTestSessionServiceMethods.ByName("TestAttemptFetch")),
 			connect.WithClientOptions(opts...),
 		),
-		testAttemptDelete: connect.NewClient[v1.TestAttemptDeleteRequest, v1.TestAttemptDeleteResponse](
+		testAttemptDelete: connect.NewClient[v11.TestAttemptDeleteRequest, v11.TestAttemptDeleteResponse](
 			httpClient,
 			baseURL+ExamTestSessionServiceTestAttemptDeleteProcedure,
 			connect.WithSchema(examTestSessionServiceMethods.ByName("TestAttemptDelete")),
 			connect.WithClientOptions(opts...),
 		),
-		testTakeInfo: connect.NewClient[v1.TestTakeInfoRequest, v1.TestTakeInfoResponse](
+		testTakeInfo: connect.NewClient[v11.TestTakeInfoRequest, v11.TestTakeInfoResponse](
 			httpClient,
 			baseURL+ExamTestSessionServiceTestTakeInfoProcedure,
 			connect.WithSchema(examTestSessionServiceMethods.ByName("TestTakeInfo")),
 			connect.WithClientOptions(opts...),
 		),
-		testTakeStart: connect.NewClient[v1.TestTakeStartRequest, v1.TestTakeStateResponse](
+		testTakeStart: connect.NewClient[v11.TestTakeStartRequest, v11.TestTakeStateResponse](
 			httpClient,
 			baseURL+ExamTestSessionServiceTestTakeStartProcedure,
 			connect.WithSchema(examTestSessionServiceMethods.ByName("TestTakeStart")),
 			connect.WithClientOptions(opts...),
 		),
-		testTakeState: connect.NewClient[v1.TestTakeStateRequest, v1.TestTakeStateResponse](
+		testTakeState: connect.NewClient[v11.TestTakeStateRequest, v11.TestTakeStateResponse](
 			httpClient,
 			baseURL+ExamTestSessionServiceTestTakeStateProcedure,
 			connect.WithSchema(examTestSessionServiceMethods.ByName("TestTakeState")),
 			connect.WithClientOptions(opts...),
 		),
-		testTakeAnswer: connect.NewClient[v1.TestTakeAnswerRequest, v1.TestTakeAnswerResponse](
+		testTakeAnswer: connect.NewClient[v11.TestTakeAnswerRequest, v11.TestTakeAnswerResponse](
 			httpClient,
 			baseURL+ExamTestSessionServiceTestTakeAnswerProcedure,
 			connect.WithSchema(examTestSessionServiceMethods.ByName("TestTakeAnswer")),
 			connect.WithClientOptions(opts...),
 		),
-		testTakeFinish: connect.NewClient[v1.TestTakeFinishRequest, v1.TestTakeStateResponse](
+		testTakeFinish: connect.NewClient[v11.TestTakeFinishRequest, v11.TestTakeStateResponse](
 			httpClient,
 			baseURL+ExamTestSessionServiceTestTakeFinishProcedure,
 			connect.WithSchema(examTestSessionServiceMethods.ByName("TestTakeFinish")),
@@ -168,89 +179,97 @@ func NewExamTestSessionServiceClient(httpClient connect.HTTPClient, baseURL stri
 
 // examTestSessionServiceClient implements ExamTestSessionServiceClient.
 type examTestSessionServiceClient struct {
-	testSessionCreate     *connect.Client[v1.TestSessionCreateRequest, v1.TestSessionCreateResponse]
-	testSessionFetch      *connect.Client[v1.TestSessionFetchRequest, v1.TestSessionFetchResponse]
-	testSessionOpenUpdate *connect.Client[v1.TestSessionOpenUpdateRequest, v1.TestSessionOpenUpdateResponse]
-	testSessionDelete     *connect.Client[v1.TestSessionDeleteRequest, v1.TestSessionDeleteResponse]
-	testAttemptFetch      *connect.Client[v1.TestAttemptFetchRequest, v1.TestAttemptFetchResponse]
-	testAttemptDelete     *connect.Client[v1.TestAttemptDeleteRequest, v1.TestAttemptDeleteResponse]
-	testTakeInfo          *connect.Client[v1.TestTakeInfoRequest, v1.TestTakeInfoResponse]
-	testTakeStart         *connect.Client[v1.TestTakeStartRequest, v1.TestTakeStateResponse]
-	testTakeState         *connect.Client[v1.TestTakeStateRequest, v1.TestTakeStateResponse]
-	testTakeAnswer        *connect.Client[v1.TestTakeAnswerRequest, v1.TestTakeAnswerResponse]
-	testTakeFinish        *connect.Client[v1.TestTakeFinishRequest, v1.TestTakeStateResponse]
+	examPublicFetch       *connect.Client[v1.ExamPublicFetchRequest, v1.ExamPublicFetchResponse]
+	testSessionCreate     *connect.Client[v11.TestSessionCreateRequest, v11.TestSessionCreateResponse]
+	testSessionFetch      *connect.Client[v11.TestSessionFetchRequest, v11.TestSessionFetchResponse]
+	testSessionOpenUpdate *connect.Client[v11.TestSessionOpenUpdateRequest, v11.TestSessionOpenUpdateResponse]
+	testSessionDelete     *connect.Client[v11.TestSessionDeleteRequest, v11.TestSessionDeleteResponse]
+	testAttemptFetch      *connect.Client[v11.TestAttemptFetchRequest, v11.TestAttemptFetchResponse]
+	testAttemptDelete     *connect.Client[v11.TestAttemptDeleteRequest, v11.TestAttemptDeleteResponse]
+	testTakeInfo          *connect.Client[v11.TestTakeInfoRequest, v11.TestTakeInfoResponse]
+	testTakeStart         *connect.Client[v11.TestTakeStartRequest, v11.TestTakeStateResponse]
+	testTakeState         *connect.Client[v11.TestTakeStateRequest, v11.TestTakeStateResponse]
+	testTakeAnswer        *connect.Client[v11.TestTakeAnswerRequest, v11.TestTakeAnswerResponse]
+	testTakeFinish        *connect.Client[v11.TestTakeFinishRequest, v11.TestTakeStateResponse]
+}
+
+// ExamPublicFetch calls contract.fesmu.exam.service.v1.ExamTestSessionService.ExamPublicFetch.
+func (c *examTestSessionServiceClient) ExamPublicFetch(ctx context.Context, req *connect.Request[v1.ExamPublicFetchRequest]) (*connect.Response[v1.ExamPublicFetchResponse], error) {
+	return c.examPublicFetch.CallUnary(ctx, req)
 }
 
 // TestSessionCreate calls contract.fesmu.exam.service.v1.ExamTestSessionService.TestSessionCreate.
-func (c *examTestSessionServiceClient) TestSessionCreate(ctx context.Context, req *connect.Request[v1.TestSessionCreateRequest]) (*connect.Response[v1.TestSessionCreateResponse], error) {
+func (c *examTestSessionServiceClient) TestSessionCreate(ctx context.Context, req *connect.Request[v11.TestSessionCreateRequest]) (*connect.Response[v11.TestSessionCreateResponse], error) {
 	return c.testSessionCreate.CallUnary(ctx, req)
 }
 
 // TestSessionFetch calls contract.fesmu.exam.service.v1.ExamTestSessionService.TestSessionFetch.
-func (c *examTestSessionServiceClient) TestSessionFetch(ctx context.Context, req *connect.Request[v1.TestSessionFetchRequest]) (*connect.Response[v1.TestSessionFetchResponse], error) {
+func (c *examTestSessionServiceClient) TestSessionFetch(ctx context.Context, req *connect.Request[v11.TestSessionFetchRequest]) (*connect.Response[v11.TestSessionFetchResponse], error) {
 	return c.testSessionFetch.CallUnary(ctx, req)
 }
 
 // TestSessionOpenUpdate calls
 // contract.fesmu.exam.service.v1.ExamTestSessionService.TestSessionOpenUpdate.
-func (c *examTestSessionServiceClient) TestSessionOpenUpdate(ctx context.Context, req *connect.Request[v1.TestSessionOpenUpdateRequest]) (*connect.Response[v1.TestSessionOpenUpdateResponse], error) {
+func (c *examTestSessionServiceClient) TestSessionOpenUpdate(ctx context.Context, req *connect.Request[v11.TestSessionOpenUpdateRequest]) (*connect.Response[v11.TestSessionOpenUpdateResponse], error) {
 	return c.testSessionOpenUpdate.CallUnary(ctx, req)
 }
 
 // TestSessionDelete calls contract.fesmu.exam.service.v1.ExamTestSessionService.TestSessionDelete.
-func (c *examTestSessionServiceClient) TestSessionDelete(ctx context.Context, req *connect.Request[v1.TestSessionDeleteRequest]) (*connect.Response[v1.TestSessionDeleteResponse], error) {
+func (c *examTestSessionServiceClient) TestSessionDelete(ctx context.Context, req *connect.Request[v11.TestSessionDeleteRequest]) (*connect.Response[v11.TestSessionDeleteResponse], error) {
 	return c.testSessionDelete.CallUnary(ctx, req)
 }
 
 // TestAttemptFetch calls contract.fesmu.exam.service.v1.ExamTestSessionService.TestAttemptFetch.
-func (c *examTestSessionServiceClient) TestAttemptFetch(ctx context.Context, req *connect.Request[v1.TestAttemptFetchRequest]) (*connect.Response[v1.TestAttemptFetchResponse], error) {
+func (c *examTestSessionServiceClient) TestAttemptFetch(ctx context.Context, req *connect.Request[v11.TestAttemptFetchRequest]) (*connect.Response[v11.TestAttemptFetchResponse], error) {
 	return c.testAttemptFetch.CallUnary(ctx, req)
 }
 
 // TestAttemptDelete calls contract.fesmu.exam.service.v1.ExamTestSessionService.TestAttemptDelete.
-func (c *examTestSessionServiceClient) TestAttemptDelete(ctx context.Context, req *connect.Request[v1.TestAttemptDeleteRequest]) (*connect.Response[v1.TestAttemptDeleteResponse], error) {
+func (c *examTestSessionServiceClient) TestAttemptDelete(ctx context.Context, req *connect.Request[v11.TestAttemptDeleteRequest]) (*connect.Response[v11.TestAttemptDeleteResponse], error) {
 	return c.testAttemptDelete.CallUnary(ctx, req)
 }
 
 // TestTakeInfo calls contract.fesmu.exam.service.v1.ExamTestSessionService.TestTakeInfo.
-func (c *examTestSessionServiceClient) TestTakeInfo(ctx context.Context, req *connect.Request[v1.TestTakeInfoRequest]) (*connect.Response[v1.TestTakeInfoResponse], error) {
+func (c *examTestSessionServiceClient) TestTakeInfo(ctx context.Context, req *connect.Request[v11.TestTakeInfoRequest]) (*connect.Response[v11.TestTakeInfoResponse], error) {
 	return c.testTakeInfo.CallUnary(ctx, req)
 }
 
 // TestTakeStart calls contract.fesmu.exam.service.v1.ExamTestSessionService.TestTakeStart.
-func (c *examTestSessionServiceClient) TestTakeStart(ctx context.Context, req *connect.Request[v1.TestTakeStartRequest]) (*connect.Response[v1.TestTakeStateResponse], error) {
+func (c *examTestSessionServiceClient) TestTakeStart(ctx context.Context, req *connect.Request[v11.TestTakeStartRequest]) (*connect.Response[v11.TestTakeStateResponse], error) {
 	return c.testTakeStart.CallUnary(ctx, req)
 }
 
 // TestTakeState calls contract.fesmu.exam.service.v1.ExamTestSessionService.TestTakeState.
-func (c *examTestSessionServiceClient) TestTakeState(ctx context.Context, req *connect.Request[v1.TestTakeStateRequest]) (*connect.Response[v1.TestTakeStateResponse], error) {
+func (c *examTestSessionServiceClient) TestTakeState(ctx context.Context, req *connect.Request[v11.TestTakeStateRequest]) (*connect.Response[v11.TestTakeStateResponse], error) {
 	return c.testTakeState.CallUnary(ctx, req)
 }
 
 // TestTakeAnswer calls contract.fesmu.exam.service.v1.ExamTestSessionService.TestTakeAnswer.
-func (c *examTestSessionServiceClient) TestTakeAnswer(ctx context.Context, req *connect.Request[v1.TestTakeAnswerRequest]) (*connect.Response[v1.TestTakeAnswerResponse], error) {
+func (c *examTestSessionServiceClient) TestTakeAnswer(ctx context.Context, req *connect.Request[v11.TestTakeAnswerRequest]) (*connect.Response[v11.TestTakeAnswerResponse], error) {
 	return c.testTakeAnswer.CallUnary(ctx, req)
 }
 
 // TestTakeFinish calls contract.fesmu.exam.service.v1.ExamTestSessionService.TestTakeFinish.
-func (c *examTestSessionServiceClient) TestTakeFinish(ctx context.Context, req *connect.Request[v1.TestTakeFinishRequest]) (*connect.Response[v1.TestTakeStateResponse], error) {
+func (c *examTestSessionServiceClient) TestTakeFinish(ctx context.Context, req *connect.Request[v11.TestTakeFinishRequest]) (*connect.Response[v11.TestTakeStateResponse], error) {
 	return c.testTakeFinish.CallUnary(ctx, req)
 }
 
 // ExamTestSessionServiceHandler is an implementation of the
 // contract.fesmu.exam.service.v1.ExamTestSessionService service.
 type ExamTestSessionServiceHandler interface {
-	TestSessionCreate(context.Context, *connect.Request[v1.TestSessionCreateRequest]) (*connect.Response[v1.TestSessionCreateResponse], error)
-	TestSessionFetch(context.Context, *connect.Request[v1.TestSessionFetchRequest]) (*connect.Response[v1.TestSessionFetchResponse], error)
-	TestSessionOpenUpdate(context.Context, *connect.Request[v1.TestSessionOpenUpdateRequest]) (*connect.Response[v1.TestSessionOpenUpdateResponse], error)
-	TestSessionDelete(context.Context, *connect.Request[v1.TestSessionDeleteRequest]) (*connect.Response[v1.TestSessionDeleteResponse], error)
-	TestAttemptFetch(context.Context, *connect.Request[v1.TestAttemptFetchRequest]) (*connect.Response[v1.TestAttemptFetchResponse], error)
-	TestAttemptDelete(context.Context, *connect.Request[v1.TestAttemptDeleteRequest]) (*connect.Response[v1.TestAttemptDeleteResponse], error)
-	TestTakeInfo(context.Context, *connect.Request[v1.TestTakeInfoRequest]) (*connect.Response[v1.TestTakeInfoResponse], error)
-	TestTakeStart(context.Context, *connect.Request[v1.TestTakeStartRequest]) (*connect.Response[v1.TestTakeStateResponse], error)
-	TestTakeState(context.Context, *connect.Request[v1.TestTakeStateRequest]) (*connect.Response[v1.TestTakeStateResponse], error)
-	TestTakeAnswer(context.Context, *connect.Request[v1.TestTakeAnswerRequest]) (*connect.Response[v1.TestTakeAnswerResponse], error)
-	TestTakeFinish(context.Context, *connect.Request[v1.TestTakeFinishRequest]) (*connect.Response[v1.TestTakeStateResponse], error)
+	// Public computer-class catalogue: only currently available exams, no questions or results.
+	ExamPublicFetch(context.Context, *connect.Request[v1.ExamPublicFetchRequest]) (*connect.Response[v1.ExamPublicFetchResponse], error)
+	TestSessionCreate(context.Context, *connect.Request[v11.TestSessionCreateRequest]) (*connect.Response[v11.TestSessionCreateResponse], error)
+	TestSessionFetch(context.Context, *connect.Request[v11.TestSessionFetchRequest]) (*connect.Response[v11.TestSessionFetchResponse], error)
+	TestSessionOpenUpdate(context.Context, *connect.Request[v11.TestSessionOpenUpdateRequest]) (*connect.Response[v11.TestSessionOpenUpdateResponse], error)
+	TestSessionDelete(context.Context, *connect.Request[v11.TestSessionDeleteRequest]) (*connect.Response[v11.TestSessionDeleteResponse], error)
+	TestAttemptFetch(context.Context, *connect.Request[v11.TestAttemptFetchRequest]) (*connect.Response[v11.TestAttemptFetchResponse], error)
+	TestAttemptDelete(context.Context, *connect.Request[v11.TestAttemptDeleteRequest]) (*connect.Response[v11.TestAttemptDeleteResponse], error)
+	TestTakeInfo(context.Context, *connect.Request[v11.TestTakeInfoRequest]) (*connect.Response[v11.TestTakeInfoResponse], error)
+	TestTakeStart(context.Context, *connect.Request[v11.TestTakeStartRequest]) (*connect.Response[v11.TestTakeStateResponse], error)
+	TestTakeState(context.Context, *connect.Request[v11.TestTakeStateRequest]) (*connect.Response[v11.TestTakeStateResponse], error)
+	TestTakeAnswer(context.Context, *connect.Request[v11.TestTakeAnswerRequest]) (*connect.Response[v11.TestTakeAnswerResponse], error)
+	TestTakeFinish(context.Context, *connect.Request[v11.TestTakeFinishRequest]) (*connect.Response[v11.TestTakeStateResponse], error)
 }
 
 // NewExamTestSessionServiceHandler builds an HTTP handler from the service implementation. It
@@ -259,7 +278,13 @@ type ExamTestSessionServiceHandler interface {
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
 func NewExamTestSessionServiceHandler(svc ExamTestSessionServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
-	examTestSessionServiceMethods := v11.File_fesmu_exam_service_v1_exam_test_session_service_proto.Services().ByName("ExamTestSessionService").Methods()
+	examTestSessionServiceMethods := v1.File_fesmu_exam_service_v1_exam_test_session_service_proto.Services().ByName("ExamTestSessionService").Methods()
+	examTestSessionServiceExamPublicFetchHandler := connect.NewUnaryHandler(
+		ExamTestSessionServiceExamPublicFetchProcedure,
+		svc.ExamPublicFetch,
+		connect.WithSchema(examTestSessionServiceMethods.ByName("ExamPublicFetch")),
+		connect.WithHandlerOptions(opts...),
+	)
 	examTestSessionServiceTestSessionCreateHandler := connect.NewUnaryHandler(
 		ExamTestSessionServiceTestSessionCreateProcedure,
 		svc.TestSessionCreate,
@@ -328,6 +353,8 @@ func NewExamTestSessionServiceHandler(svc ExamTestSessionServiceHandler, opts ..
 	)
 	return "/contract.fesmu.exam.service.v1.ExamTestSessionService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
+		case ExamTestSessionServiceExamPublicFetchProcedure:
+			examTestSessionServiceExamPublicFetchHandler.ServeHTTP(w, r)
 		case ExamTestSessionServiceTestSessionCreateProcedure:
 			examTestSessionServiceTestSessionCreateHandler.ServeHTTP(w, r)
 		case ExamTestSessionServiceTestSessionFetchProcedure:
@@ -359,46 +386,50 @@ func NewExamTestSessionServiceHandler(svc ExamTestSessionServiceHandler, opts ..
 // UnimplementedExamTestSessionServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedExamTestSessionServiceHandler struct{}
 
-func (UnimplementedExamTestSessionServiceHandler) TestSessionCreate(context.Context, *connect.Request[v1.TestSessionCreateRequest]) (*connect.Response[v1.TestSessionCreateResponse], error) {
+func (UnimplementedExamTestSessionServiceHandler) ExamPublicFetch(context.Context, *connect.Request[v1.ExamPublicFetchRequest]) (*connect.Response[v1.ExamPublicFetchResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.fesmu.exam.service.v1.ExamTestSessionService.ExamPublicFetch is not implemented"))
+}
+
+func (UnimplementedExamTestSessionServiceHandler) TestSessionCreate(context.Context, *connect.Request[v11.TestSessionCreateRequest]) (*connect.Response[v11.TestSessionCreateResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.fesmu.exam.service.v1.ExamTestSessionService.TestSessionCreate is not implemented"))
 }
 
-func (UnimplementedExamTestSessionServiceHandler) TestSessionFetch(context.Context, *connect.Request[v1.TestSessionFetchRequest]) (*connect.Response[v1.TestSessionFetchResponse], error) {
+func (UnimplementedExamTestSessionServiceHandler) TestSessionFetch(context.Context, *connect.Request[v11.TestSessionFetchRequest]) (*connect.Response[v11.TestSessionFetchResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.fesmu.exam.service.v1.ExamTestSessionService.TestSessionFetch is not implemented"))
 }
 
-func (UnimplementedExamTestSessionServiceHandler) TestSessionOpenUpdate(context.Context, *connect.Request[v1.TestSessionOpenUpdateRequest]) (*connect.Response[v1.TestSessionOpenUpdateResponse], error) {
+func (UnimplementedExamTestSessionServiceHandler) TestSessionOpenUpdate(context.Context, *connect.Request[v11.TestSessionOpenUpdateRequest]) (*connect.Response[v11.TestSessionOpenUpdateResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.fesmu.exam.service.v1.ExamTestSessionService.TestSessionOpenUpdate is not implemented"))
 }
 
-func (UnimplementedExamTestSessionServiceHandler) TestSessionDelete(context.Context, *connect.Request[v1.TestSessionDeleteRequest]) (*connect.Response[v1.TestSessionDeleteResponse], error) {
+func (UnimplementedExamTestSessionServiceHandler) TestSessionDelete(context.Context, *connect.Request[v11.TestSessionDeleteRequest]) (*connect.Response[v11.TestSessionDeleteResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.fesmu.exam.service.v1.ExamTestSessionService.TestSessionDelete is not implemented"))
 }
 
-func (UnimplementedExamTestSessionServiceHandler) TestAttemptFetch(context.Context, *connect.Request[v1.TestAttemptFetchRequest]) (*connect.Response[v1.TestAttemptFetchResponse], error) {
+func (UnimplementedExamTestSessionServiceHandler) TestAttemptFetch(context.Context, *connect.Request[v11.TestAttemptFetchRequest]) (*connect.Response[v11.TestAttemptFetchResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.fesmu.exam.service.v1.ExamTestSessionService.TestAttemptFetch is not implemented"))
 }
 
-func (UnimplementedExamTestSessionServiceHandler) TestAttemptDelete(context.Context, *connect.Request[v1.TestAttemptDeleteRequest]) (*connect.Response[v1.TestAttemptDeleteResponse], error) {
+func (UnimplementedExamTestSessionServiceHandler) TestAttemptDelete(context.Context, *connect.Request[v11.TestAttemptDeleteRequest]) (*connect.Response[v11.TestAttemptDeleteResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.fesmu.exam.service.v1.ExamTestSessionService.TestAttemptDelete is not implemented"))
 }
 
-func (UnimplementedExamTestSessionServiceHandler) TestTakeInfo(context.Context, *connect.Request[v1.TestTakeInfoRequest]) (*connect.Response[v1.TestTakeInfoResponse], error) {
+func (UnimplementedExamTestSessionServiceHandler) TestTakeInfo(context.Context, *connect.Request[v11.TestTakeInfoRequest]) (*connect.Response[v11.TestTakeInfoResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.fesmu.exam.service.v1.ExamTestSessionService.TestTakeInfo is not implemented"))
 }
 
-func (UnimplementedExamTestSessionServiceHandler) TestTakeStart(context.Context, *connect.Request[v1.TestTakeStartRequest]) (*connect.Response[v1.TestTakeStateResponse], error) {
+func (UnimplementedExamTestSessionServiceHandler) TestTakeStart(context.Context, *connect.Request[v11.TestTakeStartRequest]) (*connect.Response[v11.TestTakeStateResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.fesmu.exam.service.v1.ExamTestSessionService.TestTakeStart is not implemented"))
 }
 
-func (UnimplementedExamTestSessionServiceHandler) TestTakeState(context.Context, *connect.Request[v1.TestTakeStateRequest]) (*connect.Response[v1.TestTakeStateResponse], error) {
+func (UnimplementedExamTestSessionServiceHandler) TestTakeState(context.Context, *connect.Request[v11.TestTakeStateRequest]) (*connect.Response[v11.TestTakeStateResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.fesmu.exam.service.v1.ExamTestSessionService.TestTakeState is not implemented"))
 }
 
-func (UnimplementedExamTestSessionServiceHandler) TestTakeAnswer(context.Context, *connect.Request[v1.TestTakeAnswerRequest]) (*connect.Response[v1.TestTakeAnswerResponse], error) {
+func (UnimplementedExamTestSessionServiceHandler) TestTakeAnswer(context.Context, *connect.Request[v11.TestTakeAnswerRequest]) (*connect.Response[v11.TestTakeAnswerResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.fesmu.exam.service.v1.ExamTestSessionService.TestTakeAnswer is not implemented"))
 }
 
-func (UnimplementedExamTestSessionServiceHandler) TestTakeFinish(context.Context, *connect.Request[v1.TestTakeFinishRequest]) (*connect.Response[v1.TestTakeStateResponse], error) {
+func (UnimplementedExamTestSessionServiceHandler) TestTakeFinish(context.Context, *connect.Request[v11.TestTakeFinishRequest]) (*connect.Response[v11.TestTakeStateResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.fesmu.exam.service.v1.ExamTestSessionService.TestTakeFinish is not implemented"))
 }

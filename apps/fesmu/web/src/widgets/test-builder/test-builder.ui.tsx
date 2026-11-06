@@ -162,7 +162,7 @@ const TestRow: FC<{ test: Test; state: TestBuilder; onHandOut?: HandOut }> = ({ 
             <CommonPopover
                 items={[
                     ...(onHandOut && canEdit
-                        ? [{ label: "Выдать студентам", icon: <SendIcon className="h-3.5 w-3.5" />, onClick: () => onHandOut(test) }]
+                        ? [{ label: state.exam ? "Открыть доступ" : "Выдать студентам", icon: <SendIcon className="h-3.5 w-3.5" />, onClick: () => onHandOut(test) }]
                         : []),
                     {
                         label: "Выгрузить в RTF",

@@ -9,6 +9,8 @@ option go_package = "exam_service_v1;exam_service_pb";
 // The examination-test link, registration and attempt API. Students use the
 // same anonymous flow and registration fields as regular test sessions.
 service ExamTestSessionService {
+  // Public computer-class catalogue: only currently available exams, no questions or results.
+  rpc ExamPublicFetch (ExamPublicFetchRequest) returns (ExamPublicFetchResponse);
   rpc TestSessionCreate (contract.service.v1.TestSessionCreateRequest) returns (contract.service.v1.TestSessionCreateResponse);
   rpc TestSessionFetch (contract.service.v1.TestSessionFetchRequest) returns (contract.service.v1.TestSessionFetchResponse);
   rpc TestSessionOpenUpdate (contract.service.v1.TestSessionOpenUpdateRequest) returns (contract.service.v1.TestSessionOpenUpdateResponse);
@@ -20,4 +22,20 @@ service ExamTestSessionService {
   rpc TestTakeState (contract.service.v1.TestTakeStateRequest) returns (contract.service.v1.TestTakeStateResponse);
   rpc TestTakeAnswer (contract.service.v1.TestTakeAnswerRequest) returns (contract.service.v1.TestTakeAnswerResponse);
   rpc TestTakeFinish (contract.service.v1.TestTakeFinishRequest) returns (contract.service.v1.TestTakeStateResponse);
+}
+
+message ExamPublicFetchRequest {}
+
+message ExamPublicFetchResponse {
+  repeated ExamPublicTest list = 1;
+}
+
+message ExamPublicTest {
+  int64 test_id = 1;
+  string token = 2;
+  string faculty = 3;
+  int32 semester = 4;
+  string subject = 5;
+  string title = 6;
+  int32 duration_minutes = 7;
 }

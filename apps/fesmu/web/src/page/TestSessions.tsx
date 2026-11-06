@@ -17,7 +17,7 @@ export default function TestSessionsPage({ exam = false }: { exam?: boolean }) {
     return (
         <CommonWrapper
             title={exam ? "Сессии экзаменационного тестирования" : "Сессии тестирования"}
-            description={exam ? "Экзаменационные тесты, доступы по ссылке и результаты" : "Тесты, выданные студентам по ссылке, и их результаты"}
+            description={exam ? "Доступность экзаменов на общей странице компьютерного класса и результаты студентов" : "Тесты, выданные студентам по ссылке, и их результаты"}
             filter={{ render: { count: state.visible.length, children: <TestSessionFilters state={state} /> } }}
         >
             <CommonControlState isLoading={state.loading} isError={state.error} isEmpty={false}>

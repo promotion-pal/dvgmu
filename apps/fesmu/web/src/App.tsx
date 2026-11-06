@@ -21,6 +21,7 @@ import ScheduleEditorPage from "./page/ScheduleEditor";
 import ScheduleHallPage from "./page/ScheduleHall";
 import ComputerClassPage from "./page/ComputerClass";
 import TestBuilderPage from "./page/TestBuilder";
+import ExamTestingPublicPage from "./page/public/ExamTestingPublic";
 import { TestVersion } from "@fesmu/contract/fesmu/enum/v1/test.enum_pb";
 import TestSessionsPage from "./page/TestSessions";
 import TestSessionResultsPage from "./page/TestSessionResults";
@@ -194,10 +195,13 @@ function App() {
         <Route path={ROUTE.PUBLIC.SCHEDULE_COLLECT} element={<ScheduleCollectPage />} />
         {/* Students take a test by its session link, without a sign-in. */}
         <Route path={ROUTE.PUBLIC.TEST_TAKE} element={<TestTakePage />} />
-        <Route path={ROUTE.PUBLIC.EXAM_TEST_TAKE} element={<TestTakePage exam />} />
         {/* Анкета по QR — без входа. */}
         <Route path={ROUTE.PUBLIC.QUESTION} element={<QuestionPage />} />
       </Route>
+
+      {/* Computer-class exams have one standalone public entry, with no LK navigation. */}
+      <Route path={ROUTE.PUBLIC.EXAM_TESTING} element={<ExamTestingPublicPage />} />
+      <Route path={ROUTE.PUBLIC.EXAM_TEST_TAKE} element={<TestTakePage exam />} />
 
       {/* Опубликованные методички — открыто, без входа. */}
       <Route element={<PublicLayout />}>

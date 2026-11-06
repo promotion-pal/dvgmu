@@ -86,6 +86,7 @@ const ROUTE = {
     /** A student takes a test by its session link. */
     TEST_TAKE: "/tests/take/:token",
     EXAM_TEST_TAKE: "/exam-testing/take/:token",
+    EXAM_TESTING: "/exam-testing",
     /** Опубликованные методички — без входа. */
     MANUALS: "/manuals",
     MANUAL: "/manuals/:id",
