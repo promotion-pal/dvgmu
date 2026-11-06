@@ -5,6 +5,13 @@
 name: fesmu${STAND:+_${STAND}}
 
 services:
+  # Включена в обычный запуск портала; определение и каталог данных общие
+  # с compose баз, чтобы два способа запуска использовали ту же БД.
+  fesmu_core_exam_test_db:
+    extends:
+      file: docker-compose.dev.yml
+      service: fesmu_core_exam_test_db
+
   # Ключи сервисов (core_app/core_api) намеренно НЕ совпадают с именами
   # контейнеров: имя сервиса — DNS-алиас в traefik-network, и у стенда оно
   # не должно перехватывать прод-имя fesmu_core_api.
@@ -43,6 +50,15 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    environment:
+      EXAM_TEST_POSTGRES_HOST: ${EXAM_TEST_POSTGRES_HOST:-fesmu_core_exam_test_db}
+      EXAM_TEST_POSTGRES_PORT: ${EXAM_TEST_POSTGRES_PORT:-5432}
+      EXAM_TEST_POSTGRES_USER: ${EXAM_TEST_POSTGRES_USER:-root}
+      EXAM_TEST_POSTGRES_PASSWORD: ${EXAM_TEST_POSTGRES_PASSWORD:-pass}
+      EXAM_TEST_POSTGRES_DB: ${EXAM_TEST_POSTGRES_DB:-fesmu_core_exam_test_db}
+    depends_on:
+      fesmu_core_exam_test_db:
+        condition: service_healthy
     ports:
       - "4000"
     networks:

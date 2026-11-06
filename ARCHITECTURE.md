@@ -37,6 +37,10 @@
 | **notification** | `services/notification` | Отправка писем (SMTP) | — | сейчас в репозитории никто не вызывает |
 | **sync** | `services/sync` | Сверка MDM ↔ AD: читает обе стороны и пишет расхождения в лог | — | запускается по таймеру |
 
+Экзаменационная БД входит в обычный Compose FESMU через общее определение
+в `apps/fesmu/docker-compose.dev.yml`. API зависит от её healthcheck;
+PostgreSQL создаёт базу при первом запуске, API применяет миграции автоматически.
+
 **Сайты при сервисах** (Next.js, в общем pnpm workspace, TS схем — из `@fesmu/contract`):
 - `services/dormitory` — общежитие (сайт и api, пакеты `contract.dormitory.*`);
 - `services/mentor` — наставничество (сайт и api, пакеты `contract.mentor.*`).

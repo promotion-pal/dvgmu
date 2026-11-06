@@ -44,12 +44,17 @@ services:
   fesmu_core_exam_test_db:
     container_name: "fesmu_core_exam_test_db"
     image: postgres:17
+    restart: unless-stopped
     environment:
       POSTGRES_USER: ${EXAM_TEST_POSTGRES_USER:-root}
       POSTGRES_PASSWORD: ${EXAM_TEST_POSTGRES_PASSWORD:-pass}
       POSTGRES_DB: ${EXAM_TEST_POSTGRES_DB:-fesmu_core_exam_test_db}
-    ports:
-      - "127.0.0.1:5462:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+      start_period: 10s
     networks:
       - traefik-network
     volumes:

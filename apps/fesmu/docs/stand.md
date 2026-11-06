@@ -98,12 +98,17 @@ POSTGRES_DB_LIBRARY=fesmu_core_library_db
 (`POSTGRES_PORT_LIBRARY` — только если другой).
 
 Экзаменационные тесты и их попытки хранятся отдельно от обычного банка в
-`exam_test_db`. Для окружения нужно создать отдельную PostgreSQL базу и задать
-`EXAM_TEST_POSTGRES_HOST`, `EXAM_TEST_POSTGRES_USER`,
-`EXAM_TEST_POSTGRES_PASSWORD`, `EXAM_TEST_POSTGRES_DB` (порт —
-`EXAM_TEST_POSTGRES_PORT`, по умолчанию 5432). В тестовом compose уже есть
-отдельный контейнер `fesmu_core_exam_test_db`; локальный dev использует базу
-`fesmu_exam_tests`.
+`exam_test_db`. Обычный `docker compose up -d --build` в `apps/fesmu` сам
+запускает `fesmu_core_exam_test_db` и ждёт PostgreSQL healthcheck перед API.
+При первом запуске PostgreSQL создаёт базу, затем API автоматически применяет
+`migrations/test`. Определение контейнера общее с `docker-compose.dev.yml`,
+каталог данных прежний — `api/db/exam-test`. Порт БД не публикуется на хост.
+API и контейнер БД получают одинаковые `EXAM_TEST_POSTGRES_USER`,
+`EXAM_TEST_POSTGRES_PASSWORD`, `EXAM_TEST_POSTGRES_DB` из `.env` (без них —
+локальные значения `root`, `pass`, `fesmu_core_exam_test_db`). Внутренний хост —
+`fesmu_core_exam_test_db`, порт — 5432. Для рабочего окружения задайте пароль
+до первого запуска: изменение `.env` не меняет пароль роли в существующей БД.
+Локальный `make dev-up` использует базу `fesmu_exam_tests`.
 
 Файлы хранит сервис files (`PACKAGE_FILES`): издания — `library/books`,
 рисунки и вложения методичек — `library/manuals` (по `FileType`). Нужен files
