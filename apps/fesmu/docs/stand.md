@@ -93,7 +93,7 @@ POSTGRES_PASSWORD_LIBRARY=…
 POSTGRES_DB_LIBRARY=fesmu_core_library_db
 ```
 
-База — `fesmu_core_library_db` из `docker-compose.dev.yml`; порт наружу не
+База — `fesmu_core_library_db` из продового `docker-compose.yml`; порт наружу не
 проброшен, api достаёт её только по `traefik-network`. Порт по умолчанию — 5432
 (`POSTGRES_PORT_LIBRARY` — только если другой).
 
@@ -101,7 +101,7 @@ POSTGRES_DB_LIBRARY=fesmu_core_library_db
 `exam_test_db`. Обычный `docker compose up -d --build` в `apps/fesmu` сам
 запускает `fesmu_core_exam_test_db` и ждёт PostgreSQL healthcheck перед API.
 При первом запуске PostgreSQL создаёт базу, затем API автоматически применяет
-`migrations/test`. Определение контейнера общее с `docker-compose.dev.yml`,
+`migrations/test`. Определение контейнера находится в продовом `docker-compose.yml`,
 каталог данных прежний — `api/db/exam-test`. Порт БД не публикуется на хост.
 API и контейнер БД получают одинаковые `EXAM_TEST_POSTGRES_USER`,
 `EXAM_TEST_POSTGRES_PASSWORD`, `EXAM_TEST_POSTGRES_DB` из `.env` (без них —
@@ -122,3 +122,20 @@ API и контейнер БД получают одинаковые `EXAM_TEST_
 Ключи сервисов сменились (`fesmu_core_app` → `core_app`, `fesmu_core_api` →
 `core_api`), имена контейнеров прода прежние. Первый деплой прода:
 `docker compose up -d --build --remove-orphans`.
+
+## Запуск prod и local
+
+Из `apps/fesmu` обычный `docker compose up -d --build` запускает прод:
+API, веб и все шесть БД. Их имена и каталоги `api/db/*` сохранены; отдельный
+запуск файла баз не требуется. Базы не публикуют порты на хост.
+Корневой `make up SERVICES=fesmu` использует только этот compose.
+
+`docker compose -f docker-compose.dev.yml up -d --build` запускает локальный
+портал `fesmu_local` (тот же стек, что `make dev-up`), с adfs-mock и отдельным
+томом `fesmu_local_pgdata`. Он не передаёт продовый `.env` контейнерам и не монтирует `api/db`.
+Веб: http://localhost:18300, API: http://localhost:18200.
+
+В «Доступах» экзамены включаются отдельным разделом «Экзаменационное тестирование»:
+просмотр — `exam_tests.fetch`, изменение — `exam_tests.post` (включает просмотр).
+Ранее выданные права `tests.*` остаются правами обычного банка; доступ к экзаменам
+нужно выдать отдельно. У ADMIN по-прежнему есть доступ ко всем разделам.

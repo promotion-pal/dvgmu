@@ -62,8 +62,7 @@ up:
 	@for s in $(SERVICES); do \
 		if [ "$$s" = fesmu ]; then \
 			[ -d apps/fesmu/api/db ] || echo "⚠️  нет apps/fesmu/api/db — базы fesmu будут новые, пустые"; \
-			echo "$(CYAN)== fesmu: базы$(NC)"; (cd apps/fesmu && docker compose -f docker-compose.dev.yml up -d) || exit 1; \
-			echo "$(CYAN)== fesmu: api и веб$(NC)"; (cd apps/fesmu && docker compose up -d --build) || exit 1; \
+			echo "$(CYAN)== fesmu: базы, api и веб$(NC)"; (cd apps/fesmu && docker compose up -d --build) || exit 1; \
 		else \
 			[ "$$s" != mdm ] || [ -d services/mdm/db ] || echo "⚠️  нет services/mdm/db — база mdm будет новая, пустая"; \
 			echo "$(CYAN)== $$s$(NC)"; (cd services/$$s && docker compose up -d --build) || exit 1; \
@@ -78,7 +77,7 @@ up:
 down:
 	@for s in $(SERVICES); do \
 		if [ "$$s" = fesmu ]; then \
-			(cd apps/fesmu && docker compose down && docker compose -f docker-compose.dev.yml down); \
+			(cd apps/fesmu && docker compose down); \
 		else (cd services/$$s && docker compose down); fi; \
 	done
 
