@@ -66,7 +66,10 @@ export interface DepartmentSection {
     title: string;
     count: number;
     disciplines: DisciplineSection[];
+    semesters?: SemesterSection[];
 }
+
+export interface SemesterSection { semester: number; key: string; disciplines: DisciplineSection[] }
 
 const normalize = (value: string) =>
     value.toLocaleLowerCase("ru").replace(/ё/g, "е").replace(/\s+/g, " ").trim();
@@ -137,6 +140,22 @@ export const groupByDepartment = (tests: Test[]): DepartmentSection[] =>
             groups: groupTests(discipline.tests),
         })),
     }));
+
+export const groupExamByDepartment = (tests: Test[]): DepartmentSection[] => groupByDepartment(tests).map((department) => {
+    const semesters = new Map<number, Test[]>();
+    for (const test of tests.filter((item) => departmentKey(item.department) === department.key)) {
+        const list = semesters.get(test.semester) ?? [];
+        list.push(test);
+        semesters.set(test.semester, list);
+    }
+    return { ...department, semesters: [...semesters.entries()].sort(([a], [b]) => a - b).map(([semester, items]) => ({
+        semester, key: `${department.key}/semester-${semester}`,
+        disciplines: bucketBy(items, (test) => test.discipline, disciplineKey, NO_DISCIPLINE).map((discipline) => ({
+            key: `${department.key}/semester-${semester}/${discipline.key}`, title: discipline.title,
+            count: discipline.tests.length, groups: discipline.tests.map((test) => ({ key: test.id, title: test.topic, tests: [test] })),
+        })),
+    })) };
+});
 
 /** Spellings already typed in, one per key, for the form's suggestions. */
 export const suggestionsOf = (tests: Test[], value: (test: Test) => string, keyOf: (value: string) => string) =>

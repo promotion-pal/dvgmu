@@ -184,6 +184,39 @@ const useTestTake = (token: string, api: TestTakeApi = testTakeApi, exam = false
         return () => clearInterval(timer);
     }, [running]);
 
+    // Browser-visible focus changes end the attempt. The server stores the
+    // finished status and score just like a normal submission.
+    useEffect(() => {
+        if (!running || !state) return;
+        let triggered = false;
+        const disqualify = () => {
+            if (triggered) return;
+            triggered = true;
+            toast.error("Тест завершён: обнаружен переход на другую вкладку или приложение");
+            void finish();
+        };
+        const onVisibility = () => { if (document.visibilityState !== "visible") disqualify(); };
+        document.addEventListener("visibilitychange", onVisibility);
+        window.addEventListener("blur", disqualify);
+        const blockCopy = (event: Event) => event.preventDefault();
+        document.addEventListener("copy", blockCopy);
+        document.addEventListener("cut", blockCopy);
+        document.addEventListener("contextmenu", blockCopy);
+        const blockShortcut = (event: KeyboardEvent) => {
+            if ((event.metaKey || event.ctrlKey) && ["c", "x", "a", "p", "s"].includes(event.key.toLowerCase())) event.preventDefault();
+        };
+        document.addEventListener("keydown", blockShortcut);
+        return () => {
+            document.removeEventListener("visibilitychange", onVisibility);
+            window.removeEventListener("blur", disqualify);
+            document.removeEventListener("copy", blockCopy);
+            document.removeEventListener("cut", blockCopy);
+            document.removeEventListener("contextmenu", blockCopy);
+            document.removeEventListener("keydown", blockShortcut);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [running, state?.attemptToken]);
+
     // The deadline on the student's clock.
     const deadline = state ? state.deadline - state.clockOffset : undefined;
     const remainingMs = deadline === undefined ? 0 : Math.max(0, deadline - now);

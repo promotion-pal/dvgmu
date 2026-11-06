@@ -42,6 +42,7 @@ type Test struct {
 
 	Department   string                `gorm:"size:255;not null;default:'';index"`
 	Discipline   string                `gorm:"size:255;not null;default:'';index"`
+	Semester     int                   `gorm:"not null;default:0;index"`
 	ExportStatus enum.TestExportStatus `gorm:"type:smallint;not null;default:1;index"`
 	// V1 — a bank of questions; V2 — right and wrong answers mixed per student.
 	Version     enum.TestVersion `gorm:"type:smallint;not null;default:1"`
@@ -142,6 +143,7 @@ func (t *Test) ToProto() *entity.Test {
 		Id:           t.ID,
 		Department:   t.Department,
 		Discipline:   t.Discipline,
+		Semester:     int32(t.Semester),
 		ExportStatus: t.ExportStatus,
 		Version:      t.Version,
 		Topic:        t.Topic,
@@ -160,6 +162,7 @@ type TestFilter struct {
 type TestParams struct {
 	Department  string
 	Discipline  string
+	Semester    int
 	Topic       string
 	Description string
 	// Unspecified — V1.
@@ -184,6 +187,7 @@ func NewTest(params TestParams, now time.Time) (*Test, error) {
 	t := &Test{
 		Department:   strings.Join(strings.Fields(params.Department), " "),
 		Discipline:   strings.Join(strings.Fields(params.Discipline), " "),
+		Semester:     params.Semester,
 		ExportStatus: enum.TestExportStatus_TEST_EXPORT_STATUS_NOT_EXPORTED,
 		Version:      params.Version,
 		Topic:        strings.TrimSpace(params.Topic),

@@ -57,6 +57,7 @@ export default function TestBuilderPage({ version, exam = false }: { version: Te
                 state={state.bulk}
                 departmentSuggestions={state.departmentSuggestions}
                 disciplineSuggestions={state.disciplineSuggestions}
+                exam={exam}
             />
         <TestSessionCreateModal state={sessionCreate} exam={exam} />
         </CommonWrapper>

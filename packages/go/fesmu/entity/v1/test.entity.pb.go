@@ -33,6 +33,7 @@ type Test struct {
 	Discipline    string                 `protobuf:"bytes,9,opt,name=discipline,proto3" json:"discipline,omitempty"`
 	ExportStatus  v1.TestExportStatus    `protobuf:"varint,8,opt,name=export_status,json=exportStatus,proto3,enum=contract.enum.v1.TestExportStatus" json:"export_status,omitempty"`
 	Version       v1.TestVersion         `protobuf:"varint,10,opt,name=version,proto3,enum=contract.enum.v1.TestVersion" json:"version,omitempty"`
+	Semester      int32                  `protobuf:"varint,11,opt,name=semester,proto3" json:"semester,omitempty"`
 	Questions     []*TestQuestion        `protobuf:"bytes,4,rep,name=questions,proto3" json:"questions,omitempty"`
 	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
@@ -117,6 +118,13 @@ func (x *Test) GetVersion() v1.TestVersion {
 		return x.Version
 	}
 	return v1.TestVersion(0)
+}
+
+func (x *Test) GetSemester() int32 {
+	if x != nil {
+		return x.Semester
+	}
+	return 0
 }
 
 func (x *Test) GetQuestions() []*TestQuestion {
@@ -827,7 +835,7 @@ var File_fesmu_entity_v1_test_entity_proto protoreflect.FileDescriptor
 
 const file_fesmu_entity_v1_test_entity_proto_rawDesc = "" +
 	"\n" +
-	"!fesmu/entity/v1/test.entity.proto\x12\x12contract.entity.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1dfesmu/enum/v1/test.enum.proto\"\xc6\x03\n" +
+	"!fesmu/entity/v1/test.entity.proto\x12\x12contract.entity.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1dfesmu/enum/v1/test.enum.proto\"\xe2\x03\n" +
 	"\x04Test\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x14\n" +
 	"\x05topic\x18\x02 \x01(\tR\x05topic\x12 \n" +
@@ -840,7 +848,8 @@ const file_fesmu_entity_v1_test_entity_proto_rawDesc = "" +
 	"discipline\x12G\n" +
 	"\rexport_status\x18\b \x01(\x0e2\".contract.enum.v1.TestExportStatusR\fexportStatus\x127\n" +
 	"\aversion\x18\n" +
-	" \x01(\x0e2\x1d.contract.enum.v1.TestVersionR\aversion\x12>\n" +
+	" \x01(\x0e2\x1d.contract.enum.v1.TestVersionR\aversion\x12\x1a\n" +
+	"\bsemester\x18\v \x01(\x05R\bsemester\x12>\n" +
 	"\tquestions\x18\x04 \x03(\v2 .contract.entity.v1.TestQuestionR\tquestions\x129\n" +
 	"\n" +
 	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +

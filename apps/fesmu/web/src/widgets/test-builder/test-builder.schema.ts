@@ -36,6 +36,7 @@ export interface Test {
     department: string;
     /** Typed in by staff; empty for tests made before the field existed. */
     discipline: string;
+    semester: number;
     topic: string;
     description?: string;
     version: TestVersion;
@@ -60,6 +61,7 @@ const questionSchema = z.object({
 
 /** The create/edit form; the server checks the same rules. */
 export const testSchema = z.object({
+    semester: z.string().regex(/^(|0|[1-9]|1[0-2])$/, "Семестр — число от 1 до 12"),
     department: z.string().trim().min(1, "Укажите кафедру").max(255, "Не длиннее 255 символов"),
     discipline: z.string().trim().min(1, "Укажите дисциплину").max(255, "Не длиннее 255 символов"),
     topic: z.string().trim().min(1, "Укажите тему теста").max(255, "Не длиннее 255 символов"),
@@ -69,6 +71,7 @@ export const testSchema = z.object({
 });
 
 export type TestForm = z.infer<typeof testSchema>;
+export const examTestSchema = testSchema.extend({ semester: z.string().regex(/^([1-9]|1[0-2])$/, "Укажите семестр от 1 до 12") });
 export type TestQuestionForm = TestForm["questions"][number];
 
 export const emptyAnswer = (): TestForm["questions"][number]["answers"][number] => ({ text: "", isCorrect: false });
@@ -76,6 +79,7 @@ export const emptyQuestion = (): TestQuestionForm => ({ text: "", image: "", ans
 export const emptyTestForm = (version: TestForm["version"] = TestVersion.V1): TestForm => ({
     department: "",
     discipline: "",
+    semester: "",
     topic: "",
     description: "",
     version,
@@ -86,6 +90,7 @@ export const emptyTestForm = (version: TestForm["version"] = TestVersion.V1): Te
  * named "<topic> <start>", "<topic> <start+1>", … in file-name order;
  * without one, each keeps its file's name. */
 export const bulkImportSchema = z.object({
+    semester: z.string().regex(/^(|0|[1-9]|1[0-2])$/, "Семестр — число от 1 до 12"),
     department: testSchema.shape.department,
     discipline: testSchema.shape.discipline,
     version: testSchema.shape.version,

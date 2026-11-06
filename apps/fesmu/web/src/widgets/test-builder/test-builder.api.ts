@@ -17,6 +17,7 @@ const fromMessage = (message: TestMessage): Test => ({
     id: message.id.toString(),
     department: message.department,
     discipline: message.discipline,
+    semester: message.semester,
     topic: message.topic,
     description: message.description || undefined,
     version: message.version === TestVersion.V2 ? TestVersion.V2 : TestVersion.V1,
@@ -40,11 +41,11 @@ export const testBuilderApi = {
     },
 
     async create(values: TestForm): Promise<void> {
-        await client.testCreate(values);
+        await client.testCreate({ ...values, semester: Number(values.semester) || 0 });
     },
 
     async update(id: string, values: TestForm): Promise<void> {
-        await client.testUpdate({ id: BigInt(id), ...values });
+        await client.testUpdate({ id: BigInt(id), ...values, semester: Number(values.semester) || 0 });
     },
 
     async remove(id: string): Promise<void> {
@@ -73,6 +74,7 @@ export const testBuilderApi = {
             form: {
                 department: "",
                 discipline: "",
+                semester: "",
                 topic: response.topic,
                 description: "",
                 version: TestVersion.V1,

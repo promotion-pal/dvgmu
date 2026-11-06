@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	enum "fesmu/contract/fesmu/enum/v1"
 	"dvgmu/api/internal/domain/models"
+	enum "fesmu/contract/fesmu/enum/v1"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -83,7 +83,7 @@ func (s *TestStorage) TestUpdate(ctx context.Context, test *models.Test) error {
 		defer test.LoadAnswers()
 
 		res := tx.Model(&models.Test{}).Where("id = ?", test.ID).
-			Select("department", "discipline", "topic", "description", "updated_at").
+			Select("department", "discipline", "semester", "topic", "description", "updated_at").
 			Updates(test)
 		if res.Error != nil {
 			return res.Error

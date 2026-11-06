@@ -78,12 +78,13 @@ interface TestBuilderBulkImportModalProps {
     state: BulkImport;
     departmentSuggestions: string[];
     disciplineSuggestions: string[];
+    exam?: boolean;
 }
 
 /** Bulk import: many files into one department and discipline; with a topic
  * the tests are numbered "<topic> N". Files are read first and shown with their
  * warnings; the tests are created only on the button. */
-export const TestBuilderBulkImportModal: FC<TestBuilderBulkImportModalProps> = ({ state, departmentSuggestions, disciplineSuggestions }) => {
+export const TestBuilderBulkImportModal: FC<TestBuilderBulkImportModalProps> = ({ state, departmentSuggestions, disciplineSuggestions, exam = false }) => {
     const input = useRef<HTMLInputElement>(null);
     const FieldInput = PromFieldInput<BulkImportForm>;
     const count = state.pending.length;
@@ -99,8 +100,9 @@ export const TestBuilderBulkImportModal: FC<TestBuilderBulkImportModalProps> = (
             <FormProvider {...state.form}>
                 <form onSubmit={state.create} className="flex flex-col gap-4">
                     <div className="grid gap-4 sm:grid-cols-2">
-                        <FieldInput name="department" label="Кафедра" placeholder="Например: Кафедра анатомии" maxLength={255} suggestions={departmentSuggestions} />
-                        <FieldInput name="discipline" label="Дисциплина" placeholder="Например: Анатомия человека" maxLength={255} suggestions={disciplineSuggestions} />
+                        {exam && <FieldInput name="semester" label="Семестр (1–12)" placeholder="Например: 3" maxLength={2} />}
+                        <FieldInput name="department" label={exam ? "Направление обучения (факультет)" : "Кафедра"} placeholder={exam ? "Например: Педиатрический факультет" : "Например: Кафедра анатомии"} maxLength={255} suggestions={departmentSuggestions} />
+                        <FieldInput name="discipline" label={exam ? "Предмет" : "Дисциплина"} placeholder="Например: Анатомия человека" maxLength={255} suggestions={disciplineSuggestions} />
                     </div>
                     <div className="grid gap-4 sm:grid-cols-[1fr_9rem]">
                         <FieldInput name="topic" label="Тема" placeholder="Необязательно, например: Токсикология" maxLength={240} />

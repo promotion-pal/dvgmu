@@ -23,6 +23,7 @@ import { IMPORT_ACCEPT } from "./test-builder.bulk.ui";
 import { emptyAnswer, emptyQuestion, TestVersion } from "./test-builder.schema";
 import { askableQuestionCount, distinctQuestionCount } from "./test-builder.utils";
 import type { Test, TestForm } from "./test-builder.schema";
+import type { SemesterSection, DisciplineSection } from "./test-builder.utils";
 
 type TestBuilder = ReturnType<typeof useTestBuilder>;
 
@@ -50,14 +51,14 @@ const listError = (errors: FieldErrors<TestForm>, name: string): string | undefi
 const TestBuilderFilters: FC<{ state: TestBuilder }> = ({ state }) => (
     <div className="flex flex-wrap items-end gap-x-5 gap-y-3">
         <CommonFilterSelect
-            label="Кафедра"
+            label={state.exam ? "Факультет" : "Кафедра"}
             value={state.department}
             onChange={state.setDepartment}
             options={state.departmentOptions}
-            allLabel="Все кафедры"
+            allLabel={state.exam ? "Все факультеты" : "Все кафедры"}
             className="[&_button]:min-w-64"
         />
-        <CommonSearchInput value={state.search} onChange={state.setSearch} placeholder="Поиск по теме" />
+        <CommonSearchInput value={state.search} onChange={state.setSearch} placeholder={state.exam ? "Поиск по предмету или названию теста" : "Поиск по теме"} />
     </div>
 );
 
@@ -193,6 +194,26 @@ const TestRow: FC<{ test: Test; state: TestBuilder; onHandOut?: HandOut }> = ({ 
     );
 };
 
+const ExamSemesters: FC<{ semesters: SemesterSection[]; state: TestBuilder; onHandOut?: HandOut }> = ({ semesters, state, onHandOut }) => (
+    <div className="flex flex-col gap-3">
+        {semesters.map((semester) => (
+            <section key={semester.key} className="rounded-lg border bg-muted/10 p-3">
+                <h3 className="mb-2 font-semibold">Семестр {semester.semester}</h3>
+                <div className="flex flex-col gap-2">
+                    {semester.disciplines.map((discipline: DisciplineSection) => (
+                        <section key={discipline.key} className="rounded-md border bg-background p-2">
+                            <h4 className="mb-2 flex items-center gap-2 font-medium"><BookOpenIcon className="size-4" />{discipline.title}</h4>
+                            <Accordion type="multiple">
+                                {discipline.groups.flatMap((group) => group.tests).map((test) => <TestRow key={test.id} test={test} state={state} onHandOut={onHandOut} />)}
+                            </Accordion>
+                        </section>
+                    ))}
+                </div>
+            </section>
+        ))}
+    </div>
+);
+
 /** Every test as an accordion row: the topic up top, its questions with the
  * correct answers marked inside. Folded by department, then by discipline;
  * inside, tests with similar topics are grouped. */
@@ -236,7 +257,7 @@ const TestBuilderList: FC<{ state: TestBuilder; onHandOut?: HandOut }> = ({ stat
                             </span>
                         </AccordionTrigger>
                         <AccordionContent>
-                            <Accordion
+                            {state.exam && section.semesters ? <ExamSemesters semesters={section.semesters} state={state} onHandOut={onHandOut} /> : <Accordion
                                 type="multiple"
                                 value={state.openDisciplines}
                                 onValueChange={state.setOpenDisciplines}
@@ -271,7 +292,7 @@ const TestBuilderList: FC<{ state: TestBuilder; onHandOut?: HandOut }> = ({ stat
                                         </AccordionContent>
                                     </AccordionItem>
                                 ))}
-                            </Accordion>
+                            </Accordion>}
                         </AccordionContent>
                     </AccordionItem>
                 ))}
@@ -517,21 +538,22 @@ const TestBuilderFormModal: FC<{ state: TestBuilder }> = ({ state }) => {
                             </ul>
                         </div>
                     )}
+                    {state.exam && <FieldInput name="semester" label="Семестр (1–12)" placeholder="Например: 3" maxLength={2} />}
                     <FieldInput
                         name="department"
-                        label="Кафедра"
-                        placeholder="Например: Кафедра анатомии"
+                        label={state.exam ? "Направление обучения (факультет)" : "Кафедра"}
+                        placeholder={state.exam ? "Например: Педиатрический факультет" : "Например: Кафедра анатомии"}
                         maxLength={255}
                         suggestions={state.departmentSuggestions}
                     />
                     <FieldInput
                         name="discipline"
-                        label="Дисциплина"
+                        label={state.exam ? "Предмет" : "Дисциплина"}
                         placeholder="Например: Анатомия человека"
                         maxLength={255}
                         suggestions={state.disciplineSuggestions}
                     />
-                    <FieldInput name="topic" label="Тема теста" placeholder="Например: Анатомия — кости черепа" maxLength={255} />
+                    <FieldInput name="topic" label={state.exam ? "Название теста" : "Тема теста"} placeholder={state.exam ? "Например: Итоговый тест по анатомии" : "Например: Анатомия — кости черепа"} maxLength={255} />
                     <PromFieldTextArea<TestForm> name="description" label="Описание" placeholder="Необязательно" rows={2} />
 
                     {questions.fields.map((field, index) => (

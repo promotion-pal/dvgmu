@@ -7,11 +7,11 @@ import (
 
 	"connectrpc.com/connect"
 
+	"dvgmu/api/internal/domain/models"
+	"dvgmu/api/internal/service"
 	entity "fesmu/contract/fesmu/entity/v1"
 	enum "fesmu/contract/fesmu/enum/v1"
 	pb "fesmu/contract/fesmu/service/v1"
-	"dvgmu/api/internal/domain/models"
-	"dvgmu/api/internal/service"
 )
 
 // errTestUnavailable is returned by every call while the test database is down.
@@ -20,10 +20,15 @@ var errTestUnavailable = errors.New("конструктор тестов нед�
 type TestHandler struct {
 	// nil when the test database couldn't be reached at startup.
 	service *service.TestService
+	exam    bool
 }
 
-func TestNewController(service *service.TestService) *TestHandler {
-	return &TestHandler{service: service}
+func TestNewController(service *service.TestService, exam ...bool) *TestHandler {
+	h := &TestHandler{service: service}
+	if len(exam) > 0 {
+		h.exam = exam[0]
+	}
+	return h
 }
 
 func (h *TestHandler) unavailable() error {
@@ -77,7 +82,10 @@ func (h *TestHandler) TestCreate(
 	if err := h.unavailable(); err != nil {
 		return nil, err
 	}
-	id, err := h.service.TestCreate(ctx, testParams(req.Msg.GetDepartment(), req.Msg.GetDiscipline(), req.Msg.GetTopic(), req.Msg.GetDescription(), req.Msg.GetVersion(), req.Msg.GetQuestions()))
+	if h.exam && (req.Msg.GetSemester() < 1 || req.Msg.GetSemester() > 12) {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("укажите семестр от 1 до 12"))
+	}
+	id, err := h.service.TestCreate(ctx, testParams(req.Msg.GetDepartment(), req.Msg.GetDiscipline(), req.Msg.GetSemester(), req.Msg.GetTopic(), req.Msg.GetDescription(), req.Msg.GetVersion(), req.Msg.GetQuestions()))
 	if err != nil {
 		return nil, testConnectError(err)
 	}
@@ -100,7 +108,10 @@ func (h *TestHandler) TestUpdate(
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("id is required"))
 	}
 
-	err := h.service.TestUpdate(ctx, req.Msg.GetId(), testParams(req.Msg.GetDepartment(), req.Msg.GetDiscipline(), req.Msg.GetTopic(), req.Msg.GetDescription(), req.Msg.GetVersion(), req.Msg.GetQuestions()))
+	if h.exam && (req.Msg.GetSemester() < 1 || req.Msg.GetSemester() > 12) {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("укажите семестр от 1 до 12"))
+	}
+	err := h.service.TestUpdate(ctx, req.Msg.GetId(), testParams(req.Msg.GetDepartment(), req.Msg.GetDiscipline(), req.Msg.GetSemester(), req.Msg.GetTopic(), req.Msg.GetDescription(), req.Msg.GetVersion(), req.Msg.GetQuestions()))
 	if err != nil {
 		return nil, testConnectError(err)
 	}
@@ -237,11 +248,12 @@ func (h *TestHandler) ImageHTTP() http.Handler {
 	})
 }
 
-func testParams(department, discipline, topic, description string, version enum.TestVersion, questions []*pb.TestQuestionInput) models.TestParams {
+func testParams(department, discipline string, semester int32, topic, description string, version enum.TestVersion, questions []*pb.TestQuestionInput) models.TestParams {
 	params := models.TestParams{
 		Version:     version,
 		Department:  department,
 		Discipline:  discipline,
+		Semester:    int(semester),
 		Topic:       topic,
 		Description: description,
 		Questions:   make([]models.TestQuestionParams, 0, len(questions)),

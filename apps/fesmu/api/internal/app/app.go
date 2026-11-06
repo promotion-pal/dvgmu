@@ -107,7 +107,7 @@ func New(
 	}
 	testHandler := grpc.TestNewController(testService)
 	testSessionHandler := grpc.TestSessionNewController(testSessionService)
-	examTestHandler := grpc.TestNewController(examTestService)
+	examTestHandler := grpc.TestNewController(examTestService, true)
 	examTestSessionHandler := grpc.TestSessionNewController(examTestSessionService)
 
 	// Who is signed in comes from the auth access token (uuid, login, roles

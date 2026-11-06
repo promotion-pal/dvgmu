@@ -29,13 +29,15 @@ const fileStem = (file: File) => file.name.replace(/\.[^.]+$/, "").trim();
 /** Bulk import: several .docx/.txt files at once, all into one department and
  * discipline. With a topic, the tests are named "<topic> N", numbered on from
  * the tests already there; without one, each keeps its file's name. */
-export const useBulkImport = (tests: Test[], onDone: () => Promise<void>, version: BulkImportForm["version"] = TestVersion.V1, api: TestBuilderApi = testBuilderApi) => {
+export const useBulkImport = (tests: Test[], onDone: () => Promise<void>, version: BulkImportForm["version"] = TestVersion.V1, api: TestBuilderApi = testBuilderApi, exam = false) => {
     const modal = useCommonModal();
     const [items, setItems] = useState<BulkItem[]>([]);
     const [running, setRunning] = useState(false);
     const form = useForm<BulkImportForm>({
-        resolver: zodResolver(bulkImportSchema),
-        defaultValues: { department: "", discipline: "", version, topic: "", start: "1" },
+        resolver: zodResolver(bulkImportSchema.superRefine((values, ctx) => {
+            if (exam && !/^([1-9]|1[0-2])$/.test(values.semester)) ctx.addIssue({ code: "custom", path: ["semester"], message: "Укажите семестр от 1 до 12" });
+        })),
+        defaultValues: { department: "", discipline: "", semester: "", version, topic: "", start: "1" },
     });
     const topic = useWatch({ control: form.control, name: "topic" });
     const start = Number(useWatch({ control: form.control, name: "start" })) || 1;
@@ -66,7 +68,7 @@ export const useBulkImport = (tests: Test[], onDone: () => Promise<void>, versio
 
     const open = (files: File[]) => {
         setItems([]);
-        form.reset({ department: "", discipline: "", version, topic: "", start: "1" });
+        form.reset({ department: "", discipline: "", semester: "", version, topic: "", start: "1" });
         modal.openModal("create");
         void addFiles(files, []);
     };
@@ -105,6 +107,7 @@ export const useBulkImport = (tests: Test[], onDone: () => Promise<void>, versio
                     ...item.draft.form,
                     department: values.department,
                     discipline: values.discipline,
+                    semester: String(Number(values.semester) || ""),
                     version: values.version,
                     topic: names.get(item.file) ?? fileStem(item.file),
                 });

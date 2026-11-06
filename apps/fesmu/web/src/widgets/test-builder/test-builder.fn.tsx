@@ -7,9 +7,9 @@ import { toast } from "sonner";
 import { useCommonModal } from "@/shared/components/modal";
 import { testBuilderApi } from "./test-builder.api";
 import type { TestBuilderApi } from "./test-builder.api";
-import { emptyTestForm, testSchema, TestVersion } from "./test-builder.schema";
+import { emptyTestForm, examTestSchema, testSchema, TestVersion } from "./test-builder.schema";
 import type { Test, TestForm } from "./test-builder.schema";
-import { departmentKey, disciplineKey, groupByDepartment, suggestionsOf } from "./test-builder.utils";
+import { departmentKey, disciplineKey, groupByDepartment, groupExamByDepartment, suggestionsOf } from "./test-builder.utils";
 import { useBulkImport } from "./test-builder.bulk.fn";
 
 const NO_DEPARTMENT_VALUE = "__none__";
@@ -21,6 +21,7 @@ const errorText = (error: unknown, fallback: string) =>
 const toForm = (test: Test): TestForm => ({
     department: test.department,
     discipline: test.discipline,
+    semester: String(test.semester || ""),
     topic: test.topic,
     description: test.description ?? "",
     version: test.version === TestVersion.V2 ? TestVersion.V2 : TestVersion.V1,
@@ -86,12 +87,12 @@ const firstFormError = (errors: FieldErrors<TestForm>): { message: string; quest
 };
 
 /** The create/edit form of one test. */
-const useTestForm = (onSaved: () => Promise<void>, api: TestBuilderApi) => {
+const useTestForm = (onSaved: () => Promise<void>, api: TestBuilderApi, exam = false) => {
     const [editing, setEditing] = useState<Test>();
     // What the import asks to check before saving; empty for a hand-made test.
     const [warnings, setWarnings] = useState<string[]>([]);
     const form = useForm<TestForm>({
-        resolver: zodResolver(testSchema),
+        resolver: zodResolver(exam ? examTestSchema : testSchema),
         defaultValues: emptyTestForm(),
     });
 
@@ -143,7 +144,7 @@ const useTestBuilder = (version: TestForm["version"] = TestVersion.V1, api: Test
     const formState = useTestForm(async () => {
         modal.closeModal();
         await fetch();
-    }, api);
+    }, api, exam);
 
     const openCreate = () => {
         formState.setEditing(undefined);
@@ -173,7 +174,7 @@ const useTestBuilder = (version: TestForm["version"] = TestVersion.V1, api: Test
 
     const [importing, setImporting] = useState(false);
 
-    const bulk = useBulkImport(tests, fetch, version, api);
+    const bulk = useBulkImport(tests, fetch, version, api, exam);
 
     /** One file opens the create form filled from it; several — the bulk import. */
     const importFiles = (files: File[]) => {
@@ -221,8 +222,9 @@ const useTestBuilder = (version: TestForm["version"] = TestVersion.V1, api: Test
                     test.discipline.toLocaleLowerCase("ru").includes(query),
             );
     }, [tests, search, department, version]);
-    const departments = useMemo(() => groupByDepartment(visible), [visible]);
-    const allDepartments = useMemo(() => groupByDepartment(tests.filter((test) => test.version === version)), [tests, version]);
+    const grouping = exam ? groupExamByDepartment : groupByDepartment;
+    const departments = useMemo(() => grouping(visible), [visible, exam]);
+    const allDepartments = useMemo(() => grouping(tests.filter((test) => test.version === version)), [tests, version, exam]);
     // Radix Select can't take an empty value, so "Без кафедры" (key "") gets a sentinel.
     const departmentOptions = allDepartments.map((section) => ({ value: section.key || NO_DEPARTMENT_VALUE, label: section.title }));
     // Offered while typing the department, so one department isn't spelled ten ways.

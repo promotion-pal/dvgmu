@@ -160,7 +160,7 @@ const TestTakeQuestions: FC<{ take: TestTake }> = ({ take }) => {
     const last = current === state.questions.length - 1;
 
     return (
-        <div className="mx-auto flex w-full max-w-3xl flex-col gap-4">
+        <div className="mx-auto flex w-full max-w-3xl flex-col gap-4 select-none [&_*]:[-webkit-user-select:none]" onDragStart={(event) => event.preventDefault()}>
             {/* One row of fixed height on any phone: nothing in it may wrap or
                 appear/disappear, or the whole page jumps on every answer. */}
             <div className="sticky top-0 z-10 -mx-4 flex items-center justify-between gap-3 border-b bg-background px-4 py-3 sm:mx-0 sm:rounded-xl sm:border sm:bg-background/95 sm:backdrop-blur">
@@ -194,14 +194,14 @@ const TestTakeQuestions: FC<{ take: TestTake }> = ({ take }) => {
                     <CardTitle className="text-lg leading-snug whitespace-pre-line">{question.text}</CardTitle>
                     {question.image && (
                         // Opens full size in a new tab — readings on a small screen may need a closer look.
-                        <a href={testImageUrl(question.image.hash, take.exam)} target="_blank" rel="noreferrer" className="mt-2 block w-fit">
+                        <div className="mt-2 block w-fit">
                             <CommonImage
                                 src={testImageUrl(question.image.hash, take.exam)}
                                 alt="Картинка к вопросу"
                                 width={question.image.width}
                                 height={question.image.height}
                             />
-                        </a>
+                        </div>
                     )}
                 </CardHeader>
                 <CardContent>

@@ -323,6 +323,7 @@ type TestCreateRequest struct {
 	Discipline  string                 `protobuf:"bytes,5,opt,name=discipline,proto3" json:"discipline,omitempty"`
 	// Unspecified — V1.
 	Version       v11.TestVersion `protobuf:"varint,6,opt,name=version,proto3,enum=contract.enum.v1.TestVersion" json:"version,omitempty"`
+	Semester      int32           `protobuf:"varint,7,opt,name=semester,proto3" json:"semester,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -399,6 +400,13 @@ func (x *TestCreateRequest) GetVersion() v11.TestVersion {
 	return v11.TestVersion(0)
 }
 
+func (x *TestCreateRequest) GetSemester() int32 {
+	if x != nil {
+		return x.Semester
+	}
+	return 0
+}
+
 type TestCreateResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
@@ -470,6 +478,7 @@ type TestUpdateRequest struct {
 	Discipline  string                 `protobuf:"bytes,6,opt,name=discipline,proto3" json:"discipline,omitempty"`
 	// Unspecified — V1.
 	Version       v11.TestVersion `protobuf:"varint,7,opt,name=version,proto3,enum=contract.enum.v1.TestVersion" json:"version,omitempty"`
+	Semester      int32           `protobuf:"varint,8,opt,name=semester,proto3" json:"semester,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -551,6 +560,13 @@ func (x *TestUpdateRequest) GetVersion() v11.TestVersion {
 		return x.Version
 	}
 	return v11.TestVersion(0)
+}
+
+func (x *TestUpdateRequest) GetSemester() int32 {
+	if x != nil {
+		return x.Semester
+	}
+	return 0
 }
 
 type TestUpdateResponse struct {
@@ -1139,7 +1155,7 @@ const file_fesmu_service_v1_test_service_proto_rawDesc = "" +
 	"\x0fTestByIDRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\"@\n" +
 	"\x10TestByIDResponse\x12,\n" +
-	"\x04test\x18\x01 \x01(\v2\x18.contract.entity.v1.TestR\x04test\"\x8a\x02\n" +
+	"\x04test\x18\x01 \x01(\v2\x18.contract.entity.v1.TestR\x04test\"\xa6\x02\n" +
 	"\x11TestCreateRequest\x12\x14\n" +
 	"\x05topic\x18\x01 \x01(\tR\x05topic\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12D\n" +
@@ -1150,11 +1166,12 @@ const file_fesmu_service_v1_test_service_proto_rawDesc = "" +
 	"\n" +
 	"discipline\x18\x05 \x01(\tR\n" +
 	"discipline\x127\n" +
-	"\aversion\x18\x06 \x01(\x0e2\x1d.contract.enum.v1.TestVersionR\aversion\"a\n" +
+	"\aversion\x18\x06 \x01(\x0e2\x1d.contract.enum.v1.TestVersionR\aversion\x12\x1a\n" +
+	"\bsemester\x18\a \x01(\x05R\bsemester\"a\n" +
 	"\x12TestCreateResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x12\x17\n" +
-	"\atest_id\x18\x03 \x01(\x03R\x06testId\"\x9a\x02\n" +
+	"\atest_id\x18\x03 \x01(\x03R\x06testId\"\xb6\x02\n" +
 	"\x11TestUpdateRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x14\n" +
 	"\x05topic\x18\x02 \x01(\tR\x05topic\x12 \n" +
@@ -1166,7 +1183,8 @@ const file_fesmu_service_v1_test_service_proto_rawDesc = "" +
 	"\n" +
 	"discipline\x18\x06 \x01(\tR\n" +
 	"discipline\x127\n" +
-	"\aversion\x18\a \x01(\x0e2\x1d.contract.enum.v1.TestVersionR\aversion\"H\n" +
+	"\aversion\x18\a \x01(\x0e2\x1d.contract.enum.v1.TestVersionR\aversion\x12\x1a\n" +
+	"\bsemester\x18\b \x01(\x05R\bsemester\"H\n" +
 	"\x12TestUpdateResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\"#\n" +

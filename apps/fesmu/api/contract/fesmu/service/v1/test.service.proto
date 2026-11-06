@@ -67,6 +67,7 @@ message TestCreateRequest {
     string discipline = 5;
     // Unspecified — V1.
     contract.enum.v1.TestVersion version = 6;
+    int32 semester = 7;
 }
 
 message TestCreateResponse {
@@ -85,6 +86,7 @@ message TestUpdateRequest {
     string discipline = 6;
     // Unspecified — V1.
     contract.enum.v1.TestVersion version = 7;
+    int32 semester = 8;
 }
 
 message TestUpdateResponse {

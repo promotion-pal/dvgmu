@@ -17,6 +17,7 @@ message Test {
   string discipline = 9;
   contract.enum.v1.TestExportStatus export_status = 8;
   contract.enum.v1.TestVersion version = 10;
+  int32 semester = 11;
 
   repeated TestQuestion questions = 4;
 
