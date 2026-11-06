@@ -4,8 +4,8 @@ import { Can } from "@/features/access";
 import { PermissionSection } from "@/shared/config/permissions";
 import { CommonControlState } from "@/shared/components/state/control-state";
 import { CommonWrapper } from "@/shared/components/wrapper";
-import { TestBuilderBulkImportModal, TestBuilderFilters, TestBuilderFormModal, TestBuilderImport, TestBuilderList, askableQuestionCount, useTestBuilder } from "@/widgets/test-builder";
-import { TestSessionCreateModal, useTestSessionCreate } from "@/widgets/test-session";
+import { TestBuilderBulkImportModal, TestBuilderFilters, TestBuilderFormModal, TestBuilderImport, TestBuilderList, askableQuestionCount, examTestBuilderApi, testBuilderApi, useTestBuilder } from "@/widgets/test-builder";
+import { TestSessionCreateModal, examTestSessionApi, testSessionApi, useTestSessionCreate } from "@/widgets/test-session";
 import { TestVersion } from "@fesmu/contract/fesmu/enum/v1/test.enum_pb";
 
 const PAGE = {
@@ -22,9 +22,10 @@ const PAGE = {
 /** Staff page of the test builder for one version: tests by topic, their
  * questions and answers with the correct ones marked; creating, editing and
  * deleting; handing a test out to students as a timed session. */
-export default function TestBuilderPage({ version }: { version: TestVersion.V1 | TestVersion.V2 }) {
-    const state = useTestBuilder(version);
-    const sessionCreate = useTestSessionCreate();
+export default function TestBuilderPage({ version, exam = false }: { version: TestVersion.V1 | TestVersion.V2; exam?: boolean }) {
+    const api = exam ? examTestBuilderApi : testBuilderApi;
+    const state = useTestBuilder(version, api, exam);
+    const sessionCreate = useTestSessionCreate(exam ? examTestSessionApi : testSessionApi, exam);
 
     useEffect(() => {
         state.fetch();
@@ -33,8 +34,8 @@ export default function TestBuilderPage({ version }: { version: TestVersion.V1 |
 
     return (
         <CommonWrapper
-            title={PAGE[version].title}
-            description={PAGE[version].description}
+            title={exam ? "Экзаменационное тестирование" : PAGE[version].title}
+            description={exam ? "Защищённый банк экзаменационных тестов. Создайте сессию и предоставьте студентам ссылку для прохождения." : PAGE[version].description}
             action={
                 <Can section={PermissionSection.TESTS}>
                     <div className="flex items-center gap-4">
@@ -57,7 +58,7 @@ export default function TestBuilderPage({ version }: { version: TestVersion.V1 |
                 departmentSuggestions={state.departmentSuggestions}
                 disciplineSuggestions={state.disciplineSuggestions}
             />
-            <TestSessionCreateModal state={sessionCreate} />
+        <TestSessionCreateModal state={sessionCreate} exam={exam} />
         </CommonWrapper>
     );
 }

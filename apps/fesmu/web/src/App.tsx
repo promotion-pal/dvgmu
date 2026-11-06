@@ -110,6 +110,9 @@ function App() {
             <Route path={ROUTE.TESTS.BUILDER_V2} element={<TestBuilderPage version={TestVersion.V2} />} />
             <Route path={ROUTE.TESTS.SESSIONS} element={<TestSessionsPage />} />
             <Route path={ROUTE.TESTS.SESSION_RESULTS} element={<TestSessionResultsPage />} />
+            <Route path={ROUTE.EXAM_TESTS.BUILDER} element={<TestBuilderPage version={TestVersion.V1} exam />} />
+            <Route path={ROUTE.EXAM_TESTS.SESSIONS} element={<TestSessionsPage exam />} />
+            <Route path={ROUTE.EXAM_TESTS.SESSION_RESULTS} element={<TestSessionResultsPage exam />} />
           </Route>
 
           {/* Сотрудник: разделы по правам из наборов доступа */}
@@ -189,6 +192,7 @@ function App() {
         <Route path={ROUTE.PUBLIC.SCHEDULE_COLLECT} element={<ScheduleCollectPage />} />
         {/* Students take a test by its session link, without a sign-in. */}
         <Route path={ROUTE.PUBLIC.TEST_TAKE} element={<TestTakePage />} />
+        <Route path={ROUTE.PUBLIC.EXAM_TEST_TAKE} element={<TestTakePage exam />} />
         {/* Анкета по QR — без входа. */}
         <Route path={ROUTE.PUBLIC.QUESTION} element={<QuestionPage />} />
       </Route>

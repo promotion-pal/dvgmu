@@ -28,7 +28,7 @@
 | Сервис | Папка | Что делает | Своя БД | Кто вызывает |
 |---|---|---|---|---|
 | **fesmu web** | `apps/fesmu/web` | Интерфейс портала | — | браузер |
-| **fesmu api** | `apps/fesmu/api` | Логика портала: расписание, закупки, тесты, справки, опросы, права. Шлюз к сервисам. | 4 базы: purchase, infrastructure, tests, library | fesmu web |
+| **fesmu api** | `apps/fesmu/api` | Логика портала: расписание, закупки, тесты, экзаменационное тестирование, справки, опросы, права. Шлюз к сервисам. | 5 баз: purchase, infrastructure, tests, exam tests, library | fesmu web |
 | **auth** | `services/auth` | Вход через AD (AD FS), токены fesmu, SAML IdP для Yandex 360, активация и смена пароля в AD | identities, refresh_tokens | браузер, fesmu api, Yandex 360 |
 | **mdm** | `services/mdm` | Главный справочник людей: пользователи, студенты, сотрудники, роли, доступы, подразделения, связка с AD (`ad_object_id`) | да | auth, fesmu api, sync |
 | **analytics** | `services/analytics` | Опросы по QR и их ответы | да | fesmu api |

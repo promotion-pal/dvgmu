@@ -5,6 +5,7 @@ import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import { useCommonModal } from "@/shared/components/modal";
 import { testBuilderApi } from "./test-builder.api";
+import type { TestBuilderApi } from "./test-builder.api";
 import type { TestImportDraft } from "./test-builder.api";
 import { bulkImportSchema, TestVersion } from "./test-builder.schema";
 import type { BulkImportForm, Test } from "./test-builder.schema";
@@ -28,7 +29,7 @@ const fileStem = (file: File) => file.name.replace(/\.[^.]+$/, "").trim();
 /** Bulk import: several .docx/.txt files at once, all into one department and
  * discipline. With a topic, the tests are named "<topic> N", numbered on from
  * the tests already there; without one, each keeps its file's name. */
-export const useBulkImport = (tests: Test[], onDone: () => Promise<void>, version: BulkImportForm["version"] = TestVersion.V1) => {
+export const useBulkImport = (tests: Test[], onDone: () => Promise<void>, version: BulkImportForm["version"] = TestVersion.V1, api: TestBuilderApi = testBuilderApi) => {
     const modal = useCommonModal();
     const [items, setItems] = useState<BulkItem[]>([]);
     const [running, setRunning] = useState(false);
@@ -46,7 +47,7 @@ export const useBulkImport = (tests: Test[], onDone: () => Promise<void>, versio
     const read = async (files: File[]) => {
         for (const file of files) {
             try {
-                patch(file, { status: "ready", draft: await testBuilderApi.importParse(file) });
+                patch(file, { status: "ready", draft: await api.importParse(file) });
             } catch (error) {
                 patch(file, { status: "unreadable", error: errorText(error, "Не удалось прочитать файл") });
             }
@@ -100,7 +101,7 @@ export const useBulkImport = (tests: Test[], onDone: () => Promise<void>, versio
             if (!item.draft) continue;
             patch(item.file, { status: "creating", error: undefined });
             try {
-                await testBuilderApi.create({
+                await api.create({
                     ...item.draft.form,
                     department: values.department,
                     discipline: values.discipline,
@@ -134,5 +135,6 @@ export const useBulkImport = (tests: Test[], onDone: () => Promise<void>, versio
         create,
         reading: items.some((item) => item.status === "reading"),
         done: items.length > 0 && items.every((item) => item.status === "created" || item.status === "unreadable"),
+        api,
     };
 };

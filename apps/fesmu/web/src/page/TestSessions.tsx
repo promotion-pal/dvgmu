@@ -2,11 +2,12 @@ import { useEffect } from "react";
 import { CommonControlState } from "@/shared/components/state/control-state";
 import { CommonWrapper } from "@/shared/components/wrapper";
 import { TestSessionFilters, TestSessionList, useTestSessions } from "@/widgets/test-session";
+import { examTestSessionApi, testSessionApi } from "@/widgets/test-session";
 
 /** Staff: every test handed out to students — the link, open/closed, how
  * many have taken it; a row leads to its results. */
-export default function TestSessionsPage() {
-    const state = useTestSessions();
+export default function TestSessionsPage({ exam = false }: { exam?: boolean }) {
+    const state = useTestSessions(exam ? examTestSessionApi : testSessionApi, exam);
 
     useEffect(() => {
         state.fetch();
@@ -15,8 +16,8 @@ export default function TestSessionsPage() {
 
     return (
         <CommonWrapper
-            title="Сессии тестирования"
-            description="Тесты, выданные студентам по ссылке, и их результаты"
+            title={exam ? "Сессии экзаменационного тестирования" : "Сессии тестирования"}
+            description={exam ? "Экзаменационные тесты, доступы по ссылке и результаты" : "Тесты, выданные студентам по ссылке, и их результаты"}
             filter={{ render: { count: state.visible.length, children: <TestSessionFilters state={state} /> } }}
         >
             <CommonControlState isLoading={state.loading} isError={state.error} isEmpty={false}>

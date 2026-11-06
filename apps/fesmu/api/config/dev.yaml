@@ -40,6 +40,14 @@ databases:
     dbname: "fesmu_core_test_db"
     sslmode: "disable"
 
+  exam_test_db:
+    host: "localhost"
+    port: 5462
+    user: "root"
+    password: "pass"
+    dbname: "fesmu_core_exam_test_db"
+    sslmode: "disable"
+
   library_db:
     host: "localhost"
     port: 5460

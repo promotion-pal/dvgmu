@@ -97,6 +97,14 @@ POSTGRES_DB_LIBRARY=fesmu_core_library_db
 проброшен, api достаёт её только по `traefik-network`. Порт по умолчанию — 5432
 (`POSTGRES_PORT_LIBRARY` — только если другой).
 
+Экзаменационные тесты и их попытки хранятся отдельно от обычного банка в
+`exam_test_db`. Для окружения нужно создать отдельную PostgreSQL базу и задать
+`EXAM_TEST_POSTGRES_HOST`, `EXAM_TEST_POSTGRES_USER`,
+`EXAM_TEST_POSTGRES_PASSWORD`, `EXAM_TEST_POSTGRES_DB` (порт —
+`EXAM_TEST_POSTGRES_PORT`, по умолчанию 5432). В тестовом compose уже есть
+отдельный контейнер `fesmu_core_exam_test_db`; локальный dev использует базу
+`fesmu_exam_tests`.
+
 Файлы хранит сервис files (`PACKAGE_FILES`): издания — `library/books`,
 рисунки и вложения методичек — `library/manuals` (по `FileType`). Нужен files
 с миграцией `00002_files_on_disk` (dvgmu_apps, release/3.0).

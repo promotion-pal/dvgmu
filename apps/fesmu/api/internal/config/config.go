@@ -75,6 +75,8 @@ type DatabasesConfig struct {
 	InfrastructureDB DatabaseConfig `yaml:"infrastructure_db"`
 	// TestDB holds the test builder's tests, apart from everything else.
 	TestDB DatabaseConfig `yaml:"test_db"`
+	// ExamTestDB keeps examination tests and their attempts apart from regular tests.
+	ExamTestDB DatabaseConfig `yaml:"exam_test_db"`
 	// LibraryDB holds the library catalog, study manuals and reading positions.
 	LibraryDB DatabaseConfig `yaml:"library_db"`
 }
@@ -125,6 +127,10 @@ func applyDatabaseEnvOverrides(cfg *Config) {
 	overrideDatabase(&cfg.Databases.TestDB,
 		"TEST_POSTGRES_HOST", "TEST_POSTGRES_PORT", "TEST_POSTGRES_USER",
 		"TEST_POSTGRES_PASSWORD", "TEST_POSTGRES_DB", "DB_SSLMODE")
+
+	overrideDatabase(&cfg.Databases.ExamTestDB,
+		"EXAM_TEST_POSTGRES_HOST", "EXAM_TEST_POSTGRES_PORT", "EXAM_TEST_POSTGRES_USER",
+		"EXAM_TEST_POSTGRES_PASSWORD", "EXAM_TEST_POSTGRES_DB", "DB_SSLMODE")
 
 	overrideDatabase(&cfg.Databases.LibraryDB,
 		"POSTGRES_HOST_LIBRARY", "POSTGRES_PORT_LIBRARY", "POSTGRES_USER_LIBRARY",

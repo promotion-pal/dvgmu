@@ -6,6 +6,7 @@ import type { FieldErrors } from "react-hook-form";
 import { toast } from "sonner";
 import { useCommonModal } from "@/shared/components/modal";
 import { testBuilderApi } from "./test-builder.api";
+import type { TestBuilderApi } from "./test-builder.api";
 import { emptyTestForm, testSchema, TestVersion } from "./test-builder.schema";
 import type { Test, TestForm } from "./test-builder.schema";
 import { departmentKey, disciplineKey, groupByDepartment, suggestionsOf } from "./test-builder.utils";
@@ -43,12 +44,12 @@ const downloadFile = (fileName: string, content: Uint8Array) => {
 
 /** Uploading a question's picture: the id to put in the form, or undefined
  * when the file was refused (the reason is shown). */
-const useImageUpload = () => {
+const useImageUpload = (api: TestBuilderApi = testBuilderApi) => {
     const [uploading, setUploading] = useState(false);
     const upload = async (file: File): Promise<string | undefined> => {
         setUploading(true);
         try {
-            return (await testBuilderApi.uploadImage(file)).hash;
+            return (await api.uploadImage(file)).hash;
         } catch (error) {
             console.error("Ошибка при загрузке картинки:", error);
             toast.error(errorText(error, "Не удалось загрузить картинку"));
@@ -85,7 +86,7 @@ const firstFormError = (errors: FieldErrors<TestForm>): { message: string; quest
 };
 
 /** The create/edit form of one test. */
-const useTestForm = (onSaved: () => Promise<void>) => {
+const useTestForm = (onSaved: () => Promise<void>, api: TestBuilderApi) => {
     const [editing, setEditing] = useState<Test>();
     // What the import asks to check before saving; empty for a hand-made test.
     const [warnings, setWarnings] = useState<string[]>([]);
@@ -96,8 +97,8 @@ const useTestForm = (onSaved: () => Promise<void>) => {
 
     const handleSubmit = form.handleSubmit(async (values) => {
         try {
-            if (editing) await testBuilderApi.update(editing.id, values);
-            else await testBuilderApi.create(values);
+            if (editing) await api.update(editing.id, values);
+            else await api.create(values);
             toast.success(editing ? "Тест обновлён" : "Тест создан");
             await onSaved();
         } catch (error) {
@@ -117,7 +118,7 @@ const useTestForm = (onSaved: () => Promise<void>) => {
 
 /** State of the test builder: the tests, a search by topic and
  * creating/editing/deleting tests. */
-const useTestBuilder = (version: TestForm["version"] = TestVersion.V1) => {
+const useTestBuilder = (version: TestForm["version"] = TestVersion.V1, api: TestBuilderApi = testBuilderApi, exam = false) => {
     const [tests, setTests] = useState<Test[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
@@ -129,7 +130,7 @@ const useTestBuilder = (version: TestForm["version"] = TestVersion.V1) => {
         setLoading(true);
         setError(false);
         try {
-            setTests(await testBuilderApi.fetch());
+            setTests(await api.fetch());
         } catch (err) {
             console.error("Ошибка при получении тестов:", err);
             setError(true);
@@ -142,7 +143,7 @@ const useTestBuilder = (version: TestForm["version"] = TestVersion.V1) => {
     const formState = useTestForm(async () => {
         modal.closeModal();
         await fetch();
-    });
+    }, api);
 
     const openCreate = () => {
         formState.setEditing(undefined);
@@ -161,7 +162,7 @@ const useTestBuilder = (version: TestForm["version"] = TestVersion.V1) => {
     const remove = async (test: Test) => {
         if (!confirm(`Удалить тест «${test.topic}» со всеми вопросами?`)) return;
         try {
-            await testBuilderApi.remove(test.id);
+            await api.remove(test.id);
             toast.success("Тест удалён");
             await fetch();
         } catch (err) {
@@ -172,7 +173,7 @@ const useTestBuilder = (version: TestForm["version"] = TestVersion.V1) => {
 
     const [importing, setImporting] = useState(false);
 
-    const bulk = useBulkImport(tests, fetch, version);
+    const bulk = useBulkImport(tests, fetch, version, api);
 
     /** One file opens the create form filled from it; several — the bulk import. */
     const importFiles = (files: File[]) => {
@@ -184,7 +185,7 @@ const useTestBuilder = (version: TestForm["version"] = TestVersion.V1) => {
     const importFile = async (file: File) => {
         setImporting(true);
         try {
-            const draft = await testBuilderApi.importParse(file);
+            const draft = await api.importParse(file);
             formState.setEditing(undefined);
             formState.setWarnings(draft.warnings);
             formState.form.reset({ ...draft.form, version });
@@ -200,7 +201,7 @@ const useTestBuilder = (version: TestForm["version"] = TestVersion.V1) => {
 
     const exportFile = async (test: Test) => {
         try {
-            const { fileName, content } = await testBuilderApi.export(test.id);
+            const { fileName, content } = await api.export(test.id);
             downloadFile(fileName || "test.rtf", content);
         } catch (err) {
             console.error("Ошибка при выгрузке теста:", err);
@@ -251,6 +252,8 @@ const useTestBuilder = (version: TestForm["version"] = TestVersion.V1) => {
 
     return {
         fetch,
+        api,
+        exam,
         loading,
         error,
         empty: !tests.some((test) => test.version === version),

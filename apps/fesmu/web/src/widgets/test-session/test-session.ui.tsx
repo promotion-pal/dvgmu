@@ -53,7 +53,7 @@ const formatSpent = (from?: Date, to?: Date) => {
     return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
 };
 
-const sessionResultsPath = (id: string) => ROUTE.TESTS.SESSION_RESULTS.replace(":id", id);
+const sessionResultsPath = (id: string, exam = false) => (exam ? ROUTE.EXAM_TESTS.SESSION_RESULTS : ROUTE.TESTS.SESSION_RESULTS).replace(":id", id);
 
 const questionsAsked = (session: TestSession) =>
     (session.questionCount ? `${session.questionCount} из ${session.totalQuestions} вопросов` : `${session.totalQuestions} вопросов`) +
@@ -76,8 +76,8 @@ const FieldDateTime: FC<{ form: SessionCreate["form"]; name: "opensAt" | "closes
 };
 
 /** The student link with a copy button, shown once the session is made. */
-const SessionLink: FC<{ session: TestSession }> = ({ session }) => {
-    const url = testTakeUrl(session.token);
+const SessionLink: FC<{ session: TestSession; exam?: boolean }> = ({ session, exam = false }) => {
+    const url = testTakeUrl(session.token, exam);
     return (
         <div className="flex flex-col gap-3 rounded-xl border bg-muted/40 p-4">
             <p className="text-sm text-muted-foreground">
@@ -95,7 +95,7 @@ const SessionLink: FC<{ session: TestSession }> = ({ session }) => {
                     </a>
                 </Button>
                 <Button asChild variant="outline" size="sm">
-                    <Link to={sessionResultsPath(session.id)}>
+                    <Link to={sessionResultsPath(session.id, exam)}>
                         <UsersIcon className="size-4" />
                         Результаты
                     </Link>
@@ -125,7 +125,7 @@ const QuestionPickHint: FC<{ form: SessionCreate["form"]; total: number; mixed: 
 };
 
 /** Staff: hand a test out — time limit and options — then copy the link. */
-const TestSessionCreateModal: FC<{ state: SessionCreate }> = ({ state }) => {
+const TestSessionCreateModal: FC<{ state: SessionCreate; exam?: boolean }> = ({ state, exam = state.exam }) => {
     const { form, target, created, handleSubmit } = state;
 
     return (
@@ -137,7 +137,7 @@ const TestSessionCreateModal: FC<{ state: SessionCreate }> = ({ state }) => {
             className="sm:max-w-xl"
         >
             {created ? (
-                <SessionLink session={created} />
+                <SessionLink session={created} exam={exam} />
             ) : (
                 <FormProvider {...form}>
                     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -247,7 +247,7 @@ const SessionRow: FC<{ session: TestSession; state: Sessions }> = ({ session, st
     <TableRow>
         <TableCell className="min-w-64 max-w-md whitespace-normal">
             <div className="flex items-start gap-2">
-                <Link to={sessionResultsPath(session.id)} className="min-w-0 font-medium break-words hover:underline">
+                <Link to={sessionResultsPath(session.id, state.exam)} className="min-w-0 font-medium break-words hover:underline">
                     {session.topic}
                 </Link>
                 <Badge variant="outline" className={cn("mt-0.5 shrink-0 text-[10px]", session.mixed && "border-primary/40 text-primary")}>
@@ -275,14 +275,14 @@ const SessionRow: FC<{ session: TestSession; state: Sessions }> = ({ session, st
         </TableCell>
         <TableCell>
             <div className="flex items-center justify-end gap-2">
-                <CommonShareLink url={testTakeUrl(session.token)} label="Ссылка" />
-                <CommonQrButton url={testTakeUrl(session.token)} title={session.topic} subtitle="Отсканируйте и пройдите тест" emoji="📝" fileName={`QR ${session.topic}`} label="QR" />
+                <CommonShareLink url={testTakeUrl(session.token, state.exam)} label="Ссылка" />
+                <CommonQrButton url={testTakeUrl(session.token, state.exam)} title={session.topic} subtitle="Отсканируйте и пройдите тест" emoji="📝" fileName={`QR ${session.topic}`} label="QR" />
                 <CommonPopover
                     items={[
                         {
                             label: "Результаты",
                             icon: <UsersIcon className="h-3.5 w-3.5" />,
-                            onClick: () => navigate(sessionResultsPath(session.id)),
+                            onClick: () => navigate(sessionResultsPath(session.id, state.exam)),
                         },
                         // Opening, closing and deleting need the right to change tests.
                         ...(canEdit
@@ -393,8 +393,8 @@ const TestSessionResultsHeader: FC<{ state: SessionResults }> = ({ state }) => {
                 )}
             </div>
             <div className="flex flex-wrap items-center gap-2">
-                <CommonShareLink url={testTakeUrl(session.token)} label="Скопировать ссылку для студентов" />
-                <CommonQrButton url={testTakeUrl(session.token)} title={session.topic} subtitle="Отсканируйте и пройдите тест" emoji="📝" fileName={`QR ${session.topic}`} />
+                <CommonShareLink url={testTakeUrl(session.token, state.exam)} label="Скопировать ссылку для студентов" />
+                <CommonQrButton url={testTakeUrl(session.token, state.exam)} title={session.topic} subtitle="Отсканируйте и пройдите тест" emoji="📝" fileName={`QR ${session.topic}`} />
                 <Can section={PermissionSection.TESTS}>
                     <Button variant="outline" size="sm" onClick={() => state.setOpen(!session.isOpen)}>
                         {session.isOpen ? <LockIcon className="size-4" /> : <LockOpenIcon className="size-4" />}

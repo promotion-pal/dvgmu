@@ -96,3 +96,5 @@ export const testSessionApi = {
         await client.testAttemptDelete({ id: BigInt(id) });
     },
 };
+
+export type TestSessionApi = typeof testSessionApi;

@@ -123,6 +123,10 @@ services:
       TEST_POSTGRES_USER: postgres
       TEST_POSTGRES_PASSWORD: postgres
       TEST_POSTGRES_DB: fesmu_tests
+      EXAM_TEST_POSTGRES_HOST: postgres
+      EXAM_TEST_POSTGRES_USER: postgres
+      EXAM_TEST_POSTGRES_PASSWORD: postgres
+      EXAM_TEST_POSTGRES_DB: fesmu_exam_tests
       POSTGRES_HOST_LIBRARY: postgres
       POSTGRES_USER_LIBRARY: postgres
       POSTGRES_PASSWORD_LIBRARY: postgres

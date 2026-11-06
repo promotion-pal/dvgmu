@@ -73,7 +73,8 @@ export const ATTEMPT_STATUS_TONE: Record<TestAttemptStatus, string> = {
 };
 
 /** The student link of a session. */
-export const testTakeUrl = (token: string) => `${window.location.origin}${ROUTE.PUBLIC.TEST_TAKE.replace(":token", token)}`;
+export const testTakeUrl = (token: string, exam = false) =>
+    `${window.location.origin}${(exam ? ROUTE.PUBLIC.EXAM_TEST_TAKE : ROUTE.PUBLIC.TEST_TAKE).replace(":token", token)}`;
 
 /** The opening time is still ahead. */
 export const sessionNotOpenYet = (session: TestSession, now = new Date()) => Boolean(session.opensAt && session.opensAt > now);

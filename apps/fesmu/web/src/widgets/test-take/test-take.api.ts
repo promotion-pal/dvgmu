@@ -62,3 +62,5 @@ export const testTakeApi = {
         return fromState(await client.testTakeFinish({ attemptToken }));
     },
 };
+
+export type TestTakeApi = typeof testTakeApi;

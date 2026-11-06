@@ -14,14 +14,15 @@ import (
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 
-	analyticsserviceconnect "fesmu/contract/analytics/service/serviceconnect"
-	"fesmu/contract/auth/v2/authv2connect"
-	mdmserviceconnect "fesmu/contract/mdm/service/serviceconnect"
-	tasksserviceconnect "fesmu/contract/tickets/service/serviceconnect"
-	serviceconnect "fesmu/contract/fesmu/service/v1/servicev1connect"
 	"dvgmu/api/internal/auth"
 	"dvgmu/api/internal/grpc"
 	"dvgmu/api/internal/proxy"
+	analyticsserviceconnect "fesmu/contract/analytics/service/serviceconnect"
+	"fesmu/contract/auth/v2/authv2connect"
+	examserviceconnect "fesmu/contract/fesmu/exam/service/v1/servicev1connect"
+	serviceconnect "fesmu/contract/fesmu/service/v1/servicev1connect"
+	mdmserviceconnect "fesmu/contract/mdm/service/serviceconnect"
+	tasksserviceconnect "fesmu/contract/tickets/service/serviceconnect"
 )
 
 // Module is a self-contained feature (see internal/modules) that mounts its
@@ -49,6 +50,8 @@ func New(
 	computerClassHandler *grpc.ComputerClassHandler,
 	testHandler *grpc.TestHandler,
 	testSessionHandler *grpc.TestSessionHandler,
+	examTestHandler *grpc.TestHandler,
+	examTestSessionHandler *grpc.TestSessionHandler,
 	vaccinationHandler *grpc.VaccinationHandler,
 	userHandler *grpc.UserHandler,
 	mdmURL string,
@@ -125,6 +128,12 @@ func New(
 	testSessionPath, testSessionConnectHandler := serviceconnect.NewTestSessionServiceHandler(testSessionHandler, opts...)
 	mux.Handle(testSessionPath, testSessionConnectHandler)
 
+	examTestPath, examTestConnectHandler := examserviceconnect.NewExamTestServiceHandler(examTestHandler, opts...)
+	mux.Handle(examTestPath, examTestConnectHandler)
+	mux.Handle("GET /exam-test-images/{hash}", examTestHandler.ImageHTTP())
+	examTestSessionPath, examTestSessionConnectHandler := examserviceconnect.NewExamTestSessionServiceHandler(examTestSessionHandler, opts...)
+	mux.Handle(examTestSessionPath, examTestSessionConnectHandler)
+
 	userPath, userConnectHandler := serviceconnect.NewUserServiceHandler(userHandler, opts...)
 	mux.Handle(userPath, userConnectHandler)
 
@@ -180,6 +189,8 @@ func New(
 		serviceconnect.VaccinationServiceName,
 		serviceconnect.TestServiceName,
 		serviceconnect.TestSessionServiceName,
+		examserviceconnect.ExamTestServiceName,
+		examserviceconnect.ExamTestSessionServiceName,
 		serviceconnect.UserServiceName,
 		mdmserviceconnect.UserServiceName,
 		tasksserviceconnect.TicketDormitoryServiceName,

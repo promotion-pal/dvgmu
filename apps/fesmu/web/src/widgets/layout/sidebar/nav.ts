@@ -52,6 +52,8 @@ const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
             { title: "Тесты V1 · Банк вопросов", url: ROUTE.TESTS.BUILDER, icon: ListChecksIcon, permissions: permsFor(PermissionSection.TESTS) },
             { title: "Тесты V2 · Верные и неверные", url: ROUTE.TESTS.BUILDER_V2, icon: ListTodoIcon, permissions: permsFor(PermissionSection.TESTS) },
             { title: "Сессии тестирования", url: ROUTE.TESTS.SESSIONS, icon: HourglassIcon, permissions: permsFor(PermissionSection.TESTS) },
+            { title: "Экзаменационное тестирование", url: ROUTE.EXAM_TESTS.BUILDER, icon: FileCheckIcon, permissions: permsFor(PermissionSection.TESTS) },
+            { title: "Сессии экзаменов", url: ROUTE.EXAM_TESTS.SESSIONS, icon: HourglassIcon, permissions: permsFor(PermissionSection.TESTS) },
         ],
     },
     {

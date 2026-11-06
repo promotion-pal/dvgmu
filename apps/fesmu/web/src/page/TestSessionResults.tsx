@@ -6,11 +6,12 @@ import { CommonWrapper } from "@/shared/components/wrapper";
 import { ROUTE } from "@/shared/config/path";
 import { Button } from "@/shared/ui/button";
 import { TestSessionResultsHeader, TestSessionResultsTable, TestSessionSheetModal, useTestSessionResults, useTestSessionSheet } from "@/widgets/test-session";
+import { examTestSessionApi, testSessionApi } from "@/widgets/test-session";
 
 /** Staff: one session's results — every student's score and, unfolded, their answers. */
-export default function TestSessionResultsPage() {
+export default function TestSessionResultsPage({ exam = false }: { exam?: boolean }) {
     const { id } = useParams<{ id: string }>();
-    const state = useTestSessionResults(id);
+    const state = useTestSessionResults(id, exam ? examTestSessionApi : testSessionApi, exam);
     const session = state.results?.session;
     const sheet = useTestSessionSheet(state.results);
 
@@ -30,7 +31,7 @@ export default function TestSessionResultsPage() {
                         Ведомость (Word)
                     </Button>
                     <Button asChild variant="ghost" size="sm">
-                        <Link to={ROUTE.TESTS.SESSIONS}>
+                        <Link to={exam ? ROUTE.EXAM_TESTS.SESSIONS : ROUTE.TESTS.SESSIONS}>
                             <ArrowLeftIcon className="size-4" />
                             Все сессии
                         </Link>

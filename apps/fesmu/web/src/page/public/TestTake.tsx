@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { TestTakePanel, useTestTake } from "@/widgets/test-take";
+import { examTestTakeApi, TestTakePanel, testTakeApi, useTestTake } from "@/widgets/test-take";
 
 /** Standalone page where a student takes a test by its session link — no
  * login, no sidebar: name and group, then the timed questions. */
-export default function TestTakePage() {
+export default function TestTakePage({ exam = false }: { exam?: boolean }) {
     const { token = "" } = useParams<{ token: string }>();
-    const take = useTestTake(token);
+    const take = useTestTake(token, exam ? examTestTakeApi : testTakeApi, exam);
 
     useEffect(() => {
         take.load();

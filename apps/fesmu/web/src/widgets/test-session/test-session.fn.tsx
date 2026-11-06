@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { useCommonModal } from "@/shared/components/modal";
 import { exportDocTable } from "@/shared/lib/word-export";
 import { testSessionApi } from "./test-session.api";
+import type { TestSessionApi } from "./test-session.api";
 import { attemptDay, attemptGrade, attemptPercent, emptyTestSessionForm, formatDay, sessionOpen, testSessionSchema, TestAttemptStatus } from "./test-session.schema";
 import type { TestAttempt, TestSession, TestSessionForm, TestSessionResults } from "./test-session.schema";
 
@@ -31,7 +32,7 @@ export interface TestSessionTarget {
 }
 
 /** "Hand out a test": the form, then the link to give the students. */
-const useTestSessionCreate = () => {
+const useTestSessionCreate = (api: TestSessionApi = testSessionApi, exam = false) => {
     const modal = useCommonModal();
     const [target, setTarget] = useState<TestSessionTarget>();
     const [created, setCreated] = useState<TestSession>();
@@ -61,7 +62,7 @@ const useTestSessionCreate = () => {
             return;
         }
         try {
-            setCreated(await testSessionApi.create(target.id, target.mixed ? values : { ...values, optionCount: "" }));
+            setCreated(await api.create(target.id, target.mixed ? values : { ...values, optionCount: "" }));
             toast.success("Сессия создана — отправьте ссылку студентам");
         } catch (error) {
             console.error("Ошибка при создании сессии:", error);
@@ -69,11 +70,11 @@ const useTestSessionCreate = () => {
         }
     });
 
-    return { modal, target, created, form, open, handleSubmit };
+    return { modal, target, created, form, open, handleSubmit, exam };
 };
 
 /** Staff list of every session: open/close the link, delete. */
-const useTestSessions = () => {
+const useTestSessions = (api: TestSessionApi = testSessionApi, exam = false) => {
     const [sessions, setSessions] = useState<TestSession[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
@@ -84,7 +85,7 @@ const useTestSessions = () => {
         setLoading(true);
         setError(false);
         try {
-            setSessions(await testSessionApi.fetch());
+            setSessions(await api.fetch());
         } catch (err) {
             console.error("Ошибка при получении сессий:", err);
             setError(true);
@@ -98,7 +99,7 @@ const useTestSessions = () => {
             setSessions((current) => current.map((item) => (item.id === session.id ? { ...item, isOpen: value } : item)));
         patch(isOpen);
         try {
-            await testSessionApi.setOpen(session.id, isOpen);
+            await api.setOpen(session.id, isOpen);
             toast.success(isOpen ? "Приём ответов открыт" : "Приём ответов закрыт");
         } catch (err) {
             patch(session.isOpen);
@@ -111,7 +112,7 @@ const useTestSessions = () => {
         const results = session.attemptCount ? ` и ${session.attemptCount} результатов` : "";
         if (!confirm(`Удалить сессию «${session.topic}»${results}?`)) return;
         try {
-            await testSessionApi.remove(session.id);
+            await api.remove(session.id);
             toast.success("Сессия удалена");
             setSessions((current) => current.filter((item) => item.id !== session.id));
         } catch (err) {
@@ -132,13 +133,13 @@ const useTestSessions = () => {
             );
     }, [sessions, search, onlyOpen]);
 
-    return { fetch, loading, error, empty: sessions.length === 0, visible, search, setSearch, onlyOpen, setOnlyOpen, setOpen, remove };
+    return { fetch, loading, error, empty: sessions.length === 0, visible, search, setSearch, onlyOpen, setOnlyOpen, setOpen, remove, exam };
 };
 
 const REFRESH_MS = 20_000;
 
 /** One session's results; refreshed every 20 s while someone is still taking it. */
-const useTestSessionResults = (sessionId: string | undefined) => {
+const useTestSessionResults = (sessionId: string | undefined, api: TestSessionApi = testSessionApi, exam = false) => {
     const [results, setResults] = useState<TestSessionResults>();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
@@ -149,7 +150,7 @@ const useTestSessionResults = (sessionId: string | undefined) => {
         if (!quiet) setLoading(true);
         setError(false);
         try {
-            setResults(await testSessionApi.results(sessionId));
+            setResults(await api.results(sessionId));
         } catch (err) {
             console.error("Ошибка при получении результатов:", err);
             if (!quiet) setError(true);
@@ -169,7 +170,7 @@ const useTestSessionResults = (sessionId: string | undefined) => {
     const setOpen = async (isOpen: boolean) => {
         if (!results) return;
         try {
-            await testSessionApi.setOpen(results.session.id, isOpen);
+            await api.setOpen(results.session.id, isOpen);
             setResults({ ...results, session: { ...results.session, isOpen } });
             toast.success(isOpen ? "Приём ответов открыт" : "Приём ответов закрыт");
         } catch (err) {
@@ -181,7 +182,7 @@ const useTestSessionResults = (sessionId: string | undefined) => {
     const removeAttempt = async (attempt: TestAttempt) => {
         if (!confirm(`Удалить результат «${attempt.fullName}»? Студент сможет пройти тест заново.`)) return;
         try {
-            await testSessionApi.removeAttempt(attempt.id);
+            await api.removeAttempt(attempt.id);
             toast.success("Результат удалён");
             await fetch(true);
         } catch (err) {
@@ -209,7 +210,7 @@ const useTestSessionResults = (sessionId: string | undefined) => {
         return { total: list.length, done: done.length, running, average };
     }, [results]);
 
-    return { results, attempts, stats, loading, error, fetch, search, setSearch, setOpen, removeAttempt };
+    return { results, attempts, stats, loading, error, fetch, search, setSearch, setOpen, removeAttempt, exam };
 };
 
 export { useTestSessionCreate, useTestSessions, useTestSessionResults };

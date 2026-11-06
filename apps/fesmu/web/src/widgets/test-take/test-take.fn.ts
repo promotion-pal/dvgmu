@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { testTakeApi } from "./test-take.api";
+import type { TestTakeApi } from "./test-take.api";
 import { TestAttemptStatus, testTakeStartSchema } from "./test-take.schema";
 import type { TestTakeInfo, TestTakeStartForm, TestTakeState } from "./test-take.schema";
 
@@ -37,7 +38,7 @@ const phaseOf = (state: TestTakeState): TestTakePhase => (state.status === TestA
 
 /** A student taking a test by its session link: the intro form, the timed
  * questions (every pick is saved on the server at once) and the result. */
-const useTestTake = (token: string) => {
+const useTestTake = (token: string, api: TestTakeApi = testTakeApi, exam = false) => {
     const [phase, setPhase] = useState<TestTakePhase>("loading");
     const [info, setInfo] = useState<TestTakeInfo>();
     const [state, setState] = useState<TestTakeState>();
@@ -68,7 +69,7 @@ const useTestTake = (token: string) => {
         const attemptToken = savedAttempt(token);
         if (attemptToken) {
             try {
-                apply(await testTakeApi.state(attemptToken));
+                apply(await api.state(attemptToken));
                 return;
             } catch (error) {
                 // A deleted attempt (staff removed the result) starts over.
@@ -79,7 +80,7 @@ const useTestTake = (token: string) => {
             }
         }
         try {
-            setInfo(await testTakeApi.info(token));
+            setInfo(await api.info(token));
             setPhase("intro");
         } catch (error) {
             if (codeOf(error) !== Code.NotFound) console.error("Ошибка при загрузке теста:", error);
@@ -89,7 +90,7 @@ const useTestTake = (token: string) => {
 
     const onStart = async (values: TestTakeStartForm) => {
         try {
-            const next = await testTakeApi.start(token, values.fullName, values.studentGroup);
+            const next = await api.start(token, values.fullName, values.studentGroup);
             saveAttempt(token, next.attemptToken);
             setCurrent(0);
             apply(next);
@@ -104,7 +105,7 @@ const useTestTake = (token: string) => {
     const refresh = async () => {
         if (!state) return;
         try {
-            apply(await testTakeApi.state(state.attemptToken));
+            apply(await api.state(state.attemptToken));
         } catch (error) {
             toast.error(errorText(error, "Не удалось обновить тест"));
         }
@@ -113,7 +114,7 @@ const useTestTake = (token: string) => {
     const send = (questionId: string) => {
         if (!state) return Promise.resolve();
         const picked = pickedRef.current[questionId] ?? [];
-        const save = testTakeApi
+        const save = api
             .answer(state.attemptToken, questionId, picked)
             .then(() => {
                 // A newer pick may have been sent meanwhile; only the last one clears the mark.
@@ -161,7 +162,7 @@ const useTestTake = (token: string) => {
             await Promise.all(savesRef.current.values());
             // Resend whatever failed to reach the server.
             await Promise.all([...failedRef.current].map(send));
-            apply(await testTakeApi.finish(state.attemptToken));
+            apply(await api.finish(state.attemptToken));
         } catch (error) {
             toast.error(errorText(error, "Не удалось завершить тест — попробуйте ещё раз"));
         } finally {
@@ -199,6 +200,7 @@ const useTestTake = (token: string) => {
     const answered = state ? state.questions.filter((question) => state.picked[question.id]?.length).length : 0;
 
     return {
+        exam,
         load,
         phase,
         info,

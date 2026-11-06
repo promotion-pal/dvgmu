@@ -86,3 +86,5 @@ export const testBuilderApi = {
         };
     },
 };
+
+export type TestBuilderApi = typeof testBuilderApi;

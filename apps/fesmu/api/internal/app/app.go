@@ -11,11 +11,6 @@ import (
 	"gorm.io/gorm"
 
 	"dvgmu/api"
-	filesserviceconnect "fesmu/contract/file/service/serviceconnect"
-	mdmserviceconnect "fesmu/contract/mdm/service/serviceconnect"
-	serviceconnect "fesmu/contract/fesmu/service/v1/servicev1connect"
-	"fesmu/contract/fesmu/service/v2/servicev2connect"
-	"fesmu/contract/fesmu/service/v3/servicev3connect"
 	grpcapp "dvgmu/api/internal/app/grpc"
 	"dvgmu/api/internal/auth"
 	"dvgmu/api/internal/config"
@@ -32,6 +27,12 @@ import (
 	"dvgmu/api/internal/service/packages/certificate"
 	"dvgmu/api/internal/service/packages/user"
 	"dvgmu/api/internal/storage"
+	examserviceconnect "fesmu/contract/fesmu/exam/service/v1/servicev1connect"
+	serviceconnect "fesmu/contract/fesmu/service/v1/servicev1connect"
+	"fesmu/contract/fesmu/service/v2/servicev2connect"
+	"fesmu/contract/fesmu/service/v3/servicev3connect"
+	filesserviceconnect "fesmu/contract/file/service/serviceconnect"
+	mdmserviceconnect "fesmu/contract/mdm/service/serviceconnect"
 )
 
 type App struct {
@@ -82,6 +83,8 @@ func New(
 	// Unavailable): the rest of the API must not go down with it.
 	var testService *service.TestService
 	var testSessionService *service.TestSessionService
+	var examTestService *service.TestService
+	var examTestSessionService *service.TestSessionService
 	// Question pictures go to the files service (tests/images); without it
 	// the builder works, only pictures can't be added.
 	var testImageFiles service.TestImageFiles
@@ -95,8 +98,17 @@ func New(
 		testService = service.NewTestService(log, testStorage, testStorage, testStorage, testImageFiles)
 		testSessionService = service.NewTestSessionService(log, storage.TestSessionStorageNew(testDB), testStorage)
 	}
+	if examTestDB, err := connectAndMigrate(log, cfg.Databases.ExamTestDB, "migrations/test"); err != nil {
+		log.Error("exam testing disabled: database is unavailable", "dbname", cfg.Databases.ExamTestDB.DBName, "error", err.Error())
+	} else {
+		examTestStorage := storage.TestStorageNew(examTestDB)
+		examTestService = service.NewTestService(log, examTestStorage, examTestStorage, examTestStorage, testImageFiles)
+		examTestSessionService = service.NewTestSessionService(log, storage.TestSessionStorageNew(examTestDB), examTestStorage)
+	}
 	testHandler := grpc.TestNewController(testService)
 	testSessionHandler := grpc.TestSessionNewController(testSessionService)
+	examTestHandler := grpc.TestNewController(examTestService)
+	examTestSessionHandler := grpc.TestSessionNewController(examTestSessionService)
 
 	// Who is signed in comes from the auth access token (uuid, login, roles
 	// set in MDM); name, email and MDM id — from MDM itself.
@@ -164,6 +176,11 @@ func New(
 		authInterceptor.Skip[serviceconnect.TestSessionServiceTestTakeStateProcedure] = true
 		authInterceptor.Skip[serviceconnect.TestSessionServiceTestTakeAnswerProcedure] = true
 		authInterceptor.Skip[serviceconnect.TestSessionServiceTestTakeFinishProcedure] = true
+		authInterceptor.Skip[examserviceconnect.ExamTestSessionServiceTestTakeInfoProcedure] = true
+		authInterceptor.Skip[examserviceconnect.ExamTestSessionServiceTestTakeStartProcedure] = true
+		authInterceptor.Skip[examserviceconnect.ExamTestSessionServiceTestTakeStateProcedure] = true
+		authInterceptor.Skip[examserviceconnect.ExamTestSessionServiceTestTakeAnswerProcedure] = true
+		authInterceptor.Skip[examserviceconnect.ExamTestSessionServiceTestTakeFinishProcedure] = true
 		// Опубликованные методички открыты всем (страница /manuals): анонимно —
 		// только опубликованное и только файлы из него; вошедшему редактору
 		// те же методы отдают и черновики.
@@ -193,16 +210,18 @@ func New(
 			// ADMIN (нет в карте).
 		}
 		authInterceptor.Sections = map[string][]auth.Section{
-			serviceconnect.CertificateServiceName:     {auth.SectionCertificate},
-			serviceconnect.InfrastructureServiceName:  {auth.SectionInfrastructure},
-			serviceconnect.InventoryServiceName:       {auth.SectionInventory},
-			serviceconnect.ScheduleServiceName:        {auth.SectionSchedule},
-			serviceconnect.ScheduleCollectServiceName: {auth.SectionSchedule},
-			serviceconnect.HallServiceName:            {auth.SectionHalls},
-			serviceconnect.ComputerClassServiceName:   {auth.SectionComputerClasses},
-			serviceconnect.VaccinationServiceName:     {auth.SectionVaccination},
-			serviceconnect.TestServiceName:            {auth.SectionTests},
-			serviceconnect.TestSessionServiceName:     {auth.SectionTests},
+			serviceconnect.CertificateServiceName:         {auth.SectionCertificate},
+			serviceconnect.InfrastructureServiceName:      {auth.SectionInfrastructure},
+			serviceconnect.InventoryServiceName:           {auth.SectionInventory},
+			serviceconnect.ScheduleServiceName:            {auth.SectionSchedule},
+			serviceconnect.ScheduleCollectServiceName:     {auth.SectionSchedule},
+			serviceconnect.HallServiceName:                {auth.SectionHalls},
+			serviceconnect.ComputerClassServiceName:       {auth.SectionComputerClasses},
+			serviceconnect.VaccinationServiceName:         {auth.SectionVaccination},
+			serviceconnect.TestServiceName:                {auth.SectionTests},
+			serviceconnect.TestSessionServiceName:         {auth.SectionTests},
+			examserviceconnect.ExamTestServiceName:        {auth.SectionTests},
+			examserviceconnect.ExamTestSessionServiceName: {auth.SectionTests},
 			// Опросы: номер QR — просмотр раздела, создание и правка — analytics.post.
 			serviceconnect.SurveyServiceName: {auth.SectionAnalytics},
 			// Деканат: студенты своего факультета — просмотр, коды первого
@@ -282,6 +301,8 @@ func New(
 		computerClassHandler,
 		testHandler,
 		testSessionHandler,
+		examTestHandler,
+		examTestSessionHandler,
 		vaccinationHandler,
 		userHandler,
 		cfg.Packages.MDM,

@@ -31,6 +31,11 @@ const ROUTE = {
     SESSIONS: `${LK}/tests/sessions`,
     SESSION_RESULTS: `${LK}/tests/sessions/:id`,
   },
+  EXAM_TESTS: {
+    BUILDER: `${LK}/exam-testing`,
+    SESSIONS: `${LK}/exam-testing/sessions`,
+    SESSION_RESULTS: `${LK}/exam-testing/sessions/:id`,
+  },
   PURCHASE: {
     V2: `${LK}/purchases/v2`,
     V3: `${LK}/purchases`,
@@ -80,6 +85,7 @@ const ROUTE = {
     QUESTION: "/analytic",
     /** A student takes a test by its session link. */
     TEST_TAKE: "/tests/take/:token",
+    EXAM_TEST_TAKE: "/exam-testing/take/:token",
     /** Опубликованные методички — без входа. */
     MANUALS: "/manuals",
     MANUAL: "/manuals/:id",
@@ -100,7 +106,7 @@ const ROUTE = {
  *  переводим в кабинет. */
 const LEGACY_LK_PREFIXES = [
   "/profile", "/infrastructure", "/inventory", "/users", "/students", "/employees", "/tickets",
-  "/my", "/study", "/tests", "/purchases", "/library", "/analytics", "/deanery", "/admin",
+  "/my", "/study", "/tests", "/exam-testing", "/purchases", "/library", "/analytics", "/deanery", "/admin",
 ] as const;
 
 export { LEGACY_LK_PREFIXES, LK, ROUTE };

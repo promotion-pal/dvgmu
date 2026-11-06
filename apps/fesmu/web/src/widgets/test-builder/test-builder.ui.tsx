@@ -100,7 +100,7 @@ const TestBuilderImport: FC<{ state: TestBuilder }> = ({ state }) => {
 
 /* ───────────── list ───────────── */
 
-const TestQuestions: FC<{ test: Test }> = ({ test }) => (
+const TestQuestions: FC<{ test: Test; exam?: boolean }> = ({ test, exam = false }) => (
     <ol className="flex flex-col gap-4">
         {test.questions.map((question, index) => (
             <li key={question.id} className="flex flex-col gap-2">
@@ -109,7 +109,7 @@ const TestQuestions: FC<{ test: Test }> = ({ test }) => (
                 </p>
                 {question.image && (
                     <CommonImage
-                        src={testImageUrl(question.image.hash)}
+                        src={testImageUrl(question.image.hash, exam)}
                         alt={`Картинка к вопросу ${index + 1}`}
                         width={question.image.width}
                         height={question.image.height}
@@ -187,7 +187,7 @@ const TestRow: FC<{ test: Test; state: TestBuilder; onHandOut?: HandOut }> = ({ 
             />
         </div>
         <AccordionContent>
-            <TestQuestions test={test} />
+            <TestQuestions test={test} exam={state.exam} />
         </AccordionContent>
     </AccordionItem>
     );
@@ -287,11 +287,11 @@ const FieldInput = PromFieldInput<TestForm>;
 const MAX_ANSWERS = 30;
 
 /** A question's picture: shown with "Заменить" and "Убрать", or a button to add one. */
-const QuestionImageField: FC<{ index: number }> = ({ index }) => {
+const QuestionImageField: FC<{ index: number; api: TestBuilder["api"]; exam: boolean }> = ({ index, api, exam }) => {
     const { control, setValue } = useFormContext<TestForm>();
     const image = useWatch({ control, name: `questions.${index}.image` });
     const input = useRef<HTMLInputElement>(null);
-    const { uploading, upload } = useImageUpload();
+    const { uploading, upload } = useImageUpload(api);
 
     const pick = async (file: File | undefined) => {
         if (!file) return;
@@ -301,7 +301,7 @@ const QuestionImageField: FC<{ index: number }> = ({ index }) => {
 
     return (
         <div className="flex flex-col gap-2">
-            {image && <CommonImage src={testImageUrl(image)} alt={`Картинка к вопросу ${index + 1}`} className="max-h-72 w-fit" />}
+            {image && <CommonImage src={testImageUrl(image, exam)} alt={`Картинка к вопросу ${index + 1}`} className="max-h-72 w-fit" />}
             <div className="flex flex-wrap gap-2">
                 <Button type="button" variant="outline" size="sm" disabled={uploading} onClick={() => input.current?.click()}>
                     <ImageIcon className="size-4" />
@@ -460,7 +460,7 @@ const PoolAnswers: FC<{ index: number }> = ({ index }) => {
 
 /** One question of the form: its text, picture and answers — by the test's
  * version as one list of options (V1) or right and wrong lists (V2). */
-const QuestionEditor: FC<{ index: number; canRemove: boolean; onRemove: () => void }> = ({ index, canRemove, onRemove }) => {
+const QuestionEditor: FC<{ index: number; canRemove: boolean; onRemove: () => void; api: TestBuilder["api"]; exam: boolean }> = ({ index, canRemove, onRemove, api, exam }) => {
     const { control, formState } = useFormContext<TestForm>();
     const version = useWatch({ control, name: "version" });
     const answersError = listError(formState.errors, `questions.${index}.answers`);
@@ -476,7 +476,7 @@ const QuestionEditor: FC<{ index: number; canRemove: boolean; onRemove: () => vo
             </div>
 
             <PromFieldTextArea<TestForm> name={`questions.${index}.text`} placeholder="Текст вопроса" rows={2} />
-            <QuestionImageField index={index} />
+            <QuestionImageField index={index} api={api} exam={exam} />
 
             {version === TestVersion.V2 ? <PoolAnswers index={index} /> : <ClassicAnswers index={index} />}
             {answersError && <span className="text-sm text-red-500">{answersError}</span>}
@@ -540,6 +540,8 @@ const TestBuilderFormModal: FC<{ state: TestBuilder }> = ({ state }) => {
                             index={index}
                             canRemove={questions.fields.length > 1}
                             onRemove={() => questions.remove(index)}
+                            api={state.api}
+                            exam={state.exam}
                         />
                     ))}
                     {questionsError && <span className="text-sm text-red-500">{questionsError}</span>}
