@@ -76,6 +76,18 @@ message TestSession {
   int32 option_count = 18;
   // The test's version when the session was made; option_count is V2 only.
   contract.enum.v1.TestVersion version = 19;
+  ExamAudience audience = 20;
+  int32 assigned_count = 21;
+}
+
+// Staff-only targeting criteria. Recipients are saved by stable MDM UUID.
+message ExamAudience {
+  // course, group or students. Empty is allowed only for ordinary tests.
+  string kind = 1;
+  int32 faculty_code = 2;
+  int32 course = 3;
+  string student_group = 4;
+  repeated string student_uuids = 5;
 }
 
 // One student's run through a session.
@@ -93,6 +105,7 @@ message TestAttempt {
   google.protobuf.Timestamp finished_at = 10;
   // Every question asked, in the order asked; unanswered ones have no answer_ids.
   repeated TestAttemptAnswer answers = 11;
+  string mdm_user_uuid = 12;
 }
 
 message TestAttemptAnswer {

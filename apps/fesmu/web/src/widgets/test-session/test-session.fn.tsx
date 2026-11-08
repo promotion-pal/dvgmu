@@ -48,6 +48,7 @@ const useTestSessionCreate = (api: TestSessionApi = testSessionApi, exam = false
         // to DEFAULT_ASKED of its questions (all when the test is that small).
         form.reset({
             ...emptyTestSessionForm(),
+            audience: {...emptyTestSessionForm().audience,kind:exam ? "course" : ""},
             questionCount: test.questionCount > DEFAULT_ASKED ? String(DEFAULT_ASKED) : "",
             optionCount: test.mixed ? String(DEFAULT_OPTIONS) : "",
         });
@@ -56,6 +57,13 @@ const useTestSessionCreate = (api: TestSessionApi = testSessionApi, exam = false
 
     const handleSubmit = form.handleSubmit(async (values) => {
         if (!target) return;
+        if(exam) {
+            const a=values.audience;
+            if(!a.kind || ((a.kind==="course" || a.kind==="group") && !a.facultyCode)) {form.setError("audience.facultyCode",{message:"Выберите факультет и тип назначения"});return;}
+            if((a.kind==="course" || a.kind==="group") && !a.course){form.setError("audience.course",{message:"Выберите курс"});return;}
+            if(a.kind==="group" && !a.studentGroup){form.setError("audience.studentGroup",{message:"Выберите группу"});return;}
+            if(a.kind==="students" && !a.studentUuids.length){form.setError("audience.studentUuids",{message:"Выберите студентов"});return;}
+        }
         const count = Number(values.questionCount || 0);
         if (count > target.questionCount) {
             form.setError("questionCount", { message: `В тесте всего ${target.questionCount}` });
@@ -63,7 +71,7 @@ const useTestSessionCreate = (api: TestSessionApi = testSessionApi, exam = false
         }
         try {
             setCreated(await api.create(target.id, target.mixed ? values : { ...values, optionCount: "" }));
-            toast.success("Сессия создана — отправьте ссылку студентам");
+            toast.success(exam ? "Экзамен назначен выбранным студентам" : "Сессия создана — отправьте ссылку студентам");
         } catch (error) {
             console.error("Ошибка при создании сессии:", error);
             toast.error(errorText(error, "Не удалось создать сессию"));

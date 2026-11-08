@@ -1,0 +1,59 @@
+syntax = "proto3";
+package contract.service;
+option go_package = "service;service_pb";
+import "mdm/enum/user.enum.proto";
+
+// A minimal, filtered directory. Consumers do not join UserFetch with
+// StudentFetch/EmployeeFetch or fetch private profiles for every result.
+service UserDirectoryService {
+  rpc UserDirectoryFetch (UserDirectoryFetchRequest) returns (UserDirectoryFetchResponse);
+}
+message UserDirectoryFetchRequest {
+  contract.enum.UserRole role = 1;
+  string query = 2;
+  int32 faculty_code = 3;
+  int32 course = 4;
+  string student_group = 5;
+  string record_book = 6;
+  contract.enum.UserStudentStatus student_status = 7;
+  contract.enum.UserEmployeeDepartment employee_department = 8;
+  string employee_position = 9;
+  reserved 10;
+  int32 limit = 11;
+  int32 offset = 12;
+  bool include_facets = 13;
+  repeated string user_uuids = 14;
+ contract.enum.UserStatus user_status = 15;
+}
+message UserDirectoryStudent {
+  int32 faculty_code = 1;
+  int32 course = 2;
+  string group = 3;
+  contract.enum.UserStudentStatus status = 4;
+ string faculty_name = 5;
+}
+message UserDirectoryEmployee {
+  contract.enum.UserEmployeeDepartment department = 1;
+  string position = 2;
+  reserved 3;
+}
+message UserDirectoryEntry {
+  string uuid = 1;
+  string full_name = 2;
+  repeated contract.enum.UserRole roles = 3;
+  repeated UserDirectoryStudent students = 4;
+  repeated UserDirectoryEmployee employees = 5;
+}
+message UserDirectoryStudentFacet {
+  int32 faculty_code = 1;
+  int32 course = 2;
+  string group = 3;
+  int32 count = 4;
+ string faculty_name = 5;
+}
+message UserDirectoryFetchResponse {
+  repeated UserDirectoryEntry users = 1;
+  int64 total = 2;
+  int32 next_offset = 3;
+  repeated UserDirectoryStudentFacet student_facets = 4;
+}

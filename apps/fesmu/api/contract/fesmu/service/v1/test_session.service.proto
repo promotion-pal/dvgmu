@@ -46,6 +46,7 @@ message TestSessionCreateRequest {
     google.protobuf.Timestamp opens_at = 8;
     // 0 = every option; otherwise a random mix of that many per question.
     int32 option_count = 9;
+    contract.entity.v1.ExamAudience audience = 10;
 }
 
 message TestSessionCreateResponse {
@@ -120,6 +121,7 @@ message TestTakeStartRequest {
     string token = 1;
     string full_name = 2;
     string student_group = 3;
+    string record_book = 4;
 }
 
 message TestTakeStateRequest {

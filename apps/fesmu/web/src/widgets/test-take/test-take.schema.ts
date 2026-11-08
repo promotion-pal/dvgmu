@@ -42,8 +42,11 @@ export interface TestTakeState {
 }
 
 export const testTakeStartSchema = z.object({
+ recordBook:z.string(),
     fullName: z.string().trim().min(1, "Укажите ФИО").max(255, "Не длиннее 255 символов"),
     studentGroup: z.string().trim().min(1, "Укажите группу").max(64, "Не длиннее 64 символов"),
 });
+
+export const examTestTakeStartSchema=testTakeStartSchema.extend({fullName:z.string(),studentGroup:z.string(),recordBook:z.string().trim().regex(/^[0-9]{7}$/, "Введите 7 цифр номера зачётной книжки")});
 
 export type TestTakeStartForm = z.infer<typeof testTakeStartSchema>;

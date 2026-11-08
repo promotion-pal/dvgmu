@@ -3,12 +3,15 @@ syntax = "proto3";
 package contract.fesmu.exam.service.v1;
 
 import "fesmu/service/v1/test_session.service.proto";
+import "mdm/service/user_directory.service.proto";
 
 option go_package = "exam_service_v1;exam_service_pb";
 
 // The examination-test link, registration and attempt API. Students use the
 // same anonymous flow and registration fields as regular test sessions.
 service ExamTestSessionService {
+  // Staff-only, student directory for selecting exam recipients.
+  rpc ExamAudienceFetch (contract.service.UserDirectoryFetchRequest) returns (contract.service.UserDirectoryFetchResponse);
   // Public computer-class catalogue: only currently available exams, no questions or results.
   rpc ExamPublicFetch (ExamPublicFetchRequest) returns (ExamPublicFetchResponse);
   rpc TestSessionCreate (contract.service.v1.TestSessionCreateRequest) returns (contract.service.v1.TestSessionCreateResponse);
@@ -24,7 +27,9 @@ service ExamTestSessionService {
   rpc TestTakeFinish (contract.service.v1.TestTakeFinishRequest) returns (contract.service.v1.TestTakeStateResponse);
 }
 
-message ExamPublicFetchRequest {}
+message ExamPublicFetchRequest {
+  string record_book = 1;
+}
 
 message ExamPublicFetchResponse {
   repeated ExamPublicTest list = 1;

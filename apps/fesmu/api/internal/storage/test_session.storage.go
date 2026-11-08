@@ -5,8 +5,8 @@ import (
 	"errors"
 	"time"
 
-	enum "fesmu/contract/fesmu/enum/v1"
 	"dvgmu/api/internal/domain/models"
+	enum "fesmu/contract/fesmu/enum/v1"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -23,7 +23,7 @@ func TestSessionStorageNew(db *gorm.DB) *TestSessionStorage {
 
 // The list leaves the frozen questions out: they can run to hundreds per session.
 const testSessionListColumns = `test_sessions.id, test_sessions.test_id, test_sessions.token, test_sessions.topic,
-	test_sessions.department, test_sessions.description, test_sessions.note, test_sessions.duration_minutes,
+	test_sessions.audience, (SELECT count(*) FROM exam_assignments WHERE exam_assignments.session_id=test_sessions.id) AS assigned_count, test_sessions.department, test_sessions.description, test_sessions.note, test_sessions.duration_minutes,
 	test_sessions.question_count, test_sessions.option_count, test_sessions.pick_version, test_sessions.version, test_sessions.distinct_questions, test_sessions.shuffle, test_sessions.show_result, test_sessions.is_open,
 	test_sessions.opens_at, test_sessions.closes_at, test_sessions.created_at, test_sessions.updated_at,
 	CASE WHEN test_sessions.pick_version >= 1 THEN test_sessions.distinct_questions
@@ -61,11 +61,18 @@ func (s *TestSessionStorage) sessionBy(ctx context.Context, where string, arg an
 		return nil, err
 	}
 	record.TotalQuestions = record.QuestionTotal()
+	if record.Audience.Kind != "" {
+		var count int64
+		if err := s.db.WithContext(ctx).Model(&models.ExamAssignment{}).Where("session_id=?", record.ID).Count(&count).Error; err != nil {
+			return nil, err
+		}
+		record.AssignedCount = int(count)
+	}
 	return &record, nil
 }
 
 func (s *TestSessionStorage) TestSessionCreate(ctx context.Context, session *models.TestSession) (int64, error) {
-	if err := s.db.WithContext(ctx).Omit("Test", "Attempts").Create(session).Error; err != nil {
+	if err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error { return tx.Omit("Test", "Attempts").Create(session).Error }); err != nil {
 		return 0, err
 	}
 	return session.ID, nil

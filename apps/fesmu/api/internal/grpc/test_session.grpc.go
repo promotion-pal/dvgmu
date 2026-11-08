@@ -7,10 +7,10 @@ import (
 	"connectrpc.com/connect"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	entity "fesmu/contract/fesmu/entity/v1"
-	pb "fesmu/contract/fesmu/service/v1"
 	"dvgmu/api/internal/domain/models"
 	"dvgmu/api/internal/service"
+	entity "fesmu/contract/fesmu/entity/v1"
+	pb "fesmu/contract/fesmu/service/v1"
 )
 
 type TestSessionHandler struct {
@@ -41,6 +41,7 @@ func (h *TestSessionHandler) TestSessionCreate(
 	}
 
 	params := models.TestSessionParams{
+		Audience:        models.ExamAudienceFromProto(req.Msg.GetAudience()),
 		DurationMinutes: int(req.Msg.GetDurationMinutes()),
 		QuestionCount:   int(req.Msg.GetQuestionCount()),
 		OptionCount:     int(req.Msg.GetOptionCount()),
@@ -198,6 +199,7 @@ func (h *TestSessionHandler) TestTakeStart(
 	}
 
 	view, err := h.service.TestTakeStart(ctx, req.Msg.GetToken(), models.TestAttemptParams{
+		RecordBook:   req.Msg.GetRecordBook(),
 		FullName:     req.Msg.GetFullName(),
 		StudentGroup: req.Msg.GetStudentGroup(),
 	})
@@ -278,6 +280,12 @@ func (h *TestSessionHandler) takeState(view *service.TestAttemptView) *pb.TestTa
 
 func testSessionConnectError(err error) error {
 	switch {
+	case errors.Is(err, models.ErrExamNotAssigned):
+		return connect.NewError(connect.CodePermissionDenied, err)
+	case errors.Is(err, models.ErrExamDirectory):
+		return connect.NewError(connect.CodeUnavailable, err)
+	case errors.Is(err, models.ErrExamAudience), errors.Is(err, models.ErrExamStudent):
+		return connect.NewError(connect.CodeInvalidArgument, err)
 	case errors.Is(err, models.ErrTestInvalid):
 		return connect.NewError(connect.CodeInvalidArgument, err)
 	case errors.Is(err, models.ErrTestNotFound),

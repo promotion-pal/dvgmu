@@ -1,4 +1,5 @@
 import { Fragment, useState } from "react";
+import { ExamAudienceFields } from "./exam-audience.ui";
 import type { FC, ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -81,8 +82,9 @@ const SessionLink: FC<{ session: TestSession; exam?: boolean }> = ({ session, ex
     return (
         <div className="flex flex-col gap-3 rounded-xl border bg-muted/40 p-4">
             <p className="text-sm text-muted-foreground">
-                {exam ? "Общая открытая страница компьютерного класса. Экзамен появится на ней в заданное время. Эта ссылка и QR-код одинаковы для всех экзаменов; студент выбирает нужный тест без входа в ЛК." : "Ссылка для студентов — по ней тест проходится без входа в систему. QR-код можно показать на экране: студенты отсканируют его телефоном."}
+                {exam ? "Общая открытая страница компьютерного класса. Экзамен появится у назначенных студентов после ввода номера зачётки в заданное время. Эта ссылка и QR-код одинаковы для всех экзаменов; студент выбирает нужный тест без входа в ЛК." : "Ссылка для студентов — по ней тест проходится без входа в систему. QR-код можно показать на экране: студенты отсканируют его телефоном."}
             </p>
+            {exam && <p className="text-sm font-medium">Назначено студентов: {session.assignedCount ?? 0}</p>}
             <CommonQrCode url={url} fileName={`QR ${session.topic}`} size={220} className="self-center" />
             <code className="break-all rounded-md bg-background px-3 py-2 text-sm">{url}</code>
             <div className="flex flex-wrap gap-2">
@@ -140,6 +142,7 @@ const TestSessionCreateModal: FC<{ state: SessionCreate; exam?: boolean }> = ({ 
             ) : (
                 <FormProvider {...form}>
                     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+ {exam && <ExamAudienceFields />}
                         <div className="grid gap-4 sm:grid-cols-2">
                             <PromFieldInput<TestSessionForm>
                                 name="durationMinutes"
@@ -254,6 +257,7 @@ const SessionRow: FC<{ session: TestSession; state: Sessions }> = ({ session, st
                 </Badge>
             </div>
             <div className="text-xs break-words text-muted-foreground">{[session.department, session.note].filter(Boolean).join(" · ")}</div>
+            {state.exam && <p className="mt-1 text-xs text-muted-foreground">{session.audience?.kind ? `${session.audience.kind==="course"?`${session.audience.course} курс`:session.audience.kind==="group"?`Группа ${session.audience.studentGroup}`:"Индивидуальное назначение"} · назначено студентов: ${session.assignedCount??0}` : "Студенты не назначены — откройте доступ заново в банке экзаменов"}</p>}
         </TableCell>
         <TableCell className="whitespace-nowrap text-sm">
             <div className="flex items-center gap-1">

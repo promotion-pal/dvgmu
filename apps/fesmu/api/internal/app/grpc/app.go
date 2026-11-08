@@ -172,6 +172,8 @@ func New(
 	}
 
 	mux.Handle("/"+mdmserviceconnect.UserServiceName+"/", mdmProxy)
+	mux.Handle("/"+mdmserviceconnect.UserDirectoryServiceName+"/", mdmProxy)
+	mux.Handle("GET /users", mdmProxy)
 	mux.Handle("/"+tasksserviceconnect.TicketDormitoryServiceName+"/", tasksProxy)
 	mux.Handle("/"+tasksserviceconnect.TicketBuildServiceName+"/", tasksProxy)
 	mux.Handle("/"+analyticsserviceconnect.AnalyticServiceName+"/", analyticsProxy)

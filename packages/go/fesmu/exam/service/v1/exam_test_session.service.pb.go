@@ -8,6 +8,7 @@ package servicev1
 
 import (
 	v1 "fesmu/contract/fesmu/service/v1"
+	service "fesmu/contract/mdm/service"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -24,6 +25,7 @@ const (
 
 type ExamPublicFetchRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	RecordBook    string                 `protobuf:"bytes,1,opt,name=record_book,json=recordBook,proto3" json:"record_book,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -56,6 +58,13 @@ func (x *ExamPublicFetchRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use ExamPublicFetchRequest.ProtoReflect.Descriptor instead.
 func (*ExamPublicFetchRequest) Descriptor() ([]byte, []int) {
 	return file_fesmu_exam_service_v1_exam_test_session_service_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *ExamPublicFetchRequest) GetRecordBook() string {
+	if x != nil {
+		return x.RecordBook
+	}
+	return ""
 }
 
 type ExamPublicFetchResponse struct {
@@ -198,8 +207,10 @@ var File_fesmu_exam_service_v1_exam_test_session_service_proto protoreflect.File
 
 const file_fesmu_exam_service_v1_exam_test_session_service_proto_rawDesc = "" +
 	"\n" +
-	"5fesmu/exam/service/v1/exam_test_session.service.proto\x12\x1econtract.fesmu.exam.service.v1\x1a+fesmu/service/v1/test_session.service.proto\"\x18\n" +
-	"\x16ExamPublicFetchRequest\"]\n" +
+	"5fesmu/exam/service/v1/exam_test_session.service.proto\x12\x1econtract.fesmu.exam.service.v1\x1a+fesmu/service/v1/test_session.service.proto\x1a(mdm/service/user_directory.service.proto\"9\n" +
+	"\x16ExamPublicFetchRequest\x12\x1f\n" +
+	"\vrecord_book\x18\x01 \x01(\tR\n" +
+	"recordBook\"]\n" +
 	"\x17ExamPublicFetchResponse\x12B\n" +
 	"\x04list\x18\x01 \x03(\v2..contract.fesmu.exam.service.v1.ExamPublicTestR\x04list\"\xd0\x01\n" +
 	"\x0eExamPublicTest\x12\x17\n" +
@@ -209,9 +220,9 @@ const file_fesmu_exam_service_v1_exam_test_session_service_proto_rawDesc = "" +
 	"\bsemester\x18\x04 \x01(\x05R\bsemester\x12\x18\n" +
 	"\asubject\x18\x05 \x01(\tR\asubject\x12\x14\n" +
 	"\x05title\x18\x06 \x01(\tR\x05title\x12)\n" +
-	"\x10duration_minutes\x18\a \x01(\x05R\x0fdurationMinutes2\xe5\n" +
-	"\n" +
-	"\x16ExamTestSessionService\x12\x82\x01\n" +
+	"\x10duration_minutes\x18\a \x01(\x05R\x0fdurationMinutes2\xd5\v\n" +
+	"\x16ExamTestSessionService\x12n\n" +
+	"\x11ExamAudienceFetch\x12+.contract.service.UserDirectoryFetchRequest\x1a,.contract.service.UserDirectoryFetchResponse\x12\x82\x01\n" +
 	"\x0fExamPublicFetch\x126.contract.fesmu.exam.service.v1.ExamPublicFetchRequest\x1a7.contract.fesmu.exam.service.v1.ExamPublicFetchResponse\x12r\n" +
 	"\x11TestSessionCreate\x12-.contract.service.v1.TestSessionCreateRequest\x1a..contract.service.v1.TestSessionCreateResponse\x12o\n" +
 	"\x10TestSessionFetch\x12,.contract.service.v1.TestSessionFetchRequest\x1a-.contract.service.v1.TestSessionFetchResponse\x12~\n" +
@@ -240,58 +251,62 @@ func file_fesmu_exam_service_v1_exam_test_session_service_proto_rawDescGZIP() []
 
 var file_fesmu_exam_service_v1_exam_test_session_service_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_fesmu_exam_service_v1_exam_test_session_service_proto_goTypes = []any{
-	(*ExamPublicFetchRequest)(nil),           // 0: contract.fesmu.exam.service.v1.ExamPublicFetchRequest
-	(*ExamPublicFetchResponse)(nil),          // 1: contract.fesmu.exam.service.v1.ExamPublicFetchResponse
-	(*ExamPublicTest)(nil),                   // 2: contract.fesmu.exam.service.v1.ExamPublicTest
-	(*v1.TestSessionCreateRequest)(nil),      // 3: contract.service.v1.TestSessionCreateRequest
-	(*v1.TestSessionFetchRequest)(nil),       // 4: contract.service.v1.TestSessionFetchRequest
-	(*v1.TestSessionOpenUpdateRequest)(nil),  // 5: contract.service.v1.TestSessionOpenUpdateRequest
-	(*v1.TestSessionDeleteRequest)(nil),      // 6: contract.service.v1.TestSessionDeleteRequest
-	(*v1.TestAttemptFetchRequest)(nil),       // 7: contract.service.v1.TestAttemptFetchRequest
-	(*v1.TestAttemptDeleteRequest)(nil),      // 8: contract.service.v1.TestAttemptDeleteRequest
-	(*v1.TestTakeInfoRequest)(nil),           // 9: contract.service.v1.TestTakeInfoRequest
-	(*v1.TestTakeStartRequest)(nil),          // 10: contract.service.v1.TestTakeStartRequest
-	(*v1.TestTakeStateRequest)(nil),          // 11: contract.service.v1.TestTakeStateRequest
-	(*v1.TestTakeAnswerRequest)(nil),         // 12: contract.service.v1.TestTakeAnswerRequest
-	(*v1.TestTakeFinishRequest)(nil),         // 13: contract.service.v1.TestTakeFinishRequest
-	(*v1.TestSessionCreateResponse)(nil),     // 14: contract.service.v1.TestSessionCreateResponse
-	(*v1.TestSessionFetchResponse)(nil),      // 15: contract.service.v1.TestSessionFetchResponse
-	(*v1.TestSessionOpenUpdateResponse)(nil), // 16: contract.service.v1.TestSessionOpenUpdateResponse
-	(*v1.TestSessionDeleteResponse)(nil),     // 17: contract.service.v1.TestSessionDeleteResponse
-	(*v1.TestAttemptFetchResponse)(nil),      // 18: contract.service.v1.TestAttemptFetchResponse
-	(*v1.TestAttemptDeleteResponse)(nil),     // 19: contract.service.v1.TestAttemptDeleteResponse
-	(*v1.TestTakeInfoResponse)(nil),          // 20: contract.service.v1.TestTakeInfoResponse
-	(*v1.TestTakeStateResponse)(nil),         // 21: contract.service.v1.TestTakeStateResponse
-	(*v1.TestTakeAnswerResponse)(nil),        // 22: contract.service.v1.TestTakeAnswerResponse
+	(*ExamPublicFetchRequest)(nil),             // 0: contract.fesmu.exam.service.v1.ExamPublicFetchRequest
+	(*ExamPublicFetchResponse)(nil),            // 1: contract.fesmu.exam.service.v1.ExamPublicFetchResponse
+	(*ExamPublicTest)(nil),                     // 2: contract.fesmu.exam.service.v1.ExamPublicTest
+	(*service.UserDirectoryFetchRequest)(nil),  // 3: contract.service.UserDirectoryFetchRequest
+	(*v1.TestSessionCreateRequest)(nil),        // 4: contract.service.v1.TestSessionCreateRequest
+	(*v1.TestSessionFetchRequest)(nil),         // 5: contract.service.v1.TestSessionFetchRequest
+	(*v1.TestSessionOpenUpdateRequest)(nil),    // 6: contract.service.v1.TestSessionOpenUpdateRequest
+	(*v1.TestSessionDeleteRequest)(nil),        // 7: contract.service.v1.TestSessionDeleteRequest
+	(*v1.TestAttemptFetchRequest)(nil),         // 8: contract.service.v1.TestAttemptFetchRequest
+	(*v1.TestAttemptDeleteRequest)(nil),        // 9: contract.service.v1.TestAttemptDeleteRequest
+	(*v1.TestTakeInfoRequest)(nil),             // 10: contract.service.v1.TestTakeInfoRequest
+	(*v1.TestTakeStartRequest)(nil),            // 11: contract.service.v1.TestTakeStartRequest
+	(*v1.TestTakeStateRequest)(nil),            // 12: contract.service.v1.TestTakeStateRequest
+	(*v1.TestTakeAnswerRequest)(nil),           // 13: contract.service.v1.TestTakeAnswerRequest
+	(*v1.TestTakeFinishRequest)(nil),           // 14: contract.service.v1.TestTakeFinishRequest
+	(*service.UserDirectoryFetchResponse)(nil), // 15: contract.service.UserDirectoryFetchResponse
+	(*v1.TestSessionCreateResponse)(nil),       // 16: contract.service.v1.TestSessionCreateResponse
+	(*v1.TestSessionFetchResponse)(nil),        // 17: contract.service.v1.TestSessionFetchResponse
+	(*v1.TestSessionOpenUpdateResponse)(nil),   // 18: contract.service.v1.TestSessionOpenUpdateResponse
+	(*v1.TestSessionDeleteResponse)(nil),       // 19: contract.service.v1.TestSessionDeleteResponse
+	(*v1.TestAttemptFetchResponse)(nil),        // 20: contract.service.v1.TestAttemptFetchResponse
+	(*v1.TestAttemptDeleteResponse)(nil),       // 21: contract.service.v1.TestAttemptDeleteResponse
+	(*v1.TestTakeInfoResponse)(nil),            // 22: contract.service.v1.TestTakeInfoResponse
+	(*v1.TestTakeStateResponse)(nil),           // 23: contract.service.v1.TestTakeStateResponse
+	(*v1.TestTakeAnswerResponse)(nil),          // 24: contract.service.v1.TestTakeAnswerResponse
 }
 var file_fesmu_exam_service_v1_exam_test_session_service_proto_depIdxs = []int32{
 	2,  // 0: contract.fesmu.exam.service.v1.ExamPublicFetchResponse.list:type_name -> contract.fesmu.exam.service.v1.ExamPublicTest
-	0,  // 1: contract.fesmu.exam.service.v1.ExamTestSessionService.ExamPublicFetch:input_type -> contract.fesmu.exam.service.v1.ExamPublicFetchRequest
-	3,  // 2: contract.fesmu.exam.service.v1.ExamTestSessionService.TestSessionCreate:input_type -> contract.service.v1.TestSessionCreateRequest
-	4,  // 3: contract.fesmu.exam.service.v1.ExamTestSessionService.TestSessionFetch:input_type -> contract.service.v1.TestSessionFetchRequest
-	5,  // 4: contract.fesmu.exam.service.v1.ExamTestSessionService.TestSessionOpenUpdate:input_type -> contract.service.v1.TestSessionOpenUpdateRequest
-	6,  // 5: contract.fesmu.exam.service.v1.ExamTestSessionService.TestSessionDelete:input_type -> contract.service.v1.TestSessionDeleteRequest
-	7,  // 6: contract.fesmu.exam.service.v1.ExamTestSessionService.TestAttemptFetch:input_type -> contract.service.v1.TestAttemptFetchRequest
-	8,  // 7: contract.fesmu.exam.service.v1.ExamTestSessionService.TestAttemptDelete:input_type -> contract.service.v1.TestAttemptDeleteRequest
-	9,  // 8: contract.fesmu.exam.service.v1.ExamTestSessionService.TestTakeInfo:input_type -> contract.service.v1.TestTakeInfoRequest
-	10, // 9: contract.fesmu.exam.service.v1.ExamTestSessionService.TestTakeStart:input_type -> contract.service.v1.TestTakeStartRequest
-	11, // 10: contract.fesmu.exam.service.v1.ExamTestSessionService.TestTakeState:input_type -> contract.service.v1.TestTakeStateRequest
-	12, // 11: contract.fesmu.exam.service.v1.ExamTestSessionService.TestTakeAnswer:input_type -> contract.service.v1.TestTakeAnswerRequest
-	13, // 12: contract.fesmu.exam.service.v1.ExamTestSessionService.TestTakeFinish:input_type -> contract.service.v1.TestTakeFinishRequest
-	1,  // 13: contract.fesmu.exam.service.v1.ExamTestSessionService.ExamPublicFetch:output_type -> contract.fesmu.exam.service.v1.ExamPublicFetchResponse
-	14, // 14: contract.fesmu.exam.service.v1.ExamTestSessionService.TestSessionCreate:output_type -> contract.service.v1.TestSessionCreateResponse
-	15, // 15: contract.fesmu.exam.service.v1.ExamTestSessionService.TestSessionFetch:output_type -> contract.service.v1.TestSessionFetchResponse
-	16, // 16: contract.fesmu.exam.service.v1.ExamTestSessionService.TestSessionOpenUpdate:output_type -> contract.service.v1.TestSessionOpenUpdateResponse
-	17, // 17: contract.fesmu.exam.service.v1.ExamTestSessionService.TestSessionDelete:output_type -> contract.service.v1.TestSessionDeleteResponse
-	18, // 18: contract.fesmu.exam.service.v1.ExamTestSessionService.TestAttemptFetch:output_type -> contract.service.v1.TestAttemptFetchResponse
-	19, // 19: contract.fesmu.exam.service.v1.ExamTestSessionService.TestAttemptDelete:output_type -> contract.service.v1.TestAttemptDeleteResponse
-	20, // 20: contract.fesmu.exam.service.v1.ExamTestSessionService.TestTakeInfo:output_type -> contract.service.v1.TestTakeInfoResponse
-	21, // 21: contract.fesmu.exam.service.v1.ExamTestSessionService.TestTakeStart:output_type -> contract.service.v1.TestTakeStateResponse
-	21, // 22: contract.fesmu.exam.service.v1.ExamTestSessionService.TestTakeState:output_type -> contract.service.v1.TestTakeStateResponse
-	22, // 23: contract.fesmu.exam.service.v1.ExamTestSessionService.TestTakeAnswer:output_type -> contract.service.v1.TestTakeAnswerResponse
-	21, // 24: contract.fesmu.exam.service.v1.ExamTestSessionService.TestTakeFinish:output_type -> contract.service.v1.TestTakeStateResponse
-	13, // [13:25] is the sub-list for method output_type
-	1,  // [1:13] is the sub-list for method input_type
+	3,  // 1: contract.fesmu.exam.service.v1.ExamTestSessionService.ExamAudienceFetch:input_type -> contract.service.UserDirectoryFetchRequest
+	0,  // 2: contract.fesmu.exam.service.v1.ExamTestSessionService.ExamPublicFetch:input_type -> contract.fesmu.exam.service.v1.ExamPublicFetchRequest
+	4,  // 3: contract.fesmu.exam.service.v1.ExamTestSessionService.TestSessionCreate:input_type -> contract.service.v1.TestSessionCreateRequest
+	5,  // 4: contract.fesmu.exam.service.v1.ExamTestSessionService.TestSessionFetch:input_type -> contract.service.v1.TestSessionFetchRequest
+	6,  // 5: contract.fesmu.exam.service.v1.ExamTestSessionService.TestSessionOpenUpdate:input_type -> contract.service.v1.TestSessionOpenUpdateRequest
+	7,  // 6: contract.fesmu.exam.service.v1.ExamTestSessionService.TestSessionDelete:input_type -> contract.service.v1.TestSessionDeleteRequest
+	8,  // 7: contract.fesmu.exam.service.v1.ExamTestSessionService.TestAttemptFetch:input_type -> contract.service.v1.TestAttemptFetchRequest
+	9,  // 8: contract.fesmu.exam.service.v1.ExamTestSessionService.TestAttemptDelete:input_type -> contract.service.v1.TestAttemptDeleteRequest
+	10, // 9: contract.fesmu.exam.service.v1.ExamTestSessionService.TestTakeInfo:input_type -> contract.service.v1.TestTakeInfoRequest
+	11, // 10: contract.fesmu.exam.service.v1.ExamTestSessionService.TestTakeStart:input_type -> contract.service.v1.TestTakeStartRequest
+	12, // 11: contract.fesmu.exam.service.v1.ExamTestSessionService.TestTakeState:input_type -> contract.service.v1.TestTakeStateRequest
+	13, // 12: contract.fesmu.exam.service.v1.ExamTestSessionService.TestTakeAnswer:input_type -> contract.service.v1.TestTakeAnswerRequest
+	14, // 13: contract.fesmu.exam.service.v1.ExamTestSessionService.TestTakeFinish:input_type -> contract.service.v1.TestTakeFinishRequest
+	15, // 14: contract.fesmu.exam.service.v1.ExamTestSessionService.ExamAudienceFetch:output_type -> contract.service.UserDirectoryFetchResponse
+	1,  // 15: contract.fesmu.exam.service.v1.ExamTestSessionService.ExamPublicFetch:output_type -> contract.fesmu.exam.service.v1.ExamPublicFetchResponse
+	16, // 16: contract.fesmu.exam.service.v1.ExamTestSessionService.TestSessionCreate:output_type -> contract.service.v1.TestSessionCreateResponse
+	17, // 17: contract.fesmu.exam.service.v1.ExamTestSessionService.TestSessionFetch:output_type -> contract.service.v1.TestSessionFetchResponse
+	18, // 18: contract.fesmu.exam.service.v1.ExamTestSessionService.TestSessionOpenUpdate:output_type -> contract.service.v1.TestSessionOpenUpdateResponse
+	19, // 19: contract.fesmu.exam.service.v1.ExamTestSessionService.TestSessionDelete:output_type -> contract.service.v1.TestSessionDeleteResponse
+	20, // 20: contract.fesmu.exam.service.v1.ExamTestSessionService.TestAttemptFetch:output_type -> contract.service.v1.TestAttemptFetchResponse
+	21, // 21: contract.fesmu.exam.service.v1.ExamTestSessionService.TestAttemptDelete:output_type -> contract.service.v1.TestAttemptDeleteResponse
+	22, // 22: contract.fesmu.exam.service.v1.ExamTestSessionService.TestTakeInfo:output_type -> contract.service.v1.TestTakeInfoResponse
+	23, // 23: contract.fesmu.exam.service.v1.ExamTestSessionService.TestTakeStart:output_type -> contract.service.v1.TestTakeStateResponse
+	23, // 24: contract.fesmu.exam.service.v1.ExamTestSessionService.TestTakeState:output_type -> contract.service.v1.TestTakeStateResponse
+	24, // 25: contract.fesmu.exam.service.v1.ExamTestSessionService.TestTakeAnswer:output_type -> contract.service.v1.TestTakeAnswerResponse
+	23, // 26: contract.fesmu.exam.service.v1.ExamTestSessionService.TestTakeFinish:output_type -> contract.service.v1.TestTakeStateResponse
+	14, // [14:27] is the sub-list for method output_type
+	1,  // [1:14] is the sub-list for method input_type
 	1,  // [1:1] is the sub-list for extension type_name
 	1,  // [1:1] is the sub-list for extension extendee
 	0,  // [0:1] is the sub-list for field type_name

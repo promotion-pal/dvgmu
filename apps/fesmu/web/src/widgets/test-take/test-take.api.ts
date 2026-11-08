@@ -46,8 +46,8 @@ export const testTakeApi = {
         };
     },
 
-    async start(token: string, fullName: string, studentGroup: string): Promise<TestTakeState> {
-        return fromState(await client.testTakeStart({ token, fullName, studentGroup }));
+    async start(token: string, fullName: string, studentGroup: string, recordBook?: string): Promise<TestTakeState> {
+        return fromState(await client.testTakeStart({ token, fullName, studentGroup, recordBook }));
     },
 
     async state(attemptToken: string): Promise<TestTakeState> {

@@ -64,6 +64,7 @@ func New(
 	activationService := service.NewActivationService(log, userStorage, storage.ActivationStorageNew(db))
 	accessService := service.NewAccessGroupService(log, userStorage, storage.AccessGroupStorageNew(db))
 	userHandler := grpc.UserNewController(userService, activationService, accessService)
+	directoryHandler := grpc.UserDirectoryNewController(service.NewUserDirectoryService(storage.UserDirectoryStorageNew(db)))
 	userLinkHandler := grpc.UserLinkNewController(userService, activationService, cfg.InternalToken)
 	if cfg.InternalToken == "" {
 		log.Warn("MDM_INTERNAL_TOKEN is empty — UserLinkService rejects every request")
@@ -75,6 +76,7 @@ func New(
 		userLinkHandler,
 		cfg.AllowedOrigins,
 		cfg.GRPC.Port,
+		directoryHandler,
 	)
 
 	return &App{

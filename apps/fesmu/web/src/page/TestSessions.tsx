@@ -12,7 +12,7 @@ export default function TestSessionsPage({ exam = false }: { exam?: boolean }) {
     useEffect(() => {
         state.fetch();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [exam]);
 
     return (
         <CommonWrapper

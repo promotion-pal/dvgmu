@@ -83,8 +83,11 @@ type TestSession struct {
 	OpensAt           *time.Time `gorm:""`
 	ClosesAt          *time.Time `gorm:""`
 
-	Questions []TestSnapshotQuestion `gorm:"type:jsonb;serializer:json;not null"`
-	Attempts  []TestAttempt          `gorm:"foreignKey:SessionID;constraint:OnDelete:CASCADE"`
+	Questions     []TestSnapshotQuestion `gorm:"type:jsonb;serializer:json;not null"`
+	Audience      ExamAudience           `gorm:"type:jsonb;serializer:json;not null;default:'{}'"`
+	Assignments   []ExamAssignment       `gorm:"foreignKey:SessionID;constraint:OnDelete:CASCADE"`
+	AssignedCount int                    `gorm:"->;-:migration"`
+	Attempts      []TestAttempt          `gorm:"foreignKey:SessionID;constraint:OnDelete:CASCADE"`
 
 	// Counted by the list query, not stored.
 	AttemptCount   int `gorm:"->;-:migration"`
@@ -122,6 +125,7 @@ type TestAttempt struct {
 	Token        string `gorm:"size:64;not null;uniqueIndex"`
 	FullName     string `gorm:"size:255;not null"`
 	StudentGroup string `gorm:"size:64;not null;default:''"`
+	MDMUserUUID  string `gorm:"size:36;not null;default:''"`
 	Seed         int64  `gorm:"not null"`
 
 	Status  enum.TestAttemptStatus `gorm:"type:smallint;not null;default:1"`
@@ -140,6 +144,7 @@ type TestAttemptAnswer struct {
 }
 
 type TestSessionParams struct {
+	Audience        ExamAudience
 	DurationMinutes int
 	QuestionCount   int
 	Shuffle         bool
@@ -156,6 +161,7 @@ type TestSessionParams struct {
 func NewTestSession(test *Test, params TestSessionParams, token string, now time.Time) (*TestSession, error) {
 	s := &TestSession{
 		TestID:          &test.ID,
+		Audience:        params.Audience,
 		Token:           token,
 		Topic:           test.Topic,
 		Department:      test.Department,
@@ -431,6 +437,8 @@ func mixOptions(rng *rand.Rand, options []TestSnapshotAnswer, n int) (out []Test
 }
 
 type TestAttemptParams struct {
+	RecordBook   string
+	MDMUserUUID  string
 	FullName     string
 	StudentGroup string
 }
@@ -448,6 +456,7 @@ func NewTestAttempt(session *TestSession, params TestAttemptParams, token string
 		Token:        token,
 		FullName:     strings.Join(strings.Fields(params.FullName), " "),
 		StudentGroup: strings.Join(strings.Fields(params.StudentGroup), " "),
+		MDMUserUUID:  params.MDMUserUUID,
 		Seed:         seed,
 		Status:       enum.TestAttemptStatus_TEST_ATTEMPT_STATUS_IN_PROGRESS,
 		Answers:      []TestAttemptAnswer{},
@@ -579,6 +588,8 @@ func (q TestSnapshotQuestion) IsCorrect(picked []int64) bool {
 
 func (s *TestSession) ToProto() *entity.TestSession {
 	out := &entity.TestSession{
+		Audience:        s.Audience.ToProto(),
+		AssignedCount:   int32(s.AssignedCount),
 		Id:              s.ID,
 		Token:           s.Token,
 		Topic:           s.Topic,
@@ -644,6 +655,7 @@ func TakeQuestionsProto(questions []TestSnapshotQuestion) []*entity.TestTakeQues
 // what was picked and whether it was right.
 func (a *TestAttempt) ToProto(questions []TestSnapshotQuestion) *entity.TestAttempt {
 	out := &entity.TestAttempt{
+		MdmUserUuid:  a.MDMUserUUID,
 		Id:           a.ID,
 		SessionId:    a.SessionID,
 		FullName:     a.FullName,

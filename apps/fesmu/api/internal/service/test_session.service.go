@@ -31,10 +31,12 @@ type TestSessionStore interface {
 // their attempts. The deadline is kept here, on the server: the page's
 // countdown is only a display.
 type TestSessionService struct {
-	log   *slog.Logger
-	store TestSessionStore
-	tests TestProvider
-	now   func() time.Time
+	log       *slog.Logger
+	store     TestSessionStore
+	tests     TestProvider
+	now       func() time.Time
+	exam      bool
+	directory ExamDirectory
 }
 
 func NewTestSessionService(log *slog.Logger, store TestSessionStore, tests TestProvider) *TestSessionService {
@@ -64,6 +66,16 @@ func (s *TestSessionService) TestSessionCreate(ctx context.Context, testID int64
 	if err != nil {
 		log.Warn(utils.MSGValidateFailed("test session", err))
 		return nil, err
+	}
+	if s.exam {
+		recipients, err := s.examRecipients(ctx, params.Audience)
+		if err != nil {
+			return nil, err
+		}
+		session.Assignments = recipients
+		session.AssignedCount = len(recipients)
+	} else if params.Audience.Kind != "" {
+		return nil, models.ErrExamAudience
 	}
 	if _, err := s.store.TestSessionCreate(ctx, session); err != nil {
 		log.Error(utils.MSGCreateError("test session", err))
@@ -179,6 +191,11 @@ func (s *TestSessionService) TestTakeStart(ctx context.Context, token string, pa
 	session, err := s.sessionByToken(ctx, token)
 	if err != nil {
 		return nil, err
+	}
+	if s.exam {
+		if err := s.examCheck(ctx, session, &params); err != nil {
+			return nil, err
+		}
 	}
 	attempt, err := models.NewTestAttempt(session, params, rand.Text(), mrand.Int64(), s.now())
 	if err != nil {

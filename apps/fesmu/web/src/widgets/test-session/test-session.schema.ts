@@ -9,6 +9,8 @@ export { TestAttemptStatus };
 /** A test handed out to students by a link, with a time limit per attempt. */
 export interface TestSession {
     id: string;
+    assignedCount?: number;
+    audience?: {kind:string;facultyCode:number;course:number;studentGroup:string;studentUuids:string[]};
     /** Undefined once the test itself was deleted; the session keeps its copy. */
     testId?: string;
     token: string;
@@ -40,6 +42,7 @@ export interface TestSessionQuestion {
 
 export interface TestAttempt {
     id: string;
+    mdmUserUuid?:string;
     fullName: string;
     studentGroup: string;
     status: TestAttemptStatus;
@@ -87,6 +90,11 @@ const wholeNumber = z.string().trim().regex(/^\d*$/, "Только цифры");
 
 /** The "hand out a test" form; the server checks the same rules. */
 export const testSessionSchema = z.object({
+    audience: z.object({
+        kind: z.enum(["", "course", "group", "students"]),
+        facultyCode: z.string(), course: z.string(), studentGroup: z.string(),
+        studentUuids: z.array(z.string()),
+    }),
     durationMinutes: wholeNumber
         .min(1, "Укажите время на прохождение")
         .refine((value) => Number(value) >= 1 && Number(value) <= 600, "От 1 до 600 минут"),
@@ -109,7 +117,8 @@ export const testSessionSchema = z.object({
 export type TestSessionForm = z.infer<typeof testSessionSchema>;
 
 export const emptyTestSessionForm = (): TestSessionForm => ({
-    durationMinutes: "30",
+    audience: {kind:"",facultyCode:"",course:"",studentGroup:"",studentUuids:[]},
+ durationMinutes: "30",
     questionCount: "",
     optionCount: "",
     shuffle: true,

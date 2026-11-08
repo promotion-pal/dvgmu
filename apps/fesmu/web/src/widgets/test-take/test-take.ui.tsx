@@ -68,8 +68,13 @@ const TestTakeIntro: FC<{ take: TestTake }> = ({ take }) => {
                 {info.isOpen ? (
                     <FormProvider {...form}>
                         <form onSubmit={start} className="flex flex-col gap-4">
+                            {take.exam ? <>
+                                {take.recordBook ? <p className="text-sm">Номер зачётки: <strong>{take.recordBook}</strong></p> : <PromFieldInput<TestTakeStartForm> name="recordBook" label="Номер зачётной книжки" placeholder="7 цифр" maxLength={7} className={FIELD_CLASS} />}
+                                <p className="text-sm text-muted-foreground">Назначение будет проверено перед началом. ФИО и группа подставляются из MDM.</p>
+                            </> : <>
                             <PromFieldInput<TestTakeStartForm> name="fullName" label="ФИО" placeholder="Иванов Иван Иванович" maxLength={255} className={FIELD_CLASS} />
                             <PromFieldInput<TestTakeStartForm> name="studentGroup" label="Группа" placeholder="Например: Л-101" maxLength={64} className={FIELD_CLASS} />
+                            </>}
                             <ul className="list-disc space-y-1 pl-5 text-sm text-muted-foreground">
                                 <li>Время пойдёт сразу после нажатия «Начать тест».</li>
                                 <li>Каждый ответ сохраняется сразу — если страница закроется, откройте ссылку снова в этом же браузере.</li>

@@ -1,9 +1,9 @@
 package models
 
 import (
+	"errors"
 	"fesmu/contract/mdm/entity"
 	"fesmu/contract/mdm/enum"
-	"errors"
 	"fmt"
 	"strings"
 	"time"
@@ -110,6 +110,11 @@ func (s *Student) ParseFaculty() (string, error) {
 		return "", err
 	}
 
+	return FacultyName(facultyCode)
+}
+
+// FacultyName is the shared label for record-book-derived faculty codes.
+func FacultyName(facultyCode int) (string, error) {
 	switch facultyCode {
 	case 10:
 		return "Лечебный ф.", nil

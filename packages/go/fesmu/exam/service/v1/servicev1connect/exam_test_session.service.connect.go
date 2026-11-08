@@ -10,6 +10,7 @@ import (
 	errors "errors"
 	v1 "fesmu/contract/fesmu/exam/service/v1"
 	v11 "fesmu/contract/fesmu/service/v1"
+	service "fesmu/contract/mdm/service"
 	http "net/http"
 	strings "strings"
 )
@@ -34,6 +35,9 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
+	// ExamTestSessionServiceExamAudienceFetchProcedure is the fully-qualified name of the
+	// ExamTestSessionService's ExamAudienceFetch RPC.
+	ExamTestSessionServiceExamAudienceFetchProcedure = "/contract.fesmu.exam.service.v1.ExamTestSessionService/ExamAudienceFetch"
 	// ExamTestSessionServiceExamPublicFetchProcedure is the fully-qualified name of the
 	// ExamTestSessionService's ExamPublicFetch RPC.
 	ExamTestSessionServiceExamPublicFetchProcedure = "/contract.fesmu.exam.service.v1.ExamTestSessionService/ExamPublicFetch"
@@ -75,6 +79,8 @@ const (
 // ExamTestSessionServiceClient is a client for the
 // contract.fesmu.exam.service.v1.ExamTestSessionService service.
 type ExamTestSessionServiceClient interface {
+	// Staff-only, student directory for selecting exam recipients.
+	ExamAudienceFetch(context.Context, *connect.Request[service.UserDirectoryFetchRequest]) (*connect.Response[service.UserDirectoryFetchResponse], error)
 	// Public computer-class catalogue: only currently available exams, no questions or results.
 	ExamPublicFetch(context.Context, *connect.Request[v1.ExamPublicFetchRequest]) (*connect.Response[v1.ExamPublicFetchResponse], error)
 	TestSessionCreate(context.Context, *connect.Request[v11.TestSessionCreateRequest]) (*connect.Response[v11.TestSessionCreateResponse], error)
@@ -102,6 +108,12 @@ func NewExamTestSessionServiceClient(httpClient connect.HTTPClient, baseURL stri
 	baseURL = strings.TrimRight(baseURL, "/")
 	examTestSessionServiceMethods := v1.File_fesmu_exam_service_v1_exam_test_session_service_proto.Services().ByName("ExamTestSessionService").Methods()
 	return &examTestSessionServiceClient{
+		examAudienceFetch: connect.NewClient[service.UserDirectoryFetchRequest, service.UserDirectoryFetchResponse](
+			httpClient,
+			baseURL+ExamTestSessionServiceExamAudienceFetchProcedure,
+			connect.WithSchema(examTestSessionServiceMethods.ByName("ExamAudienceFetch")),
+			connect.WithClientOptions(opts...),
+		),
 		examPublicFetch: connect.NewClient[v1.ExamPublicFetchRequest, v1.ExamPublicFetchResponse](
 			httpClient,
 			baseURL+ExamTestSessionServiceExamPublicFetchProcedure,
@@ -179,6 +191,7 @@ func NewExamTestSessionServiceClient(httpClient connect.HTTPClient, baseURL stri
 
 // examTestSessionServiceClient implements ExamTestSessionServiceClient.
 type examTestSessionServiceClient struct {
+	examAudienceFetch     *connect.Client[service.UserDirectoryFetchRequest, service.UserDirectoryFetchResponse]
 	examPublicFetch       *connect.Client[v1.ExamPublicFetchRequest, v1.ExamPublicFetchResponse]
 	testSessionCreate     *connect.Client[v11.TestSessionCreateRequest, v11.TestSessionCreateResponse]
 	testSessionFetch      *connect.Client[v11.TestSessionFetchRequest, v11.TestSessionFetchResponse]
@@ -191,6 +204,11 @@ type examTestSessionServiceClient struct {
 	testTakeState         *connect.Client[v11.TestTakeStateRequest, v11.TestTakeStateResponse]
 	testTakeAnswer        *connect.Client[v11.TestTakeAnswerRequest, v11.TestTakeAnswerResponse]
 	testTakeFinish        *connect.Client[v11.TestTakeFinishRequest, v11.TestTakeStateResponse]
+}
+
+// ExamAudienceFetch calls contract.fesmu.exam.service.v1.ExamTestSessionService.ExamAudienceFetch.
+func (c *examTestSessionServiceClient) ExamAudienceFetch(ctx context.Context, req *connect.Request[service.UserDirectoryFetchRequest]) (*connect.Response[service.UserDirectoryFetchResponse], error) {
+	return c.examAudienceFetch.CallUnary(ctx, req)
 }
 
 // ExamPublicFetch calls contract.fesmu.exam.service.v1.ExamTestSessionService.ExamPublicFetch.
@@ -257,6 +275,8 @@ func (c *examTestSessionServiceClient) TestTakeFinish(ctx context.Context, req *
 // ExamTestSessionServiceHandler is an implementation of the
 // contract.fesmu.exam.service.v1.ExamTestSessionService service.
 type ExamTestSessionServiceHandler interface {
+	// Staff-only, student directory for selecting exam recipients.
+	ExamAudienceFetch(context.Context, *connect.Request[service.UserDirectoryFetchRequest]) (*connect.Response[service.UserDirectoryFetchResponse], error)
 	// Public computer-class catalogue: only currently available exams, no questions or results.
 	ExamPublicFetch(context.Context, *connect.Request[v1.ExamPublicFetchRequest]) (*connect.Response[v1.ExamPublicFetchResponse], error)
 	TestSessionCreate(context.Context, *connect.Request[v11.TestSessionCreateRequest]) (*connect.Response[v11.TestSessionCreateResponse], error)
@@ -279,6 +299,12 @@ type ExamTestSessionServiceHandler interface {
 // and JSON codecs. They also support gzip compression.
 func NewExamTestSessionServiceHandler(svc ExamTestSessionServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
 	examTestSessionServiceMethods := v1.File_fesmu_exam_service_v1_exam_test_session_service_proto.Services().ByName("ExamTestSessionService").Methods()
+	examTestSessionServiceExamAudienceFetchHandler := connect.NewUnaryHandler(
+		ExamTestSessionServiceExamAudienceFetchProcedure,
+		svc.ExamAudienceFetch,
+		connect.WithSchema(examTestSessionServiceMethods.ByName("ExamAudienceFetch")),
+		connect.WithHandlerOptions(opts...),
+	)
 	examTestSessionServiceExamPublicFetchHandler := connect.NewUnaryHandler(
 		ExamTestSessionServiceExamPublicFetchProcedure,
 		svc.ExamPublicFetch,
@@ -353,6 +379,8 @@ func NewExamTestSessionServiceHandler(svc ExamTestSessionServiceHandler, opts ..
 	)
 	return "/contract.fesmu.exam.service.v1.ExamTestSessionService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
+		case ExamTestSessionServiceExamAudienceFetchProcedure:
+			examTestSessionServiceExamAudienceFetchHandler.ServeHTTP(w, r)
 		case ExamTestSessionServiceExamPublicFetchProcedure:
 			examTestSessionServiceExamPublicFetchHandler.ServeHTTP(w, r)
 		case ExamTestSessionServiceTestSessionCreateProcedure:
@@ -385,6 +413,10 @@ func NewExamTestSessionServiceHandler(svc ExamTestSessionServiceHandler, opts ..
 
 // UnimplementedExamTestSessionServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedExamTestSessionServiceHandler struct{}
+
+func (UnimplementedExamTestSessionServiceHandler) ExamAudienceFetch(context.Context, *connect.Request[service.UserDirectoryFetchRequest]) (*connect.Response[service.UserDirectoryFetchResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.fesmu.exam.service.v1.ExamTestSessionService.ExamAudienceFetch is not implemented"))
+}
 
 func (UnimplementedExamTestSessionServiceHandler) ExamPublicFetch(context.Context, *connect.Request[v1.ExamPublicFetchRequest]) (*connect.Response[v1.ExamPublicFetchResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.fesmu.exam.service.v1.ExamTestSessionService.ExamPublicFetch is not implemented"))

@@ -103,7 +103,7 @@ func New(
 	} else {
 		examTestStorage := storage.TestStorageNew(examTestDB)
 		examTestService = service.NewTestService(log, examTestStorage, examTestStorage, examTestStorage, testImageFiles)
-		examTestSessionService = service.NewTestSessionService(log, storage.TestSessionStorageNew(examTestDB), examTestStorage)
+		examTestSessionService = service.NewTestSessionService(log, storage.TestSessionStorageNew(examTestDB), examTestStorage).WithExamDirectory(mdm.NewDirectory(cfg.Packages.MDM))
 	}
 	testHandler := grpc.TestNewController(testService)
 	testSessionHandler := grpc.TestSessionNewController(testSessionService)

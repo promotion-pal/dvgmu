@@ -14,6 +14,8 @@ const toDate = (timestamp?: Timestamp) => (timestamp ? timestampDate(timestamp) 
 
 const fromSession = (message: SessionMessage): TestSession => ({
     id: message.id.toString(),
+ assignedCount:message.assignedCount,
+ audience:message.audience,
     testId: message.testId ? message.testId.toString() : undefined,
     token: message.token,
     topic: message.topic,
@@ -34,6 +36,7 @@ const fromSession = (message: SessionMessage): TestSession => ({
 });
 
 const fromAttempt = (message: AttemptMessage): TestAttempt => ({
+ mdmUserUuid:message.mdmUserUuid||undefined,
     id: message.id.toString(),
     fullName: message.fullName,
     studentGroup: message.studentGroup,
@@ -55,6 +58,7 @@ export const examTestSessionApi: TestSessionApi = {
     async create(testId: string, values: TestSessionForm): Promise<TestSession> {
         const response = await client.testSessionCreate({
             testId: BigInt(testId),
+ audience:{kind:values.audience.kind,facultyCode:Number(values.audience.facultyCode),course:Number(values.audience.course),studentGroup:values.audience.studentGroup,studentUuids:values.audience.studentUuids},
             durationMinutes: Number(values.durationMinutes),
             questionCount: Number(values.questionCount || 0),
             optionCount: Number(values.optionCount || 0),

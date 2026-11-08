@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file fesmu/entity/v1/test.entity.proto.
  */
 export const file_fesmu_entity_v1_test_entity: GenFile = /*@__PURE__*/
-  fileDesc("CiFmZXNtdS9lbnRpdHkvdjEvdGVzdC5lbnRpdHkucHJvdG8SEmNvbnRyYWN0LmVudGl0eS52MSLwAgoEVGVzdBIKCgJpZBgBIAEoAxINCgV0b3BpYxgCIAEoCRITCgtkZXNjcmlwdGlvbhgDIAEoCRISCgpkZXBhcnRtZW50GAcgASgJEhIKCmRpc2NpcGxpbmUYCSABKAkSOQoNZXhwb3J0X3N0YXR1cxgIIAEoDjIiLmNvbnRyYWN0LmVudW0udjEuVGVzdEV4cG9ydFN0YXR1cxIuCgd2ZXJzaW9uGAogASgOMh0uY29udHJhY3QuZW51bS52MS5UZXN0VmVyc2lvbhIQCghzZW1lc3RlchgLIAEoBRIzCglxdWVzdGlvbnMYBCADKAsyIC5jb250cmFjdC5lbnRpdHkudjEuVGVzdFF1ZXN0aW9uEi4KCmNyZWF0ZWRfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnVwZGF0ZWRfYXQYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIpMBCgxUZXN0UXVlc3Rpb24SCgoCaWQYASABKAMSDAoEdGV4dBgCIAEoCRIvCgdhbnN3ZXJzGAMgAygLMh4uY29udHJhY3QuZW50aXR5LnYxLlRlc3RBbnN3ZXISDQoFaW1hZ2UYBCABKAkSEwoLaW1hZ2Vfd2lkdGgYBSABKAUSFAoMaW1hZ2VfaGVpZ2h0GAYgASgFIjoKClRlc3RBbnN3ZXISCgoCaWQYASABKAMSDAoEdGV4dBgCIAEoCRISCgppc19jb3JyZWN0GAMgASgIIusDCgtUZXN0U2Vzc2lvbhIKCgJpZBgBIAEoAxIPCgd0ZXN0X2lkGAIgASgDEg0KBXRva2VuGAMgASgJEg0KBXRvcGljGAQgASgJEhIKCmRlcGFydG1lbnQYBSABKAkSEwoLZGVzY3JpcHRpb24YBiABKAkSDAoEbm90ZRgHIAEoCRIYChBkdXJhdGlvbl9taW51dGVzGAggASgFEhYKDnF1ZXN0aW9uX2NvdW50GAkgASgFEhcKD3RvdGFsX3F1ZXN0aW9ucxgKIAEoBRIPCgdzaHVmZmxlGAsgASgIEhMKC3Nob3dfcmVzdWx0GAwgASgIEg8KB2lzX29wZW4YDSABKAgSLQoJY2xvc2VzX2F0GA4gASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIVCg1hdHRlbXB0X2NvdW50GA8gASgFEi4KCmNyZWF0ZWRfYXQYECABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEiwKCG9wZW5zX2F0GBEgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIUCgxvcHRpb25fY291bnQYEiABKAUSLgoHdmVyc2lvbhgTIAEoDjIdLmNvbnRyYWN0LmVudW0udjEuVGVzdFZlcnNpb24i8QIKC1Rlc3RBdHRlbXB0EgoKAmlkGAEgASgDEhIKCnNlc3Npb25faWQYAiABKAMSEQoJZnVsbF9uYW1lGAMgASgJEhUKDXN0dWRlbnRfZ3JvdXAYBCABKAkSMwoGc3RhdHVzGAUgASgOMiMuY29udHJhY3QuZW51bS52MS5UZXN0QXR0ZW1wdFN0YXR1cxINCgVzY29yZRgGIAEoBRINCgV0b3RhbBgHIAEoBRIuCgpzdGFydGVkX2F0GAggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIsCghkZWFkbGluZRgJIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLwoLZmluaXNoZWRfYXQYCiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEjYKB2Fuc3dlcnMYCyADKAsyJS5jb250cmFjdC5lbnRpdHkudjEuVGVzdEF0dGVtcHRBbnN3ZXIiUAoRVGVzdEF0dGVtcHRBbnN3ZXISEwoLcXVlc3Rpb25faWQYASABKAMSEgoKYW5zd2VyX2lkcxgCIAMoAxISCgppc19jb3JyZWN0GAMgASgIIq0BChBUZXN0VGFrZVF1ZXN0aW9uEgoKAmlkGAEgASgDEgwKBHRleHQYAiABKAkSMwoHYW5zd2VycxgDIAMoCzIiLmNvbnRyYWN0LmVudGl0eS52MS5UZXN0VGFrZUFuc3dlchIQCghtdWx0aXBsZRgEIAEoCBINCgVpbWFnZRgFIAEoCRITCgtpbWFnZV93aWR0aBgGIAEoBRIUCgxpbWFnZV9oZWlnaHQYByABKAUiKgoOVGVzdFRha2VBbnN3ZXISCgoCaWQYASABKAMSDAoEdGV4dBgCIAEoCUK8AQoWY29tLmNvbnRyYWN0LmVudGl0eS52MUIPVGVzdEVudGl0eVByb3RvUAFaJ2Zlc211L2NvbnRyYWN0L2Zlc211L2VudGl0eS92MTtlbnRpdHl2MaICA0NFWKoCEkNvbnRyYWN0LkVudGl0eS5WMcoCEkNvbnRyYWN0XEVudGl0eVxWMeICHkNvbnRyYWN0XEVudGl0eVxWMVxHUEJNZXRhZGF0YeoCFENvbnRyYWN0OjpFbnRpdHk6OlYxYgZwcm90bzM", [file_google_protobuf_timestamp, file_fesmu_enum_v1_test_enum]);
+  fileDesc("CiFmZXNtdS9lbnRpdHkvdjEvdGVzdC5lbnRpdHkucHJvdG8SEmNvbnRyYWN0LmVudGl0eS52MSLwAgoEVGVzdBIKCgJpZBgBIAEoAxINCgV0b3BpYxgCIAEoCRITCgtkZXNjcmlwdGlvbhgDIAEoCRISCgpkZXBhcnRtZW50GAcgASgJEhIKCmRpc2NpcGxpbmUYCSABKAkSOQoNZXhwb3J0X3N0YXR1cxgIIAEoDjIiLmNvbnRyYWN0LmVudW0udjEuVGVzdEV4cG9ydFN0YXR1cxIuCgd2ZXJzaW9uGAogASgOMh0uY29udHJhY3QuZW51bS52MS5UZXN0VmVyc2lvbhIQCghzZW1lc3RlchgLIAEoBRIzCglxdWVzdGlvbnMYBCADKAsyIC5jb250cmFjdC5lbnRpdHkudjEuVGVzdFF1ZXN0aW9uEi4KCmNyZWF0ZWRfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnVwZGF0ZWRfYXQYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIpMBCgxUZXN0UXVlc3Rpb24SCgoCaWQYASABKAMSDAoEdGV4dBgCIAEoCRIvCgdhbnN3ZXJzGAMgAygLMh4uY29udHJhY3QuZW50aXR5LnYxLlRlc3RBbnN3ZXISDQoFaW1hZ2UYBCABKAkSEwoLaW1hZ2Vfd2lkdGgYBSABKAUSFAoMaW1hZ2VfaGVpZ2h0GAYgASgFIjoKClRlc3RBbnN3ZXISCgoCaWQYASABKAMSDAoEdGV4dBgCIAEoCRISCgppc19jb3JyZWN0GAMgASgIIrcECgtUZXN0U2Vzc2lvbhIKCgJpZBgBIAEoAxIPCgd0ZXN0X2lkGAIgASgDEg0KBXRva2VuGAMgASgJEg0KBXRvcGljGAQgASgJEhIKCmRlcGFydG1lbnQYBSABKAkSEwoLZGVzY3JpcHRpb24YBiABKAkSDAoEbm90ZRgHIAEoCRIYChBkdXJhdGlvbl9taW51dGVzGAggASgFEhYKDnF1ZXN0aW9uX2NvdW50GAkgASgFEhcKD3RvdGFsX3F1ZXN0aW9ucxgKIAEoBRIPCgdzaHVmZmxlGAsgASgIEhMKC3Nob3dfcmVzdWx0GAwgASgIEg8KB2lzX29wZW4YDSABKAgSLQoJY2xvc2VzX2F0GA4gASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIVCg1hdHRlbXB0X2NvdW50GA8gASgFEi4KCmNyZWF0ZWRfYXQYECABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEiwKCG9wZW5zX2F0GBEgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIUCgxvcHRpb25fY291bnQYEiABKAUSLgoHdmVyc2lvbhgTIAEoDjIdLmNvbnRyYWN0LmVudW0udjEuVGVzdFZlcnNpb24SMgoIYXVkaWVuY2UYFCABKAsyIC5jb250cmFjdC5lbnRpdHkudjEuRXhhbUF1ZGllbmNlEhYKDmFzc2lnbmVkX2NvdW50GBUgASgFInAKDEV4YW1BdWRpZW5jZRIMCgRraW5kGAEgASgJEhQKDGZhY3VsdHlfY29kZRgCIAEoBRIOCgZjb3Vyc2UYAyABKAUSFQoNc3R1ZGVudF9ncm91cBgEIAEoCRIVCg1zdHVkZW50X3V1aWRzGAUgAygJIogDCgtUZXN0QXR0ZW1wdBIKCgJpZBgBIAEoAxISCgpzZXNzaW9uX2lkGAIgASgDEhEKCWZ1bGxfbmFtZRgDIAEoCRIVCg1zdHVkZW50X2dyb3VwGAQgASgJEjMKBnN0YXR1cxgFIAEoDjIjLmNvbnRyYWN0LmVudW0udjEuVGVzdEF0dGVtcHRTdGF0dXMSDQoFc2NvcmUYBiABKAUSDQoFdG90YWwYByABKAUSLgoKc3RhcnRlZF9hdBgIIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLAoIZGVhZGxpbmUYCSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi8KC2ZpbmlzaGVkX2F0GAogASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBI2CgdhbnN3ZXJzGAsgAygLMiUuY29udHJhY3QuZW50aXR5LnYxLlRlc3RBdHRlbXB0QW5zd2VyEhUKDW1kbV91c2VyX3V1aWQYDCABKAkiUAoRVGVzdEF0dGVtcHRBbnN3ZXISEwoLcXVlc3Rpb25faWQYASABKAMSEgoKYW5zd2VyX2lkcxgCIAMoAxISCgppc19jb3JyZWN0GAMgASgIIq0BChBUZXN0VGFrZVF1ZXN0aW9uEgoKAmlkGAEgASgDEgwKBHRleHQYAiABKAkSMwoHYW5zd2VycxgDIAMoCzIiLmNvbnRyYWN0LmVudGl0eS52MS5UZXN0VGFrZUFuc3dlchIQCghtdWx0aXBsZRgEIAEoCBINCgVpbWFnZRgFIAEoCRITCgtpbWFnZV93aWR0aBgGIAEoBRIUCgxpbWFnZV9oZWlnaHQYByABKAUiKgoOVGVzdFRha2VBbnN3ZXISCgoCaWQYASABKAMSDAoEdGV4dBgCIAEoCUK8AQoWY29tLmNvbnRyYWN0LmVudGl0eS52MUIPVGVzdEVudGl0eVByb3RvUAFaJ2Zlc211L2NvbnRyYWN0L2Zlc211L2VudGl0eS92MTtlbnRpdHl2MaICA0NFWKoCEkNvbnRyYWN0LkVudGl0eS5WMcoCEkNvbnRyYWN0XEVudGl0eVxWMeICHkNvbnRyYWN0XEVudGl0eVxWMVxHUEJNZXRhZGF0YeoCFENvbnRyYWN0OjpFbnRpdHk6OlYxYgZwcm90bzM", [file_google_protobuf_timestamp, file_fesmu_enum_v1_test_enum]);
 
 /**
  * @generated from message contract.entity.v1.Test
@@ -281,6 +281,16 @@ export type TestSession = Message<"contract.entity.v1.TestSession"> & {
    * @generated from field: contract.enum.v1.TestVersion version = 19;
    */
   version: TestVersion;
+
+  /**
+   * @generated from field: contract.entity.v1.ExamAudience audience = 20;
+   */
+  audience?: ExamAudience | undefined;
+
+  /**
+   * @generated from field: int32 assigned_count = 21;
+   */
+  assignedCount: number;
 };
 
 /**
@@ -289,6 +299,47 @@ export type TestSession = Message<"contract.entity.v1.TestSession"> & {
  */
 export const TestSessionSchema: GenMessage<TestSession> = /*@__PURE__*/
   messageDesc(file_fesmu_entity_v1_test_entity, 3);
+
+/**
+ * Staff-only targeting criteria. Recipients are saved by stable MDM UUID.
+ *
+ * @generated from message contract.entity.v1.ExamAudience
+ */
+export type ExamAudience = Message<"contract.entity.v1.ExamAudience"> & {
+  /**
+   * course, group or students. Empty is allowed only for ordinary tests.
+   *
+   * @generated from field: string kind = 1;
+   */
+  kind: string;
+
+  /**
+   * @generated from field: int32 faculty_code = 2;
+   */
+  facultyCode: number;
+
+  /**
+   * @generated from field: int32 course = 3;
+   */
+  course: number;
+
+  /**
+   * @generated from field: string student_group = 4;
+   */
+  studentGroup: string;
+
+  /**
+   * @generated from field: repeated string student_uuids = 5;
+   */
+  studentUuids: string[];
+};
+
+/**
+ * Describes the message contract.entity.v1.ExamAudience.
+ * Use `create(ExamAudienceSchema)` to create a new message.
+ */
+export const ExamAudienceSchema: GenMessage<ExamAudience> = /*@__PURE__*/
+  messageDesc(file_fesmu_entity_v1_test_entity, 4);
 
 /**
  * One student's run through a session.
@@ -354,6 +405,11 @@ export type TestAttempt = Message<"contract.entity.v1.TestAttempt"> & {
    * @generated from field: repeated contract.entity.v1.TestAttemptAnswer answers = 11;
    */
   answers: TestAttemptAnswer[];
+
+  /**
+   * @generated from field: string mdm_user_uuid = 12;
+   */
+  mdmUserUuid: string;
 };
 
 /**
@@ -361,7 +417,7 @@ export type TestAttempt = Message<"contract.entity.v1.TestAttempt"> & {
  * Use `create(TestAttemptSchema)` to create a new message.
  */
 export const TestAttemptSchema: GenMessage<TestAttempt> = /*@__PURE__*/
-  messageDesc(file_fesmu_entity_v1_test_entity, 4);
+  messageDesc(file_fesmu_entity_v1_test_entity, 5);
 
 /**
  * @generated from message contract.entity.v1.TestAttemptAnswer
@@ -390,7 +446,7 @@ export type TestAttemptAnswer = Message<"contract.entity.v1.TestAttemptAnswer"> 
  * Use `create(TestAttemptAnswerSchema)` to create a new message.
  */
 export const TestAttemptAnswerSchema: GenMessage<TestAttemptAnswer> = /*@__PURE__*/
-  messageDesc(file_fesmu_entity_v1_test_entity, 5);
+  messageDesc(file_fesmu_entity_v1_test_entity, 6);
 
 /**
  * A question as the student sees it: the correct options are not marked.
@@ -443,7 +499,7 @@ export type TestTakeQuestion = Message<"contract.entity.v1.TestTakeQuestion"> & 
  * Use `create(TestTakeQuestionSchema)` to create a new message.
  */
 export const TestTakeQuestionSchema: GenMessage<TestTakeQuestion> = /*@__PURE__*/
-  messageDesc(file_fesmu_entity_v1_test_entity, 6);
+  messageDesc(file_fesmu_entity_v1_test_entity, 7);
 
 /**
  * @generated from message contract.entity.v1.TestTakeAnswer
@@ -465,5 +521,5 @@ export type TestTakeAnswer = Message<"contract.entity.v1.TestTakeAnswer"> & {
  * Use `create(TestTakeAnswerSchema)` to create a new message.
  */
 export const TestTakeAnswerSchema: GenMessage<TestTakeAnswer> = /*@__PURE__*/
-  messageDesc(file_fesmu_entity_v1_test_entity, 7);
+  messageDesc(file_fesmu_entity_v1_test_entity, 8);
 

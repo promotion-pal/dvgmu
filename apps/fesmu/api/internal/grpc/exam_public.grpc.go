@@ -11,9 +11,9 @@ func (h *TestSessionHandler) ExamPublicFetch(ctx context.Context, req *connect.R
 	if err := h.unavailable(); err != nil {
 		return nil, err
 	}
-	list, err := h.service.ExamPublicFetch(ctx)
+	list, err := h.service.ExamPublicFetch(ctx, req.Msg.GetRecordBook())
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, testSessionConnectError(err)
 	}
 	response := &pb.ExamPublicFetchResponse{List: make([]*pb.ExamPublicTest, 0, len(list))}
 	for _, exam := range list {

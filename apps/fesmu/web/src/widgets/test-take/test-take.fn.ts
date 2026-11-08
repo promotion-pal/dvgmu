@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { testTakeApi } from "./test-take.api";
 import type { TestTakeApi } from "./test-take.api";
-import { TestAttemptStatus, testTakeStartSchema } from "./test-take.schema";
+import { TestAttemptStatus, testTakeStartSchema, examTestTakeStartSchema } from "./test-take.schema";
 import type { TestTakeInfo, TestTakeStartForm, TestTakeState } from "./test-take.schema";
 
 export type TestTakePhase = "loading" | "missing" | "intro" | "running" | "done";
@@ -38,7 +38,7 @@ const phaseOf = (state: TestTakeState): TestTakePhase => (state.status === TestA
 
 /** A student taking a test by its session link: the intro form, the timed
  * questions (every pick is saved on the server at once) and the result. */
-const useTestTake = (token: string, api: TestTakeApi = testTakeApi, exam = false, sharedComputer = false) => {
+const useTestTake = (token: string, api: TestTakeApi = testTakeApi, exam = false, sharedComputer = false, recordBook = "") => {
     const [phase, setPhase] = useState<TestTakePhase>("loading");
     const [info, setInfo] = useState<TestTakeInfo>();
     const [state, setState] = useState<TestTakeState>();
@@ -48,13 +48,19 @@ const useTestTake = (token: string, api: TestTakeApi = testTakeApi, exam = false
     // Questions whose latest pick hasn't reached the server yet (shown on the page).
     const [unsaved, setUnsaved] = useState<Set<string>>(new Set());
     const pickedRef = useRef<Record<string, string[]>>({});
+    const storageScope=useRef(token);
+    const scopeFor=async(book:string)=>{
+        if(!exam)return token;
+        const hash=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(book.trim()));
+        return `${token}:student:${Array.from(new Uint8Array(hash),v=>v.toString(16).padStart(2,"0")).join("")}`;
+    };
     const savesRef = useRef(new Map<string, Promise<void>>());
     // Picks the server refused for a network reason; resent on finishing.
     const failedRef = useRef(new Set<string>());
 
     const form = useForm<TestTakeStartForm>({
-        resolver: zodResolver(testTakeStartSchema),
-        defaultValues: { fullName: "", studentGroup: "" },
+        resolver: zodResolver(exam ? examTestTakeStartSchema : testTakeStartSchema),
+        defaultValues: { fullName: "", studentGroup: "", recordBook },
     });
 
     const apply = (next: TestTakeState) => {
@@ -66,7 +72,8 @@ const useTestTake = (token: string, api: TestTakeApi = testTakeApi, exam = false
 
     const load = async () => {
         setPhase("loading");
-        const attemptToken = savedAttempt(token);
+        storageScope.current=await scopeFor(recordBook);
+        const attemptToken = exam && !recordBook ? undefined : savedAttempt(storageScope.current);
         if (attemptToken) {
             try {
                 const previous = await api.state(attemptToken);
@@ -76,13 +83,13 @@ const useTestTake = (token: string, api: TestTakeApi = testTakeApi, exam = false
                 }
                 // A completed student's result stays on the server. The next
                 // person using this classroom computer registers a new attempt.
-                saveAttempt(token, undefined);
+                saveAttempt(storageScope.current, undefined);
             } catch (error) {
                 // A deleted attempt (staff removed the result) starts over.
                 if (codeOf(error) !== Code.NotFound) {
                     toast.error(errorText(error, "Не удалось загрузить тест"));
                 }
-                saveAttempt(token, undefined);
+                saveAttempt(storageScope.current, undefined);
             }
         }
         try {
@@ -96,8 +103,9 @@ const useTestTake = (token: string, api: TestTakeApi = testTakeApi, exam = false
 
     const onStart = async (values: TestTakeStartForm) => {
         try {
-            const next = await api.start(token, values.fullName, values.studentGroup);
-            saveAttempt(token, next.attemptToken);
+            storageScope.current=await scopeFor(values.recordBook);
+            const next = await api.start(token, values.fullName, values.studentGroup, exam ? values.recordBook : undefined);
+            saveAttempt(storageScope.current, next.attemptToken);
             setCurrent(0);
             apply(next);
         } catch (error) {
@@ -240,6 +248,7 @@ const useTestTake = (token: string, api: TestTakeApi = testTakeApi, exam = false
 
     return {
         exam,
+        recordBook,
         load,
         phase,
         info,

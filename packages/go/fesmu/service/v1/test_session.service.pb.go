@@ -36,7 +36,8 @@ type TestSessionCreateRequest struct {
 	// Unset: open right away; otherwise attempts can start from this moment.
 	OpensAt *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=opens_at,json=opensAt,proto3" json:"opens_at,omitempty"`
 	// 0 = every option; otherwise a random mix of that many per question.
-	OptionCount   int32 `protobuf:"varint,9,opt,name=option_count,json=optionCount,proto3" json:"option_count,omitempty"`
+	OptionCount   int32            `protobuf:"varint,9,opt,name=option_count,json=optionCount,proto3" json:"option_count,omitempty"`
+	Audience      *v1.ExamAudience `protobuf:"bytes,10,opt,name=audience,proto3" json:"audience,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -132,6 +133,13 @@ func (x *TestSessionCreateRequest) GetOptionCount() int32 {
 		return x.OptionCount
 	}
 	return 0
+}
+
+func (x *TestSessionCreateRequest) GetAudience() *v1.ExamAudience {
+	if x != nil {
+		return x.Audience
+	}
+	return nil
 }
 
 type TestSessionCreateResponse struct {
@@ -811,6 +819,7 @@ type TestTakeStartRequest struct {
 	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
 	FullName      string                 `protobuf:"bytes,2,opt,name=full_name,json=fullName,proto3" json:"full_name,omitempty"`
 	StudentGroup  string                 `protobuf:"bytes,3,opt,name=student_group,json=studentGroup,proto3" json:"student_group,omitempty"`
+	RecordBook    string                 `protobuf:"bytes,4,opt,name=record_book,json=recordBook,proto3" json:"record_book,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -862,6 +871,13 @@ func (x *TestTakeStartRequest) GetFullName() string {
 func (x *TestTakeStartRequest) GetStudentGroup() string {
 	if x != nil {
 		return x.StudentGroup
+	}
+	return ""
+}
+
+func (x *TestTakeStartRequest) GetRecordBook() string {
+	if x != nil {
+		return x.RecordBook
 	}
 	return ""
 }
@@ -1192,7 +1208,7 @@ var File_fesmu_service_v1_test_session_service_proto protoreflect.FileDescriptor
 
 const file_fesmu_service_v1_test_session_service_proto_rawDesc = "" +
 	"\n" +
-	"+fesmu/service/v1/test_session.service.proto\x12\x13contract.service.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a!fesmu/entity/v1/test.entity.proto\x1a\x1dfesmu/enum/v1/test.enum.proto\"\xe7\x02\n" +
+	"+fesmu/service/v1/test_session.service.proto\x12\x13contract.service.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a!fesmu/entity/v1/test.entity.proto\x1a\x1dfesmu/enum/v1/test.enum.proto\"\xa5\x03\n" +
 	"\x18TestSessionCreateRequest\x12\x17\n" +
 	"\atest_id\x18\x01 \x01(\x03R\x06testId\x12)\n" +
 	"\x10duration_minutes\x18\x02 \x01(\x05R\x0fdurationMinutes\x12%\n" +
@@ -1203,7 +1219,9 @@ const file_fesmu_service_v1_test_session_service_proto_rawDesc = "" +
 	"\x04note\x18\x06 \x01(\tR\x04note\x127\n" +
 	"\tcloses_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\bclosesAt\x125\n" +
 	"\bopens_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\aopensAt\x12!\n" +
-	"\foption_count\x18\t \x01(\x05R\voptionCount\"V\n" +
+	"\foption_count\x18\t \x01(\x05R\voptionCount\x12<\n" +
+	"\baudience\x18\n" +
+	" \x01(\v2 .contract.entity.v1.ExamAudienceR\baudience\"V\n" +
 	"\x19TestSessionCreateResponse\x129\n" +
 	"\asession\x18\x01 \x01(\v2\x1f.contract.entity.v1.TestSessionR\asession\"2\n" +
 	"\x17TestSessionFetchRequest\x12\x17\n" +
@@ -1242,11 +1260,13 @@ const file_fesmu_service_v1_test_session_service_proto_rawDesc = "" +
 	"\x0equestion_count\x18\x04 \x01(\x05R\rquestionCount\x12\x17\n" +
 	"\ais_open\x18\x05 \x01(\bR\x06isOpen\x125\n" +
 	"\bopens_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\aopensAt\x127\n" +
-	"\tcloses_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\bclosesAt\"n\n" +
+	"\tcloses_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\bclosesAt\"\x8f\x01\n" +
 	"\x14TestTakeStartRequest\x12\x14\n" +
 	"\x05token\x18\x01 \x01(\tR\x05token\x12\x1b\n" +
 	"\tfull_name\x18\x02 \x01(\tR\bfullName\x12#\n" +
-	"\rstudent_group\x18\x03 \x01(\tR\fstudentGroup\";\n" +
+	"\rstudent_group\x18\x03 \x01(\tR\fstudentGroup\x12\x1f\n" +
+	"\vrecord_book\x18\x04 \x01(\tR\n" +
+	"recordBook\";\n" +
 	"\x14TestTakeStateRequest\x12#\n" +
 	"\rattempt_token\x18\x01 \x01(\tR\fattemptToken\"|\n" +
 	"\x15TestTakeAnswerRequest\x12#\n" +
@@ -1323,55 +1343,57 @@ var file_fesmu_service_v1_test_session_service_proto_goTypes = []any{
 	(*TestTakeFinishRequest)(nil),         // 18: contract.service.v1.TestTakeFinishRequest
 	(*TestTakeStateResponse)(nil),         // 19: contract.service.v1.TestTakeStateResponse
 	(*timestamppb.Timestamp)(nil),         // 20: google.protobuf.Timestamp
-	(*v1.TestSession)(nil),                // 21: contract.entity.v1.TestSession
-	(*v1.TestQuestion)(nil),               // 22: contract.entity.v1.TestQuestion
-	(*v1.TestAttempt)(nil),                // 23: contract.entity.v1.TestAttempt
-	(v11.TestAttemptStatus)(0),            // 24: contract.enum.v1.TestAttemptStatus
-	(*v1.TestTakeQuestion)(nil),           // 25: contract.entity.v1.TestTakeQuestion
-	(*v1.TestAttemptAnswer)(nil),          // 26: contract.entity.v1.TestAttemptAnswer
+	(*v1.ExamAudience)(nil),               // 21: contract.entity.v1.ExamAudience
+	(*v1.TestSession)(nil),                // 22: contract.entity.v1.TestSession
+	(*v1.TestQuestion)(nil),               // 23: contract.entity.v1.TestQuestion
+	(*v1.TestAttempt)(nil),                // 24: contract.entity.v1.TestAttempt
+	(v11.TestAttemptStatus)(0),            // 25: contract.enum.v1.TestAttemptStatus
+	(*v1.TestTakeQuestion)(nil),           // 26: contract.entity.v1.TestTakeQuestion
+	(*v1.TestAttemptAnswer)(nil),          // 27: contract.entity.v1.TestAttemptAnswer
 }
 var file_fesmu_service_v1_test_session_service_proto_depIdxs = []int32{
 	20, // 0: contract.service.v1.TestSessionCreateRequest.closes_at:type_name -> google.protobuf.Timestamp
 	20, // 1: contract.service.v1.TestSessionCreateRequest.opens_at:type_name -> google.protobuf.Timestamp
-	21, // 2: contract.service.v1.TestSessionCreateResponse.session:type_name -> contract.entity.v1.TestSession
-	21, // 3: contract.service.v1.TestSessionFetchResponse.list:type_name -> contract.entity.v1.TestSession
-	21, // 4: contract.service.v1.TestAttemptFetchResponse.session:type_name -> contract.entity.v1.TestSession
-	22, // 5: contract.service.v1.TestAttemptFetchResponse.questions:type_name -> contract.entity.v1.TestQuestion
-	23, // 6: contract.service.v1.TestAttemptFetchResponse.list:type_name -> contract.entity.v1.TestAttempt
-	20, // 7: contract.service.v1.TestTakeInfoResponse.opens_at:type_name -> google.protobuf.Timestamp
-	20, // 8: contract.service.v1.TestTakeInfoResponse.closes_at:type_name -> google.protobuf.Timestamp
-	24, // 9: contract.service.v1.TestTakeStateResponse.status:type_name -> contract.enum.v1.TestAttemptStatus
-	20, // 10: contract.service.v1.TestTakeStateResponse.deadline:type_name -> google.protobuf.Timestamp
-	20, // 11: contract.service.v1.TestTakeStateResponse.server_time:type_name -> google.protobuf.Timestamp
-	25, // 12: contract.service.v1.TestTakeStateResponse.questions:type_name -> contract.entity.v1.TestTakeQuestion
-	26, // 13: contract.service.v1.TestTakeStateResponse.answers:type_name -> contract.entity.v1.TestAttemptAnswer
-	0,  // 14: contract.service.v1.TestSessionService.TestSessionCreate:input_type -> contract.service.v1.TestSessionCreateRequest
-	2,  // 15: contract.service.v1.TestSessionService.TestSessionFetch:input_type -> contract.service.v1.TestSessionFetchRequest
-	4,  // 16: contract.service.v1.TestSessionService.TestSessionOpenUpdate:input_type -> contract.service.v1.TestSessionOpenUpdateRequest
-	6,  // 17: contract.service.v1.TestSessionService.TestSessionDelete:input_type -> contract.service.v1.TestSessionDeleteRequest
-	8,  // 18: contract.service.v1.TestSessionService.TestAttemptFetch:input_type -> contract.service.v1.TestAttemptFetchRequest
-	10, // 19: contract.service.v1.TestSessionService.TestAttemptDelete:input_type -> contract.service.v1.TestAttemptDeleteRequest
-	12, // 20: contract.service.v1.TestSessionService.TestTakeInfo:input_type -> contract.service.v1.TestTakeInfoRequest
-	14, // 21: contract.service.v1.TestSessionService.TestTakeStart:input_type -> contract.service.v1.TestTakeStartRequest
-	15, // 22: contract.service.v1.TestSessionService.TestTakeState:input_type -> contract.service.v1.TestTakeStateRequest
-	16, // 23: contract.service.v1.TestSessionService.TestTakeAnswer:input_type -> contract.service.v1.TestTakeAnswerRequest
-	18, // 24: contract.service.v1.TestSessionService.TestTakeFinish:input_type -> contract.service.v1.TestTakeFinishRequest
-	1,  // 25: contract.service.v1.TestSessionService.TestSessionCreate:output_type -> contract.service.v1.TestSessionCreateResponse
-	3,  // 26: contract.service.v1.TestSessionService.TestSessionFetch:output_type -> contract.service.v1.TestSessionFetchResponse
-	5,  // 27: contract.service.v1.TestSessionService.TestSessionOpenUpdate:output_type -> contract.service.v1.TestSessionOpenUpdateResponse
-	7,  // 28: contract.service.v1.TestSessionService.TestSessionDelete:output_type -> contract.service.v1.TestSessionDeleteResponse
-	9,  // 29: contract.service.v1.TestSessionService.TestAttemptFetch:output_type -> contract.service.v1.TestAttemptFetchResponse
-	11, // 30: contract.service.v1.TestSessionService.TestAttemptDelete:output_type -> contract.service.v1.TestAttemptDeleteResponse
-	13, // 31: contract.service.v1.TestSessionService.TestTakeInfo:output_type -> contract.service.v1.TestTakeInfoResponse
-	19, // 32: contract.service.v1.TestSessionService.TestTakeStart:output_type -> contract.service.v1.TestTakeStateResponse
-	19, // 33: contract.service.v1.TestSessionService.TestTakeState:output_type -> contract.service.v1.TestTakeStateResponse
-	17, // 34: contract.service.v1.TestSessionService.TestTakeAnswer:output_type -> contract.service.v1.TestTakeAnswerResponse
-	19, // 35: contract.service.v1.TestSessionService.TestTakeFinish:output_type -> contract.service.v1.TestTakeStateResponse
-	25, // [25:36] is the sub-list for method output_type
-	14, // [14:25] is the sub-list for method input_type
-	14, // [14:14] is the sub-list for extension type_name
-	14, // [14:14] is the sub-list for extension extendee
-	0,  // [0:14] is the sub-list for field type_name
+	21, // 2: contract.service.v1.TestSessionCreateRequest.audience:type_name -> contract.entity.v1.ExamAudience
+	22, // 3: contract.service.v1.TestSessionCreateResponse.session:type_name -> contract.entity.v1.TestSession
+	22, // 4: contract.service.v1.TestSessionFetchResponse.list:type_name -> contract.entity.v1.TestSession
+	22, // 5: contract.service.v1.TestAttemptFetchResponse.session:type_name -> contract.entity.v1.TestSession
+	23, // 6: contract.service.v1.TestAttemptFetchResponse.questions:type_name -> contract.entity.v1.TestQuestion
+	24, // 7: contract.service.v1.TestAttemptFetchResponse.list:type_name -> contract.entity.v1.TestAttempt
+	20, // 8: contract.service.v1.TestTakeInfoResponse.opens_at:type_name -> google.protobuf.Timestamp
+	20, // 9: contract.service.v1.TestTakeInfoResponse.closes_at:type_name -> google.protobuf.Timestamp
+	25, // 10: contract.service.v1.TestTakeStateResponse.status:type_name -> contract.enum.v1.TestAttemptStatus
+	20, // 11: contract.service.v1.TestTakeStateResponse.deadline:type_name -> google.protobuf.Timestamp
+	20, // 12: contract.service.v1.TestTakeStateResponse.server_time:type_name -> google.protobuf.Timestamp
+	26, // 13: contract.service.v1.TestTakeStateResponse.questions:type_name -> contract.entity.v1.TestTakeQuestion
+	27, // 14: contract.service.v1.TestTakeStateResponse.answers:type_name -> contract.entity.v1.TestAttemptAnswer
+	0,  // 15: contract.service.v1.TestSessionService.TestSessionCreate:input_type -> contract.service.v1.TestSessionCreateRequest
+	2,  // 16: contract.service.v1.TestSessionService.TestSessionFetch:input_type -> contract.service.v1.TestSessionFetchRequest
+	4,  // 17: contract.service.v1.TestSessionService.TestSessionOpenUpdate:input_type -> contract.service.v1.TestSessionOpenUpdateRequest
+	6,  // 18: contract.service.v1.TestSessionService.TestSessionDelete:input_type -> contract.service.v1.TestSessionDeleteRequest
+	8,  // 19: contract.service.v1.TestSessionService.TestAttemptFetch:input_type -> contract.service.v1.TestAttemptFetchRequest
+	10, // 20: contract.service.v1.TestSessionService.TestAttemptDelete:input_type -> contract.service.v1.TestAttemptDeleteRequest
+	12, // 21: contract.service.v1.TestSessionService.TestTakeInfo:input_type -> contract.service.v1.TestTakeInfoRequest
+	14, // 22: contract.service.v1.TestSessionService.TestTakeStart:input_type -> contract.service.v1.TestTakeStartRequest
+	15, // 23: contract.service.v1.TestSessionService.TestTakeState:input_type -> contract.service.v1.TestTakeStateRequest
+	16, // 24: contract.service.v1.TestSessionService.TestTakeAnswer:input_type -> contract.service.v1.TestTakeAnswerRequest
+	18, // 25: contract.service.v1.TestSessionService.TestTakeFinish:input_type -> contract.service.v1.TestTakeFinishRequest
+	1,  // 26: contract.service.v1.TestSessionService.TestSessionCreate:output_type -> contract.service.v1.TestSessionCreateResponse
+	3,  // 27: contract.service.v1.TestSessionService.TestSessionFetch:output_type -> contract.service.v1.TestSessionFetchResponse
+	5,  // 28: contract.service.v1.TestSessionService.TestSessionOpenUpdate:output_type -> contract.service.v1.TestSessionOpenUpdateResponse
+	7,  // 29: contract.service.v1.TestSessionService.TestSessionDelete:output_type -> contract.service.v1.TestSessionDeleteResponse
+	9,  // 30: contract.service.v1.TestSessionService.TestAttemptFetch:output_type -> contract.service.v1.TestAttemptFetchResponse
+	11, // 31: contract.service.v1.TestSessionService.TestAttemptDelete:output_type -> contract.service.v1.TestAttemptDeleteResponse
+	13, // 32: contract.service.v1.TestSessionService.TestTakeInfo:output_type -> contract.service.v1.TestTakeInfoResponse
+	19, // 33: contract.service.v1.TestSessionService.TestTakeStart:output_type -> contract.service.v1.TestTakeStateResponse
+	19, // 34: contract.service.v1.TestSessionService.TestTakeState:output_type -> contract.service.v1.TestTakeStateResponse
+	17, // 35: contract.service.v1.TestSessionService.TestTakeAnswer:output_type -> contract.service.v1.TestTakeAnswerResponse
+	19, // 36: contract.service.v1.TestSessionService.TestTakeFinish:output_type -> contract.service.v1.TestTakeStateResponse
+	26, // [26:37] is the sub-list for method output_type
+	15, // [15:26] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_fesmu_service_v1_test_session_service_proto_init() }

@@ -13,8 +13,8 @@ import (
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 
-	"fesmu/contract/mdm/service/serviceconnect"
 	"dvgmu/api/internal/grpc"
+	"fesmu/contract/mdm/service/serviceconnect"
 )
 
 type App struct {
@@ -29,8 +29,14 @@ func New(
 	userLinkHandler *grpc.UserLinkHandler,
 	allowedOrigins []string,
 	port int,
+	directoryHandlers ...*grpc.UserDirectoryHandler,
 ) *App {
 	mux := http.NewServeMux()
+	if len(directoryHandlers) > 0 && directoryHandlers[0] != nil {
+		path, handler := serviceconnect.NewUserDirectoryServiceHandler(directoryHandlers[0])
+		mux.Handle(path, handler)
+		mux.HandleFunc("GET /users", directoryHandlers[0].QueryHTTP)
+	}
 
 	corsHandler := cors.New(cors.Options{
 		AllowedOrigins: allowedOrigins,
@@ -62,6 +68,7 @@ func New(
 
 	reflector := grpcreflect.NewStaticReflector(
 		serviceconnect.UserServiceName,
+		serviceconnect.UserDirectoryServiceName,
 		serviceconnect.UserLinkServiceName,
 	)
 	mux.Handle(grpcreflect.NewHandlerV1(reflector))

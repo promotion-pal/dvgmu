@@ -33,12 +33,12 @@ export default function TestBuilderPage({ version, exam = false }: { version: Te
     useEffect(() => {
         state.fetch();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [version]);
+    }, [version,exam]);
 
     return (
         <CommonWrapper
             title={exam ? "Экзаменационное тестирование" : PAGE[version].title}
-            description={exam ? "Одна открытая страница для компьютерного класса. В меню теста выберите «Открыть доступ», чтобы добавить экзамен на общую страницу." : PAGE[version].description}
+            description={exam ? "Одна открытая страница для компьютерного класса. В меню теста выберите «Открыть доступ» и назначьте экзамен курсу, группе или студентам из MDM." : PAGE[version].description}
             action={
                 <Can section={exam ? PermissionSection.EXAM_TESTS : PermissionSection.TESTS}>
                     <div className="flex items-center gap-4">
