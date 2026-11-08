@@ -1,7 +1,6 @@
 import { useFetchState } from "@/features/lib/fetch";
-import type { AccessGroup, User } from "@fesmu/contract/mdm/entity/user.entity_pb";
+import type { UserPermissionGroup, User } from "@fesmu/contract/mdm/entity/user.entity_pb";
 import { UserRole } from "@fesmu/contract/mdm/enum/user.enum_pb";
-import type { UserEmployeeDepartment } from "@fesmu/contract/mdm/enum/user.enum_pb";
 import { UserService } from "@fesmu/contract/mdm/service/user.service_pb";
 import { connectTransport } from "@/shared/config/api";
 import { ConnectError, createClient } from "@connectrpc/connect";
@@ -33,15 +32,7 @@ const withGroup = (ids: bigint[], id: bigint, on: boolean) =>
 /** Массовое действие над отмеченными: добавить/убрать роль или доступ (набор). */
 type BulkAction =
     | { kind: "role"; on: boolean; role: UserRole }
-    | { kind: "group"; on: boolean; id: bigint }
-    | { kind: "department"; on: boolean; department: UserEmployeeDepartment };
-
-/** Сотрудник — у кого роль «Сотрудник» или уже есть подразделение (чтобы его
- *  можно было снять). Подразделения — только у сотрудников. */
-const isEmployee = (user: User) => user.roles.includes(UserRole.STAFF) || user.departments.length > 0;
-
-const withDepartment = (deps: UserEmployeeDepartment[], d: UserEmployeeDepartment, on: boolean) =>
-    on ? [...new Set([...deps, d])].sort((a, b) => a - b) : deps.filter((x) => x !== d);
+    | { kind: "group"; on: boolean; id: bigint };
 
 // Одновременных запросов в MDM при массовом действии.
 const BULK_CONCURRENCY = 5;
@@ -56,16 +47,28 @@ const useRoleAdmin = () => {
     const [saving, setSaving] = useState<Set<bigint>>(new Set());
 
     // Наборы доступа — для колонки «Доступы» и массовой выдачи.
-    const [groups, setGroups] = useState<AccessGroup[]>([]);
+    const [groups, setGroups] = useState<UserPermissionGroup[]>([]);
+    const [groupAssignments, setGroupAssignments] = useState<Map<bigint, bigint[]>>(new Map());
+    const groupIdsForUser = (userID: bigint) => groupAssignments.get(userID) ?? [];
 
     const fetchUsers = async () => {
         userState.setLoading(true);
         userState.setError(false);
 
         try {
-            const [response, groupResponse] = await Promise.all([userClient.userFetch({}), userClient.accessGroupFetch({})]);
+            const [response, groupResponse, assignmentResponse] = await Promise.all([
+                userClient.userFetch({}),
+                userClient.userPermissionGroupFetch({}),
+                userClient.userPermissionGroupAssignmentsFetch({}),
+            ]);
             userState.setList(response.users);
             setGroups(groupResponse.groups);
+            const assignments = new Map<bigint, bigint[]>();
+            for (const assignment of assignmentResponse.assignments) {
+                const userID = assignment.userId;
+                assignments.set(userID, [...(assignments.get(userID) ?? []), assignment.groupId]);
+            }
+            setGroupAssignments(assignments);
         } catch (error) {
             console.error("Ошибка при получении пользователей MDM:", error);
             userState.setError(true);
@@ -100,61 +103,18 @@ const useRoleAdmin = () => {
     };
 
     const toggleGroup = async (user: User, id: bigint, on: boolean) => {
-        const accessGroupIds = withGroup(user.accessGroupIds, id, on);
-        replaceUser({ ...user, accessGroupIds });
+        const previous = groupIdsForUser(user.id);
+        const permissionGroupIds = withGroup(previous, id, on);
+        setGroupAssignments((current) => new Map(current).set(user.id, permissionGroupIds));
         setSaving((prev) => new Set(prev).add(user.id));
 
         try {
-            const response = await userClient.userAccessGroupsSet({ id: user.id, groupIds: accessGroupIds });
+            const response = await userClient.userPermissionGroupsSet({ id: user.id, groupIds: permissionGroupIds });
             if (response.user) replaceUser(response.user);
         } catch (error) {
             console.error("Ошибка при выдаче набора доступа:", error);
-            replaceUser(user);
+            setGroupAssignments((current) => new Map(current).set(user.id, previous));
             toast.error(`Не удалось сохранить доступы: ${formatUserFullName(user)}`);
-        } finally {
-            setSaving((prev) => {
-                const next = new Set(prev);
-                next.delete(user.id);
-                return next;
-            });
-        }
-    };
-
-    // Подразделения человека: доступы подразделений приходят с ответом MDM.
-    const setDepartments = async (user: User, departments: UserEmployeeDepartment[]) => {
-        replaceUser({ ...user, departments });
-        setSaving((prev) => new Set(prev).add(user.id));
-
-        try {
-            const response = await userClient.userDepartmentsSet({ id: user.id, departments });
-            if (response.user) replaceUser(response.user);
-        } catch (error) {
-            console.error("Ошибка при сохранении подразделений:", error);
-            replaceUser(user);
-            toast.error(`Не удалось сохранить подразделения: ${formatUserFullName(user)}`);
-        } finally {
-            setSaving((prev) => {
-                const next = new Set(prev);
-                next.delete(user.id);
-                return next;
-            });
-        }
-    };
-
-    // Должность человека: одна на всех его подразделениях.
-    const setPosition = async (user: User, position: string) => {
-        position = position.trim();
-        if (position === user.position) return;
-        replaceUser({ ...user, position });
-        setSaving((prev) => new Set(prev).add(user.id));
-
-        try {
-            const response = await userClient.userPositionSet({ id: user.id, position });
-            if (response.user) replaceUser(response.user);
-        } catch (error) {
-            console.error("Ошибка при сохранении должности:", error);
-            replaceUser(user);
-            toast.error(`Не удалось сохранить должность: ${formatUserFullName(user)}`);
         } finally {
             setSaving((prev) => {
                 const next = new Set(prev);
@@ -178,30 +138,23 @@ const useRoleAdmin = () => {
     // Каждому отмеченному — свой запрос с его новым набором; кому менять
     // нечего, тех пропускаем. Ошибка по одному не останавливает остальных.
     const applyBulk = async (action: BulkAction) => {
-        let skipped = 0;
         const targets = userState.list.filter((user) => selected.has(user.id)).flatMap((user): BulkTarget[] => {
             if (action.kind === "role") {
                 const roles = withRole(user.roles, action.role, action.on);
                 return sameSet(roles, user.roles) ? [] : [{ user, save: () => userClient.userRolesSet({ id: user.id, roles }) }];
             }
-            if (action.kind === "department") {
-                if (action.on && !isEmployee(user)) {
-                    skipped++;
-                    return [];
-                }
-                const departments = withDepartment(user.departments, action.department, action.on);
-                return sameSet(departments, user.departments)
-                    ? []
-                    : [{ user, save: () => userClient.userDepartmentsSet({ id: user.id, departments }) }];
-            }
-            const groupIds = withGroup(user.accessGroupIds, action.id, action.on);
-            return sameSet(groupIds, user.accessGroupIds)
+            const previous = groupIdsForUser(user.id);
+            const groupIds = withGroup(previous, action.id, action.on);
+            return sameSet(groupIds, previous)
                 ? []
-                : [{ user, save: () => userClient.userAccessGroupsSet({ id: user.id, groupIds }) }];
+                : [{ user, save: async () => {
+                    const response = await userClient.userPermissionGroupsSet({ id: user.id, groupIds });
+                    setGroupAssignments((current) => new Map(current).set(user.id, groupIds));
+                    return response;
+                } }];
         });
-        const skippedNote = skipped > 0 ? ` Пропущено не-сотрудников: ${skipped} — сначала роль «Сотрудник».` : "";
         if (targets.length === 0) {
-            toast.info(`Менять нечего: у всех отмеченных уже так.${skippedNote}`);
+            toast.info("Менять нечего: у всех отмеченных уже так.");
             return;
         }
 
@@ -225,7 +178,7 @@ const useRoleAdmin = () => {
         setBulkProgress(null);
 
         if (failed.length === 0) {
-            toast.success(`Готово: изменено ${targets.length}.${skippedNote}`);
+            toast.success(`Готово: изменено ${targets.length}.`);
             setSelected(new Set());
         } else {
             // Неудачные остаются отмеченными — можно повторить.
@@ -257,9 +210,8 @@ const useRoleAdmin = () => {
         saving,
         toggleRole,
         toggleGroup,
-        setDepartments,
-        setPosition,
         groups,
+        groupIdsForUser,
         selected,
         setChecked,
         clearSelected: () => setSelected(new Set()),
@@ -271,5 +223,5 @@ const useRoleAdmin = () => {
     };
 };
 
-export { ROLES, ROLE_LABEL, formatUserFullName, isEmployee, useRoleAdmin };
+export { ROLES, ROLE_LABEL, formatUserFullName, useRoleAdmin };
 export type { BulkAction };

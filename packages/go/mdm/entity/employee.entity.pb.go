@@ -24,12 +24,17 @@ const (
 )
 
 type Employee struct {
-	state         protoimpl.MessageState      `protogen:"open.v1"`
-	Id            int64                       `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	UserId        int64                       `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Department    enum.UserEmployeeDepartment `protobuf:"varint,3,opt,name=department,proto3,enum=contract.enum.UserEmployeeDepartment" json:"department,omitempty"`
-	CreatedAt     *timestamppb.Timestamp      `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt     *timestamppb.Timestamp      `protobuf:"bytes,5,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	state      protoimpl.MessageState      `protogen:"open.v1"`
+	Id         int64                       `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	UserId     int64                       `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Department enum.UserEmployeeDepartment `protobuf:"varint,3,opt,name=department,proto3,enum=contract.enum.UserEmployeeDepartment" json:"department,omitempty"`
+	CreatedAt  *timestamppb.Timestamp      `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt  *timestamppb.Timestamp      `protobuf:"bytes,5,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	Status     enum.UserEmployeeStatus     `protobuf:"varint,6,opt,name=status,proto3,enum=contract.enum.UserEmployeeStatus" json:"status,omitempty"`
+	// Должность сотрудника.
+	Position enum.UserEmployeePosition `protobuf:"varint,7,opt,name=position,proto3,enum=contract.enum.UserEmployeePosition" json:"position,omitempty"`
+	// Ключ строки источника для идемпотентной загрузки назначений.
+	SourceKey     string `protobuf:"bytes,8,opt,name=source_key,json=sourceKey,proto3" json:"source_key,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -99,11 +104,32 @@ func (x *Employee) GetUpdatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
+func (x *Employee) GetStatus() enum.UserEmployeeStatus {
+	if x != nil {
+		return x.Status
+	}
+	return enum.UserEmployeeStatus(0)
+}
+
+func (x *Employee) GetPosition() enum.UserEmployeePosition {
+	if x != nil {
+		return x.Position
+	}
+	return enum.UserEmployeePosition(0)
+}
+
+func (x *Employee) GetSourceKey() string {
+	if x != nil {
+		return x.SourceKey
+	}
+	return ""
+}
+
 var File_mdm_entity_employee_entity_proto protoreflect.FileDescriptor
 
 const file_mdm_entity_employee_entity_proto_rawDesc = "" +
 	"\n" +
-	" mdm/entity/employee.entity.proto\x12\x0fcontract.entity\x1a\x18mdm/enum/user.enum.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xf0\x01\n" +
+	" mdm/entity/employee.entity.proto\x12\x0fcontract.entity\x1a\x18mdm/enum/user.enum.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x8b\x03\n" +
 	"\bEmployee\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\x03R\x06userId\x12E\n" +
@@ -113,7 +139,11 @@ const file_mdm_entity_employee_entity_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
-	"updated_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAtB\xa2\x01\n" +
+	"updated_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x129\n" +
+	"\x06status\x18\x06 \x01(\x0e2!.contract.enum.UserEmployeeStatusR\x06status\x12?\n" +
+	"\bposition\x18\a \x01(\x0e2#.contract.enum.UserEmployeePositionR\bposition\x12\x1d\n" +
+	"\n" +
+	"source_key\x18\b \x01(\tR\tsourceKeyB\xa2\x01\n" +
 	"\x13com.contract.entityB\x13EmployeeEntityProtoP\x01Z\x19fesmu/contract/mdm/entity\xa2\x02\x03CEX\xaa\x02\x0fContract.Entity\xca\x02\x0fContract\\Entity\xe2\x02\x1bContract\\Entity\\GPBMetadata\xea\x02\x10Contract::Entityb\x06proto3"
 
 var (
@@ -133,16 +163,20 @@ var file_mdm_entity_employee_entity_proto_goTypes = []any{
 	(*Employee)(nil),                 // 0: contract.entity.Employee
 	(enum.UserEmployeeDepartment)(0), // 1: contract.enum.UserEmployeeDepartment
 	(*timestamppb.Timestamp)(nil),    // 2: google.protobuf.Timestamp
+	(enum.UserEmployeeStatus)(0),     // 3: contract.enum.UserEmployeeStatus
+	(enum.UserEmployeePosition)(0),   // 4: contract.enum.UserEmployeePosition
 }
 var file_mdm_entity_employee_entity_proto_depIdxs = []int32{
 	1, // 0: contract.entity.Employee.department:type_name -> contract.enum.UserEmployeeDepartment
 	2, // 1: contract.entity.Employee.created_at:type_name -> google.protobuf.Timestamp
 	2, // 2: contract.entity.Employee.updated_at:type_name -> google.protobuf.Timestamp
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	3, // 3: contract.entity.Employee.status:type_name -> contract.enum.UserEmployeeStatus
+	4, // 4: contract.entity.Employee.position:type_name -> contract.enum.UserEmployeePosition
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_mdm_entity_employee_entity_proto_init() }

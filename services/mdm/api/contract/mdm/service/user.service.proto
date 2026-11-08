@@ -30,8 +30,9 @@ service UserService {
     rpc UserRolesSet (UserRolesSetRequest) returns (UserRolesSetResponse);
     // UserPermissionsSet заменяет набор прав пользователя целиком.
     rpc UserPermissionsSet (UserPermissionsSetRequest) returns (UserPermissionsSetResponse);
-    // UserAccessGroupsSet заменяет выданные пользователю наборы доступа целиком.
-    rpc UserAccessGroupsSet (UserAccessGroupsSetRequest) returns (UserAccessGroupsSetResponse);
+    // UserPermissionGroupsSet заменяет выданные пользователю группы прав целиком.
+    rpc UserPermissionGroupsSet (UserPermissionGroupsSetRequest) returns (UserPermissionGroupsSetResponse);
+    rpc UserPermissionGroupAssignmentsFetch (UserPermissionGroupAssignmentsFetchRequest) returns (UserPermissionGroupAssignmentsFetchResponse);
     // UserDepartmentsSet заменяет подразделения человека (его записи сотрудника)
     // целиком; пустой набор — убрать все.
     rpc UserDepartmentsSet (UserDepartmentsSetRequest) returns (UserDepartmentsSetResponse);
@@ -39,11 +40,11 @@ service UserService {
     rpc UserPositionSet (UserPositionSetRequest) returns (UserPositionSetResponse);
 
     // Наборы доступа: права, собранные администратором под общим именем.
-    rpc AccessGroupFetch (AccessGroupFetchRequest) returns (AccessGroupFetchResponse);
-    // AccessGroupSave: id = 0 — создать, иначе изменить (состав прав заменяется целиком).
-    rpc AccessGroupSave (AccessGroupSaveRequest) returns (AccessGroupSaveResponse);
-    // AccessGroupDelete: набор снимается и со всех, кому выдан.
-    rpc AccessGroupDelete (AccessGroupDeleteRequest) returns (AccessGroupDeleteResponse);
+    rpc UserPermissionGroupFetch (UserPermissionGroupFetchRequest) returns (UserPermissionGroupFetchResponse);
+    // id = 0 — создать, иначе изменить (состав прав заменяется целиком).
+    rpc UserPermissionGroupSave (UserPermissionGroupSaveRequest) returns (UserPermissionGroupSaveResponse);
+    // При удалении группа снимается со всех пользователей, кому она выдана.
+    rpc UserPermissionGroupDelete (UserPermissionGroupDeleteRequest) returns (UserPermissionGroupDeleteResponse);
 
     rpc PassportCreate (PassportCreateRequest) returns (PassportCreateResponse);
     rpc EducationCreate (EducationCreateRequest) returns (EducationCreateResponse);
@@ -128,6 +129,9 @@ message UserFetchByUUIDRequest {
 
 message UserFetchByUUIDResponse {
     contract.entity.User user = 1;
+    string username = 2;
+    repeated string effective_permissions = 3;
+    repeated contract.enum.UserEmployeeDepartment departments = 4;
 }
 
 message UserFetchByADObjectIDRequest {
@@ -136,6 +140,9 @@ message UserFetchByADObjectIDRequest {
 
 message UserFetchByADObjectIDResponse {
     contract.entity.User user = 1;
+    string username = 2;
+    repeated string effective_permissions = 3;
+    repeated contract.enum.UserEmployeeDepartment departments = 4;
 }
 
 message ActivationIssueRequest {
@@ -156,13 +163,25 @@ message UserPermissionsSetResponse {
     contract.entity.User user = 1;
 }
 
-message UserAccessGroupsSetRequest {
+message UserPermissionGroupsSetRequest {
     int64 id = 1;
     repeated int64 group_ids = 2;
 }
 
-message UserAccessGroupsSetResponse {
+message UserPermissionGroupsSetResponse {
     contract.entity.User user = 1;
+}
+
+message UserPermissionGroupAssignmentsFetchRequest {
+}
+
+message UserPermissionGroupAssignment {
+    int64 user_id = 1;
+    int64 group_id = 2;
+}
+
+message UserPermissionGroupAssignmentsFetchResponse {
+    repeated UserPermissionGroupAssignment assignments = 1;
 }
 
 message UserDepartmentsSetRequest {
@@ -183,31 +202,31 @@ message UserPositionSetResponse {
     contract.entity.User user = 1;
 }
 
-message AccessGroupFetchRequest {
+message UserPermissionGroupFetchRequest {
 }
 
-message AccessGroupFetchResponse {
-    repeated contract.entity.AccessGroup groups = 1;
+message UserPermissionGroupFetchResponse {
+    repeated contract.entity.UserPermissionGroup groups = 1;
 }
 
-message AccessGroupSaveRequest {
+message UserPermissionGroupSaveRequest {
+    reserved 5;
+    reserved "departments";
     int64 id = 1;
     string name = 2;
     string description = 3;
     repeated string permissions = 4;
-    // departments — выдавать доступ всем сотрудникам этих подразделений.
-    repeated contract.enum.UserEmployeeDepartment departments = 5;
 }
 
-message AccessGroupSaveResponse {
-    contract.entity.AccessGroup group = 1;
+message UserPermissionGroupSaveResponse {
+    contract.entity.UserPermissionGroup group = 1;
 }
 
-message AccessGroupDeleteRequest {
+message UserPermissionGroupDeleteRequest {
     int64 id = 1;
 }
 
-message AccessGroupDeleteResponse {
+message UserPermissionGroupDeleteResponse {
 }
 
 message UserRolesSetRequest {
@@ -373,6 +392,8 @@ message StudentFetchResponse {
 message EmployeeCreateRequest {
     int64 user_id = 1;
     contract.enum.UserEmployeeDepartment department = 2;
+    contract.enum.UserEmployeeStatus status = 3;
+    contract.enum.UserEmployeePosition position = 4;
 }
 
 message EmployeeCreateResponse {

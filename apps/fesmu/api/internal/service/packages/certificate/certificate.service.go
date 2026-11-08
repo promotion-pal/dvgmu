@@ -21,6 +21,7 @@ import (
 	fileenum "fesmu/contract/file/enum"
 	filespb "fesmu/contract/file/service"
 	entity "fesmu/contract/mdm/entity"
+	mdmenum "fesmu/contract/mdm/enum"
 	mdmpb "fesmu/contract/mdm/service"
 	pb "fesmu/contract/fesmu/service/v1"
 	"dvgmu/api/internal/auth"
@@ -85,10 +86,10 @@ var (
 
 // actor — кто вошёл: его запись в MDM (id, ФИО, подразделения) и токен.
 type actor struct {
-	id    int64
-	name  string
-	mdm   *entity.User
-	token *auth.User
+	id          int64
+	name        string
+	departments []mdmenum.UserEmployeeDepartment
+	token       *auth.User
 }
 
 func (s *Service) caller(ctx context.Context) (*actor, error) {
@@ -105,7 +106,7 @@ func (s *Service) caller(ctx context.Context) (*actor, error) {
 	if name == "" {
 		name = user.Username
 	}
-	return &actor{id: u.GetId(), name: name, mdm: u, token: user}, nil
+	return &actor{id: u.GetId(), name: name, departments: resp.Msg.GetDepartments(), token: user}, nil
 }
 
 // scope — чьи заказы видит и обрабатывает сотрудник: факультеты его
@@ -119,7 +120,7 @@ func (a *actor) scope() scope {
 	if a.token.HasRole(auth.RoleAdmin) {
 		return scope{all: true}
 	}
-	f := faculty.OfDepartments(a.mdm.GetDepartments())
+	f := faculty.OfDepartments(a.departments)
 	if len(f) == 0 {
 		return scope{all: true}
 	}

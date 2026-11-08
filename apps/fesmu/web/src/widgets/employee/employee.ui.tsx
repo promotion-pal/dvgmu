@@ -3,6 +3,7 @@ import { BriefcaseIcon, KeyIcon, MailIcon, PhoneIcon } from "lucide-react";
 import { Badge } from "@/shared/ui/badge";
 import type { EmployeeWithUser } from "@fesmu/contract/mdm/service/user.service_pb";
 import { UserEmployeeDepartment } from "@fesmu/contract/mdm/enum/user.enum_pb";
+import { EMPLOYEE_POSITION_LABEL, EMPLOYEE_STATUS_LABEL } from "@/shared/config/employee-directory";
 import { memberKey } from "@/shared/lib/role-members";
 import { PersonDetails, PersonSummary } from "@/shared/components/person";
 import { CommonControlState } from "@/shared/components/state/control-state";
@@ -30,11 +31,26 @@ const EmployeeList: FC<EmployeeListProps> = ({ list, employeeModal, activeMenu, 
     return (
         <>
             <CommonControlState {...state}>
-                <section className="grid md:grid-cols-3 gap-4">
-                    {list.map((row) => (
-                        <EmployeeListItem row={row} key={memberKey(row.employee?.id, row.user)} activeMenu={activeMenu} />
+                {Object.entries(
+                    list.reduce<Record<string, EmployeeWithUser[]>>((groups, row) => {
+                        const department = row.employee?.department ?? UserEmployeeDepartment.UNSPECIFIED;
+                        (groups[String(department)] ??= []).push(row);
+                        return groups;
+                    }, {}),
+                )
+                    .sort((a, b) => EMPLOYEE_DEPARTMENT_LABEL[Number(a[0]) as UserEmployeeDepartment].localeCompare(EMPLOYEE_DEPARTMENT_LABEL[Number(b[0]) as UserEmployeeDepartment], "ru"))
+                    .map(([department, rows]) => (
+                        <section className="mb-8" key={department}>
+                            <h2 className="mb-3 text-lg font-semibold">
+                                {EMPLOYEE_DEPARTMENT_LABEL[Number(department) as UserEmployeeDepartment]} <span className="text-muted-foreground">({rows.length})</span>
+                            </h2>
+                            <div className="grid gap-4 md:grid-cols-3">
+                                {rows.map((row) => (
+                                    <EmployeeListItem row={row} key={memberKey(row.employee?.id, row.user)} activeMenu={activeMenu} />
+                                ))}
+                            </div>
+                        </section>
                     ))}
-                </section>
             </CommonControlState>
 
             <CommonModal
@@ -60,11 +76,11 @@ const EmployeeListItem: FC<EmployeeListItemProps> = ({ row, activeMenu }) => {
             fullName={formatUserFullName(row.user)}
             email={row.user.email}
             phone={row.user.phone}
-            badges={
-                <Badge variant="secondary">
-                    {EMPLOYEE_DEPARTMENT_LABEL[row.employee?.department ?? UserEmployeeDepartment.UNSPECIFIED]}
-                </Badge>
-            }
+            badges={<>
+                <Badge variant="secondary">{EMPLOYEE_DEPARTMENT_LABEL[row.employee?.department ?? UserEmployeeDepartment.UNSPECIFIED]}</Badge>
+                {row.employee && row.employee.position !== 0 && <Badge variant="outline">{EMPLOYEE_POSITION_LABEL[row.employee.position]}</Badge>}
+                {row.employee && row.employee.status !== 0 && <Badge variant="outline">{EMPLOYEE_STATUS_LABEL[row.employee.status]}</Badge>}
+            </>}
             menuItems={activeMenu?.(row)}
         />
     );
@@ -90,6 +106,8 @@ const EmployeeDetails: FC<EmployeeDetailsProps> = ({ item }) => {
                 { icon: <MailIcon className="size-4" />, label: "Логин (email)", value: user.email || "—" },
                 { icon: <PhoneIcon className="size-4" />, label: "Телефон", value: user.phone || "—" },
                 { icon: <BriefcaseIcon className="size-4" />, label: "Отдел", value: EMPLOYEE_DEPARTMENT_LABEL[department] },
+                { icon: <BriefcaseIcon className="size-4" />, label: "Должность", value: item.employee?.position ? EMPLOYEE_POSITION_LABEL[item.employee.position] : "—" },
+                { icon: <BriefcaseIcon className="size-4" />, label: "Статус", value: item.employee?.status ? EMPLOYEE_STATUS_LABEL[item.employee.status] : "—" },
                 { icon: <KeyIcon className="size-4" />, label: "Пароль", value: DEFAULT_USER_PASSWORD },
             ]}
         />

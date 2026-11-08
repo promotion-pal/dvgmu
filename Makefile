@@ -18,7 +18,7 @@ proto-check: proto
 		|| { git status --short -- $(GENERATED); echo "сгенерированный код отстал от схем — make proto и закоммитить" >&2; exit 1; }
 	@echo "сгенерированный код совпадает со схемами"
 
-.PHONY: dev-up dev-seed dev-down dev-logs dev-import
+.PHONY: dev-up dev-seed dev-seed-students dev-down dev-logs dev-import
 
 dev-up:
 	@docker compose -f dev/docker-compose.yml up -d --build
@@ -26,6 +26,12 @@ dev-up:
 
 dev-seed:
 	@dev/seed.sh
+	@$(MAKE) dev-seed-students
+
+# Загружает постоянный student-roster.csv в локальный MDM.
+dev-seed-students:
+	@docker compose --profile tools -f dev/docker-compose.yml build seed-students
+	@docker compose --profile tools -f dev/docker-compose.yml run --rm seed-students
 
 # Копия боевой базы в локальный портал: make dev-import DB=analytics FILE=~/Downloads/analytics.dump
 dev-import:
@@ -87,3 +93,26 @@ ps:
 logs:
 	@if [ "$(S)" = fesmu ]; then cd apps/fesmu && docker compose logs -f --tail=100; \
 	else cd services/$(S) && docker compose logs -f --tail=100; fi
+
+# MDM ↔ AD sync. Одноразовые create targets пишут в AD выключенные учётки
+# без пароля; перед ними запускайте sync-check.
+SYNC_LIMIT ?= 10
+.PHONY: sync-build sync-check sync-create sync-create-students sync-create-staff sync-up
+
+sync-build:
+	@cd services/sync && docker compose build sync_api
+
+sync-check: sync-build
+	@cd services/sync && docker compose run --rm sync_api ./sync --config=config/prod.yaml --check-missing
+
+sync-create: sync-build
+	@cd services/sync && docker compose run --rm sync_api ./sync --config=config/prod.yaml --create-missing=$(SYNC_LIMIT)
+
+sync-create-students: sync-build
+	@cd services/sync && docker compose run --rm sync_api ./sync --config=config/prod.yaml --create-missing-students=$(SYNC_LIMIT)
+
+sync-create-staff: sync-build
+	@cd services/sync && docker compose run --rm sync_api ./sync --config=config/prod.yaml --create-missing-staff=$(SYNC_LIMIT)
+
+sync-up:
+	@cd services/sync && docker compose up -d --build sync_api

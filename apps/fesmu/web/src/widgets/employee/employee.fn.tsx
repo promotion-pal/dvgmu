@@ -1,7 +1,7 @@
 import { useFetchState } from "@/features/lib/fetch";
 import type { EmployeeWithUser } from "@fesmu/contract/mdm/service/user.service_pb";
 import { EmployeeWithUserSchema, UserService } from "@fesmu/contract/mdm/service/user.service_pb";
-import { UserEmployeeDepartment, UserRole } from "@fesmu/contract/mdm/enum/user.enum_pb";
+import { UserEmployeeDepartment, UserEmployeePosition, UserEmployeeStatus, UserRole } from "@fesmu/contract/mdm/enum/user.enum_pb";
 import { create } from "@bufbuild/protobuf";
 import { withRoleMembers } from "@/shared/lib/role-members";
 import { useCommonModal } from "@/shared/components/modal";
@@ -18,6 +18,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { EmployeeCreateModal, EmployeeDetails } from "./employee.ui";
 import { DEPARTMENT_LABEL } from "@/shared/config/departments";
+import { EMPLOYEE_POSITION_LABEL, EMPLOYEE_STATUS_LABEL } from "@/shared/config/employee-directory";
 import { employeeSchema } from "./employee.schema";
 import type { EmployeeSchema } from "./employee.schema";
 
@@ -65,6 +66,8 @@ const useEmployeeForm = ({ refresh, onCloseModal }: UseEmployeeFormProps) => {
             const response = await mdmClient.employeeCreate({
                 userId: BigInt(values.userId),
                 department: values.department ?? UserEmployeeDepartment.UNSPECIFIED,
+            position: values.position ?? UserEmployeePosition.UNSPECIFIED,
+            status: values.status ?? UserEmployeeStatus.USER_PRESENCE_STATUS_AVAILABLE,
             });
 
             if (response.success) {
@@ -155,4 +158,4 @@ const useEmployee = () => {
     };
 };
 
-export { useEmployee, useEmployeeForm, EMPLOYEE_DEPARTMENT_LABEL, exportEmployeesToWord };
+export { useEmployee, useEmployeeForm, EMPLOYEE_DEPARTMENT_LABEL, EMPLOYEE_POSITION_LABEL, EMPLOYEE_STATUS_LABEL, exportEmployeesToWord };

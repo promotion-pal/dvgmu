@@ -145,6 +145,18 @@ services:
     ports: ["127.0.0.1:18200:4000"]
     depends_on: [postgres, mdm, auth, analytics, file, tickets]
 
+  seed-students:
+    profiles: [tools]
+    build:
+      context: ..
+      dockerfile: apps/fesmu/api/Dockerfile.seed-students
+    environment:
+      PACKAGE_MDM: http://mdm:4000
+      MDM_INTERNAL_TOKEN: dev-mdm-token
+    volumes:
+      - ../services/mdm/api/seeds/student-roster.csv:/seed/student-roster.csv:ro
+    depends_on: [mdm]
+
   web:
     build:
       context: ..

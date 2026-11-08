@@ -2,9 +2,9 @@ package storage
 
 import (
 	"context"
-	"fesmu/contract/mdm/enum"
 	"dvgmu/api/internal/domain/models"
 	"errors"
+	"fesmu/contract/mdm/enum"
 	"strings"
 
 	"github.com/google/uuid"
@@ -23,11 +23,11 @@ func UserStorageNew(db *gorm.DB) *UserStorage {
 func (s *UserStorage) UserFetch(ctx context.Context) ([]*models.User, error) {
 	var records []*models.User
 
-	if err := s.db.WithContext(ctx).Preload("Roles").Preload("Permissions").Preload("AccessGroups.Permissions").Preload("Employees").Order("id").Find(&records).Error; err != nil {
+	if err := s.db.WithContext(ctx).Preload("Roles").Preload("Permissions").Preload("UserPermissionGroups.Permissions").Preload("Employees").Order("id").Find(&records).Error; err != nil {
 		return nil, err
 	}
 
-	return records, withDepartmentGroups(s.db.WithContext(ctx), records...)
+	return records, nil
 }
 
 func (s *UserStorage) UserByID(ctx context.Context, id int64) (*models.User, error) {
@@ -39,7 +39,7 @@ func (s *UserStorage) UserByID(ctx context.Context, id int64) (*models.User, err
 		Preload("Military").
 		Preload("Student").
 		Preload("Employee").
-		Preload("Roles").Preload("Permissions").Preload("AccessGroups.Permissions").Preload("Employees").
+		Preload("Roles").Preload("Permissions").Preload("UserPermissionGroups.Permissions").Preload("Employees").
 		First(&record, "id = ?", id).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -48,7 +48,7 @@ func (s *UserStorage) UserByID(ctx context.Context, id int64) (*models.User, err
 		return nil, err
 	}
 
-	return &record, withDepartmentGroups(s.db.WithContext(ctx), &record)
+	return &record, nil
 }
 
 func (s *UserStorage) UserByEmail(ctx context.Context, email string) (*models.User, error) {
@@ -60,7 +60,7 @@ func (s *UserStorage) UserByEmail(ctx context.Context, email string) (*models.Us
 		Preload("Military").
 		Preload("Student").
 		Preload("Employee").
-		Preload("Roles").Preload("Permissions").Preload("AccessGroups.Permissions").Preload("Employees").
+		Preload("Roles").Preload("Permissions").Preload("UserPermissionGroups.Permissions").Preload("Employees").
 		First(&record, "email = ?", email).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -69,7 +69,7 @@ func (s *UserStorage) UserByEmail(ctx context.Context, email string) (*models.Us
 		return nil, err
 	}
 
-	return &record, withDepartmentGroups(s.db.WithContext(ctx), &record)
+	return &record, nil
 }
 
 // UsersByFullName отдаёт всех с совпадающими фамилией и именем (без учёта
@@ -84,14 +84,14 @@ func (s *UserStorage) UsersByFullName(ctx context.Context, lastName, firstName s
 		Preload("Military").
 		Preload("Student").
 		Preload("Employee").
-		Preload("Roles").Preload("Permissions").Preload("AccessGroups.Permissions").Preload("Employees").
+		Preload("Roles").Preload("Permissions").Preload("UserPermissionGroups.Permissions").Preload("Employees").
 		Where("lower(last_name) = lower(?) AND lower(first_name) = lower(?)", strings.TrimSpace(lastName), strings.TrimSpace(firstName)).
 		Find(&records).Error
 	if err != nil {
 		return nil, err
 	}
 
-	return records, withDepartmentGroups(s.db.WithContext(ctx), records...)
+	return records, nil
 }
 
 func (s *UserStorage) UserExistsByEmail(ctx context.Context, email string) (bool, error) {
@@ -161,7 +161,7 @@ func (s *UserStorage) UserByUUID(ctx context.Context, id string) (*models.User, 
 	}
 
 	var record models.User
-	err := s.db.WithContext(ctx).Preload("Roles").Preload("Permissions").Preload("AccessGroups.Permissions").Preload("Employees").First(&record, "uuid = ?", id).Error
+	err := s.db.WithContext(ctx).Preload("Roles").Preload("Permissions").Preload("UserPermissionGroups.Permissions").Preload("Employees").First(&record, "uuid = ?", id).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, models.ErrUserNotFound
@@ -169,7 +169,7 @@ func (s *UserStorage) UserByUUID(ctx context.Context, id string) (*models.User, 
 		return nil, err
 	}
 
-	return &record, withDepartmentGroups(s.db.WithContext(ctx), &record)
+	return &record, nil
 }
 
 func (s *UserStorage) UserByADObjectID(ctx context.Context, objectID string) (*models.User, error) {
@@ -178,7 +178,7 @@ func (s *UserStorage) UserByADObjectID(ctx context.Context, objectID string) (*m
 	}
 
 	var record models.User
-	err := s.db.WithContext(ctx).Preload("Roles").Preload("Permissions").Preload("AccessGroups.Permissions").Preload("Employees").First(&record, "ad_object_id = ?", objectID).Error
+	err := s.db.WithContext(ctx).Preload("Roles").Preload("Permissions").Preload("UserPermissionGroups.Permissions").Preload("Employees").First(&record, "ad_object_id = ?", objectID).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, models.ErrUserNotFound
@@ -186,7 +186,7 @@ func (s *UserStorage) UserByADObjectID(ctx context.Context, objectID string) (*m
 		return nil, err
 	}
 
-	return &record, withDepartmentGroups(s.db.WithContext(ctx), &record)
+	return &record, nil
 }
 
 // UserRolesSet приводит роли пользователя ровно к набору roles: лишние
@@ -281,54 +281,4 @@ func (s *UserStorage) UserPermissionsSet(ctx context.Context, userID int64, perm
 		}
 		return tx.Clauses(clause.OnConflict{DoNothing: true}).Create(&rows).Error
 	})
-}
-
-// withDepartmentGroups подставляет людям доступы их подразделений
-// (access_group_departments) — двумя запросами на всех, не на каждого.
-func withDepartmentGroups(db *gorm.DB, users ...*models.User) error {
-	var deps []enum.UserEmployeeDepartment
-	for _, u := range users {
-		deps = append(deps, u.DepartmentList()...)
-	}
-	deps = models.NormalizeDepartments(deps)
-	if len(deps) == 0 {
-		return nil
-	}
-
-	var links []models.AccessGroupDepartment
-	if err := db.Where("department IN ?", deps).Find(&links).Error; err != nil {
-		return err
-	}
-	if len(links) == 0 {
-		return nil
-	}
-	ids := make([]int64, 0, len(links))
-	for _, l := range links {
-		ids = append(ids, l.GroupID)
-	}
-	var groups []models.AccessGroup
-	if err := db.Preload("Permissions").Where("id IN ?", ids).Find(&groups).Error; err != nil {
-		return err
-	}
-	byID := make(map[int64]models.AccessGroup, len(groups))
-	for _, g := range groups {
-		byID[g.ID] = g
-	}
-	byDept := make(map[enum.UserEmployeeDepartment][]int64)
-	for _, l := range links {
-		byDept[l.Department] = append(byDept[l.Department], l.GroupID)
-	}
-
-	for _, u := range users {
-		seen := map[int64]bool{}
-		for _, d := range u.DepartmentList() {
-			for _, id := range byDept[d] {
-				if g, ok := byID[id]; ok && !seen[id] {
-					seen[id] = true
-					u.DepartmentGroups = append(u.DepartmentGroups, g)
-				}
-			}
-		}
-	}
-	return nil
 }

@@ -1,10 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { CommonWrapper } from "@/shared/components/wrapper";
-import { DepartmentFilter, matchesDepartment } from "@/shared/components/department";
-import type { DepartmentFilterValue } from "@/shared/components/department";
 import { CommonPagination, CommonSearchInput, usePagination } from "@/shared/components/filter";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/ui/select";
-import { BulkBar, IssuedCodeDialog, ROLES, ROLE_LABEL, RoleUserTable, formatUserFullName, useRoleAdmin, isEmployee } from "@/widgets/role-admin";
+import { BulkBar, IssuedCodeDialog, ROLES, ROLE_LABEL, RoleUserTable, formatUserFullName, useRoleAdmin } from "@/widgets/role-admin";
 
 const ALL = "all";
 const NO_ROLE = "none";
@@ -16,7 +14,6 @@ export function RoleAdmin() {
     const [search, setSearch] = useState("");
     const [roleFilter, setRoleFilter] = useState<string>(ALL);
     const [groupFilter, setGroupFilter] = useState<string>(ALL);
-    const [departmentFilter, setDepartmentFilter] = useState<DepartmentFilterValue>("all");
 
     useEffect(() => {
         fetch();
@@ -29,24 +26,22 @@ export function RoleAdmin() {
         return users.list.filter((user) => {
             if (roleFilter === NO_ROLE && user.roles.length > 0) return false;
             if (roleFilter !== ALL && roleFilter !== NO_ROLE && !user.roles.includes(Number(roleFilter))) return false;
-            // «Без подразделения» — сотрудники без него, не все остальные.
-            if (departmentFilter === "none" && !isEmployee(user)) return false;
-            if (!matchesDepartment(user.departments, departmentFilter)) return false;
-            if (groupFilter === NO_GROUP && user.accessGroupIds.length > 0) return false;
-            if (groupFilter !== ALL && groupFilter !== NO_GROUP && !user.accessGroupIds.some((id) => String(id) === groupFilter)) return false;
+            const groupIds = admin.groupIdsForUser(user.id);
+            if (groupFilter === NO_GROUP && groupIds.length > 0) return false;
+            if (groupFilter !== ALL && groupFilter !== NO_GROUP && !groupIds.some((id) => String(id) === groupFilter)) return false;
             if (!query) return true;
-            return [formatUserFullName(user), user.username ?? "", user.email]
+            return [formatUserFullName(user), user.email.split("@")[0], user.email]
                 .some((value) => value.toLowerCase().includes(query));
         });
-    }, [users.list, query, roleFilter, groupFilter, departmentFilter]);
+    }, [users.list, query, roleFilter, groupFilter, admin.groupIdsForUser]);
 
-    const usersPage = usePagination(filteredUsers, { resetKey: `${query}|${roleFilter}|${groupFilter}|${departmentFilter}` });
+    const usersPage = usePagination(filteredUsers, { resetKey: `${query}|${roleFilter}|${groupFilter}` });
     const allFoundSelected = filteredUsers.length > 0 && filteredUsers.every((user) => selected.has(user.id));
 
     return (
         <CommonWrapper
-            title="Роли"
-            description="Роль — кто человек (студент, преподаватель, сотрудник), доступ — какие разделы ему открыты. Изменения сохраняются сразу; отметьте нескольких — появится панель массовых действий"
+            title="Роли и группы прав пользователей"
+            description="Роль определяет тип пользователя, группа прав открывает функции портала. Подразделения и должности сотрудника настраиваются в кадровом разделе. Изменения сохраняются сразу."
             filter={{
                 render: {
                     count: filteredUsers.length,
@@ -69,7 +64,6 @@ export function RoleAdmin() {
                                     ))}
                                 </SelectContent>
                             </Select>
-                            <DepartmentFilter value={departmentFilter} onChange={setDepartmentFilter} />
                             <Select value={groupFilter} onValueChange={setGroupFilter}>
                                 <SelectTrigger className="w-auto min-w-48">
                                     <SelectValue />
@@ -101,14 +95,13 @@ export function RoleAdmin() {
                 <RoleUserTable
                     list={usersPage.pageItems}
                     groups={admin.groups}
+                    groupIdsForUser={admin.groupIdsForUser}
                     saving={admin.saving}
                     locked={admin.bulkProgress !== null}
                     selected={selected}
                     onCheck={admin.setChecked}
                     onToggleRole={admin.toggleRole}
                     onToggleGroup={admin.toggleGroup}
-                    onSetDepartments={admin.setDepartments}
-                    onSetPosition={admin.setPosition}
                     onIssueCode={admin.issueCode}
                     isLoading={users.loading}
                     isError={users.error}

@@ -62,7 +62,7 @@ func New(
 
 	userService := service.NewUserService(log, userStorage, userStorage, passportStorage, educationStorage, militaryStorage, studentStorage, employeeStorage)
 	activationService := service.NewActivationService(log, userStorage, storage.ActivationStorageNew(db))
-	accessService := service.NewAccessGroupService(log, userStorage, storage.AccessGroupStorageNew(db))
+	accessService := service.NewUserPermissionGroupService(log, userStorage, storage.UserPermissionGroupStorageNew(db))
 	userHandler := grpc.UserNewController(userService, activationService, accessService)
 	directoryHandler := grpc.UserDirectoryNewController(service.NewUserDirectoryService(storage.UserDirectoryStorageNew(db)))
 	userLinkHandler := grpc.UserLinkNewController(userService, activationService, cfg.InternalToken)

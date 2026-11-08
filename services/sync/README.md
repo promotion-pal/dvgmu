@@ -52,10 +52,36 @@ sync больше не нужен.
 существующий read-only LDAP-бинд (`AUTH_LDAP_*`).
 
 `--create-missing` требует **отдельный** более привилегированный бинд
-(`SYNC_LDAP_WRITE_*`) с правом Create на целевом OU (`SYNC_LDAP_TARGET_OU`,
-напр. `OU=Test,DC=dvgmu,DC=local`) — не тот же аккаунт, что read-only бинд
-выше. Пусто — `--create-missing` просто откажет с понятной ошибкой, обычный
-режим не страдает.
+(`SYNC_LDAP_WRITE_*`) с правом Create на целевых OU (`SYNC_LDAP_STUDENTS_OU`
+и `SYNC_LDAP_STAFF_OU`, например `OU=Students,DC=dvgmu,DC=local`) — не тот же
+аккаунт, что read-only бинд выше. Пользователи с ролью `USER_ROLE_STUDENT`
+идут в студенческий OU, с `USER_ROLE_STAFF` или `USER_ROLE_TEACHER` — в OU
+сотрудников. Неопределённые или конфликтующие роли пропускаются с
+предупреждением. Пустой OU отключает создание соответствующей категории.
+
+В `.env` задаются полные DN папок (OU должны быть заранее созданы в AD):
+
+```dotenv
+SYNC_LDAP_STUDENTS_OU=OU=Students,DC=dvgmu,DC=local
+SYNC_LDAP_STAFF_OU=OU=Staff,DC=dvgmu,DC=local
+```
+
+Команды из корня репозитория: сначала проверить кандидатов без записи, затем
+создать до 10 учёток суммарно (каждая будет выключенной, без пароля):
+
+```bash
+make sync-check
+make sync-create-students SYNC_LIMIT=10
+make sync-create-staff SYNC_LIMIT=10
+# обе категории, максимум 10 учёток суммарно:
+make sync-create SYNC_LIMIT=10
+```
+
+Чтобы запустить обычную периодическую сверку в фоне:
+
+```bash
+make sync-up
+```
 
 ## Локальный запуск
 

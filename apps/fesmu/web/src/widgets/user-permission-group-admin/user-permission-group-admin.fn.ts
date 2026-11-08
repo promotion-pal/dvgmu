@@ -1,6 +1,5 @@
 import { useFetchState } from "@/features/lib/fetch";
-import type { AccessGroup } from "@fesmu/contract/mdm/entity/user.entity_pb";
-import type { UserEmployeeDepartment } from "@fesmu/contract/mdm/enum/user.enum_pb";
+import type { UserPermissionGroup } from "@fesmu/contract/mdm/entity/user.entity_pb";
 import { UserService } from "@fesmu/contract/mdm/service/user.service_pb";
 import { connectTransport } from "@/shared/config/api";
 import { ConnectError, createClient } from "@connectrpc/connect";
@@ -55,35 +54,32 @@ const toggleHallManagement = (codes: string[], on: boolean) => {
 };
 
 /** Черновик набора в окне правки; id 0 — новый. */
-interface AccessGroupDraft {
+interface UserPermissionGroupDraft {
     id: bigint;
     name: string;
     description: string;
     permissions: string[];
-    /** Подразделения, всем сотрудникам которых доступ выдаётся сам. */
-    departments: UserEmployeeDepartment[];
 }
 
-const emptyDraft = (): AccessGroupDraft => ({ id: 0n, name: "", description: "", permissions: [], departments: [] });
+const emptyDraft = (): UserPermissionGroupDraft => ({ id: 0n, name: "", description: "", permissions: [] });
 
-const toDraft = (g: AccessGroup): AccessGroupDraft => ({
+const toDraft = (g: UserPermissionGroup): UserPermissionGroupDraft => ({
     id: g.id,
     name: g.name,
     description: g.description,
     // Migrate the legacy view-only hall bit away without silently granting
     // moderation; halls.post is the sole permission for this section.
     permissions: g.permissions.filter((permission) => permission !== perm(PermissionSection.HALLS, PermissionAction.FETCH)),
-    departments: [...g.departments],
 });
 
-const useAccessGroups = () => {
-    const state = useFetchState<AccessGroup>();
+const useUserPermissionGroups = () => {
+    const state = useFetchState<UserPermissionGroup>();
 
     const fetch = async () => {
         state.setLoading(true);
         state.setError(false);
         try {
-            const response = await userClient.accessGroupFetch({});
+            const response = await userClient.userPermissionGroupFetch({});
             state.setList(response.groups);
         } catch (error) {
             console.error("Ошибка при получении наборов доступа:", error);
@@ -94,9 +90,9 @@ const useAccessGroups = () => {
     };
 
     /** true — сохранено (окно можно закрыть). */
-    const save = async (draft: AccessGroupDraft): Promise<boolean> => {
+    const save = async (draft: UserPermissionGroupDraft): Promise<boolean> => {
         try {
-            const response = await userClient.accessGroupSave(draft);
+            const response = await userClient.userPermissionGroupSave(draft);
             const saved = response.group;
             if (saved) {
                 state.setList((list) =>
@@ -114,9 +110,9 @@ const useAccessGroups = () => {
         }
     };
 
-    const remove = async (group: AccessGroup) => {
+    const remove = async (group: UserPermissionGroup) => {
         try {
-            await userClient.accessGroupDelete({ id: group.id });
+            await userClient.userPermissionGroupDelete({ id: group.id });
             state.setList((list) => list.filter((g) => g.id !== group.id));
             toast.success(`Доступ «${group.name}» удалён`);
         } catch (error) {
@@ -128,5 +124,5 @@ const useAccessGroups = () => {
     return { groups: state, fetch, save, remove };
 };
 
-export { emptyDraft, toDraft, toggleHallManagement, toggleSectionAction, toggleSections, useAccessGroups };
-export type { AccessGroupDraft };
+export { emptyDraft, toDraft, toggleHallManagement, toggleSectionAction, toggleSections, useUserPermissionGroups };
+export type { UserPermissionGroupDraft };

@@ -20,10 +20,9 @@ type WriteConfig struct {
 	InsecureSkipVerify bool
 	BindDN             string
 	BindPassword       string
-	// TargetOU — полный DN, куда создавать новые учётки, напр.
-	// "OU=Test,DC=dvgmu,DC=local". Обязателен — без него AD не даст создать
-	// объект.
-	TargetOU string
+	// Target OU values are full DNs, e.g. OU=Students,DC=dvgmu,DC=local.
+	StudentsOU string
+	StaffOU    string
 	// UPNSuffix — домен для userPrincipalName, напр. "dvgmu.local".
 	UPNSuffix string
 }
@@ -36,11 +35,24 @@ func NewWriteClient(cfg WriteConfig) *WriteClient {
 	return &WriteClient{cfg: cfg}
 }
 
-// Enabled — задан ли вообще write-бинд. TargetOU (нужен только CreateUser)
-// проверяется отдельно в самом CreateUser — SetEmail (Modify по уже
-// известному DN) в нём не нуждается.
+// Enabled reports whether the write bind is configured.
 func (c *WriteClient) Enabled() bool {
 	return c != nil && c.cfg.URL != ""
+}
+
+// TargetOU selects the destination OU based on the MDM role category.
+func (c *WriteClient) TargetOU(category string) string {
+	if c == nil {
+		return ""
+	}
+	switch category {
+	case "student":
+		return c.cfg.StudentsOU
+	case "staff":
+		return c.cfg.StaffOU
+	default:
+		return ""
+	}
 }
 
 type NewUser struct {
@@ -59,9 +71,12 @@ type CreatedUser struct {
 // включить учётку человек, через ADUC/PowerShell, после проверки записи).
 // Единственное, что делает этот метод — Add-объект в AD и возвращает его
 // objectGUID для последующей привязки к MDM.
-func (c *WriteClient) CreateUser(u NewUser) (*CreatedUser, error) {
-	if !c.Enabled() || c.cfg.TargetOU == "" {
-		return nil, fmt.Errorf("adldap: write client not configured (need SYNC_LDAP_WRITE_URL and SYNC_LDAP_TARGET_OU)")
+func (c *WriteClient) CreateUser(u NewUser, targetOU string) (*CreatedUser, error) {
+	if !c.Enabled() {
+		return nil, fmt.Errorf("adldap: write client not configured (need SYNC_LDAP_WRITE_URL)")
+	}
+	if targetOU == "" {
+		return nil, fmt.Errorf("adldap: target OU is not configured for this user category")
 	}
 
 	conn, err := c.dialBind()
@@ -85,7 +100,7 @@ func (c *WriteClient) CreateUser(u NewUser) (*CreatedUser, error) {
 	if len(cn) > 64 {
 		cn = u.SAMAccountName
 	}
-	dn := fmt.Sprintf("CN=%s,%s", ldapDNEscape(cn), c.cfg.TargetOU)
+	dn := fmt.Sprintf("CN=%s,%s", ldapDNEscape(cn), targetOU)
 
 	addReq := goldap.NewAddRequest(dn, nil)
 	addReq.Attribute("objectClass", []string{"top", "person", "organizationalPerson", "user"})

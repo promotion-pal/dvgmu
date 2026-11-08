@@ -108,6 +108,7 @@ func (c *Client) Employees(ctx context.Context) ([]Employee, error) {
 		Employees []struct {
 			Employee struct {
 				Department string `json:"department"` // protojson: enum by name
+				Position   string `json:"position"`   // protojson: enum by name
 			} `json:"employee"`
 			User struct {
 				UUID       string `json:"uuid"`
@@ -127,11 +128,13 @@ func (c *Client) Employees(ctx context.Context) ([]Employee, error) {
 			continue
 		}
 		name := strings.Join(strings.Fields(e.User.LastName+" "+e.User.FirstName+" "+e.User.Patronymic), " ")
+		position := mdmenum.UserEmployeePosition_value[e.Employee.Position]
+		positionName := strings.TrimPrefix(mdmenum.UserEmployeePosition_name[position], "USER_EMPLOYEE_POSITION_")
 		list = append(list, Employee{
 			UUID:       e.User.UUID,
 			Name:       name,
 			Department: mdmenum.UserEmployeeDepartment_value[e.Employee.Department],
-			Position:   strings.TrimSpace(e.User.Position),
+			Position:   strings.ReplaceAll(positionName, "_", " "),
 		})
 	}
 	return list, nil

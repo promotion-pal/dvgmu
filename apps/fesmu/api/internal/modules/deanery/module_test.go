@@ -28,10 +28,11 @@ const (
 
 // fakeMDM — MDM в памяти: сотрудники по uuid, студенты, выданные коды.
 type fakeMDM struct {
-	staff    map[string]*mdmentity.User
-	students []*mdmpb.StudentWithUser
-	issued   []int64
-	failFor  int64
+	staff       map[string]*mdmentity.User
+	departments map[string][]mdmenum.UserEmployeeDepartment
+	students    []*mdmpb.StudentWithUser
+	issued      []int64
+	failFor     int64
 }
 
 func (f *fakeMDM) UserFetchByUUID(_ context.Context, req *connect.Request[mdmpb.UserFetchByUUIDRequest]) (*connect.Response[mdmpb.UserFetchByUUIDResponse], error) {
@@ -39,7 +40,7 @@ func (f *fakeMDM) UserFetchByUUID(_ context.Context, req *connect.Request[mdmpb.
 	if !ok {
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("no user"))
 	}
-	return connect.NewResponse(&mdmpb.UserFetchByUUIDResponse{User: u}), nil
+	return connect.NewResponse(&mdmpb.UserFetchByUUIDResponse{User: u, Departments: f.departments[req.Msg.GetUuid()]}), nil
 }
 
 func (f *fakeMDM) StudentFetch(context.Context, *connect.Request[mdmpb.StudentFetchRequest]) (*connect.Response[mdmpb.StudentFetchResponse], error) {
@@ -58,7 +59,7 @@ func (f *fakeMDM) ActivationIssue(_ context.Context, req *connect.Request[mdmpb.
 }
 
 func student(id int64, last, group, book string, status mdmenum.UserStudentStatus, linked bool) *mdmpb.StudentWithUser {
-	u := &mdmentity.User{Id: id, LastName: last, FirstName: "Имя", Username: proto.String("s" + book)}
+	u := &mdmentity.User{Id: id, LastName: last, FirstName: "Имя"}
 	if linked {
 		u.AdObjectId = proto.String("guid-" + book)
 	}
@@ -71,9 +72,10 @@ func student(id int64, last, group, book string, status mdmenum.UserStudentStatu
 func newModule() (*deanery.Module, *fakeMDM) {
 	f := &fakeMDM{
 		staff: map[string]*mdmentity.User{
-			"meddean": {Id: 100, Departments: []mdmenum.UserEmployeeDepartment{medDean}},
+			"meddean": {Id: 100},
 			"other":   {Id: 101},
 		},
+		departments: map[string][]mdmenum.UserEmployeeDepartment{"meddean": {medDean}},
 		students: []*mdmpb.StudentWithUser{
 			student(1, "Борисов", "309", "1021001", studying, true),
 			student(2, "Андреев", "309", "1021002", studying, false),    // нет учётки AD

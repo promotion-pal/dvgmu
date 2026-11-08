@@ -4,8 +4,43 @@ import { UserList, exportUsersToWord, useUser } from "@/widgets/user";
 import { FileDownIcon, PlusIcon, SquareCheckBigIcon, Trash2Icon } from "lucide-react";
 import { UserImportButton } from "@/widgets/user-import";
 import { useEffect, useMemo, useState } from "react";
+import { Button } from "@/shared/ui/button";
+import { RoleAdmin } from "./admin/roles/RoleAdmin";
+import { PermissionGroupAdmin } from "./admin/permission-groups/PermissionGroupAdmin";
+import { useSearchParams } from "react-router-dom";
 
 export default function UserPage() {
+    const [searchParams, setSearchParams] = useSearchParams();
+    const tab = searchParams.get("tab");
+    const section = tab === "roles" || tab === "permissions" ? tab : "directory";
+    const setSection = (value: "directory" | "roles" | "permissions") => {
+        const next = new URLSearchParams(searchParams);
+        if (value === "directory") next.delete("tab");
+        else next.set("tab", value);
+        setSearchParams(next, { replace: true });
+    };
+
+    return (
+        <div className="flex flex-col gap-2">
+            <nav aria-label="Разделы управления пользователями" className="flex flex-wrap gap-2 px-4 pt-4 sm:px-6">
+                <Button variant={section === "directory" ? "default" : "outline"} onClick={() => setSection("directory")}>
+                    Пользователи
+                </Button>
+                <Button variant={section === "roles" ? "default" : "outline"} onClick={() => setSection("roles")}>
+                    Роли и подразделения
+                </Button>
+                <Button variant={section === "permissions" ? "default" : "outline"} onClick={() => setSection("permissions")}>
+                    Права по функциям
+                </Button>
+            </nav>
+            {section === "directory" && <UserDirectory />}
+            {section === "roles" && <RoleAdmin />}
+            {section === "permissions" && <PermissionGroupAdmin />}
+        </div>
+    );
+}
+
+function UserDirectory() {
     const {
         fetch, list, loading, error, empty, userModal, activeMenu,
         selectedIds, toggleSelected, clearSelected, selectAll, removeSelected,

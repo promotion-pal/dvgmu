@@ -59,13 +59,17 @@ func (fakeMDM) UserFetchByUUID(_ context.Context, req *connect.Request[mdmpb.Use
 		"u-student": {Id: studentID},
 		"u-other":   {Id: otherID},
 		"u-clerk":   {Id: clerkID},
-		"u-meddean": {Id: medDeanID, Departments: []mdmenum.UserEmployeeDepartment{
-			mdmenum.UserEmployeeDepartment_USER_EMPLOYEE_DEPARTMENT_DEKANAT_LECHEBNOGO_FAKULTETA,
-		}},
+		"u-meddean": {Id: medDeanID},
 	}
 	u := users[req.Msg.GetUuid()]
 	u.LastName, u.FirstName = "Кто-то", req.Msg.GetUuid()
-	return connect.NewResponse(&mdmpb.UserFetchByUUIDResponse{User: u}), nil
+	response := &mdmpb.UserFetchByUUIDResponse{User: u}
+	if req.Msg.GetUuid() == "u-meddean" {
+		response.Departments = []mdmenum.UserEmployeeDepartment{
+			mdmenum.UserEmployeeDepartment_USER_EMPLOYEE_DEPARTMENT_DEKANAT_LECHEBNOGO_FAKULTETA,
+		}
+	}
+	return connect.NewResponse(response), nil
 }
 
 type fakeFiles struct{}

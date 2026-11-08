@@ -4,7 +4,7 @@
 
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
-import type { UserEmployeeDepartment, UserRole, UserStatus } from "../enum/user.enum_pb";
+import type { UserRole, UserStatus } from "../enum/user.enum_pb";
 import { file_mdm_enum_user_enum } from "../enum/user.enum_pb";
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
@@ -24,7 +24,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file mdm/entity/user.entity.proto.
  */
 export const file_mdm_entity_user_entity: GenFile = /*@__PURE__*/
-  fileDesc("ChxtZG0vZW50aXR5L3VzZXIuZW50aXR5LnByb3RvEg9jb250cmFjdC5lbnRpdHkioAUKBFVzZXISCgoCaWQYASABKAMSEgoKZmlyc3RfbmFtZRgCIAEoCRIRCglsYXN0X25hbWUYAyABKAkSFwoKcGF0cm9ueW1pYxgEIAEoCUgAiAEBEg0KBWVtYWlsGAUgASgJEhIKBXBob25lGAYgASgJSAGIAQESKQoGc3RhdHVzGAcgASgOMhkuY29udHJhY3QuZW51bS5Vc2VyU3RhdHVzEjEKCGJpcnRoZGF5GAggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgCiAEBEi4KCmNyZWF0ZWRfYXQYCSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnVwZGF0ZWRfYXQYCiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEgwKBHV1aWQYCyABKAkSFQoIdXNlcm5hbWUYDCABKAlIA4gBARIZCgxhZF9vYmplY3RfaWQYDSABKAlIBIgBARImCgVyb2xlcxgOIAMoDjIXLmNvbnRyYWN0LmVudW0uVXNlclJvbGUSEwoLcGVybWlzc2lvbnMYDyADKAkSGAoQYWNjZXNzX2dyb3VwX2lkcxgQIAMoAxIdChVlZmZlY3RpdmVfcGVybWlzc2lvbnMYESADKAkSOgoLZGVwYXJ0bWVudHMYEiADKA4yJS5jb250cmFjdC5lbnVtLlVzZXJFbXBsb3llZURlcGFydG1lbnQSIwobZGVwYXJ0bWVudF9hY2Nlc3NfZ3JvdXBfaWRzGBMgAygDEhAKCHBvc2l0aW9uGBQgASgJQg0KC19wYXRyb255bWljQggKBl9waG9uZUILCglfYmlydGhkYXlCCwoJX3VzZXJuYW1lQg8KDV9hZF9vYmplY3RfaWQioQEKC0FjY2Vzc0dyb3VwEgoKAmlkGAEgASgDEgwKBG5hbWUYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEwoLcGVybWlzc2lvbnMYBCADKAkSEgoKdXNlcl9jb3VudBgFIAEoAxI6CgtkZXBhcnRtZW50cxgGIAMoDjIlLmNvbnRyYWN0LmVudW0uVXNlckVtcGxveWVlRGVwYXJ0bWVudCKRAgoIVXNlckZ1bGwSIwoEdXNlchgBIAEoCzIVLmNvbnRyYWN0LmVudGl0eS5Vc2VyEisKCHBhc3Nwb3J0GAIgASgLMhkuY29udHJhY3QuZW50aXR5LlBhc3Nwb3J0Ei4KCmVkdWNhdGlvbnMYAyADKAsyGi5jb250cmFjdC5lbnRpdHkuRWR1Y2F0aW9uEisKCG1pbGl0YXJ5GAQgASgLMhkuY29udHJhY3QuZW50aXR5Lk1pbGl0YXJ5EikKB3N0dWRlbnQYBSABKAsyGC5jb250cmFjdC5lbnRpdHkuU3R1ZGVudBIrCghlbXBsb3llZRgGIAEoCzIZLmNvbnRyYWN0LmVudGl0eS5FbXBsb3llZUKeAQoTY29tLmNvbnRyYWN0LmVudGl0eUIPVXNlckVudGl0eVByb3RvUAFaGWZlc211L2NvbnRyYWN0L21kbS9lbnRpdHmiAgNDRViqAg9Db250cmFjdC5FbnRpdHnKAg9Db250cmFjdFxFbnRpdHniAhtDb250cmFjdFxFbnRpdHlcR1BCTWV0YWRhdGHqAhBDb250cmFjdDo6RW50aXR5YgZwcm90bzM", [file_mdm_enum_user_enum, file_google_protobuf_timestamp, file_mdm_entity_passport_entity, file_mdm_entity_education_entity, file_mdm_entity_military_entity, file_mdm_entity_student_entity, file_mdm_entity_employee_entity]);
+  fileDesc("ChxtZG0vZW50aXR5L3VzZXIuZW50aXR5LnByb3RvEg9jb250cmFjdC5lbnRpdHki0wMKBFVzZXISCgoCaWQYASABKAMSDAoEdXVpZBgCIAEoCRIZCgxhZF9vYmplY3RfaWQYAyABKAlIAIgBARISCgpmaXJzdF9uYW1lGAQgASgJEhEKCWxhc3RfbmFtZRgFIAEoCRIXCgpwYXRyb255bWljGAYgASgJSAGIAQESDQoFZW1haWwYByABKAkSEgoFcGhvbmUYCCABKAlIAogBARIpCgZzdGF0dXMYCSABKA4yGS5jb250cmFjdC5lbnVtLlVzZXJTdGF0dXMSMQoIYmlydGhkYXkYCiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSAOIAQESLgoKY3JlYXRlZF9hdBgLIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKdXBkYXRlZF9hdBgMIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASFgoOcGVybWlzc2lvbl9pZHMYDSADKAMSJgoFcm9sZXMYDiADKA4yFy5jb250cmFjdC5lbnVtLlVzZXJSb2xlQg8KDV9hZF9vYmplY3RfaWRCDQoLX3BhdHJvbnltaWNCCAoGX3Bob25lQgsKCV9iaXJ0aGRheSJZChNVc2VyUGVybWlzc2lvbkdyb3VwEgoKAmlkGAEgASgDEgwKBG5hbWUYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEwoLcGVybWlzc2lvbnMYBCADKAkikQIKCFVzZXJGdWxsEiMKBHVzZXIYASABKAsyFS5jb250cmFjdC5lbnRpdHkuVXNlchIpCgdzdHVkZW50GAIgASgLMhguY29udHJhY3QuZW50aXR5LlN0dWRlbnQSKwoIcGFzc3BvcnQYAyABKAsyGS5jb250cmFjdC5lbnRpdHkuUGFzc3BvcnQSKwoIbWlsaXRhcnkYBCABKAsyGS5jb250cmFjdC5lbnRpdHkuTWlsaXRhcnkSKwoIZW1wbG95ZWUYBSABKAsyGS5jb250cmFjdC5lbnRpdHkuRW1wbG95ZWUSLgoKZWR1Y2F0aW9ucxgGIAMoCzIaLmNvbnRyYWN0LmVudGl0eS5FZHVjYXRpb25CngEKE2NvbS5jb250cmFjdC5lbnRpdHlCD1VzZXJFbnRpdHlQcm90b1ABWhlmZXNtdS9jb250cmFjdC9tZG0vZW50aXR5ogIDQ0VYqgIPQ29udHJhY3QuRW50aXR5ygIPQ29udHJhY3RcRW50aXR54gIbQ29udHJhY3RcRW50aXR5XEdQQk1ldGFkYXRh6gIQQ29udHJhY3Q6OkVudGl0eWIGcHJvdG8z", [file_mdm_enum_user_enum, file_google_protobuf_timestamp, file_mdm_entity_passport_entity, file_mdm_entity_education_entity, file_mdm_entity_military_entity, file_mdm_entity_student_entity, file_mdm_entity_employee_entity]);
 
 /**
  * @generated from message contract.entity.User
@@ -36,120 +36,69 @@ export type User = Message<"contract.entity.User"> & {
   id: bigint;
 
   /**
-   * @generated from field: string first_name = 2;
-   */
-  firstName: string;
-
-  /**
-   * @generated from field: string last_name = 3;
-   */
-  lastName: string;
-
-  /**
-   * @generated from field: optional string patronymic = 4;
-   */
-  patronymic?: string | undefined;
-
-  /**
-   * @generated from field: string email = 5;
-   */
-  email: string;
-
-  /**
-   * @generated from field: optional string phone = 6;
-   */
-  phone?: string | undefined;
-
-  /**
-   * @generated from field: contract.enum.UserStatus status = 7;
-   */
-  status: UserStatus;
-
-  /**
-   * @generated from field: optional google.protobuf.Timestamp birthday = 8;
-   */
-  birthday?: Timestamp | undefined;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp created_at = 9;
-   */
-  createdAt?: Timestamp | undefined;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp updated_at = 10;
-   */
-  updatedAt?: Timestamp | undefined;
-
-  /**
-   * uuid — публичный идентификатор (mdm_uuid): в JWT sub, AD, других
-   * сервисах. Числовой id остаётся внутренним ключом mdm.
-   *
-   * @generated from field: string uuid = 11;
+   * @generated from field: string uuid = 2;
    */
   uuid: string;
 
   /**
-   * username — sAMAccountName в AD и local-part Яндекс-логина.
-   *
-   * @generated from field: optional string username = 12;
-   */
-  username?: string | undefined;
-
-  /**
-   * ad_object_id — objectGUID учётки AD; пусто, пока sync её не создал.
-   *
-   * @generated from field: optional string ad_object_id = 13;
+   * @generated from field: optional string ad_object_id = 3;
    */
   adObjectId?: string | undefined;
+
+  /**
+   * @generated from field: string first_name = 4;
+   */
+  firstName: string;
+
+  /**
+   * @generated from field: string last_name = 5;
+   */
+  lastName: string;
+
+  /**
+   * @generated from field: optional string patronymic = 6;
+   */
+  patronymic?: string | undefined;
+
+  /**
+   * @generated from field: string email = 7;
+   */
+  email: string;
+
+  /**
+   * @generated from field: optional string phone = 8;
+   */
+  phone?: string | undefined;
+
+  /**
+   * @generated from field: contract.enum.UserStatus status = 9;
+   */
+  status: UserStatus;
+
+  /**
+   * @generated from field: optional google.protobuf.Timestamp birthday = 10;
+   */
+  birthday?: Timestamp | undefined;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp created_at = 11;
+   */
+  createdAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp updated_at = 12;
+   */
+  updatedAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: repeated int64 permission_ids = 13;
+   */
+  permissionIds: bigint[];
 
   /**
    * @generated from field: repeated contract.enum.UserRole roles = 14;
    */
   roles: UserRole[];
-
-  /**
-   * permissions — собственные права на отдельные действия ("раздел.действие").
-   *
-   * @generated from field: repeated string permissions = 15;
-   */
-  permissions: string[];
-
-  /**
-   * access_group_ids — выданные наборы доступа (UserService.AccessGroupFetch).
-   *
-   * @generated from field: repeated int64 access_group_ids = 16;
-   */
-  accessGroupIds: bigint[];
-
-  /**
-   * effective_permissions — итоговые права: собственные и всех наборов.
-   * Именно их кладёт в токен auth.
-   *
-   * @generated from field: repeated string effective_permissions = 17;
-   */
-  effectivePermissions: string[];
-
-  /**
-   * departments — подразделения человека (его записи сотрудника, без «не указано»).
-   *
-   * @generated from field: repeated contract.enum.UserEmployeeDepartment departments = 18;
-   */
-  departments: UserEmployeeDepartment[];
-
-  /**
-   * department_access_group_ids — доступы, полученные через подразделения
-   * (AccessGroup.departments); их права уже в effective_permissions.
-   *
-   * @generated from field: repeated int64 department_access_group_ids = 19;
-   */
-  departmentAccessGroupIds: bigint[];
-
-  /**
-   * position — должность сотрудника («Начальник отдела»); пусто, пока не задана.
-   *
-   * @generated from field: string position = 20;
-   */
-  position: string;
 };
 
 /**
@@ -160,11 +109,9 @@ export const UserSchema: GenMessage<User> = /*@__PURE__*/
   messageDesc(file_mdm_entity_user_entity, 0);
 
 /**
- * AccessGroup — набор доступа: именованный набор прав, выдаётся людям.
- *
- * @generated from message contract.entity.AccessGroup
+ * @generated from message contract.entity.UserPermissionGroup
  */
-export type AccessGroup = Message<"contract.entity.AccessGroup"> & {
+export type UserPermissionGroup = Message<"contract.entity.UserPermissionGroup"> & {
   /**
    * @generated from field: int64 id = 1;
    */
@@ -184,27 +131,13 @@ export type AccessGroup = Message<"contract.entity.AccessGroup"> & {
    * @generated from field: repeated string permissions = 4;
    */
   permissions: string[];
-
-  /**
-   * user_count — у скольких людей этот набор (выдан лично).
-   *
-   * @generated from field: int64 user_count = 5;
-   */
-  userCount: bigint;
-
-  /**
-   * departments — подразделения, всем сотрудникам которых доступ выдан сам.
-   *
-   * @generated from field: repeated contract.enum.UserEmployeeDepartment departments = 6;
-   */
-  departments: UserEmployeeDepartment[];
 };
 
 /**
- * Describes the message contract.entity.AccessGroup.
- * Use `create(AccessGroupSchema)` to create a new message.
+ * Describes the message contract.entity.UserPermissionGroup.
+ * Use `create(UserPermissionGroupSchema)` to create a new message.
  */
-export const AccessGroupSchema: GenMessage<AccessGroup> = /*@__PURE__*/
+export const UserPermissionGroupSchema: GenMessage<UserPermissionGroup> = /*@__PURE__*/
   messageDesc(file_mdm_entity_user_entity, 1);
 
 /**
@@ -217,14 +150,14 @@ export type UserFull = Message<"contract.entity.UserFull"> & {
   user?: User | undefined;
 
   /**
-   * @generated from field: contract.entity.Passport passport = 2;
+   * @generated from field: contract.entity.Student student = 2;
    */
-  passport?: Passport | undefined;
+  student?: Student | undefined;
 
   /**
-   * @generated from field: repeated contract.entity.Education educations = 3;
+   * @generated from field: contract.entity.Passport passport = 3;
    */
-  educations: Education[];
+  passport?: Passport | undefined;
 
   /**
    * @generated from field: contract.entity.Military military = 4;
@@ -232,14 +165,14 @@ export type UserFull = Message<"contract.entity.UserFull"> & {
   military?: Military | undefined;
 
   /**
-   * @generated from field: contract.entity.Student student = 5;
-   */
-  student?: Student | undefined;
-
-  /**
-   * @generated from field: contract.entity.Employee employee = 6;
+   * @generated from field: contract.entity.Employee employee = 5;
    */
   employee?: Employee | undefined;
+
+  /**
+   * @generated from field: repeated contract.entity.Education educations = 6;
+   */
+  educations: Education[];
 };
 
 /**

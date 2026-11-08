@@ -42,6 +42,7 @@ type Finding struct {
 	LastName   string
 	ObjectGUID string
 	Detail     string
+	Category   string
 }
 
 type Report struct {
@@ -107,6 +108,7 @@ func Run(mdmUsers []mdmclient.User, adEntries []adldap.Entry) Report {
 					Email:     u.Email,
 					FirstName: u.FirstName,
 					LastName:  u.LastName,
+					Category:  userCategory(u.Roles),
 					Detail:    "нет аккаунта в AD ни по связке, ни по email, ни по sAMAccountName",
 				})
 			}
@@ -164,6 +166,26 @@ func Run(mdmUsers []mdmclient.User, adEntries []adldap.Entry) Report {
 	}
 
 	return Report{Findings: findings}
+}
+
+// userCategory выбирает OU по ролям MDM. STUDENT вместе с STAFF/TEACHER — неоднозначность.
+func userCategory(roles []string) string {
+	student, staff := false, false
+	for _, role := range roles {
+		switch role {
+		case "USER_ROLE_STUDENT":
+			student = true
+		case "USER_ROLE_STAFF", "USER_ROLE_TEACHER":
+			staff = true
+		}
+	}
+	if student == staff {
+		return ""
+	}
+	if student {
+		return "student"
+	}
+	return "staff"
 }
 
 func fieldDiff(u mdmclient.User, e adldap.Entry) string {

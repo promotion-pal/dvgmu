@@ -110,7 +110,7 @@ func (m *Module) caller(ctx context.Context) (*auth.User, scope, error) {
 	if err != nil {
 		return nil, scope{}, connect.NewError(connect.CodeUnavailable, errors.New("не удалось найти вас в MDM"))
 	}
-	f := faculty.OfDepartments(resp.Msg.GetUser().GetDepartments())
+	f := faculty.OfDepartments(resp.Msg.GetDepartments())
 	if len(f) == 0 {
 		return user, scope{all: true}, nil
 	}
@@ -137,6 +137,10 @@ func fullName(u *mdmentity.User) string {
 	return strings.Join(out, " ")
 }
 
+func userLogin(u *mdmentity.User) string {
+	return strings.TrimSpace(strings.SplitN(u.GetEmail(), "@", 2)[0])
+}
+
 // issueBlocker — почему нельзя выдать код; "" — можно.
 func issueBlocker(s *mdmentity.Student, u *mdmentity.User) string {
 	switch {
@@ -144,7 +148,7 @@ func issueBlocker(s *mdmentity.Student, u *mdmentity.User) string {
 		return "учётка отключена в MDM"
 	case strings.TrimSpace(u.GetAdObjectId()) == "":
 		return "нет учётки AD"
-	case strings.TrimSpace(u.GetUsername()) == "":
+	case userLogin(u) == "":
 		return "нет логина"
 	}
 	switch s.GetStatus() {
@@ -169,7 +173,7 @@ func toStudent(sw *mdmpb.StudentWithUser, code int32, demo bool) *pb.DeaneryStud
 		Course:       faculty.Course(s.GetGroup()),
 		Faculty:      faculty.Label(code),
 		RecordBook:   strings.TrimSpace(s.GetRecordBook()),
-		Login:        strings.TrimSpace(u.GetUsername()),
+		Login:        userLogin(u),
 		HasAccount:   strings.TrimSpace(u.GetAdObjectId()) != "",
 		Status:       studentStatusLabels[s.GetStatus()],
 		CanIssue:     blocker == "" || demo,

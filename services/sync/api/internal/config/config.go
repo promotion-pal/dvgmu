@@ -38,16 +38,16 @@ type LDAPConfig struct {
 // Обычный ldap:// (без TLS) подходит: sync создаёт учётки без пароля
 // (см. adldap.CreateUser), а установка пароля — единственная операция,
 // которую AD требует делать только по ldaps:///StartTLS — здесь не нужна.
-// Пусто (URL или TargetOU) — write-режим (-create-missing) недоступен, но
-// обычный read-only проход работает как обычно.
+// Пустые OU отключают создание только соответствующей категории; обычный
+// read-only проход продолжает работать.
 type LDAPWriteConfig struct {
 	URL                string `yaml:"url" env:"SYNC_LDAP_WRITE_URL"`
 	InsecureSkipVerify bool   `yaml:"insecure_skip_verify" env:"SYNC_LDAP_WRITE_INSECURE_SKIP_VERIFY" env-default:"false"`
 	BindDN             string `yaml:"bind_dn" env:"SYNC_LDAP_WRITE_BIND_DN"`
 	BindPassword       string `yaml:"bind_password" env:"SYNC_LDAP_WRITE_BIND_PASSWORD"`
-	// TargetOU — полный DN, куда создавать новые учётки, напр.
-	// "OU=Test,DC=dvgmu,DC=local".
-	TargetOU string `yaml:"target_ou" env:"SYNC_LDAP_TARGET_OU"`
+	// Полные DN целевых OU, например OU=Students,DC=dvgmu,DC=local.
+	StudentsOU string `yaml:"students_ou" env:"SYNC_LDAP_STUDENTS_OU"`
+	StaffOU    string `yaml:"staff_ou" env:"SYNC_LDAP_STAFF_OU"`
 	// UPNSuffix — домен для userPrincipalName, напр. "dvgmu.local".
 	UPNSuffix string `yaml:"upn_suffix" env:"SYNC_LDAP_UPN_SUFFIX"`
 }

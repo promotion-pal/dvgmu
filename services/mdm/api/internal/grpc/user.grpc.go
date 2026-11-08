@@ -7,19 +7,19 @@ import (
 	"connectrpc.com/connect"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "fesmu/contract/mdm/service"
 	"dvgmu/api/internal/domain/models"
 	"dvgmu/api/internal/service"
+	pb "fesmu/contract/mdm/service"
 )
 
 type UserHandler struct {
-	service    *service.UserService
-	activation *service.ActivationService
-	access     *service.AccessGroupService
+	service              *service.UserService
+	activation           *service.ActivationService
+	userPermissionGroups *service.UserPermissionGroupService
 }
 
-func UserNewController(service *service.UserService, activation *service.ActivationService, access *service.AccessGroupService) *UserHandler {
-	return &UserHandler{service: service, activation: activation, access: access}
+func UserNewController(service *service.UserService, activation *service.ActivationService, userPermissionGroups *service.UserPermissionGroupService) *UserHandler {
+	return &UserHandler{service: service, activation: activation, userPermissionGroups: userPermissionGroups}
 }
 
 func (h *UserHandler) UserFetch(
@@ -119,7 +119,16 @@ func (h *UserHandler) UserFetchByUUID(
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	return connect.NewResponse(&pb.UserFetchByUUIDResponse{User: user.ToProto()}), nil
+	username := ""
+	if user.Username != nil {
+		username = *user.Username
+	}
+	return connect.NewResponse(&pb.UserFetchByUUIDResponse{
+		User:                 user.ToProto(),
+		Username:             username,
+		EffectivePermissions: user.EffectivePermissions(),
+		Departments:          user.DepartmentList(),
+	}), nil
 }
 
 func (h *UserHandler) UserFetchByADObjectID(
@@ -138,7 +147,16 @@ func (h *UserHandler) UserFetchByADObjectID(
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	return connect.NewResponse(&pb.UserFetchByADObjectIDResponse{User: user.ToProto()}), nil
+	username := ""
+	if user.Username != nil {
+		username = *user.Username
+	}
+	return connect.NewResponse(&pb.UserFetchByADObjectIDResponse{
+		User:                 user.ToProto(),
+		Username:             username,
+		EffectivePermissions: user.EffectivePermissions(),
+		Departments:          user.DepartmentList(),
+	}), nil
 }
 
 func (h *UserHandler) ActivationIssue(
@@ -555,6 +573,8 @@ func (h *UserHandler) EmployeeCreate(
 	params := models.EmployeeCreateParams{
 		UserID:     req.Msg.GetUserId(),
 		Department: req.Msg.GetDepartment(),
+		Status:     req.Msg.GetStatus(),
+		Position:   req.Msg.GetPosition(),
 	}
 
 	id, err := h.service.EmployeeCreate(ctx, params)

@@ -42,8 +42,6 @@ import { NotFoundPage } from "./page/state";
 import StudentCabinetPage from "./page/cabinet";
 import ProfilePage from "./page/Profile";
 import AuthAdminPage from "./page/admin/auth";
-import RoleAdminPage from "./page/admin/roles";
-import AccessAdminPage from "./page/admin/access";
 import DebtorAdminPage from "./page/admin/debtors";
 import VaccinationAdminPage from "./page/admin/vaccination";
 
@@ -158,8 +156,8 @@ function App() {
           {/* Администратор */}
           <Route element={<Allow roles={ACCESS.ADMIN} />}>
             <Route path={ROUTE.ADMIN.AUTH} element={<AuthAdminPage />} />
-            <Route path={ROUTE.ADMIN.ROLES} element={<RoleAdminPage />} />
-            <Route path={ROUTE.ADMIN.ACCESS} element={<AccessAdminPage />} />
+            <Route path={ROUTE.ADMIN.ROLES} element={<Navigate to={`${ROUTE.USER.USERS}?tab=roles`} replace />} />
+            <Route path={ROUTE.ADMIN.ACCESS} element={<Navigate to={`${ROUTE.USER.USERS}?tab=permissions`} replace />} />
             {/* Персональные данные */}
             <Route path={ROUTE.USER.USERS} element={<UserPage />} />
             <Route path={ROUTE.USER.STUDENTS} element={<StudentPage />} />

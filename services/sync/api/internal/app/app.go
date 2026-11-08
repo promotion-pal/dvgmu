@@ -43,7 +43,8 @@ func New(log *slog.Logger, cfg *config.Config) *App {
 			InsecureSkipVerify: cfg.LDAPWrite.InsecureSkipVerify,
 			BindDN:             cfg.LDAPWrite.BindDN,
 			BindPassword:       cfg.LDAPWrite.BindPassword,
-			TargetOU:           cfg.LDAPWrite.TargetOU,
+			StudentsOU:         cfg.LDAPWrite.StudentsOU,
+			StaffOU:            cfg.LDAPWrite.StaffOU,
 			UPNSuffix:          cfg.LDAPWrite.UPNSuffix,
 		}),
 	}
@@ -141,7 +142,7 @@ func (a *App) fetchAll(ctx context.Context) ([]mdmclient.User, []adldap.Entry, e
 //     ВЫКЛЮЧЕННОЙ и БЕЗ ПАРОЛЯ (пароль/включение — вручную админом через
 //     ADUC/PowerShell после проверки) и сразу привязать её к MDM. Ограничено
 //     лимитом — осознанно маленькими партиями, не разом на все находки.
-func (a *App) ApplyOnce(ctx context.Context, createMissingLimit int, linkUnlinked bool) error {
+func (a *App) ApplyOnce(ctx context.Context, createMissingLimit int, createMissingCategory string, linkUnlinked bool) error {
 	mdmUsers, adEntries, err := a.fetchAll(ctx)
 	if err != nil {
 		return fmt.Errorf("fetch: %w", err)
@@ -153,7 +154,7 @@ func (a *App) ApplyOnce(ctx context.Context, createMissingLimit int, linkUnlinke
 	}
 
 	if createMissingLimit > 0 {
-		if err := a.createMissing(ctx, report, createMissingLimit); err != nil {
+		if err := a.createMissing(ctx, report, createMissingLimit, createMissingCategory); err != nil {
 			return err
 		}
 	}
@@ -281,10 +282,10 @@ func (a *App) linkUnlinked(ctx context.Context, report reconcile.Report) {
 	a.log.Info("sync: link-unlinked finished", "candidates", len(links), "linked", linked, "skipped", len(skipped))
 }
 
-func (a *App) createMissing(ctx context.Context, report reconcile.Report, limit int) error {
+func (a *App) createMissing(ctx context.Context, report reconcile.Report, limit int, category string) error {
 	if !a.adWrite.Enabled() {
 		return fmt.Errorf("create-missing requested but AD write is not configured " +
-			"(need SYNC_LDAP_WRITE_URL, SYNC_LDAP_WRITE_BIND_DN/PASSWORD, SYNC_LDAP_TARGET_OU)")
+			"(need SYNC_LDAP_WRITE_URL, SYNC_LDAP_WRITE_BIND_DN/PASSWORD)")
 	}
 
 	created := 0
@@ -295,6 +296,15 @@ func (a *App) createMissing(ctx context.Context, report reconcile.Report, limit 
 			break
 		}
 		if f.Kind != reconcile.KindMissingInAD {
+			continue
+		}
+		if category != "" && f.Category != category {
+			continue
+		}
+		targetOU := a.adWrite.TargetOU(f.Category)
+		if targetOU == "" {
+			a.log.Warn("sync: skip create, no destination OU for MDM roles/category",
+				"mdm_id", f.MDMID, "email", f.Email, "category", f.Category)
 			continue
 		}
 
@@ -310,7 +320,7 @@ func (a *App) createMissing(ctx context.Context, report reconcile.Report, limit 
 			LastName:       f.LastName,
 			Email:          f.Email,
 			SAMAccountName: sam,
-		})
+		}, targetOU)
 		if err != nil {
 			// Любая ошибка от AD — сразу останавливаем весь прогон, а не
 			// пропускаем и идём дальше: живой пример — Constraint Violation

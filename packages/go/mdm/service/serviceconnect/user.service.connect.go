@@ -65,24 +65,27 @@ const (
 	// UserServiceUserPermissionsSetProcedure is the fully-qualified name of the UserService's
 	// UserPermissionsSet RPC.
 	UserServiceUserPermissionsSetProcedure = "/contract.service.UserService/UserPermissionsSet"
-	// UserServiceUserAccessGroupsSetProcedure is the fully-qualified name of the UserService's
-	// UserAccessGroupsSet RPC.
-	UserServiceUserAccessGroupsSetProcedure = "/contract.service.UserService/UserAccessGroupsSet"
+	// UserServiceUserPermissionGroupsSetProcedure is the fully-qualified name of the UserService's
+	// UserPermissionGroupsSet RPC.
+	UserServiceUserPermissionGroupsSetProcedure = "/contract.service.UserService/UserPermissionGroupsSet"
+	// UserServiceUserPermissionGroupAssignmentsFetchProcedure is the fully-qualified name of the
+	// UserService's UserPermissionGroupAssignmentsFetch RPC.
+	UserServiceUserPermissionGroupAssignmentsFetchProcedure = "/contract.service.UserService/UserPermissionGroupAssignmentsFetch"
 	// UserServiceUserDepartmentsSetProcedure is the fully-qualified name of the UserService's
 	// UserDepartmentsSet RPC.
 	UserServiceUserDepartmentsSetProcedure = "/contract.service.UserService/UserDepartmentsSet"
 	// UserServiceUserPositionSetProcedure is the fully-qualified name of the UserService's
 	// UserPositionSet RPC.
 	UserServiceUserPositionSetProcedure = "/contract.service.UserService/UserPositionSet"
-	// UserServiceAccessGroupFetchProcedure is the fully-qualified name of the UserService's
-	// AccessGroupFetch RPC.
-	UserServiceAccessGroupFetchProcedure = "/contract.service.UserService/AccessGroupFetch"
-	// UserServiceAccessGroupSaveProcedure is the fully-qualified name of the UserService's
-	// AccessGroupSave RPC.
-	UserServiceAccessGroupSaveProcedure = "/contract.service.UserService/AccessGroupSave"
-	// UserServiceAccessGroupDeleteProcedure is the fully-qualified name of the UserService's
-	// AccessGroupDelete RPC.
-	UserServiceAccessGroupDeleteProcedure = "/contract.service.UserService/AccessGroupDelete"
+	// UserServiceUserPermissionGroupFetchProcedure is the fully-qualified name of the UserService's
+	// UserPermissionGroupFetch RPC.
+	UserServiceUserPermissionGroupFetchProcedure = "/contract.service.UserService/UserPermissionGroupFetch"
+	// UserServiceUserPermissionGroupSaveProcedure is the fully-qualified name of the UserService's
+	// UserPermissionGroupSave RPC.
+	UserServiceUserPermissionGroupSaveProcedure = "/contract.service.UserService/UserPermissionGroupSave"
+	// UserServiceUserPermissionGroupDeleteProcedure is the fully-qualified name of the UserService's
+	// UserPermissionGroupDelete RPC.
+	UserServiceUserPermissionGroupDeleteProcedure = "/contract.service.UserService/UserPermissionGroupDelete"
 	// UserServicePassportCreateProcedure is the fully-qualified name of the UserService's
 	// PassportCreate RPC.
 	UserServicePassportCreateProcedure = "/contract.service.UserService/PassportCreate"
@@ -126,19 +129,20 @@ type UserServiceClient interface {
 	UserRolesSet(context.Context, *connect.Request[service.UserRolesSetRequest]) (*connect.Response[service.UserRolesSetResponse], error)
 	// UserPermissionsSet заменяет набор прав пользователя целиком.
 	UserPermissionsSet(context.Context, *connect.Request[service.UserPermissionsSetRequest]) (*connect.Response[service.UserPermissionsSetResponse], error)
-	// UserAccessGroupsSet заменяет выданные пользователю наборы доступа целиком.
-	UserAccessGroupsSet(context.Context, *connect.Request[service.UserAccessGroupsSetRequest]) (*connect.Response[service.UserAccessGroupsSetResponse], error)
+	// UserPermissionGroupsSet заменяет выданные пользователю группы прав целиком.
+	UserPermissionGroupsSet(context.Context, *connect.Request[service.UserPermissionGroupsSetRequest]) (*connect.Response[service.UserPermissionGroupsSetResponse], error)
+	UserPermissionGroupAssignmentsFetch(context.Context, *connect.Request[service.UserPermissionGroupAssignmentsFetchRequest]) (*connect.Response[service.UserPermissionGroupAssignmentsFetchResponse], error)
 	// UserDepartmentsSet заменяет подразделения человека (его записи сотрудника)
 	// целиком; пустой набор — убрать все.
 	UserDepartmentsSet(context.Context, *connect.Request[service.UserDepartmentsSetRequest]) (*connect.Response[service.UserDepartmentsSetResponse], error)
 	// UserPositionSet задаёт должность человека; пустая строка — снять.
 	UserPositionSet(context.Context, *connect.Request[service.UserPositionSetRequest]) (*connect.Response[service.UserPositionSetResponse], error)
 	// Наборы доступа: права, собранные администратором под общим именем.
-	AccessGroupFetch(context.Context, *connect.Request[service.AccessGroupFetchRequest]) (*connect.Response[service.AccessGroupFetchResponse], error)
-	// AccessGroupSave: id = 0 — создать, иначе изменить (состав прав заменяется целиком).
-	AccessGroupSave(context.Context, *connect.Request[service.AccessGroupSaveRequest]) (*connect.Response[service.AccessGroupSaveResponse], error)
-	// AccessGroupDelete: набор снимается и со всех, кому выдан.
-	AccessGroupDelete(context.Context, *connect.Request[service.AccessGroupDeleteRequest]) (*connect.Response[service.AccessGroupDeleteResponse], error)
+	UserPermissionGroupFetch(context.Context, *connect.Request[service.UserPermissionGroupFetchRequest]) (*connect.Response[service.UserPermissionGroupFetchResponse], error)
+	// id = 0 — создать, иначе изменить (состав прав заменяется целиком).
+	UserPermissionGroupSave(context.Context, *connect.Request[service.UserPermissionGroupSaveRequest]) (*connect.Response[service.UserPermissionGroupSaveResponse], error)
+	// При удалении группа снимается со всех пользователей, кому она выдана.
+	UserPermissionGroupDelete(context.Context, *connect.Request[service.UserPermissionGroupDeleteRequest]) (*connect.Response[service.UserPermissionGroupDeleteResponse], error)
 	PassportCreate(context.Context, *connect.Request[service.PassportCreateRequest]) (*connect.Response[service.PassportCreateResponse], error)
 	EducationCreate(context.Context, *connect.Request[service.EducationCreateRequest]) (*connect.Response[service.EducationCreateResponse], error)
 	MilitaryCreate(context.Context, *connect.Request[service.MilitaryCreateRequest]) (*connect.Response[service.MilitaryCreateResponse], error)
@@ -231,10 +235,16 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(userServiceMethods.ByName("UserPermissionsSet")),
 			connect.WithClientOptions(opts...),
 		),
-		userAccessGroupsSet: connect.NewClient[service.UserAccessGroupsSetRequest, service.UserAccessGroupsSetResponse](
+		userPermissionGroupsSet: connect.NewClient[service.UserPermissionGroupsSetRequest, service.UserPermissionGroupsSetResponse](
 			httpClient,
-			baseURL+UserServiceUserAccessGroupsSetProcedure,
-			connect.WithSchema(userServiceMethods.ByName("UserAccessGroupsSet")),
+			baseURL+UserServiceUserPermissionGroupsSetProcedure,
+			connect.WithSchema(userServiceMethods.ByName("UserPermissionGroupsSet")),
+			connect.WithClientOptions(opts...),
+		),
+		userPermissionGroupAssignmentsFetch: connect.NewClient[service.UserPermissionGroupAssignmentsFetchRequest, service.UserPermissionGroupAssignmentsFetchResponse](
+			httpClient,
+			baseURL+UserServiceUserPermissionGroupAssignmentsFetchProcedure,
+			connect.WithSchema(userServiceMethods.ByName("UserPermissionGroupAssignmentsFetch")),
 			connect.WithClientOptions(opts...),
 		),
 		userDepartmentsSet: connect.NewClient[service.UserDepartmentsSetRequest, service.UserDepartmentsSetResponse](
@@ -249,22 +259,22 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(userServiceMethods.ByName("UserPositionSet")),
 			connect.WithClientOptions(opts...),
 		),
-		accessGroupFetch: connect.NewClient[service.AccessGroupFetchRequest, service.AccessGroupFetchResponse](
+		userPermissionGroupFetch: connect.NewClient[service.UserPermissionGroupFetchRequest, service.UserPermissionGroupFetchResponse](
 			httpClient,
-			baseURL+UserServiceAccessGroupFetchProcedure,
-			connect.WithSchema(userServiceMethods.ByName("AccessGroupFetch")),
+			baseURL+UserServiceUserPermissionGroupFetchProcedure,
+			connect.WithSchema(userServiceMethods.ByName("UserPermissionGroupFetch")),
 			connect.WithClientOptions(opts...),
 		),
-		accessGroupSave: connect.NewClient[service.AccessGroupSaveRequest, service.AccessGroupSaveResponse](
+		userPermissionGroupSave: connect.NewClient[service.UserPermissionGroupSaveRequest, service.UserPermissionGroupSaveResponse](
 			httpClient,
-			baseURL+UserServiceAccessGroupSaveProcedure,
-			connect.WithSchema(userServiceMethods.ByName("AccessGroupSave")),
+			baseURL+UserServiceUserPermissionGroupSaveProcedure,
+			connect.WithSchema(userServiceMethods.ByName("UserPermissionGroupSave")),
 			connect.WithClientOptions(opts...),
 		),
-		accessGroupDelete: connect.NewClient[service.AccessGroupDeleteRequest, service.AccessGroupDeleteResponse](
+		userPermissionGroupDelete: connect.NewClient[service.UserPermissionGroupDeleteRequest, service.UserPermissionGroupDeleteResponse](
 			httpClient,
-			baseURL+UserServiceAccessGroupDeleteProcedure,
-			connect.WithSchema(userServiceMethods.ByName("AccessGroupDelete")),
+			baseURL+UserServiceUserPermissionGroupDeleteProcedure,
+			connect.WithSchema(userServiceMethods.ByName("UserPermissionGroupDelete")),
 			connect.WithClientOptions(opts...),
 		),
 		passportCreate: connect.NewClient[service.PassportCreateRequest, service.PassportCreateResponse](
@@ -314,31 +324,32 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 
 // userServiceClient implements UserServiceClient.
 type userServiceClient struct {
-	userFetch             *connect.Client[service.UserFetchRequest, service.UserFetchResponse]
-	userCreate            *connect.Client[service.UserCreateRequest, service.UserCreateResponse]
-	userFetchByID         *connect.Client[service.UserFetchByIDRequest, service.UserFetchByIDResponse]
-	userCreateBatch       *connect.Client[service.UserCreateBatchRequest, service.UserCreateBatchResponse]
-	userUpdate            *connect.Client[service.UserUpdateRequest, service.UserUpdateResponse]
-	userDelete            *connect.Client[service.UserDeleteRequest, service.UserDeleteResponse]
-	userDeleteBatch       *connect.Client[service.UserDeleteBatchRequest, service.UserDeleteBatchResponse]
-	userFetchByUUID       *connect.Client[service.UserFetchByUUIDRequest, service.UserFetchByUUIDResponse]
-	userFetchByADObjectID *connect.Client[service.UserFetchByADObjectIDRequest, service.UserFetchByADObjectIDResponse]
-	activationIssue       *connect.Client[service.ActivationIssueRequest, service.ActivationIssueResponse]
-	userRolesSet          *connect.Client[service.UserRolesSetRequest, service.UserRolesSetResponse]
-	userPermissionsSet    *connect.Client[service.UserPermissionsSetRequest, service.UserPermissionsSetResponse]
-	userAccessGroupsSet   *connect.Client[service.UserAccessGroupsSetRequest, service.UserAccessGroupsSetResponse]
-	userDepartmentsSet    *connect.Client[service.UserDepartmentsSetRequest, service.UserDepartmentsSetResponse]
-	userPositionSet       *connect.Client[service.UserPositionSetRequest, service.UserPositionSetResponse]
-	accessGroupFetch      *connect.Client[service.AccessGroupFetchRequest, service.AccessGroupFetchResponse]
-	accessGroupSave       *connect.Client[service.AccessGroupSaveRequest, service.AccessGroupSaveResponse]
-	accessGroupDelete     *connect.Client[service.AccessGroupDeleteRequest, service.AccessGroupDeleteResponse]
-	passportCreate        *connect.Client[service.PassportCreateRequest, service.PassportCreateResponse]
-	educationCreate       *connect.Client[service.EducationCreateRequest, service.EducationCreateResponse]
-	militaryCreate        *connect.Client[service.MilitaryCreateRequest, service.MilitaryCreateResponse]
-	studentCreate         *connect.Client[service.StudentCreateRequest, service.StudentCreateResponse]
-	studentFetch          *connect.Client[service.StudentFetchRequest, service.StudentFetchResponse]
-	employeeCreate        *connect.Client[service.EmployeeCreateRequest, service.EmployeeCreateResponse]
-	employeeFetch         *connect.Client[service.EmployeeFetchRequest, service.EmployeeFetchResponse]
+	userFetch                           *connect.Client[service.UserFetchRequest, service.UserFetchResponse]
+	userCreate                          *connect.Client[service.UserCreateRequest, service.UserCreateResponse]
+	userFetchByID                       *connect.Client[service.UserFetchByIDRequest, service.UserFetchByIDResponse]
+	userCreateBatch                     *connect.Client[service.UserCreateBatchRequest, service.UserCreateBatchResponse]
+	userUpdate                          *connect.Client[service.UserUpdateRequest, service.UserUpdateResponse]
+	userDelete                          *connect.Client[service.UserDeleteRequest, service.UserDeleteResponse]
+	userDeleteBatch                     *connect.Client[service.UserDeleteBatchRequest, service.UserDeleteBatchResponse]
+	userFetchByUUID                     *connect.Client[service.UserFetchByUUIDRequest, service.UserFetchByUUIDResponse]
+	userFetchByADObjectID               *connect.Client[service.UserFetchByADObjectIDRequest, service.UserFetchByADObjectIDResponse]
+	activationIssue                     *connect.Client[service.ActivationIssueRequest, service.ActivationIssueResponse]
+	userRolesSet                        *connect.Client[service.UserRolesSetRequest, service.UserRolesSetResponse]
+	userPermissionsSet                  *connect.Client[service.UserPermissionsSetRequest, service.UserPermissionsSetResponse]
+	userPermissionGroupsSet             *connect.Client[service.UserPermissionGroupsSetRequest, service.UserPermissionGroupsSetResponse]
+	userPermissionGroupAssignmentsFetch *connect.Client[service.UserPermissionGroupAssignmentsFetchRequest, service.UserPermissionGroupAssignmentsFetchResponse]
+	userDepartmentsSet                  *connect.Client[service.UserDepartmentsSetRequest, service.UserDepartmentsSetResponse]
+	userPositionSet                     *connect.Client[service.UserPositionSetRequest, service.UserPositionSetResponse]
+	userPermissionGroupFetch            *connect.Client[service.UserPermissionGroupFetchRequest, service.UserPermissionGroupFetchResponse]
+	userPermissionGroupSave             *connect.Client[service.UserPermissionGroupSaveRequest, service.UserPermissionGroupSaveResponse]
+	userPermissionGroupDelete           *connect.Client[service.UserPermissionGroupDeleteRequest, service.UserPermissionGroupDeleteResponse]
+	passportCreate                      *connect.Client[service.PassportCreateRequest, service.PassportCreateResponse]
+	educationCreate                     *connect.Client[service.EducationCreateRequest, service.EducationCreateResponse]
+	militaryCreate                      *connect.Client[service.MilitaryCreateRequest, service.MilitaryCreateResponse]
+	studentCreate                       *connect.Client[service.StudentCreateRequest, service.StudentCreateResponse]
+	studentFetch                        *connect.Client[service.StudentFetchRequest, service.StudentFetchResponse]
+	employeeCreate                      *connect.Client[service.EmployeeCreateRequest, service.EmployeeCreateResponse]
+	employeeFetch                       *connect.Client[service.EmployeeFetchRequest, service.EmployeeFetchResponse]
 }
 
 // UserFetch calls contract.service.UserService.UserFetch.
@@ -401,9 +412,15 @@ func (c *userServiceClient) UserPermissionsSet(ctx context.Context, req *connect
 	return c.userPermissionsSet.CallUnary(ctx, req)
 }
 
-// UserAccessGroupsSet calls contract.service.UserService.UserAccessGroupsSet.
-func (c *userServiceClient) UserAccessGroupsSet(ctx context.Context, req *connect.Request[service.UserAccessGroupsSetRequest]) (*connect.Response[service.UserAccessGroupsSetResponse], error) {
-	return c.userAccessGroupsSet.CallUnary(ctx, req)
+// UserPermissionGroupsSet calls contract.service.UserService.UserPermissionGroupsSet.
+func (c *userServiceClient) UserPermissionGroupsSet(ctx context.Context, req *connect.Request[service.UserPermissionGroupsSetRequest]) (*connect.Response[service.UserPermissionGroupsSetResponse], error) {
+	return c.userPermissionGroupsSet.CallUnary(ctx, req)
+}
+
+// UserPermissionGroupAssignmentsFetch calls
+// contract.service.UserService.UserPermissionGroupAssignmentsFetch.
+func (c *userServiceClient) UserPermissionGroupAssignmentsFetch(ctx context.Context, req *connect.Request[service.UserPermissionGroupAssignmentsFetchRequest]) (*connect.Response[service.UserPermissionGroupAssignmentsFetchResponse], error) {
+	return c.userPermissionGroupAssignmentsFetch.CallUnary(ctx, req)
 }
 
 // UserDepartmentsSet calls contract.service.UserService.UserDepartmentsSet.
@@ -416,19 +433,19 @@ func (c *userServiceClient) UserPositionSet(ctx context.Context, req *connect.Re
 	return c.userPositionSet.CallUnary(ctx, req)
 }
 
-// AccessGroupFetch calls contract.service.UserService.AccessGroupFetch.
-func (c *userServiceClient) AccessGroupFetch(ctx context.Context, req *connect.Request[service.AccessGroupFetchRequest]) (*connect.Response[service.AccessGroupFetchResponse], error) {
-	return c.accessGroupFetch.CallUnary(ctx, req)
+// UserPermissionGroupFetch calls contract.service.UserService.UserPermissionGroupFetch.
+func (c *userServiceClient) UserPermissionGroupFetch(ctx context.Context, req *connect.Request[service.UserPermissionGroupFetchRequest]) (*connect.Response[service.UserPermissionGroupFetchResponse], error) {
+	return c.userPermissionGroupFetch.CallUnary(ctx, req)
 }
 
-// AccessGroupSave calls contract.service.UserService.AccessGroupSave.
-func (c *userServiceClient) AccessGroupSave(ctx context.Context, req *connect.Request[service.AccessGroupSaveRequest]) (*connect.Response[service.AccessGroupSaveResponse], error) {
-	return c.accessGroupSave.CallUnary(ctx, req)
+// UserPermissionGroupSave calls contract.service.UserService.UserPermissionGroupSave.
+func (c *userServiceClient) UserPermissionGroupSave(ctx context.Context, req *connect.Request[service.UserPermissionGroupSaveRequest]) (*connect.Response[service.UserPermissionGroupSaveResponse], error) {
+	return c.userPermissionGroupSave.CallUnary(ctx, req)
 }
 
-// AccessGroupDelete calls contract.service.UserService.AccessGroupDelete.
-func (c *userServiceClient) AccessGroupDelete(ctx context.Context, req *connect.Request[service.AccessGroupDeleteRequest]) (*connect.Response[service.AccessGroupDeleteResponse], error) {
-	return c.accessGroupDelete.CallUnary(ctx, req)
+// UserPermissionGroupDelete calls contract.service.UserService.UserPermissionGroupDelete.
+func (c *userServiceClient) UserPermissionGroupDelete(ctx context.Context, req *connect.Request[service.UserPermissionGroupDeleteRequest]) (*connect.Response[service.UserPermissionGroupDeleteResponse], error) {
+	return c.userPermissionGroupDelete.CallUnary(ctx, req)
 }
 
 // PassportCreate calls contract.service.UserService.PassportCreate.
@@ -486,19 +503,20 @@ type UserServiceHandler interface {
 	UserRolesSet(context.Context, *connect.Request[service.UserRolesSetRequest]) (*connect.Response[service.UserRolesSetResponse], error)
 	// UserPermissionsSet заменяет набор прав пользователя целиком.
 	UserPermissionsSet(context.Context, *connect.Request[service.UserPermissionsSetRequest]) (*connect.Response[service.UserPermissionsSetResponse], error)
-	// UserAccessGroupsSet заменяет выданные пользователю наборы доступа целиком.
-	UserAccessGroupsSet(context.Context, *connect.Request[service.UserAccessGroupsSetRequest]) (*connect.Response[service.UserAccessGroupsSetResponse], error)
+	// UserPermissionGroupsSet заменяет выданные пользователю группы прав целиком.
+	UserPermissionGroupsSet(context.Context, *connect.Request[service.UserPermissionGroupsSetRequest]) (*connect.Response[service.UserPermissionGroupsSetResponse], error)
+	UserPermissionGroupAssignmentsFetch(context.Context, *connect.Request[service.UserPermissionGroupAssignmentsFetchRequest]) (*connect.Response[service.UserPermissionGroupAssignmentsFetchResponse], error)
 	// UserDepartmentsSet заменяет подразделения человека (его записи сотрудника)
 	// целиком; пустой набор — убрать все.
 	UserDepartmentsSet(context.Context, *connect.Request[service.UserDepartmentsSetRequest]) (*connect.Response[service.UserDepartmentsSetResponse], error)
 	// UserPositionSet задаёт должность человека; пустая строка — снять.
 	UserPositionSet(context.Context, *connect.Request[service.UserPositionSetRequest]) (*connect.Response[service.UserPositionSetResponse], error)
 	// Наборы доступа: права, собранные администратором под общим именем.
-	AccessGroupFetch(context.Context, *connect.Request[service.AccessGroupFetchRequest]) (*connect.Response[service.AccessGroupFetchResponse], error)
-	// AccessGroupSave: id = 0 — создать, иначе изменить (состав прав заменяется целиком).
-	AccessGroupSave(context.Context, *connect.Request[service.AccessGroupSaveRequest]) (*connect.Response[service.AccessGroupSaveResponse], error)
-	// AccessGroupDelete: набор снимается и со всех, кому выдан.
-	AccessGroupDelete(context.Context, *connect.Request[service.AccessGroupDeleteRequest]) (*connect.Response[service.AccessGroupDeleteResponse], error)
+	UserPermissionGroupFetch(context.Context, *connect.Request[service.UserPermissionGroupFetchRequest]) (*connect.Response[service.UserPermissionGroupFetchResponse], error)
+	// id = 0 — создать, иначе изменить (состав прав заменяется целиком).
+	UserPermissionGroupSave(context.Context, *connect.Request[service.UserPermissionGroupSaveRequest]) (*connect.Response[service.UserPermissionGroupSaveResponse], error)
+	// При удалении группа снимается со всех пользователей, кому она выдана.
+	UserPermissionGroupDelete(context.Context, *connect.Request[service.UserPermissionGroupDeleteRequest]) (*connect.Response[service.UserPermissionGroupDeleteResponse], error)
 	PassportCreate(context.Context, *connect.Request[service.PassportCreateRequest]) (*connect.Response[service.PassportCreateResponse], error)
 	EducationCreate(context.Context, *connect.Request[service.EducationCreateRequest]) (*connect.Response[service.EducationCreateResponse], error)
 	MilitaryCreate(context.Context, *connect.Request[service.MilitaryCreateRequest]) (*connect.Response[service.MilitaryCreateResponse], error)
@@ -587,10 +605,16 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(userServiceMethods.ByName("UserPermissionsSet")),
 		connect.WithHandlerOptions(opts...),
 	)
-	userServiceUserAccessGroupsSetHandler := connect.NewUnaryHandler(
-		UserServiceUserAccessGroupsSetProcedure,
-		svc.UserAccessGroupsSet,
-		connect.WithSchema(userServiceMethods.ByName("UserAccessGroupsSet")),
+	userServiceUserPermissionGroupsSetHandler := connect.NewUnaryHandler(
+		UserServiceUserPermissionGroupsSetProcedure,
+		svc.UserPermissionGroupsSet,
+		connect.WithSchema(userServiceMethods.ByName("UserPermissionGroupsSet")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceUserPermissionGroupAssignmentsFetchHandler := connect.NewUnaryHandler(
+		UserServiceUserPermissionGroupAssignmentsFetchProcedure,
+		svc.UserPermissionGroupAssignmentsFetch,
+		connect.WithSchema(userServiceMethods.ByName("UserPermissionGroupAssignmentsFetch")),
 		connect.WithHandlerOptions(opts...),
 	)
 	userServiceUserDepartmentsSetHandler := connect.NewUnaryHandler(
@@ -605,22 +629,22 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(userServiceMethods.ByName("UserPositionSet")),
 		connect.WithHandlerOptions(opts...),
 	)
-	userServiceAccessGroupFetchHandler := connect.NewUnaryHandler(
-		UserServiceAccessGroupFetchProcedure,
-		svc.AccessGroupFetch,
-		connect.WithSchema(userServiceMethods.ByName("AccessGroupFetch")),
+	userServiceUserPermissionGroupFetchHandler := connect.NewUnaryHandler(
+		UserServiceUserPermissionGroupFetchProcedure,
+		svc.UserPermissionGroupFetch,
+		connect.WithSchema(userServiceMethods.ByName("UserPermissionGroupFetch")),
 		connect.WithHandlerOptions(opts...),
 	)
-	userServiceAccessGroupSaveHandler := connect.NewUnaryHandler(
-		UserServiceAccessGroupSaveProcedure,
-		svc.AccessGroupSave,
-		connect.WithSchema(userServiceMethods.ByName("AccessGroupSave")),
+	userServiceUserPermissionGroupSaveHandler := connect.NewUnaryHandler(
+		UserServiceUserPermissionGroupSaveProcedure,
+		svc.UserPermissionGroupSave,
+		connect.WithSchema(userServiceMethods.ByName("UserPermissionGroupSave")),
 		connect.WithHandlerOptions(opts...),
 	)
-	userServiceAccessGroupDeleteHandler := connect.NewUnaryHandler(
-		UserServiceAccessGroupDeleteProcedure,
-		svc.AccessGroupDelete,
-		connect.WithSchema(userServiceMethods.ByName("AccessGroupDelete")),
+	userServiceUserPermissionGroupDeleteHandler := connect.NewUnaryHandler(
+		UserServiceUserPermissionGroupDeleteProcedure,
+		svc.UserPermissionGroupDelete,
+		connect.WithSchema(userServiceMethods.ByName("UserPermissionGroupDelete")),
 		connect.WithHandlerOptions(opts...),
 	)
 	userServicePassportCreateHandler := connect.NewUnaryHandler(
@@ -691,18 +715,20 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 			userServiceUserRolesSetHandler.ServeHTTP(w, r)
 		case UserServiceUserPermissionsSetProcedure:
 			userServiceUserPermissionsSetHandler.ServeHTTP(w, r)
-		case UserServiceUserAccessGroupsSetProcedure:
-			userServiceUserAccessGroupsSetHandler.ServeHTTP(w, r)
+		case UserServiceUserPermissionGroupsSetProcedure:
+			userServiceUserPermissionGroupsSetHandler.ServeHTTP(w, r)
+		case UserServiceUserPermissionGroupAssignmentsFetchProcedure:
+			userServiceUserPermissionGroupAssignmentsFetchHandler.ServeHTTP(w, r)
 		case UserServiceUserDepartmentsSetProcedure:
 			userServiceUserDepartmentsSetHandler.ServeHTTP(w, r)
 		case UserServiceUserPositionSetProcedure:
 			userServiceUserPositionSetHandler.ServeHTTP(w, r)
-		case UserServiceAccessGroupFetchProcedure:
-			userServiceAccessGroupFetchHandler.ServeHTTP(w, r)
-		case UserServiceAccessGroupSaveProcedure:
-			userServiceAccessGroupSaveHandler.ServeHTTP(w, r)
-		case UserServiceAccessGroupDeleteProcedure:
-			userServiceAccessGroupDeleteHandler.ServeHTTP(w, r)
+		case UserServiceUserPermissionGroupFetchProcedure:
+			userServiceUserPermissionGroupFetchHandler.ServeHTTP(w, r)
+		case UserServiceUserPermissionGroupSaveProcedure:
+			userServiceUserPermissionGroupSaveHandler.ServeHTTP(w, r)
+		case UserServiceUserPermissionGroupDeleteProcedure:
+			userServiceUserPermissionGroupDeleteHandler.ServeHTTP(w, r)
 		case UserServicePassportCreateProcedure:
 			userServicePassportCreateHandler.ServeHTTP(w, r)
 		case UserServiceEducationCreateProcedure:
@@ -774,8 +800,12 @@ func (UnimplementedUserServiceHandler) UserPermissionsSet(context.Context, *conn
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.UserPermissionsSet is not implemented"))
 }
 
-func (UnimplementedUserServiceHandler) UserAccessGroupsSet(context.Context, *connect.Request[service.UserAccessGroupsSetRequest]) (*connect.Response[service.UserAccessGroupsSetResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.UserAccessGroupsSet is not implemented"))
+func (UnimplementedUserServiceHandler) UserPermissionGroupsSet(context.Context, *connect.Request[service.UserPermissionGroupsSetRequest]) (*connect.Response[service.UserPermissionGroupsSetResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.UserPermissionGroupsSet is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) UserPermissionGroupAssignmentsFetch(context.Context, *connect.Request[service.UserPermissionGroupAssignmentsFetchRequest]) (*connect.Response[service.UserPermissionGroupAssignmentsFetchResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.UserPermissionGroupAssignmentsFetch is not implemented"))
 }
 
 func (UnimplementedUserServiceHandler) UserDepartmentsSet(context.Context, *connect.Request[service.UserDepartmentsSetRequest]) (*connect.Response[service.UserDepartmentsSetResponse], error) {
@@ -786,16 +816,16 @@ func (UnimplementedUserServiceHandler) UserPositionSet(context.Context, *connect
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.UserPositionSet is not implemented"))
 }
 
-func (UnimplementedUserServiceHandler) AccessGroupFetch(context.Context, *connect.Request[service.AccessGroupFetchRequest]) (*connect.Response[service.AccessGroupFetchResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.AccessGroupFetch is not implemented"))
+func (UnimplementedUserServiceHandler) UserPermissionGroupFetch(context.Context, *connect.Request[service.UserPermissionGroupFetchRequest]) (*connect.Response[service.UserPermissionGroupFetchResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.UserPermissionGroupFetch is not implemented"))
 }
 
-func (UnimplementedUserServiceHandler) AccessGroupSave(context.Context, *connect.Request[service.AccessGroupSaveRequest]) (*connect.Response[service.AccessGroupSaveResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.AccessGroupSave is not implemented"))
+func (UnimplementedUserServiceHandler) UserPermissionGroupSave(context.Context, *connect.Request[service.UserPermissionGroupSaveRequest]) (*connect.Response[service.UserPermissionGroupSaveResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.UserPermissionGroupSave is not implemented"))
 }
 
-func (UnimplementedUserServiceHandler) AccessGroupDelete(context.Context, *connect.Request[service.AccessGroupDeleteRequest]) (*connect.Response[service.AccessGroupDeleteResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.AccessGroupDelete is not implemented"))
+func (UnimplementedUserServiceHandler) UserPermissionGroupDelete(context.Context, *connect.Request[service.UserPermissionGroupDeleteRequest]) (*connect.Response[service.UserPermissionGroupDeleteResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.UserPermissionGroupDelete is not implemented"))
 }
 
 func (UnimplementedUserServiceHandler) PassportCreate(context.Context, *connect.Request[service.PassportCreateRequest]) (*connect.Response[service.PassportCreateResponse], error) {

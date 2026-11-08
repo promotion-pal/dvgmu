@@ -2,8 +2,8 @@ package storage
 
 import (
 	"context"
-	"fesmu/contract/mdm/enum"
 	"dvgmu/api/internal/domain/models"
+	"fesmu/contract/mdm/enum"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -21,26 +21,35 @@ func EmployeeStorageNew(db *gorm.DB) *EmployeeStorage {
 // же отделе, новая запись не вставляется, а возвращается id существующей.
 func (s *EmployeeStorage) EmployeeCreate(ctx context.Context, employee *models.Employee) (int64, error) {
 	db := s.db.WithContext(ctx)
-
-	res := db.Clauses(clause.OnConflict{
-		Columns:   []clause.Column{{Name: "user_id"}, {Name: "department"}},
-		DoNothing: true,
-	}).Create(employee)
-	if res.Error != nil {
-		return 0, res.Error
-	}
-	if res.RowsAffected > 0 {
-		return employee.ID, nil
+	if employee.SourceKey != nil && *employee.SourceKey != "" {
+		if err := db.Clauses(clause.OnConflict{
+			Columns:   []clause.Column{{Name: "source_key"}},
+			DoUpdates: clause.AssignmentColumns([]string{"user_id", "department", "status", "position", "updated_at"}),
+		}).Create(employee).Error; err != nil {
+			return 0, err
+		}
+		var existing models.Employee
+		if err := db.Select("id").Where("source_key = ?", *employee.SourceKey).Take(&existing).Error; err != nil {
+			return 0, err
+		}
+		return existing.ID, nil
 	}
 
 	var existing models.Employee
-	if err := db.
-		Select("id").
-		Where("user_id = ? AND department = ?", employee.UserID, employee.Department).
-		Take(&existing).Error; err != nil {
+	err := db.Where("user_id = ? AND department = ? AND position = ? AND source_key IS NULL", employee.UserID, employee.Department, employee.Position).Take(&existing).Error
+	if err == nil {
+		if err := db.Model(&existing).Updates(map[string]any{"status": employee.Status, "updated_at": employee.UpdatedAt}).Error; err != nil {
+			return 0, err
+		}
+		return existing.ID, nil
+	}
+	if err != gorm.ErrRecordNotFound {
 		return 0, err
 	}
-	return existing.ID, nil
+	if err := db.Create(employee).Error; err != nil {
+		return 0, err
+	}
+	return employee.ID, nil
 }
 
 // EmployeeFetch отдаёт всех сотрудников вместе с их пользователем одним
@@ -70,19 +79,25 @@ func (s *EmployeeStorage) EmployeeDepartmentsSet(ctx context.Context, userID int
 		if len(deps) > 0 {
 			del = del.Where("department NOT IN ?", deps)
 		}
-		if err := del.Delete(&models.Employee{}).Error; err != nil {
+		if err := del.Where("source_key IS NULL").Delete(&models.Employee{}).Error; err != nil {
 			return err
 		}
 		if len(deps) == 0 {
 			return nil
 		}
-		rows := make([]models.Employee, 0, len(deps))
 		for _, d := range deps {
-			rows = append(rows, models.Employee{UserID: userID, Department: d})
+			var count int64
+			if err := tx.Model(&models.Employee{}).Where("user_id = ? AND department = ?", userID, d).Count(&count).Error; err != nil {
+				return err
+			}
+			if count > 0 {
+				continue
+			}
+			row := models.Employee{UserID: userID, Department: d}
+			if err := tx.Omit("User").Create(&row).Error; err != nil {
+				return err
+			}
 		}
-		return tx.Clauses(clause.OnConflict{
-			Columns:   []clause.Column{{Name: "user_id"}, {Name: "department"}},
-			DoNothing: true,
-		}).Omit("User").Create(&rows).Error
+		return nil
 	})
 }

@@ -25,8 +25,12 @@ func main() {
 	// (оба флага нулевые) — обычный read-only тикер, ничего не пишет.
 	createMissing := flag.Int("create-missing", 0,
 		"одноразово создать до N учёток в AD для missing_in_ad и выйти (нужен настроенный SYNC_LDAP_WRITE_*)")
+	createMissingStudents := flag.Int("create-missing-students", 0,
+		"создать до N отсутствующих студентов в студенческом OU и выйти")
+	createMissingStaff := flag.Int("create-missing-staff", 0,
+		"создать до N отсутствующих сотрудников в OU сотрудников и выйти")
 	linkUnlinked := flag.Bool("link-unlinked", false,
-		"одноразово привязать в auth все unlinked_but_exists (без записи в AD) и выйти")
+		"одноразово привязать в MDM все unlinked_but_exists (без записи в AD) и выйти")
 	once := flag.Bool("once", false,
 		"выполнить один read-only проход (без записи) и выйти, вместо вечного тикера")
 	checkMissing := flag.Bool("check-missing", false,
@@ -41,10 +45,33 @@ func main() {
 
 	application := app.New(log, cfg)
 
-	if *createMissing > 0 || *linkUnlinked {
+	createCount := 0
+	createCategory := ""
+	if *createMissing > 0 {
+		createCount++
+	}
+	if *createMissingStudents > 0 {
+		createCount++
+		createCategory = "student"
+	}
+	if *createMissingStaff > 0 {
+		createCount++
+		createCategory = "staff"
+	}
+	if createCount > 1 {
+		log.Error("укажите только один из флагов --create-missing, --create-missing-students или --create-missing-staff")
+		os.Exit(2)
+	}
+	if createCount == 1 || *linkUnlinked {
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 		defer cancel()
-		if err := application.ApplyOnce(ctx, *createMissing, *linkUnlinked); err != nil {
+		limit := *createMissing
+		if createCategory == "student" {
+			limit = *createMissingStudents
+		} else if createCategory == "staff" {
+			limit = *createMissingStaff
+		}
+		if err := application.ApplyOnce(ctx, limit, createCategory, *linkUnlinked); err != nil {
 			log.Error("apply failed", "error", err.Error())
 			os.Exit(1)
 		}

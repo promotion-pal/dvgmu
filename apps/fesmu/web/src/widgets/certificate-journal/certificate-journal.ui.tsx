@@ -176,7 +176,7 @@ const OrderForDialog: FC<OrderForDialogProps> = ({ open, users, loading, onClose
     const matches = useMemo(() => {
         const q = query.trim().toLowerCase();
         if (q.length < 2) return [];
-        return users.filter((u) => fullName(u).toLowerCase().includes(q) || (u.username ?? "").includes(q)).slice(0, 20);
+        return users.filter((u) => fullName(u).toLowerCase().includes(q) || u.email.toLowerCase().includes(q)).slice(0, 20);
     }, [users, query]);
 
     const close = () => {
@@ -211,7 +211,7 @@ const OrderForDialog: FC<OrderForDialogProps> = ({ open, users, loading, onClose
                     <div className="flex flex-col gap-2">
                         <Input
                             autoFocus
-                            placeholder={loading ? "Загрузка списка…" : "ФИО или логин (от 2 букв)"}
+                            placeholder={loading ? "Загрузка списка…" : "ФИО или email (от 2 букв)"}
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
                         />
@@ -223,7 +223,7 @@ const OrderForDialog: FC<OrderForDialogProps> = ({ open, users, loading, onClose
                                     className="block w-full rounded px-2 py-1.5 text-left text-sm hover:bg-muted"
                                     onClick={() => setStudent(u)}
                                 >
-                                    {fullName(u)} <span className="text-muted-foreground">{u.username}</span>
+                                    {fullName(u)} <span className="text-muted-foreground">{u.email}</span>
                                 </button>
                             ))}
                         </div>

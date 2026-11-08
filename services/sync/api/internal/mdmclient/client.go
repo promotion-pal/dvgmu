@@ -57,6 +57,7 @@ type User struct {
 	Email      string
 	Status     string // "USER_STATUS_ACTIVE" / "USER_STATUS_INACTIVE" / ...
 	ADObjectID string // objectGUID связанной учётки AD, пусто — не связан
+	Roles      []string
 }
 
 type wireUser struct {
@@ -67,6 +68,7 @@ type wireUser struct {
 	Email      string      `json:"email"`
 	Status     string      `json:"status"`
 	ADObjectID string      `json:"adObjectId"`
+	Roles      []string    `json:"roles"`
 }
 
 func (u wireUser) toUser() User {
@@ -78,6 +80,7 @@ func (u wireUser) toUser() User {
 		Email:      u.Email,
 		Status:     u.Status,
 		ADObjectID: u.ADObjectID,
+		Roles:      u.Roles,
 	}
 }
 

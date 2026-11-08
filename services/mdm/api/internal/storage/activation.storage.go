@@ -47,7 +47,7 @@ func (s *ActivationStorage) ActivationCheck(
 		result error
 	)
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		err := tx.Preload("Roles").Preload("Permissions").Preload("AccessGroups.Permissions").First(&user, "lower(username) = ?", strings.ToLower(strings.TrimSpace(username))).Error
+		err := tx.Preload("Roles").Preload("Permissions").Preload("UserPermissionGroups.Permissions").First(&user, "lower(username) = ?", strings.ToLower(strings.TrimSpace(username))).Error
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			result = models.ErrActivationInvalid
 			return nil

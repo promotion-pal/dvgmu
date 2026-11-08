@@ -62,15 +62,15 @@ func NewClient(baseURL, internalToken string) *Client {
 type wireUser struct {
 	ID        wireInt64 `json:"id"`
 	UUID      string    `json:"uuid"`
-	Username  string    `json:"username"`
 	Email     string    `json:"email"`
 	FirstName string    `json:"firstName"`
 	LastName  string    `json:"lastName"`
 	Status    string    `json:"status"`
 	Roles     []string  `json:"roles"`
 	ADObject  string    `json:"adObjectId"`
-	Perms     []string  `json:"permissions"`
-	// Effective — свои права и права наборов доступа (mdm 00017+).
+	// Старый MDM мог присылать эти поля внутри User; читаем их для переходного периода.
+	Username  string   `json:"username"`
+	Perms     []string `json:"permissions"`
 	Effective []string `json:"effectivePermissions"`
 }
 
@@ -86,7 +86,6 @@ func (n *wireInt64) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
-// permissions — итоговые права; старый mdm без наборов отдаёт только свои.
 func (u wireUser) permissions() []string {
 	if len(u.Effective) > 0 {
 		return u.Effective
@@ -94,7 +93,13 @@ func (u wireUser) permissions() []string {
 	return u.Perms
 }
 
-func (u wireUser) toUser() *User {
+func (u wireUser) toUser(username string, permissions []string) *User {
+	if username == "" {
+		username = u.Username
+	}
+	if len(permissions) == 0 {
+		permissions = u.permissions()
+	}
 	roles := make([]string, 0, len(u.Roles))
 	for _, r := range u.Roles {
 		roles = append(roles, strings.TrimPrefix(r, "USER_ROLE_"))
@@ -102,14 +107,14 @@ func (u wireUser) toUser() *User {
 	return &User{
 		ID:          int64(u.ID),
 		UUID:        u.UUID,
-		Username:    u.Username,
+		Username:    username,
 		Email:       u.Email,
 		FirstName:   u.FirstName,
 		LastName:    u.LastName,
 		Active:      u.Status == statusActive,
 		ADObjectID:  u.ADObject,
 		Roles:       roles,
-		Permissions: u.permissions(),
+		Permissions: permissions,
 	}
 }
 
@@ -178,7 +183,9 @@ func (c *Client) fetch(ctx context.Context, method string, body map[string]strin
 	}
 
 	var out struct {
-		User *wireUser `json:"user"`
+		User                 *wireUser `json:"user"`
+		Username             string    `json:"username"`
+		EffectivePermissions []string  `json:"effectivePermissions"`
 	}
 	if err := json.NewDecoder(resp.Body).Decode(&out); err != nil {
 		return nil, fmt.Errorf("decode mdm response: %w", err)
@@ -186,5 +193,5 @@ func (c *Client) fetch(ctx context.Context, method string, body map[string]strin
 	if out.User == nil {
 		return nil, ErrNotFound
 	}
-	return out.User.toUser(), nil
+	return out.User.toUser(out.Username, out.EffectivePermissions), nil
 }

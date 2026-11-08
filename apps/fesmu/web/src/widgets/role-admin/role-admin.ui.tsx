@@ -1,13 +1,10 @@
 import { useState } from "react";
 import type { ComponentProps, FC } from "react";
-import { Building2Icon, ChevronDownIcon, CopyIcon, KeyRoundIcon, XIcon } from "lucide-react";
+import { ChevronDownIcon, CopyIcon, KeyRoundIcon, XIcon } from "lucide-react";
 import { toast } from "sonner";
-import type { AccessGroup, User } from "@fesmu/contract/mdm/entity/user.entity_pb";
-import type { UserEmployeeDepartment, UserRole } from "@fesmu/contract/mdm/enum/user.enum_pb";
+import type { UserPermissionGroup, User } from "@fesmu/contract/mdm/entity/user.entity_pb";
+import type { UserRole } from "@fesmu/contract/mdm/enum/user.enum_pb";
 import { CommonControlState } from "@/shared/components/state/control-state";
-import { DepartmentFilter, DepartmentMultiPicker } from "@/shared/components/department";
-import type { DepartmentFilterValue } from "@/shared/components/department";
-import { DEPARTMENT_LABEL } from "@/shared/config/departments";
 import { Badge } from "@/shared/ui/badge";
 import { Button } from "@/shared/ui/button";
 import { Checkbox } from "@/shared/ui/checkbox";
@@ -22,7 +19,7 @@ import {
 } from "@/shared/ui/dropdown-menu";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/shared/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/shared/ui/table";
-import { ROLES, ROLE_LABEL, formatUserFullName, isEmployee } from "./role-admin.fn";
+import { ROLES, ROLE_LABEL, formatUserFullName } from "./role-admin.fn";
 import type { BulkAction } from "./role-admin.fn";
 
 /** Выпадашка с отметками: роли или права одного пользователя. */
@@ -72,46 +69,26 @@ const ROLE_OPTIONS = ROLES.map((role) => ({ value: role, label: ROLE_LABEL[role]
 
 interface RoleUserTableProps extends ComponentProps<typeof CommonControlState> {
     list: User[];
-    groups: AccessGroup[];
+    groups: UserPermissionGroup[];
+    groupIdsForUser: (userID: bigint) => bigint[];
     saving: Set<bigint>;
     locked: boolean;
     selected: Set<bigint>;
     onCheck: (ids: bigint[], on: boolean) => void;
     onToggleRole: (user: User, role: UserRole, on: boolean) => void;
     onToggleGroup: (user: User, id: bigint, on: boolean) => void;
-    onSetDepartments: (user: User, departments: UserEmployeeDepartment[]) => void;
-    onSetPosition: (user: User, position: string) => void;
     onIssueCode: (user: User) => void;
 }
-
-/** Должность: сохраняется, когда поле теряет фокус или по Enter. */
-const PositionInput: FC<{ user: User; disabled: boolean; onSave: (position: string) => void }> = ({ user, disabled, onSave }) => {
-    const [value, setValue] = useState(user.position);
-    return (
-        <input
-            className="w-full min-w-40 rounded-md border bg-background px-2 py-1 text-xs placeholder:text-muted-foreground disabled:opacity-60"
-            placeholder="Должность"
-            aria-label={`Должность: ${formatUserFullName(user)}`}
-            maxLength={255}
-            disabled={disabled}
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            onBlur={() => onSave(value)}
-            onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
-        />
-    );
-};
 const RoleUserTable: FC<RoleUserTableProps> = ({
     list,
     groups,
+    groupIdsForUser,
     saving,
     locked,
     selected,
     onCheck,
     onToggleRole,
     onToggleGroup,
-    onSetDepartments,
-    onSetPosition,
     onIssueCode,
     ...state
 }) => {
@@ -138,7 +115,6 @@ const RoleUserTable: FC<RoleUserTableProps> = ({
                         <TableHead>ФИО</TableHead>
                         <TableHead>Логин</TableHead>
                         <TableHead>Email</TableHead>
-                        <TableHead>Подразделения и должность</TableHead>
                         <TableHead>Роли</TableHead>
                         <TableHead>Доступы</TableHead>
                         <TableHead className="text-center">Активация</TableHead>
@@ -158,25 +134,8 @@ const RoleUserTable: FC<RoleUserTableProps> = ({
                                     />
                                 </TableCell>
                                 <TableCell>{formatUserFullName(user)}</TableCell>
-                                <TableCell className="font-mono text-xs">{user.username || "—"}</TableCell>
+                                <TableCell className="font-mono text-xs">{user.email.split("@")[0] || "—"}</TableCell>
                                 <TableCell>{user.email || "—"}</TableCell>
-                                <TableCell>
-                                    {isEmployee(user) ? (
-                                        <div className="flex flex-col gap-1">
-                                            <DepartmentMultiPicker
-                                                value={user.departments}
-                                                disabled={busy}
-                                                onChange={(departments) => onSetDepartments(user, departments)}
-                                            />
-                                            {/* key: a saved or reverted value starts the field over */}
-                                            <PositionInput key={user.position} user={user} disabled={busy} onSave={(position) => onSetPosition(user, position)} />
-                                        </div>
-                                    ) : (
-                                        <span className="px-2 text-muted-foreground" title="Только для сотрудников: сначала роль «Сотрудник»">
-                                            —
-                                        </span>
-                                    )}
-                                </TableCell>
                                 <TableCell>
                                     <Picker
                                         title="Роли — открывают разделы"
@@ -189,33 +148,19 @@ const RoleUserTable: FC<RoleUserTableProps> = ({
                                 </TableCell>
                                 <TableCell>
                                     <Picker
-                                        title={groups.length > 0 ? "Доступы — какие разделы открыты" : "Доступов нет — создайте в «Доступы»"}
+                                        title={groups.length > 0 ? "Группы прав" : "Групп прав пока нет"}
                                         empty="—"
                                         options={groupOptions}
-                                        value={user.accessGroupIds.map(String)}
+                                        value={groupIdsForUser(user.id).map(String)}
                                         disabled={busy}
                                         onToggle={(id, on) => onToggleGroup(user, BigInt(id), on)}
                                     />
-                                    {/* Доступы подразделений — сами, снять их можно только в «Доступы» или сменив подразделение */}
-                                    {user.departmentAccessGroupIds.length > 0 && (
-                                        <div className="mt-1 flex flex-wrap gap-1 px-2">
-                                            {groups
-                                                .filter((g) => user.departmentAccessGroupIds.includes(g.id))
-                                                .map((g) => (
-                                                    <Badge key={g.id.toString()} variant="outline" title="Через подразделение">
-                                                        <Building2Icon className="size-3" />
-                                                        {g.name}
-                                                    </Badge>
-                                                ))}
-                                        </div>
-                                    )}
                                 </TableCell>
                                 <TableCell className="text-center">
                                     <Button
                                         variant="outline"
                                         size="sm"
-                                        disabled={!user.username}
-                                        title={user.username ? "Выдать код активации" : "Нет логина AD — код выдать нельзя"}
+                                        title="Выдать код активации"
                                         onClick={() => onIssueCode(user)}
                                     >
                                         <KeyRoundIcon className="size-4" />
@@ -234,10 +179,8 @@ const RoleUserTable: FC<RoleUserTableProps> = ({
 const ADD = "add";
 const REMOVE = "remove";
 
-const DEPARTMENT_TARGET = "department";
-
 interface BulkBarProps {
-    groups: AccessGroup[];
+    groups: UserPermissionGroup[];
     selectedCount: number;
     foundCount: number;
     allFoundSelected: boolean;
@@ -252,21 +195,15 @@ const BulkBar: FC<BulkBarProps> = ({ groups, selectedCount, foundCount, allFound
     // "role:4" или "perm:certificate.view"
     const [target, setTarget] = useState<string>("");
     const [confirming, setConfirming] = useState(false);
-    // Подразделение для массового действия (target = DEPARTMENT_TARGET).
-    const [department, setDepartment] = useState<DepartmentFilterValue>("all");
 
     const action: BulkAction | null = target.startsWith("role:")
         ? { kind: "role", on: mode === ADD, role: Number(target.slice(5)) as UserRole }
         : target.startsWith("group:")
           ? { kind: "group", on: mode === ADD, id: BigInt(target.slice(6)) }
-          : target === DEPARTMENT_TARGET && typeof department === "number"
-            ? { kind: "department", on: mode === ADD, department }
-            : null;
+          : null;
     const targetLabel = target.startsWith("role:")
         ? `роль «${ROLE_LABEL[Number(target.slice(5)) as (typeof ROLES)[number]]}»`
-        : target === DEPARTMENT_TARGET
-          ? `подразделение «${typeof department === "number" ? DEPARTMENT_LABEL[department] : ""}»`
-          : `доступ «${groups.find((g) => `group:${g.id}` === target)?.name ?? ""}»`;
+        : `группу прав «${groups.find((g) => `group:${g.id}` === target)?.name ?? ""}»`;
 
     if (selectedCount === 0) return null;
 
@@ -289,7 +226,7 @@ const BulkBar: FC<BulkBarProps> = ({ groups, selectedCount, foundCount, allFound
             </Select>
             <Select value={target} onValueChange={setTarget} disabled={progress !== null}>
                 <SelectTrigger className="w-auto min-w-56">
-                    <SelectValue placeholder="Роль, доступ или подразделение…" />
+                    <SelectValue placeholder="Роль или группа прав…" />
                 </SelectTrigger>
                 <SelectContent>
                     <SelectGroup>
@@ -297,10 +234,6 @@ const BulkBar: FC<BulkBarProps> = ({ groups, selectedCount, foundCount, allFound
                         {ROLES.map((role) => (
                             <SelectItem key={role} value={`role:${role}`}>{ROLE_LABEL[role]}</SelectItem>
                         ))}
-                    </SelectGroup>
-                    <SelectGroup>
-                        <SelectLabel>Сотрудник</SelectLabel>
-                        <SelectItem value={DEPARTMENT_TARGET}>Подразделение…</SelectItem>
                     </SelectGroup>
                     {groups.length > 0 && (
                         <SelectGroup>
@@ -312,7 +245,6 @@ const BulkBar: FC<BulkBarProps> = ({ groups, selectedCount, foundCount, allFound
                     )}
                 </SelectContent>
             </Select>
-            {target === DEPARTMENT_TARGET && <DepartmentFilter withAll={false} value={department} onChange={setDepartment} />}
             <Button size="sm" disabled={!action || progress !== null} onClick={() => setConfirming(true)}>
                 {progress ? `Сохранение ${progress.done}/${progress.total}…` : "Применить"}
             </Button>
@@ -368,7 +300,7 @@ const IssuedCodeDialog: FC<IssuedCodeDialogProps> = ({ issued, onClose }) => {
                 <DialogHeader>
                     <DialogTitle>Код активации</DialogTitle>
                     <DialogDescription>
-                        {issued && `${formatUserFullName(issued.user)}, логин ${issued.user.username}`}
+                        {issued && `${formatUserFullName(issued.user)}, логин ${issued.user.email.split("@")[0]}`}
                     </DialogDescription>
                 </DialogHeader>
                 {issued && (

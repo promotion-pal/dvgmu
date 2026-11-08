@@ -4,7 +4,7 @@
 
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
-import type { UserEmployeeDepartment } from "../enum/user.enum_pb";
+import type { UserEmployeeDepartment, UserEmployeePosition, UserEmployeeStatus } from "../enum/user.enum_pb";
 import { file_mdm_enum_user_enum } from "../enum/user.enum_pb";
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file mdm/entity/employee.entity.proto.
  */
 export const file_mdm_entity_employee_entity: GenFile = /*@__PURE__*/
-  fileDesc("CiBtZG0vZW50aXR5L2VtcGxveWVlLmVudGl0eS5wcm90bxIPY29udHJhY3QuZW50aXR5IsIBCghFbXBsb3llZRIKCgJpZBgBIAEoAxIPCgd1c2VyX2lkGAIgASgDEjkKCmRlcGFydG1lbnQYAyABKA4yJS5jb250cmFjdC5lbnVtLlVzZXJFbXBsb3llZURlcGFydG1lbnQSLgoKY3JlYXRlZF9hdBgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKdXBkYXRlZF9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCogEKE2NvbS5jb250cmFjdC5lbnRpdHlCE0VtcGxveWVlRW50aXR5UHJvdG9QAVoZZmVzbXUvY29udHJhY3QvbWRtL2VudGl0eaICA0NFWKoCD0NvbnRyYWN0LkVudGl0ecoCD0NvbnRyYWN0XEVudGl0eeICG0NvbnRyYWN0XEVudGl0eVxHUEJNZXRhZGF0YeoCEENvbnRyYWN0OjpFbnRpdHliBnByb3RvMw", [file_mdm_enum_user_enum, file_google_protobuf_timestamp]);
+  fileDesc("CiBtZG0vZW50aXR5L2VtcGxveWVlLmVudGl0eS5wcm90bxIPY29udHJhY3QuZW50aXR5IsACCghFbXBsb3llZRIKCgJpZBgBIAEoAxIPCgd1c2VyX2lkGAIgASgDEjkKCmRlcGFydG1lbnQYAyABKA4yJS5jb250cmFjdC5lbnVtLlVzZXJFbXBsb3llZURlcGFydG1lbnQSLgoKY3JlYXRlZF9hdBgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKdXBkYXRlZF9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASMQoGc3RhdHVzGAYgASgOMiEuY29udHJhY3QuZW51bS5Vc2VyRW1wbG95ZWVTdGF0dXMSNQoIcG9zaXRpb24YByABKA4yIy5jb250cmFjdC5lbnVtLlVzZXJFbXBsb3llZVBvc2l0aW9uEhIKCnNvdXJjZV9rZXkYCCABKAlCogEKE2NvbS5jb250cmFjdC5lbnRpdHlCE0VtcGxveWVlRW50aXR5UHJvdG9QAVoZZmVzbXUvY29udHJhY3QvbWRtL2VudGl0eaICA0NFWKoCD0NvbnRyYWN0LkVudGl0ecoCD0NvbnRyYWN0XEVudGl0eeICG0NvbnRyYWN0XEVudGl0eVxHUEJNZXRhZGF0YeoCEENvbnRyYWN0OjpFbnRpdHliBnByb3RvMw", [file_mdm_enum_user_enum, file_google_protobuf_timestamp]);
 
 /**
  * @generated from message contract.entity.Employee
@@ -44,6 +44,25 @@ export type Employee = Message<"contract.entity.Employee"> & {
    * @generated from field: google.protobuf.Timestamp updated_at = 5;
    */
   updatedAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: contract.enum.UserEmployeeStatus status = 6;
+   */
+  status: UserEmployeeStatus;
+
+  /**
+   * Должность сотрудника.
+   *
+   * @generated from field: contract.enum.UserEmployeePosition position = 7;
+   */
+  position: UserEmployeePosition;
+
+  /**
+   * Ключ строки источника для идемпотентной загрузки назначений.
+   *
+   * @generated from field: string source_key = 8;
+   */
+  sourceKey: string;
 };
 
 /**

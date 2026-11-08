@@ -1,6 +1,6 @@
 import type { ComponentType } from "react";
 import type { UserRole } from "@fesmu/contract/fesmu/enum/v1/user.enum_pb";
-import { BookOpenTextIcon, ChartColumnIcon, QrCodeIcon, BriefcaseIcon, LibraryIcon, Building2Icon, FileCheckIcon, CalendarDaysIcon, CalendarRangeIcon, ClipboardListIcon, FileTextIcon, GraduationCapIcon, HourglassIcon, KeyRoundIcon, ListChecksIcon, ListTodoIcon, MonitorIcon, ReceiptTextIcon, ShieldCheckIcon, ShoppingBagIcon, ShoppingCartIcon, TicketIcon, UserCogIcon, UsersIcon } from "lucide-react";
+import { BookOpenTextIcon, ChartColumnIcon, QrCodeIcon, BriefcaseIcon, LibraryIcon, Building2Icon, FileCheckIcon, CalendarDaysIcon, CalendarRangeIcon, ClipboardListIcon, FileTextIcon, GraduationCapIcon, HourglassIcon, ListChecksIcon, ListTodoIcon, MonitorIcon, ReceiptTextIcon, ShieldCheckIcon, ShoppingBagIcon, ShoppingCartIcon, TicketIcon, UsersIcon } from "lucide-react";
 import { ACCESS } from "@/shared/config/access";
 import { PermissionSection, PURCHASE_SECTIONS, PURCHASE_V3_PERMS, permsFor, permsForAny } from "@/shared/config/permissions";
 import { ROUTE } from "@/shared/config/path";
@@ -96,8 +96,6 @@ const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
         items: [
             { title: "Справки", url: ROUTE.ADMIN.CERTIFICATES, icon: FileCheckIcon, permissions: permsFor(PermissionSection.CERTIFICATE) },
             { title: "Авторизация", url: ROUTE.ADMIN.AUTH, icon: ShieldCheckIcon, roles: [...ACCESS.ADMIN] },
-            { title: "Роли", url: ROUTE.ADMIN.ROLES, icon: UserCogIcon, roles: [...ACCESS.ADMIN] },
-            { title: "Доступы", url: ROUTE.ADMIN.ACCESS, icon: KeyRoundIcon, roles: [...ACCESS.ADMIN] },
             { title: "Задолженность студентов", url: ROUTE.ADMIN.DEBTORS, icon: ReceiptTextIcon, roles: [...ACCESS.ADMIN] },
         ],
     },

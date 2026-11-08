@@ -1,9 +1,9 @@
 package models
 
 import (
+	"errors"
 	"fesmu/contract/mdm/entity"
 	"fesmu/contract/mdm/enum"
-	"errors"
 	"strings"
 	"time"
 
@@ -36,13 +36,10 @@ type User struct {
 	ADObjectID  *string          `gorm:"column:ad_object_id;type:uuid;unique"`
 	Roles       []UserRole       `gorm:"foreignKey:UserID"`
 	Permissions []UserPermission `gorm:"foreignKey:UserID"`
-	// AccessGroups — выданные наборы доступа (с их правами).
-	AccessGroups []AccessGroup `gorm:"many2many:user_access_groups;joinForeignKey:UserID;joinReferences:GroupID"`
+	// UserPermissionGroups — назначенные пользователю группы прав.
+	UserPermissionGroups []UserPermissionGroup `gorm:"many2many:user_permission_group_users;joinForeignKey:UserID;joinReferences:GroupID"`
 	// Employees — все записи сотрудника (по одной на подразделение).
 	Employees []Employee `gorm:"foreignKey:UserID"`
-	// DepartmentGroups — доступы, привязанные к подразделениям человека
-	// (заполняет storage, в таблице не хранится).
-	DepartmentGroups []AccessGroup `gorm:"-"`
 
 	Passport   *Passport   `gorm:"foreignKey:UserID"`
 	Educations []Education `gorm:"foreignKey:UserID"`
@@ -56,25 +53,17 @@ type User struct {
 
 func (u *User) ToProto() *entity.User {
 	pb := &entity.User{
-		Id:        u.ID,
-		FirstName: u.FirstName,
-		LastName:  u.LastName,
-		Email:     u.Email,
-		Status:    u.Status,
-		Position:  u.Position,
-		CreatedAt: timestamppb.New(u.CreatedAt),
-		UpdatedAt: timestamppb.New(u.UpdatedAt),
-
-		Uuid:        u.UUID,
-		Username:    u.Username,
-		AdObjectId:  u.ADObjectID,
-		Roles:       u.RoleList(),
-		Permissions: u.PermissionList(),
-
-		AccessGroupIds:           u.AccessGroupIDs(),
-		EffectivePermissions:     u.EffectivePermissions(),
-		Departments:              u.DepartmentList(),
-		DepartmentAccessGroupIds: u.DepartmentGroupIDs(),
+		Id:            u.ID,
+		Uuid:          u.UUID,
+		AdObjectId:    u.ADObjectID,
+		FirstName:     u.FirstName,
+		LastName:      u.LastName,
+		Email:         u.Email,
+		Status:        u.Status,
+		CreatedAt:     timestamppb.New(u.CreatedAt),
+		UpdatedAt:     timestamppb.New(u.UpdatedAt),
+		PermissionIds: u.PermissionIDs(),
+		Roles:         u.RoleList(),
 	}
 	if u.Patronymic != "" {
 		pb.Patronymic = &u.Patronymic

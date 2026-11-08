@@ -749,10 +749,13 @@ func (x *UserFetchByUUIDRequest) GetUuid() string {
 }
 
 type UserFetchByUUIDResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	User          *entity.User           `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                protoimpl.MessageState        `protogen:"open.v1"`
+	User                 *entity.User                  `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	Username             string                        `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
+	EffectivePermissions []string                      `protobuf:"bytes,3,rep,name=effective_permissions,json=effectivePermissions,proto3" json:"effective_permissions,omitempty"`
+	Departments          []enum.UserEmployeeDepartment `protobuf:"varint,4,rep,packed,name=departments,proto3,enum=contract.enum.UserEmployeeDepartment" json:"departments,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
 }
 
 func (x *UserFetchByUUIDResponse) Reset() {
@@ -788,6 +791,27 @@ func (*UserFetchByUUIDResponse) Descriptor() ([]byte, []int) {
 func (x *UserFetchByUUIDResponse) GetUser() *entity.User {
 	if x != nil {
 		return x.User
+	}
+	return nil
+}
+
+func (x *UserFetchByUUIDResponse) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *UserFetchByUUIDResponse) GetEffectivePermissions() []string {
+	if x != nil {
+		return x.EffectivePermissions
+	}
+	return nil
+}
+
+func (x *UserFetchByUUIDResponse) GetDepartments() []enum.UserEmployeeDepartment {
+	if x != nil {
+		return x.Departments
 	}
 	return nil
 }
@@ -837,10 +861,13 @@ func (x *UserFetchByADObjectIDRequest) GetAdObjectId() string {
 }
 
 type UserFetchByADObjectIDResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	User          *entity.User           `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                protoimpl.MessageState        `protogen:"open.v1"`
+	User                 *entity.User                  `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	Username             string                        `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
+	EffectivePermissions []string                      `protobuf:"bytes,3,rep,name=effective_permissions,json=effectivePermissions,proto3" json:"effective_permissions,omitempty"`
+	Departments          []enum.UserEmployeeDepartment `protobuf:"varint,4,rep,packed,name=departments,proto3,enum=contract.enum.UserEmployeeDepartment" json:"departments,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
 }
 
 func (x *UserFetchByADObjectIDResponse) Reset() {
@@ -876,6 +903,27 @@ func (*UserFetchByADObjectIDResponse) Descriptor() ([]byte, []int) {
 func (x *UserFetchByADObjectIDResponse) GetUser() *entity.User {
 	if x != nil {
 		return x.User
+	}
+	return nil
+}
+
+func (x *UserFetchByADObjectIDResponse) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *UserFetchByADObjectIDResponse) GetEffectivePermissions() []string {
+	if x != nil {
+		return x.EffectivePermissions
+	}
+	return nil
+}
+
+func (x *UserFetchByADObjectIDResponse) GetDepartments() []enum.UserEmployeeDepartment {
+	if x != nil {
+		return x.Departments
 	}
 	return nil
 }
@@ -1072,7 +1120,7 @@ func (x *UserPermissionsSetResponse) GetUser() *entity.User {
 	return nil
 }
 
-type UserAccessGroupsSetRequest struct {
+type UserPermissionGroupsSetRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	GroupIds      []int64                `protobuf:"varint,2,rep,packed,name=group_ids,json=groupIds,proto3" json:"group_ids,omitempty"`
@@ -1080,20 +1128,20 @@ type UserAccessGroupsSetRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UserAccessGroupsSetRequest) Reset() {
-	*x = UserAccessGroupsSetRequest{}
+func (x *UserPermissionGroupsSetRequest) Reset() {
+	*x = UserPermissionGroupsSetRequest{}
 	mi := &file_mdm_service_user_service_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UserAccessGroupsSetRequest) String() string {
+func (x *UserPermissionGroupsSetRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UserAccessGroupsSetRequest) ProtoMessage() {}
+func (*UserPermissionGroupsSetRequest) ProtoMessage() {}
 
-func (x *UserAccessGroupsSetRequest) ProtoReflect() protoreflect.Message {
+func (x *UserPermissionGroupsSetRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_mdm_service_user_service_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1105,46 +1153,46 @@ func (x *UserAccessGroupsSetRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UserAccessGroupsSetRequest.ProtoReflect.Descriptor instead.
-func (*UserAccessGroupsSetRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use UserPermissionGroupsSetRequest.ProtoReflect.Descriptor instead.
+func (*UserPermissionGroupsSetRequest) Descriptor() ([]byte, []int) {
 	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{20}
 }
 
-func (x *UserAccessGroupsSetRequest) GetId() int64 {
+func (x *UserPermissionGroupsSetRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-func (x *UserAccessGroupsSetRequest) GetGroupIds() []int64 {
+func (x *UserPermissionGroupsSetRequest) GetGroupIds() []int64 {
 	if x != nil {
 		return x.GroupIds
 	}
 	return nil
 }
 
-type UserAccessGroupsSetResponse struct {
+type UserPermissionGroupsSetResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	User          *entity.User           `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UserAccessGroupsSetResponse) Reset() {
-	*x = UserAccessGroupsSetResponse{}
+func (x *UserPermissionGroupsSetResponse) Reset() {
+	*x = UserPermissionGroupsSetResponse{}
 	mi := &file_mdm_service_user_service_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UserAccessGroupsSetResponse) String() string {
+func (x *UserPermissionGroupsSetResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UserAccessGroupsSetResponse) ProtoMessage() {}
+func (*UserPermissionGroupsSetResponse) ProtoMessage() {}
 
-func (x *UserAccessGroupsSetResponse) ProtoReflect() protoreflect.Message {
+func (x *UserPermissionGroupsSetResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_mdm_service_user_service_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1156,14 +1204,146 @@ func (x *UserAccessGroupsSetResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UserAccessGroupsSetResponse.ProtoReflect.Descriptor instead.
-func (*UserAccessGroupsSetResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use UserPermissionGroupsSetResponse.ProtoReflect.Descriptor instead.
+func (*UserPermissionGroupsSetResponse) Descriptor() ([]byte, []int) {
 	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{21}
 }
 
-func (x *UserAccessGroupsSetResponse) GetUser() *entity.User {
+func (x *UserPermissionGroupsSetResponse) GetUser() *entity.User {
 	if x != nil {
 		return x.User
+	}
+	return nil
+}
+
+type UserPermissionGroupAssignmentsFetchRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserPermissionGroupAssignmentsFetchRequest) Reset() {
+	*x = UserPermissionGroupAssignmentsFetchRequest{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserPermissionGroupAssignmentsFetchRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserPermissionGroupAssignmentsFetchRequest) ProtoMessage() {}
+
+func (x *UserPermissionGroupAssignmentsFetchRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserPermissionGroupAssignmentsFetchRequest.ProtoReflect.Descriptor instead.
+func (*UserPermissionGroupAssignmentsFetchRequest) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{22}
+}
+
+type UserPermissionGroupAssignment struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	GroupId       int64                  `protobuf:"varint,2,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserPermissionGroupAssignment) Reset() {
+	*x = UserPermissionGroupAssignment{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserPermissionGroupAssignment) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserPermissionGroupAssignment) ProtoMessage() {}
+
+func (x *UserPermissionGroupAssignment) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserPermissionGroupAssignment.ProtoReflect.Descriptor instead.
+func (*UserPermissionGroupAssignment) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *UserPermissionGroupAssignment) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *UserPermissionGroupAssignment) GetGroupId() int64 {
+	if x != nil {
+		return x.GroupId
+	}
+	return 0
+}
+
+type UserPermissionGroupAssignmentsFetchResponse struct {
+	state         protoimpl.MessageState           `protogen:"open.v1"`
+	Assignments   []*UserPermissionGroupAssignment `protobuf:"bytes,1,rep,name=assignments,proto3" json:"assignments,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserPermissionGroupAssignmentsFetchResponse) Reset() {
+	*x = UserPermissionGroupAssignmentsFetchResponse{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserPermissionGroupAssignmentsFetchResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserPermissionGroupAssignmentsFetchResponse) ProtoMessage() {}
+
+func (x *UserPermissionGroupAssignmentsFetchResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserPermissionGroupAssignmentsFetchResponse.ProtoReflect.Descriptor instead.
+func (*UserPermissionGroupAssignmentsFetchResponse) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *UserPermissionGroupAssignmentsFetchResponse) GetAssignments() []*UserPermissionGroupAssignment {
+	if x != nil {
+		return x.Assignments
 	}
 	return nil
 }
@@ -1178,7 +1358,7 @@ type UserDepartmentsSetRequest struct {
 
 func (x *UserDepartmentsSetRequest) Reset() {
 	*x = UserDepartmentsSetRequest{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[22]
+	mi := &file_mdm_service_user_service_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1190,7 +1370,7 @@ func (x *UserDepartmentsSetRequest) String() string {
 func (*UserDepartmentsSetRequest) ProtoMessage() {}
 
 func (x *UserDepartmentsSetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[22]
+	mi := &file_mdm_service_user_service_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1203,7 +1383,7 @@ func (x *UserDepartmentsSetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserDepartmentsSetRequest.ProtoReflect.Descriptor instead.
 func (*UserDepartmentsSetRequest) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{22}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *UserDepartmentsSetRequest) GetId() int64 {
@@ -1229,7 +1409,7 @@ type UserDepartmentsSetResponse struct {
 
 func (x *UserDepartmentsSetResponse) Reset() {
 	*x = UserDepartmentsSetResponse{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[23]
+	mi := &file_mdm_service_user_service_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1241,7 +1421,7 @@ func (x *UserDepartmentsSetResponse) String() string {
 func (*UserDepartmentsSetResponse) ProtoMessage() {}
 
 func (x *UserDepartmentsSetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[23]
+	mi := &file_mdm_service_user_service_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1254,7 +1434,7 @@ func (x *UserDepartmentsSetResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserDepartmentsSetResponse.ProtoReflect.Descriptor instead.
 func (*UserDepartmentsSetResponse) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{23}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *UserDepartmentsSetResponse) GetUser() *entity.User {
@@ -1274,7 +1454,7 @@ type UserPositionSetRequest struct {
 
 func (x *UserPositionSetRequest) Reset() {
 	*x = UserPositionSetRequest{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[24]
+	mi := &file_mdm_service_user_service_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1286,7 +1466,7 @@ func (x *UserPositionSetRequest) String() string {
 func (*UserPositionSetRequest) ProtoMessage() {}
 
 func (x *UserPositionSetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[24]
+	mi := &file_mdm_service_user_service_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1299,7 +1479,7 @@ func (x *UserPositionSetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserPositionSetRequest.ProtoReflect.Descriptor instead.
 func (*UserPositionSetRequest) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{24}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *UserPositionSetRequest) GetId() int64 {
@@ -1325,7 +1505,7 @@ type UserPositionSetResponse struct {
 
 func (x *UserPositionSetResponse) Reset() {
 	*x = UserPositionSetResponse{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[25]
+	mi := &file_mdm_service_user_service_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1337,7 +1517,7 @@ func (x *UserPositionSetResponse) String() string {
 func (*UserPositionSetResponse) ProtoMessage() {}
 
 func (x *UserPositionSetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[25]
+	mi := &file_mdm_service_user_service_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1350,7 +1530,7 @@ func (x *UserPositionSetResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserPositionSetResponse.ProtoReflect.Descriptor instead.
 func (*UserPositionSetResponse) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{25}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *UserPositionSetResponse) GetUser() *entity.User {
@@ -1360,27 +1540,27 @@ func (x *UserPositionSetResponse) GetUser() *entity.User {
 	return nil
 }
 
-type AccessGroupFetchRequest struct {
+type UserPermissionGroupFetchRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AccessGroupFetchRequest) Reset() {
-	*x = AccessGroupFetchRequest{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[26]
+func (x *UserPermissionGroupFetchRequest) Reset() {
+	*x = UserPermissionGroupFetchRequest{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AccessGroupFetchRequest) String() string {
+func (x *UserPermissionGroupFetchRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AccessGroupFetchRequest) ProtoMessage() {}
+func (*UserPermissionGroupFetchRequest) ProtoMessage() {}
 
-func (x *AccessGroupFetchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[26]
+func (x *UserPermissionGroupFetchRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1391,33 +1571,33 @@ func (x *AccessGroupFetchRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AccessGroupFetchRequest.ProtoReflect.Descriptor instead.
-func (*AccessGroupFetchRequest) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{26}
+// Deprecated: Use UserPermissionGroupFetchRequest.ProtoReflect.Descriptor instead.
+func (*UserPermissionGroupFetchRequest) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{29}
 }
 
-type AccessGroupFetchResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Groups        []*entity.AccessGroup  `protobuf:"bytes,1,rep,name=groups,proto3" json:"groups,omitempty"`
+type UserPermissionGroupFetchResponse struct {
+	state         protoimpl.MessageState        `protogen:"open.v1"`
+	Groups        []*entity.UserPermissionGroup `protobuf:"bytes,1,rep,name=groups,proto3" json:"groups,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AccessGroupFetchResponse) Reset() {
-	*x = AccessGroupFetchResponse{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[27]
+func (x *UserPermissionGroupFetchResponse) Reset() {
+	*x = UserPermissionGroupFetchResponse{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AccessGroupFetchResponse) String() string {
+func (x *UserPermissionGroupFetchResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AccessGroupFetchResponse) ProtoMessage() {}
+func (*UserPermissionGroupFetchResponse) ProtoMessage() {}
 
-func (x *AccessGroupFetchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[27]
+func (x *UserPermissionGroupFetchResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1428,45 +1608,43 @@ func (x *AccessGroupFetchResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AccessGroupFetchResponse.ProtoReflect.Descriptor instead.
-func (*AccessGroupFetchResponse) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{27}
+// Deprecated: Use UserPermissionGroupFetchResponse.ProtoReflect.Descriptor instead.
+func (*UserPermissionGroupFetchResponse) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{30}
 }
 
-func (x *AccessGroupFetchResponse) GetGroups() []*entity.AccessGroup {
+func (x *UserPermissionGroupFetchResponse) GetGroups() []*entity.UserPermissionGroup {
 	if x != nil {
 		return x.Groups
 	}
 	return nil
 }
 
-type AccessGroupSaveRequest struct {
-	state       protoimpl.MessageState `protogen:"open.v1"`
-	Id          int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name        string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Description string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	Permissions []string               `protobuf:"bytes,4,rep,name=permissions,proto3" json:"permissions,omitempty"`
-	// departments — выдавать доступ всем сотрудникам этих подразделений.
-	Departments   []enum.UserEmployeeDepartment `protobuf:"varint,5,rep,packed,name=departments,proto3,enum=contract.enum.UserEmployeeDepartment" json:"departments,omitempty"`
+type UserPermissionGroupSaveRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	Permissions   []string               `protobuf:"bytes,4,rep,name=permissions,proto3" json:"permissions,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AccessGroupSaveRequest) Reset() {
-	*x = AccessGroupSaveRequest{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[28]
+func (x *UserPermissionGroupSaveRequest) Reset() {
+	*x = UserPermissionGroupSaveRequest{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AccessGroupSaveRequest) String() string {
+func (x *UserPermissionGroupSaveRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AccessGroupSaveRequest) ProtoMessage() {}
+func (*UserPermissionGroupSaveRequest) ProtoMessage() {}
 
-func (x *AccessGroupSaveRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[28]
+func (x *UserPermissionGroupSaveRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1477,68 +1655,61 @@ func (x *AccessGroupSaveRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AccessGroupSaveRequest.ProtoReflect.Descriptor instead.
-func (*AccessGroupSaveRequest) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{28}
+// Deprecated: Use UserPermissionGroupSaveRequest.ProtoReflect.Descriptor instead.
+func (*UserPermissionGroupSaveRequest) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{31}
 }
 
-func (x *AccessGroupSaveRequest) GetId() int64 {
+func (x *UserPermissionGroupSaveRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-func (x *AccessGroupSaveRequest) GetName() string {
+func (x *UserPermissionGroupSaveRequest) GetName() string {
 	if x != nil {
 		return x.Name
 	}
 	return ""
 }
 
-func (x *AccessGroupSaveRequest) GetDescription() string {
+func (x *UserPermissionGroupSaveRequest) GetDescription() string {
 	if x != nil {
 		return x.Description
 	}
 	return ""
 }
 
-func (x *AccessGroupSaveRequest) GetPermissions() []string {
+func (x *UserPermissionGroupSaveRequest) GetPermissions() []string {
 	if x != nil {
 		return x.Permissions
 	}
 	return nil
 }
 
-func (x *AccessGroupSaveRequest) GetDepartments() []enum.UserEmployeeDepartment {
-	if x != nil {
-		return x.Departments
-	}
-	return nil
-}
-
-type AccessGroupSaveResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Group         *entity.AccessGroup    `protobuf:"bytes,1,opt,name=group,proto3" json:"group,omitempty"`
+type UserPermissionGroupSaveResponse struct {
+	state         protoimpl.MessageState      `protogen:"open.v1"`
+	Group         *entity.UserPermissionGroup `protobuf:"bytes,1,opt,name=group,proto3" json:"group,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AccessGroupSaveResponse) Reset() {
-	*x = AccessGroupSaveResponse{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[29]
+func (x *UserPermissionGroupSaveResponse) Reset() {
+	*x = UserPermissionGroupSaveResponse{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AccessGroupSaveResponse) String() string {
+func (x *UserPermissionGroupSaveResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AccessGroupSaveResponse) ProtoMessage() {}
+func (*UserPermissionGroupSaveResponse) ProtoMessage() {}
 
-func (x *AccessGroupSaveResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[29]
+func (x *UserPermissionGroupSaveResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1549,40 +1720,40 @@ func (x *AccessGroupSaveResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AccessGroupSaveResponse.ProtoReflect.Descriptor instead.
-func (*AccessGroupSaveResponse) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{29}
+// Deprecated: Use UserPermissionGroupSaveResponse.ProtoReflect.Descriptor instead.
+func (*UserPermissionGroupSaveResponse) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{32}
 }
 
-func (x *AccessGroupSaveResponse) GetGroup() *entity.AccessGroup {
+func (x *UserPermissionGroupSaveResponse) GetGroup() *entity.UserPermissionGroup {
 	if x != nil {
 		return x.Group
 	}
 	return nil
 }
 
-type AccessGroupDeleteRequest struct {
+type UserPermissionGroupDeleteRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AccessGroupDeleteRequest) Reset() {
-	*x = AccessGroupDeleteRequest{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[30]
+func (x *UserPermissionGroupDeleteRequest) Reset() {
+	*x = UserPermissionGroupDeleteRequest{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AccessGroupDeleteRequest) String() string {
+func (x *UserPermissionGroupDeleteRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AccessGroupDeleteRequest) ProtoMessage() {}
+func (*UserPermissionGroupDeleteRequest) ProtoMessage() {}
 
-func (x *AccessGroupDeleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[30]
+func (x *UserPermissionGroupDeleteRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1593,39 +1764,39 @@ func (x *AccessGroupDeleteRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AccessGroupDeleteRequest.ProtoReflect.Descriptor instead.
-func (*AccessGroupDeleteRequest) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{30}
+// Deprecated: Use UserPermissionGroupDeleteRequest.ProtoReflect.Descriptor instead.
+func (*UserPermissionGroupDeleteRequest) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{33}
 }
 
-func (x *AccessGroupDeleteRequest) GetId() int64 {
+func (x *UserPermissionGroupDeleteRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-type AccessGroupDeleteResponse struct {
+type UserPermissionGroupDeleteResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AccessGroupDeleteResponse) Reset() {
-	*x = AccessGroupDeleteResponse{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[31]
+func (x *UserPermissionGroupDeleteResponse) Reset() {
+	*x = UserPermissionGroupDeleteResponse{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AccessGroupDeleteResponse) String() string {
+func (x *UserPermissionGroupDeleteResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AccessGroupDeleteResponse) ProtoMessage() {}
+func (*UserPermissionGroupDeleteResponse) ProtoMessage() {}
 
-func (x *AccessGroupDeleteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[31]
+func (x *UserPermissionGroupDeleteResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1636,9 +1807,9 @@ func (x *AccessGroupDeleteResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AccessGroupDeleteResponse.ProtoReflect.Descriptor instead.
-func (*AccessGroupDeleteResponse) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{31}
+// Deprecated: Use UserPermissionGroupDeleteResponse.ProtoReflect.Descriptor instead.
+func (*UserPermissionGroupDeleteResponse) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{34}
 }
 
 type UserRolesSetRequest struct {
@@ -1651,7 +1822,7 @@ type UserRolesSetRequest struct {
 
 func (x *UserRolesSetRequest) Reset() {
 	*x = UserRolesSetRequest{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[32]
+	mi := &file_mdm_service_user_service_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1663,7 +1834,7 @@ func (x *UserRolesSetRequest) String() string {
 func (*UserRolesSetRequest) ProtoMessage() {}
 
 func (x *UserRolesSetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[32]
+	mi := &file_mdm_service_user_service_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1676,7 +1847,7 @@ func (x *UserRolesSetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserRolesSetRequest.ProtoReflect.Descriptor instead.
 func (*UserRolesSetRequest) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{32}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *UserRolesSetRequest) GetId() int64 {
@@ -1702,7 +1873,7 @@ type UserRolesSetResponse struct {
 
 func (x *UserRolesSetResponse) Reset() {
 	*x = UserRolesSetResponse{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[33]
+	mi := &file_mdm_service_user_service_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1714,7 +1885,7 @@ func (x *UserRolesSetResponse) String() string {
 func (*UserRolesSetResponse) ProtoMessage() {}
 
 func (x *UserRolesSetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[33]
+	mi := &file_mdm_service_user_service_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1727,7 +1898,7 @@ func (x *UserRolesSetResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserRolesSetResponse.ProtoReflect.Descriptor instead.
 func (*UserRolesSetResponse) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{33}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *UserRolesSetResponse) GetUser() *entity.User {
@@ -1746,7 +1917,7 @@ type UserCreateBatchRequest struct {
 
 func (x *UserCreateBatchRequest) Reset() {
 	*x = UserCreateBatchRequest{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[34]
+	mi := &file_mdm_service_user_service_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1758,7 +1929,7 @@ func (x *UserCreateBatchRequest) String() string {
 func (*UserCreateBatchRequest) ProtoMessage() {}
 
 func (x *UserCreateBatchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[34]
+	mi := &file_mdm_service_user_service_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1771,7 +1942,7 @@ func (x *UserCreateBatchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserCreateBatchRequest.ProtoReflect.Descriptor instead.
 func (*UserCreateBatchRequest) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{34}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *UserCreateBatchRequest) GetUsers() []*UserCreateBatchItem {
@@ -1798,7 +1969,7 @@ type UserCreateBatchItem struct {
 
 func (x *UserCreateBatchItem) Reset() {
 	*x = UserCreateBatchItem{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[35]
+	mi := &file_mdm_service_user_service_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1810,7 +1981,7 @@ func (x *UserCreateBatchItem) String() string {
 func (*UserCreateBatchItem) ProtoMessage() {}
 
 func (x *UserCreateBatchItem) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[35]
+	mi := &file_mdm_service_user_service_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1823,7 +1994,7 @@ func (x *UserCreateBatchItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserCreateBatchItem.ProtoReflect.Descriptor instead.
 func (*UserCreateBatchItem) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{35}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *UserCreateBatchItem) GetLastName() string {
@@ -1898,7 +2069,7 @@ type UserCreateBatchResponse struct {
 
 func (x *UserCreateBatchResponse) Reset() {
 	*x = UserCreateBatchResponse{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[36]
+	mi := &file_mdm_service_user_service_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1910,7 +2081,7 @@ func (x *UserCreateBatchResponse) String() string {
 func (*UserCreateBatchResponse) ProtoMessage() {}
 
 func (x *UserCreateBatchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[36]
+	mi := &file_mdm_service_user_service_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1923,7 +2094,7 @@ func (x *UserCreateBatchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserCreateBatchResponse.ProtoReflect.Descriptor instead.
 func (*UserCreateBatchResponse) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{36}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{39}
 }
 
 func (x *UserCreateBatchResponse) GetResults() []*UserCreateBatchResult {
@@ -1947,7 +2118,7 @@ type UserCreateBatchResult struct {
 
 func (x *UserCreateBatchResult) Reset() {
 	*x = UserCreateBatchResult{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[37]
+	mi := &file_mdm_service_user_service_proto_msgTypes[40]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1959,7 +2130,7 @@ func (x *UserCreateBatchResult) String() string {
 func (*UserCreateBatchResult) ProtoMessage() {}
 
 func (x *UserCreateBatchResult) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[37]
+	mi := &file_mdm_service_user_service_proto_msgTypes[40]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1972,7 +2143,7 @@ func (x *UserCreateBatchResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserCreateBatchResult.ProtoReflect.Descriptor instead.
 func (*UserCreateBatchResult) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{37}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{40}
 }
 
 func (x *UserCreateBatchResult) GetIndex() int32 {
@@ -2039,7 +2210,7 @@ type PassportCreateRequest struct {
 
 func (x *PassportCreateRequest) Reset() {
 	*x = PassportCreateRequest{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[38]
+	mi := &file_mdm_service_user_service_proto_msgTypes[41]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2051,7 +2222,7 @@ func (x *PassportCreateRequest) String() string {
 func (*PassportCreateRequest) ProtoMessage() {}
 
 func (x *PassportCreateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[38]
+	mi := &file_mdm_service_user_service_proto_msgTypes[41]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2064,7 +2235,7 @@ func (x *PassportCreateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PassportCreateRequest.ProtoReflect.Descriptor instead.
 func (*PassportCreateRequest) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{38}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{41}
 }
 
 func (x *PassportCreateRequest) GetUserId() int64 {
@@ -2176,7 +2347,7 @@ type PassportCreateResponse struct {
 
 func (x *PassportCreateResponse) Reset() {
 	*x = PassportCreateResponse{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[39]
+	mi := &file_mdm_service_user_service_proto_msgTypes[42]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2188,7 +2359,7 @@ func (x *PassportCreateResponse) String() string {
 func (*PassportCreateResponse) ProtoMessage() {}
 
 func (x *PassportCreateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[39]
+	mi := &file_mdm_service_user_service_proto_msgTypes[42]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2201,7 +2372,7 @@ func (x *PassportCreateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PassportCreateResponse.ProtoReflect.Descriptor instead.
 func (*PassportCreateResponse) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{39}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{42}
 }
 
 func (x *PassportCreateResponse) GetSuccess() bool {
@@ -2253,7 +2424,7 @@ type EducationCreateRequest struct {
 
 func (x *EducationCreateRequest) Reset() {
 	*x = EducationCreateRequest{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[40]
+	mi := &file_mdm_service_user_service_proto_msgTypes[43]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2265,7 +2436,7 @@ func (x *EducationCreateRequest) String() string {
 func (*EducationCreateRequest) ProtoMessage() {}
 
 func (x *EducationCreateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[40]
+	mi := &file_mdm_service_user_service_proto_msgTypes[43]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2278,7 +2449,7 @@ func (x *EducationCreateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EducationCreateRequest.ProtoReflect.Descriptor instead.
 func (*EducationCreateRequest) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{40}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{43}
 }
 
 func (x *EducationCreateRequest) GetUserId() int64 {
@@ -2432,7 +2603,7 @@ type EducationCreateResponse struct {
 
 func (x *EducationCreateResponse) Reset() {
 	*x = EducationCreateResponse{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[41]
+	mi := &file_mdm_service_user_service_proto_msgTypes[44]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2444,7 +2615,7 @@ func (x *EducationCreateResponse) String() string {
 func (*EducationCreateResponse) ProtoMessage() {}
 
 func (x *EducationCreateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[41]
+	mi := &file_mdm_service_user_service_proto_msgTypes[44]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2457,7 +2628,7 @@ func (x *EducationCreateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EducationCreateResponse.ProtoReflect.Descriptor instead.
 func (*EducationCreateResponse) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{41}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{44}
 }
 
 func (x *EducationCreateResponse) GetSuccess() bool {
@@ -2497,7 +2668,7 @@ type MilitaryCreateRequest struct {
 
 func (x *MilitaryCreateRequest) Reset() {
 	*x = MilitaryCreateRequest{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[42]
+	mi := &file_mdm_service_user_service_proto_msgTypes[45]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2509,7 +2680,7 @@ func (x *MilitaryCreateRequest) String() string {
 func (*MilitaryCreateRequest) ProtoMessage() {}
 
 func (x *MilitaryCreateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[42]
+	mi := &file_mdm_service_user_service_proto_msgTypes[45]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2522,7 +2693,7 @@ func (x *MilitaryCreateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MilitaryCreateRequest.ProtoReflect.Descriptor instead.
 func (*MilitaryCreateRequest) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{42}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{45}
 }
 
 func (x *MilitaryCreateRequest) GetUserId() int64 {
@@ -2592,7 +2763,7 @@ type MilitaryCreateResponse struct {
 
 func (x *MilitaryCreateResponse) Reset() {
 	*x = MilitaryCreateResponse{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[43]
+	mi := &file_mdm_service_user_service_proto_msgTypes[46]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2604,7 +2775,7 @@ func (x *MilitaryCreateResponse) String() string {
 func (*MilitaryCreateResponse) ProtoMessage() {}
 
 func (x *MilitaryCreateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[43]
+	mi := &file_mdm_service_user_service_proto_msgTypes[46]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2617,7 +2788,7 @@ func (x *MilitaryCreateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MilitaryCreateResponse.ProtoReflect.Descriptor instead.
 func (*MilitaryCreateResponse) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{43}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{46}
 }
 
 func (x *MilitaryCreateResponse) GetSuccess() bool {
@@ -2655,7 +2826,7 @@ type StudentCreateRequest struct {
 
 func (x *StudentCreateRequest) Reset() {
 	*x = StudentCreateRequest{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[44]
+	mi := &file_mdm_service_user_service_proto_msgTypes[47]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2667,7 +2838,7 @@ func (x *StudentCreateRequest) String() string {
 func (*StudentCreateRequest) ProtoMessage() {}
 
 func (x *StudentCreateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[44]
+	mi := &file_mdm_service_user_service_proto_msgTypes[47]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2680,7 +2851,7 @@ func (x *StudentCreateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StudentCreateRequest.ProtoReflect.Descriptor instead.
 func (*StudentCreateRequest) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{44}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{47}
 }
 
 func (x *StudentCreateRequest) GetUserId() int64 {
@@ -2736,7 +2907,7 @@ type StudentCreateResponse struct {
 
 func (x *StudentCreateResponse) Reset() {
 	*x = StudentCreateResponse{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[45]
+	mi := &file_mdm_service_user_service_proto_msgTypes[48]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2748,7 +2919,7 @@ func (x *StudentCreateResponse) String() string {
 func (*StudentCreateResponse) ProtoMessage() {}
 
 func (x *StudentCreateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[45]
+	mi := &file_mdm_service_user_service_proto_msgTypes[48]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2761,7 +2932,7 @@ func (x *StudentCreateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StudentCreateResponse.ProtoReflect.Descriptor instead.
 func (*StudentCreateResponse) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{45}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{48}
 }
 
 func (x *StudentCreateResponse) GetSuccess() bool {
@@ -2793,7 +2964,7 @@ type StudentFetchRequest struct {
 
 func (x *StudentFetchRequest) Reset() {
 	*x = StudentFetchRequest{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[46]
+	mi := &file_mdm_service_user_service_proto_msgTypes[49]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2805,7 +2976,7 @@ func (x *StudentFetchRequest) String() string {
 func (*StudentFetchRequest) ProtoMessage() {}
 
 func (x *StudentFetchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[46]
+	mi := &file_mdm_service_user_service_proto_msgTypes[49]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2818,7 +2989,7 @@ func (x *StudentFetchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StudentFetchRequest.ProtoReflect.Descriptor instead.
 func (*StudentFetchRequest) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{46}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{49}
 }
 
 // Данные учащегося вместе с его профилем пользователя — одним запросом,
@@ -2833,7 +3004,7 @@ type StudentWithUser struct {
 
 func (x *StudentWithUser) Reset() {
 	*x = StudentWithUser{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[47]
+	mi := &file_mdm_service_user_service_proto_msgTypes[50]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2845,7 +3016,7 @@ func (x *StudentWithUser) String() string {
 func (*StudentWithUser) ProtoMessage() {}
 
 func (x *StudentWithUser) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[47]
+	mi := &file_mdm_service_user_service_proto_msgTypes[50]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2858,7 +3029,7 @@ func (x *StudentWithUser) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StudentWithUser.ProtoReflect.Descriptor instead.
 func (*StudentWithUser) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{47}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{50}
 }
 
 func (x *StudentWithUser) GetStudent() *entity.Student {
@@ -2884,7 +3055,7 @@ type StudentFetchResponse struct {
 
 func (x *StudentFetchResponse) Reset() {
 	*x = StudentFetchResponse{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[48]
+	mi := &file_mdm_service_user_service_proto_msgTypes[51]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2896,7 +3067,7 @@ func (x *StudentFetchResponse) String() string {
 func (*StudentFetchResponse) ProtoMessage() {}
 
 func (x *StudentFetchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[48]
+	mi := &file_mdm_service_user_service_proto_msgTypes[51]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2909,7 +3080,7 @@ func (x *StudentFetchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StudentFetchResponse.ProtoReflect.Descriptor instead.
 func (*StudentFetchResponse) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{48}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{51}
 }
 
 func (x *StudentFetchResponse) GetStudents() []*StudentWithUser {
@@ -2923,13 +3094,15 @@ type EmployeeCreateRequest struct {
 	state         protoimpl.MessageState      `protogen:"open.v1"`
 	UserId        int64                       `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Department    enum.UserEmployeeDepartment `protobuf:"varint,2,opt,name=department,proto3,enum=contract.enum.UserEmployeeDepartment" json:"department,omitempty"`
+	Status        enum.UserEmployeeStatus     `protobuf:"varint,3,opt,name=status,proto3,enum=contract.enum.UserEmployeeStatus" json:"status,omitempty"`
+	Position      enum.UserEmployeePosition   `protobuf:"varint,4,opt,name=position,proto3,enum=contract.enum.UserEmployeePosition" json:"position,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *EmployeeCreateRequest) Reset() {
 	*x = EmployeeCreateRequest{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[49]
+	mi := &file_mdm_service_user_service_proto_msgTypes[52]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2941,7 +3114,7 @@ func (x *EmployeeCreateRequest) String() string {
 func (*EmployeeCreateRequest) ProtoMessage() {}
 
 func (x *EmployeeCreateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[49]
+	mi := &file_mdm_service_user_service_proto_msgTypes[52]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2954,7 +3127,7 @@ func (x *EmployeeCreateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmployeeCreateRequest.ProtoReflect.Descriptor instead.
 func (*EmployeeCreateRequest) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{49}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{52}
 }
 
 func (x *EmployeeCreateRequest) GetUserId() int64 {
@@ -2971,6 +3144,20 @@ func (x *EmployeeCreateRequest) GetDepartment() enum.UserEmployeeDepartment {
 	return enum.UserEmployeeDepartment(0)
 }
 
+func (x *EmployeeCreateRequest) GetStatus() enum.UserEmployeeStatus {
+	if x != nil {
+		return x.Status
+	}
+	return enum.UserEmployeeStatus(0)
+}
+
+func (x *EmployeeCreateRequest) GetPosition() enum.UserEmployeePosition {
+	if x != nil {
+		return x.Position
+	}
+	return enum.UserEmployeePosition(0)
+}
+
 type EmployeeCreateResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
@@ -2982,7 +3169,7 @@ type EmployeeCreateResponse struct {
 
 func (x *EmployeeCreateResponse) Reset() {
 	*x = EmployeeCreateResponse{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[50]
+	mi := &file_mdm_service_user_service_proto_msgTypes[53]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2994,7 +3181,7 @@ func (x *EmployeeCreateResponse) String() string {
 func (*EmployeeCreateResponse) ProtoMessage() {}
 
 func (x *EmployeeCreateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[50]
+	mi := &file_mdm_service_user_service_proto_msgTypes[53]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3007,7 +3194,7 @@ func (x *EmployeeCreateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmployeeCreateResponse.ProtoReflect.Descriptor instead.
 func (*EmployeeCreateResponse) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{50}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{53}
 }
 
 func (x *EmployeeCreateResponse) GetSuccess() bool {
@@ -3039,7 +3226,7 @@ type EmployeeFetchRequest struct {
 
 func (x *EmployeeFetchRequest) Reset() {
 	*x = EmployeeFetchRequest{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[51]
+	mi := &file_mdm_service_user_service_proto_msgTypes[54]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3051,7 +3238,7 @@ func (x *EmployeeFetchRequest) String() string {
 func (*EmployeeFetchRequest) ProtoMessage() {}
 
 func (x *EmployeeFetchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[51]
+	mi := &file_mdm_service_user_service_proto_msgTypes[54]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3064,7 +3251,7 @@ func (x *EmployeeFetchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmployeeFetchRequest.ProtoReflect.Descriptor instead.
 func (*EmployeeFetchRequest) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{51}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{54}
 }
 
 type EmployeeWithUser struct {
@@ -3077,7 +3264,7 @@ type EmployeeWithUser struct {
 
 func (x *EmployeeWithUser) Reset() {
 	*x = EmployeeWithUser{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[52]
+	mi := &file_mdm_service_user_service_proto_msgTypes[55]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3089,7 +3276,7 @@ func (x *EmployeeWithUser) String() string {
 func (*EmployeeWithUser) ProtoMessage() {}
 
 func (x *EmployeeWithUser) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[52]
+	mi := &file_mdm_service_user_service_proto_msgTypes[55]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3102,7 +3289,7 @@ func (x *EmployeeWithUser) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmployeeWithUser.ProtoReflect.Descriptor instead.
 func (*EmployeeWithUser) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{52}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{55}
 }
 
 func (x *EmployeeWithUser) GetEmployee() *entity.Employee {
@@ -3128,7 +3315,7 @@ type EmployeeFetchResponse struct {
 
 func (x *EmployeeFetchResponse) Reset() {
 	*x = EmployeeFetchResponse{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[53]
+	mi := &file_mdm_service_user_service_proto_msgTypes[56]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3140,7 +3327,7 @@ func (x *EmployeeFetchResponse) String() string {
 func (*EmployeeFetchResponse) ProtoMessage() {}
 
 func (x *EmployeeFetchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[53]
+	mi := &file_mdm_service_user_service_proto_msgTypes[56]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3153,7 +3340,7 @@ func (x *EmployeeFetchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmployeeFetchResponse.ProtoReflect.Descriptor instead.
 func (*EmployeeFetchResponse) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{53}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{56}
 }
 
 func (x *EmployeeFetchResponse) GetEmployees() []*EmployeeWithUser {
@@ -3226,14 +3413,20 @@ const file_mdm_service_user_service_proto_rawDesc = "" +
 	"\x15UserFetchByIDResponse\x123\n" +
 	"\aprofile\x18\x01 \x01(\v2\x19.contract.entity.UserFullR\aprofile\",\n" +
 	"\x16UserFetchByUUIDRequest\x12\x12\n" +
-	"\x04uuid\x18\x01 \x01(\tR\x04uuid\"D\n" +
+	"\x04uuid\x18\x01 \x01(\tR\x04uuid\"\xde\x01\n" +
 	"\x17UserFetchByUUIDResponse\x12)\n" +
-	"\x04user\x18\x01 \x01(\v2\x15.contract.entity.UserR\x04user\"@\n" +
+	"\x04user\x18\x01 \x01(\v2\x15.contract.entity.UserR\x04user\x12\x1a\n" +
+	"\busername\x18\x02 \x01(\tR\busername\x123\n" +
+	"\x15effective_permissions\x18\x03 \x03(\tR\x14effectivePermissions\x12G\n" +
+	"\vdepartments\x18\x04 \x03(\x0e2%.contract.enum.UserEmployeeDepartmentR\vdepartments\"@\n" +
 	"\x1cUserFetchByADObjectIDRequest\x12 \n" +
 	"\fad_object_id\x18\x01 \x01(\tR\n" +
-	"adObjectId\"J\n" +
+	"adObjectId\"\xe4\x01\n" +
 	"\x1dUserFetchByADObjectIDResponse\x12)\n" +
-	"\x04user\x18\x01 \x01(\v2\x15.contract.entity.UserR\x04user\"(\n" +
+	"\x04user\x18\x01 \x01(\v2\x15.contract.entity.UserR\x04user\x12\x1a\n" +
+	"\busername\x18\x02 \x01(\tR\busername\x123\n" +
+	"\x15effective_permissions\x18\x03 \x03(\tR\x14effectivePermissions\x12G\n" +
+	"\vdepartments\x18\x04 \x03(\x0e2%.contract.enum.UserEmployeeDepartmentR\vdepartments\"(\n" +
 	"\x16ActivationIssueRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\"h\n" +
 	"\x17ActivationIssueResponse\x12\x12\n" +
@@ -3244,12 +3437,18 @@ const file_mdm_service_user_service_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12 \n" +
 	"\vpermissions\x18\x02 \x03(\tR\vpermissions\"G\n" +
 	"\x1aUserPermissionsSetResponse\x12)\n" +
-	"\x04user\x18\x01 \x01(\v2\x15.contract.entity.UserR\x04user\"I\n" +
-	"\x1aUserAccessGroupsSetRequest\x12\x0e\n" +
+	"\x04user\x18\x01 \x01(\v2\x15.contract.entity.UserR\x04user\"M\n" +
+	"\x1eUserPermissionGroupsSetRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1b\n" +
-	"\tgroup_ids\x18\x02 \x03(\x03R\bgroupIds\"H\n" +
-	"\x1bUserAccessGroupsSetResponse\x12)\n" +
-	"\x04user\x18\x01 \x01(\v2\x15.contract.entity.UserR\x04user\"t\n" +
+	"\tgroup_ids\x18\x02 \x03(\x03R\bgroupIds\"L\n" +
+	"\x1fUserPermissionGroupsSetResponse\x12)\n" +
+	"\x04user\x18\x01 \x01(\v2\x15.contract.entity.UserR\x04user\",\n" +
+	"*UserPermissionGroupAssignmentsFetchRequest\"S\n" +
+	"\x1dUserPermissionGroupAssignment\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x03R\x06userId\x12\x19\n" +
+	"\bgroup_id\x18\x02 \x01(\x03R\agroupId\"\x80\x01\n" +
+	"+UserPermissionGroupAssignmentsFetchResponse\x12Q\n" +
+	"\vassignments\x18\x01 \x03(\v2/.contract.service.UserPermissionGroupAssignmentR\vassignments\"t\n" +
 	"\x19UserDepartmentsSetRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12G\n" +
 	"\vdepartments\x18\x02 \x03(\x0e2%.contract.enum.UserEmployeeDepartmentR\vdepartments\"G\n" +
@@ -3259,21 +3458,20 @@ const file_mdm_service_user_service_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1a\n" +
 	"\bposition\x18\x02 \x01(\tR\bposition\"D\n" +
 	"\x17UserPositionSetResponse\x12)\n" +
-	"\x04user\x18\x01 \x01(\v2\x15.contract.entity.UserR\x04user\"\x19\n" +
-	"\x17AccessGroupFetchRequest\"P\n" +
-	"\x18AccessGroupFetchResponse\x124\n" +
-	"\x06groups\x18\x01 \x03(\v2\x1c.contract.entity.AccessGroupR\x06groups\"\xc9\x01\n" +
-	"\x16AccessGroupSaveRequest\x12\x0e\n" +
+	"\x04user\x18\x01 \x01(\v2\x15.contract.entity.UserR\x04user\"!\n" +
+	"\x1fUserPermissionGroupFetchRequest\"`\n" +
+	" UserPermissionGroupFetchResponse\x12<\n" +
+	"\x06groups\x18\x01 \x03(\v2$.contract.entity.UserPermissionGroupR\x06groups\"\x9b\x01\n" +
+	"\x1eUserPermissionGroupSaveRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
 	"\vdescription\x18\x03 \x01(\tR\vdescription\x12 \n" +
-	"\vpermissions\x18\x04 \x03(\tR\vpermissions\x12G\n" +
-	"\vdepartments\x18\x05 \x03(\x0e2%.contract.enum.UserEmployeeDepartmentR\vdepartments\"M\n" +
-	"\x17AccessGroupSaveResponse\x122\n" +
-	"\x05group\x18\x01 \x01(\v2\x1c.contract.entity.AccessGroupR\x05group\"*\n" +
-	"\x18AccessGroupDeleteRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"\x1b\n" +
-	"\x19AccessGroupDeleteResponse\"T\n" +
+	"\vpermissions\x18\x04 \x03(\tR\vpermissionsJ\x04\b\x05\x10\x06R\vdepartments\"]\n" +
+	"\x1fUserPermissionGroupSaveResponse\x12:\n" +
+	"\x05group\x18\x01 \x01(\v2$.contract.entity.UserPermissionGroupR\x05group\"2\n" +
+	" UserPermissionGroupDeleteRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"#\n" +
+	"!UserPermissionGroupDeleteResponse\"T\n" +
 	"\x13UserRolesSetRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12-\n" +
 	"\x05roles\x18\x02 \x03(\x0e2\x17.contract.enum.UserRoleR\x05roles\"A\n" +
@@ -3395,12 +3593,14 @@ const file_mdm_service_user_service_proto_rawDesc = "" +
 	"\astudent\x18\x01 \x01(\v2\x18.contract.entity.StudentR\astudent\x12)\n" +
 	"\x04user\x18\x02 \x01(\v2\x15.contract.entity.UserR\x04user\"U\n" +
 	"\x14StudentFetchResponse\x12=\n" +
-	"\bstudents\x18\x01 \x03(\v2!.contract.service.StudentWithUserR\bstudents\"w\n" +
+	"\bstudents\x18\x01 \x03(\v2!.contract.service.StudentWithUserR\bstudents\"\xf3\x01\n" +
 	"\x15EmployeeCreateRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\x03R\x06userId\x12E\n" +
 	"\n" +
 	"department\x18\x02 \x01(\x0e2%.contract.enum.UserEmployeeDepartmentR\n" +
-	"department\"m\n" +
+	"department\x129\n" +
+	"\x06status\x18\x03 \x01(\x0e2!.contract.enum.UserEmployeeStatusR\x06status\x12?\n" +
+	"\bposition\x18\x04 \x01(\x0e2#.contract.enum.UserEmployeePositionR\bposition\"m\n" +
 	"\x16EmployeeCreateResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x12\x1f\n" +
@@ -3411,7 +3611,7 @@ const file_mdm_service_user_service_proto_rawDesc = "" +
 	"\bemployee\x18\x01 \x01(\v2\x19.contract.entity.EmployeeR\bemployee\x12)\n" +
 	"\x04user\x18\x02 \x01(\v2\x15.contract.entity.UserR\x04user\"Y\n" +
 	"\x15EmployeeFetchResponse\x12@\n" +
-	"\temployees\x18\x01 \x03(\v2\".contract.service.EmployeeWithUserR\temployees2\x82\x14\n" +
+	"\temployees\x18\x01 \x03(\v2\".contract.service.EmployeeWithUserR\temployees2\xfd\x15\n" +
 	"\vUserService\x12T\n" +
 	"\tUserFetch\x12\".contract.service.UserFetchRequest\x1a#.contract.service.UserFetchResponse\x12W\n" +
 	"\n" +
@@ -3427,13 +3627,14 @@ const file_mdm_service_user_service_proto_rawDesc = "" +
 	"\x15UserFetchByADObjectID\x12..contract.service.UserFetchByADObjectIDRequest\x1a/.contract.service.UserFetchByADObjectIDResponse\x12f\n" +
 	"\x0fActivationIssue\x12(.contract.service.ActivationIssueRequest\x1a).contract.service.ActivationIssueResponse\x12]\n" +
 	"\fUserRolesSet\x12%.contract.service.UserRolesSetRequest\x1a&.contract.service.UserRolesSetResponse\x12o\n" +
-	"\x12UserPermissionsSet\x12+.contract.service.UserPermissionsSetRequest\x1a,.contract.service.UserPermissionsSetResponse\x12r\n" +
-	"\x13UserAccessGroupsSet\x12,.contract.service.UserAccessGroupsSetRequest\x1a-.contract.service.UserAccessGroupsSetResponse\x12o\n" +
+	"\x12UserPermissionsSet\x12+.contract.service.UserPermissionsSetRequest\x1a,.contract.service.UserPermissionsSetResponse\x12~\n" +
+	"\x17UserPermissionGroupsSet\x120.contract.service.UserPermissionGroupsSetRequest\x1a1.contract.service.UserPermissionGroupsSetResponse\x12\xa2\x01\n" +
+	"#UserPermissionGroupAssignmentsFetch\x12<.contract.service.UserPermissionGroupAssignmentsFetchRequest\x1a=.contract.service.UserPermissionGroupAssignmentsFetchResponse\x12o\n" +
 	"\x12UserDepartmentsSet\x12+.contract.service.UserDepartmentsSetRequest\x1a,.contract.service.UserDepartmentsSetResponse\x12f\n" +
-	"\x0fUserPositionSet\x12(.contract.service.UserPositionSetRequest\x1a).contract.service.UserPositionSetResponse\x12i\n" +
-	"\x10AccessGroupFetch\x12).contract.service.AccessGroupFetchRequest\x1a*.contract.service.AccessGroupFetchResponse\x12f\n" +
-	"\x0fAccessGroupSave\x12(.contract.service.AccessGroupSaveRequest\x1a).contract.service.AccessGroupSaveResponse\x12l\n" +
-	"\x11AccessGroupDelete\x12*.contract.service.AccessGroupDeleteRequest\x1a+.contract.service.AccessGroupDeleteResponse\x12c\n" +
+	"\x0fUserPositionSet\x12(.contract.service.UserPositionSetRequest\x1a).contract.service.UserPositionSetResponse\x12\x81\x01\n" +
+	"\x18UserPermissionGroupFetch\x121.contract.service.UserPermissionGroupFetchRequest\x1a2.contract.service.UserPermissionGroupFetchResponse\x12~\n" +
+	"\x17UserPermissionGroupSave\x120.contract.service.UserPermissionGroupSaveRequest\x1a1.contract.service.UserPermissionGroupSaveResponse\x12\x84\x01\n" +
+	"\x19UserPermissionGroupDelete\x122.contract.service.UserPermissionGroupDeleteRequest\x1a3.contract.service.UserPermissionGroupDeleteResponse\x12c\n" +
 	"\x0ePassportCreate\x12'.contract.service.PassportCreateRequest\x1a(.contract.service.PassportCreateResponse\x12f\n" +
 	"\x0fEducationCreate\x12(.contract.service.EducationCreateRequest\x1a).contract.service.EducationCreateResponse\x12c\n" +
 	"\x0eMilitaryCreate\x12'.contract.service.MilitaryCreateRequest\x1a(.contract.service.MilitaryCreateResponse\x12`\n" +
@@ -3455,177 +3656,188 @@ func file_mdm_service_user_service_proto_rawDescGZIP() []byte {
 	return file_mdm_service_user_service_proto_rawDescData
 }
 
-var file_mdm_service_user_service_proto_msgTypes = make([]protoimpl.MessageInfo, 54)
+var file_mdm_service_user_service_proto_msgTypes = make([]protoimpl.MessageInfo, 57)
 var file_mdm_service_user_service_proto_goTypes = []any{
-	(*UserFetchRequest)(nil),              // 0: contract.service.UserFetchRequest
-	(*UserFetchResponse)(nil),             // 1: contract.service.UserFetchResponse
-	(*UserCreateRequest)(nil),             // 2: contract.service.UserCreateRequest
-	(*UserCreateResponse)(nil),            // 3: contract.service.UserCreateResponse
-	(*UserUpdateRequest)(nil),             // 4: contract.service.UserUpdateRequest
-	(*UserUpdateResponse)(nil),            // 5: contract.service.UserUpdateResponse
-	(*UserDeleteRequest)(nil),             // 6: contract.service.UserDeleteRequest
-	(*UserDeleteResponse)(nil),            // 7: contract.service.UserDeleteResponse
-	(*UserDeleteBatchRequest)(nil),        // 8: contract.service.UserDeleteBatchRequest
-	(*UserDeleteBatchResponse)(nil),       // 9: contract.service.UserDeleteBatchResponse
-	(*UserFetchByIDRequest)(nil),          // 10: contract.service.UserFetchByIDRequest
-	(*UserFetchByIDResponse)(nil),         // 11: contract.service.UserFetchByIDResponse
-	(*UserFetchByUUIDRequest)(nil),        // 12: contract.service.UserFetchByUUIDRequest
-	(*UserFetchByUUIDResponse)(nil),       // 13: contract.service.UserFetchByUUIDResponse
-	(*UserFetchByADObjectIDRequest)(nil),  // 14: contract.service.UserFetchByADObjectIDRequest
-	(*UserFetchByADObjectIDResponse)(nil), // 15: contract.service.UserFetchByADObjectIDResponse
-	(*ActivationIssueRequest)(nil),        // 16: contract.service.ActivationIssueRequest
-	(*ActivationIssueResponse)(nil),       // 17: contract.service.ActivationIssueResponse
-	(*UserPermissionsSetRequest)(nil),     // 18: contract.service.UserPermissionsSetRequest
-	(*UserPermissionsSetResponse)(nil),    // 19: contract.service.UserPermissionsSetResponse
-	(*UserAccessGroupsSetRequest)(nil),    // 20: contract.service.UserAccessGroupsSetRequest
-	(*UserAccessGroupsSetResponse)(nil),   // 21: contract.service.UserAccessGroupsSetResponse
-	(*UserDepartmentsSetRequest)(nil),     // 22: contract.service.UserDepartmentsSetRequest
-	(*UserDepartmentsSetResponse)(nil),    // 23: contract.service.UserDepartmentsSetResponse
-	(*UserPositionSetRequest)(nil),        // 24: contract.service.UserPositionSetRequest
-	(*UserPositionSetResponse)(nil),       // 25: contract.service.UserPositionSetResponse
-	(*AccessGroupFetchRequest)(nil),       // 26: contract.service.AccessGroupFetchRequest
-	(*AccessGroupFetchResponse)(nil),      // 27: contract.service.AccessGroupFetchResponse
-	(*AccessGroupSaveRequest)(nil),        // 28: contract.service.AccessGroupSaveRequest
-	(*AccessGroupSaveResponse)(nil),       // 29: contract.service.AccessGroupSaveResponse
-	(*AccessGroupDeleteRequest)(nil),      // 30: contract.service.AccessGroupDeleteRequest
-	(*AccessGroupDeleteResponse)(nil),     // 31: contract.service.AccessGroupDeleteResponse
-	(*UserRolesSetRequest)(nil),           // 32: contract.service.UserRolesSetRequest
-	(*UserRolesSetResponse)(nil),          // 33: contract.service.UserRolesSetResponse
-	(*UserCreateBatchRequest)(nil),        // 34: contract.service.UserCreateBatchRequest
-	(*UserCreateBatchItem)(nil),           // 35: contract.service.UserCreateBatchItem
-	(*UserCreateBatchResponse)(nil),       // 36: contract.service.UserCreateBatchResponse
-	(*UserCreateBatchResult)(nil),         // 37: contract.service.UserCreateBatchResult
-	(*PassportCreateRequest)(nil),         // 38: contract.service.PassportCreateRequest
-	(*PassportCreateResponse)(nil),        // 39: contract.service.PassportCreateResponse
-	(*EducationCreateRequest)(nil),        // 40: contract.service.EducationCreateRequest
-	(*EducationCreateResponse)(nil),       // 41: contract.service.EducationCreateResponse
-	(*MilitaryCreateRequest)(nil),         // 42: contract.service.MilitaryCreateRequest
-	(*MilitaryCreateResponse)(nil),        // 43: contract.service.MilitaryCreateResponse
-	(*StudentCreateRequest)(nil),          // 44: contract.service.StudentCreateRequest
-	(*StudentCreateResponse)(nil),         // 45: contract.service.StudentCreateResponse
-	(*StudentFetchRequest)(nil),           // 46: contract.service.StudentFetchRequest
-	(*StudentWithUser)(nil),               // 47: contract.service.StudentWithUser
-	(*StudentFetchResponse)(nil),          // 48: contract.service.StudentFetchResponse
-	(*EmployeeCreateRequest)(nil),         // 49: contract.service.EmployeeCreateRequest
-	(*EmployeeCreateResponse)(nil),        // 50: contract.service.EmployeeCreateResponse
-	(*EmployeeFetchRequest)(nil),          // 51: contract.service.EmployeeFetchRequest
-	(*EmployeeWithUser)(nil),              // 52: contract.service.EmployeeWithUser
-	(*EmployeeFetchResponse)(nil),         // 53: contract.service.EmployeeFetchResponse
-	(*entity.User)(nil),                   // 54: contract.entity.User
-	(*timestamppb.Timestamp)(nil),         // 55: google.protobuf.Timestamp
-	(*entity.UserFull)(nil),               // 56: contract.entity.UserFull
-	(enum.UserEmployeeDepartment)(0),      // 57: contract.enum.UserEmployeeDepartment
-	(*entity.AccessGroup)(nil),            // 58: contract.entity.AccessGroup
-	(enum.UserRole)(0),                    // 59: contract.enum.UserRole
-	(enum.UserGender)(0),                  // 60: contract.enum.UserGender
-	(enum.UserNationality)(0),             // 61: contract.enum.UserNationality
-	(enum.EducationType)(0),               // 62: contract.enum.EducationType
-	(enum.EducationStatus)(0),             // 63: contract.enum.EducationStatus
-	(enum.MilitaryRank)(0),                // 64: contract.enum.MilitaryRank
-	(enum.MilitaryDocument)(0),            // 65: contract.enum.MilitaryDocument
-	(enum.MilitaryValidity)(0),            // 66: contract.enum.MilitaryValidity
-	(enum.UserStudentStatus)(0),           // 67: contract.enum.UserStudentStatus
-	(enum.UserStudentEducationForm)(0),    // 68: contract.enum.UserStudentEducationForm
-	(*entity.Student)(nil),                // 69: contract.entity.Student
-	(*entity.Employee)(nil),               // 70: contract.entity.Employee
+	(*UserFetchRequest)(nil),                            // 0: contract.service.UserFetchRequest
+	(*UserFetchResponse)(nil),                           // 1: contract.service.UserFetchResponse
+	(*UserCreateRequest)(nil),                           // 2: contract.service.UserCreateRequest
+	(*UserCreateResponse)(nil),                          // 3: contract.service.UserCreateResponse
+	(*UserUpdateRequest)(nil),                           // 4: contract.service.UserUpdateRequest
+	(*UserUpdateResponse)(nil),                          // 5: contract.service.UserUpdateResponse
+	(*UserDeleteRequest)(nil),                           // 6: contract.service.UserDeleteRequest
+	(*UserDeleteResponse)(nil),                          // 7: contract.service.UserDeleteResponse
+	(*UserDeleteBatchRequest)(nil),                      // 8: contract.service.UserDeleteBatchRequest
+	(*UserDeleteBatchResponse)(nil),                     // 9: contract.service.UserDeleteBatchResponse
+	(*UserFetchByIDRequest)(nil),                        // 10: contract.service.UserFetchByIDRequest
+	(*UserFetchByIDResponse)(nil),                       // 11: contract.service.UserFetchByIDResponse
+	(*UserFetchByUUIDRequest)(nil),                      // 12: contract.service.UserFetchByUUIDRequest
+	(*UserFetchByUUIDResponse)(nil),                     // 13: contract.service.UserFetchByUUIDResponse
+	(*UserFetchByADObjectIDRequest)(nil),                // 14: contract.service.UserFetchByADObjectIDRequest
+	(*UserFetchByADObjectIDResponse)(nil),               // 15: contract.service.UserFetchByADObjectIDResponse
+	(*ActivationIssueRequest)(nil),                      // 16: contract.service.ActivationIssueRequest
+	(*ActivationIssueResponse)(nil),                     // 17: contract.service.ActivationIssueResponse
+	(*UserPermissionsSetRequest)(nil),                   // 18: contract.service.UserPermissionsSetRequest
+	(*UserPermissionsSetResponse)(nil),                  // 19: contract.service.UserPermissionsSetResponse
+	(*UserPermissionGroupsSetRequest)(nil),              // 20: contract.service.UserPermissionGroupsSetRequest
+	(*UserPermissionGroupsSetResponse)(nil),             // 21: contract.service.UserPermissionGroupsSetResponse
+	(*UserPermissionGroupAssignmentsFetchRequest)(nil),  // 22: contract.service.UserPermissionGroupAssignmentsFetchRequest
+	(*UserPermissionGroupAssignment)(nil),               // 23: contract.service.UserPermissionGroupAssignment
+	(*UserPermissionGroupAssignmentsFetchResponse)(nil), // 24: contract.service.UserPermissionGroupAssignmentsFetchResponse
+	(*UserDepartmentsSetRequest)(nil),                   // 25: contract.service.UserDepartmentsSetRequest
+	(*UserDepartmentsSetResponse)(nil),                  // 26: contract.service.UserDepartmentsSetResponse
+	(*UserPositionSetRequest)(nil),                      // 27: contract.service.UserPositionSetRequest
+	(*UserPositionSetResponse)(nil),                     // 28: contract.service.UserPositionSetResponse
+	(*UserPermissionGroupFetchRequest)(nil),             // 29: contract.service.UserPermissionGroupFetchRequest
+	(*UserPermissionGroupFetchResponse)(nil),            // 30: contract.service.UserPermissionGroupFetchResponse
+	(*UserPermissionGroupSaveRequest)(nil),              // 31: contract.service.UserPermissionGroupSaveRequest
+	(*UserPermissionGroupSaveResponse)(nil),             // 32: contract.service.UserPermissionGroupSaveResponse
+	(*UserPermissionGroupDeleteRequest)(nil),            // 33: contract.service.UserPermissionGroupDeleteRequest
+	(*UserPermissionGroupDeleteResponse)(nil),           // 34: contract.service.UserPermissionGroupDeleteResponse
+	(*UserRolesSetRequest)(nil),                         // 35: contract.service.UserRolesSetRequest
+	(*UserRolesSetResponse)(nil),                        // 36: contract.service.UserRolesSetResponse
+	(*UserCreateBatchRequest)(nil),                      // 37: contract.service.UserCreateBatchRequest
+	(*UserCreateBatchItem)(nil),                         // 38: contract.service.UserCreateBatchItem
+	(*UserCreateBatchResponse)(nil),                     // 39: contract.service.UserCreateBatchResponse
+	(*UserCreateBatchResult)(nil),                       // 40: contract.service.UserCreateBatchResult
+	(*PassportCreateRequest)(nil),                       // 41: contract.service.PassportCreateRequest
+	(*PassportCreateResponse)(nil),                      // 42: contract.service.PassportCreateResponse
+	(*EducationCreateRequest)(nil),                      // 43: contract.service.EducationCreateRequest
+	(*EducationCreateResponse)(nil),                     // 44: contract.service.EducationCreateResponse
+	(*MilitaryCreateRequest)(nil),                       // 45: contract.service.MilitaryCreateRequest
+	(*MilitaryCreateResponse)(nil),                      // 46: contract.service.MilitaryCreateResponse
+	(*StudentCreateRequest)(nil),                        // 47: contract.service.StudentCreateRequest
+	(*StudentCreateResponse)(nil),                       // 48: contract.service.StudentCreateResponse
+	(*StudentFetchRequest)(nil),                         // 49: contract.service.StudentFetchRequest
+	(*StudentWithUser)(nil),                             // 50: contract.service.StudentWithUser
+	(*StudentFetchResponse)(nil),                        // 51: contract.service.StudentFetchResponse
+	(*EmployeeCreateRequest)(nil),                       // 52: contract.service.EmployeeCreateRequest
+	(*EmployeeCreateResponse)(nil),                      // 53: contract.service.EmployeeCreateResponse
+	(*EmployeeFetchRequest)(nil),                        // 54: contract.service.EmployeeFetchRequest
+	(*EmployeeWithUser)(nil),                            // 55: contract.service.EmployeeWithUser
+	(*EmployeeFetchResponse)(nil),                       // 56: contract.service.EmployeeFetchResponse
+	(*entity.User)(nil),                                 // 57: contract.entity.User
+	(*timestamppb.Timestamp)(nil),                       // 58: google.protobuf.Timestamp
+	(*entity.UserFull)(nil),                             // 59: contract.entity.UserFull
+	(enum.UserEmployeeDepartment)(0),                    // 60: contract.enum.UserEmployeeDepartment
+	(*entity.UserPermissionGroup)(nil),                  // 61: contract.entity.UserPermissionGroup
+	(enum.UserRole)(0),                                  // 62: contract.enum.UserRole
+	(enum.UserGender)(0),                                // 63: contract.enum.UserGender
+	(enum.UserNationality)(0),                           // 64: contract.enum.UserNationality
+	(enum.EducationType)(0),                             // 65: contract.enum.EducationType
+	(enum.EducationStatus)(0),                           // 66: contract.enum.EducationStatus
+	(enum.MilitaryRank)(0),                              // 67: contract.enum.MilitaryRank
+	(enum.MilitaryDocument)(0),                          // 68: contract.enum.MilitaryDocument
+	(enum.MilitaryValidity)(0),                          // 69: contract.enum.MilitaryValidity
+	(enum.UserStudentStatus)(0),                         // 70: contract.enum.UserStudentStatus
+	(enum.UserStudentEducationForm)(0),                  // 71: contract.enum.UserStudentEducationForm
+	(*entity.Student)(nil),                              // 72: contract.entity.Student
+	(enum.UserEmployeeStatus)(0),                        // 73: contract.enum.UserEmployeeStatus
+	(enum.UserEmployeePosition)(0),                      // 74: contract.enum.UserEmployeePosition
+	(*entity.Employee)(nil),                             // 75: contract.entity.Employee
 }
 var file_mdm_service_user_service_proto_depIdxs = []int32{
-	54, // 0: contract.service.UserFetchResponse.users:type_name -> contract.entity.User
-	55, // 1: contract.service.UserCreateRequest.birthday:type_name -> google.protobuf.Timestamp
-	55, // 2: contract.service.UserUpdateRequest.birthday:type_name -> google.protobuf.Timestamp
-	56, // 3: contract.service.UserFetchByIDResponse.profile:type_name -> contract.entity.UserFull
-	54, // 4: contract.service.UserFetchByUUIDResponse.user:type_name -> contract.entity.User
-	54, // 5: contract.service.UserFetchByADObjectIDResponse.user:type_name -> contract.entity.User
-	55, // 6: contract.service.ActivationIssueResponse.expires_at:type_name -> google.protobuf.Timestamp
-	54, // 7: contract.service.UserPermissionsSetResponse.user:type_name -> contract.entity.User
-	54, // 8: contract.service.UserAccessGroupsSetResponse.user:type_name -> contract.entity.User
-	57, // 9: contract.service.UserDepartmentsSetRequest.departments:type_name -> contract.enum.UserEmployeeDepartment
-	54, // 10: contract.service.UserDepartmentsSetResponse.user:type_name -> contract.entity.User
-	54, // 11: contract.service.UserPositionSetResponse.user:type_name -> contract.entity.User
-	58, // 12: contract.service.AccessGroupFetchResponse.groups:type_name -> contract.entity.AccessGroup
-	57, // 13: contract.service.AccessGroupSaveRequest.departments:type_name -> contract.enum.UserEmployeeDepartment
-	58, // 14: contract.service.AccessGroupSaveResponse.group:type_name -> contract.entity.AccessGroup
-	59, // 15: contract.service.UserRolesSetRequest.roles:type_name -> contract.enum.UserRole
-	54, // 16: contract.service.UserRolesSetResponse.user:type_name -> contract.entity.User
-	35, // 17: contract.service.UserCreateBatchRequest.users:type_name -> contract.service.UserCreateBatchItem
-	55, // 18: contract.service.UserCreateBatchItem.birthday:type_name -> google.protobuf.Timestamp
-	38, // 19: contract.service.UserCreateBatchItem.passport:type_name -> contract.service.PassportCreateRequest
-	40, // 20: contract.service.UserCreateBatchItem.educations:type_name -> contract.service.EducationCreateRequest
-	42, // 21: contract.service.UserCreateBatchItem.military:type_name -> contract.service.MilitaryCreateRequest
-	37, // 22: contract.service.UserCreateBatchResponse.results:type_name -> contract.service.UserCreateBatchResult
-	60, // 23: contract.service.PassportCreateRequest.gender:type_name -> contract.enum.UserGender
-	61, // 24: contract.service.PassportCreateRequest.nationality:type_name -> contract.enum.UserNationality
-	62, // 25: contract.service.EducationCreateRequest.type:type_name -> contract.enum.EducationType
-	63, // 26: contract.service.EducationCreateRequest.status:type_name -> contract.enum.EducationStatus
-	55, // 27: contract.service.EducationCreateRequest.issue_date:type_name -> google.protobuf.Timestamp
-	64, // 28: contract.service.MilitaryCreateRequest.rank:type_name -> contract.enum.MilitaryRank
-	65, // 29: contract.service.MilitaryCreateRequest.document:type_name -> contract.enum.MilitaryDocument
-	66, // 30: contract.service.MilitaryCreateRequest.validity:type_name -> contract.enum.MilitaryValidity
-	55, // 31: contract.service.MilitaryCreateRequest.deferment_expires_at:type_name -> google.protobuf.Timestamp
-	67, // 32: contract.service.StudentCreateRequest.status:type_name -> contract.enum.UserStudentStatus
-	68, // 33: contract.service.StudentCreateRequest.education_form:type_name -> contract.enum.UserStudentEducationForm
-	69, // 34: contract.service.StudentWithUser.student:type_name -> contract.entity.Student
-	54, // 35: contract.service.StudentWithUser.user:type_name -> contract.entity.User
-	47, // 36: contract.service.StudentFetchResponse.students:type_name -> contract.service.StudentWithUser
-	57, // 37: contract.service.EmployeeCreateRequest.department:type_name -> contract.enum.UserEmployeeDepartment
-	70, // 38: contract.service.EmployeeWithUser.employee:type_name -> contract.entity.Employee
-	54, // 39: contract.service.EmployeeWithUser.user:type_name -> contract.entity.User
-	52, // 40: contract.service.EmployeeFetchResponse.employees:type_name -> contract.service.EmployeeWithUser
-	0,  // 41: contract.service.UserService.UserFetch:input_type -> contract.service.UserFetchRequest
-	2,  // 42: contract.service.UserService.UserCreate:input_type -> contract.service.UserCreateRequest
-	10, // 43: contract.service.UserService.UserFetchByID:input_type -> contract.service.UserFetchByIDRequest
-	34, // 44: contract.service.UserService.UserCreateBatch:input_type -> contract.service.UserCreateBatchRequest
-	4,  // 45: contract.service.UserService.UserUpdate:input_type -> contract.service.UserUpdateRequest
-	6,  // 46: contract.service.UserService.UserDelete:input_type -> contract.service.UserDeleteRequest
-	8,  // 47: contract.service.UserService.UserDeleteBatch:input_type -> contract.service.UserDeleteBatchRequest
-	12, // 48: contract.service.UserService.UserFetchByUUID:input_type -> contract.service.UserFetchByUUIDRequest
-	14, // 49: contract.service.UserService.UserFetchByADObjectID:input_type -> contract.service.UserFetchByADObjectIDRequest
-	16, // 50: contract.service.UserService.ActivationIssue:input_type -> contract.service.ActivationIssueRequest
-	32, // 51: contract.service.UserService.UserRolesSet:input_type -> contract.service.UserRolesSetRequest
-	18, // 52: contract.service.UserService.UserPermissionsSet:input_type -> contract.service.UserPermissionsSetRequest
-	20, // 53: contract.service.UserService.UserAccessGroupsSet:input_type -> contract.service.UserAccessGroupsSetRequest
-	22, // 54: contract.service.UserService.UserDepartmentsSet:input_type -> contract.service.UserDepartmentsSetRequest
-	24, // 55: contract.service.UserService.UserPositionSet:input_type -> contract.service.UserPositionSetRequest
-	26, // 56: contract.service.UserService.AccessGroupFetch:input_type -> contract.service.AccessGroupFetchRequest
-	28, // 57: contract.service.UserService.AccessGroupSave:input_type -> contract.service.AccessGroupSaveRequest
-	30, // 58: contract.service.UserService.AccessGroupDelete:input_type -> contract.service.AccessGroupDeleteRequest
-	38, // 59: contract.service.UserService.PassportCreate:input_type -> contract.service.PassportCreateRequest
-	40, // 60: contract.service.UserService.EducationCreate:input_type -> contract.service.EducationCreateRequest
-	42, // 61: contract.service.UserService.MilitaryCreate:input_type -> contract.service.MilitaryCreateRequest
-	44, // 62: contract.service.UserService.StudentCreate:input_type -> contract.service.StudentCreateRequest
-	46, // 63: contract.service.UserService.StudentFetch:input_type -> contract.service.StudentFetchRequest
-	49, // 64: contract.service.UserService.EmployeeCreate:input_type -> contract.service.EmployeeCreateRequest
-	51, // 65: contract.service.UserService.EmployeeFetch:input_type -> contract.service.EmployeeFetchRequest
-	1,  // 66: contract.service.UserService.UserFetch:output_type -> contract.service.UserFetchResponse
-	3,  // 67: contract.service.UserService.UserCreate:output_type -> contract.service.UserCreateResponse
-	11, // 68: contract.service.UserService.UserFetchByID:output_type -> contract.service.UserFetchByIDResponse
-	36, // 69: contract.service.UserService.UserCreateBatch:output_type -> contract.service.UserCreateBatchResponse
-	5,  // 70: contract.service.UserService.UserUpdate:output_type -> contract.service.UserUpdateResponse
-	7,  // 71: contract.service.UserService.UserDelete:output_type -> contract.service.UserDeleteResponse
-	9,  // 72: contract.service.UserService.UserDeleteBatch:output_type -> contract.service.UserDeleteBatchResponse
-	13, // 73: contract.service.UserService.UserFetchByUUID:output_type -> contract.service.UserFetchByUUIDResponse
-	15, // 74: contract.service.UserService.UserFetchByADObjectID:output_type -> contract.service.UserFetchByADObjectIDResponse
-	17, // 75: contract.service.UserService.ActivationIssue:output_type -> contract.service.ActivationIssueResponse
-	33, // 76: contract.service.UserService.UserRolesSet:output_type -> contract.service.UserRolesSetResponse
-	19, // 77: contract.service.UserService.UserPermissionsSet:output_type -> contract.service.UserPermissionsSetResponse
-	21, // 78: contract.service.UserService.UserAccessGroupsSet:output_type -> contract.service.UserAccessGroupsSetResponse
-	23, // 79: contract.service.UserService.UserDepartmentsSet:output_type -> contract.service.UserDepartmentsSetResponse
-	25, // 80: contract.service.UserService.UserPositionSet:output_type -> contract.service.UserPositionSetResponse
-	27, // 81: contract.service.UserService.AccessGroupFetch:output_type -> contract.service.AccessGroupFetchResponse
-	29, // 82: contract.service.UserService.AccessGroupSave:output_type -> contract.service.AccessGroupSaveResponse
-	31, // 83: contract.service.UserService.AccessGroupDelete:output_type -> contract.service.AccessGroupDeleteResponse
-	39, // 84: contract.service.UserService.PassportCreate:output_type -> contract.service.PassportCreateResponse
-	41, // 85: contract.service.UserService.EducationCreate:output_type -> contract.service.EducationCreateResponse
-	43, // 86: contract.service.UserService.MilitaryCreate:output_type -> contract.service.MilitaryCreateResponse
-	45, // 87: contract.service.UserService.StudentCreate:output_type -> contract.service.StudentCreateResponse
-	48, // 88: contract.service.UserService.StudentFetch:output_type -> contract.service.StudentFetchResponse
-	50, // 89: contract.service.UserService.EmployeeCreate:output_type -> contract.service.EmployeeCreateResponse
-	53, // 90: contract.service.UserService.EmployeeFetch:output_type -> contract.service.EmployeeFetchResponse
-	66, // [66:91] is the sub-list for method output_type
-	41, // [41:66] is the sub-list for method input_type
-	41, // [41:41] is the sub-list for extension type_name
-	41, // [41:41] is the sub-list for extension extendee
-	0,  // [0:41] is the sub-list for field type_name
+	57, // 0: contract.service.UserFetchResponse.users:type_name -> contract.entity.User
+	58, // 1: contract.service.UserCreateRequest.birthday:type_name -> google.protobuf.Timestamp
+	58, // 2: contract.service.UserUpdateRequest.birthday:type_name -> google.protobuf.Timestamp
+	59, // 3: contract.service.UserFetchByIDResponse.profile:type_name -> contract.entity.UserFull
+	57, // 4: contract.service.UserFetchByUUIDResponse.user:type_name -> contract.entity.User
+	60, // 5: contract.service.UserFetchByUUIDResponse.departments:type_name -> contract.enum.UserEmployeeDepartment
+	57, // 6: contract.service.UserFetchByADObjectIDResponse.user:type_name -> contract.entity.User
+	60, // 7: contract.service.UserFetchByADObjectIDResponse.departments:type_name -> contract.enum.UserEmployeeDepartment
+	58, // 8: contract.service.ActivationIssueResponse.expires_at:type_name -> google.protobuf.Timestamp
+	57, // 9: contract.service.UserPermissionsSetResponse.user:type_name -> contract.entity.User
+	57, // 10: contract.service.UserPermissionGroupsSetResponse.user:type_name -> contract.entity.User
+	23, // 11: contract.service.UserPermissionGroupAssignmentsFetchResponse.assignments:type_name -> contract.service.UserPermissionGroupAssignment
+	60, // 12: contract.service.UserDepartmentsSetRequest.departments:type_name -> contract.enum.UserEmployeeDepartment
+	57, // 13: contract.service.UserDepartmentsSetResponse.user:type_name -> contract.entity.User
+	57, // 14: contract.service.UserPositionSetResponse.user:type_name -> contract.entity.User
+	61, // 15: contract.service.UserPermissionGroupFetchResponse.groups:type_name -> contract.entity.UserPermissionGroup
+	61, // 16: contract.service.UserPermissionGroupSaveResponse.group:type_name -> contract.entity.UserPermissionGroup
+	62, // 17: contract.service.UserRolesSetRequest.roles:type_name -> contract.enum.UserRole
+	57, // 18: contract.service.UserRolesSetResponse.user:type_name -> contract.entity.User
+	38, // 19: contract.service.UserCreateBatchRequest.users:type_name -> contract.service.UserCreateBatchItem
+	58, // 20: contract.service.UserCreateBatchItem.birthday:type_name -> google.protobuf.Timestamp
+	41, // 21: contract.service.UserCreateBatchItem.passport:type_name -> contract.service.PassportCreateRequest
+	43, // 22: contract.service.UserCreateBatchItem.educations:type_name -> contract.service.EducationCreateRequest
+	45, // 23: contract.service.UserCreateBatchItem.military:type_name -> contract.service.MilitaryCreateRequest
+	40, // 24: contract.service.UserCreateBatchResponse.results:type_name -> contract.service.UserCreateBatchResult
+	63, // 25: contract.service.PassportCreateRequest.gender:type_name -> contract.enum.UserGender
+	64, // 26: contract.service.PassportCreateRequest.nationality:type_name -> contract.enum.UserNationality
+	65, // 27: contract.service.EducationCreateRequest.type:type_name -> contract.enum.EducationType
+	66, // 28: contract.service.EducationCreateRequest.status:type_name -> contract.enum.EducationStatus
+	58, // 29: contract.service.EducationCreateRequest.issue_date:type_name -> google.protobuf.Timestamp
+	67, // 30: contract.service.MilitaryCreateRequest.rank:type_name -> contract.enum.MilitaryRank
+	68, // 31: contract.service.MilitaryCreateRequest.document:type_name -> contract.enum.MilitaryDocument
+	69, // 32: contract.service.MilitaryCreateRequest.validity:type_name -> contract.enum.MilitaryValidity
+	58, // 33: contract.service.MilitaryCreateRequest.deferment_expires_at:type_name -> google.protobuf.Timestamp
+	70, // 34: contract.service.StudentCreateRequest.status:type_name -> contract.enum.UserStudentStatus
+	71, // 35: contract.service.StudentCreateRequest.education_form:type_name -> contract.enum.UserStudentEducationForm
+	72, // 36: contract.service.StudentWithUser.student:type_name -> contract.entity.Student
+	57, // 37: contract.service.StudentWithUser.user:type_name -> contract.entity.User
+	50, // 38: contract.service.StudentFetchResponse.students:type_name -> contract.service.StudentWithUser
+	60, // 39: contract.service.EmployeeCreateRequest.department:type_name -> contract.enum.UserEmployeeDepartment
+	73, // 40: contract.service.EmployeeCreateRequest.status:type_name -> contract.enum.UserEmployeeStatus
+	74, // 41: contract.service.EmployeeCreateRequest.position:type_name -> contract.enum.UserEmployeePosition
+	75, // 42: contract.service.EmployeeWithUser.employee:type_name -> contract.entity.Employee
+	57, // 43: contract.service.EmployeeWithUser.user:type_name -> contract.entity.User
+	55, // 44: contract.service.EmployeeFetchResponse.employees:type_name -> contract.service.EmployeeWithUser
+	0,  // 45: contract.service.UserService.UserFetch:input_type -> contract.service.UserFetchRequest
+	2,  // 46: contract.service.UserService.UserCreate:input_type -> contract.service.UserCreateRequest
+	10, // 47: contract.service.UserService.UserFetchByID:input_type -> contract.service.UserFetchByIDRequest
+	37, // 48: contract.service.UserService.UserCreateBatch:input_type -> contract.service.UserCreateBatchRequest
+	4,  // 49: contract.service.UserService.UserUpdate:input_type -> contract.service.UserUpdateRequest
+	6,  // 50: contract.service.UserService.UserDelete:input_type -> contract.service.UserDeleteRequest
+	8,  // 51: contract.service.UserService.UserDeleteBatch:input_type -> contract.service.UserDeleteBatchRequest
+	12, // 52: contract.service.UserService.UserFetchByUUID:input_type -> contract.service.UserFetchByUUIDRequest
+	14, // 53: contract.service.UserService.UserFetchByADObjectID:input_type -> contract.service.UserFetchByADObjectIDRequest
+	16, // 54: contract.service.UserService.ActivationIssue:input_type -> contract.service.ActivationIssueRequest
+	35, // 55: contract.service.UserService.UserRolesSet:input_type -> contract.service.UserRolesSetRequest
+	18, // 56: contract.service.UserService.UserPermissionsSet:input_type -> contract.service.UserPermissionsSetRequest
+	20, // 57: contract.service.UserService.UserPermissionGroupsSet:input_type -> contract.service.UserPermissionGroupsSetRequest
+	22, // 58: contract.service.UserService.UserPermissionGroupAssignmentsFetch:input_type -> contract.service.UserPermissionGroupAssignmentsFetchRequest
+	25, // 59: contract.service.UserService.UserDepartmentsSet:input_type -> contract.service.UserDepartmentsSetRequest
+	27, // 60: contract.service.UserService.UserPositionSet:input_type -> contract.service.UserPositionSetRequest
+	29, // 61: contract.service.UserService.UserPermissionGroupFetch:input_type -> contract.service.UserPermissionGroupFetchRequest
+	31, // 62: contract.service.UserService.UserPermissionGroupSave:input_type -> contract.service.UserPermissionGroupSaveRequest
+	33, // 63: contract.service.UserService.UserPermissionGroupDelete:input_type -> contract.service.UserPermissionGroupDeleteRequest
+	41, // 64: contract.service.UserService.PassportCreate:input_type -> contract.service.PassportCreateRequest
+	43, // 65: contract.service.UserService.EducationCreate:input_type -> contract.service.EducationCreateRequest
+	45, // 66: contract.service.UserService.MilitaryCreate:input_type -> contract.service.MilitaryCreateRequest
+	47, // 67: contract.service.UserService.StudentCreate:input_type -> contract.service.StudentCreateRequest
+	49, // 68: contract.service.UserService.StudentFetch:input_type -> contract.service.StudentFetchRequest
+	52, // 69: contract.service.UserService.EmployeeCreate:input_type -> contract.service.EmployeeCreateRequest
+	54, // 70: contract.service.UserService.EmployeeFetch:input_type -> contract.service.EmployeeFetchRequest
+	1,  // 71: contract.service.UserService.UserFetch:output_type -> contract.service.UserFetchResponse
+	3,  // 72: contract.service.UserService.UserCreate:output_type -> contract.service.UserCreateResponse
+	11, // 73: contract.service.UserService.UserFetchByID:output_type -> contract.service.UserFetchByIDResponse
+	39, // 74: contract.service.UserService.UserCreateBatch:output_type -> contract.service.UserCreateBatchResponse
+	5,  // 75: contract.service.UserService.UserUpdate:output_type -> contract.service.UserUpdateResponse
+	7,  // 76: contract.service.UserService.UserDelete:output_type -> contract.service.UserDeleteResponse
+	9,  // 77: contract.service.UserService.UserDeleteBatch:output_type -> contract.service.UserDeleteBatchResponse
+	13, // 78: contract.service.UserService.UserFetchByUUID:output_type -> contract.service.UserFetchByUUIDResponse
+	15, // 79: contract.service.UserService.UserFetchByADObjectID:output_type -> contract.service.UserFetchByADObjectIDResponse
+	17, // 80: contract.service.UserService.ActivationIssue:output_type -> contract.service.ActivationIssueResponse
+	36, // 81: contract.service.UserService.UserRolesSet:output_type -> contract.service.UserRolesSetResponse
+	19, // 82: contract.service.UserService.UserPermissionsSet:output_type -> contract.service.UserPermissionsSetResponse
+	21, // 83: contract.service.UserService.UserPermissionGroupsSet:output_type -> contract.service.UserPermissionGroupsSetResponse
+	24, // 84: contract.service.UserService.UserPermissionGroupAssignmentsFetch:output_type -> contract.service.UserPermissionGroupAssignmentsFetchResponse
+	26, // 85: contract.service.UserService.UserDepartmentsSet:output_type -> contract.service.UserDepartmentsSetResponse
+	28, // 86: contract.service.UserService.UserPositionSet:output_type -> contract.service.UserPositionSetResponse
+	30, // 87: contract.service.UserService.UserPermissionGroupFetch:output_type -> contract.service.UserPermissionGroupFetchResponse
+	32, // 88: contract.service.UserService.UserPermissionGroupSave:output_type -> contract.service.UserPermissionGroupSaveResponse
+	34, // 89: contract.service.UserService.UserPermissionGroupDelete:output_type -> contract.service.UserPermissionGroupDeleteResponse
+	42, // 90: contract.service.UserService.PassportCreate:output_type -> contract.service.PassportCreateResponse
+	44, // 91: contract.service.UserService.EducationCreate:output_type -> contract.service.EducationCreateResponse
+	46, // 92: contract.service.UserService.MilitaryCreate:output_type -> contract.service.MilitaryCreateResponse
+	48, // 93: contract.service.UserService.StudentCreate:output_type -> contract.service.StudentCreateResponse
+	51, // 94: contract.service.UserService.StudentFetch:output_type -> contract.service.StudentFetchResponse
+	53, // 95: contract.service.UserService.EmployeeCreate:output_type -> contract.service.EmployeeCreateResponse
+	56, // 96: contract.service.UserService.EmployeeFetch:output_type -> contract.service.EmployeeFetchResponse
+	71, // [71:97] is the sub-list for method output_type
+	45, // [45:71] is the sub-list for method input_type
+	45, // [45:45] is the sub-list for extension type_name
+	45, // [45:45] is the sub-list for extension extendee
+	0,  // [0:45] is the sub-list for field type_name
 }
 
 func init() { file_mdm_service_user_service_proto_init() }
@@ -3635,14 +3847,14 @@ func file_mdm_service_user_service_proto_init() {
 	}
 	file_mdm_service_user_service_proto_msgTypes[2].OneofWrappers = []any{}
 	file_mdm_service_user_service_proto_msgTypes[4].OneofWrappers = []any{}
-	file_mdm_service_user_service_proto_msgTypes[35].OneofWrappers = []any{}
+	file_mdm_service_user_service_proto_msgTypes[38].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_mdm_service_user_service_proto_rawDesc), len(file_mdm_service_user_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   54,
+			NumMessages:   57,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

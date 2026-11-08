@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { ComponentProps, FC } from "react";
-import { Building2Icon, PencilIcon, Trash2Icon, UsersIcon } from "lucide-react";
-import type { AccessGroup } from "@fesmu/contract/mdm/entity/user.entity_pb";
+import { PencilIcon, Trash2Icon } from "lucide-react";
+import type { UserPermissionGroup } from "@fesmu/contract/mdm/entity/user.entity_pb";
 import {
     ACTION_LABEL,
     PURCHASE_PERMISSIONS,
@@ -14,8 +14,6 @@ import {
     summarizePermissions,
 } from "@/shared/config/permissions";
 import { CommonControlState } from "@/shared/components/state/control-state";
-import { DepartmentMultiPicker } from "@/shared/components/department";
-import { DEPARTMENT_LABEL } from "@/shared/config/departments";
 import { Badge } from "@/shared/ui/badge";
 import { Button } from "@/shared/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/shared/ui/dialog";
@@ -23,15 +21,15 @@ import { Input } from "@/shared/ui/input";
 import { Label } from "@/shared/ui/label";
 import { Switch } from "@/shared/ui/switch";
 import { Textarea } from "@/shared/ui/textarea";
-import { toggleHallManagement, toggleSectionAction, toggleSections } from "./access-admin.fn";
-import type { AccessGroupDraft } from "./access-admin.fn";
+import { toggleHallManagement, toggleSectionAction, toggleSections } from "./user-permission-group-admin.fn";
+import type { UserPermissionGroupDraft } from "./user-permission-group-admin.fn";
 
-interface AccessGroupListProps extends ComponentProps<typeof CommonControlState> {
-    list: AccessGroup[];
-    onEdit: (group: AccessGroup) => void;
-    onDelete: (group: AccessGroup) => void;
+interface UserPermissionGroupListProps extends ComponentProps<typeof CommonControlState> {
+    list: UserPermissionGroup[];
+    onEdit: (group: UserPermissionGroup) => void;
+    onDelete: (group: UserPermissionGroup) => void;
 }
-const AccessGroupList: FC<AccessGroupListProps> = ({ list, onEdit, onDelete, ...state }) => (
+const UserPermissionGroupList: FC<UserPermissionGroupListProps> = ({ list, onEdit, onDelete, ...state }) => (
     <CommonControlState {...state}>
         <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {list.map((group) => (
@@ -56,19 +54,6 @@ const AccessGroupList: FC<AccessGroupListProps> = ({ list, onEdit, onDelete, ...
                             <Badge key={label} variant="secondary">{label}</Badge>
                         ))}
                     </div>
-                    {group.departments.length > 0 && (
-                        <p className="flex items-start gap-1.5 text-xs text-muted-foreground">
-                            <Building2Icon className="mt-0.5 size-3.5 shrink-0" />
-                            <span>
-                                Всем сотрудникам: {group.departments.slice(0, 3).map((d) => DEPARTMENT_LABEL[d]).join("; ")}
-                                {group.departments.length > 3 && ` и ещё ${group.departments.length - 3}`}
-                            </span>
-                        </p>
-                    )}
-                    <span className="mt-auto flex items-center gap-1.5 text-xs text-muted-foreground">
-                        <UsersIcon className="size-3.5" />
-                        Выдан лично: {group.userCount.toString()}
-                    </span>
                 </article>
             ))}
         </section>
@@ -115,6 +100,7 @@ const SectionsPicker: FC<{ value: string[]; onChange: (codes: string[]) => void 
                                         <span className="flex min-w-0 flex-1 flex-col">
                                             <span className={canPost ? "text-sm font-medium" : "text-sm"}>{title}</span>
                                             <span className="text-xs text-muted-foreground">Доступ к общему расписанию, всем заявкам, редактированию и модерации</span>
+                                            <code className="text-[11px] text-muted-foreground">Permission: {perm(section.key, PermissionAction.POST)}</code>
                                         </span>
                                     </li>
                                 );
@@ -131,10 +117,12 @@ const SectionsPicker: FC<{ value: string[]; onChange: (codes: string[]) => void 
                                     <span className="flex min-w-0 flex-1 flex-col">
                                         <span className={canFetch ? "text-sm font-medium" : "text-sm"}>{title}</span>
                                         <span className="text-xs text-muted-foreground">{section.description}</span>
+                                            <code className="text-[11px] text-muted-foreground">Permission: {perm(section.key, PermissionAction.FETCH)}</code>
                                     </span>
                                     {canFetch && (
                                         <label className="flex shrink-0 cursor-pointer items-center gap-2 text-xs text-muted-foreground">
                                             {section.postLabel ?? ACTION_LABEL[PermissionAction.POST]}
+                                            <code className="text-[11px]">{perm(section.key, PermissionAction.POST)}</code>
                                             <Switch
                                                 size="sm"
                                                 aria-label={`${section.label}: ${ACTION_LABEL[PermissionAction.POST]}`}
@@ -200,6 +188,7 @@ const PurchasePermissionsPicker: FC<{ value: string[]; onChange: (codes: string[
                                         <span className="flex min-w-0 flex-1 flex-col">
                                             <span className={on ? "text-sm font-medium" : "text-sm"}>{item.label}</span>
                                             <span className="text-xs text-muted-foreground">{item.description}</span>
+                                            <code className="text-[11px] text-muted-foreground">Permission: {code}</code>
                                         </span>
                                     </li>
                                 );
@@ -215,21 +204,21 @@ const PurchasePermissionsPicker: FC<{ value: string[]; onChange: (codes: string[
     );
 };
 
-interface AccessGroupDialogProps {
-    draft: AccessGroupDraft | null;
+interface UserPermissionGroupDialogProps {
+    draft: UserPermissionGroupDraft | null;
     onClose: () => void;
-    onSave: (draft: AccessGroupDraft) => Promise<boolean>;
+    onSave: (draft: UserPermissionGroupDraft) => Promise<boolean>;
 }
-const AccessGroupDialog: FC<AccessGroupDialogProps> = ({ draft, onClose, onSave }) => (
+const UserPermissionGroupDialog: FC<UserPermissionGroupDialogProps> = ({ draft, onClose, onSave }) => (
     <Dialog open={draft !== null} onOpenChange={(open) => !open && onClose()}>
         <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
             {/* key: свежая форма на каждый набор */}
-            {draft && <AccessGroupForm key={draft.id.toString()} initial={draft} onClose={onClose} onSave={onSave} />}
+            {draft && <UserPermissionGroupForm key={draft.id.toString()} initial={draft} onClose={onClose} onSave={onSave} />}
         </DialogContent>
     </Dialog>
 );
 
-const AccessGroupForm: FC<{ initial: AccessGroupDraft; onClose: () => void; onSave: AccessGroupDialogProps["onSave"] }> = ({
+const UserPermissionGroupForm: FC<{ initial: UserPermissionGroupDraft; onClose: () => void; onSave: UserPermissionGroupDialogProps["onSave"] }> = ({
     initial,
     onClose,
     onSave,
@@ -275,19 +264,6 @@ const AccessGroupForm: FC<{ initial: AccessGroupDraft; onClose: () => void; onSa
                     onChange={(e) => setDraft((d) => ({ ...d, description: e.target.value }))}
                 />
             </div>
-            <div className="flex flex-col gap-2">
-                <Label>Подразделения</Label>
-                <DepartmentMultiPicker
-                    className="max-w-full justify-between border"
-                    placeholder="Не привязан — выдаётся только лично"
-                    value={draft.departments}
-                    onChange={(departments) => setDraft((d) => ({ ...d, departments }))}
-                />
-                <p className="text-xs text-muted-foreground">
-                    Доступ получат все сотрудники выбранных подразделений сами, без выдачи каждому. Перевели человека —
-                    права поменяются.
-                </p>
-            </div>
             <div className="flex flex-col gap-3">
                 <Label>Разделы</Label>
                 <SectionsPicker
@@ -310,20 +286,18 @@ const AccessGroupForm: FC<{ initial: AccessGroupDraft; onClose: () => void; onSa
     );
 };
 
-interface DeleteAccessGroupDialogProps {
-    group: AccessGroup | null;
+interface DeleteUserPermissionGroupDialogProps {
+    group: UserPermissionGroup | null;
     onClose: () => void;
-    onConfirm: (group: AccessGroup) => Promise<void>;
+    onConfirm: (group: UserPermissionGroup) => Promise<void>;
 }
-const DeleteAccessGroupDialog: FC<DeleteAccessGroupDialogProps> = ({ group, onClose, onConfirm }) => (
+const DeleteUserPermissionGroupDialog: FC<DeleteUserPermissionGroupDialogProps> = ({ group, onClose, onConfirm }) => (
     <Dialog open={group !== null} onOpenChange={(open) => !open && onClose()}>
         <DialogContent>
             <DialogHeader>
-                <DialogTitle>Удалить доступ «{group?.name}»?</DialogTitle>
+                <DialogTitle>Удалить группу прав «{group?.name}»?</DialogTitle>
                 <DialogDescription>
-                    {group && group.userCount > 0n
-                        ? `Доступ выдан ${group.userCount} чел. — у них закроются его разделы.`
-                        : "Доступ никому не выдан."}
+                    Группа будет снята со всех пользователей, которым она назначена.
                 </DialogDescription>
             </DialogHeader>
             <DialogFooter>
@@ -342,4 +316,4 @@ const DeleteAccessGroupDialog: FC<DeleteAccessGroupDialogProps> = ({ group, onCl
     </Dialog>
 );
 
-export { AccessGroupDialog, AccessGroupList, DeleteAccessGroupDialog };
+export { UserPermissionGroupDialog, UserPermissionGroupList, DeleteUserPermissionGroupDialog };
