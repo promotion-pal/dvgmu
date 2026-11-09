@@ -145,6 +145,11 @@ func (s *TestSessionService) TestAttemptFetch(ctx context.Context, sessionID int
 		}
 		return nil, nil, err
 	}
+	if s.exam {
+		if err := s.examSessionRecipients(ctx, session); err != nil {
+			return nil, nil, err
+		}
+	}
 	attempts, err := s.store.TestAttemptFetch(ctx, sessionID)
 	if err != nil {
 		log.Error(utils.MSGFetchError("test attempt", err))

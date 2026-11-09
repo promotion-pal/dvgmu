@@ -164,13 +164,20 @@ func (s *TestSessionStorage) TestAttemptFinalize(ctx context.Context, attempt *m
 		}).Error
 }
 
+// Deleting a result explicitly releases this student's subject entitlement.
+// Both deletes commit together, so a new start cannot race a partial reset.
 func (s *TestSessionStorage) TestAttemptDelete(ctx context.Context, id int64) error {
-	res := s.db.WithContext(ctx).Delete(&models.TestAttempt{}, "id = ?", id)
-	if res.Error != nil {
-		return res.Error
-	}
-	if res.RowsAffected == 0 {
-		return models.ErrTestAttemptNotFound
-	}
-	return nil
+	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		if err := tx.Where("attempt_id = ?", id).Delete(&models.ExamParticipation{}).Error; err != nil {
+			return err
+		}
+		res := tx.Delete(&models.TestAttempt{}, "id = ?", id)
+		if res.Error != nil {
+			return res.Error
+		}
+		if res.RowsAffected == 0 {
+			return models.ErrTestAttemptNotFound
+		}
+		return nil
+	})
 }

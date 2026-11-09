@@ -367,6 +367,43 @@ const Stat: FC<{ label: string; value: ReactNode }> = ({ label, value }) => (
     </div>
 );
 
+const ExamSessionRecipients: FC<{state: SessionResults}> = ({state}) => {
+    const [search,setSearch]=useState("");
+    const [limit,setLimit]=useState(50);
+    const session=state.results?.session;
+    if (!session) return null;
+    const recipients=session.recipients ?? [];
+    const query=search.trim().toLocaleLowerCase("ru");
+    const filtered=recipients.filter(person=>`${person.fullName} ${person.studentGroup} ${person.mdmUserUuid}`.toLocaleLowerCase("ru").includes(query));
+    const attempts=new Map(state.results?.attempts.map(attempt=>[attempt.mdmUserUuid,attempt]));
+    return <Card className="gap-4 p-4">
+        <div>
+            <h2 className="font-semibold">Выданный тест: {session.topic}</h2>
+            <p className="text-sm text-muted-foreground">{session.department} · Назначено студентов: {recipients.length}</p>
+            <p className="mt-1 text-sm text-muted-foreground">Удаление результата разрешает студенту пройти предмет заново, пока доступ к экзамену открыт.</p>
+        </div>
+        <CommonSearchInput value={search} onChange={value=>{setSearch(value);setLimit(50);}} placeholder="Поиск студента по ФИО, группе или UUID" />
+        <div className="max-h-96 overflow-auto">
+            <Table>
+                <TableHeader><TableRow><TableHead>Студент</TableHead><TableHead>Группа</TableHead><TableHead>Выдан</TableHead><TableHead>Прохождение в этой сессии</TableHead></TableRow></TableHeader>
+                <TableBody>
+                    {filtered.slice(0,limit).map(person=>{
+                        const attempt=attempts.get(person.mdmUserUuid);
+                        return <TableRow key={person.mdmUserUuid}>
+                            <TableCell><p>{person.fullName || "ФИО недоступно в MDM"}</p><p className="text-xs text-muted-foreground">{person.mdmUserUuid}</p></TableCell>
+                            <TableCell>{person.studentGroup || "—"}</TableCell>
+                            <TableCell>{formatDateTime(person.issuedAt)}</TableCell>
+                            <TableCell>{attempt ? ATTEMPT_STATUS_LABEL[attempt.status] : "Нет результата / не начинал"}</TableCell>
+                        </TableRow>;
+                    })}
+                    {filtered.length===0 && <TableRow><TableCell colSpan={4}>Назначенные студенты не найдены</TableCell></TableRow>}
+                </TableBody>
+            </Table>
+        </div>
+        {filtered.length>limit && <Button variant="outline" onClick={()=>setLimit(value=>value+50)}>Показать ещё ({filtered.length-limit})</Button>}
+    </Card>;
+};
+
 /** The session's link, settings and the counts above the results table. */
 const TestSessionResultsHeader: FC<{ state: SessionResults }> = ({ state }) => {
     const session = state.results?.session;
@@ -422,6 +459,7 @@ const TestSessionResultsHeader: FC<{ state: SessionResults }> = ({ state }) => {
                 <Stat label="Проходят сейчас" value={state.stats.running} />
                 <Stat label="Средний результат" value={state.stats.average === undefined ? "—" : `${Math.round(state.stats.average * 100)}%`} />
             </div>
+            {state.exam && <ExamSessionRecipients state={state} />}
         </div>
     );
 };

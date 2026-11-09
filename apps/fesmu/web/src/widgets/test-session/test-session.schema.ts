@@ -10,6 +10,7 @@ export { TestAttemptStatus };
 export interface TestSession {
     id: string;
     assignedCount?: number;
+    recipients?: {mdmUserUuid:string;fullName:string;studentGroup:string;issuedAt?:Date}[];
     audience?: {kind:string;facultyCode:number;course:number;studentGroup:string;studentUuids:string[]};
     /** Undefined once the test itself was deleted; the session keeps its copy. */
     testId?: string;

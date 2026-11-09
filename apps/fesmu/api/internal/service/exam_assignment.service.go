@@ -87,7 +87,11 @@ func (s *TestSessionService) examRecipients(ctx context.Context, a models.ExamAu
 			}
 			if !seen[person.Uuid] {
 				seen[person.Uuid] = true
-				result = append(result, models.ExamAssignment{MDMUserUUID: person.Uuid, CreatedAt: s.now()})
+				group := ""
+				if len(person.Students) > 0 {
+					group = person.Students[0].Group
+				}
+				result = append(result, models.ExamAssignment{MDMUserUUID: person.Uuid, FullName: person.FullName, StudentGroup: group, CreatedAt: s.now()})
 			}
 		}
 		if len(result) > 20000 {
@@ -157,4 +161,51 @@ func (s *TestSessionService) examCheck(ctx context.Context, session *models.Test
 
 type ExamOnceStore interface {
 	ExamStartOnce(context.Context, *models.TestSession, *models.TestAttempt, time.Time) (*models.TestAttempt, *models.TestSession, error)
+}
+
+// Recipient names are frozen on issuance. Older assignments are resolved in
+// batches by UUID; a directory outage must not hide existing exam results.
+func (s *TestSessionService) examSessionRecipients(ctx context.Context, session *models.TestSession) error {
+	store, ok := s.store.(interface {
+		ExamAssignments(context.Context, int64) ([]models.ExamAssignment, error)
+	})
+	if !ok {
+		return models.ErrExamDirectory
+	}
+	recipients, err := store.ExamAssignments(ctx, session.ID)
+	if err != nil {
+		return err
+	}
+	session.Assignments = recipients
+	session.AssignedCount = len(recipients)
+	missing := []string{}
+	for _, a := range recipients {
+		if a.FullName == "" {
+			missing = append(missing, a.MDMUserUUID)
+		}
+	}
+	for start := 0; start < len(missing) && s.directory != nil; start += 200 {
+		end := start + 200
+		if end > len(missing) {
+			end = len(missing)
+		}
+		page, err := s.directory.Fetch(ctx, &pb.UserDirectoryFetchRequest{ProfileKind: "student", UserUuids: missing[start:end], Limit: 200})
+		if err != nil || page.GetProfileKind() != "student" {
+			break
+		}
+		byID := map[string]*pb.UserDirectoryEntry{}
+		for _, person := range page.Users {
+			byID[person.Uuid] = person
+		}
+		for i := range session.Assignments {
+			a := &session.Assignments[i]
+			if person := byID[a.MDMUserUUID]; person != nil && a.FullName == "" {
+				a.FullName = person.FullName
+				if len(person.Students) > 0 {
+					a.StudentGroup = person.Students[0].Group
+				}
+			}
+		}
+	}
+	return nil
 }

@@ -118,12 +118,17 @@ func TestExamOncePostgresConcurrentStartsAndCompletedSubject(t *testing.T) {
 	if err != nil || len(list) != 0 {
 		t.Fatalf("completed subject visible: %v %v", list, err)
 	}
-	// Removing a result must not restore the entitlement.
+	// Explicitly removing a result releases the entitlement and restores access.
 	if err := store.TestAttemptDelete(ctx, active.ID); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := start(third, student); !errors.Is(err, models.ErrExamAlreadyTaken) {
-		t.Fatalf("deleted result granted retake: %v", err)
+	retry, err := start(third, student)
+	if err != nil || retry.ID == active.ID {
+		t.Fatalf("deleted result did not grant a fresh attempt: %v %v", retry, err)
+	}
+	list, err = store.ExamPublicFetch(ctx, now, student)
+	if err != nil || len(list) != 1 {
+		t.Fatalf("subject not restored after deletion: %v %v", list, err)
 	}
 	a, err := start(third, other)
 	if err != nil {

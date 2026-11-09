@@ -15,6 +15,7 @@ const toDate = (timestamp?: Timestamp) => (timestamp ? timestampDate(timestamp) 
 const fromSession = (message: SessionMessage): TestSession => ({
     id: message.id.toString(),
  assignedCount:message.assignedCount,
+ recipients:message.recipients.map(person=>({mdmUserUuid:person.mdmUserUuid,fullName:person.fullName,studentGroup:person.studentGroup,issuedAt:toDate(person.issuedAt)})),
  audience:message.audience,
     testId: message.testId ? message.testId.toString() : undefined,
     token: message.token,

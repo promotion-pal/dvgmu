@@ -13,10 +13,12 @@ var ErrExamDirectory = errors.New("справочник студентов MDM �
 
 // A session targets a snapshot of MDM users, never database IDs from another service.
 type ExamAssignment struct {
-	ID          int64     `gorm:"primaryKey;autoIncrement"`
-	SessionID   int64     `gorm:"not null;uniqueIndex:idx_exam_assignment_student"`
-	MDMUserUUID string    `gorm:"type:uuid;not null;uniqueIndex:idx_exam_assignment_student;index"`
-	CreatedAt   time.Time `gorm:"not null;default:CURRENT_TIMESTAMP"`
+	ID           int64     `gorm:"primaryKey;autoIncrement"`
+	SessionID    int64     `gorm:"not null;uniqueIndex:idx_exam_assignment_student"`
+	MDMUserUUID  string    `gorm:"type:uuid;not null;uniqueIndex:idx_exam_assignment_student;index"`
+	FullName     string    `gorm:"size:255;not null;default:''"`
+	StudentGroup string    `gorm:"size:64;not null;default:''"`
+	CreatedAt    time.Time `gorm:"not null;default:CURRENT_TIMESTAMP"`
 }
 
 type ExamAudience struct {

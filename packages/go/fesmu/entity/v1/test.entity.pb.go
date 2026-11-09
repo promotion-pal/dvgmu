@@ -331,6 +331,8 @@ type TestSession struct {
 	Version       v1.TestVersion `protobuf:"varint,19,opt,name=version,proto3,enum=contract.enum.v1.TestVersion" json:"version,omitempty"`
 	Audience      *ExamAudience  `protobuf:"bytes,20,opt,name=audience,proto3" json:"audience,omitempty"`
 	AssignedCount int32          `protobuf:"varint,21,opt,name=assigned_count,json=assignedCount,proto3" json:"assigned_count,omitempty"`
+	// Full recipient list is returned on the staff session results page.
+	Recipients    []*ExamRecipient `protobuf:"bytes,22,rep,name=recipients,proto3" json:"recipients,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -512,6 +514,13 @@ func (x *TestSession) GetAssignedCount() int32 {
 	return 0
 }
 
+func (x *TestSession) GetRecipients() []*ExamRecipient {
+	if x != nil {
+		return x.Recipients
+	}
+	return nil
+}
+
 // Staff-only targeting criteria. Recipients are saved by stable MDM UUID.
 type ExamAudience struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -590,6 +599,74 @@ func (x *ExamAudience) GetStudentUuids() []string {
 	return nil
 }
 
+type ExamRecipient struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	MdmUserUuid   string                 `protobuf:"bytes,1,opt,name=mdm_user_uuid,json=mdmUserUuid,proto3" json:"mdm_user_uuid,omitempty"`
+	FullName      string                 `protobuf:"bytes,2,opt,name=full_name,json=fullName,proto3" json:"full_name,omitempty"`
+	StudentGroup  string                 `protobuf:"bytes,3,opt,name=student_group,json=studentGroup,proto3" json:"student_group,omitempty"`
+	IssuedAt      *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=issued_at,json=issuedAt,proto3" json:"issued_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ExamRecipient) Reset() {
+	*x = ExamRecipient{}
+	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ExamRecipient) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ExamRecipient) ProtoMessage() {}
+
+func (x *ExamRecipient) ProtoReflect() protoreflect.Message {
+	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ExamRecipient.ProtoReflect.Descriptor instead.
+func (*ExamRecipient) Descriptor() ([]byte, []int) {
+	return file_fesmu_entity_v1_test_entity_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ExamRecipient) GetMdmUserUuid() string {
+	if x != nil {
+		return x.MdmUserUuid
+	}
+	return ""
+}
+
+func (x *ExamRecipient) GetFullName() string {
+	if x != nil {
+		return x.FullName
+	}
+	return ""
+}
+
+func (x *ExamRecipient) GetStudentGroup() string {
+	if x != nil {
+		return x.StudentGroup
+	}
+	return ""
+}
+
+func (x *ExamRecipient) GetIssuedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.IssuedAt
+	}
+	return nil
+}
+
 // One student's run through a session.
 type TestAttempt struct {
 	state        protoimpl.MessageState `protogen:"open.v1"`
@@ -613,7 +690,7 @@ type TestAttempt struct {
 
 func (x *TestAttempt) Reset() {
 	*x = TestAttempt{}
-	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[5]
+	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -625,7 +702,7 @@ func (x *TestAttempt) String() string {
 func (*TestAttempt) ProtoMessage() {}
 
 func (x *TestAttempt) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[5]
+	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -638,7 +715,7 @@ func (x *TestAttempt) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestAttempt.ProtoReflect.Descriptor instead.
 func (*TestAttempt) Descriptor() ([]byte, []int) {
-	return file_fesmu_entity_v1_test_entity_proto_rawDescGZIP(), []int{5}
+	return file_fesmu_entity_v1_test_entity_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *TestAttempt) GetId() int64 {
@@ -737,7 +814,7 @@ type TestAttemptAnswer struct {
 
 func (x *TestAttemptAnswer) Reset() {
 	*x = TestAttemptAnswer{}
-	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[6]
+	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -749,7 +826,7 @@ func (x *TestAttemptAnswer) String() string {
 func (*TestAttemptAnswer) ProtoMessage() {}
 
 func (x *TestAttemptAnswer) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[6]
+	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -762,7 +839,7 @@ func (x *TestAttemptAnswer) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestAttemptAnswer.ProtoReflect.Descriptor instead.
 func (*TestAttemptAnswer) Descriptor() ([]byte, []int) {
-	return file_fesmu_entity_v1_test_entity_proto_rawDescGZIP(), []int{6}
+	return file_fesmu_entity_v1_test_entity_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *TestAttemptAnswer) GetQuestionId() int64 {
@@ -804,7 +881,7 @@ type TestTakeQuestion struct {
 
 func (x *TestTakeQuestion) Reset() {
 	*x = TestTakeQuestion{}
-	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[7]
+	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -816,7 +893,7 @@ func (x *TestTakeQuestion) String() string {
 func (*TestTakeQuestion) ProtoMessage() {}
 
 func (x *TestTakeQuestion) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[7]
+	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -829,7 +906,7 @@ func (x *TestTakeQuestion) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestTakeQuestion.ProtoReflect.Descriptor instead.
 func (*TestTakeQuestion) Descriptor() ([]byte, []int) {
-	return file_fesmu_entity_v1_test_entity_proto_rawDescGZIP(), []int{7}
+	return file_fesmu_entity_v1_test_entity_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *TestTakeQuestion) GetId() int64 {
@@ -891,7 +968,7 @@ type TestTakeAnswer struct {
 
 func (x *TestTakeAnswer) Reset() {
 	*x = TestTakeAnswer{}
-	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[8]
+	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -903,7 +980,7 @@ func (x *TestTakeAnswer) String() string {
 func (*TestTakeAnswer) ProtoMessage() {}
 
 func (x *TestTakeAnswer) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[8]
+	mi := &file_fesmu_entity_v1_test_entity_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -916,7 +993,7 @@ func (x *TestTakeAnswer) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestTakeAnswer.ProtoReflect.Descriptor instead.
 func (*TestTakeAnswer) Descriptor() ([]byte, []int) {
-	return file_fesmu_entity_v1_test_entity_proto_rawDescGZIP(), []int{8}
+	return file_fesmu_entity_v1_test_entity_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *TestTakeAnswer) GetId() int64 {
@@ -970,7 +1047,7 @@ const file_fesmu_entity_v1_test_entity_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04text\x18\x02 \x01(\tR\x04text\x12\x1d\n" +
 	"\n" +
-	"is_correct\x18\x03 \x01(\bR\tisCorrect\"\x98\x06\n" +
+	"is_correct\x18\x03 \x01(\bR\tisCorrect\"\xdb\x06\n" +
 	"\vTestSession\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x17\n" +
 	"\atest_id\x18\x02 \x01(\x03R\x06testId\x12\x14\n" +
@@ -997,13 +1074,21 @@ const file_fesmu_entity_v1_test_entity_proto_rawDesc = "" +
 	"\foption_count\x18\x12 \x01(\x05R\voptionCount\x127\n" +
 	"\aversion\x18\x13 \x01(\x0e2\x1d.contract.enum.v1.TestVersionR\aversion\x12<\n" +
 	"\baudience\x18\x14 \x01(\v2 .contract.entity.v1.ExamAudienceR\baudience\x12%\n" +
-	"\x0eassigned_count\x18\x15 \x01(\x05R\rassignedCount\"\xa7\x01\n" +
+	"\x0eassigned_count\x18\x15 \x01(\x05R\rassignedCount\x12A\n" +
+	"\n" +
+	"recipients\x18\x16 \x03(\v2!.contract.entity.v1.ExamRecipientR\n" +
+	"recipients\"\xa7\x01\n" +
 	"\fExamAudience\x12\x12\n" +
 	"\x04kind\x18\x01 \x01(\tR\x04kind\x12!\n" +
 	"\ffaculty_code\x18\x02 \x01(\x05R\vfacultyCode\x12\x16\n" +
 	"\x06course\x18\x03 \x01(\x05R\x06course\x12#\n" +
 	"\rstudent_group\x18\x04 \x01(\tR\fstudentGroup\x12#\n" +
-	"\rstudent_uuids\x18\x05 \x03(\tR\fstudentUuids\"\xfc\x03\n" +
+	"\rstudent_uuids\x18\x05 \x03(\tR\fstudentUuids\"\xae\x01\n" +
+	"\rExamRecipient\x12\"\n" +
+	"\rmdm_user_uuid\x18\x01 \x01(\tR\vmdmUserUuid\x12\x1b\n" +
+	"\tfull_name\x18\x02 \x01(\tR\bfullName\x12#\n" +
+	"\rstudent_group\x18\x03 \x01(\tR\fstudentGroup\x127\n" +
+	"\tissued_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\bissuedAt\"\xfc\x03\n" +
 	"\vTestAttempt\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1d\n" +
 	"\n" +
@@ -1054,45 +1139,48 @@ func file_fesmu_entity_v1_test_entity_proto_rawDescGZIP() []byte {
 	return file_fesmu_entity_v1_test_entity_proto_rawDescData
 }
 
-var file_fesmu_entity_v1_test_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_fesmu_entity_v1_test_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_fesmu_entity_v1_test_entity_proto_goTypes = []any{
 	(*Test)(nil),                  // 0: contract.entity.v1.Test
 	(*TestQuestion)(nil),          // 1: contract.entity.v1.TestQuestion
 	(*TestAnswer)(nil),            // 2: contract.entity.v1.TestAnswer
 	(*TestSession)(nil),           // 3: contract.entity.v1.TestSession
 	(*ExamAudience)(nil),          // 4: contract.entity.v1.ExamAudience
-	(*TestAttempt)(nil),           // 5: contract.entity.v1.TestAttempt
-	(*TestAttemptAnswer)(nil),     // 6: contract.entity.v1.TestAttemptAnswer
-	(*TestTakeQuestion)(nil),      // 7: contract.entity.v1.TestTakeQuestion
-	(*TestTakeAnswer)(nil),        // 8: contract.entity.v1.TestTakeAnswer
-	(v1.TestExportStatus)(0),      // 9: contract.enum.v1.TestExportStatus
-	(v1.TestVersion)(0),           // 10: contract.enum.v1.TestVersion
-	(*timestamppb.Timestamp)(nil), // 11: google.protobuf.Timestamp
-	(v1.TestAttemptStatus)(0),     // 12: contract.enum.v1.TestAttemptStatus
+	(*ExamRecipient)(nil),         // 5: contract.entity.v1.ExamRecipient
+	(*TestAttempt)(nil),           // 6: contract.entity.v1.TestAttempt
+	(*TestAttemptAnswer)(nil),     // 7: contract.entity.v1.TestAttemptAnswer
+	(*TestTakeQuestion)(nil),      // 8: contract.entity.v1.TestTakeQuestion
+	(*TestTakeAnswer)(nil),        // 9: contract.entity.v1.TestTakeAnswer
+	(v1.TestExportStatus)(0),      // 10: contract.enum.v1.TestExportStatus
+	(v1.TestVersion)(0),           // 11: contract.enum.v1.TestVersion
+	(*timestamppb.Timestamp)(nil), // 12: google.protobuf.Timestamp
+	(v1.TestAttemptStatus)(0),     // 13: contract.enum.v1.TestAttemptStatus
 }
 var file_fesmu_entity_v1_test_entity_proto_depIdxs = []int32{
-	9,  // 0: contract.entity.v1.Test.export_status:type_name -> contract.enum.v1.TestExportStatus
-	10, // 1: contract.entity.v1.Test.version:type_name -> contract.enum.v1.TestVersion
+	10, // 0: contract.entity.v1.Test.export_status:type_name -> contract.enum.v1.TestExportStatus
+	11, // 1: contract.entity.v1.Test.version:type_name -> contract.enum.v1.TestVersion
 	1,  // 2: contract.entity.v1.Test.questions:type_name -> contract.entity.v1.TestQuestion
-	11, // 3: contract.entity.v1.Test.created_at:type_name -> google.protobuf.Timestamp
-	11, // 4: contract.entity.v1.Test.updated_at:type_name -> google.protobuf.Timestamp
+	12, // 3: contract.entity.v1.Test.created_at:type_name -> google.protobuf.Timestamp
+	12, // 4: contract.entity.v1.Test.updated_at:type_name -> google.protobuf.Timestamp
 	2,  // 5: contract.entity.v1.TestQuestion.answers:type_name -> contract.entity.v1.TestAnswer
-	11, // 6: contract.entity.v1.TestSession.closes_at:type_name -> google.protobuf.Timestamp
-	11, // 7: contract.entity.v1.TestSession.created_at:type_name -> google.protobuf.Timestamp
-	11, // 8: contract.entity.v1.TestSession.opens_at:type_name -> google.protobuf.Timestamp
-	10, // 9: contract.entity.v1.TestSession.version:type_name -> contract.enum.v1.TestVersion
+	12, // 6: contract.entity.v1.TestSession.closes_at:type_name -> google.protobuf.Timestamp
+	12, // 7: contract.entity.v1.TestSession.created_at:type_name -> google.protobuf.Timestamp
+	12, // 8: contract.entity.v1.TestSession.opens_at:type_name -> google.protobuf.Timestamp
+	11, // 9: contract.entity.v1.TestSession.version:type_name -> contract.enum.v1.TestVersion
 	4,  // 10: contract.entity.v1.TestSession.audience:type_name -> contract.entity.v1.ExamAudience
-	12, // 11: contract.entity.v1.TestAttempt.status:type_name -> contract.enum.v1.TestAttemptStatus
-	11, // 12: contract.entity.v1.TestAttempt.started_at:type_name -> google.protobuf.Timestamp
-	11, // 13: contract.entity.v1.TestAttempt.deadline:type_name -> google.protobuf.Timestamp
-	11, // 14: contract.entity.v1.TestAttempt.finished_at:type_name -> google.protobuf.Timestamp
-	6,  // 15: contract.entity.v1.TestAttempt.answers:type_name -> contract.entity.v1.TestAttemptAnswer
-	8,  // 16: contract.entity.v1.TestTakeQuestion.answers:type_name -> contract.entity.v1.TestTakeAnswer
-	17, // [17:17] is the sub-list for method output_type
-	17, // [17:17] is the sub-list for method input_type
-	17, // [17:17] is the sub-list for extension type_name
-	17, // [17:17] is the sub-list for extension extendee
-	0,  // [0:17] is the sub-list for field type_name
+	5,  // 11: contract.entity.v1.TestSession.recipients:type_name -> contract.entity.v1.ExamRecipient
+	12, // 12: contract.entity.v1.ExamRecipient.issued_at:type_name -> google.protobuf.Timestamp
+	13, // 13: contract.entity.v1.TestAttempt.status:type_name -> contract.enum.v1.TestAttemptStatus
+	12, // 14: contract.entity.v1.TestAttempt.started_at:type_name -> google.protobuf.Timestamp
+	12, // 15: contract.entity.v1.TestAttempt.deadline:type_name -> google.protobuf.Timestamp
+	12, // 16: contract.entity.v1.TestAttempt.finished_at:type_name -> google.protobuf.Timestamp
+	7,  // 17: contract.entity.v1.TestAttempt.answers:type_name -> contract.entity.v1.TestAttemptAnswer
+	9,  // 18: contract.entity.v1.TestTakeQuestion.answers:type_name -> contract.entity.v1.TestTakeAnswer
+	19, // [19:19] is the sub-list for method output_type
+	19, // [19:19] is the sub-list for method input_type
+	19, // [19:19] is the sub-list for extension type_name
+	19, // [19:19] is the sub-list for extension extendee
+	0,  // [0:19] is the sub-list for field type_name
 }
 
 func init() { file_fesmu_entity_v1_test_entity_proto_init() }
@@ -1106,7 +1194,7 @@ func file_fesmu_entity_v1_test_entity_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_fesmu_entity_v1_test_entity_proto_rawDesc), len(file_fesmu_entity_v1_test_entity_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   9,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

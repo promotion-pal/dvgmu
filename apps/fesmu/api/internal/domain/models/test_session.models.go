@@ -609,6 +609,9 @@ func (s *TestSession) ToProto() *entity.TestSession {
 		AttemptCount:    int32(s.AttemptCount),
 		CreatedAt:       timestamppb.New(s.CreatedAt),
 	}
+	for _, a := range s.Assignments {
+		out.Recipients = append(out.Recipients, &entity.ExamRecipient{MdmUserUuid: a.MDMUserUUID, FullName: a.FullName, StudentGroup: a.StudentGroup, IssuedAt: timestamppb.New(a.CreatedAt)})
+	}
 	if s.TestID != nil {
 		out.TestId = *s.TestID
 	}

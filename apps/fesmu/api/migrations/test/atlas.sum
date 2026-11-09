@@ -1,4 +1,4 @@
-h1:g1BznZX/isdQLUwp2Emd4upDi7kunLIbS6A1agicJbM=
+h1:pghF1EE6qIAWjZx+37mfXARd7h8znAgsousgNmprYOY=
 20261001120000_test.sql h1:WoFw540MWd/tntpnOFNjOxs+DiTKagT6M5E2rWW0ZpA=
 20261002060902_test_faculty.sql h1:5T1mAI3iaTWV0uTfUPLdOIL8EU34pjwFGOPJpV17fWk=
 20261002080000_test_department.sql h1:3Cggiwq5AkizUcKQtE3p1QL2kr3GK6yNVwxtTd0u3CA=
@@ -12,3 +12,4 @@ h1:g1BznZX/isdQLUwp2Emd4upDi7kunLIbS6A1agicJbM=
 20261106090000_exam_test_semester.sql h1:0INeWG4YgxWMyLYI4MB+34c+dkBks5Nhsiglt9hawPM=
 20261109120000_exam_assignments.sql h1:6cJdjBWGCdE0vE+VH2oj0O7ocPZHkHLHjSVOJRaAM5I=
 20261109180000_exam_once_policy.sql h1:MMZ1ib2pEDF8aAoag+4lhsKDfFMUzYZFYvDYv65351o=
+20261109190000_exam_recipient_identity.sql h1:K3PEUX2npoXC9da0biIN0IDyF3/Kh60aaMKt20rgBxI=

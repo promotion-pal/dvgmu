@@ -78,6 +78,8 @@ message TestSession {
   contract.enum.v1.TestVersion version = 19;
   ExamAudience audience = 20;
   int32 assigned_count = 21;
+  // Full recipient list is returned on the staff session results page.
+  repeated ExamRecipient recipients = 22;
 }
 
 // Staff-only targeting criteria. Recipients are saved by stable MDM UUID.
@@ -88,6 +90,13 @@ message ExamAudience {
   int32 course = 3;
   string student_group = 4;
   repeated string student_uuids = 5;
+}
+
+message ExamRecipient {
+ string mdm_user_uuid = 1;
+ string full_name = 2;
+ string student_group = 3;
+ google.protobuf.Timestamp issued_at = 4;
 }
 
 // One student's run through a session.

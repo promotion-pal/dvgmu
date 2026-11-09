@@ -25,7 +25,7 @@ func ExamSubjectKey(test *Test) string {
 	return hex.EncodeToString(sum[:])
 }
 
-// Kept after an attempt/session is deleted: deletion must not grant a retake.
+// Session deletion keeps the limit. Explicit result deletion releases it.
 type ExamParticipation struct {
 	ID          int64        `gorm:"primaryKey;autoIncrement"`
 	MDMUserUUID string       `gorm:"type:uuid;not null;uniqueIndex:idx_exam_subject_student"`

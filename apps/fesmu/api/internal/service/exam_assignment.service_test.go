@@ -6,6 +6,7 @@ import (
 	"errors"
 	enum "fesmu/contract/fesmu/enum/v1"
 	pb "fesmu/contract/mdm/service"
+	"github.com/google/uuid"
 	"google.golang.org/protobuf/proto"
 	"io"
 	"log/slog"
@@ -177,6 +178,9 @@ func TestExamSessionStoresRecipientSnapshotAndRejectsMissingAudience(t *testing.
 	if session.ShowResult {
 		t.Fatal("exam must hide results regardless of client preference")
 	}
+	if session.Assignments[0].FullName != "Иванов Иван Иванович" || session.Assignments[0].StudentGroup != "201" {
+		t.Fatal("recipient identity was not saved")
+	}
 	if len(session.Assignments) != 1 || session.Assignments[0].MDMUserUUID != assignedUUID || session.AssignedCount != 1 {
 		t.Fatalf("missing UUID mapping: %+v", session)
 	}
@@ -218,4 +222,50 @@ func TestExamDirectoryRejectsServerThatIgnoredProfileFilter(t *testing.T) {
 func (f *assignmentTestStore) ExamStartOnce(_ context.Context, session *models.TestSession, a *models.TestAttempt, _ time.Time) (*models.TestAttempt, *models.TestSession, error) {
 	f.created = a
 	return a, session, nil
+}
+
+func (f *assignmentTestStore) ExamAssignments(_ context.Context, id int64) ([]models.ExamAssignment, error) {
+	return f.session.Assignments, nil
+}
+func TestExamSessionRecipientsBatchLegacyIdentityAndPreserveSnapshots(t *testing.T) {
+	session := &models.TestSession{ID: 1, Assignments: []models.ExamAssignment{{MDMUserUUID: assignedUUID, FullName: "Сохранённое ФИО", StudentGroup: "101"}}}
+	for i := 0; i < 201; i++ {
+		session.Assignments = append(session.Assignments, models.ExamAssignment{MDMUserUUID: uuid.NewString()})
+	}
+	directory := &fakeExamDirectory{fetch: func(q *pb.UserDirectoryFetchRequest) (*pb.UserDirectoryFetchResponse, error) {
+		if q.ProfileKind != "student" || q.ActiveStudentsOnly || len(q.UserUuids) > 200 {
+			t.Fatalf("invalid historical identity query: %v", q)
+		}
+		page := &pb.UserDirectoryFetchResponse{ProfileKind: "student"}
+		for _, id := range q.UserUuids {
+			if id == assignedUUID {
+				t.Fatal("saved identity unnecessarily fetched")
+			}
+			page.Users = append(page.Users, &pb.UserDirectoryEntry{Uuid: id, FullName: "Студент из MDM", Students: []*pb.UserDirectoryStudent{{Group: "202"}}})
+		}
+		return page, nil
+	}}
+	store := &assignmentTestStore{session: session}
+	service := NewTestSessionService(nil, store, nil).WithExamDirectory(directory)
+	if err := service.examSessionRecipients(context.Background(), session); err != nil {
+		t.Fatal(err)
+	}
+	if len(directory.calls) != 2 || len(directory.calls[0].UserUuids) != 200 || len(directory.calls[1].UserUuids) != 1 {
+		t.Fatal("legacy recipient names not batched")
+	}
+	got := session.ToProto()
+	if len(got.Recipients) != 202 || got.Recipients[0].FullName != "Сохранённое ФИО" || got.Recipients[1].StudentGroup != "202" {
+		t.Fatalf("missing recipient list: %v", got)
+	}
+	// Directory failure must still return the issued UUIDs and saved names.
+	session.Assignments = append(session.Assignments, models.ExamAssignment{MDMUserUUID: otherUUID})
+	directory.fetch = func(*pb.UserDirectoryFetchRequest) (*pb.UserDirectoryFetchResponse, error) {
+		return nil, errors.New("offline")
+	}
+	if err := service.examSessionRecipients(context.Background(), session); err != nil {
+		t.Fatal(err)
+	}
+	if len(session.Assignments) != 203 || session.Assignments[0].FullName != "Сохранённое ФИО" {
+		t.Fatal("directory outage hid assignments")
+	}
 }
