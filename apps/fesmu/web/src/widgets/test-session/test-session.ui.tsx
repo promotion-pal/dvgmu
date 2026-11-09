@@ -196,7 +196,7 @@ const TestSessionCreateModal: FC<{ state: SessionCreate; exam?: boolean }> = ({ 
                         </div>
                         <div className="flex flex-col gap-3">
                             <PromFieldSwitch<TestSessionForm> name="shuffle" label="Перемешивать вопросы и варианты ответа" />
-                            {exam ? <p className="text-sm text-muted-foreground">Одна попытка по предмету. После сдачи предмет исчезнет из списка студента. Результат сообщит преподаватель.</p> : <PromFieldSwitch<TestSessionForm> name="showResult" label="Показать студенту результат после завершения" />}
+                            {exam ? <p className="text-sm text-muted-foreground">Одна попытка в этой сессии. После сдачи экзамен исчезнет из списка студента. Результат сообщит преподаватель.</p> : <PromFieldSwitch<TestSessionForm> name="showResult" label="Показать студенту результат после завершения" />}
                         </div>
                         <QuestionPickHint form={form} total={target?.questionCount ?? 0} mixed={Boolean(target?.mixed)} />
                         <p className="text-xs text-muted-foreground">
@@ -380,7 +380,7 @@ const ExamSessionRecipients: FC<{state: SessionResults}> = ({state}) => {
         <div>
             <h2 className="font-semibold">Выданный тест: {session.topic}</h2>
             <p className="text-sm text-muted-foreground">{session.department} · Назначено студентов: {recipients.length}</p>
-            <p className="mt-1 text-sm text-muted-foreground">Удаление результата разрешает студенту пройти предмет заново, пока доступ к экзамену открыт.</p>
+            <p className="mt-1 text-sm text-muted-foreground">Удаление результата разрешает студенту пройти тест заново в этой сессии, пока доступ к экзамену открыт.</p>
         </div>
         <CommonSearchInput value={search} onChange={value=>{setSearch(value);setLimit(50);}} placeholder="Поиск студента по ФИО, группе или UUID" />
         <div className="max-h-96 overflow-auto">

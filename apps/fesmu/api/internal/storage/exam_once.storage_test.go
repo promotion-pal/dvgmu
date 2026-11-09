@@ -16,7 +16,7 @@ import (
 	"time"
 )
 
-func TestExamOncePostgresConcurrentStartsAndCompletedSubject(t *testing.T) {
+func TestExamOncePostgresSessionScopedAttempts(t *testing.T) {
 	dsn := os.Getenv("EXAM_TEST_DB_DSN")
 	if dsn == "" {
 		t.Skip("EXAM_TEST_DB_DSN not set")
@@ -63,7 +63,7 @@ func TestExamOncePostgresConcurrentStartsAndCompletedSubject(t *testing.T) {
 		}
 		return s
 	}
-	first, second := create(), create()
+	first := create()
 	start := func(s *models.TestSession, user string) (*models.TestAttempt, error) {
 		a, err := models.NewTestAttempt(s, models.TestAttemptParams{FullName: "Test Student", StudentGroup: "101", MDMUserUUID: user}, uuid.NewString(), 42, now)
 		if err != nil {
@@ -79,11 +79,7 @@ func TestExamOncePostgresConcurrentStartsAndCompletedSubject(t *testing.T) {
 		wg.Add(1)
 		go func(i int) {
 			defer wg.Done()
-			s := first
-			if i%2 == 0 {
-				s = second
-			}
-			a, err := start(s, student)
+			a, err := start(first, student)
 			if err != nil {
 				failures <- err
 			} else {
@@ -110,26 +106,67 @@ func TestExamOncePostgresConcurrentStartsAndCompletedSubject(t *testing.T) {
 	if err := db.Model(active).Update("status", enum.TestAttemptStatus_TEST_ATTEMPT_STATUS_FINISHED).Error; err != nil {
 		t.Fatal(err)
 	}
-	third := create()
-	if _, err := start(third, student); !errors.Is(err, models.ErrExamAlreadyTaken) {
-		t.Fatalf("new session granted retake: %v", err)
+
+	if _, err := start(first, student); !errors.Is(err, models.ErrExamAlreadyTaken) {
+		t.Fatalf("same session granted a retake: %v", err)
 	}
 	list, err := store.ExamPublicFetch(ctx, now, student)
 	if err != nil || len(list) != 0 {
-		t.Fatalf("completed subject visible: %v %v", list, err)
+		t.Fatalf("completed session visible: %v %v", list, err)
 	}
-	// Explicitly removing a result releases the entitlement and restores access.
-	if err := store.TestAttemptDelete(ctx, active.ID); err != nil {
+	// Closing and reopening the same session must preserve the restriction.
+	if err := store.TestSessionOpenUpdate(ctx, first.ID, false); err != nil {
 		t.Fatal(err)
 	}
-	retry, err := start(third, student)
-	if err != nil || retry.ID == active.ID {
-		t.Fatalf("deleted result did not grant a fresh attempt: %v %v", retry, err)
+	if err := store.TestSessionOpenUpdate(ctx, first.ID, true); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := start(first, student); !errors.Is(err, models.ErrExamAlreadyTaken) {
+		t.Fatalf("reopened session granted a retake: %v", err)
+	}
+	second := create()
+	fresh, err := start(second, student)
+	if err != nil || fresh.ID == active.ID || fresh.SessionID != second.ID {
+		t.Fatalf("new session did not grant an independent attempt: %v %v", fresh, err)
+	}
+	if err := db.Model(fresh).Update("status", enum.TestAttemptStatus_TEST_ATTEMPT_STATUS_FINISHED).Error; err != nil {
+		t.Fatal(err)
 	}
 	list, err = store.ExamPublicFetch(ctx, now, student)
-	if err != nil || len(list) != 1 {
-		t.Fatalf("subject not restored after deletion: %v %v", list, err)
+	if err != nil || len(list) != 0 {
+		t.Fatalf("completed sessions visible: %v %v", list, err)
 	}
+	// Deleting a whole session must remove its limits, assignments and attempts.
+	if err := store.TestSessionDelete(ctx, first.ID); err != nil {
+		t.Fatal(err)
+	}
+	for _, model := range []any{&models.ExamParticipation{}, &models.ExamAssignment{}, &models.TestAttempt{}} {
+		var count int64
+		if err := db.Model(model).Where("session_id=?", first.ID).Count(&count).Error; err != nil || count != 0 {
+			t.Fatalf("session deletion did not cascade: %T %d %v", model, count, err)
+		}
+	}
+	third := create()
+	thirdAttempt, err := start(third, student)
+	if err != nil {
+		t.Fatalf("deleted session blocked recreated session: %v", err)
+	}
+	// Explicitly removing a result releases only that session's entitlement.
+	if err := store.TestAttemptDelete(ctx, fresh.ID); err != nil {
+		t.Fatal(err)
+	}
+	retry, err := start(second, student)
+	if err != nil || retry.ID == fresh.ID {
+		t.Fatalf("deleted result did not grant a fresh attempt: %v %v", retry, err)
+	}
+	stillActive, err := start(third, student)
+	if err != nil || stillActive.ID != thirdAttempt.ID {
+		t.Fatalf("deleting another session result reset active attempt: %v %v", stillActive, err)
+	}
+	if err := store.TestSessionOpenUpdate(ctx, second.ID, false); err != nil {
+		t.Fatal(err)
+	}
+
 	a, err := start(third, other)
 	if err != nil {
 		t.Fatal(err)

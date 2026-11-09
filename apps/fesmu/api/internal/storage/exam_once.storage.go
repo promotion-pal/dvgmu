@@ -9,8 +9,8 @@ import (
 	"time"
 )
 
-// The unique participation row serializes simultaneous starts, including starts
-// through different sessions of the same subject. An active attempt is resumed.
+// The unique participation row serializes simultaneous starts in one session.
+// An active attempt is resumed; a separate session has an independent attempt.
 func (s *TestSessionStorage) ExamStartOnce(ctx context.Context, requested *models.TestSession, proposed *models.TestAttempt, now time.Time) (*models.TestAttempt, *models.TestSession, error) {
 	var attempt *models.TestAttempt
 	var owner *models.TestSession
@@ -22,7 +22,7 @@ func (s *TestSessionStorage) ExamStartOnce(ctx context.Context, requested *model
 		if !current.Open(now) {
 			return models.ErrTestSessionClosed
 		}
-		if current.ExamSubjectKey == "" || proposed.MDMUserUUID == "" {
+		if proposed.SessionID != current.ID || proposed.MDMUserUUID == "" {
 			return models.ErrExamNotAssigned
 		}
 		var assigned int64
@@ -32,8 +32,8 @@ func (s *TestSessionStorage) ExamStartOnce(ctx context.Context, requested *model
 		if assigned == 0 {
 			return models.ErrExamNotAssigned
 		}
-		claim := models.ExamParticipation{MDMUserUUID: proposed.MDMUserUUID, SubjectKey: current.ExamSubjectKey, CreatedAt: now}
-		inserted := tx.Clauses(clause.OnConflict{Columns: []clause.Column{{Name: "mdm_user_uuid"}, {Name: "subject_key"}}, DoNothing: true}).Omit("Attempt").Create(&claim)
+		claim := models.ExamParticipation{MDMUserUUID: proposed.MDMUserUUID, SessionID: current.ID, CreatedAt: now}
+		inserted := tx.Clauses(clause.OnConflict{Columns: []clause.Column{{Name: "mdm_user_uuid"}, {Name: "session_id"}}, DoNothing: true}).Omit("Attempt", "Session").Create(&claim)
 		if inserted.Error != nil {
 			return inserted.Error
 		}
@@ -48,7 +48,7 @@ func (s *TestSessionStorage) ExamStartOnce(ctx context.Context, requested *model
 			owner = &current
 			return nil
 		}
-		if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).Where("mdm_user_uuid=? AND subject_key=?", proposed.MDMUserUUID, current.ExamSubjectKey).First(&claim).Error; err != nil {
+		if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).Where("mdm_user_uuid=? AND session_id=?", proposed.MDMUserUUID, current.ID).First(&claim).Error; err != nil {
 			return err
 		}
 		if claim.AttemptID == nil {

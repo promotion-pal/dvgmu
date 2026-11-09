@@ -108,7 +108,7 @@ export default function ExamTestingPublicPage() {
             {loading ? <p role="status">Загружаем экзамены…</p> : failed ? <Card className="p-6">
                 <p role="alert">{error||"Не удалось проверить назначенные экзамены"}</p>
                 <Button variant="outline" className="self-start" onClick={() => setRefresh((value) => value + 1)}>Повторить</Button>
-            </Card> : visible.length === 0 ? <Card className="p-6"><p>Нет доступных экзаменов по выбранным условиям. Пройденные предметы скрыты; результат сообщит преподаватель.</p></Card> : <div className="grid gap-4 sm:grid-cols-2">
+            </Card> : visible.length === 0 ? <Card className="p-6"><p>Нет доступных экзаменов по выбранным условиям. Пройденные экзамены в этих сессиях скрыты; результат сообщит преподаватель.</p></Card> : <div className="grid gap-4 sm:grid-cols-2">
                 {visible.map((exam) => <Card key={exam.testId.toString()} className="flex flex-col p-5">
                     <p className="text-sm text-muted-foreground">{exam.faculty} · семестр {exam.semester}</p>
                     <p className="text-sm font-medium">{exam.subject}</p>

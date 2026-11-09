@@ -5,22 +5,6 @@ import (
 	"testing"
 )
 
-func TestExamSubjectIdentity(t *testing.T) {
-	a := &Test{ID: 1, Department: " Педиатрический  факультет ", Semester: 2, Discipline: "Анатомия", Topic: "Первый вариант"}
-	b := &Test{ID: 2, Department: "педиатрический факультет", Semester: 2, Discipline: " анатомия ", Topic: "Другой вариант"}
-	if ExamSubjectKey(a) != ExamSubjectKey(b) {
-		t.Fatal("new test title must not reset subject entitlement")
-	}
-	b.Semester = 3
-	if ExamSubjectKey(a) == ExamSubjectKey(b) {
-		t.Fatal("different semester must have its own entitlement")
-	}
-	b.Semester = 2
-	b.Department = "Лечебный факультет"
-	if ExamSubjectKey(a) == ExamSubjectKey(b) {
-		t.Fatal("different faculty must have its own entitlement")
-	}
-}
 func TestExamRequiresExactlyOneCorrectAnswer(t *testing.T) {
 	for _, count := range []int{0, 1, 2} {
 		q := TestSnapshotQuestion{Answers: []TestSnapshotAnswer{{IsCorrect: count > 0}, {IsCorrect: count > 1}}}

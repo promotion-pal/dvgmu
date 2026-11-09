@@ -19,7 +19,7 @@ func (s *TestSessionStorage) ExamPublicFetch(ctx context.Context, now time.Time,
  AND EXISTS(SELECT 1 FROM exam_assignments a WHERE a.session_id=s.id AND a.mdm_user_uuid=?)
 		  AND NOT EXISTS (
     SELECT 1 FROM exam_participations p LEFT JOIN test_attempts used ON used.id=p.attempt_id
-    WHERE p.mdm_user_uuid=? AND p.subject_key=s.exam_subject_key
+    WHERE p.mdm_user_uuid=? AND p.session_id=s.id
       AND (p.attempt_id IS NULL OR used.id IS NULL OR used.status<>1 OR used.deadline<=?)
   )
   AND (s.opens_at IS NULL OR s.opens_at <= ?)
