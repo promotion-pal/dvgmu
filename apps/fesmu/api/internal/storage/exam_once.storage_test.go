@@ -1,0 +1,142 @@
+package storage
+
+import (
+	"context"
+	api "dvgmu/api"
+	"dvgmu/api/internal/domain/models"
+	"errors"
+	enum "fesmu/contract/fesmu/enum/v1"
+	"github.com/google/uuid"
+	"github.com/pressly/goose/v3"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+	"os"
+	"sync"
+	"testing"
+	"time"
+)
+
+func TestExamOncePostgresConcurrentStartsAndCompletedSubject(t *testing.T) {
+	dsn := os.Getenv("EXAM_TEST_DB_DSN")
+	if dsn == "" {
+		t.Skip("EXAM_TEST_DB_DSN not set")
+	}
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	sql, err := db.DB()
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = sql.Close() })
+	goose.SetBaseFS(api.MigrationsFS)
+	if err := goose.SetDialect("postgres"); err != nil {
+		t.Fatal(err)
+	}
+	if err := goose.Up(sql, "migrations/test"); err != nil {
+		t.Fatal(err)
+	}
+	ctx := context.Background()
+	store := TestSessionStorageNew(db)
+	student := uuid.NewString()
+	other := uuid.NewString()
+	now := time.Now().UTC()
+	test := &models.Test{Department: "Once test", Discipline: uuid.NewString(), Semester: 1, Topic: "Exam", Version: enum.TestVersion_TEST_VERSION_V1, Questions: []models.TestQuestion{{Text: "Question", Answers: []models.TestAnswer{{Text: "Yes", IsCorrect: true}, {Text: "No"}}}}}
+	if _, err := TestStorageNew(db).TestCreate(ctx, test); err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() {
+		db.Where("mdm_user_uuid IN ?", []string{student, other}).Delete(&models.ExamParticipation{})
+		db.Where("test_id=?", test.ID).Delete(&models.TestSession{})
+		db.Delete(test)
+	})
+	create := func() *models.TestSession {
+		t.Helper()
+		s, err := models.NewTestSession(test, models.TestSessionParams{DurationMinutes: 30}, uuid.NewString(), now)
+		if err != nil {
+			t.Fatal(err)
+		}
+		s.Assignments = []models.ExamAssignment{{MDMUserUUID: student}, {MDMUserUUID: other}}
+		if _, err := store.TestSessionCreate(ctx, s); err != nil {
+			t.Fatal(err)
+		}
+		return s
+	}
+	first, second := create(), create()
+	start := func(s *models.TestSession, user string) (*models.TestAttempt, error) {
+		a, err := models.NewTestAttempt(s, models.TestAttemptParams{FullName: "Test Student", StudentGroup: "101", MDMUserUUID: user}, uuid.NewString(), 42, now)
+		if err != nil {
+			return nil, err
+		}
+		a, _, err = store.ExamStartOnce(ctx, s, a, now)
+		return a, err
+	}
+	var wg sync.WaitGroup
+	attempts := make(chan *models.TestAttempt, 8)
+	failures := make(chan error, 8)
+	for i := 0; i < 8; i++ {
+		wg.Add(1)
+		go func(i int) {
+			defer wg.Done()
+			s := first
+			if i%2 == 0 {
+				s = second
+			}
+			a, err := start(s, student)
+			if err != nil {
+				failures <- err
+			} else {
+				attempts <- a
+			}
+		}(i)
+	}
+	wg.Wait()
+	close(attempts)
+	close(failures)
+	for err := range failures {
+		t.Fatal(err)
+	}
+	var active *models.TestAttempt
+	for a := range attempts {
+		if active != nil && active.ID != a.ID {
+			t.Fatal("parallel starts created another attempt")
+		}
+		active = a
+	}
+	if active == nil {
+		t.Fatal("no attempt created")
+	}
+	if err := db.Model(active).Update("status", enum.TestAttemptStatus_TEST_ATTEMPT_STATUS_FINISHED).Error; err != nil {
+		t.Fatal(err)
+	}
+	third := create()
+	if _, err := start(third, student); !errors.Is(err, models.ErrExamAlreadyTaken) {
+		t.Fatalf("new session granted retake: %v", err)
+	}
+	list, err := store.ExamPublicFetch(ctx, now, student)
+	if err != nil || len(list) != 0 {
+		t.Fatalf("completed subject visible: %v %v", list, err)
+	}
+	// Removing a result must not restore the entitlement.
+	if err := store.TestAttemptDelete(ctx, active.ID); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := start(third, student); !errors.Is(err, models.ErrExamAlreadyTaken) {
+		t.Fatalf("deleted result granted retake: %v", err)
+	}
+	a, err := start(third, other)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := db.Model(a).Update("deadline", now.Add(-time.Second)).Error; err != nil {
+		t.Fatal(err)
+	}
+	if _, err := start(third, other); !errors.Is(err, models.ErrExamAlreadyTaken) {
+		t.Fatalf("expired attempt granted retake: %v", err)
+	}
+	list, err = store.ExamPublicFetch(ctx, now, other)
+	if err != nil || len(list) != 0 {
+		t.Fatalf("expired subject visible: %v %v", list, err)
+	}
+}

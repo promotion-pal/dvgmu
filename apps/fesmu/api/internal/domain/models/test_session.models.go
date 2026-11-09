@@ -83,11 +83,12 @@ type TestSession struct {
 	OpensAt           *time.Time `gorm:""`
 	ClosesAt          *time.Time `gorm:""`
 
-	Questions     []TestSnapshotQuestion `gorm:"type:jsonb;serializer:json;not null"`
-	Audience      ExamAudience           `gorm:"type:jsonb;serializer:json;not null;default:'{}'"`
-	Assignments   []ExamAssignment       `gorm:"foreignKey:SessionID;constraint:OnDelete:CASCADE"`
-	AssignedCount int                    `gorm:"->;-:migration"`
-	Attempts      []TestAttempt          `gorm:"foreignKey:SessionID;constraint:OnDelete:CASCADE"`
+	Questions      []TestSnapshotQuestion `gorm:"type:jsonb;serializer:json;not null"`
+	ExamSubjectKey string                 `gorm:"size:32;not null;default:''"`
+	Audience       ExamAudience           `gorm:"type:jsonb;serializer:json;not null;default:'{}'"`
+	Assignments    []ExamAssignment       `gorm:"foreignKey:SessionID;constraint:OnDelete:CASCADE"`
+	AssignedCount  int                    `gorm:"->;-:migration"`
+	Attempts       []TestAttempt          `gorm:"foreignKey:SessionID;constraint:OnDelete:CASCADE"`
 
 	// Counted by the list query, not stored.
 	AttemptCount   int `gorm:"->;-:migration"`
@@ -162,6 +163,7 @@ func NewTestSession(test *Test, params TestSessionParams, token string, now time
 	s := &TestSession{
 		TestID:          &test.ID,
 		Audience:        params.Audience,
+		ExamSubjectKey:  ExamSubjectKey(test),
 		Token:           token,
 		Topic:           test.Topic,
 		Department:      test.Department,

@@ -71,7 +71,16 @@ export const testSchema = z.object({
 });
 
 export type TestForm = z.infer<typeof testSchema>;
-export const examTestSchema = testSchema.extend({ semester: z.string().regex(/^([1-9]|1[0-2])$/, "Укажите семестр от 1 до 12") });
+export const examTestSchema = testSchema.extend({
+    semester: z.string().regex(/^([1-9]|1[0-2])$/, "Укажите семестр от 1 до 12"),
+    questions: testSchema.shape.questions.superRefine((questions, ctx) => {
+        questions.forEach((question, index) => {
+            if (question.answers.filter(answer => answer.isCorrect).length !== 1) {
+                ctx.addIssue({ code: "custom", message: "Для экзамена выберите ровно один верный ответ", path: [index, "answers"] });
+            }
+        });
+    }),
+});
 export type TestQuestionForm = TestForm["questions"][number];
 
 export const emptyAnswer = (): TestForm["questions"][number]["answers"][number] => ({ text: "", isCorrect: false });

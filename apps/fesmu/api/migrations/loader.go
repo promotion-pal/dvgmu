@@ -47,6 +47,7 @@ func main() {
 			&models.TestAttempt{},
 			&models.TestImage{},
 			&models.ExamAssignment{},
+			&models.ExamParticipation{},
 		)
 	case "purchase":
 		stmts, err = gormschema.New("postgres").Load(append(purchase.Tables(), purchasev3.Tables()...)...)

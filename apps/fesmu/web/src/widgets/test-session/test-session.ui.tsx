@@ -196,7 +196,7 @@ const TestSessionCreateModal: FC<{ state: SessionCreate; exam?: boolean }> = ({ 
                         </div>
                         <div className="flex flex-col gap-3">
                             <PromFieldSwitch<TestSessionForm> name="shuffle" label="Перемешивать вопросы и варианты ответа" />
-                            <PromFieldSwitch<TestSessionForm> name="showResult" label="Показать студенту результат после завершения" />
+                            {exam ? <p className="text-sm text-muted-foreground">Одна попытка по предмету. После сдачи предмет исчезнет из списка студента. Результат сообщит преподаватель.</p> : <PromFieldSwitch<TestSessionForm> name="showResult" label="Показать студенту результат после завершения" />}
                         </div>
                         <QuestionPickHint form={form} total={target?.questionCount ?? 0} mixed={Boolean(target?.mixed)} />
                         <p className="text-xs text-muted-foreground">
@@ -387,7 +387,7 @@ const TestSessionResultsHeader: FC<{ state: SessionResults }> = ({ state }) => {
                     </>
                 )}
                 <span>·</span>
-                <span>{session.showResult ? "студент видит результат" : "результат студенту не показывается"}</span>
+                <span>{!state.exam && session.showResult ? "студент видит результат" : "результат студенту не показывается"}</span>
                 {sessionWindow(session) && (
                     <>
                         <span>·</span>

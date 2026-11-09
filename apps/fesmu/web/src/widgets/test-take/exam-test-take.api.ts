@@ -21,14 +21,14 @@ const fromState = (message: TestTakeStateResponse): TestTakeState => {
         questions: message.questions.map((question) => ({
             id: question.id.toString(),
             text: question.text,
-            multiple: question.multiple,
+            multiple: false,
             image: question.image ? { hash: question.image, width: question.imageWidth, height: question.imageHeight } : undefined,
             answers: question.answers.map((answer) => ({ id: answer.id.toString(), text: answer.text })),
         })),
         picked: Object.fromEntries(message.answers.map((answer) => [answer.questionId.toString(), answer.answerIds.map(String)])),
-        showResult: message.showResult,
-        score: message.score,
-        total: message.total,
+        showResult: false,
+        score: 0,
+        total: 0,
     };
 };
 

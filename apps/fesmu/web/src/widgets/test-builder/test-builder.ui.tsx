@@ -352,16 +352,21 @@ const QuestionImageField: FC<{ index: number; api: TestBuilder["api"]; exam: boo
 
 /** V1: the options as one list, each with a "Верный" mark — shown to the
  * student all of them, as written. */
-const ClassicAnswers: FC<{ index: number }> = ({ index }) => {
-    const { control } = useFormContext<TestForm>();
+const ClassicAnswers: FC<{ index: number; exam: boolean }> = ({ index, exam }) => {
+    const { control, setValue } = useFormContext<TestForm>();
+    const values = useWatch({ control, name: `questions.${index}.answers` }) ?? [];
     const answers = useFieldArray({ control, name: `questions.${index}.answers` });
 
     return (
         <div className="flex flex-col gap-2">
-            <p className="text-sm text-muted-foreground">Варианты ответа — отметьте верные (можно несколько)</p>
+            <p className="text-sm text-muted-foreground">{exam ? "Варианты ответа — выберите один верный" : "Варианты ответа — отметьте верные (можно несколько)"}</p>
             {answers.fields.map((field, answerIndex) => (
                 <div key={field.id} className="flex items-start gap-3">
-                    <PromFieldCheckbox<TestForm> name={`questions.${index}.answers.${answerIndex}.isCorrect`} label="Верный" className="mt-2.5 shrink-0" />
+                    {exam ? <label className="mt-2.5 flex shrink-0 items-center gap-2 text-sm">
+                        <input type="radio" name={`correct-answer-${index}`} checked={Boolean(values[answerIndex]?.isCorrect)}
+                            onChange={() => answers.fields.forEach((_, i) => setValue(`questions.${index}.answers.${i}.isCorrect`, i === answerIndex, { shouldDirty: true, shouldValidate: true }))} />
+                        Верный
+                    </label> : <PromFieldCheckbox<TestForm> name={`questions.${index}.answers.${answerIndex}.isCorrect`} label="Верный" className="mt-2.5 shrink-0" />}
                     <div className="min-w-0 flex-1">
                         <FieldInput name={`questions.${index}.answers.${answerIndex}.text`} placeholder={`Вариант ${answerIndex + 1}`} />
                     </div>
@@ -499,7 +504,7 @@ const QuestionEditor: FC<{ index: number; canRemove: boolean; onRemove: () => vo
             <PromFieldTextArea<TestForm> name={`questions.${index}.text`} placeholder="Текст вопроса" rows={2} />
             <QuestionImageField index={index} api={api} exam={exam} />
 
-            {version === TestVersion.V2 ? <PoolAnswers index={index} /> : <ClassicAnswers index={index} />}
+            {!exam && version === TestVersion.V2 ? <PoolAnswers index={index} /> : <ClassicAnswers index={index} exam={exam} />}
             {answersError && <span className="text-sm text-red-500">{answersError}</span>}
         </div>
     );

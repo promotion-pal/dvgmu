@@ -169,10 +169,13 @@ func TestExamSessionStoresRecipientSnapshotAndRejectsMissingAudience(t *testing.
 	if _, err := s.TestSessionCreate(context.Background(), 1, models.TestSessionParams{DurationMinutes: 30}); !errors.Is(err, models.ErrExamAudience) {
 		t.Fatalf("empty audience accepted: %v", err)
 	}
-	params := models.TestSessionParams{DurationMinutes: 30, Audience: models.ExamAudience{Kind: "students", StudentUUIDs: []string{assignedUUID}}}
+	params := models.TestSessionParams{DurationMinutes: 30, ShowResult: true, Audience: models.ExamAudience{Kind: "students", StudentUUIDs: []string{assignedUUID}}}
 	session, err := s.TestSessionCreate(context.Background(), 1, params)
 	if err != nil {
 		t.Fatal(err)
+	}
+	if session.ShowResult {
+		t.Fatal("exam must hide results regardless of client preference")
 	}
 	if len(session.Assignments) != 1 || session.Assignments[0].MDMUserUUID != assignedUUID || session.AssignedCount != 1 {
 		t.Fatalf("missing UUID mapping: %+v", session)
@@ -210,4 +213,9 @@ func TestExamDirectoryRejectsServerThatIgnoredProfileFilter(t *testing.T) {
 	if _, err := s.ExamPublicFetch(context.Background(), "2025001"); !errors.Is(err, models.ErrExamDirectory) {
 		t.Fatalf("legacy MDM exposed public identity: %v", err)
 	}
+}
+
+func (f *assignmentTestStore) ExamStartOnce(_ context.Context, session *models.TestSession, a *models.TestAttempt, _ time.Time) (*models.TestAttempt, *models.TestSession, error) {
+	f.created = a
+	return a, session, nil
 }

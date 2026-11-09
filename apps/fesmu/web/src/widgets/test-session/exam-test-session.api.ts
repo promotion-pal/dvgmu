@@ -63,7 +63,7 @@ export const examTestSessionApi: TestSessionApi = {
             questionCount: Number(values.questionCount || 0),
             optionCount: Number(values.optionCount || 0),
             shuffle: values.shuffle,
-            showResult: values.showResult,
+            showResult: false,
             note: values.note,
             opensAt: values.opensAt ? timestampFromDate(new Date(values.opensAt)) : undefined,
             closesAt: values.closesAt ? timestampFromDate(new Date(values.closesAt)) : undefined,

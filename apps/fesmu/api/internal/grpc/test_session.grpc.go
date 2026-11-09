@@ -266,12 +266,17 @@ func (h *TestSessionHandler) takeState(view *service.TestAttemptView) *pb.TestTa
 		Status:       a.Status,
 		Deadline:     timestamppb.New(a.Deadline),
 		ServerTime:   timestamppb.New(h.service.Now()),
-		ShowResult:   view.Session.ShowResult,
+		ShowResult:   view.Session.ShowResult && !h.service.IsExam(),
 	}
 	if a.InProgress() {
 		resp.Questions = models.TakeQuestionsProto(view.Questions)
+		if h.service.IsExam() {
+			for _, question := range resp.Questions {
+				question.Multiple = false
+			}
+		}
 		resp.Answers = a.SavedAnswersProto()
-	} else if view.Session.ShowResult {
+	} else if resp.ShowResult {
 		resp.Score = int32(a.Score)
 		resp.Total = int32(a.Total)
 	}
@@ -280,6 +285,8 @@ func (h *TestSessionHandler) takeState(view *service.TestAttemptView) *pb.TestTa
 
 func testSessionConnectError(err error) error {
 	switch {
+	case errors.Is(err, models.ErrExamAlreadyTaken):
+		return connect.NewError(connect.CodeFailedPrecondition, err)
 	case errors.Is(err, models.ErrExamNotAssigned):
 		return connect.NewError(connect.CodePermissionDenied, err)
 	case errors.Is(err, models.ErrExamDirectory):

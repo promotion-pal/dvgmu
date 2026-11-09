@@ -77,7 +77,7 @@ const useTestTake = (token: string, api: TestTakeApi = testTakeApi, exam = false
         if (attemptToken) {
             try {
                 const previous = await api.state(attemptToken);
-                if (!sharedComputer || previous.status === TestAttemptStatus.IN_PROGRESS) {
+                if (exam || !sharedComputer || previous.status === TestAttemptStatus.IN_PROGRESS) {
                     apply(previous);
                     return;
                 }

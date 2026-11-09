@@ -62,12 +62,18 @@ func (s *TestSessionService) TestSessionCreate(ctx context.Context, testID int64
 		return nil, err
 	}
 
+	if s.exam {
+		params.ShowResult = false
+	}
 	session, err := models.NewTestSession(test, params, rand.Text(), s.now())
 	if err != nil {
 		log.Warn(utils.MSGValidateFailed("test session", err))
 		return nil, err
 	}
 	if s.exam {
+		if err := models.ValidateExamQuestions(session.Questions); err != nil {
+			return nil, err
+		}
 		recipients, err := s.examRecipients(ctx, params.Audience)
 		if err != nil {
 			return nil, err
@@ -193,6 +199,9 @@ func (s *TestSessionService) TestTakeStart(ctx context.Context, token string, pa
 		return nil, err
 	}
 	if s.exam {
+		if err := models.ValidateExamQuestions(session.Questions); err != nil {
+			return nil, err
+		}
 		if err := s.examCheck(ctx, session, &params); err != nil {
 			return nil, err
 		}
@@ -201,6 +210,17 @@ func (s *TestSessionService) TestTakeStart(ctx context.Context, token string, pa
 	if err != nil {
 		log.Warn(utils.MSGValidateFailed("test attempt", err), slog.Int64("session_id", session.ID))
 		return nil, err
+	}
+	if s.exam {
+		store, ok := s.store.(ExamOnceStore)
+		if !ok {
+			return nil, models.ErrExamDirectory
+		}
+		stored, owner, err := store.ExamStartOnce(ctx, session, attempt, s.now())
+		if err != nil {
+			return nil, err
+		}
+		return &TestAttemptView{Attempt: stored, Session: owner, Questions: owner.AttemptQuestions(stored.Seed)}, nil
 	}
 	if _, err := s.store.TestAttemptCreate(ctx, attempt); err != nil {
 		log.Error(utils.MSGCreateError("test attempt", err))
@@ -223,6 +243,9 @@ func (s *TestSessionService) TestTakeState(ctx context.Context, attemptToken str
 
 func (s *TestSessionService) TestTakeAnswer(ctx context.Context, attemptToken string, questionID int64, answerIDs []int64) error {
 	_, err := s.updateAttempt(ctx, "TestSession.TestTakeAnswer", attemptToken, func(a *models.TestAttempt, questions []models.TestSnapshotQuestion, now time.Time) error {
+		if s.exam && len(answerIDs) > 1 {
+			return models.ErrTestInvalid
+		}
 		return a.SetAnswer(questions, questionID, answerIDs, now)
 	})
 	return err
@@ -251,6 +274,11 @@ func (s *TestSessionService) updateAttempt(
 	var questions []models.TestSnapshotQuestion
 	attempt, session, err := s.store.TestAttemptUpdate(ctx, attemptToken, func(a *models.TestAttempt, session *models.TestSession) error {
 		questions = session.AttemptQuestions(a.Seed)
+		if s.exam && a.InProgress() && op != "TestSession.TestTakeFinish" {
+			if err := models.ValidateExamQuestions(questions); err != nil {
+				return err
+			}
+		}
 		return change(a, questions, s.now())
 	})
 	if err != nil {
@@ -278,3 +306,5 @@ func (s *TestSessionService) sessionByToken(ctx context.Context, token string) (
 func (s *TestSessionService) Now() time.Time {
 	return s.now()
 }
+
+func (s *TestSessionService) IsExam() bool { return s.exam }

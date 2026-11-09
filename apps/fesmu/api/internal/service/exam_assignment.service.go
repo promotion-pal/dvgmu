@@ -8,6 +8,7 @@ import (
 	"github.com/google/uuid"
 	"regexp"
 	"strings"
+	"time"
 )
 
 type ExamDirectory interface {
@@ -152,4 +153,8 @@ func (s *TestSessionService) examCheck(ctx context.Context, session *models.Test
 		return errors.New("MDM returned a student without a name")
 	}
 	return nil
+}
+
+type ExamOnceStore interface {
+	ExamStartOnce(context.Context, *models.TestSession, *models.TestAttempt, time.Time) (*models.TestAttempt, *models.TestSession, error)
 }

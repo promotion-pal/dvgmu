@@ -82,6 +82,11 @@ func (h *TestHandler) TestCreate(
 	if err := h.unavailable(); err != nil {
 		return nil, err
 	}
+	if h.exam {
+		if err := models.ValidateExamParams(testParams(req.Msg.GetDepartment(), req.Msg.GetDiscipline(), req.Msg.GetSemester(), req.Msg.GetTopic(), req.Msg.GetDescription(), req.Msg.GetVersion(), req.Msg.GetQuestions())); err != nil {
+			return nil, testConnectError(err)
+		}
+	}
 	if h.exam && (req.Msg.GetSemester() < 1 || req.Msg.GetSemester() > 12) {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("укажите семестр от 1 до 12"))
 	}
@@ -108,6 +113,11 @@ func (h *TestHandler) TestUpdate(
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("id is required"))
 	}
 
+	if h.exam {
+		if err := models.ValidateExamParams(testParams(req.Msg.GetDepartment(), req.Msg.GetDiscipline(), req.Msg.GetSemester(), req.Msg.GetTopic(), req.Msg.GetDescription(), req.Msg.GetVersion(), req.Msg.GetQuestions())); err != nil {
+			return nil, testConnectError(err)
+		}
+	}
 	if h.exam && (req.Msg.GetSemester() < 1 || req.Msg.GetSemester() > 12) {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("укажите семестр от 1 до 12"))
 	}
