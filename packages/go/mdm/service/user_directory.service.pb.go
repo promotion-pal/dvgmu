@@ -38,6 +38,10 @@ type UserDirectoryFetchRequest struct {
 	IncludeFacets      bool                        `protobuf:"varint,13,opt,name=include_facets,json=includeFacets,proto3" json:"include_facets,omitempty"`
 	UserUuids          []string                    `protobuf:"bytes,14,rep,name=user_uuids,json=userUuids,proto3" json:"user_uuids,omitempty"`
 	UserStatus         enum.UserStatus             `protobuf:"varint,15,opt,name=user_status,json=userStatus,proto3,enum=contract.enum.UserStatus" json:"user_status,omitempty"`
+	// Educational/employment record type, independent of manually granted login roles.
+	ProfileKind string `protobuf:"bytes,16,opt,name=profile_kind,json=profileKind,proto3" json:"profile_kind,omitempty"`
+	// Current enrollments, including imported records with unspecified status.
+	ActiveStudentsOnly bool `protobuf:"varint,17,opt,name=active_students_only,json=activeStudentsOnly,proto3" json:"active_students_only,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -168,6 +172,20 @@ func (x *UserDirectoryFetchRequest) GetUserStatus() enum.UserStatus {
 		return x.UserStatus
 	}
 	return enum.UserStatus(0)
+}
+
+func (x *UserDirectoryFetchRequest) GetProfileKind() string {
+	if x != nil {
+		return x.ProfileKind
+	}
+	return ""
+}
+
+func (x *UserDirectoryFetchRequest) GetActiveStudentsOnly() bool {
+	if x != nil {
+		return x.ActiveStudentsOnly
+	}
+	return false
 }
 
 type UserDirectoryStudent struct {
@@ -456,6 +474,8 @@ type UserDirectoryFetchResponse struct {
 	Total         int64                        `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
 	NextOffset    int32                        `protobuf:"varint,3,opt,name=next_offset,json=nextOffset,proto3" json:"next_offset,omitempty"`
 	StudentFacets []*UserDirectoryStudentFacet `protobuf:"bytes,4,rep,name=student_facets,json=studentFacets,proto3" json:"student_facets,omitempty"`
+	// Confirms that the server understood and applied the profile filter.
+	ProfileKind   string `protobuf:"bytes,5,opt,name=profile_kind,json=profileKind,proto3" json:"profile_kind,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -518,11 +538,18 @@ func (x *UserDirectoryFetchResponse) GetStudentFacets() []*UserDirectoryStudentF
 	return nil
 }
 
+func (x *UserDirectoryFetchResponse) GetProfileKind() string {
+	if x != nil {
+		return x.ProfileKind
+	}
+	return ""
+}
+
 var File_mdm_service_user_directory_service_proto protoreflect.FileDescriptor
 
 const file_mdm_service_user_directory_service_proto_rawDesc = "" +
 	"\n" +
-	"(mdm/service/user_directory.service.proto\x12\x10contract.service\x1a\x18mdm/enum/user.enum.proto\"\xe3\x04\n" +
+	"(mdm/service/user_directory.service.proto\x12\x10contract.service\x1a\x18mdm/enum/user.enum.proto\"\xb8\x05\n" +
 	"\x19UserDirectoryFetchRequest\x12+\n" +
 	"\x04role\x18\x01 \x01(\x0e2\x17.contract.enum.UserRoleR\x04role\x12\x14\n" +
 	"\x05query\x18\x02 \x01(\tR\x05query\x12!\n" +
@@ -540,7 +567,9 @@ const file_mdm_service_user_directory_service_proto_rawDesc = "" +
 	"\n" +
 	"user_uuids\x18\x0e \x03(\tR\tuserUuids\x12:\n" +
 	"\vuser_status\x18\x0f \x01(\x0e2\x19.contract.enum.UserStatusR\n" +
-	"userStatusJ\x04\b\n" +
+	"userStatus\x12!\n" +
+	"\fprofile_kind\x18\x10 \x01(\tR\vprofileKind\x120\n" +
+	"\x14active_students_only\x18\x11 \x01(\bR\x12activeStudentsOnlyJ\x04\b\n" +
 	"\x10\v\"\xc4\x01\n" +
 	"\x14UserDirectoryStudent\x12!\n" +
 	"\ffaculty_code\x18\x01 \x01(\x05R\vfacultyCode\x12\x16\n" +
@@ -564,13 +593,14 @@ const file_mdm_service_user_directory_service_proto_rawDesc = "" +
 	"\x06course\x18\x02 \x01(\x05R\x06course\x12\x14\n" +
 	"\x05group\x18\x03 \x01(\tR\x05group\x12\x14\n" +
 	"\x05count\x18\x04 \x01(\x05R\x05count\x12!\n" +
-	"\ffaculty_name\x18\x05 \x01(\tR\vfacultyName\"\xe3\x01\n" +
+	"\ffaculty_name\x18\x05 \x01(\tR\vfacultyName\"\x86\x02\n" +
 	"\x1aUserDirectoryFetchResponse\x12:\n" +
 	"\x05users\x18\x01 \x03(\v2$.contract.service.UserDirectoryEntryR\x05users\x12\x14\n" +
 	"\x05total\x18\x02 \x01(\x03R\x05total\x12\x1f\n" +
 	"\vnext_offset\x18\x03 \x01(\x05R\n" +
 	"nextOffset\x12R\n" +
-	"\x0estudent_facets\x18\x04 \x03(\v2+.contract.service.UserDirectoryStudentFacetR\rstudentFacets2\x87\x01\n" +
+	"\x0estudent_facets\x18\x04 \x03(\v2+.contract.service.UserDirectoryStudentFacetR\rstudentFacets\x12!\n" +
+	"\fprofile_kind\x18\x05 \x01(\tR\vprofileKind2\x87\x01\n" +
 	"\x14UserDirectoryService\x12o\n" +
 	"\x12UserDirectoryFetch\x12+.contract.service.UserDirectoryFetchRequest\x1a,.contract.service.UserDirectoryFetchResponseB\xae\x01\n" +
 	"\x14com.contract.serviceB\x19UserDirectoryServiceProtoP\x01Z\x1afesmu/contract/mdm/service\xa2\x02\x03CSX\xaa\x02\x10Contract.Service\xca\x02\x10Contract\\Service\xe2\x02\x1cContract\\Service\\GPBMetadata\xea\x02\x11Contract::Serviceb\x06proto3"

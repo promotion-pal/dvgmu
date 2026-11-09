@@ -33,6 +33,9 @@ func directoryCourse() string {
 	return `CASE WHEN btrim(students.record_book) ~ '^[0-9]{7}$' THEN LEAST(6,GREATEST(1,` + time.Now().Format("2006") + `-(2000+substring(btrim(students.record_book),3,2)::int)+1)) ELSE 0 END`
 }
 func directoryStudents(q *pb.UserDirectoryFetchRequest, db *gorm.DB) *gorm.DB {
+	if q.ActiveStudentsOnly {
+		db = db.Where("students.status IN ?", []enum.UserStudentStatus{enum.UserStudentStatus_USER_STUDENT_STATUS_UNSPECIFIED, enum.UserStudentStatus_USER_STUDENT_STATUS_STUDYING, enum.UserStudentStatus_USER_STUDENT_STATUS_RESTORED, enum.UserStudentStatus_USER_STUDENT_STATUS_TRANSFERRED})
+	}
 	if q.FacultyCode > 0 {
 		db = db.Where(directoryFaculty+" = ?", q.FacultyCode)
 	}
@@ -64,11 +67,11 @@ func directoryUsers(q *pb.UserDirectoryFetchRequest, db *gorm.DB) *gorm.DB {
 	if len(q.UserUuids) > 0 {
 		db = db.Where("users.uuid IN ?", q.UserUuids)
 	}
-	if q.Role == enum.UserRole_USER_ROLE_STUDENT || q.FacultyCode > 0 || q.Course > 0 || q.StudentGroup != "" || q.RecordBook != "" || q.StudentStatus != 0 {
+	if q.ProfileKind == "student" || q.ActiveStudentsOnly || q.Role == enum.UserRole_USER_ROLE_STUDENT || q.FacultyCode > 0 || q.Course > 0 || q.StudentGroup != "" || q.RecordBook != "" || q.StudentStatus != 0 {
 		sub := directoryStudents(q, db.Session(&gorm.Session{NewDB: true}).Table("students").Select("1").Where("students.user_id=users.id"))
 		db = db.Where("EXISTS (?)", sub)
 	}
-	if q.EmployeeDepartment != 0 || q.EmployeePosition != "" {
+	if q.ProfileKind == "employee" || q.EmployeeDepartment != 0 || q.EmployeePosition != "" {
 		sub := db.Session(&gorm.Session{NewDB: true}).Table("employees").Select("1").Where("employees.user_id=users.id")
 		if q.EmployeeDepartment != 0 {
 			sub = sub.Where("department=?", q.EmployeeDepartment)
@@ -81,7 +84,7 @@ func directoryUsers(q *pb.UserDirectoryFetchRequest, db *gorm.DB) *gorm.DB {
 	return db
 }
 func (s *UserDirectoryStorage) UserDirectoryFetch(ctx context.Context, q *pb.UserDirectoryFetchRequest) (*pb.UserDirectoryFetchResponse, error) {
-	out := &pb.UserDirectoryFetchResponse{}
+	out := &pb.UserDirectoryFetchResponse{ProfileKind: q.ProfileKind}
 	base := func() *gorm.DB { return directoryUsers(q, s.db.WithContext(ctx).Model(&directoryUser{})) }
 	if err := base().Count(&out.Total).Error; err != nil {
 		return nil, err
@@ -89,10 +92,10 @@ func (s *UserDirectoryStorage) UserDirectoryFetch(ctx context.Context, q *pb.Use
 	var users []directoryUser
 	// A fixed number of bulk queries; no per-user profile/StudentFetch calls.
 	records := base().Select("users.id,users.uuid,users.first_name,users.last_name,users.patronymic,users.position").Preload("Roles")
-	if q.Role != enum.UserRole_USER_ROLE_STAFF && q.Role != enum.UserRole_USER_ROLE_TEACHER {
+	if q.ProfileKind != "employee" && q.Role != enum.UserRole_USER_ROLE_STAFF && q.Role != enum.UserRole_USER_ROLE_TEACHER {
 		records = records.Preload("Students", func(db *gorm.DB) *gorm.DB { return directoryStudents(q, db).Order("students.id DESC") })
 	}
-	if q.Role != enum.UserRole_USER_ROLE_STUDENT {
+	if q.ProfileKind != "student" && q.Role != enum.UserRole_USER_ROLE_STUDENT {
 		records = records.Preload("Employees")
 	}
 	if err := records.Order("users.last_name,users.first_name,users.id").Limit(int(q.Limit)).Offset(int(q.Offset)).Find(&users).Error; err != nil {

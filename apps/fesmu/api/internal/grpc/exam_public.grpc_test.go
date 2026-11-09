@@ -42,6 +42,9 @@ func TestExamCatalogueIsPublicButStaffDataIsPrivate(t *testing.T) {
 	if len(response.Msg.List) != 1 || response.Msg.List[0].Semester != 6 || response.Msg.List[0].Token != "public-session" {
 		t.Fatalf("unexpected public catalogue: %v", response.Msg)
 	}
+	if response.Msg.Student == nil || response.Msg.Student.FullName != "Иванов Иван" || response.Msg.Student.StudentGroup != "201" {
+		t.Fatalf("missing student identity: %v", response.Msg.Student)
+	}
 	// Keep the anonymous projection constrained to the catalogue even when the
 	// private session/test models gain more sensitive fields in the future.
 	allowed := map[string]bool{"test_id": true, "token": true, "faculty": true, "semester": true, "subject": true, "title": true, "duration_minutes": true}
@@ -67,7 +70,7 @@ func TestExamCatalogueUnavailableDatabase(t *testing.T) {
 type publicExamTestDirectory struct{}
 
 func (*publicExamTestDirectory) Fetch(context.Context, *mdmpb.UserDirectoryFetchRequest) (*mdmpb.UserDirectoryFetchResponse, error) {
-	return &mdmpb.UserDirectoryFetchResponse{Total: 1, Users: []*mdmpb.UserDirectoryEntry{{Uuid: "11111111-1111-4111-8111-111111111111", FullName: "Иванов Иван", Students: []*mdmpb.UserDirectoryStudent{{Group: "201"}}}}}, nil
+	return &mdmpb.UserDirectoryFetchResponse{ProfileKind: "student", Total: 1, Users: []*mdmpb.UserDirectoryEntry{{Uuid: "11111111-1111-4111-8111-111111111111", FullName: "Иванов Иван", Students: []*mdmpb.UserDirectoryStudent{{Group: "201", FacultyName: "Педиатрический ф.", Course: 2}}}}}, nil
 }
 
 func TestExamAudienceDirectoryNeedsEditPermission(t *testing.T) {

@@ -33,6 +33,14 @@ message ExamPublicFetchRequest {
 
 message ExamPublicFetchResponse {
   repeated ExamPublicTest list = 1;
+  ExamPublicStudent student = 2;
+}
+
+message ExamPublicStudent {
+  string full_name = 1;
+  string student_group = 2;
+  string faculty = 3;
+  int32 course = 4;
 }
 
 message ExamPublicTest {

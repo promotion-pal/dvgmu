@@ -4,7 +4,6 @@ import (
 	"context"
 	"dvgmu/api/internal/domain/models"
 	"errors"
-	enum "fesmu/contract/mdm/enum"
 	pb "fesmu/contract/mdm/service"
 	"github.com/google/uuid"
 	"regexp"
@@ -31,9 +30,9 @@ func (s *TestSessionService) ExamAudienceFetch(ctx context.Context, input *pb.Us
 		return nil, models.ErrExamDirectory
 	}
 	// This staff endpoint only exposes student selectors, never the employee directory.
-	q := &pb.UserDirectoryFetchRequest{UserStatus: enum.UserStatus_USER_STATUS_ACTIVE, Role: enum.UserRole_USER_ROLE_STUDENT, Query: input.Query, FacultyCode: input.FacultyCode, Course: input.Course, StudentGroup: input.StudentGroup, Limit: input.Limit, Offset: input.Offset, IncludeFacets: input.IncludeFacets, StudentStatus: enum.UserStudentStatus_USER_STUDENT_STATUS_STUDYING}
+	q := &pb.UserDirectoryFetchRequest{ProfileKind: "student", ActiveStudentsOnly: true, Query: input.Query, FacultyCode: input.FacultyCode, Course: input.Course, StudentGroup: input.StudentGroup, Limit: input.Limit, Offset: input.Offset, IncludeFacets: input.IncludeFacets}
 	response, err := s.directory.Fetch(ctx, q)
-	if err != nil {
+	if err != nil || response.GetProfileKind() != "student" {
 		return nil, models.ErrExamDirectory
 	}
 	for _, entry := range response.Users {
@@ -45,7 +44,7 @@ func (s *TestSessionService) examRecipients(ctx context.Context, a models.ExamAu
 	if s.directory == nil {
 		return nil, models.ErrExamDirectory
 	}
-	q := &pb.UserDirectoryFetchRequest{UserStatus: enum.UserStatus_USER_STATUS_ACTIVE, Role: enum.UserRole_USER_ROLE_STUDENT, Limit: 200, StudentStatus: enum.UserStudentStatus_USER_STUDENT_STATUS_STUDYING}
+	q := &pb.UserDirectoryFetchRequest{ProfileKind: "student", ActiveStudentsOnly: true, Limit: 200}
 	switch a.Kind {
 	case "course":
 		if a.FacultyCode <= 0 || a.Course < 1 || a.Course > 6 {
@@ -78,7 +77,7 @@ func (s *TestSessionService) examRecipients(ctx context.Context, a models.ExamAu
 	result := []models.ExamAssignment{}
 	for {
 		page, err := s.directory.Fetch(ctx, q)
-		if err != nil {
+		if err != nil || page.GetProfileKind() != "student" {
 			return nil, models.ErrExamDirectory
 		}
 		for _, person := range page.Users {
@@ -121,8 +120,8 @@ func (s *TestSessionService) examStudent(ctx context.Context, recordBook string)
 	if s.directory == nil {
 		return nil, models.ErrExamDirectory
 	}
-	page, err := s.directory.Fetch(ctx, &pb.UserDirectoryFetchRequest{UserStatus: enum.UserStatus_USER_STATUS_ACTIVE, Role: enum.UserRole_USER_ROLE_STUDENT, RecordBook: recordBook, Limit: 2, StudentStatus: enum.UserStudentStatus_USER_STUDENT_STATUS_STUDYING})
-	if err != nil {
+	page, err := s.directory.Fetch(ctx, &pb.UserDirectoryFetchRequest{ProfileKind: "student", ActiveStudentsOnly: true, RecordBook: recordBook, Limit: 2})
+	if err != nil || page.GetProfileKind() != "student" {
 		return nil, models.ErrExamDirectory
 	}
 	if page.Total != 1 || len(page.Users) != 1 || len(page.Users[0].Students) == 0 {

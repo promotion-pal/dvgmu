@@ -5,7 +5,6 @@ import (
 	"dvgmu/api/internal/domain/models"
 	"errors"
 	enum "fesmu/contract/fesmu/enum/v1"
-	mdmenum "fesmu/contract/mdm/enum"
 	pb "fesmu/contract/mdm/service"
 	"google.golang.org/protobuf/proto"
 	"io"
@@ -28,7 +27,7 @@ func (f *fakeExamDirectory) Fetch(_ context.Context, q *pb.UserDirectoryFetchReq
 	return f.fetch(q)
 }
 func examStudentPage(uuid string) *pb.UserDirectoryFetchResponse {
-	return &pb.UserDirectoryFetchResponse{Total: 1, Users: []*pb.UserDirectoryEntry{{Uuid: uuid, FullName: "Иванов Иван Иванович", Students: []*pb.UserDirectoryStudent{{FacultyCode: 20, Course: 2, Group: "201"}}}}}
+	return &pb.UserDirectoryFetchResponse{ProfileKind: "student", Total: 1, Users: []*pb.UserDirectoryEntry{{Uuid: uuid, FullName: "Иванов Иван Иванович", Students: []*pb.UserDirectoryStudent{{FacultyCode: 20, Course: 2, Group: "201"}}}}}
 }
 
 type assignmentTestStore struct {
@@ -81,7 +80,7 @@ func assignmentTestData(t *testing.T) (*models.Test, *models.TestSession) {
 func TestExamStartRequiresAssignmentAndUsesMDMIdentity(t *testing.T) {
 	_, session := assignmentTestData(t)
 	directory := &fakeExamDirectory{fetch: func(q *pb.UserDirectoryFetchRequest) (*pb.UserDirectoryFetchResponse, error) {
-		if q.Role != mdmenum.UserRole_USER_ROLE_STUDENT || q.RecordBook != "2025001" {
+		if (q.Role != 0 || q.UserStatus != 0 || q.ProfileKind != "student" || !q.ActiveStudentsOnly) || q.RecordBook != "2025001" {
 			t.Fatalf("identity must be filtered in MDM: %v", q)
 		}
 		return examStudentPage(assignedUUID), nil
@@ -118,7 +117,7 @@ func TestExamCourseAndGroupRecipientsArePaginatedDeduplicatedUUIDs(t *testing.T)
 	for _, kind := range []string{"course", "group"} {
 		t.Run(kind, func(t *testing.T) {
 			d := &fakeExamDirectory{fetch: func(q *pb.UserDirectoryFetchRequest) (*pb.UserDirectoryFetchResponse, error) {
-				if q.FacultyCode != 20 || q.Role != mdmenum.UserRole_USER_ROLE_STUDENT {
+				if q.FacultyCode != 20 || (q.Role != 0 || q.UserStatus != 0 || q.ProfileKind != "student" || !q.ActiveStudentsOnly) {
 					t.Fatalf("missing scoped filter: %v", q)
 				}
 				if kind == "course" && q.Course != 2 {
@@ -128,9 +127,9 @@ func TestExamCourseAndGroupRecipientsArePaginatedDeduplicatedUUIDs(t *testing.T)
 					t.Fatal("missing group")
 				}
 				if q.Offset == 0 {
-					return &pb.UserDirectoryFetchResponse{Users: []*pb.UserDirectoryEntry{{Uuid: assignedUUID}}, NextOffset: 1}, nil
+					return &pb.UserDirectoryFetchResponse{ProfileKind: "student", Users: []*pb.UserDirectoryEntry{{Uuid: assignedUUID}}, NextOffset: 1}, nil
 				}
-				return &pb.UserDirectoryFetchResponse{Users: []*pb.UserDirectoryEntry{{Uuid: assignedUUID}, {Uuid: otherUUID}}}, nil
+				return &pb.UserDirectoryFetchResponse{ProfileKind: "student", Users: []*pb.UserDirectoryEntry{{Uuid: assignedUUID}, {Uuid: otherUUID}}}, nil
 			}}
 			s := NewTestSessionService(nil, nil, nil).WithExamDirectory(d)
 			recipients, err := s.examRecipients(context.Background(), models.ExamAudience{Kind: kind, FacultyCode: 20, Course: 2, StudentGroup: "201"})
@@ -177,5 +176,38 @@ func TestExamSessionStoresRecipientSnapshotAndRejectsMissingAudience(t *testing.
 	}
 	if len(session.Assignments) != 1 || session.Assignments[0].MDMUserUUID != assignedUUID || session.AssignedCount != 1 {
 		t.Fatalf("missing UUID mapping: %+v", session)
+	}
+}
+
+func TestExamCatalogueReturnsStudentEvenWithoutAssignedExams(t *testing.T) {
+	d := &fakeExamDirectory{fetch: func(q *pb.UserDirectoryFetchRequest) (*pb.UserDirectoryFetchResponse, error) {
+		if q.Role != 0 || q.UserStatus != 0 || q.ProfileKind != "student" {
+			t.Fatalf("record-book access must not depend on login: %v", q)
+		}
+		return examStudentPage(otherUUID), nil
+	}}
+	store := &assignmentTestStore{}
+	s := NewTestSessionService(nil, store, nil).WithExamDirectory(d)
+	catalogue, err := s.ExamPublicFetch(context.Background(), "2025001")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(catalogue.Exams) != 0 || catalogue.Student.FullName != "Иванов Иван Иванович" || catalogue.Student.StudentGroup != "201" {
+		t.Fatalf("student information disappeared when no tests assigned: %+v", catalogue)
+	}
+}
+
+func TestExamDirectoryRejectsServerThatIgnoredProfileFilter(t *testing.T) {
+	d := &fakeExamDirectory{fetch: func(*pb.UserDirectoryFetchRequest) (*pb.UserDirectoryFetchResponse, error) {
+		page := examStudentPage(assignedUUID)
+		page.ProfileKind = ""
+		return page, nil
+	}}
+	s := NewTestSessionService(nil, nil, nil).WithExamDirectory(d)
+	if _, err := s.ExamAudienceFetch(context.Background(), &pb.UserDirectoryFetchRequest{}); !errors.Is(err, models.ErrExamDirectory) {
+		t.Fatalf("legacy MDM filter ignored: %v", err)
+	}
+	if _, err := s.ExamPublicFetch(context.Background(), "2025001"); !errors.Is(err, models.ErrExamDirectory) {
+		t.Fatalf("legacy MDM exposed public identity: %v", err)
 	}
 }

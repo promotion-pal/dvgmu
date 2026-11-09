@@ -11,12 +11,13 @@ func (h *TestSessionHandler) ExamPublicFetch(ctx context.Context, req *connect.R
 	if err := h.unavailable(); err != nil {
 		return nil, err
 	}
-	list, err := h.service.ExamPublicFetch(ctx, req.Msg.GetRecordBook())
+	catalogue, err := h.service.ExamPublicFetch(ctx, req.Msg.GetRecordBook())
 	if err != nil {
 		return nil, testSessionConnectError(err)
 	}
-	response := &pb.ExamPublicFetchResponse{List: make([]*pb.ExamPublicTest, 0, len(list))}
-	for _, exam := range list {
+	response := &pb.ExamPublicFetchResponse{List: make([]*pb.ExamPublicTest, 0, len(catalogue.Exams))}
+	response.Student = &pb.ExamPublicStudent{FullName: catalogue.Student.FullName, StudentGroup: catalogue.Student.StudentGroup, Faculty: catalogue.Student.Faculty, Course: int32(catalogue.Student.Course)}
+	for _, exam := range catalogue.Exams {
 		response.List = append(response.List, &pb.ExamPublicTest{
 			TestId: exam.TestID, Token: exam.Token, Faculty: exam.Faculty,
 			Semester: int32(exam.Semester), Subject: exam.Subject, Title: exam.Title,

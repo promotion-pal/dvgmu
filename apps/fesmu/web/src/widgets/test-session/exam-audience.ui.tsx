@@ -91,6 +91,7 @@ export function ExamAudienceFields() {
    </div>
    {next > 0 && <Button type="button" variant="outline" disabled={busy} onClick={() => void load(next, true)}>Показать ещё</Button>}
   </>}
+  {!busy && !error && total===0 && !query && !a.facultyCode && !a.course && !a.studentGroup && <p role="status" className="text-sm text-muted-foreground">В этом MDM не найдены доступные учебные записи студентов. Проверьте, что список студентов загружен в нужное окружение MDM.</p>}
   {busy && <p className="text-sm text-muted-foreground" role="status">Запрашиваем MDM…</p>}
   {error ? <div role="alert" className="text-sm text-destructive">{error} <Button type="button" size="sm" variant="outline" onClick={() => setRetry(v => v + 1)}>Повторить</Button></div> : <p className="text-sm text-muted-foreground">{a.kind === "students" ? `Выбрано студентов: ${a.studentUuids.length}` : `По фильтрам MDM найдено студентов: ${total}`}</p>}
   {[errors?.kind, errors?.facultyCode, errors?.course, errors?.studentGroup, errors?.studentUuids].map((err, i) => err?.message ? <p key={i} role="alert" className="text-sm text-destructive">{err.message}</p> : null)}

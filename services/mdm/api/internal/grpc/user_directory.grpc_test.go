@@ -37,3 +37,13 @@ func TestDirectoryQueryParameters(t *testing.T) {
 		t.Fatalf("employee filters failed: %d / %v", w.Code, store.last)
 	}
 }
+
+func TestDirectoryProfileQueryDoesNotRequireManualStudentRole(t *testing.T) {
+	store := &queryDirectoryStore{}
+	h := UserDirectoryNewController(service.NewUserDirectoryService(store))
+	w := httptest.NewRecorder()
+	h.QueryHTTP(w, httptest.NewRequest("GET", "/users?profile_kind=student&active_students_only=true", nil))
+	if w.Code != 200 || store.last == nil || store.last.Role != 0 || store.last.UserStatus != 0 || store.last.ProfileKind != "student" || !store.last.ActiveStudentsOnly {
+		t.Fatalf("profile query unexpectedly requires a login role: %d / %v", w.Code, store.last)
+	}
+}

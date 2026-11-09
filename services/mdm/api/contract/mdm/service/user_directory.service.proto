@@ -24,6 +24,10 @@ message UserDirectoryFetchRequest {
   bool include_facets = 13;
   repeated string user_uuids = 14;
  contract.enum.UserStatus user_status = 15;
+  // Educational/employment record type, independent of manually granted login roles.
+  string profile_kind = 16;
+  // Current enrollments, including imported records with unspecified status.
+  bool active_students_only = 17;
 }
 message UserDirectoryStudent {
   int32 faculty_code = 1;
@@ -56,4 +60,6 @@ message UserDirectoryFetchResponse {
   int64 total = 2;
   int32 next_offset = 3;
   repeated UserDirectoryStudentFacet student_facets = 4;
+  // Confirms that the server understood and applied the profile filter.
+  string profile_kind = 5;
 }

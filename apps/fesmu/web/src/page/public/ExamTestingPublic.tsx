@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createClient, ConnectError } from "@connectrpc/connect";
 import { ExamTestSessionService } from "@fesmu/contract/fesmu/exam/service/v1/exam_test_session.service_pb";
-import type { ExamPublicTest } from "@fesmu/contract/fesmu/exam/service/v1/exam_test_session.service_pb";
+import type { ExamPublicTest, ExamPublicStudent } from "@fesmu/contract/fesmu/exam/service/v1/exam_test_session.service_pb";
 import { connectTransport } from "@/shared/config/api";
 import { Button } from "@/shared/ui/button";
 import { Card } from "@/shared/ui/card";
@@ -29,6 +29,8 @@ function ExamAttempt({ token, recordBook, onBack }: { token: string; recordBook:
  * are listed; taking an exam stays on this page and never requires an LK login. */
 export default function ExamTestingPublicPage() {
     const [exams, setExams] = useState<ExamPublicTest[]>([]);
+    const [student,setStudent]=useState<ExamPublicStudent>();
+    const autoOpen=useRef(false);
     const [loading, setLoading] = useState(true);
     const [recordBook,setRecordBook]=useState("");
     const [input,setInput]=useState("");
@@ -46,9 +48,12 @@ export default function ExamTestingPublicPage() {
         const load = async () => {
             try {
                 const response = await client.examPublicFetch({recordBook});
-                if (active) { setExams(response.list); setFailed(false);setError(""); }
+                if (active) {
+                    setExams(response.list);setStudent(response.student);setFailed(false);setError("");
+                    if(autoOpen.current){autoOpen.current=false;if(response.list.length===1)setSelected(response.list[0].token);}
+                }
             } catch(err) {
-                if (active){setFailed(true);setExams([]);setError(err instanceof ConnectError?err.rawMessage:"Не удалось проверить назначенные экзамены");}
+                if (active){setFailed(true);setExams([]);setStudent(undefined);setError(err instanceof ConnectError?err.rawMessage:"Не удалось проверить назначенные экзамены");}
             } finally {
                 if (active) setLoading(false);
             }
@@ -68,14 +73,18 @@ export default function ExamTestingPublicPage() {
             <h1 className="text-3xl font-bold">Экзаменационное тестирование</h1>
             {!selected && <p className="mt-2 text-muted-foreground">Введите номер зачётной книжки. Вы увидите только экзамены, назначенные вам. Вход в личный кабинет не требуется.</p>}
         </header>
+        {student && <Card className="gap-1 p-4" aria-label="Данные студента">
+            <p className="text-lg font-semibold">{student.fullName}</p>
+            <p className="text-sm text-muted-foreground">Группа {student.studentGroup || "не указана"}{student.course>0 && ` · ${student.course} курс`}{student.faculty && ` · ${student.faculty}`}</p>
+        </Card>}
         {!recordBook ? <Card className="mx-auto w-full max-w-md p-6">
-            <form className="flex flex-col gap-4" onSubmit={e=>{e.preventDefault();if(!/^[0-9]{7}$/.test(input.trim())){setError("Введите 7 цифр номера зачётной книжки");return;}setExams([]);setError("");setFailed(false);setLoading(true);setRecordBook(input.trim());}}>
+            <form className="flex flex-col gap-4" onSubmit={e=>{e.preventDefault();if(!/^[0-9]{7}$/.test(input.trim())){setError("Введите 7 цифр номера зачётной книжки");return;}setExams([]);setStudent(undefined);autoOpen.current=true;setError("");setFailed(false);setLoading(true);setRecordBook(input.trim());}}>
                 <label className="flex flex-col gap-2 font-medium">Номер зачётной книжки<input className="rounded-md border bg-background p-3" value={input} onChange={e=>setInput(e.target.value)} inputMode="numeric" autoComplete="off" maxLength={7} placeholder="7 цифр" required /></label>
                 {error&&<p className="text-sm text-destructive" role="alert">{error}</p>}
                 <Button type="submit">Показать мои экзамены</Button>
             </form>
         </Card> : selected ? <ExamAttempt key={`${selected}:${recordBook}`} token={selected} recordBook={recordBook} onBack={() => setSelected(undefined)} /> : <>
-            <div className="flex flex-wrap items-center justify-between gap-3"><p className="text-sm text-muted-foreground">Номер зачётки: {recordBook}</p><Button variant="outline" onClick={()=>{setRecordBook("");setInput("");setExams([]);setError("");setFaculty("");setSemester("");setSubject("");}}>Другой студент</Button></div>
+            <div className="flex flex-wrap items-center justify-between gap-3"><p className="text-sm text-muted-foreground">Номер зачётки: {recordBook}</p><Button variant="outline" onClick={()=>{setRecordBook("");setInput("");setStudent(undefined);autoOpen.current=false;setExams([]);setError("");setFaculty("");setSemester("");setSubject("");}}>Другой студент</Button></div>
             <div className="grid gap-4 sm:grid-cols-3">
                 <label className="flex flex-col gap-2 text-sm font-medium">Направление обучения (факультет)
                     <select className="rounded-md border bg-background p-3" value={faculty} onChange={(e) => { setFaculty(e.target.value); setSemester(""); setSubject(""); }}>

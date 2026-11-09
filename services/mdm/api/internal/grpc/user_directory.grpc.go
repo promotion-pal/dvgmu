@@ -35,7 +35,7 @@ func (h *UserDirectoryHandler) QueryHTTP(w http.ResponseWriter, r *http.Request)
 	data := map[string]any{}
 	ints := map[string]bool{"faculty_code": true, "course": true, "limit": true, "offset": true}
 	enums := map[string]string{"role": "USER_ROLE_", "user_status": "USER_STATUS_", "student_status": "USER_STUDENT_STATUS_", "employee_department": "USER_EMPLOYEE_DEPARTMENT_"}
-	stringsAllowed := map[string]bool{"query": true, "student_group": true, "record_book": true, "employee_position": true}
+	stringsAllowed := map[string]bool{"query": true, "student_group": true, "record_book": true, "employee_position": true, "profile_kind": true}
 	bad := func() { http.Error(w, "invalid directory query", http.StatusBadRequest) }
 	for key, values := range r.URL.Query() {
 		if len(values) != 1 {
@@ -67,7 +67,7 @@ func (h *UserDirectoryHandler) QueryHTTP(w http.ResponseWriter, r *http.Request)
 			data[key] = v
 		case stringsAllowed[key]:
 			data[key] = value
-		case key == "include_facets":
+		case key == "include_facets" || key == "active_students_only":
 			v, err := strconv.ParseBool(value)
 			if err != nil {
 				bad()
