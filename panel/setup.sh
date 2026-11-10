@@ -335,7 +335,15 @@ function download() {
     echo ""
 }
 function startServices() {
-    /bin/bash -c "$COMPOSE_CMD -f $DOCKER_FILE_PATH --env-file=$DOCKER_ENV_PATH up -d --pull if_not_present --quiet-pull"
+    if [ ! -f "$DOCKER_ENV_PATH" ]; then
+        echo "Missing configuration: $DOCKER_ENV_PATH"
+        echo "Copy plane.env.example to plane.env and configure it first."
+        exit 1
+    fi
+    if ! /bin/bash -c "$COMPOSE_CMD -f $DOCKER_FILE_PATH --env-file=$DOCKER_ENV_PATH up -d --build --pull if_not_present --quiet-pull"; then
+        echo "Plane startup failed. Resolve the Docker Compose error above before retrying."
+        exit 1
+    fi
 
     local migrator_container_id=$(docker container ls -aq -f "name=$SERVICE_FOLDER-migrator")
     if [ -n "$migrator_container_id" ]; then
@@ -350,7 +358,7 @@ function startServices() {
     fi
     printf "\r\033[K"
     echo ""
-    echo "   Data Migration completed successfully ✅"
+
 
     # if migrator exit status is not 0, show error message and exit
     if [ -n "$migrator_container_id" ]; then
@@ -364,6 +372,16 @@ function startServices() {
             exit 1
         fi
     fi
+
+    if [ -z "$migrator_container_id" ]; then
+        echo "Migration container not found; cannot confirm migrations."
+        exit 1
+    fi
+    if [ "$(docker inspect --format='{{.State.Status}}' "$migrator_container_id")" != "exited" ]; then
+        echo "Migration has not completed; check migrator logs."
+        exit 1
+    fi
+    echo "   Data Migration completed successfully ✅"
 
     local api_container_id=$(docker container ls -q -f "name=$SERVICE_FOLDER-api")
 

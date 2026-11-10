@@ -205,7 +205,8 @@ services:
 
   # Comment this if you using any external s3 compatible storage
   plane-minio:
-    image: cgr.dev/chainguard/minio:latest
+    build:
+      context: ../minio
     command: server /export --console-address ":9090"
     deploy:
       replicas: 1

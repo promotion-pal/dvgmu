@@ -63,3 +63,12 @@ Plane-Done: FESMU-123
 необходимости повторите вручную. Это синхронизация событий, а не сверка всей истории.
 
 Документация API: https://developers.plane.so/api-reference/issue/update-issue-detail
+
+## MinIO при первом запуске
+
+MinIO собирается из официального репозитория, версия закреплена в
+`panel/minio/Dockerfile`. Реестры Chainguard и Quay не используются.
+Первая сборка требует доступа Docker к Docker Hub, GitHub, Alpine и Go proxy;
+она может занять несколько минут. Данные остаются в томе `uploads`.
+После обновления репозитория запустите `make panel-up`. Скрипт остановится
+с ошибкой, если Compose не смог скачать или собрать образы.
