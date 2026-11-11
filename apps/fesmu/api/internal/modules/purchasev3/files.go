@@ -16,6 +16,13 @@ type quotationInput struct {
 
 // Offers are attached while the characteristics are prepared and checked.
 func mayEditOffers(a actor, l *Lot) (stage[enum.PurchaseLotStatus], error) {
+	if a.can(permLotFullEdit) {
+		st, _, ok := stageOf(lotRoute, l.Status)
+		if !ok {
+			st.role = roleImplementerHead
+		}
+		return st, nil
+	}
 	if l.Status != lotSpecification && l.Status != lotSpecCheck {
 		return stage[enum.PurchaseLotStatus]{}, wrongState("КП прикрепляют, пока готовятся характеристики; закупка %s", lotStatusLabel[l.Status])
 	}

@@ -5,14 +5,15 @@ import (
 	"fmt"
 	"regexp"
 	"slices"
+	"strconv"
 	"strings"
 	"time"
 
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	"dvgmu/api/internal/modules/purchase"
 	enum "fesmu/contract/fesmu/enum/v3"
 	pb "fesmu/contract/fesmu/service/v3"
-	"dvgmu/api/internal/modules/purchase"
 )
 
 // LotCreate: the implementing head merges requests sent to their department
@@ -291,6 +292,104 @@ func (s *Service) LotMove(ctx context.Context, id int64, move enum.PurchaseMove,
 	})
 }
 
+// LotStatusSet is an administrative override, separate from the regulated route.
+func (s *Service) LotStatusSet(ctx context.Context, req *pb.PurchaseLotStatusSetRequest) error {
+	a, err := s.begin(ctx)
+	if err != nil {
+		return err
+	}
+	if !a.can(permLotFullEdit) {
+		return needPerm(permLotFullEdit)
+	}
+	status, comment := req.GetStatus(), strings.TrimSpace(req.GetComment())
+	if status == enum.PurchaseLotStatus_PURCHASE_LOT_STATUS_UNSPECIFIED {
+		return invalid("выберите статус закупки")
+	}
+	if _, ok := lotStatusLabel[status]; !ok {
+		return invalid("неизвестный статус закупки")
+	}
+	comment = strings.TrimSpace(comment)
+	if tooLong(comment, 2048) {
+		return invalid("комментарий длиннее 2048 символов")
+	}
+	return s.store.tx(ctx, func(tx *storage) error {
+		l, err := tx.lotLocked(ctx, req.GetId())
+		if err != nil {
+			return err
+		}
+		previous := lotStatusLabel[l.Status]
+		var changes change
+		changes.text("статус", previous, lotStatusLabel[status])
+		changes.text("тип плана", planTypeLabel[l.PlanType], planTypeLabel[req.GetPlanType()])
+		changes.text("год ПФХД", strconv.Itoa(int(l.PlanYear)), strconv.Itoa(int(req.GetPlanYear())))
+		changes.text("направление проректора", strconv.FormatInt(l.CuratorID, 10), strconv.FormatInt(req.GetCuratorId(), 10))
+		changes.text("реализующий отдел", strconv.Itoa(int(l.ImplementingDepartment)), strconv.Itoa(int(req.GetImplementingDepartment())))
+		changes.text("исполнитель", l.AssigneeName, req.GetAssigneeUuid())
+		changes.text("комментарий комиссии", l.CommissionComment, req.GetCommissionComment())
+		changes.text("тип объекта", itemTypeLabel[l.ItemType], itemTypeLabel[req.GetItemType()])
+		now := s.now()
+		statusChanged := l.Status != status
+		l.Status, l.UpdatedAt = status, now
+		if statusChanged {
+			l.LastComment, l.StageSince = comment, &now
+		} else if comment != "" {
+			l.LastComment = comment
+		}
+		l.PlanType, l.PlanYear = req.GetPlanType(), req.GetPlanYear()
+		l.CommissionComment = cut(strings.TrimSpace(req.GetCommissionComment()), 2048)
+		if itemTypeLabel[req.GetItemType()] == "" {
+			return invalid("выберите тип: товар или услуга")
+		}
+		l.ItemType = req.GetItemType()
+		if l.PlanYear < 0 || l.PlanYear > 0 && !validPlanYear(l.PlanYear) {
+			return invalid("год ПФХД должен быть от 2000 до 2100")
+		}
+		if l.PlanYear > 0 && planTypeLabel[l.PlanType] == "" {
+			return invalid("выберите плановый или внеплановый вид ПФХД")
+		}
+		if l.PlanYear == 0 {
+			l.PlanType = enum.PurchasePlanType_PURCHASE_PLAN_TYPE_UNSPECIFIED
+		}
+		implementing := req.GetImplementingDepartment()
+		if implementing == 0 {
+			implementing = l.ImplementingDepartment
+		}
+		if _, err := tx.department(ctx, implementing); err != nil {
+			return err
+		}
+		l.ImplementingDepartment = implementing
+		curator := req.GetCuratorId()
+		if curator == 0 {
+			curator = l.CuratorID
+		}
+		if _, err := tx.curator(ctx, curator); err != nil {
+			return err
+		}
+		l.CuratorID = curator
+		if req.GetAssigneeUuid() != "" {
+			name, err := s.employeeName(ctx, req.GetAssigneeUuid(), implementing)
+			if err != nil {
+				return err
+			}
+			l.AssigneeUUID, l.AssigneeName = req.GetAssigneeUuid(), cut(name, 255)
+		} else {
+			l.AssigneeUUID, l.AssigneeName = "", ""
+		}
+		if statusChanged {
+			if status == lotCompleted {
+				l.CompletedAt = &now
+			} else {
+				l.CompletedAt = nil
+			}
+		}
+		if err := tx.saveLot(ctx, l); err != nil {
+			return err
+		}
+		return tx.addLogs(ctx, a.logAs(roleImplementerHead, logLot, l.ID, "status_set",
+			"Полное редактирование закупки: "+changes.String(), comment, now))
+	})
+}
+
 // fillCodes puts the classifier's codes into a purchase that has none: the
 // implementing head sees them at the check, the economist confirms them.
 func fillCodes(l *Lot) {
@@ -352,7 +451,20 @@ func (s *Service) LotUpdate(ctx context.Context, req *pb.PurchaseLotUpdateReques
 		switch p := req.GetPatch().(type) {
 		case *pb.PurchaseLotUpdateRequest_Content:
 			stages = append(slices.Clone(stageOne), stageTwo...)
-			err = patchContent(l, p.Content, &c)
+			if a.can(permLotFullEdit) {
+				status := l.Status
+				l.Status = lotSpecCheck
+				err = patchContent(l, p.Content, &c)
+				l.Status = status
+				tech := strings.TrimSpace(p.Content.GetTechSpec())
+				if tooLong(tech, 100000) {
+					return invalid("ТЗ слишком длинное")
+				}
+				c.text("ТЗ", l.TechSpec, tech)
+				l.TechSpec = tech
+			} else {
+				err = patchContent(l, p.Content, &c)
+			}
 		case *pb.PurchaseLotUpdateRequest_Curator:
 			stages = []enum.PurchaseLotStatus{lotCuratorReview}
 			v := strings.TrimSpace(p.Curator.GetCuratorJustification())
@@ -395,7 +507,7 @@ func (s *Service) LotUpdate(ctx context.Context, req *pb.PurchaseLotUpdateReques
 		default:
 			return invalid("нечего сохранять")
 		}
-		if !slices.Contains(stages, l.Status) {
+		if !a.can(permLotFullEdit) && !slices.Contains(stages, l.Status) {
 			return wrongState("закупка %s — эти поля сейчас не меняют", lotStatusLabel[l.Status])
 		}
 		if err != nil || len(c) == 0 {
@@ -417,7 +529,7 @@ func (s *Service) lotDeadline(ctx context.Context, tx *storage, a actor, l *Lot,
 	if err != nil {
 		return err
 	}
-	if l.Status == lotCompleted {
+	if l.Status == lotCompleted && !a.can(permLotFullEdit) {
 		return wrongState("закупка завершена — срок не меняют")
 	}
 	comment := strings.TrimSpace(p.GetDueComment())

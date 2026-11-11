@@ -46,6 +46,7 @@ service PurchaseService {
     rpc PurchaseLotDisband (PurchaseLotDisbandRequest) returns (PurchaseLotDisbandResponse);
     rpc PurchaseLotUpdate (PurchaseLotUpdateRequest) returns (PurchaseLotUpdateResponse);
     rpc PurchaseLotMove (PurchaseLotMoveRequest) returns (PurchaseLotMoveResponse);
+    rpc PurchaseLotStatusSet (PurchaseLotStatusSetRequest) returns (PurchaseLotStatusSetResponse);
 
     rpc PurchaseQuotationCreate (PurchaseQuotationCreateRequest) returns (PurchaseQuotationCreateResponse);
     rpc PurchaseQuotationDelete (PurchaseQuotationDeleteRequest) returns (PurchaseQuotationDeleteResponse);
@@ -337,6 +338,23 @@ message PurchaseLotMoveRequest {
 }
 
 message PurchaseLotMoveResponse {
+}
+
+// Full editor only: set any non-unspecified status directly.
+message PurchaseLotStatusSetRequest {
+    int64 id = 1;
+    contract.enum.v3.PurchaseLotStatus status = 2;
+    string comment = 3;
+    contract.enum.v3.PurchasePlanType plan_type = 4;
+    int32 plan_year = 5;
+    string assignee_uuid = 6;
+    int32 implementing_department = 7;
+    int64 curator_id = 8;
+    string commission_comment = 9;
+    contract.enum.v3.PurchaseItemType item_type = 10;
+}
+
+message PurchaseLotStatusSetResponse {
 }
 
 // LOT_PREPARE, the assignee, while SPECIFICATION (also LOT_MANAGE at the check).

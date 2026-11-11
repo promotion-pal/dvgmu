@@ -66,6 +66,9 @@ const (
 	// PurchaseServicePurchaseLotMoveProcedure is the fully-qualified name of the PurchaseService's
 	// PurchaseLotMove RPC.
 	PurchaseServicePurchaseLotMoveProcedure = "/contract.service.v3.PurchaseService/PurchaseLotMove"
+	// PurchaseServicePurchaseLotStatusSetProcedure is the fully-qualified name of the PurchaseService's
+	// PurchaseLotStatusSet RPC.
+	PurchaseServicePurchaseLotStatusSetProcedure = "/contract.service.v3.PurchaseService/PurchaseLotStatusSet"
 	// PurchaseServicePurchaseQuotationCreateProcedure is the fully-qualified name of the
 	// PurchaseService's PurchaseQuotationCreate RPC.
 	PurchaseServicePurchaseQuotationCreateProcedure = "/contract.service.v3.PurchaseService/PurchaseQuotationCreate"
@@ -135,6 +138,7 @@ type PurchaseServiceClient interface {
 	PurchaseLotDisband(context.Context, *connect.Request[v3.PurchaseLotDisbandRequest]) (*connect.Response[v3.PurchaseLotDisbandResponse], error)
 	PurchaseLotUpdate(context.Context, *connect.Request[v3.PurchaseLotUpdateRequest]) (*connect.Response[v3.PurchaseLotUpdateResponse], error)
 	PurchaseLotMove(context.Context, *connect.Request[v3.PurchaseLotMoveRequest]) (*connect.Response[v3.PurchaseLotMoveResponse], error)
+	PurchaseLotStatusSet(context.Context, *connect.Request[v3.PurchaseLotStatusSetRequest]) (*connect.Response[v3.PurchaseLotStatusSetResponse], error)
 	PurchaseQuotationCreate(context.Context, *connect.Request[v3.PurchaseQuotationCreateRequest]) (*connect.Response[v3.PurchaseQuotationCreateResponse], error)
 	PurchaseQuotationDelete(context.Context, *connect.Request[v3.PurchaseQuotationDeleteRequest]) (*connect.Response[v3.PurchaseQuotationDeleteResponse], error)
 	PurchaseQuotationFileFetch(context.Context, *connect.Request[v3.PurchaseQuotationFileFetchRequest]) (*connect.Response[v3.PurchaseQuotationFileFetchResponse], error)
@@ -235,6 +239,12 @@ func NewPurchaseServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 			httpClient,
 			baseURL+PurchaseServicePurchaseLotMoveProcedure,
 			connect.WithSchema(purchaseServiceMethods.ByName("PurchaseLotMove")),
+			connect.WithClientOptions(opts...),
+		),
+		purchaseLotStatusSet: connect.NewClient[v3.PurchaseLotStatusSetRequest, v3.PurchaseLotStatusSetResponse](
+			httpClient,
+			baseURL+PurchaseServicePurchaseLotStatusSetProcedure,
+			connect.WithSchema(purchaseServiceMethods.ByName("PurchaseLotStatusSet")),
 			connect.WithClientOptions(opts...),
 		),
 		purchaseQuotationCreate: connect.NewClient[v3.PurchaseQuotationCreateRequest, v3.PurchaseQuotationCreateResponse](
@@ -355,6 +365,7 @@ type purchaseServiceClient struct {
 	purchaseLotDisband         *connect.Client[v3.PurchaseLotDisbandRequest, v3.PurchaseLotDisbandResponse]
 	purchaseLotUpdate          *connect.Client[v3.PurchaseLotUpdateRequest, v3.PurchaseLotUpdateResponse]
 	purchaseLotMove            *connect.Client[v3.PurchaseLotMoveRequest, v3.PurchaseLotMoveResponse]
+	purchaseLotStatusSet       *connect.Client[v3.PurchaseLotStatusSetRequest, v3.PurchaseLotStatusSetResponse]
 	purchaseQuotationCreate    *connect.Client[v3.PurchaseQuotationCreateRequest, v3.PurchaseQuotationCreateResponse]
 	purchaseQuotationDelete    *connect.Client[v3.PurchaseQuotationDeleteRequest, v3.PurchaseQuotationDeleteResponse]
 	purchaseQuotationFileFetch *connect.Client[v3.PurchaseQuotationFileFetchRequest, v3.PurchaseQuotationFileFetchResponse]
@@ -427,6 +438,11 @@ func (c *purchaseServiceClient) PurchaseLotUpdate(ctx context.Context, req *conn
 // PurchaseLotMove calls contract.service.v3.PurchaseService.PurchaseLotMove.
 func (c *purchaseServiceClient) PurchaseLotMove(ctx context.Context, req *connect.Request[v3.PurchaseLotMoveRequest]) (*connect.Response[v3.PurchaseLotMoveResponse], error) {
 	return c.purchaseLotMove.CallUnary(ctx, req)
+}
+
+// PurchaseLotStatusSet calls contract.service.v3.PurchaseService.PurchaseLotStatusSet.
+func (c *purchaseServiceClient) PurchaseLotStatusSet(ctx context.Context, req *connect.Request[v3.PurchaseLotStatusSetRequest]) (*connect.Response[v3.PurchaseLotStatusSetResponse], error) {
+	return c.purchaseLotStatusSet.CallUnary(ctx, req)
 }
 
 // PurchaseQuotationCreate calls contract.service.v3.PurchaseService.PurchaseQuotationCreate.
@@ -530,6 +546,7 @@ type PurchaseServiceHandler interface {
 	PurchaseLotDisband(context.Context, *connect.Request[v3.PurchaseLotDisbandRequest]) (*connect.Response[v3.PurchaseLotDisbandResponse], error)
 	PurchaseLotUpdate(context.Context, *connect.Request[v3.PurchaseLotUpdateRequest]) (*connect.Response[v3.PurchaseLotUpdateResponse], error)
 	PurchaseLotMove(context.Context, *connect.Request[v3.PurchaseLotMoveRequest]) (*connect.Response[v3.PurchaseLotMoveResponse], error)
+	PurchaseLotStatusSet(context.Context, *connect.Request[v3.PurchaseLotStatusSetRequest]) (*connect.Response[v3.PurchaseLotStatusSetResponse], error)
 	PurchaseQuotationCreate(context.Context, *connect.Request[v3.PurchaseQuotationCreateRequest]) (*connect.Response[v3.PurchaseQuotationCreateResponse], error)
 	PurchaseQuotationDelete(context.Context, *connect.Request[v3.PurchaseQuotationDeleteRequest]) (*connect.Response[v3.PurchaseQuotationDeleteResponse], error)
 	PurchaseQuotationFileFetch(context.Context, *connect.Request[v3.PurchaseQuotationFileFetchRequest]) (*connect.Response[v3.PurchaseQuotationFileFetchResponse], error)
@@ -626,6 +643,12 @@ func NewPurchaseServiceHandler(svc PurchaseServiceHandler, opts ...connect.Handl
 		PurchaseServicePurchaseLotMoveProcedure,
 		svc.PurchaseLotMove,
 		connect.WithSchema(purchaseServiceMethods.ByName("PurchaseLotMove")),
+		connect.WithHandlerOptions(opts...),
+	)
+	purchaseServicePurchaseLotStatusSetHandler := connect.NewUnaryHandler(
+		PurchaseServicePurchaseLotStatusSetProcedure,
+		svc.PurchaseLotStatusSet,
+		connect.WithSchema(purchaseServiceMethods.ByName("PurchaseLotStatusSet")),
 		connect.WithHandlerOptions(opts...),
 	)
 	purchaseServicePurchaseQuotationCreateHandler := connect.NewUnaryHandler(
@@ -754,6 +777,8 @@ func NewPurchaseServiceHandler(svc PurchaseServiceHandler, opts ...connect.Handl
 			purchaseServicePurchaseLotUpdateHandler.ServeHTTP(w, r)
 		case PurchaseServicePurchaseLotMoveProcedure:
 			purchaseServicePurchaseLotMoveHandler.ServeHTTP(w, r)
+		case PurchaseServicePurchaseLotStatusSetProcedure:
+			purchaseServicePurchaseLotStatusSetHandler.ServeHTTP(w, r)
 		case PurchaseServicePurchaseQuotationCreateProcedure:
 			purchaseServicePurchaseQuotationCreateHandler.ServeHTTP(w, r)
 		case PurchaseServicePurchaseQuotationDeleteProcedure:
@@ -839,6 +864,10 @@ func (UnimplementedPurchaseServiceHandler) PurchaseLotUpdate(context.Context, *c
 
 func (UnimplementedPurchaseServiceHandler) PurchaseLotMove(context.Context, *connect.Request[v3.PurchaseLotMoveRequest]) (*connect.Response[v3.PurchaseLotMoveResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.v3.PurchaseService.PurchaseLotMove is not implemented"))
+}
+
+func (UnimplementedPurchaseServiceHandler) PurchaseLotStatusSet(context.Context, *connect.Request[v3.PurchaseLotStatusSetRequest]) (*connect.Response[v3.PurchaseLotStatusSetResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.v3.PurchaseService.PurchaseLotStatusSet is not implemented"))
 }
 
 func (UnimplementedPurchaseServiceHandler) PurchaseQuotationCreate(context.Context, *connect.Request[v3.PurchaseQuotationCreateRequest]) (*connect.Response[v3.PurchaseQuotationCreateResponse], error) {

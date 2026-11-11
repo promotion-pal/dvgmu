@@ -62,6 +62,7 @@ const (
 	permAcceptance     = enum.PurchasePermission_PURCHASE_PERMISSION_LOT_ACCEPTANCE
 	permInventory      = enum.PurchasePermission_PURCHASE_PERMISSION_LOT_INVENTORY
 	permDirectories    = enum.PurchasePermission_PURCHASE_PERMISSION_DIRECTORIES
+	permLotFullEdit    = enum.PurchasePermission_PURCHASE_PERMISSION_LOT_FULL_EDIT
 )
 
 const (

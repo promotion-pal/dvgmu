@@ -77,6 +77,8 @@ enum PurchasePermission {
 
   // Справочники: проректоры и их направления, отделы, виды закупок.
   PURCHASE_PERMISSION_DIRECTORIES = 30;
+  // Полное редактирование любых закупок: все поля, документы и статусы.
+  PURCHASE_PERMISSION_LOT_FULL_EDIT = 31;
 }
 
 // Who acts at a stage: written into sign-offs and the log. One person may

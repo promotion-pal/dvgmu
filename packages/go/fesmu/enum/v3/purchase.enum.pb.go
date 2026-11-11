@@ -78,6 +78,8 @@ const (
 	PurchasePermission_PURCHASE_PERMISSION_LOT_INVENTORY PurchasePermission = 21
 	// Справочники: проректоры и их направления, отделы, виды закупок.
 	PurchasePermission_PURCHASE_PERMISSION_DIRECTORIES PurchasePermission = 30
+	// Полное редактирование любых закупок: все поля, документы и статусы.
+	PurchasePermission_PURCHASE_PERMISSION_LOT_FULL_EDIT PurchasePermission = 31
 )
 
 // Enum value maps for PurchasePermission.
@@ -102,6 +104,7 @@ var (
 		20: "PURCHASE_PERMISSION_LOT_ACCEPTANCE",
 		21: "PURCHASE_PERMISSION_LOT_INVENTORY",
 		30: "PURCHASE_PERMISSION_DIRECTORIES",
+		31: "PURCHASE_PERMISSION_LOT_FULL_EDIT",
 	}
 	PurchasePermission_value = map[string]int32{
 		"PURCHASE_PERMISSION_UNSPECIFIED":            0,
@@ -123,6 +126,7 @@ var (
 		"PURCHASE_PERMISSION_LOT_ACCEPTANCE":         20,
 		"PURCHASE_PERMISSION_LOT_INVENTORY":          21,
 		"PURCHASE_PERMISSION_DIRECTORIES":            30,
+		"PURCHASE_PERMISSION_LOT_FULL_EDIT":          31,
 	}
 )
 
@@ -916,7 +920,7 @@ var File_fesmu_enum_v3_purchase_enum_proto protoreflect.FileDescriptor
 
 const file_fesmu_enum_v3_purchase_enum_proto_rawDesc = "" +
 	"\n" +
-	"!fesmu/enum/v3/purchase.enum.proto\x12\x10contract.enum.v3*\x8a\x06\n" +
+	"!fesmu/enum/v3/purchase.enum.proto\x12\x10contract.enum.v3*\xb1\x06\n" +
 	"\x12PurchasePermission\x12#\n" +
 	"\x1fPURCHASE_PERMISSION_UNSPECIFIED\x10\x00\x12'\n" +
 	"#PURCHASE_PERMISSION_VIEW_DEPARTMENT\x10\x01\x12&\n" +
@@ -937,7 +941,8 @@ const file_fesmu_enum_v3_purchase_enum_proto_rawDesc = "" +
 	"#PURCHASE_PERMISSION_LOT_PROCUREMENT\x10\x13\x12&\n" +
 	"\"PURCHASE_PERMISSION_LOT_ACCEPTANCE\x10\x14\x12%\n" +
 	"!PURCHASE_PERMISSION_LOT_INVENTORY\x10\x15\x12#\n" +
-	"\x1fPURCHASE_PERMISSION_DIRECTORIES\x10\x1e*\xf5\x02\n" +
+	"\x1fPURCHASE_PERMISSION_DIRECTORIES\x10\x1e\x12%\n" +
+	"!PURCHASE_PERMISSION_LOT_FULL_EDIT\x10\x1f*\xf5\x02\n" +
 	"\fPurchaseRole\x12\x1d\n" +
 	"\x19PURCHASE_ROLE_UNSPECIFIED\x10\x00\x12\x1a\n" +
 	"\x16PURCHASE_ROLE_EMPLOYEE\x10\x01\x12\x16\n" +

@@ -18,6 +18,7 @@ import {
     LAW_LABEL,
     LOT_FORWARD,
     LOT_STAGES,
+    LOT_STATUS,
     lotChecklist,
     lotStage,
     METHOD_LABEL,
@@ -27,9 +28,11 @@ import {
     PLAN_LABEL,
     PurchaseDocumentKind,
     PurchaseFundingSource,
+    PurchaseItemType,
     PurchaseLaw,
     PurchaseLotStatus,
     PurchaseMethod,
+    PurchasePlanType,
     PurchaseMove,
     PurchasePermission,
     PurchaseRequestStatus,
@@ -69,7 +72,7 @@ const ContentForm: FC<{ state: PurchaseV3State; l: PurchaseLot }> = ({ state, l 
     const [okved, setOkved] = useState(l.okved);
     const q = parseQty(quantity);
     const save = () =>
-        state.updateLot(l, { case: "content", value: { title, description, quantity: q, unit, specification, okpd2, ktru, okved } } as LotPatch);
+        state.updateLot(l, { case: "content", value: { title, description, quantity: q, unit, specification, techSpec: l.techSpec, okpd2, ktru, okved } } as LotPatch);
     const suggest = async () => {
         const s = await state.suggestCodes(title);
         if (s?.found) {
@@ -134,7 +137,7 @@ const TechSpecForm: FC<{ state: PurchaseV3State; l: PurchaseLot }> = ({ state, l
             </Field>
             <SaveRow
                 state={state}
-                onSave={() => state.updateLot(l, { case: "content", value: { title: l.title, quantity: l.quantity, unit: l.unit, description, techSpec } } as LotPatch)}
+                onSave={() => state.updateLot(l, { case: "content", value: { title: l.title, quantity: l.quantity, unit: l.unit, description, specification: l.specification, okpd2: l.okpd2, ktru: l.ktru, okved: l.okved, techSpec } } as LotPatch)}
             />
         </div>
     );
@@ -453,6 +456,70 @@ const StageForm: FC<{ state: PurchaseV3State; l: PurchaseLot }> = ({ state, l })
     return null;
 };
 
+const FullEditPanel: FC<{ state: PurchaseV3State; l: PurchaseLot }> = ({ state, l }) => {
+    const statuses = [...LOT_STAGES.map((s) => s.status), PurchaseLotStatus.REJECTED, PurchaseLotStatus.COMPLETED];
+    const [status, setStatus] = useState(l.status);
+    const [comment, setComment] = useState("");
+    const [planType, setPlanType] = useState(l.planType);
+    const [planYear, setPlanYear] = useState(String(l.planYear || ""));
+    const [implementingDepartment, setImplementingDepartment] = useState(l.implementingDepartment);
+    const [curatorId, setCuratorId] = useState(l.curatorId.toString());
+    const [assigneeUuid, setAssigneeUuid] = useState(l.assigneeUuid);
+    const [commissionComment, setCommissionComment] = useState(l.commissionComment);
+    const [itemType, setItemType] = useState(l.itemType);
+    useEffect(() => { void state.loadEmployees(implementingDepartment); /* eslint-disable-line react-hooks/exhaustive-deps */ }, [implementingDepartment]);
+    return (
+        <Card className="gap-4 border-amber-500/50 p-4">
+            <p className="text-sm font-semibold">Полное редактирование закупки</p>
+            <p className="text-xs text-muted-foreground">Сохраняйте каждый блок отдельно. Поля доступны независимо от текущего этапа.</p>
+            <Section title="Наименование, описание, характеристики и коды">
+                <ContentForm state={state} l={{ ...l, status: PurchaseLotStatus.SPECIFICATION_CHECK }} />
+            </Section>
+            <Section title="Техническое задание"><TechSpecForm state={state} l={l} /></Section>
+            <Section title="Обоснование проректора"><CuratorForm state={state} l={l} /></Section>
+            <Section title="Бюджет, коды и НМЦК"><BudgetForm state={state} l={l} /></Section>
+            <Section title="Конечная стоимость"><FinalCostForm state={state} l={l} /></Section>
+            <Section title="Закон и способ закупки"><LawForm state={state} l={l} /></Section>
+            <Section title="Извещение, поставщик, контракт и исполнение">
+                <ExecutionForm state={state} l={{ ...l, status: PurchaseLotStatus.DELIVERY }} />
+            </Section>
+            <Section title="Приёмка"><AcceptanceForm state={state} l={l} /></Section>
+            <Section title="Инвентарные номера"><InventoryForm state={state} l={l} /></Section>
+            <Section title="Статус закупки">
+                <div className="grid gap-2 sm:grid-cols-[1fr_1fr_auto]">
+                    <select className={FIELD_CLASS} value={status} onChange={(e) => setStatus(Number(e.target.value) as PurchaseLotStatus)}>
+                        {statuses.map((s) => <option key={s} value={s}>{LOT_STATUS(s).label}</option>)}
+                    </select>
+                    <input className={FIELD_CLASS} value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Комментарий к ручному переходу" maxLength={2048} />
+                    <Button size="sm" disabled={state.busy || (status === l.status && !comment.trim() && planType === l.planType && Number(planYear || 0) === l.planYear && assigneeUuid === l.assigneeUuid && implementingDepartment === l.implementingDepartment && curatorId === l.curatorId.toString() && commissionComment === l.commissionComment && itemType === l.itemType)} onClick={async () => {
+                        if (await state.setLotStatus(l, status, comment.trim(), { planType, planYear: Number(planYear) || 0, assigneeUuid, implementingDepartment, curatorId: BigInt(curatorId || "0"), commissionComment, itemType })) setComment("");
+                    }}>Установить статус</Button>
+                </div>
+            </Section>
+            <Section title="План и назначение">
+                <div className="grid gap-2 sm:grid-cols-2">
+                    <Field label="Тип закупки"><select className={FIELD_CLASS} value={itemType} onChange={(e) => setItemType(Number(e.target.value) as PurchaseItemType)}><option value={PurchaseItemType.PRODUCT}>Товар</option><option value={PurchaseItemType.SERVICE}>Услуга</option></select></Field>
+                    <Field label="Тип плана"><select className={FIELD_CLASS} value={planType} onChange={(e) => setPlanType(Number(e.target.value) as PurchasePlanType)}>
+                        <option value={PurchasePlanType.UNSPECIFIED}>Не указан</option><option value={PurchasePlanType.PLANNED}>Плановая</option><option value={PurchasePlanType.UNPLANNED}>Внеплановая</option>
+                    </select></Field>
+                    <Field label="Год ПФХД"><input className={FIELD_CLASS} type="number" min={2000} max={2100} value={planYear} onChange={(e) => setPlanYear(e.target.value)} /></Field>
+                    <Field label="Реализующий отдел"><select className={FIELD_CLASS} value={implementingDepartment} onChange={(e) => setImplementingDepartment(Number(e.target.value))}>
+                        {(state.overview?.departments ?? []).map((d) => <option key={d.department} value={d.department}>{d.name}</option>)}
+                    </select></Field>
+                    <Field label="Направление проректора"><select className={FIELD_CLASS} value={curatorId} onChange={(e) => setCuratorId(e.target.value)}>
+                        {(state.overview?.curators ?? []).map((c) => <option key={c.id.toString()} value={c.id.toString()}>{c.title}</option>)}
+                    </select></Field>
+                    <Field label="Исполнитель"><select className={FIELD_CLASS} value={assigneeUuid} onChange={(e) => setAssigneeUuid(e.target.value)}>
+                        <option value="">— не назначен —</option>{(state.employees[implementingDepartment] ?? []).map((e) => <option key={e.uuid} value={e.uuid}>{e.name}</option>)}
+                    </select></Field>
+                    <Field label="Комментарий бюджетной комиссии"><textarea className={FIELD_CLASS} value={commissionComment} onChange={(e) => setCommissionComment(e.target.value)} maxLength={2048} /></Field>
+                </div>
+                <p className="text-xs text-muted-foreground">Сохраните эти значения кнопкой «Установить статус» выше; статус можно оставить прежним.</p>
+            </Section>
+        </Card>
+    );
+};
+
 /* ───────────── offers and documents ───────────── */
 
 /** A file input that looks like a button and names the chosen file. */
@@ -467,7 +534,7 @@ const FilePicker: FC<{ file: File | null; onChange: (f: File | null) => void; la
 );
 
 const Quotations: FC<{ state: PurchaseV3State; l: PurchaseLot }> = ({ state, l }) => {
-    const editable = Boolean(l.allowed?.edit) && (l.status === PurchaseLotStatus.SPECIFICATION || l.status === PurchaseLotStatus.SPECIFICATION_CHECK);
+    const editable = Boolean(l.allowed?.edit) && (state.can(PurchasePermission.LOT_FULL_EDIT) || l.status === PurchaseLotStatus.SPECIFICATION || l.status === PurchaseLotStatus.SPECIFICATION_CHECK);
     const [supplier, setSupplier] = useState("");
     const [inn, setInn] = useState("");
     const [price, setPrice] = useState("");
@@ -547,7 +614,10 @@ const Quotations: FC<{ state: PurchaseV3State; l: PurchaseLot }> = ({ state, l }
 
 const Documents: FC<{ state: PurchaseV3State; l: PurchaseLot }> = ({ state, l }) => {
     const editable = Boolean(l.allowed?.edit);
-    const kinds = stageDocuments(l.status);
+    const fullEdit = state.can(PurchasePermission.LOT_FULL_EDIT);
+    const kinds = fullEdit
+        ? [PurchaseDocumentKind.SPECIFICATION, PurchaseDocumentKind.TECH_SPEC, PurchaseDocumentKind.NOTICE, PurchaseDocumentKind.CONTRACT, PurchaseDocumentKind.SHIPPING, PurchaseDocumentKind.ACCEPTANCE_ACT, PurchaseDocumentKind.OTHER]
+        : stageDocuments(l.status);
     const [kind, setKind] = useState<PurchaseDocumentKind>(kinds[0]);
     const [file, setFile] = useState<File | null>(null);
     const [note, setNote] = useState("");
@@ -903,11 +973,13 @@ const Waiting: FC<{ l: PurchaseLot }> = ({ l }) => {
 
 export const LotDetail: FC<{ state: PurchaseV3State; l: PurchaseLot }> = ({ state, l }) => {
     const moves = l.allowed?.moves ?? [];
-    const mayEditDeadline = moves.length > 0 || state.can(PurchasePermission.LOT_MANAGE);
+    const fullEdit = state.can(PurchasePermission.LOT_FULL_EDIT);
+    const [editing, setEditing] = useState(false);
+    const mayEditDeadline = moves.length > 0 || state.can(PurchasePermission.LOT_MANAGE) || fullEdit;
 
     return (
         <div className="flex flex-col gap-4">
-            <Section title={`Закупка №${l.id}`} action={<LotBadge l={l} />}>
+            <Section title={`Закупка №${l.id}`} action={<div className="flex items-center gap-2"><LotBadge l={l} />{fullEdit && <Button size="sm" variant={editing ? "secondary" : "outline"} onClick={() => setEditing((v) => !v)}>{editing ? "Закрыть редактор" : "Редактировать"}</Button>}</div>}>
                 <p className="text-base font-medium break-words">{l.title}</p>
                 <Facts
                     items={[
@@ -931,7 +1003,7 @@ export const LotDetail: FC<{ state: PurchaseV3State; l: PurchaseLot }> = ({ stat
 
             <ReviewNote key={`${l.id}-${l.reviewNote.length}`} state={state} l={l} mayEdit={mayEditDeadline} />
 
-            {moves.length > 0 ? <YourStep key={`${l.id}-${l.status}`} state={state} l={l} /> : <Waiting l={l} />}
+            {editing && fullEdit ? <FullEditPanel key={`${l.id}-${l.updatedAt?.seconds}`} state={state} l={l} /> : moves.length > 0 ? <YourStep key={`${l.id}-${l.status}`} state={state} l={l} /> : <Waiting l={l} />}
 
             <Composition state={state} l={l} />
             <Quotations state={state} l={l} />

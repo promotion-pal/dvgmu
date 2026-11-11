@@ -64,6 +64,12 @@ panel-logs:
 
 .PHONY: up down ps logs
 
+# Обновить только веб и API ФЭФМУ после git pull; базы и остальные сервисы не перезапускаются.
+.PHONY: fesmu-update
+fesmu-update:
+	@cd apps/fesmu && docker compose build core_api core_app
+	@cd apps/fesmu && docker compose up -d --no-deps core_api core_app
+
 up:
 	@for s in $(SERVICES); do \
 		if [ "$$s" = fesmu ]; then \

@@ -17,8 +17,8 @@ import type { MessageInitShape } from "@bufbuild/protobuf";
 import type { PurchaseLotUpdateRequestSchema, PurchaseProtocolDecisionInputSchema } from "@fesmu/contract/fesmu/service/v3/purchase.service_pb";
 import { connectTransport } from "@/shared/config/api";
 import { DEPARTMENT_LABEL } from "@/shared/config/departments";
-import { isOverdue, isTask, LOT_STAGES, lotKey, lotStage, PurchaseLotStatus, PurchaseMove, PurchaseRequestStatus, requestKey } from "./purchase-v3.schema";
-import type { PurchaseDocumentKind, PurchaseItemType , PurchasePermission} from "./purchase-v3.schema";
+import { isOverdue, isTask, LOT_STAGES, lotKey, lotStage, PurchaseItemType, PurchaseLotStatus, PurchaseMove, PurchasePlanType, PurchaseRequestStatus, requestKey } from "./purchase-v3.schema";
+import type { PurchaseDocumentKind, PurchasePermission } from "./purchase-v3.schema";
 
 const client = createClient(PurchaseService, connectTransport);
 
@@ -298,6 +298,21 @@ export const usePurchaseV3 = () => {
                 () => client.purchaseLotMove({ id: l.id, move, comment, assigneeUuid }),
                 move === PurchaseMove.FORWARD ? "Закупка передана дальше" : "Закупка возвращена",
                 "Не удалось",
+            ),
+        setLotStatus: (l: PurchaseLot, status: PurchaseLotStatus, comment: string, fields?: { planType: PurchasePlanType; planYear: number; assigneeUuid: string; implementingDepartment: number; curatorId: bigint; commissionComment: string; itemType: PurchaseItemType }) =>
+            run(
+                () => client.purchaseLotStatusSet({
+                    id: l.id, status, comment,
+                    planType: fields?.planType ?? l.planType,
+                    planYear: fields?.planYear ?? l.planYear,
+                    assigneeUuid: fields?.assigneeUuid ?? l.assigneeUuid,
+                    implementingDepartment: fields?.implementingDepartment ?? l.implementingDepartment,
+                    curatorId: fields?.curatorId ?? l.curatorId,
+                    commissionComment: fields?.commissionComment ?? l.commissionComment,
+                    itemType: fields?.itemType ?? l.itemType,
+                }),
+                "Статус закупки изменён вручную",
+                "Не удалось изменить статус",
             ),
 
         addQuotation: async (l: PurchaseLot, v: { supplier: string; supplierInn: string; unitPrice: number; note: string; file?: File | null }) =>

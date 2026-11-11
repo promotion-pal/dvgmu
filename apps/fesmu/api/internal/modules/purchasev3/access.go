@@ -10,10 +10,10 @@ import (
 
 	"connectrpc.com/connect"
 
-	entity "fesmu/contract/fesmu/entity/v3"
-	enum "fesmu/contract/fesmu/enum/v3"
 	"dvgmu/api/internal/auth"
 	"dvgmu/api/internal/modules/purchase"
+	entity "fesmu/contract/fesmu/entity/v3"
+	enum "fesmu/contract/fesmu/enum/v3"
 )
 
 // Rights are "purchase.<name>" strings in the token (Администрирование →
@@ -46,6 +46,7 @@ var permLabel = map[enum.PurchasePermission]string{
 	permAcceptance:     "Приёмка",
 	permInventory:      "Постановка на учёт в инвентаре",
 	permDirectories:    "Справочники закупок",
+	permLotFullEdit:    "Полное редактирование закупок",
 }
 
 // allPerms lists every right, in enum order.
@@ -153,7 +154,13 @@ func (a actor) mayLot(st stage[enum.PurchaseLotStatus], l *Lot) error {
 func (a actor) actingOnLot(l *Lot) (stage[enum.PurchaseLotStatus], error) {
 	st, _, ok := stageOf(lotRoute, l.Status)
 	if !ok {
+		if a.can(permLotFullEdit) {
+			return stage[enum.PurchaseLotStatus]{role: roleImplementerHead}, nil
+		}
 		return st, wrongState("закупка %s — на этом этапе с ней ничего не делают", lotStatusLabel[l.Status])
+	}
+	if a.can(permLotFullEdit) {
+		return st, nil
 	}
 	return st, a.mayLot(st, l)
 }
@@ -185,6 +192,10 @@ func (a actor) allowedRequest(r *Request) *entity.PurchaseAllowed {
 // allowedLot is what the user may do with the purchase now.
 func (a actor) allowedLot(l *Lot) *entity.PurchaseAllowed {
 	out := &entity.PurchaseAllowed{}
+	if a.can(permLotFullEdit) {
+		out.Edit, out.Mine = true, true
+		return out
+	}
 	st, err := a.actingOnLot(l)
 	if err != nil {
 		return out
@@ -222,7 +233,7 @@ type viewer struct {
 func (a actor) viewer(departments []*Department) viewer {
 	v := viewer{
 		actor: a,
-		all: a.can(permViewAll) || a.can(permEconomist) || a.can(permCommission) ||
+		all: a.can(permViewAll) || a.can(permLotFullEdit) || a.can(permEconomist) || a.can(permCommission) ||
 			a.can(permContract) || a.can(permProcurement) || a.can(permAcceptance) || a.can(permInventory),
 		department: a.can(permViewDepartment) || a.can(permHeadReview) || a.can(permLotManage),
 		direction:  a.can(permViewDirection) || a.can(permRequestCurator) || a.can(permLotCurator),

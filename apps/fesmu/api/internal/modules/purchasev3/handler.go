@@ -83,6 +83,11 @@ func (h *handler) PurchaseLotMove(ctx context.Context, req *connect.Request[pb.P
 	return reply(&pb.PurchaseLotMoveResponse{}, h.service.LotMove(ctx, m.GetId(), m.GetMove(), m.GetComment(), m.GetAssigneeUuid()))
 }
 
+func (h *handler) PurchaseLotStatusSet(ctx context.Context, req *connect.Request[pb.PurchaseLotStatusSetRequest]) (*connect.Response[pb.PurchaseLotStatusSetResponse], error) {
+	m := req.Msg
+	return reply(&pb.PurchaseLotStatusSetResponse{}, h.service.LotStatusSet(ctx, m))
+}
+
 func (h *handler) PurchaseQuotationCreate(ctx context.Context, req *connect.Request[pb.PurchaseQuotationCreateRequest]) (*connect.Response[pb.PurchaseQuotationCreateResponse], error) {
 	m := req.Msg
 	id, err := h.service.QuotationCreate(ctx, m.GetLotId(), quotationInput{

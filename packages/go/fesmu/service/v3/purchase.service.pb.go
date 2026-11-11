@@ -2095,6 +2095,159 @@ func (*PurchaseLotMoveResponse) Descriptor() ([]byte, []int) {
 	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{31}
 }
 
+// Full editor only: set any non-unspecified status directly.
+type PurchaseLotStatusSetRequest struct {
+	state                  protoimpl.MessageState `protogen:"open.v1"`
+	Id                     int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Status                 v31.PurchaseLotStatus  `protobuf:"varint,2,opt,name=status,proto3,enum=contract.enum.v3.PurchaseLotStatus" json:"status,omitempty"`
+	Comment                string                 `protobuf:"bytes,3,opt,name=comment,proto3" json:"comment,omitempty"`
+	PlanType               v31.PurchasePlanType   `protobuf:"varint,4,opt,name=plan_type,json=planType,proto3,enum=contract.enum.v3.PurchasePlanType" json:"plan_type,omitempty"`
+	PlanYear               int32                  `protobuf:"varint,5,opt,name=plan_year,json=planYear,proto3" json:"plan_year,omitempty"`
+	AssigneeUuid           string                 `protobuf:"bytes,6,opt,name=assignee_uuid,json=assigneeUuid,proto3" json:"assignee_uuid,omitempty"`
+	ImplementingDepartment int32                  `protobuf:"varint,7,opt,name=implementing_department,json=implementingDepartment,proto3" json:"implementing_department,omitempty"`
+	CuratorId              int64                  `protobuf:"varint,8,opt,name=curator_id,json=curatorId,proto3" json:"curator_id,omitempty"`
+	CommissionComment      string                 `protobuf:"bytes,9,opt,name=commission_comment,json=commissionComment,proto3" json:"commission_comment,omitempty"`
+	ItemType               v31.PurchaseItemType   `protobuf:"varint,10,opt,name=item_type,json=itemType,proto3,enum=contract.enum.v3.PurchaseItemType" json:"item_type,omitempty"`
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
+}
+
+func (x *PurchaseLotStatusSetRequest) Reset() {
+	*x = PurchaseLotStatusSetRequest{}
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[32]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PurchaseLotStatusSetRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PurchaseLotStatusSetRequest) ProtoMessage() {}
+
+func (x *PurchaseLotStatusSetRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[32]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PurchaseLotStatusSetRequest.ProtoReflect.Descriptor instead.
+func (*PurchaseLotStatusSetRequest) Descriptor() ([]byte, []int) {
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{32}
+}
+
+func (x *PurchaseLotStatusSetRequest) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *PurchaseLotStatusSetRequest) GetStatus() v31.PurchaseLotStatus {
+	if x != nil {
+		return x.Status
+	}
+	return v31.PurchaseLotStatus(0)
+}
+
+func (x *PurchaseLotStatusSetRequest) GetComment() string {
+	if x != nil {
+		return x.Comment
+	}
+	return ""
+}
+
+func (x *PurchaseLotStatusSetRequest) GetPlanType() v31.PurchasePlanType {
+	if x != nil {
+		return x.PlanType
+	}
+	return v31.PurchasePlanType(0)
+}
+
+func (x *PurchaseLotStatusSetRequest) GetPlanYear() int32 {
+	if x != nil {
+		return x.PlanYear
+	}
+	return 0
+}
+
+func (x *PurchaseLotStatusSetRequest) GetAssigneeUuid() string {
+	if x != nil {
+		return x.AssigneeUuid
+	}
+	return ""
+}
+
+func (x *PurchaseLotStatusSetRequest) GetImplementingDepartment() int32 {
+	if x != nil {
+		return x.ImplementingDepartment
+	}
+	return 0
+}
+
+func (x *PurchaseLotStatusSetRequest) GetCuratorId() int64 {
+	if x != nil {
+		return x.CuratorId
+	}
+	return 0
+}
+
+func (x *PurchaseLotStatusSetRequest) GetCommissionComment() string {
+	if x != nil {
+		return x.CommissionComment
+	}
+	return ""
+}
+
+func (x *PurchaseLotStatusSetRequest) GetItemType() v31.PurchaseItemType {
+	if x != nil {
+		return x.ItemType
+	}
+	return v31.PurchaseItemType(0)
+}
+
+type PurchaseLotStatusSetResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PurchaseLotStatusSetResponse) Reset() {
+	*x = PurchaseLotStatusSetResponse{}
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[33]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PurchaseLotStatusSetResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PurchaseLotStatusSetResponse) ProtoMessage() {}
+
+func (x *PurchaseLotStatusSetResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[33]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PurchaseLotStatusSetResponse.ProtoReflect.Descriptor instead.
+func (*PurchaseLotStatusSetResponse) Descriptor() ([]byte, []int) {
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{33}
+}
+
 // LOT_PREPARE, the assignee, while SPECIFICATION (also LOT_MANAGE at the check).
 type PurchaseQuotationCreateRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -2111,7 +2264,7 @@ type PurchaseQuotationCreateRequest struct {
 
 func (x *PurchaseQuotationCreateRequest) Reset() {
 	*x = PurchaseQuotationCreateRequest{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[32]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2123,7 +2276,7 @@ func (x *PurchaseQuotationCreateRequest) String() string {
 func (*PurchaseQuotationCreateRequest) ProtoMessage() {}
 
 func (x *PurchaseQuotationCreateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[32]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2136,7 +2289,7 @@ func (x *PurchaseQuotationCreateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseQuotationCreateRequest.ProtoReflect.Descriptor instead.
 func (*PurchaseQuotationCreateRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{32}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *PurchaseQuotationCreateRequest) GetLotId() int64 {
@@ -2197,7 +2350,7 @@ type PurchaseQuotationCreateResponse struct {
 
 func (x *PurchaseQuotationCreateResponse) Reset() {
 	*x = PurchaseQuotationCreateResponse{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[33]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2209,7 +2362,7 @@ func (x *PurchaseQuotationCreateResponse) String() string {
 func (*PurchaseQuotationCreateResponse) ProtoMessage() {}
 
 func (x *PurchaseQuotationCreateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[33]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2222,7 +2375,7 @@ func (x *PurchaseQuotationCreateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseQuotationCreateResponse.ProtoReflect.Descriptor instead.
 func (*PurchaseQuotationCreateResponse) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{33}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *PurchaseQuotationCreateResponse) GetId() int64 {
@@ -2241,7 +2394,7 @@ type PurchaseQuotationDeleteRequest struct {
 
 func (x *PurchaseQuotationDeleteRequest) Reset() {
 	*x = PurchaseQuotationDeleteRequest{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[34]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2253,7 +2406,7 @@ func (x *PurchaseQuotationDeleteRequest) String() string {
 func (*PurchaseQuotationDeleteRequest) ProtoMessage() {}
 
 func (x *PurchaseQuotationDeleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[34]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2266,7 +2419,7 @@ func (x *PurchaseQuotationDeleteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseQuotationDeleteRequest.ProtoReflect.Descriptor instead.
 func (*PurchaseQuotationDeleteRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{34}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *PurchaseQuotationDeleteRequest) GetId() int64 {
@@ -2284,7 +2437,7 @@ type PurchaseQuotationDeleteResponse struct {
 
 func (x *PurchaseQuotationDeleteResponse) Reset() {
 	*x = PurchaseQuotationDeleteResponse{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[35]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2296,7 +2449,7 @@ func (x *PurchaseQuotationDeleteResponse) String() string {
 func (*PurchaseQuotationDeleteResponse) ProtoMessage() {}
 
 func (x *PurchaseQuotationDeleteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[35]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2309,7 +2462,7 @@ func (x *PurchaseQuotationDeleteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseQuotationDeleteResponse.ProtoReflect.Descriptor instead.
 func (*PurchaseQuotationDeleteResponse) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{35}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{37}
 }
 
 type PurchaseQuotationFileFetchRequest struct {
@@ -2321,7 +2474,7 @@ type PurchaseQuotationFileFetchRequest struct {
 
 func (x *PurchaseQuotationFileFetchRequest) Reset() {
 	*x = PurchaseQuotationFileFetchRequest{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[36]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2333,7 +2486,7 @@ func (x *PurchaseQuotationFileFetchRequest) String() string {
 func (*PurchaseQuotationFileFetchRequest) ProtoMessage() {}
 
 func (x *PurchaseQuotationFileFetchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[36]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2346,7 +2499,7 @@ func (x *PurchaseQuotationFileFetchRequest) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use PurchaseQuotationFileFetchRequest.ProtoReflect.Descriptor instead.
 func (*PurchaseQuotationFileFetchRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{36}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *PurchaseQuotationFileFetchRequest) GetId() int64 {
@@ -2366,7 +2519,7 @@ type PurchaseQuotationFileFetchResponse struct {
 
 func (x *PurchaseQuotationFileFetchResponse) Reset() {
 	*x = PurchaseQuotationFileFetchResponse{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[37]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2378,7 +2531,7 @@ func (x *PurchaseQuotationFileFetchResponse) String() string {
 func (*PurchaseQuotationFileFetchResponse) ProtoMessage() {}
 
 func (x *PurchaseQuotationFileFetchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[37]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2391,7 +2544,7 @@ func (x *PurchaseQuotationFileFetchResponse) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use PurchaseQuotationFileFetchResponse.ProtoReflect.Descriptor instead.
 func (*PurchaseQuotationFileFetchResponse) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{37}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{39}
 }
 
 func (x *PurchaseQuotationFileFetchResponse) GetFileName() string {
@@ -2423,7 +2576,7 @@ type PurchaseDocumentCreateRequest struct {
 
 func (x *PurchaseDocumentCreateRequest) Reset() {
 	*x = PurchaseDocumentCreateRequest{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[38]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[40]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2435,7 +2588,7 @@ func (x *PurchaseDocumentCreateRequest) String() string {
 func (*PurchaseDocumentCreateRequest) ProtoMessage() {}
 
 func (x *PurchaseDocumentCreateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[38]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[40]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2448,7 +2601,7 @@ func (x *PurchaseDocumentCreateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseDocumentCreateRequest.ProtoReflect.Descriptor instead.
 func (*PurchaseDocumentCreateRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{38}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{40}
 }
 
 func (x *PurchaseDocumentCreateRequest) GetLotId() int64 {
@@ -2495,7 +2648,7 @@ type PurchaseDocumentCreateResponse struct {
 
 func (x *PurchaseDocumentCreateResponse) Reset() {
 	*x = PurchaseDocumentCreateResponse{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[39]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[41]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2507,7 +2660,7 @@ func (x *PurchaseDocumentCreateResponse) String() string {
 func (*PurchaseDocumentCreateResponse) ProtoMessage() {}
 
 func (x *PurchaseDocumentCreateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[39]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[41]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2520,7 +2673,7 @@ func (x *PurchaseDocumentCreateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseDocumentCreateResponse.ProtoReflect.Descriptor instead.
 func (*PurchaseDocumentCreateResponse) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{39}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{41}
 }
 
 func (x *PurchaseDocumentCreateResponse) GetId() int64 {
@@ -2539,7 +2692,7 @@ type PurchaseDocumentDeleteRequest struct {
 
 func (x *PurchaseDocumentDeleteRequest) Reset() {
 	*x = PurchaseDocumentDeleteRequest{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[40]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[42]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2551,7 +2704,7 @@ func (x *PurchaseDocumentDeleteRequest) String() string {
 func (*PurchaseDocumentDeleteRequest) ProtoMessage() {}
 
 func (x *PurchaseDocumentDeleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[40]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[42]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2564,7 +2717,7 @@ func (x *PurchaseDocumentDeleteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseDocumentDeleteRequest.ProtoReflect.Descriptor instead.
 func (*PurchaseDocumentDeleteRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{40}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{42}
 }
 
 func (x *PurchaseDocumentDeleteRequest) GetId() int64 {
@@ -2582,7 +2735,7 @@ type PurchaseDocumentDeleteResponse struct {
 
 func (x *PurchaseDocumentDeleteResponse) Reset() {
 	*x = PurchaseDocumentDeleteResponse{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[41]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[43]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2594,7 +2747,7 @@ func (x *PurchaseDocumentDeleteResponse) String() string {
 func (*PurchaseDocumentDeleteResponse) ProtoMessage() {}
 
 func (x *PurchaseDocumentDeleteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[41]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[43]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2607,7 +2760,7 @@ func (x *PurchaseDocumentDeleteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseDocumentDeleteResponse.ProtoReflect.Descriptor instead.
 func (*PurchaseDocumentDeleteResponse) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{41}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{43}
 }
 
 type PurchaseDocumentFileFetchRequest struct {
@@ -2619,7 +2772,7 @@ type PurchaseDocumentFileFetchRequest struct {
 
 func (x *PurchaseDocumentFileFetchRequest) Reset() {
 	*x = PurchaseDocumentFileFetchRequest{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[42]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[44]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2631,7 +2784,7 @@ func (x *PurchaseDocumentFileFetchRequest) String() string {
 func (*PurchaseDocumentFileFetchRequest) ProtoMessage() {}
 
 func (x *PurchaseDocumentFileFetchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[42]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[44]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2644,7 +2797,7 @@ func (x *PurchaseDocumentFileFetchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseDocumentFileFetchRequest.ProtoReflect.Descriptor instead.
 func (*PurchaseDocumentFileFetchRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{42}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{44}
 }
 
 func (x *PurchaseDocumentFileFetchRequest) GetId() int64 {
@@ -2664,7 +2817,7 @@ type PurchaseDocumentFileFetchResponse struct {
 
 func (x *PurchaseDocumentFileFetchResponse) Reset() {
 	*x = PurchaseDocumentFileFetchResponse{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[43]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[45]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2676,7 +2829,7 @@ func (x *PurchaseDocumentFileFetchResponse) String() string {
 func (*PurchaseDocumentFileFetchResponse) ProtoMessage() {}
 
 func (x *PurchaseDocumentFileFetchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[43]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[45]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2689,7 +2842,7 @@ func (x *PurchaseDocumentFileFetchResponse) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use PurchaseDocumentFileFetchResponse.ProtoReflect.Descriptor instead.
 func (*PurchaseDocumentFileFetchResponse) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{43}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{45}
 }
 
 func (x *PurchaseDocumentFileFetchResponse) GetFileName() string {
@@ -2727,7 +2880,7 @@ type PurchaseProtocolCreateRequest struct {
 
 func (x *PurchaseProtocolCreateRequest) Reset() {
 	*x = PurchaseProtocolCreateRequest{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[44]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[46]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2739,7 +2892,7 @@ func (x *PurchaseProtocolCreateRequest) String() string {
 func (*PurchaseProtocolCreateRequest) ProtoMessage() {}
 
 func (x *PurchaseProtocolCreateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[44]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[46]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2752,7 +2905,7 @@ func (x *PurchaseProtocolCreateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseProtocolCreateRequest.ProtoReflect.Descriptor instead.
 func (*PurchaseProtocolCreateRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{44}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{46}
 }
 
 func (x *PurchaseProtocolCreateRequest) GetNumber() string {
@@ -2826,7 +2979,7 @@ type PurchaseProtocolDecisionInput struct {
 
 func (x *PurchaseProtocolDecisionInput) Reset() {
 	*x = PurchaseProtocolDecisionInput{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[45]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[47]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2838,7 +2991,7 @@ func (x *PurchaseProtocolDecisionInput) String() string {
 func (*PurchaseProtocolDecisionInput) ProtoMessage() {}
 
 func (x *PurchaseProtocolDecisionInput) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[45]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[47]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2851,7 +3004,7 @@ func (x *PurchaseProtocolDecisionInput) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseProtocolDecisionInput.ProtoReflect.Descriptor instead.
 func (*PurchaseProtocolDecisionInput) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{45}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{47}
 }
 
 func (x *PurchaseProtocolDecisionInput) GetLotId() int64 {
@@ -2898,7 +3051,7 @@ type PurchaseProtocolCreateResponse struct {
 
 func (x *PurchaseProtocolCreateResponse) Reset() {
 	*x = PurchaseProtocolCreateResponse{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[46]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[48]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2910,7 +3063,7 @@ func (x *PurchaseProtocolCreateResponse) String() string {
 func (*PurchaseProtocolCreateResponse) ProtoMessage() {}
 
 func (x *PurchaseProtocolCreateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[46]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[48]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2923,7 +3076,7 @@ func (x *PurchaseProtocolCreateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseProtocolCreateResponse.ProtoReflect.Descriptor instead.
 func (*PurchaseProtocolCreateResponse) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{46}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{48}
 }
 
 func (x *PurchaseProtocolCreateResponse) GetId() int64 {
@@ -2952,7 +3105,7 @@ type PurchaseProtocolUpdateRequest struct {
 
 func (x *PurchaseProtocolUpdateRequest) Reset() {
 	*x = PurchaseProtocolUpdateRequest{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[47]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[49]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2964,7 +3117,7 @@ func (x *PurchaseProtocolUpdateRequest) String() string {
 func (*PurchaseProtocolUpdateRequest) ProtoMessage() {}
 
 func (x *PurchaseProtocolUpdateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[47]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[49]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2977,7 +3130,7 @@ func (x *PurchaseProtocolUpdateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseProtocolUpdateRequest.ProtoReflect.Descriptor instead.
 func (*PurchaseProtocolUpdateRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{47}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{49}
 }
 
 func (x *PurchaseProtocolUpdateRequest) GetId() int64 {
@@ -3044,7 +3197,7 @@ type PurchaseProtocolUpdateResponse struct {
 
 func (x *PurchaseProtocolUpdateResponse) Reset() {
 	*x = PurchaseProtocolUpdateResponse{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[48]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[50]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3056,7 +3209,7 @@ func (x *PurchaseProtocolUpdateResponse) String() string {
 func (*PurchaseProtocolUpdateResponse) ProtoMessage() {}
 
 func (x *PurchaseProtocolUpdateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[48]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[50]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3069,7 +3222,7 @@ func (x *PurchaseProtocolUpdateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseProtocolUpdateResponse.ProtoReflect.Descriptor instead.
 func (*PurchaseProtocolUpdateResponse) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{48}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{50}
 }
 
 type PurchaseProtocolFileFetchRequest struct {
@@ -3081,7 +3234,7 @@ type PurchaseProtocolFileFetchRequest struct {
 
 func (x *PurchaseProtocolFileFetchRequest) Reset() {
 	*x = PurchaseProtocolFileFetchRequest{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[49]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[51]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3093,7 +3246,7 @@ func (x *PurchaseProtocolFileFetchRequest) String() string {
 func (*PurchaseProtocolFileFetchRequest) ProtoMessage() {}
 
 func (x *PurchaseProtocolFileFetchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[49]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[51]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3106,7 +3259,7 @@ func (x *PurchaseProtocolFileFetchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseProtocolFileFetchRequest.ProtoReflect.Descriptor instead.
 func (*PurchaseProtocolFileFetchRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{49}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{51}
 }
 
 func (x *PurchaseProtocolFileFetchRequest) GetId() int64 {
@@ -3126,7 +3279,7 @@ type PurchaseProtocolFileFetchResponse struct {
 
 func (x *PurchaseProtocolFileFetchResponse) Reset() {
 	*x = PurchaseProtocolFileFetchResponse{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[50]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[52]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3138,7 +3291,7 @@ func (x *PurchaseProtocolFileFetchResponse) String() string {
 func (*PurchaseProtocolFileFetchResponse) ProtoMessage() {}
 
 func (x *PurchaseProtocolFileFetchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[50]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[52]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3151,7 +3304,7 @@ func (x *PurchaseProtocolFileFetchResponse) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use PurchaseProtocolFileFetchResponse.ProtoReflect.Descriptor instead.
 func (*PurchaseProtocolFileFetchResponse) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{50}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{52}
 }
 
 func (x *PurchaseProtocolFileFetchResponse) GetFileName() string {
@@ -3177,7 +3330,7 @@ type PurchaseCodeSuggestFetchRequest struct {
 
 func (x *PurchaseCodeSuggestFetchRequest) Reset() {
 	*x = PurchaseCodeSuggestFetchRequest{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[51]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[53]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3189,7 +3342,7 @@ func (x *PurchaseCodeSuggestFetchRequest) String() string {
 func (*PurchaseCodeSuggestFetchRequest) ProtoMessage() {}
 
 func (x *PurchaseCodeSuggestFetchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[51]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[53]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3202,7 +3355,7 @@ func (x *PurchaseCodeSuggestFetchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseCodeSuggestFetchRequest.ProtoReflect.Descriptor instead.
 func (*PurchaseCodeSuggestFetchRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{51}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{53}
 }
 
 func (x *PurchaseCodeSuggestFetchRequest) GetTitle() string {
@@ -3221,7 +3374,7 @@ type PurchaseCodeSuggestFetchResponse struct {
 
 func (x *PurchaseCodeSuggestFetchResponse) Reset() {
 	*x = PurchaseCodeSuggestFetchResponse{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[52]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[54]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3233,7 +3386,7 @@ func (x *PurchaseCodeSuggestFetchResponse) String() string {
 func (*PurchaseCodeSuggestFetchResponse) ProtoMessage() {}
 
 func (x *PurchaseCodeSuggestFetchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[52]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[54]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3246,7 +3399,7 @@ func (x *PurchaseCodeSuggestFetchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseCodeSuggestFetchResponse.ProtoReflect.Descriptor instead.
 func (*PurchaseCodeSuggestFetchResponse) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{52}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{54}
 }
 
 func (x *PurchaseCodeSuggestFetchResponse) GetSuggestion() *v3.PurchaseCodeSuggestion {
@@ -3265,7 +3418,7 @@ type PurchaseEmployeeFetchRequest struct {
 
 func (x *PurchaseEmployeeFetchRequest) Reset() {
 	*x = PurchaseEmployeeFetchRequest{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[53]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[55]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3277,7 +3430,7 @@ func (x *PurchaseEmployeeFetchRequest) String() string {
 func (*PurchaseEmployeeFetchRequest) ProtoMessage() {}
 
 func (x *PurchaseEmployeeFetchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[53]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[55]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3290,7 +3443,7 @@ func (x *PurchaseEmployeeFetchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseEmployeeFetchRequest.ProtoReflect.Descriptor instead.
 func (*PurchaseEmployeeFetchRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{53}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{55}
 }
 
 func (x *PurchaseEmployeeFetchRequest) GetDepartment() enum.UserEmployeeDepartment {
@@ -3309,7 +3462,7 @@ type PurchaseEmployeeFetchResponse struct {
 
 func (x *PurchaseEmployeeFetchResponse) Reset() {
 	*x = PurchaseEmployeeFetchResponse{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[54]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[56]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3321,7 +3474,7 @@ func (x *PurchaseEmployeeFetchResponse) String() string {
 func (*PurchaseEmployeeFetchResponse) ProtoMessage() {}
 
 func (x *PurchaseEmployeeFetchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[54]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[56]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3334,7 +3487,7 @@ func (x *PurchaseEmployeeFetchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseEmployeeFetchResponse.ProtoReflect.Descriptor instead.
 func (*PurchaseEmployeeFetchResponse) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{54}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{56}
 }
 
 func (x *PurchaseEmployeeFetchResponse) GetList() []*v3.PurchaseEmployee {
@@ -3356,7 +3509,7 @@ type PurchaseActivityFetchRequest struct {
 
 func (x *PurchaseActivityFetchRequest) Reset() {
 	*x = PurchaseActivityFetchRequest{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[55]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[57]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3368,7 +3521,7 @@ func (x *PurchaseActivityFetchRequest) String() string {
 func (*PurchaseActivityFetchRequest) ProtoMessage() {}
 
 func (x *PurchaseActivityFetchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[55]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[57]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3381,7 +3534,7 @@ func (x *PurchaseActivityFetchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseActivityFetchRequest.ProtoReflect.Descriptor instead.
 func (*PurchaseActivityFetchRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{55}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{57}
 }
 
 func (x *PurchaseActivityFetchRequest) GetDays() int32 {
@@ -3400,7 +3553,7 @@ type PurchaseActivityFetchResponse struct {
 
 func (x *PurchaseActivityFetchResponse) Reset() {
 	*x = PurchaseActivityFetchResponse{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[56]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[58]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3412,7 +3565,7 @@ func (x *PurchaseActivityFetchResponse) String() string {
 func (*PurchaseActivityFetchResponse) ProtoMessage() {}
 
 func (x *PurchaseActivityFetchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[56]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[58]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3425,7 +3578,7 @@ func (x *PurchaseActivityFetchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseActivityFetchResponse.ProtoReflect.Descriptor instead.
 func (*PurchaseActivityFetchResponse) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{56}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{58}
 }
 
 func (x *PurchaseActivityFetchResponse) GetList() []*v3.PurchaseActivity {
@@ -3451,7 +3604,7 @@ type PurchaseCuratorSaveRequest struct {
 
 func (x *PurchaseCuratorSaveRequest) Reset() {
 	*x = PurchaseCuratorSaveRequest{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[57]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[59]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3463,7 +3616,7 @@ func (x *PurchaseCuratorSaveRequest) String() string {
 func (*PurchaseCuratorSaveRequest) ProtoMessage() {}
 
 func (x *PurchaseCuratorSaveRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[57]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[59]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3476,7 +3629,7 @@ func (x *PurchaseCuratorSaveRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseCuratorSaveRequest.ProtoReflect.Descriptor instead.
 func (*PurchaseCuratorSaveRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{57}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{59}
 }
 
 func (x *PurchaseCuratorSaveRequest) GetId() int64 {
@@ -3537,7 +3690,7 @@ type PurchaseCuratorSaveResponse struct {
 
 func (x *PurchaseCuratorSaveResponse) Reset() {
 	*x = PurchaseCuratorSaveResponse{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[58]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[60]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3549,7 +3702,7 @@ func (x *PurchaseCuratorSaveResponse) String() string {
 func (*PurchaseCuratorSaveResponse) ProtoMessage() {}
 
 func (x *PurchaseCuratorSaveResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[58]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[60]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3562,7 +3715,7 @@ func (x *PurchaseCuratorSaveResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseCuratorSaveResponse.ProtoReflect.Descriptor instead.
 func (*PurchaseCuratorSaveResponse) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{58}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{60}
 }
 
 func (x *PurchaseCuratorSaveResponse) GetId() int64 {
@@ -3582,7 +3735,7 @@ type PurchaseCuratorDeleteRequest struct {
 
 func (x *PurchaseCuratorDeleteRequest) Reset() {
 	*x = PurchaseCuratorDeleteRequest{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[59]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[61]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3594,7 +3747,7 @@ func (x *PurchaseCuratorDeleteRequest) String() string {
 func (*PurchaseCuratorDeleteRequest) ProtoMessage() {}
 
 func (x *PurchaseCuratorDeleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[59]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[61]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3607,7 +3760,7 @@ func (x *PurchaseCuratorDeleteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseCuratorDeleteRequest.ProtoReflect.Descriptor instead.
 func (*PurchaseCuratorDeleteRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{59}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{61}
 }
 
 func (x *PurchaseCuratorDeleteRequest) GetId() int64 {
@@ -3625,7 +3778,7 @@ type PurchaseCuratorDeleteResponse struct {
 
 func (x *PurchaseCuratorDeleteResponse) Reset() {
 	*x = PurchaseCuratorDeleteResponse{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[60]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[62]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3637,7 +3790,7 @@ func (x *PurchaseCuratorDeleteResponse) String() string {
 func (*PurchaseCuratorDeleteResponse) ProtoMessage() {}
 
 func (x *PurchaseCuratorDeleteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[60]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[62]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3650,7 +3803,7 @@ func (x *PurchaseCuratorDeleteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseCuratorDeleteResponse.ProtoReflect.Descriptor instead.
 func (*PurchaseCuratorDeleteResponse) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{60}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{62}
 }
 
 type PurchaseDepartmentSaveRequest struct {
@@ -3664,7 +3817,7 @@ type PurchaseDepartmentSaveRequest struct {
 
 func (x *PurchaseDepartmentSaveRequest) Reset() {
 	*x = PurchaseDepartmentSaveRequest{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[61]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[63]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3676,7 +3829,7 @@ func (x *PurchaseDepartmentSaveRequest) String() string {
 func (*PurchaseDepartmentSaveRequest) ProtoMessage() {}
 
 func (x *PurchaseDepartmentSaveRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[61]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[63]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3689,7 +3842,7 @@ func (x *PurchaseDepartmentSaveRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseDepartmentSaveRequest.ProtoReflect.Descriptor instead.
 func (*PurchaseDepartmentSaveRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{61}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{63}
 }
 
 func (x *PurchaseDepartmentSaveRequest) GetDepartment() enum.UserEmployeeDepartment {
@@ -3714,7 +3867,7 @@ type PurchaseDepartmentSaveResponse struct {
 
 func (x *PurchaseDepartmentSaveResponse) Reset() {
 	*x = PurchaseDepartmentSaveResponse{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[62]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[64]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3726,7 +3879,7 @@ func (x *PurchaseDepartmentSaveResponse) String() string {
 func (*PurchaseDepartmentSaveResponse) ProtoMessage() {}
 
 func (x *PurchaseDepartmentSaveResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[62]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[64]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3739,7 +3892,7 @@ func (x *PurchaseDepartmentSaveResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseDepartmentSaveResponse.ProtoReflect.Descriptor instead.
 func (*PurchaseDepartmentSaveResponse) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{62}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{64}
 }
 
 type PurchaseCategorySaveRequest struct {
@@ -3755,7 +3908,7 @@ type PurchaseCategorySaveRequest struct {
 
 func (x *PurchaseCategorySaveRequest) Reset() {
 	*x = PurchaseCategorySaveRequest{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[63]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[65]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3767,7 +3920,7 @@ func (x *PurchaseCategorySaveRequest) String() string {
 func (*PurchaseCategorySaveRequest) ProtoMessage() {}
 
 func (x *PurchaseCategorySaveRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[63]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[65]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3780,7 +3933,7 @@ func (x *PurchaseCategorySaveRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseCategorySaveRequest.ProtoReflect.Descriptor instead.
 func (*PurchaseCategorySaveRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{63}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{65}
 }
 
 func (x *PurchaseCategorySaveRequest) GetId() int64 {
@@ -3820,7 +3973,7 @@ type PurchaseCategorySaveResponse struct {
 
 func (x *PurchaseCategorySaveResponse) Reset() {
 	*x = PurchaseCategorySaveResponse{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[64]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[66]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3832,7 +3985,7 @@ func (x *PurchaseCategorySaveResponse) String() string {
 func (*PurchaseCategorySaveResponse) ProtoMessage() {}
 
 func (x *PurchaseCategorySaveResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[64]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[66]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3845,7 +3998,7 @@ func (x *PurchaseCategorySaveResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseCategorySaveResponse.ProtoReflect.Descriptor instead.
 func (*PurchaseCategorySaveResponse) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{64}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{66}
 }
 
 func (x *PurchaseCategorySaveResponse) GetId() int64 {
@@ -3864,7 +4017,7 @@ type PurchaseCategoryDeleteRequest struct {
 
 func (x *PurchaseCategoryDeleteRequest) Reset() {
 	*x = PurchaseCategoryDeleteRequest{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[65]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[67]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3876,7 +4029,7 @@ func (x *PurchaseCategoryDeleteRequest) String() string {
 func (*PurchaseCategoryDeleteRequest) ProtoMessage() {}
 
 func (x *PurchaseCategoryDeleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[65]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[67]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3889,7 +4042,7 @@ func (x *PurchaseCategoryDeleteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseCategoryDeleteRequest.ProtoReflect.Descriptor instead.
 func (*PurchaseCategoryDeleteRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{65}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{67}
 }
 
 func (x *PurchaseCategoryDeleteRequest) GetId() int64 {
@@ -3907,7 +4060,7 @@ type PurchaseCategoryDeleteResponse struct {
 
 func (x *PurchaseCategoryDeleteResponse) Reset() {
 	*x = PurchaseCategoryDeleteResponse{}
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[66]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[68]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3919,7 +4072,7 @@ func (x *PurchaseCategoryDeleteResponse) String() string {
 func (*PurchaseCategoryDeleteResponse) ProtoMessage() {}
 
 func (x *PurchaseCategoryDeleteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[66]
+	mi := &file_fesmu_service_v3_purchase_service_proto_msgTypes[68]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3932,7 +4085,7 @@ func (x *PurchaseCategoryDeleteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurchaseCategoryDeleteResponse.ProtoReflect.Descriptor instead.
 func (*PurchaseCategoryDeleteResponse) Descriptor() ([]byte, []int) {
-	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{66}
+	return file_fesmu_service_v3_purchase_service_proto_rawDescGZIP(), []int{68}
 }
 
 var File_fesmu_service_v3_purchase_service_proto protoreflect.FileDescriptor
@@ -4084,7 +4237,21 @@ const file_fesmu_service_v3_purchase_service_proto_rawDesc = "" +
 	"\x04move\x18\x02 \x01(\x0e2\x1e.contract.enum.v3.PurchaseMoveR\x04move\x12\x18\n" +
 	"\acomment\x18\x03 \x01(\tR\acomment\x12#\n" +
 	"\rassignee_uuid\x18\x04 \x01(\tR\fassigneeUuid\"\x19\n" +
-	"\x17PurchaseLotMoveResponse\"\xe9\x01\n" +
+	"\x17PurchaseLotMoveResponse\"\xcf\x03\n" +
+	"\x1bPurchaseLotStatusSetRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12;\n" +
+	"\x06status\x18\x02 \x01(\x0e2#.contract.enum.v3.PurchaseLotStatusR\x06status\x12\x18\n" +
+	"\acomment\x18\x03 \x01(\tR\acomment\x12?\n" +
+	"\tplan_type\x18\x04 \x01(\x0e2\".contract.enum.v3.PurchasePlanTypeR\bplanType\x12\x1b\n" +
+	"\tplan_year\x18\x05 \x01(\x05R\bplanYear\x12#\n" +
+	"\rassignee_uuid\x18\x06 \x01(\tR\fassigneeUuid\x127\n" +
+	"\x17implementing_department\x18\a \x01(\x05R\x16implementingDepartment\x12\x1d\n" +
+	"\n" +
+	"curator_id\x18\b \x01(\x03R\tcuratorId\x12-\n" +
+	"\x12commission_comment\x18\t \x01(\tR\x11commissionComment\x12?\n" +
+	"\titem_type\x18\n" +
+	" \x01(\x0e2\".contract.enum.v3.PurchaseItemTypeR\bitemType\"\x1e\n" +
+	"\x1cPurchaseLotStatusSetResponse\"\xe9\x01\n" +
 	"\x1ePurchaseQuotationCreateRequest\x12\x15\n" +
 	"\x06lot_id\x18\x01 \x01(\x03R\x05lotId\x12\x1a\n" +
 	"\bsupplier\x18\x02 \x01(\tR\bsupplier\x12!\n" +
@@ -4200,7 +4367,7 @@ const file_fesmu_service_v3_purchase_service_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\"/\n" +
 	"\x1dPurchaseCategoryDeleteRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\" \n" +
-	"\x1ePurchaseCategoryDeleteResponse2\xa0\x1c\n" +
+	"\x1ePurchaseCategoryDeleteResponse2\x9d\x1d\n" +
 	"\x0fPurchaseService\x12~\n" +
 	"\x15PurchaseOverviewFetch\x121.contract.service.v3.PurchaseOverviewFetchRequest\x1a2.contract.service.v3.PurchaseOverviewFetchResponse\x12~\n" +
 	"\x15PurchaseRequestCreate\x121.contract.service.v3.PurchaseRequestCreateRequest\x1a2.contract.service.v3.PurchaseRequestCreateResponse\x12~\n" +
@@ -4212,7 +4379,8 @@ const file_fesmu_service_v3_purchase_service_proto_rawDesc = "" +
 	"\x13PurchaseLotRequests\x12/.contract.service.v3.PurchaseLotRequestsRequest\x1a0.contract.service.v3.PurchaseLotRequestsResponse\x12u\n" +
 	"\x12PurchaseLotDisband\x12..contract.service.v3.PurchaseLotDisbandRequest\x1a/.contract.service.v3.PurchaseLotDisbandResponse\x12r\n" +
 	"\x11PurchaseLotUpdate\x12-.contract.service.v3.PurchaseLotUpdateRequest\x1a..contract.service.v3.PurchaseLotUpdateResponse\x12l\n" +
-	"\x0fPurchaseLotMove\x12+.contract.service.v3.PurchaseLotMoveRequest\x1a,.contract.service.v3.PurchaseLotMoveResponse\x12\x84\x01\n" +
+	"\x0fPurchaseLotMove\x12+.contract.service.v3.PurchaseLotMoveRequest\x1a,.contract.service.v3.PurchaseLotMoveResponse\x12{\n" +
+	"\x14PurchaseLotStatusSet\x120.contract.service.v3.PurchaseLotStatusSetRequest\x1a1.contract.service.v3.PurchaseLotStatusSetResponse\x12\x84\x01\n" +
 	"\x17PurchaseQuotationCreate\x123.contract.service.v3.PurchaseQuotationCreateRequest\x1a4.contract.service.v3.PurchaseQuotationCreateResponse\x12\x84\x01\n" +
 	"\x17PurchaseQuotationDelete\x123.contract.service.v3.PurchaseQuotationDeleteRequest\x1a4.contract.service.v3.PurchaseQuotationDeleteResponse\x12\x8d\x01\n" +
 	"\x1aPurchaseQuotationFileFetch\x126.contract.service.v3.PurchaseQuotationFileFetchRequest\x1a7.contract.service.v3.PurchaseQuotationFileFetchResponse\x12\x81\x01\n" +
@@ -4244,7 +4412,7 @@ func file_fesmu_service_v3_purchase_service_proto_rawDescGZIP() []byte {
 	return file_fesmu_service_v3_purchase_service_proto_rawDescData
 }
 
-var file_fesmu_service_v3_purchase_service_proto_msgTypes = make([]protoimpl.MessageInfo, 67)
+var file_fesmu_service_v3_purchase_service_proto_msgTypes = make([]protoimpl.MessageInfo, 69)
 var file_fesmu_service_v3_purchase_service_proto_goTypes = []any{
 	(*PurchaseOverviewFetchRequest)(nil),       // 0: contract.service.v3.PurchaseOverviewFetchRequest
 	(*PurchaseOverviewFetchResponse)(nil),      // 1: contract.service.v3.PurchaseOverviewFetchResponse
@@ -4278,75 +4446,78 @@ var file_fesmu_service_v3_purchase_service_proto_goTypes = []any{
 	(*PurchaseLotUpdateResponse)(nil),          // 29: contract.service.v3.PurchaseLotUpdateResponse
 	(*PurchaseLotMoveRequest)(nil),             // 30: contract.service.v3.PurchaseLotMoveRequest
 	(*PurchaseLotMoveResponse)(nil),            // 31: contract.service.v3.PurchaseLotMoveResponse
-	(*PurchaseQuotationCreateRequest)(nil),     // 32: contract.service.v3.PurchaseQuotationCreateRequest
-	(*PurchaseQuotationCreateResponse)(nil),    // 33: contract.service.v3.PurchaseQuotationCreateResponse
-	(*PurchaseQuotationDeleteRequest)(nil),     // 34: contract.service.v3.PurchaseQuotationDeleteRequest
-	(*PurchaseQuotationDeleteResponse)(nil),    // 35: contract.service.v3.PurchaseQuotationDeleteResponse
-	(*PurchaseQuotationFileFetchRequest)(nil),  // 36: contract.service.v3.PurchaseQuotationFileFetchRequest
-	(*PurchaseQuotationFileFetchResponse)(nil), // 37: contract.service.v3.PurchaseQuotationFileFetchResponse
-	(*PurchaseDocumentCreateRequest)(nil),      // 38: contract.service.v3.PurchaseDocumentCreateRequest
-	(*PurchaseDocumentCreateResponse)(nil),     // 39: contract.service.v3.PurchaseDocumentCreateResponse
-	(*PurchaseDocumentDeleteRequest)(nil),      // 40: contract.service.v3.PurchaseDocumentDeleteRequest
-	(*PurchaseDocumentDeleteResponse)(nil),     // 41: contract.service.v3.PurchaseDocumentDeleteResponse
-	(*PurchaseDocumentFileFetchRequest)(nil),   // 42: contract.service.v3.PurchaseDocumentFileFetchRequest
-	(*PurchaseDocumentFileFetchResponse)(nil),  // 43: contract.service.v3.PurchaseDocumentFileFetchResponse
-	(*PurchaseProtocolCreateRequest)(nil),      // 44: contract.service.v3.PurchaseProtocolCreateRequest
-	(*PurchaseProtocolDecisionInput)(nil),      // 45: contract.service.v3.PurchaseProtocolDecisionInput
-	(*PurchaseProtocolCreateResponse)(nil),     // 46: contract.service.v3.PurchaseProtocolCreateResponse
-	(*PurchaseProtocolUpdateRequest)(nil),      // 47: contract.service.v3.PurchaseProtocolUpdateRequest
-	(*PurchaseProtocolUpdateResponse)(nil),     // 48: contract.service.v3.PurchaseProtocolUpdateResponse
-	(*PurchaseProtocolFileFetchRequest)(nil),   // 49: contract.service.v3.PurchaseProtocolFileFetchRequest
-	(*PurchaseProtocolFileFetchResponse)(nil),  // 50: contract.service.v3.PurchaseProtocolFileFetchResponse
-	(*PurchaseCodeSuggestFetchRequest)(nil),    // 51: contract.service.v3.PurchaseCodeSuggestFetchRequest
-	(*PurchaseCodeSuggestFetchResponse)(nil),   // 52: contract.service.v3.PurchaseCodeSuggestFetchResponse
-	(*PurchaseEmployeeFetchRequest)(nil),       // 53: contract.service.v3.PurchaseEmployeeFetchRequest
-	(*PurchaseEmployeeFetchResponse)(nil),      // 54: contract.service.v3.PurchaseEmployeeFetchResponse
-	(*PurchaseActivityFetchRequest)(nil),       // 55: contract.service.v3.PurchaseActivityFetchRequest
-	(*PurchaseActivityFetchResponse)(nil),      // 56: contract.service.v3.PurchaseActivityFetchResponse
-	(*PurchaseCuratorSaveRequest)(nil),         // 57: contract.service.v3.PurchaseCuratorSaveRequest
-	(*PurchaseCuratorSaveResponse)(nil),        // 58: contract.service.v3.PurchaseCuratorSaveResponse
-	(*PurchaseCuratorDeleteRequest)(nil),       // 59: contract.service.v3.PurchaseCuratorDeleteRequest
-	(*PurchaseCuratorDeleteResponse)(nil),      // 60: contract.service.v3.PurchaseCuratorDeleteResponse
-	(*PurchaseDepartmentSaveRequest)(nil),      // 61: contract.service.v3.PurchaseDepartmentSaveRequest
-	(*PurchaseDepartmentSaveResponse)(nil),     // 62: contract.service.v3.PurchaseDepartmentSaveResponse
-	(*PurchaseCategorySaveRequest)(nil),        // 63: contract.service.v3.PurchaseCategorySaveRequest
-	(*PurchaseCategorySaveResponse)(nil),       // 64: contract.service.v3.PurchaseCategorySaveResponse
-	(*PurchaseCategoryDeleteRequest)(nil),      // 65: contract.service.v3.PurchaseCategoryDeleteRequest
-	(*PurchaseCategoryDeleteResponse)(nil),     // 66: contract.service.v3.PurchaseCategoryDeleteResponse
-	(*v3.PurchaseRequest)(nil),                 // 67: contract.entity.v3.PurchaseRequest
-	(*v3.PurchaseLot)(nil),                     // 68: contract.entity.v3.PurchaseLot
-	(*v3.PurchaseProtocol)(nil),                // 69: contract.entity.v3.PurchaseProtocol
-	(*v3.PurchaseCurator)(nil),                 // 70: contract.entity.v3.PurchaseCurator
-	(*v3.PurchaseDepartment)(nil),              // 71: contract.entity.v3.PurchaseDepartment
-	(*v3.PurchaseCategory)(nil),                // 72: contract.entity.v3.PurchaseCategory
-	(*v3.PurchaseMe)(nil),                      // 73: contract.entity.v3.PurchaseMe
-	(v31.PurchaseItemType)(0),                  // 74: contract.enum.v3.PurchaseItemType
-	(enum.UserEmployeeDepartment)(0),           // 75: contract.enum.UserEmployeeDepartment
-	(v31.PurchaseMove)(0),                      // 76: contract.enum.v3.PurchaseMove
-	(v31.PurchaseFundingSource)(0),             // 77: contract.enum.v3.PurchaseFundingSource
-	(v31.PurchaseLaw)(0),                       // 78: contract.enum.v3.PurchaseLaw
-	(v31.PurchaseMethod)(0),                    // 79: contract.enum.v3.PurchaseMethod
-	(*timestamppb.Timestamp)(nil),              // 80: google.protobuf.Timestamp
-	(v31.PurchaseDocumentKind)(0),              // 81: contract.enum.v3.PurchaseDocumentKind
-	(v31.PurchaseCommissionDecision)(0),        // 82: contract.enum.v3.PurchaseCommissionDecision
-	(v31.PurchasePlanType)(0),                  // 83: contract.enum.v3.PurchasePlanType
-	(*v3.PurchaseCodeSuggestion)(nil),          // 84: contract.entity.v3.PurchaseCodeSuggestion
-	(*v3.PurchaseEmployee)(nil),                // 85: contract.entity.v3.PurchaseEmployee
-	(*v3.PurchaseActivity)(nil),                // 86: contract.entity.v3.PurchaseActivity
+	(*PurchaseLotStatusSetRequest)(nil),        // 32: contract.service.v3.PurchaseLotStatusSetRequest
+	(*PurchaseLotStatusSetResponse)(nil),       // 33: contract.service.v3.PurchaseLotStatusSetResponse
+	(*PurchaseQuotationCreateRequest)(nil),     // 34: contract.service.v3.PurchaseQuotationCreateRequest
+	(*PurchaseQuotationCreateResponse)(nil),    // 35: contract.service.v3.PurchaseQuotationCreateResponse
+	(*PurchaseQuotationDeleteRequest)(nil),     // 36: contract.service.v3.PurchaseQuotationDeleteRequest
+	(*PurchaseQuotationDeleteResponse)(nil),    // 37: contract.service.v3.PurchaseQuotationDeleteResponse
+	(*PurchaseQuotationFileFetchRequest)(nil),  // 38: contract.service.v3.PurchaseQuotationFileFetchRequest
+	(*PurchaseQuotationFileFetchResponse)(nil), // 39: contract.service.v3.PurchaseQuotationFileFetchResponse
+	(*PurchaseDocumentCreateRequest)(nil),      // 40: contract.service.v3.PurchaseDocumentCreateRequest
+	(*PurchaseDocumentCreateResponse)(nil),     // 41: contract.service.v3.PurchaseDocumentCreateResponse
+	(*PurchaseDocumentDeleteRequest)(nil),      // 42: contract.service.v3.PurchaseDocumentDeleteRequest
+	(*PurchaseDocumentDeleteResponse)(nil),     // 43: contract.service.v3.PurchaseDocumentDeleteResponse
+	(*PurchaseDocumentFileFetchRequest)(nil),   // 44: contract.service.v3.PurchaseDocumentFileFetchRequest
+	(*PurchaseDocumentFileFetchResponse)(nil),  // 45: contract.service.v3.PurchaseDocumentFileFetchResponse
+	(*PurchaseProtocolCreateRequest)(nil),      // 46: contract.service.v3.PurchaseProtocolCreateRequest
+	(*PurchaseProtocolDecisionInput)(nil),      // 47: contract.service.v3.PurchaseProtocolDecisionInput
+	(*PurchaseProtocolCreateResponse)(nil),     // 48: contract.service.v3.PurchaseProtocolCreateResponse
+	(*PurchaseProtocolUpdateRequest)(nil),      // 49: contract.service.v3.PurchaseProtocolUpdateRequest
+	(*PurchaseProtocolUpdateResponse)(nil),     // 50: contract.service.v3.PurchaseProtocolUpdateResponse
+	(*PurchaseProtocolFileFetchRequest)(nil),   // 51: contract.service.v3.PurchaseProtocolFileFetchRequest
+	(*PurchaseProtocolFileFetchResponse)(nil),  // 52: contract.service.v3.PurchaseProtocolFileFetchResponse
+	(*PurchaseCodeSuggestFetchRequest)(nil),    // 53: contract.service.v3.PurchaseCodeSuggestFetchRequest
+	(*PurchaseCodeSuggestFetchResponse)(nil),   // 54: contract.service.v3.PurchaseCodeSuggestFetchResponse
+	(*PurchaseEmployeeFetchRequest)(nil),       // 55: contract.service.v3.PurchaseEmployeeFetchRequest
+	(*PurchaseEmployeeFetchResponse)(nil),      // 56: contract.service.v3.PurchaseEmployeeFetchResponse
+	(*PurchaseActivityFetchRequest)(nil),       // 57: contract.service.v3.PurchaseActivityFetchRequest
+	(*PurchaseActivityFetchResponse)(nil),      // 58: contract.service.v3.PurchaseActivityFetchResponse
+	(*PurchaseCuratorSaveRequest)(nil),         // 59: contract.service.v3.PurchaseCuratorSaveRequest
+	(*PurchaseCuratorSaveResponse)(nil),        // 60: contract.service.v3.PurchaseCuratorSaveResponse
+	(*PurchaseCuratorDeleteRequest)(nil),       // 61: contract.service.v3.PurchaseCuratorDeleteRequest
+	(*PurchaseCuratorDeleteResponse)(nil),      // 62: contract.service.v3.PurchaseCuratorDeleteResponse
+	(*PurchaseDepartmentSaveRequest)(nil),      // 63: contract.service.v3.PurchaseDepartmentSaveRequest
+	(*PurchaseDepartmentSaveResponse)(nil),     // 64: contract.service.v3.PurchaseDepartmentSaveResponse
+	(*PurchaseCategorySaveRequest)(nil),        // 65: contract.service.v3.PurchaseCategorySaveRequest
+	(*PurchaseCategorySaveResponse)(nil),       // 66: contract.service.v3.PurchaseCategorySaveResponse
+	(*PurchaseCategoryDeleteRequest)(nil),      // 67: contract.service.v3.PurchaseCategoryDeleteRequest
+	(*PurchaseCategoryDeleteResponse)(nil),     // 68: contract.service.v3.PurchaseCategoryDeleteResponse
+	(*v3.PurchaseRequest)(nil),                 // 69: contract.entity.v3.PurchaseRequest
+	(*v3.PurchaseLot)(nil),                     // 70: contract.entity.v3.PurchaseLot
+	(*v3.PurchaseProtocol)(nil),                // 71: contract.entity.v3.PurchaseProtocol
+	(*v3.PurchaseCurator)(nil),                 // 72: contract.entity.v3.PurchaseCurator
+	(*v3.PurchaseDepartment)(nil),              // 73: contract.entity.v3.PurchaseDepartment
+	(*v3.PurchaseCategory)(nil),                // 74: contract.entity.v3.PurchaseCategory
+	(*v3.PurchaseMe)(nil),                      // 75: contract.entity.v3.PurchaseMe
+	(v31.PurchaseItemType)(0),                  // 76: contract.enum.v3.PurchaseItemType
+	(enum.UserEmployeeDepartment)(0),           // 77: contract.enum.UserEmployeeDepartment
+	(v31.PurchaseMove)(0),                      // 78: contract.enum.v3.PurchaseMove
+	(v31.PurchaseFundingSource)(0),             // 79: contract.enum.v3.PurchaseFundingSource
+	(v31.PurchaseLaw)(0),                       // 80: contract.enum.v3.PurchaseLaw
+	(v31.PurchaseMethod)(0),                    // 81: contract.enum.v3.PurchaseMethod
+	(*timestamppb.Timestamp)(nil),              // 82: google.protobuf.Timestamp
+	(v31.PurchaseLotStatus)(0),                 // 83: contract.enum.v3.PurchaseLotStatus
+	(v31.PurchasePlanType)(0),                  // 84: contract.enum.v3.PurchasePlanType
+	(v31.PurchaseDocumentKind)(0),              // 85: contract.enum.v3.PurchaseDocumentKind
+	(v31.PurchaseCommissionDecision)(0),        // 86: contract.enum.v3.PurchaseCommissionDecision
+	(*v3.PurchaseCodeSuggestion)(nil),          // 87: contract.entity.v3.PurchaseCodeSuggestion
+	(*v3.PurchaseEmployee)(nil),                // 88: contract.entity.v3.PurchaseEmployee
+	(*v3.PurchaseActivity)(nil),                // 89: contract.entity.v3.PurchaseActivity
 }
 var file_fesmu_service_v3_purchase_service_proto_depIdxs = []int32{
-	67, // 0: contract.service.v3.PurchaseOverviewFetchResponse.requests:type_name -> contract.entity.v3.PurchaseRequest
-	68, // 1: contract.service.v3.PurchaseOverviewFetchResponse.lots:type_name -> contract.entity.v3.PurchaseLot
-	69, // 2: contract.service.v3.PurchaseOverviewFetchResponse.protocols:type_name -> contract.entity.v3.PurchaseProtocol
-	70, // 3: contract.service.v3.PurchaseOverviewFetchResponse.curators:type_name -> contract.entity.v3.PurchaseCurator
-	71, // 4: contract.service.v3.PurchaseOverviewFetchResponse.departments:type_name -> contract.entity.v3.PurchaseDepartment
-	72, // 5: contract.service.v3.PurchaseOverviewFetchResponse.categories:type_name -> contract.entity.v3.PurchaseCategory
-	73, // 6: contract.service.v3.PurchaseOverviewFetchResponse.me:type_name -> contract.entity.v3.PurchaseMe
-	74, // 7: contract.service.v3.PurchaseRequestCreateRequest.item_type:type_name -> contract.enum.v3.PurchaseItemType
-	75, // 8: contract.service.v3.PurchaseRequestCreateRequest.department:type_name -> contract.enum.UserEmployeeDepartment
-	74, // 9: contract.service.v3.PurchaseRequestUpdateRequest.item_type:type_name -> contract.enum.v3.PurchaseItemType
-	76, // 10: contract.service.v3.PurchaseRequestMoveRequest.move:type_name -> contract.enum.v3.PurchaseMove
-	75, // 11: contract.service.v3.PurchaseRequestMoveRequest.implementing_department:type_name -> contract.enum.UserEmployeeDepartment
+	69, // 0: contract.service.v3.PurchaseOverviewFetchResponse.requests:type_name -> contract.entity.v3.PurchaseRequest
+	70, // 1: contract.service.v3.PurchaseOverviewFetchResponse.lots:type_name -> contract.entity.v3.PurchaseLot
+	71, // 2: contract.service.v3.PurchaseOverviewFetchResponse.protocols:type_name -> contract.entity.v3.PurchaseProtocol
+	72, // 3: contract.service.v3.PurchaseOverviewFetchResponse.curators:type_name -> contract.entity.v3.PurchaseCurator
+	73, // 4: contract.service.v3.PurchaseOverviewFetchResponse.departments:type_name -> contract.entity.v3.PurchaseDepartment
+	74, // 5: contract.service.v3.PurchaseOverviewFetchResponse.categories:type_name -> contract.entity.v3.PurchaseCategory
+	75, // 6: contract.service.v3.PurchaseOverviewFetchResponse.me:type_name -> contract.entity.v3.PurchaseMe
+	76, // 7: contract.service.v3.PurchaseRequestCreateRequest.item_type:type_name -> contract.enum.v3.PurchaseItemType
+	77, // 8: contract.service.v3.PurchaseRequestCreateRequest.department:type_name -> contract.enum.UserEmployeeDepartment
+	76, // 9: contract.service.v3.PurchaseRequestUpdateRequest.item_type:type_name -> contract.enum.v3.PurchaseItemType
+	78, // 10: contract.service.v3.PurchaseRequestMoveRequest.move:type_name -> contract.enum.v3.PurchaseMove
+	77, // 11: contract.service.v3.PurchaseRequestMoveRequest.implementing_department:type_name -> contract.enum.UserEmployeeDepartment
 	19, // 12: contract.service.v3.PurchaseLotUpdateRequest.content:type_name -> contract.service.v3.PurchaseLotContentPatch
 	20, // 13: contract.service.v3.PurchaseLotUpdateRequest.curator:type_name -> contract.service.v3.PurchaseLotCuratorPatch
 	21, // 14: contract.service.v3.PurchaseLotUpdateRequest.budget:type_name -> contract.service.v3.PurchaseLotBudgetPatch
@@ -4357,89 +4528,94 @@ var file_fesmu_service_v3_purchase_service_proto_depIdxs = []int32{
 	26, // 19: contract.service.v3.PurchaseLotUpdateRequest.inventory:type_name -> contract.service.v3.PurchaseLotInventoryPatch
 	27, // 20: contract.service.v3.PurchaseLotUpdateRequest.deadline:type_name -> contract.service.v3.PurchaseLotDeadlinePatch
 	28, // 21: contract.service.v3.PurchaseLotUpdateRequest.review:type_name -> contract.service.v3.PurchaseLotReviewPatch
-	77, // 22: contract.service.v3.PurchaseLotBudgetPatch.funding_source:type_name -> contract.enum.v3.PurchaseFundingSource
-	78, // 23: contract.service.v3.PurchaseLotLawPatch.law:type_name -> contract.enum.v3.PurchaseLaw
-	79, // 24: contract.service.v3.PurchaseLotLawPatch.method:type_name -> contract.enum.v3.PurchaseMethod
-	80, // 25: contract.service.v3.PurchaseLotExecutionPatch.notice_at:type_name -> google.protobuf.Timestamp
-	80, // 26: contract.service.v3.PurchaseLotExecutionPatch.contract_at:type_name -> google.protobuf.Timestamp
-	80, // 27: contract.service.v3.PurchaseLotExecutionPatch.delivery_due:type_name -> google.protobuf.Timestamp
-	80, // 28: contract.service.v3.PurchaseLotExecutionPatch.delivered_at:type_name -> google.protobuf.Timestamp
-	80, // 29: contract.service.v3.PurchaseLotAcceptancePatch.accepted_at:type_name -> google.protobuf.Timestamp
-	80, // 30: contract.service.v3.PurchaseLotDeadlinePatch.due_at:type_name -> google.protobuf.Timestamp
-	76, // 31: contract.service.v3.PurchaseLotMoveRequest.move:type_name -> contract.enum.v3.PurchaseMove
-	81, // 32: contract.service.v3.PurchaseDocumentCreateRequest.kind:type_name -> contract.enum.v3.PurchaseDocumentKind
-	80, // 33: contract.service.v3.PurchaseProtocolCreateRequest.held_at:type_name -> google.protobuf.Timestamp
-	45, // 34: contract.service.v3.PurchaseProtocolCreateRequest.decisions:type_name -> contract.service.v3.PurchaseProtocolDecisionInput
-	82, // 35: contract.service.v3.PurchaseProtocolDecisionInput.decision:type_name -> contract.enum.v3.PurchaseCommissionDecision
-	83, // 36: contract.service.v3.PurchaseProtocolDecisionInput.plan_type:type_name -> contract.enum.v3.PurchasePlanType
-	80, // 37: contract.service.v3.PurchaseProtocolUpdateRequest.held_at:type_name -> google.protobuf.Timestamp
-	84, // 38: contract.service.v3.PurchaseCodeSuggestFetchResponse.suggestion:type_name -> contract.entity.v3.PurchaseCodeSuggestion
-	75, // 39: contract.service.v3.PurchaseEmployeeFetchRequest.department:type_name -> contract.enum.UserEmployeeDepartment
-	85, // 40: contract.service.v3.PurchaseEmployeeFetchResponse.list:type_name -> contract.entity.v3.PurchaseEmployee
-	86, // 41: contract.service.v3.PurchaseActivityFetchResponse.list:type_name -> contract.entity.v3.PurchaseActivity
-	75, // 42: contract.service.v3.PurchaseDepartmentSaveRequest.department:type_name -> contract.enum.UserEmployeeDepartment
-	75, // 43: contract.service.v3.PurchaseCategorySaveRequest.implementing_department:type_name -> contract.enum.UserEmployeeDepartment
-	0,  // 44: contract.service.v3.PurchaseService.PurchaseOverviewFetch:input_type -> contract.service.v3.PurchaseOverviewFetchRequest
-	2,  // 45: contract.service.v3.PurchaseService.PurchaseRequestCreate:input_type -> contract.service.v3.PurchaseRequestCreateRequest
-	4,  // 46: contract.service.v3.PurchaseService.PurchaseRequestUpdate:input_type -> contract.service.v3.PurchaseRequestUpdateRequest
-	6,  // 47: contract.service.v3.PurchaseService.PurchaseRequestDelete:input_type -> contract.service.v3.PurchaseRequestDeleteRequest
-	8,  // 48: contract.service.v3.PurchaseService.PurchaseRequestMove:input_type -> contract.service.v3.PurchaseRequestMoveRequest
-	10, // 49: contract.service.v3.PurchaseService.PurchaseRequestMerge:input_type -> contract.service.v3.PurchaseRequestMergeRequest
-	12, // 50: contract.service.v3.PurchaseService.PurchaseLotCreate:input_type -> contract.service.v3.PurchaseLotCreateRequest
-	14, // 51: contract.service.v3.PurchaseService.PurchaseLotRequests:input_type -> contract.service.v3.PurchaseLotRequestsRequest
-	16, // 52: contract.service.v3.PurchaseService.PurchaseLotDisband:input_type -> contract.service.v3.PurchaseLotDisbandRequest
-	18, // 53: contract.service.v3.PurchaseService.PurchaseLotUpdate:input_type -> contract.service.v3.PurchaseLotUpdateRequest
-	30, // 54: contract.service.v3.PurchaseService.PurchaseLotMove:input_type -> contract.service.v3.PurchaseLotMoveRequest
-	32, // 55: contract.service.v3.PurchaseService.PurchaseQuotationCreate:input_type -> contract.service.v3.PurchaseQuotationCreateRequest
-	34, // 56: contract.service.v3.PurchaseService.PurchaseQuotationDelete:input_type -> contract.service.v3.PurchaseQuotationDeleteRequest
-	36, // 57: contract.service.v3.PurchaseService.PurchaseQuotationFileFetch:input_type -> contract.service.v3.PurchaseQuotationFileFetchRequest
-	38, // 58: contract.service.v3.PurchaseService.PurchaseDocumentCreate:input_type -> contract.service.v3.PurchaseDocumentCreateRequest
-	40, // 59: contract.service.v3.PurchaseService.PurchaseDocumentDelete:input_type -> contract.service.v3.PurchaseDocumentDeleteRequest
-	42, // 60: contract.service.v3.PurchaseService.PurchaseDocumentFileFetch:input_type -> contract.service.v3.PurchaseDocumentFileFetchRequest
-	44, // 61: contract.service.v3.PurchaseService.PurchaseProtocolCreate:input_type -> contract.service.v3.PurchaseProtocolCreateRequest
-	47, // 62: contract.service.v3.PurchaseService.PurchaseProtocolUpdate:input_type -> contract.service.v3.PurchaseProtocolUpdateRequest
-	49, // 63: contract.service.v3.PurchaseService.PurchaseProtocolFileFetch:input_type -> contract.service.v3.PurchaseProtocolFileFetchRequest
-	51, // 64: contract.service.v3.PurchaseService.PurchaseCodeSuggestFetch:input_type -> contract.service.v3.PurchaseCodeSuggestFetchRequest
-	53, // 65: contract.service.v3.PurchaseService.PurchaseEmployeeFetch:input_type -> contract.service.v3.PurchaseEmployeeFetchRequest
-	55, // 66: contract.service.v3.PurchaseService.PurchaseActivityFetch:input_type -> contract.service.v3.PurchaseActivityFetchRequest
-	57, // 67: contract.service.v3.PurchaseService.PurchaseCuratorSave:input_type -> contract.service.v3.PurchaseCuratorSaveRequest
-	59, // 68: contract.service.v3.PurchaseService.PurchaseCuratorDelete:input_type -> contract.service.v3.PurchaseCuratorDeleteRequest
-	61, // 69: contract.service.v3.PurchaseService.PurchaseDepartmentSave:input_type -> contract.service.v3.PurchaseDepartmentSaveRequest
-	63, // 70: contract.service.v3.PurchaseService.PurchaseCategorySave:input_type -> contract.service.v3.PurchaseCategorySaveRequest
-	65, // 71: contract.service.v3.PurchaseService.PurchaseCategoryDelete:input_type -> contract.service.v3.PurchaseCategoryDeleteRequest
-	1,  // 72: contract.service.v3.PurchaseService.PurchaseOverviewFetch:output_type -> contract.service.v3.PurchaseOverviewFetchResponse
-	3,  // 73: contract.service.v3.PurchaseService.PurchaseRequestCreate:output_type -> contract.service.v3.PurchaseRequestCreateResponse
-	5,  // 74: contract.service.v3.PurchaseService.PurchaseRequestUpdate:output_type -> contract.service.v3.PurchaseRequestUpdateResponse
-	7,  // 75: contract.service.v3.PurchaseService.PurchaseRequestDelete:output_type -> contract.service.v3.PurchaseRequestDeleteResponse
-	9,  // 76: contract.service.v3.PurchaseService.PurchaseRequestMove:output_type -> contract.service.v3.PurchaseRequestMoveResponse
-	11, // 77: contract.service.v3.PurchaseService.PurchaseRequestMerge:output_type -> contract.service.v3.PurchaseRequestMergeResponse
-	13, // 78: contract.service.v3.PurchaseService.PurchaseLotCreate:output_type -> contract.service.v3.PurchaseLotCreateResponse
-	15, // 79: contract.service.v3.PurchaseService.PurchaseLotRequests:output_type -> contract.service.v3.PurchaseLotRequestsResponse
-	17, // 80: contract.service.v3.PurchaseService.PurchaseLotDisband:output_type -> contract.service.v3.PurchaseLotDisbandResponse
-	29, // 81: contract.service.v3.PurchaseService.PurchaseLotUpdate:output_type -> contract.service.v3.PurchaseLotUpdateResponse
-	31, // 82: contract.service.v3.PurchaseService.PurchaseLotMove:output_type -> contract.service.v3.PurchaseLotMoveResponse
-	33, // 83: contract.service.v3.PurchaseService.PurchaseQuotationCreate:output_type -> contract.service.v3.PurchaseQuotationCreateResponse
-	35, // 84: contract.service.v3.PurchaseService.PurchaseQuotationDelete:output_type -> contract.service.v3.PurchaseQuotationDeleteResponse
-	37, // 85: contract.service.v3.PurchaseService.PurchaseQuotationFileFetch:output_type -> contract.service.v3.PurchaseQuotationFileFetchResponse
-	39, // 86: contract.service.v3.PurchaseService.PurchaseDocumentCreate:output_type -> contract.service.v3.PurchaseDocumentCreateResponse
-	41, // 87: contract.service.v3.PurchaseService.PurchaseDocumentDelete:output_type -> contract.service.v3.PurchaseDocumentDeleteResponse
-	43, // 88: contract.service.v3.PurchaseService.PurchaseDocumentFileFetch:output_type -> contract.service.v3.PurchaseDocumentFileFetchResponse
-	46, // 89: contract.service.v3.PurchaseService.PurchaseProtocolCreate:output_type -> contract.service.v3.PurchaseProtocolCreateResponse
-	48, // 90: contract.service.v3.PurchaseService.PurchaseProtocolUpdate:output_type -> contract.service.v3.PurchaseProtocolUpdateResponse
-	50, // 91: contract.service.v3.PurchaseService.PurchaseProtocolFileFetch:output_type -> contract.service.v3.PurchaseProtocolFileFetchResponse
-	52, // 92: contract.service.v3.PurchaseService.PurchaseCodeSuggestFetch:output_type -> contract.service.v3.PurchaseCodeSuggestFetchResponse
-	54, // 93: contract.service.v3.PurchaseService.PurchaseEmployeeFetch:output_type -> contract.service.v3.PurchaseEmployeeFetchResponse
-	56, // 94: contract.service.v3.PurchaseService.PurchaseActivityFetch:output_type -> contract.service.v3.PurchaseActivityFetchResponse
-	58, // 95: contract.service.v3.PurchaseService.PurchaseCuratorSave:output_type -> contract.service.v3.PurchaseCuratorSaveResponse
-	60, // 96: contract.service.v3.PurchaseService.PurchaseCuratorDelete:output_type -> contract.service.v3.PurchaseCuratorDeleteResponse
-	62, // 97: contract.service.v3.PurchaseService.PurchaseDepartmentSave:output_type -> contract.service.v3.PurchaseDepartmentSaveResponse
-	64, // 98: contract.service.v3.PurchaseService.PurchaseCategorySave:output_type -> contract.service.v3.PurchaseCategorySaveResponse
-	66, // 99: contract.service.v3.PurchaseService.PurchaseCategoryDelete:output_type -> contract.service.v3.PurchaseCategoryDeleteResponse
-	72, // [72:100] is the sub-list for method output_type
-	44, // [44:72] is the sub-list for method input_type
-	44, // [44:44] is the sub-list for extension type_name
-	44, // [44:44] is the sub-list for extension extendee
-	0,  // [0:44] is the sub-list for field type_name
+	79, // 22: contract.service.v3.PurchaseLotBudgetPatch.funding_source:type_name -> contract.enum.v3.PurchaseFundingSource
+	80, // 23: contract.service.v3.PurchaseLotLawPatch.law:type_name -> contract.enum.v3.PurchaseLaw
+	81, // 24: contract.service.v3.PurchaseLotLawPatch.method:type_name -> contract.enum.v3.PurchaseMethod
+	82, // 25: contract.service.v3.PurchaseLotExecutionPatch.notice_at:type_name -> google.protobuf.Timestamp
+	82, // 26: contract.service.v3.PurchaseLotExecutionPatch.contract_at:type_name -> google.protobuf.Timestamp
+	82, // 27: contract.service.v3.PurchaseLotExecutionPatch.delivery_due:type_name -> google.protobuf.Timestamp
+	82, // 28: contract.service.v3.PurchaseLotExecutionPatch.delivered_at:type_name -> google.protobuf.Timestamp
+	82, // 29: contract.service.v3.PurchaseLotAcceptancePatch.accepted_at:type_name -> google.protobuf.Timestamp
+	82, // 30: contract.service.v3.PurchaseLotDeadlinePatch.due_at:type_name -> google.protobuf.Timestamp
+	78, // 31: contract.service.v3.PurchaseLotMoveRequest.move:type_name -> contract.enum.v3.PurchaseMove
+	83, // 32: contract.service.v3.PurchaseLotStatusSetRequest.status:type_name -> contract.enum.v3.PurchaseLotStatus
+	84, // 33: contract.service.v3.PurchaseLotStatusSetRequest.plan_type:type_name -> contract.enum.v3.PurchasePlanType
+	76, // 34: contract.service.v3.PurchaseLotStatusSetRequest.item_type:type_name -> contract.enum.v3.PurchaseItemType
+	85, // 35: contract.service.v3.PurchaseDocumentCreateRequest.kind:type_name -> contract.enum.v3.PurchaseDocumentKind
+	82, // 36: contract.service.v3.PurchaseProtocolCreateRequest.held_at:type_name -> google.protobuf.Timestamp
+	47, // 37: contract.service.v3.PurchaseProtocolCreateRequest.decisions:type_name -> contract.service.v3.PurchaseProtocolDecisionInput
+	86, // 38: contract.service.v3.PurchaseProtocolDecisionInput.decision:type_name -> contract.enum.v3.PurchaseCommissionDecision
+	84, // 39: contract.service.v3.PurchaseProtocolDecisionInput.plan_type:type_name -> contract.enum.v3.PurchasePlanType
+	82, // 40: contract.service.v3.PurchaseProtocolUpdateRequest.held_at:type_name -> google.protobuf.Timestamp
+	87, // 41: contract.service.v3.PurchaseCodeSuggestFetchResponse.suggestion:type_name -> contract.entity.v3.PurchaseCodeSuggestion
+	77, // 42: contract.service.v3.PurchaseEmployeeFetchRequest.department:type_name -> contract.enum.UserEmployeeDepartment
+	88, // 43: contract.service.v3.PurchaseEmployeeFetchResponse.list:type_name -> contract.entity.v3.PurchaseEmployee
+	89, // 44: contract.service.v3.PurchaseActivityFetchResponse.list:type_name -> contract.entity.v3.PurchaseActivity
+	77, // 45: contract.service.v3.PurchaseDepartmentSaveRequest.department:type_name -> contract.enum.UserEmployeeDepartment
+	77, // 46: contract.service.v3.PurchaseCategorySaveRequest.implementing_department:type_name -> contract.enum.UserEmployeeDepartment
+	0,  // 47: contract.service.v3.PurchaseService.PurchaseOverviewFetch:input_type -> contract.service.v3.PurchaseOverviewFetchRequest
+	2,  // 48: contract.service.v3.PurchaseService.PurchaseRequestCreate:input_type -> contract.service.v3.PurchaseRequestCreateRequest
+	4,  // 49: contract.service.v3.PurchaseService.PurchaseRequestUpdate:input_type -> contract.service.v3.PurchaseRequestUpdateRequest
+	6,  // 50: contract.service.v3.PurchaseService.PurchaseRequestDelete:input_type -> contract.service.v3.PurchaseRequestDeleteRequest
+	8,  // 51: contract.service.v3.PurchaseService.PurchaseRequestMove:input_type -> contract.service.v3.PurchaseRequestMoveRequest
+	10, // 52: contract.service.v3.PurchaseService.PurchaseRequestMerge:input_type -> contract.service.v3.PurchaseRequestMergeRequest
+	12, // 53: contract.service.v3.PurchaseService.PurchaseLotCreate:input_type -> contract.service.v3.PurchaseLotCreateRequest
+	14, // 54: contract.service.v3.PurchaseService.PurchaseLotRequests:input_type -> contract.service.v3.PurchaseLotRequestsRequest
+	16, // 55: contract.service.v3.PurchaseService.PurchaseLotDisband:input_type -> contract.service.v3.PurchaseLotDisbandRequest
+	18, // 56: contract.service.v3.PurchaseService.PurchaseLotUpdate:input_type -> contract.service.v3.PurchaseLotUpdateRequest
+	30, // 57: contract.service.v3.PurchaseService.PurchaseLotMove:input_type -> contract.service.v3.PurchaseLotMoveRequest
+	32, // 58: contract.service.v3.PurchaseService.PurchaseLotStatusSet:input_type -> contract.service.v3.PurchaseLotStatusSetRequest
+	34, // 59: contract.service.v3.PurchaseService.PurchaseQuotationCreate:input_type -> contract.service.v3.PurchaseQuotationCreateRequest
+	36, // 60: contract.service.v3.PurchaseService.PurchaseQuotationDelete:input_type -> contract.service.v3.PurchaseQuotationDeleteRequest
+	38, // 61: contract.service.v3.PurchaseService.PurchaseQuotationFileFetch:input_type -> contract.service.v3.PurchaseQuotationFileFetchRequest
+	40, // 62: contract.service.v3.PurchaseService.PurchaseDocumentCreate:input_type -> contract.service.v3.PurchaseDocumentCreateRequest
+	42, // 63: contract.service.v3.PurchaseService.PurchaseDocumentDelete:input_type -> contract.service.v3.PurchaseDocumentDeleteRequest
+	44, // 64: contract.service.v3.PurchaseService.PurchaseDocumentFileFetch:input_type -> contract.service.v3.PurchaseDocumentFileFetchRequest
+	46, // 65: contract.service.v3.PurchaseService.PurchaseProtocolCreate:input_type -> contract.service.v3.PurchaseProtocolCreateRequest
+	49, // 66: contract.service.v3.PurchaseService.PurchaseProtocolUpdate:input_type -> contract.service.v3.PurchaseProtocolUpdateRequest
+	51, // 67: contract.service.v3.PurchaseService.PurchaseProtocolFileFetch:input_type -> contract.service.v3.PurchaseProtocolFileFetchRequest
+	53, // 68: contract.service.v3.PurchaseService.PurchaseCodeSuggestFetch:input_type -> contract.service.v3.PurchaseCodeSuggestFetchRequest
+	55, // 69: contract.service.v3.PurchaseService.PurchaseEmployeeFetch:input_type -> contract.service.v3.PurchaseEmployeeFetchRequest
+	57, // 70: contract.service.v3.PurchaseService.PurchaseActivityFetch:input_type -> contract.service.v3.PurchaseActivityFetchRequest
+	59, // 71: contract.service.v3.PurchaseService.PurchaseCuratorSave:input_type -> contract.service.v3.PurchaseCuratorSaveRequest
+	61, // 72: contract.service.v3.PurchaseService.PurchaseCuratorDelete:input_type -> contract.service.v3.PurchaseCuratorDeleteRequest
+	63, // 73: contract.service.v3.PurchaseService.PurchaseDepartmentSave:input_type -> contract.service.v3.PurchaseDepartmentSaveRequest
+	65, // 74: contract.service.v3.PurchaseService.PurchaseCategorySave:input_type -> contract.service.v3.PurchaseCategorySaveRequest
+	67, // 75: contract.service.v3.PurchaseService.PurchaseCategoryDelete:input_type -> contract.service.v3.PurchaseCategoryDeleteRequest
+	1,  // 76: contract.service.v3.PurchaseService.PurchaseOverviewFetch:output_type -> contract.service.v3.PurchaseOverviewFetchResponse
+	3,  // 77: contract.service.v3.PurchaseService.PurchaseRequestCreate:output_type -> contract.service.v3.PurchaseRequestCreateResponse
+	5,  // 78: contract.service.v3.PurchaseService.PurchaseRequestUpdate:output_type -> contract.service.v3.PurchaseRequestUpdateResponse
+	7,  // 79: contract.service.v3.PurchaseService.PurchaseRequestDelete:output_type -> contract.service.v3.PurchaseRequestDeleteResponse
+	9,  // 80: contract.service.v3.PurchaseService.PurchaseRequestMove:output_type -> contract.service.v3.PurchaseRequestMoveResponse
+	11, // 81: contract.service.v3.PurchaseService.PurchaseRequestMerge:output_type -> contract.service.v3.PurchaseRequestMergeResponse
+	13, // 82: contract.service.v3.PurchaseService.PurchaseLotCreate:output_type -> contract.service.v3.PurchaseLotCreateResponse
+	15, // 83: contract.service.v3.PurchaseService.PurchaseLotRequests:output_type -> contract.service.v3.PurchaseLotRequestsResponse
+	17, // 84: contract.service.v3.PurchaseService.PurchaseLotDisband:output_type -> contract.service.v3.PurchaseLotDisbandResponse
+	29, // 85: contract.service.v3.PurchaseService.PurchaseLotUpdate:output_type -> contract.service.v3.PurchaseLotUpdateResponse
+	31, // 86: contract.service.v3.PurchaseService.PurchaseLotMove:output_type -> contract.service.v3.PurchaseLotMoveResponse
+	33, // 87: contract.service.v3.PurchaseService.PurchaseLotStatusSet:output_type -> contract.service.v3.PurchaseLotStatusSetResponse
+	35, // 88: contract.service.v3.PurchaseService.PurchaseQuotationCreate:output_type -> contract.service.v3.PurchaseQuotationCreateResponse
+	37, // 89: contract.service.v3.PurchaseService.PurchaseQuotationDelete:output_type -> contract.service.v3.PurchaseQuotationDeleteResponse
+	39, // 90: contract.service.v3.PurchaseService.PurchaseQuotationFileFetch:output_type -> contract.service.v3.PurchaseQuotationFileFetchResponse
+	41, // 91: contract.service.v3.PurchaseService.PurchaseDocumentCreate:output_type -> contract.service.v3.PurchaseDocumentCreateResponse
+	43, // 92: contract.service.v3.PurchaseService.PurchaseDocumentDelete:output_type -> contract.service.v3.PurchaseDocumentDeleteResponse
+	45, // 93: contract.service.v3.PurchaseService.PurchaseDocumentFileFetch:output_type -> contract.service.v3.PurchaseDocumentFileFetchResponse
+	48, // 94: contract.service.v3.PurchaseService.PurchaseProtocolCreate:output_type -> contract.service.v3.PurchaseProtocolCreateResponse
+	50, // 95: contract.service.v3.PurchaseService.PurchaseProtocolUpdate:output_type -> contract.service.v3.PurchaseProtocolUpdateResponse
+	52, // 96: contract.service.v3.PurchaseService.PurchaseProtocolFileFetch:output_type -> contract.service.v3.PurchaseProtocolFileFetchResponse
+	54, // 97: contract.service.v3.PurchaseService.PurchaseCodeSuggestFetch:output_type -> contract.service.v3.PurchaseCodeSuggestFetchResponse
+	56, // 98: contract.service.v3.PurchaseService.PurchaseEmployeeFetch:output_type -> contract.service.v3.PurchaseEmployeeFetchResponse
+	58, // 99: contract.service.v3.PurchaseService.PurchaseActivityFetch:output_type -> contract.service.v3.PurchaseActivityFetchResponse
+	60, // 100: contract.service.v3.PurchaseService.PurchaseCuratorSave:output_type -> contract.service.v3.PurchaseCuratorSaveResponse
+	62, // 101: contract.service.v3.PurchaseService.PurchaseCuratorDelete:output_type -> contract.service.v3.PurchaseCuratorDeleteResponse
+	64, // 102: contract.service.v3.PurchaseService.PurchaseDepartmentSave:output_type -> contract.service.v3.PurchaseDepartmentSaveResponse
+	66, // 103: contract.service.v3.PurchaseService.PurchaseCategorySave:output_type -> contract.service.v3.PurchaseCategorySaveResponse
+	68, // 104: contract.service.v3.PurchaseService.PurchaseCategoryDelete:output_type -> contract.service.v3.PurchaseCategoryDeleteResponse
+	76, // [76:105] is the sub-list for method output_type
+	47, // [47:76] is the sub-list for method input_type
+	47, // [47:47] is the sub-list for extension type_name
+	47, // [47:47] is the sub-list for extension extendee
+	0,  // [0:47] is the sub-list for field type_name
 }
 
 func init() { file_fesmu_service_v3_purchase_service_proto_init() }
@@ -4465,7 +4641,7 @@ func file_fesmu_service_v3_purchase_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_fesmu_service_v3_purchase_service_proto_rawDesc), len(file_fesmu_service_v3_purchase_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   67,
+			NumMessages:   69,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
