@@ -62,7 +62,7 @@ panel-down:
 panel-logs:
 	@cd panel/plane-app && docker compose --env-file plane.env -f docker-compose.yaml logs -f --tail=100
 
-.PHONY: up down ps logs
+.PHONY: up deploy down ps logs
 
 # Обновить только веб и API ФЭФМУ после git pull; базы и остальные сервисы не перезапускаются.
 .PHONY: fesmu-update
@@ -84,6 +84,13 @@ up:
 	@$(MAKE) panel-up
 	@docker ps --format '{{.Names}}\t{{.Status}}' | sort
 	@df -h / | tail -1
+
+# Единая команда выкладки на проде: обновить main и пересобрать выбранные сервисы.
+# По умолчанию обновляет полный набор SERVICES; можно передать список:
+#   make deploy SERVICES="mdm auth sync fesmu"
+deploy:
+	@git pull --ff-only origin main
+	@$(MAKE) up SERVICES="$(SERVICES)"
 
 # Остановить и удалить контейнеры. Тома и папки баз остаются.
 down:
