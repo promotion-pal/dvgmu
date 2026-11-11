@@ -2,9 +2,11 @@
 *
 !packages/
 !packages/go/
+!packages/go/**
 !apps/
 !apps/fesmu/
 !apps/fesmu/api/
+!apps/fesmu/api/**
 apps/fesmu/api/storage
 apps/fesmu/api/db*
 apps/fesmu/api/dvgmu
