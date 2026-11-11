@@ -1,7 +1,12 @@
 # Сборка идёт из корня монорепо — пускаем в контекст только этот api и packages/go.
 *
-!packages/go
-!services/tickets/api
+!packages/
+!packages/go/
+!packages/go/**
+!services/
+!services/tickets/
+!services/tickets/api/
+!services/tickets/api/**
 services/tickets/api/storage
 services/tickets/api/db/postgres
 services/tickets/api/analytics

@@ -1,7 +1,12 @@
 # Сборка идёт из корня монорепо — пускаем в контекст только этот api и packages/go.
 *
-!packages/go
-!services/file/api
+!packages/
+!packages/go/
+!packages/go/**
+!services/
+!services/file/
+!services/file/api/
+!services/file/api/**
 services/file/api/db/postgres
 services/file/api/storage
 services/file/api/output

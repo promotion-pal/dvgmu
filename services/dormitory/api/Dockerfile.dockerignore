@@ -1,7 +1,12 @@
 # Сборка идёт из корня монорепо — пускаем в контекст только этот api и packages/go.
 *
-!packages/go
-!services/dormitory/api
+!packages/
+!packages/go/
+!packages/go/**
+!services/
+!services/dormitory/
+!services/dormitory/api/
+!services/dormitory/api/**
 services/dormitory/api/storage
 services/dormitory/api/dormitory
 services/dormitory/api/*.test
