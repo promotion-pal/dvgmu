@@ -47,12 +47,14 @@ dev-down:
 # Имена проектов, контейнеров и томов берутся из .env каждого сервиса (STAND).
 #   make up                 — собрать и запустить всё
 #   make up SERVICES=auth   — только эти сервисы (fesmu тоже по имени: SERVICES=fesmu)
+#   make up PANEL=1         — дополнительно запустить Plane
 #   make down / ps / logs S=auth
 SERVICES ?= mdm auth analytics tickets file notification sync dormitory mentor fesmu
+PANEL ?= 0
 
 .PHONY: panel-up panel-down panel-logs
 
-# Plane запускается отдельно или в конце общего make up.
+# Plane запускается отдельно; в make up он включается только с PANEL=1.
 panel-up:
 	@cd panel && ./setup.sh start
 
@@ -81,7 +83,7 @@ up:
 		fi; \
 		docker builder prune -af >/dev/null; \
 	done
-	@$(MAKE) panel-up
+	@if [ "$(PANEL)" = "1" ]; then $(MAKE) panel-up; fi
 	@docker ps --format '{{.Names}}\t{{.Status}}' | sort
 	@df -h / | tail -1
 
@@ -90,7 +92,7 @@ up:
 #   make deploy SERVICES="mdm auth sync fesmu"
 deploy:
 	@git pull --ff-only origin main
-	@$(MAKE) up SERVICES="$(SERVICES)"
+	@$(MAKE) up SERVICES="$(SERVICES)" PANEL="$(PANEL)"
 
 # Остановить и удалить контейнеры. Тома и папки баз остаются.
 down:
