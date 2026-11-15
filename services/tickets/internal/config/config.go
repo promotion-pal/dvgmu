@@ -29,39 +29,20 @@ type DatabaseConfig struct {
 }
 
 func MustLoad() *Config {
-	configPath := fetchConfigPath()
-	if configPath == "" {
-		panic("config path is empty")
-	}
-
-	return MustLoadPath(configPath)
-}
-
-func MustLoadPath(configPath string) *Config {
-	if _, err := os.Stat(configPath); os.IsNotExist(err) {
-		panic("config file does not exist: " + configPath)
-	}
-
-	var cfg Config
-
-	if err := cleanenv.ReadConfig(configPath, &cfg); err != nil {
-		panic("cannot read config: " + err.Error())
-	}
-
-	return &cfg
-}
-
-func fetchConfigPath() string {
-	var res string
-
-	if !flag.Parsed() {
-		flag.StringVar(&res, "config", "", "path to config file")
+	path := os.Getenv("CONFIG_PATH")
+	if path == "" {
+		flag.StringVar(&path, "config", "", "configuration file path")
 		flag.Parse()
 	}
-
-	if res == "" {
-		res = os.Getenv("CONFIG_PATH")
+	if path == "" {
+		path = "config/local.yaml"
 	}
-
-	return res
+	if _, err := os.Stat(path); err != nil {
+		panic("config file does not exist: " + path)
+	}
+	var cfg Config
+	if err := cleanenv.ReadConfig(path, &cfg); err != nil {
+		panic("cannot read config: " + err.Error())
+	}
+	return &cfg
 }

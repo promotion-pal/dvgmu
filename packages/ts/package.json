@@ -1,0 +1,13 @@
+{
+  "name": "@fesmu/contract",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./tickets/entity/ticket.entity_pb": "./tickets/entity/ticket.entity_pb.ts",
+    "./tickets/service/ticket.service_pb": "./tickets/service/ticket.service_pb.ts"
+  },
+  "dependencies": {
+    "@bufbuild/protobuf": "2.12.1"
+  }
+}

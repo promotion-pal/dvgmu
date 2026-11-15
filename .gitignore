@@ -7,16 +7,41 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# Dependencies and package-manager caches
+node_modules/
+.pnp.*
+.pnpm-store/
+.yarn/cache/
+.yarn/unplugged/
+
+# Build output and framework caches
+dist/
+dist-ssr/
+.next/
+.nuxt/
+.output/
+.turbo/
+.vercel/
+.vite/
+coverage/
+services/tickets/db/postgres/
+
+# Local environment and machine-specific files
+.env
+.env.*
+!.env.example
 *.local
+.DS_Store
+
+# TypeScript and Go build artifacts
+*.tsbuildinfo
+*.test
+*.out
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
 .idea
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj

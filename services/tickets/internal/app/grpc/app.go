@@ -9,12 +9,12 @@ import (
 	"time"
 
 	"connectrpc.com/grpcreflect"
+	"fesmu/contract/tickets/service/serviceconnect"
 	"github.com/rs/cors"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 
-	"fesmu/contract/tickets/service/serviceconnect"
-	"dvgmu/tickets/internal/grpc"
+	ticketgrpc "dvgmu/tickets/internal/grpc"
 )
 
 type App struct {
@@ -23,13 +23,13 @@ type App struct {
 	port       int
 }
 
-func New(
-	log *slog.Logger,
-	dormitoryController *grpc.TicketDormitoryController,
-	buildController *grpc.TicketBuildController,
-	port int,
-) *App {
+func New(log *slog.Logger, controller *ticketgrpc.TaskController, port int) *App {
 	mux := http.NewServeMux()
+	path, handler := serviceconnect.NewTaskServiceHandler(controller)
+	mux.Handle(path, handler)
+	reflector := grpcreflect.NewStaticReflector(serviceconnect.TaskServiceName)
+	mux.Handle(grpcreflect.NewHandlerV1(reflector))
+	mux.Handle(grpcreflect.NewHandlerV1Alpha(reflector))
 
 	corsHandler := cors.New(cors.Options{
 		AllowedOrigins: []string{
@@ -37,48 +37,25 @@ func New(
 			"http://localhost:5173",
 			"https://tickets.dvgmu.promotion-pal.ru",
 		},
-		AllowedMethods: []string{
-			"GET", "POST", "OPTIONS", "PUT", "DELETE",
-		},
+		AllowedMethods: []string{"POST", "OPTIONS"},
 		AllowedHeaders: []string{
-			"Connect-Protocol-Version",
 			"Content-Type",
-			"Authorization",
-			"Cookie",
+			"Connect-Protocol-Version",
+			"Grpc-Timeout",
 			"X-Grpc-Web",
 			"X-User-Agent",
 		},
-		ExposedHeaders: []string{
-			"Connect-Content-Encoding",
-			"Connect-Accept-Encoding",
-			"Grpc-Status",
-			"Grpc-Message",
-		},
-		AllowCredentials: true,
+		ExposedHeaders: []string{"Grpc-Status", "Grpc-Message", "Grpc-Status-Details-Bin"},
 	})
 
-	dormitoryPath, dormitoryConnectHandler := serviceconnect.NewTicketDormitoryServiceHandler(dormitoryController)
-	mux.Handle(dormitoryPath, dormitoryConnectHandler)
-
-	buildPath, buildConnectHandler := serviceconnect.NewTicketBuildServiceHandler(buildController)
-	mux.Handle(buildPath, buildConnectHandler)
-
-	reflector := grpcreflect.NewStaticReflector(
-		serviceconnect.TicketDormitoryServiceName,
-		serviceconnect.TicketBuildServiceName,
-	)
-	mux.Handle(grpcreflect.NewHandlerV1(reflector))
-	mux.Handle(grpcreflect.NewHandlerV1Alpha(reflector))
-
-	srv := &http.Server{
-		Addr:    fmt.Sprintf(":%d", port),
-		Handler: corsHandler.Handler(h2c.NewHandler(mux, &http2.Server{})),
-	}
-
 	return &App{
-		log:        log,
-		httpServer: srv,
-		port:       port,
+		log: log,
+		httpServer: &http.Server{
+			Addr:              fmt.Sprintf(":%d", port),
+			Handler:           corsHandler.Handler(h2c.NewHandler(mux, &http2.Server{})),
+			ReadHeaderTimeout: 5 * time.Second,
+		},
+		port: port,
 	}
 }
 
@@ -89,20 +66,17 @@ func (a *App) MustRun() {
 }
 
 func (a *App) Run() error {
-	const op = "grpcapp.Run"
-	a.log.Info("Connect RPC (gRPC/JSON) server started", slog.Int("port", a.port))
+	a.log.Info("tickets gRPC server started", slog.Int("port", a.port))
 	if err := a.httpServer.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
-		return fmt.Errorf("%s: %w", op, err)
+		return fmt.Errorf("run tickets server: %w", err)
 	}
 	return nil
 }
 
 func (a *App) Stop() {
-	const op = "grpcapp.Stop"
-	a.log.With(slog.String("op", op)).Info("stopping Connect RPC server", slog.Int("port", a.port))
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	if err := a.httpServer.Shutdown(ctx); err != nil {
-		a.log.Error("server forced to shutdown", slog.String("error", err.Error()))
+		a.log.Error("tickets server shutdown failed", slog.String("error", err.Error()))
 	}
 }
