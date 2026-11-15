@@ -2,15 +2,15 @@ services:
   dvgmu_apps_ticket_db:
     image: postgres:17
     environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: dvgmu_tickets_db
+      POSTGRES_USER: ${POSTGRES_USER:-root}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-dvgmu_tickets_db}
     ports:
-      - "5446:5432"
+      - "${POSTGRES_PORT:-5446}:5432"
     volumes:
       - tickets_pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U root -d dvgmu_tickets_db"]
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 5s
       timeout: 3s
       retries: 10
@@ -24,13 +24,13 @@ services:
       dvgmu_apps_ticket_db:
         condition: service_healthy
     ports:
-      - "4050:4050"
+      - "${TICKETS_GRPC_PORT:-4050}:4050"
     environment:
       DB_HOST: dvgmu_apps_ticket_db
       DB_PORT: "5432"
-      DB_USER: root
-      DB_PASSWORD: password
-      DB_NAME: dvgmu_tickets_db
+      DB_USER: ${POSTGRES_USER:-root}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      DB_NAME: ${POSTGRES_DB:-dvgmu_tickets_db}
       DB_SSLMODE: disable
       GRPC_PORT: "4050"
     restart: unless-stopped
