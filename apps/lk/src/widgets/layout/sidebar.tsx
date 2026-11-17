@@ -3,12 +3,14 @@ import { NavLink } from "react-router";
 import { AnimatePresence, domAnimation, LazyMotion, MotionConfig } from "motion/react";
 import * as m from "motion/react-m";
 import { ROUTER } from "@/shared/config/path";
+import { DEFAULT_USER_ID, useUserProvider } from "@/features/provider/user.provider";
 import {
   BookOpen,
   CircleHelp,
   ClipboardList,
   Command,
   FileText,
+  House,
   Menu,
   PanelLeftClose,
   PanelLeftOpen,
@@ -18,30 +20,43 @@ import {
 } from "lucide-react";
 
 const navigation = [
-  { title: "Мои задачи", icon: ClipboardList, href: ROUTER.PATH.TASKS },
+  { title: "Главная", icon: House, href: ROUTER.INDEX },
+  { title: "Мои задачи", icon: ClipboardList, href: ROUTER.TASKS },
 ];
 
 const workspaceItems = [
-  { title: "Обучение", icon: BookOpen, href: ROUTER.PATH.EDUCATION },
-  { title: "Документы", icon: FileText, href: ROUTER.PATH.DOCUMENTS },
+  { title: "Обучение", icon: BookOpen, href: ROUTER.EDUCATION },
+  { title: "Документы", icon: FileText, href: ROUTER.DOCUMENTS },
 ];
 
 export function Sidebar({ children }: { children: ReactNode }) {
+  const { user, status } = useUserProvider();
+  const me = useUserProvider((state) => state.me);
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(() => window.matchMedia("(max-width: 767px)").matches);
+  const [viewportWidth, setViewportWidth] = useState(() => window.innerWidth);
   const isDesktopCollapsed = collapsed && !isMobile;
-  const sidebarWidth = isDesktopCollapsed ? 72 : 256;
+  const sidebarWidth = isDesktopCollapsed ? 72 : isMobile ? Math.min(288, viewportWidth - 16) : 256;
+
+  useEffect(() => {
+    void me();
+  }, [me]);
 
   useEffect(() => {
     const media = window.matchMedia("(max-width: 767px)");
     const updateViewport = () => {
       setIsMobile(media.matches);
+      setViewportWidth(window.innerWidth);
       if (!media.matches) setMobileOpen(false);
     };
 
     media.addEventListener("change", updateViewport);
-    return () => media.removeEventListener("change", updateViewport);
+    window.addEventListener("resize", updateViewport);
+    return () => {
+      media.removeEventListener("change", updateViewport);
+      window.removeEventListener("resize", updateViewport);
+    };
   }, []);
 
   return (
@@ -153,23 +168,31 @@ export function Sidebar({ children }: { children: ReactNode }) {
             </nav>
 
             <footer className="shrink-0 border-t border-slate-100 p-3">
-              <div className={`flex items-center gap-3 rounded-lg px-2 py-2 ${isDesktopCollapsed ? "md:justify-center md:gap-0 md:px-0" : ""}`}>
-                <span className="grid size-8 shrink-0 place-items-center rounded-full bg-slate-100 text-slate-600">
+              <NavLink
+                className={`flex min-h-12 min-w-0 items-center gap-3 rounded-xl border border-slate-100 bg-slate-50 px-2.5 py-2 hover:bg-slate-100 ${isDesktopCollapsed ? "md:justify-center md:gap-0 md:border-0 md:bg-transparent md:px-0 md:hover:bg-transparent" : ""}`}
+                to={ROUTER.PROFILE}
+                title="Открыть профиль"
+              >
+                <span className="grid size-9 shrink-0 place-items-center rounded-full bg-white text-slate-600">
                   <UserRound aria-hidden="true" className="size-4" />
                 </span>
                 <SidebarLabel collapsed={isDesktopCollapsed} className="min-w-0 flex-1">
-                  <span className="block truncate text-sm font-medium text-slate-800">Профиль</span>
-                  <span className="block truncate text-xs text-slate-500">Личный кабинет</span>
+                  <span className="block truncate text-sm font-medium text-slate-800">
+                    {user ? `${user.firstName} ${user.lastName}` : status === "loading" ? "Загружаю профиль…" : "Профиль"}
+                  </span>
+                  <span className="block truncate text-xs text-slate-500">
+                    ID: {user?.id.toString() ?? DEFAULT_USER_ID.toString()}
+                  </span>
                 </SidebarLabel>
-              </div>
-              <div className={`mt-1 flex gap-1 ${isDesktopCollapsed ? "md:flex-col" : ""}`}>
-                <button className={`flex h-8 flex-1 cursor-not-allowed items-center gap-2 rounded-md px-2 text-xs text-slate-400 ${isDesktopCollapsed ? "md:w-full md:flex-none md:justify-center md:gap-0 md:px-0" : ""}`} disabled type="button" title="Раздел скоро появится">
+              </NavLink>
+              <div className={`mt-2 grid grid-cols-2 gap-1 ${isDesktopCollapsed ? "md:grid-cols-1" : ""}`}>
+                <button className={`flex h-9 min-w-0 cursor-not-allowed items-center justify-center gap-2 rounded-md px-2 text-xs text-slate-400 ${isDesktopCollapsed ? "md:w-full md:flex-none md:gap-0 md:px-0" : ""}`} disabled type="button" title="Раздел скоро появится">
                   <CircleHelp aria-hidden="true" className="size-4 shrink-0" />
-                  <SidebarLabel collapsed={isDesktopCollapsed}>Помощь</SidebarLabel>
+                  <SidebarLabel collapsed={isDesktopCollapsed} className="min-w-0">Помощь</SidebarLabel>
                 </button>
-                <button className={`flex h-8 flex-1 cursor-not-allowed items-center gap-2 rounded-md px-2 text-xs text-slate-400 ${isDesktopCollapsed ? "md:w-full md:flex-none md:justify-center md:gap-0 md:px-0" : ""}`} disabled type="button" title="Раздел скоро появится">
+                <button className={`flex h-9 min-w-0 cursor-not-allowed items-center justify-center gap-2 rounded-md px-2 text-xs text-slate-400 ${isDesktopCollapsed ? "md:w-full md:flex-none md:gap-0 md:px-0" : ""}`} disabled type="button" title="Раздел скоро появится">
                   <Settings2 aria-hidden="true" className="size-4 shrink-0" />
-                  <SidebarLabel collapsed={isDesktopCollapsed}>Настройки</SidebarLabel>
+                  <SidebarLabel collapsed={isDesktopCollapsed} className="min-w-0">Настройки</SidebarLabel>
                 </button>
               </div>
             </footer>

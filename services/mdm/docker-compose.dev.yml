@@ -1,0 +1,39 @@
+services:
+  dvgmu_mdm_db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: ${MDM_POSTGRES_USER:-root}
+      POSTGRES_PASSWORD: ${MDM_POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${MDM_POSTGRES_DB:-dvgmu_mdm_db}
+    ports:
+      - "${MDM_POSTGRES_PORT:-5447}:5432"
+    volumes:
+      - mdm_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  dvgmu_mdm_api:
+    build:
+      context: ../..
+      dockerfile: services/mdm/Dockerfile
+    command: ["./mdm", "--config=config/local.yaml"]
+    depends_on:
+      dvgmu_mdm_db:
+        condition: service_healthy
+    ports:
+      - "${MDM_GRPC_PORT:-4051}:4051"
+    environment:
+      DB_HOST: dvgmu_mdm_db
+      DB_PORT: "5432"
+      DB_USER: ${MDM_POSTGRES_USER:-root}
+      DB_PASSWORD: ${MDM_POSTGRES_PASSWORD:-password}
+      DB_NAME: ${MDM_POSTGRES_DB:-dvgmu_mdm_db}
+      DB_SSLMODE: disable
+      GRPC_PORT: "4051"
+    restart: unless-stopped
+
+volumes:
+  mdm_pgdata:

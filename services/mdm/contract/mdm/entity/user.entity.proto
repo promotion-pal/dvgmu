@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package contract.entity;
+
+option go_package = "entity;entity_pb";
+
+import "mdm/enum/user.enum.proto";
+import "google/protobuf/timestamp.proto";
+
+message User {
+    int64 id = 1;
+    string uuid = 2;
+    optional string ad_object_id = 3;
+
+    string first_name = 4;
+    string last_name = 5;
+    optional string patronymic = 6;
+    string email = 7;
+    optional string phone = 8;
+    contract.enum.UserStatus status = 9;
+    optional google.protobuf.Timestamp birthday = 10;
+    google.protobuf.Timestamp created_at = 11;
+    google.protobuf.Timestamp updated_at = 12;
+
+}
+
+message UserFull { User user = 1; }

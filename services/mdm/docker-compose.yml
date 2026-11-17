@@ -1,0 +1,44 @@
+services:
+  dvgmu_mdm_db:
+    container_name: dvgmu_mdm_db
+    image: postgres:17
+    environment:
+      POSTGRES_USER: ${MDM_POSTGRES_USER:-root}
+      POSTGRES_PASSWORD: ${MDM_POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${MDM_POSTGRES_DB:-dvgmu_mdm_db}
+    volumes:
+      - ./db/postgres:/var/lib/postgresql/data
+    networks:
+      - traefik-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  dvgmu_mdm_api:
+    container_name: dvgmu_mdm_api
+    build:
+      context: ../..
+      dockerfile: services/mdm/Dockerfile
+      network: host
+    depends_on:
+      dvgmu_mdm_db:
+        condition: service_healthy
+    environment:
+      DB_HOST: ${MDM_POSTGRES_HOST:-dvgmu_mdm_db}
+      DB_PORT: "5432"
+      DB_USER: ${MDM_POSTGRES_USER:-root}
+      DB_PASSWORD: ${MDM_POSTGRES_PASSWORD:-password}
+      DB_NAME: ${MDM_POSTGRES_DB:-dvgmu_mdm_db}
+      DB_SSLMODE: disable
+      GRPC_PORT: "4000"
+      GRPC_ALLOWED_ORIGINS: ${MDM_ALLOWED_ORIGINS:-https://lk.dvgmu.promotion-pal.ru}
+    networks:
+      - traefik-network
+    restart: unless-stopped
+
+networks:
+  traefik-network:
+    external: true

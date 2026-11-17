@@ -1,102 +1,66 @@
-import { useEffect } from "react";
+import { createClient } from "@connectrpc/connect";
+import { createGrpcWebTransport } from "@connectrpc/connect-web";
+import { UserService } from "@fesmu/contract/mdm/service/user.service_pb";
+import type { User } from "@fesmu/contract/mdm/entity/user.entity_pb";
 import { create } from "zustand";
-import { Code, ConnectError, createClient } from "@connectrpc/connect";
-import { UserService } from "@fesmu/contract/fesmu/service/v1/user.service_pb";
-import type { User } from "@fesmu/contract/fesmu/entity/v1/user.entity_pb";
-import { UserRole } from "@fesmu/contract/fesmu/enum/v1/user.enum_pb";
-import { connectTransport } from "@/shared/config/api";
-import { sessionState } from "@/shared/config/session";
+import { ENV } from "@/shared/config/env";
 
-const userClient = createClient(UserService, connectTransport);
+const userClient = createClient(
+  UserService,
+  createGrpcWebTransport({ baseUrl: ENV.MDM }),
+);
 
-interface UserProfile {
-  firstName: string;
-  lastName: string;
-  email: string;
-  username: string;
-}
+export const DEFAULT_USER_ID = 1n;
+type UserStatus = "idle" | "loading" | "ready" | "unauthenticated" | "error";
 
-interface StudentProfile {
-  group: string;
-  faculty: string;
-  course: number;
-  recordBook: string;
-  educationForm: string;
-  status: string;
-  phone: string;
-  birthday: string;
-  needsDormitory: boolean;
-}
-
-/** signedOut — no session: send to auth's sign-in. notLinked — signed in
- * through AD, but the account isn't linked to MDM, so there are no roles. */
-type UserStatus = "idle" | "loading" | "ready" | "signedOut" | "notLinked" | "unknown";
-
-interface UseUserProvider {
+interface UserProviderState {
   status: UserStatus;
   user: User | null;
-  profile: UserProfile | null;
   userId: bigint;
-  student: StudentProfile | null;
-  load: (force?: boolean) => Promise<void>;
-  hasRole: (...roles: UserRole[]) => boolean;
-  /** Право на действие (или роль ADMIN — у неё все права). */
-  hasPermission: (...permissions: string[]) => boolean;
+  error: Error | null;
+  me: () => Promise<void>;
+  fetchById: (id: bigint) => Promise<User>;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
+  reset: () => void;
 }
 
-export const useUserProvider = create<UseUserProvider>((set, get) => ({
+export const useUserProvider = create<UserProviderState>((set, get) => ({
   status: "idle",
   user: null,
-  profile: null,
-  userId: 0n,
-  student: null,
+  userId: DEFAULT_USER_ID,
+  error: null,
 
-  load: async (force = false) => {
-    const { status } = get();
-    if (!force && status !== "idle") return;
-
-    set({ status: "loading" });
+  me: async () => {
+    if (get().status === "loading" || get().status === "ready") return;
     try {
-      const response = await userClient.userMe({});
-      set({
-        status: "ready",
-        user: response.user ?? null,
-        profile: {
-          firstName: response.firstName,
-          lastName: response.lastName,
-          email: response.email,
-          username: response.username,
-        },
-        userId: response.user?.mdmId ?? 0n,
-      });
-    } catch (error) {
-      // The transport has already tried a refresh; ask auth why there is no session.
-      let status: UserStatus = "unknown";
-      if (ConnectError.from(error).code === Code.Unauthenticated) {
-        const state = await sessionState();
-        if (state === "notLinked") status = "notLinked";
-        else if (state === "signedOut" || state === "expired") status = "signedOut";
-      }
-      set({ status, user: null, profile: null, userId: 0n });
+      await get().fetchById(DEFAULT_USER_ID);
+    } catch {}
+  },
+
+  fetchById: async (id) => {
+    set({ status: "loading", userId: id, error: null });
+    try {
+      const response = await userClient.userFetchByID({ id });
+      if (!response.user) throw new Error("MDM не вернул пользователя");
+      set({ status: "ready", user: response.user, userId: id });
+      return response.user;
+    } catch (cause) {
+      const error = cause instanceof Error ? cause : new Error("Не удалось получить пользователя");
+      set({ status: "error", user: null, userId: id, error });
+      throw error;
     }
   },
 
-  hasRole: (...roles) =>
-    Boolean(get().user?.roles.some((role) => role === UserRole.ADMIN || roles.includes(role))),
-
-  hasPermission: (...permissions) => {
-    const user = get().user;
-    if (!user) return false;
-    return user.roles.includes(UserRole.ADMIN) || user.permissions.some((p) => permissions.includes(p));
+  login: async (_email, _password) => {
+    set({ status: "unauthenticated", user: null, error: null });
   },
+
+  logout: async () => {
+    set({ status: "unauthenticated", user: null, error: null });
+  },
+
+  reset: () => set({ status: "idle", user: null, userId: DEFAULT_USER_ID, error: null }),
 }));
 
-export const useLoadUser = () => {
-  const provider = useUserProvider();
-  useEffect(() => {
-    provider.load();
-  }, []);
-  return provider;
-};
-
-export type { UserProfile, StudentProfile, UserStatus };
+export type { User, UserStatus };

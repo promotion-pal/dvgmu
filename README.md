@@ -23,12 +23,15 @@ pnpm install
 
 | Команда | Действие |
 | --- | --- |
-| `make dev` | Собирает и запускает Postgres и сервис задач в Docker, затем запускает Vite для личного кабинета. Фронтенд доступен на `http://localhost:5173`, API — на порту `4050`. |
-| `make dev-stop` | Останавливает локальные контейнеры. Данные базы сохраняются в Docker volume. |
+| `make dev` | Собирает и запускает Postgres, сервис задач и MDM в Docker, затем запускает Vite. Фронтенд доступен на `http://localhost:5173`, API задач — на порту `4050`, MDM — `4051`. |
+| `make dev-stop` | Останавливает локальные контейнеры. Данные обеих баз сохраняются в Docker volumes. |
 | `make proto` | Генерирует Go и TypeScript код из protobuf-контрактов в `services/tickets/contract`. |
 | `make tickets-migrate-status` | Показывает состояние миграций Atlas. |
 | `make tickets-migrate-diff` | Создаёт миграцию на основе Go-моделей. |
 | `make tickets-migrate-lint` | Проверяет последние миграции. |
+| `make mdm-migrate-status` | Показывает состояние миграций MDM. |
+| `make mdm-migrate-diff` | Создаёт миграцию MDM на основе Go-моделей. |
+| `make mdm-migrate-lint` | Проверяет последние миграции MDM. |
 
 Для локальной разработки сервис использует настройки `services/tickets/config/local.yaml`; значения подключения к Postgres можно менять через `.env`.
 

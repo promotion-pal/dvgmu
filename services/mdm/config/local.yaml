@@ -1,0 +1,16 @@
+env: local
+
+grpc:
+  port: 4051
+  timeout: 5s
+  allowed_origins:
+    - http://localhost:5173
+    - http://localhost:3000
+
+database:
+  host: localhost
+  port: 5447
+  user: root
+  password: password
+  dbname: dvgmu_mdm_db
+  sslmode: disable

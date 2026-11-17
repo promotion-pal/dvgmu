@@ -25,6 +25,7 @@ dist-ssr/
 .vite/
 coverage/
 services/tickets/db/postgres/
+services/mdm/db/postgres/
 
 # Local environment and machine-specific files
 .env
@@ -47,3 +48,5 @@ services/tickets/db/postgres/
 *.njsproj
 *.sln
 *.sw?
+
+/docs

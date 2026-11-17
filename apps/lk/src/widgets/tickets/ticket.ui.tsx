@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { formatTicketDate } from "./ticket.utils";
 import { useTickets } from "./ticket.fn";
+import { Card } from "@/shared/ui/card";
 
 export function TicketsWidget() {
   const { tickets, loading, saving, error, refetch, createTicket } = useTickets();
@@ -14,7 +15,7 @@ export function TicketsWidget() {
 
   return (
     <main className="min-h-screen bg-slate-100 px-3 py-5 text-left text-slate-800 sm:px-6 sm:py-14">
-      <section className="mx-auto box-border w-full max-w-[720px] rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_16px_44px_rgb(23_32_51_/_7%)] sm:rounded-[20px] sm:p-9">
+      <Card className="mx-auto box-border w-full max-w-[720px] p-5 sm:p-9">
         <header className="mb-8 flex items-center gap-4 sm:mb-9">
           <div className="grid size-[52px] shrink-0 place-items-center rounded-[15px] bg-blue-50 text-[25px] font-bold text-blue-700" aria-hidden="true">Д</div>
           <div>
@@ -71,7 +72,7 @@ export function TicketsWidget() {
             </button>
           )}
         </section>
-      </section>
+      </Card>
     </main>
   );
 }
