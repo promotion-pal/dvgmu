@@ -7,6 +7,7 @@ import {
   FileText,
   Menu,
   PanelLeftClose,
+  PanelLeftOpen,
   Settings2,
   UserRound,
   X,
@@ -59,12 +60,12 @@ export function Sidebar({ children }: { children: ReactNode }) {
           {collapsed && (
             <button
               aria-label="Развернуть меню"
-              className="mx-auto hidden size-10 shrink-0 place-items-center rounded-lg bg-blue-700 text-white hover:bg-blue-800 md:grid"
+              className="absolute -right-3 top-6 z-20 hidden size-6 place-items-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-sm hover:bg-slate-50 md:grid"
               onClick={() => setCollapsed(false)}
               title="Развернуть меню"
               type="button"
             >
-              <Command aria-hidden="true" className="size-5 shrink-0" />
+              <PanelLeftOpen className="size-3.5 shrink-0" />
             </button>
           )}
           {!collapsed && (
