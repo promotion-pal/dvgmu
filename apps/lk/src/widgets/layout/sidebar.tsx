@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from "react";
+import { NavLink } from "react-router";
 import {
   BookOpen,
   CircleHelp,
@@ -14,12 +15,12 @@ import {
 } from "lucide-react";
 
 const navigation = [
-  { title: "Мои задачи", icon: ClipboardList, href: "/" },
+  { title: "Мои задачи", icon: ClipboardList, href: "/tasks" },
 ];
 
 const workspaceItems = [
-  { title: "Обучение", icon: BookOpen },
-  { title: "Документы", icon: FileText },
+  { title: "Обучение", icon: BookOpen, href: "/education" },
+  { title: "Документы", icon: FileText, href: "/documents" },
 ];
 
 export function Sidebar({ children }: { children: ReactNode }) {
@@ -60,7 +61,7 @@ export function Sidebar({ children }: { children: ReactNode }) {
           {collapsed && (
             <button
               aria-label="Развернуть меню"
-              className="absolute -right-1.5 top-6 z-20 hidden size-6 place-items-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-sm hover:bg-slate-50 md:grid"
+              className="absolute -right-3 top-6 z-20 hidden size-6 place-items-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-sm hover:bg-slate-50 md:grid"
               onClick={() => setCollapsed(false)}
               title="Развернуть меню"
               type="button"
@@ -83,33 +84,34 @@ export function Sidebar({ children }: { children: ReactNode }) {
         <nav aria-label="Основная навигация" className="flex-1 overflow-y-auto px-3 py-4">
           <SidebarSection title="Платформа" collapsed={collapsed}>
             {navigation.map(({ title, icon: Icon, href }) => (
-              <a
-                aria-current="page"
-                className={`group flex h-9 items-center gap-3 rounded-md bg-slate-100 px-2.5 text-sm font-medium text-slate-950 transition-colors ${collapsed ? "md:justify-center md:gap-0 md:px-0" : ""}`}
-                href={href}
+              <NavLink
+                className={({ isActive }) => `group flex h-9 items-center gap-3 rounded-md px-2.5 text-sm transition-colors ${isActive ? "bg-slate-100 font-medium text-slate-950" : "text-slate-600 hover:bg-slate-50 hover:text-slate-950"} ${collapsed ? "md:justify-center md:gap-0 md:px-0" : ""}`}
+                end
+                to={href}
                 key={title}
                 onClick={() => setMobileOpen(false)}
                 title={collapsed ? title : undefined}
               >
                 <Icon aria-hidden="true" className="size-4 shrink-0" />
                 <span className={collapsed ? "md:hidden" : ""}>{title}</span>
-              </a>
+              </NavLink>
             ))}
           </SidebarSection>
 
           <SidebarSection className="mt-7" title="Рабочая область" collapsed={collapsed}>
-            {workspaceItems.map(({ title, icon: Icon }) => (
-              <button
-                className={`flex h-9 w-full items-center gap-3 rounded-md px-2.5 text-left text-sm text-slate-400 ${collapsed ? "md:justify-center md:gap-0 md:px-0" : ""}`}
-                disabled
+            {workspaceItems.map(({ title, icon: Icon, href }) => (
+              <NavLink
+                className={({ isActive }) => `flex h-9 w-full items-center gap-3 rounded-md px-2.5 text-left text-sm transition-colors ${isActive ? "bg-slate-100 font-medium text-slate-950" : "text-slate-600 hover:bg-slate-50 hover:text-slate-950"} ${collapsed ? "md:justify-center md:gap-0 md:px-0" : ""}`}
+                end
+                to={href}
                 key={title}
                 title={collapsed ? `${title}: скоро` : "Раздел скоро появится"}
-                type="button"
+                onClick={() => setMobileOpen(false)}
               >
                 <Icon aria-hidden="true" className="size-4 shrink-0" />
                 <span className={collapsed ? "md:hidden" : ""}>{title}</span>
                 {!collapsed && <span className="ml-auto text-[10px] uppercase tracking-wide">Скоро</span>}
-              </button>
+              </NavLink>
             ))}
           </SidebarSection>
         </nav>
@@ -142,7 +144,7 @@ export function Sidebar({ children }: { children: ReactNode }) {
           <button aria-label="Открыть меню" className="rounded-md p-2 text-slate-600 hover:bg-slate-100" onClick={() => setMobileOpen(true)} type="button">
             <Menu className="size-5" />
           </button>
-          <span className="text-sm font-medium text-slate-800">Личный кабинет · Задачи</span>
+          <span className="text-sm font-medium text-slate-800">Личный кабинет</span>
         </div>
         <div className="min-w-0 flex-1">{children}</div>
       </div>
