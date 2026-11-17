@@ -1,14 +1,15 @@
 import { Navigate, Route, Routes } from "react-router";
 import { TicketsWidget } from "@/widgets/tickets";
+import { ROUTER } from "@/shared/config/path";
 
 export function IndexPage() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/tasks" replace />} />
-      <Route path="/tasks" element={<TicketsWidget />} />
-      <Route path="/education" element={<SectionPage title="Обучение" />} />
-      <Route path="/documents" element={<SectionPage title="Документы" />} />
-      <Route path="*" element={<SectionPage title="Страница не найдена" />} />
+      <Route path={ROUTER.PATH.INDEX} element={<Navigate to={ROUTER.PATH.TASKS} replace />} />
+      <Route path={ROUTER.PATH.TASKS} element={<TicketsWidget />} />
+      <Route path={ROUTER.PATH.EDUCATION} element={<SectionPage title="Обучение" />} />
+      <Route path={ROUTER.PATH.DOCUMENTS} element={<SectionPage title="Документы" />} />
+      <Route path={ROUTER.PATH.NOT_FOUND} element={<SectionPage title="Страница не найдена" />} />
     </Routes>
   );
 }
