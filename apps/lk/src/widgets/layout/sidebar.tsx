@@ -40,7 +40,7 @@ export function Sidebar({ children }: { children: ReactNode }) {
         className={`fixed inset-y-0 left-0 z-40 flex h-screen w-64 flex-col border-r border-slate-200 bg-white transition-[width,transform] duration-200 md:sticky md:top-0 md:z-10 md:translate-x-0 ${mobileOpen ? "translate-x-0" : "-translate-x-full"} ${collapsed ? "md:w-[72px]" : "md:w-64"}`}
       >
         <header className={`flex h-16 shrink-0 items-center justify-between gap-3 border-b border-slate-100 px-3 ${collapsed ? "md:justify-center md:px-0" : ""}`}>
-          <div className={`flex min-w-0 flex-1 items-center gap-3 p-1.5 text-left ${collapsed ? "md:hidden" : ""}`}>
+          <div className={`flex min-w-0 flex-1 items-center gap-3 p-1.5 text-left ${collapsed ? "md:flex-none md:justify-center md:gap-0 md:p-0" : ""}`}>
             <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-blue-700 text-white">
               <Command aria-hidden="true" className="size-5 shrink-0" />
             </span>
@@ -60,7 +60,7 @@ export function Sidebar({ children }: { children: ReactNode }) {
           {collapsed && (
             <button
               aria-label="Развернуть меню"
-              className="absolute -right-3 top-6 z-20 hidden size-6 place-items-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-sm hover:bg-slate-50 md:grid"
+              className="absolute -right-1.5 top-6 z-20 hidden size-6 place-items-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-sm hover:bg-slate-50 md:grid"
               onClick={() => setCollapsed(false)}
               title="Развернуть меню"
               type="button"
