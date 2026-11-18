@@ -5,6 +5,8 @@ export { TestAttemptStatus };
 
 /** The session as shown before starting. */
 export interface TestTakeInfo {
+ instructionRequired?:boolean;
+ instruction?:string;
     topic: string;
     description?: string;
     durationMinutes: number;

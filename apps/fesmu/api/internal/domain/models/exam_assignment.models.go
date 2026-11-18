@@ -22,22 +22,23 @@ type ExamAssignment struct {
 }
 
 type ExamAudience struct {
-	Kind         string   `json:"kind"`
-	FacultyCode  int32    `json:"faculty_code"`
-	Course       int32    `json:"course"`
-	StudentGroup string   `json:"student_group"`
-	StudentUUIDs []string `json:"student_uuids,omitempty"`
+	Kind          string   `json:"kind"`
+	FacultyCode   int32    `json:"faculty_code"`
+	Course        int32    `json:"course"`
+	StudentGroup  string   `json:"student_group"`
+	StudentGroups []string `json:"student_groups,omitempty"`
+	StudentUUIDs  []string `json:"student_uuids,omitempty"`
 }
 
 func (a ExamAudience) ToProto() *entity.ExamAudience {
 	if a.Kind == "" {
 		return nil
 	}
-	return &entity.ExamAudience{Kind: a.Kind, FacultyCode: a.FacultyCode, Course: a.Course, StudentGroup: a.StudentGroup, StudentUuids: a.StudentUUIDs}
+	return &entity.ExamAudience{Kind: a.Kind, FacultyCode: a.FacultyCode, Course: a.Course, StudentGroup: a.StudentGroup, StudentGroups: a.StudentGroups, StudentUuids: a.StudentUUIDs}
 }
 func ExamAudienceFromProto(a *entity.ExamAudience) ExamAudience {
 	if a == nil {
 		return ExamAudience{}
 	}
-	return ExamAudience{Kind: a.Kind, FacultyCode: a.FacultyCode, Course: a.Course, StudentGroup: a.StudentGroup, StudentUUIDs: a.StudentUuids}
+	return ExamAudience{Kind: a.Kind, FacultyCode: a.FacultyCode, Course: a.Course, StudentGroup: a.StudentGroup, StudentGroups: a.StudentGroups, StudentUUIDs: a.StudentUuids}
 }

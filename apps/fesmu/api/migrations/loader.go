@@ -8,6 +8,7 @@ import (
 	"ariga.io/atlas-provider-gorm/gormschema"
 
 	"dvgmu/api/internal/domain/models"
+	"dvgmu/api/internal/modules/examv2"
 	"dvgmu/api/internal/modules/library"
 	"dvgmu/api/internal/modules/purchase"
 	"dvgmu/api/internal/modules/purchasev3"
@@ -48,6 +49,8 @@ func main() {
 			&models.TestImage{},
 			&models.ExamAssignment{},
 			&models.ExamParticipation{},
+			&examv2.BankRecord{},
+			&examv2.VariantRecord{},
 		)
 	case "purchase":
 		stmts, err = gormschema.New("postgres").Load(append(purchase.Tables(), purchasev3.Tables()...)...)

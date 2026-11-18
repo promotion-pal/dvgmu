@@ -18,6 +18,7 @@ import (
 	"dvgmu/api/internal/mdm"
 	"dvgmu/api/internal/modules/deanery"
 	"dvgmu/api/internal/modules/debtor"
+	"dvgmu/api/internal/modules/examv2"
 	"dvgmu/api/internal/modules/library"
 	"dvgmu/api/internal/modules/purchase"
 	"dvgmu/api/internal/modules/purchasev3"
@@ -28,6 +29,7 @@ import (
 	"dvgmu/api/internal/service/packages/user"
 	"dvgmu/api/internal/storage"
 	examserviceconnect "fesmu/contract/fesmu/exam/service/v1/servicev1connect"
+	examv2connect "fesmu/contract/fesmu/exam/service/v2/servicev2connect"
 	serviceconnect "fesmu/contract/fesmu/service/v1/servicev1connect"
 	"fesmu/contract/fesmu/service/v2/servicev2connect"
 	"fesmu/contract/fesmu/service/v3/servicev3connect"
@@ -83,6 +85,7 @@ func New(
 	// Unavailable): the rest of the API must not go down with it.
 	var testService *service.TestService
 	var testSessionService *service.TestSessionService
+	var examV2Module *examv2.Module
 	var examTestService *service.TestService
 	var examTestSessionService *service.TestSessionService
 	// Question pictures go to the files service (tests/images); without it
@@ -104,9 +107,13 @@ func New(
 		examTestStorage := storage.TestStorageNew(examTestDB)
 		examTestService = service.NewTestService(log, examTestStorage, examTestStorage, examTestStorage, testImageFiles)
 		examTestSessionService = service.NewTestSessionService(log, storage.TestSessionStorageNew(examTestDB), examTestStorage).WithExamDirectory(mdm.NewDirectory(cfg.Packages.MDM))
+		examV2Module = examv2.New(examTestDB, examTestSessionService)
 	}
 	testHandler := grpc.TestNewController(testService)
 	testSessionHandler := grpc.TestSessionNewController(testSessionService)
+	if examV2Module == nil {
+		examV2Module = examv2.New(nil, nil)
+	}
 	examTestHandler := grpc.TestNewController(examTestService, true)
 	examTestSessionHandler := grpc.TestSessionNewController(examTestSessionService)
 
@@ -199,6 +206,7 @@ func New(
 		// Роли — студенту и преподавателю; разделы сотрудников открывают
 		// права на раздел из доступов (Sections), роль STAFF их не открывает.
 		authInterceptor.Access = map[string][]string{
+			examv2connect.ExamStudentServiceName:  nil,
 			serviceconnect.UserServiceName:        nil, // UserMe — любой, кто вошёл
 			serviceconnect.CertificateServiceName: {auth.RoleStudent},
 			// Каталог читает любой, кто вошёл (методички открыты и без входа —
@@ -211,6 +219,7 @@ func New(
 			// ADMIN (нет в карте).
 		}
 		authInterceptor.Sections = map[string][]auth.Section{
+			examv2connect.ExamBankServiceName:             {auth.SectionExamTests},
 			serviceconnect.CertificateServiceName:         {auth.SectionCertificate},
 			serviceconnect.InfrastructureServiceName:      {auth.SectionInfrastructure},
 			serviceconnect.InventoryServiceName:           {auth.SectionInventory},
@@ -318,6 +327,7 @@ func New(
 		purchaseModule,
 		purchaseV3Module,
 		libraryModule,
+		examV2Module,
 		questionnaire.New(log, cfg.Packages.Analytics),
 		survey.New(log, cfg.Packages.Analytics),
 		deanery.New(log, cfg.Packages.MDM, cfg.Deanery.Demo),

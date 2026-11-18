@@ -175,11 +175,13 @@ func (h *TestSessionHandler) TestTakeInfo(
 		return nil, testSessionConnectError(err)
 	}
 	resp := &pb.TestTakeInfoResponse{
-		Topic:           session.Topic,
-		Description:     session.Description,
-		DurationMinutes: int32(session.DurationMinutes),
-		QuestionCount:   int32(session.AskedCount()),
-		IsOpen:          open,
+		Topic:               session.Topic,
+		Description:         session.Description,
+		DurationMinutes:     int32(session.DurationMinutes),
+		QuestionCount:       int32(session.AskedCount()),
+		IsOpen:              open,
+		InstructionRequired: session.ExamSettings.Enabled,
+		Instruction:         models.ExamV2Instruction,
 	}
 	if session.OpensAt != nil {
 		resp.OpensAt = timestamppb.New(*session.OpensAt)
@@ -199,9 +201,10 @@ func (h *TestSessionHandler) TestTakeStart(
 	}
 
 	view, err := h.service.TestTakeStart(ctx, req.Msg.GetToken(), models.TestAttemptParams{
-		RecordBook:   req.Msg.GetRecordBook(),
-		FullName:     req.Msg.GetFullName(),
-		StudentGroup: req.Msg.GetStudentGroup(),
+		RecordBook:          req.Msg.GetRecordBook(),
+		InstructionAccepted: req.Msg.GetInstructionAccepted(),
+		FullName:            req.Msg.GetFullName(),
+		StudentGroup:        req.Msg.GetStudentGroup(),
 	})
 	if err != nil {
 		return nil, testSessionConnectError(err)
@@ -266,7 +269,7 @@ func (h *TestSessionHandler) takeState(view *service.TestAttemptView) *pb.TestTa
 		Status:       a.Status,
 		Deadline:     timestamppb.New(a.Deadline),
 		ServerTime:   timestamppb.New(h.service.Now()),
-		ShowResult:   view.Session.ShowResult && !h.service.IsExam(),
+		ShowResult:   view.Session.ShowResult && (!h.service.IsExam() || view.Session.ExamSettings.Enabled),
 	}
 	if a.InProgress() {
 		resp.Questions = models.TakeQuestionsProto(view.Questions)

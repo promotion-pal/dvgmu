@@ -721,11 +721,13 @@ func (x *TestTakeInfoRequest) GetToken() string {
 }
 
 type TestTakeInfoResponse struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	Topic           string                 `protobuf:"bytes,1,opt,name=topic,proto3" json:"topic,omitempty"`
-	Description     string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
-	DurationMinutes int32                  `protobuf:"varint,3,opt,name=duration_minutes,json=durationMinutes,proto3" json:"duration_minutes,omitempty"`
-	QuestionCount   int32                  `protobuf:"varint,4,opt,name=question_count,json=questionCount,proto3" json:"question_count,omitempty"`
+	state               protoimpl.MessageState `protogen:"open.v1"`
+	InstructionRequired bool                   `protobuf:"varint,8,opt,name=instruction_required,json=instructionRequired,proto3" json:"instruction_required,omitempty"`
+	Instruction         string                 `protobuf:"bytes,9,opt,name=instruction,proto3" json:"instruction,omitempty"`
+	Topic               string                 `protobuf:"bytes,1,opt,name=topic,proto3" json:"topic,omitempty"`
+	Description         string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
+	DurationMinutes     int32                  `protobuf:"varint,3,opt,name=duration_minutes,json=durationMinutes,proto3" json:"duration_minutes,omitempty"`
+	QuestionCount       int32                  `protobuf:"varint,4,opt,name=question_count,json=questionCount,proto3" json:"question_count,omitempty"`
 	// False: the link takes no new attempts — not open yet or closed.
 	IsOpen bool `protobuf:"varint,5,opt,name=is_open,json=isOpen,proto3" json:"is_open,omitempty"`
 	// For the student's page: when the test opens and closes, if set.
@@ -763,6 +765,20 @@ func (x *TestTakeInfoResponse) ProtoReflect() protoreflect.Message {
 // Deprecated: Use TestTakeInfoResponse.ProtoReflect.Descriptor instead.
 func (*TestTakeInfoResponse) Descriptor() ([]byte, []int) {
 	return file_fesmu_service_v1_test_session_service_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *TestTakeInfoResponse) GetInstructionRequired() bool {
+	if x != nil {
+		return x.InstructionRequired
+	}
+	return false
+}
+
+func (x *TestTakeInfoResponse) GetInstruction() string {
+	if x != nil {
+		return x.Instruction
+	}
+	return ""
 }
 
 func (x *TestTakeInfoResponse) GetTopic() string {
@@ -815,13 +831,14 @@ func (x *TestTakeInfoResponse) GetClosesAt() *timestamppb.Timestamp {
 }
 
 type TestTakeStartRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
-	FullName      string                 `protobuf:"bytes,2,opt,name=full_name,json=fullName,proto3" json:"full_name,omitempty"`
-	StudentGroup  string                 `protobuf:"bytes,3,opt,name=student_group,json=studentGroup,proto3" json:"student_group,omitempty"`
-	RecordBook    string                 `protobuf:"bytes,4,opt,name=record_book,json=recordBook,proto3" json:"record_book,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state               protoimpl.MessageState `protogen:"open.v1"`
+	InstructionAccepted bool                   `protobuf:"varint,5,opt,name=instruction_accepted,json=instructionAccepted,proto3" json:"instruction_accepted,omitempty"`
+	Token               string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	FullName            string                 `protobuf:"bytes,2,opt,name=full_name,json=fullName,proto3" json:"full_name,omitempty"`
+	StudentGroup        string                 `protobuf:"bytes,3,opt,name=student_group,json=studentGroup,proto3" json:"student_group,omitempty"`
+	RecordBook          string                 `protobuf:"bytes,4,opt,name=record_book,json=recordBook,proto3" json:"record_book,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *TestTakeStartRequest) Reset() {
@@ -852,6 +869,13 @@ func (x *TestTakeStartRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use TestTakeStartRequest.ProtoReflect.Descriptor instead.
 func (*TestTakeStartRequest) Descriptor() ([]byte, []int) {
 	return file_fesmu_service_v1_test_session_service_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *TestTakeStartRequest) GetInstructionAccepted() bool {
+	if x != nil {
+		return x.InstructionAccepted
+	}
+	return false
 }
 
 func (x *TestTakeStartRequest) GetToken() string {
@@ -1252,16 +1276,19 @@ const file_fesmu_service_v1_test_session_service_proto_rawDesc = "" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\"+\n" +
 	"\x13TestTakeInfoRequest\x12\x14\n" +
-	"\x05token\x18\x01 \x01(\tR\x05token\"\xa9\x02\n" +
-	"\x14TestTakeInfoResponse\x12\x14\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\"\xfe\x02\n" +
+	"\x14TestTakeInfoResponse\x121\n" +
+	"\x14instruction_required\x18\b \x01(\bR\x13instructionRequired\x12 \n" +
+	"\vinstruction\x18\t \x01(\tR\vinstruction\x12\x14\n" +
 	"\x05topic\x18\x01 \x01(\tR\x05topic\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12)\n" +
 	"\x10duration_minutes\x18\x03 \x01(\x05R\x0fdurationMinutes\x12%\n" +
 	"\x0equestion_count\x18\x04 \x01(\x05R\rquestionCount\x12\x17\n" +
 	"\ais_open\x18\x05 \x01(\bR\x06isOpen\x125\n" +
 	"\bopens_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\aopensAt\x127\n" +
-	"\tcloses_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\bclosesAt\"\x8f\x01\n" +
-	"\x14TestTakeStartRequest\x12\x14\n" +
+	"\tcloses_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\bclosesAt\"\xc2\x01\n" +
+	"\x14TestTakeStartRequest\x121\n" +
+	"\x14instruction_accepted\x18\x05 \x01(\bR\x13instructionAccepted\x12\x14\n" +
 	"\x05token\x18\x01 \x01(\tR\x05token\x12\x1b\n" +
 	"\tfull_name\x18\x02 \x01(\tR\bfullName\x12#\n" +
 	"\rstudent_group\x18\x03 \x01(\tR\fstudentGroup\x12\x1f\n" +

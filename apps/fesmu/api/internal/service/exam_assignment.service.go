@@ -53,6 +53,17 @@ func (s *TestSessionService) examRecipients(ctx context.Context, a models.ExamAu
 		}
 		q.FacultyCode = a.FacultyCode
 		q.Course = a.Course
+	case "groups":
+		if a.FacultyCode <= 0 || a.Course < 1 || a.Course > 6 || len(a.StudentGroups) == 0 || len(a.StudentGroups) > 100 {
+			return nil, models.ErrExamAudience
+		}
+		for _, group := range a.StudentGroups {
+			if strings.TrimSpace(group) == "" {
+				return nil, models.ErrExamAudience
+			}
+		}
+		q.FacultyCode = a.FacultyCode
+		q.Course = a.Course
 	case "group":
 		if a.FacultyCode <= 0 || a.Course < 1 || a.Course > 6 || strings.TrimSpace(a.StudentGroup) == "" {
 			return nil, models.ErrExamAudience
@@ -74,6 +85,11 @@ func (s *TestSessionService) examRecipients(ctx context.Context, a models.ExamAu
 	default:
 		return nil, models.ErrExamAudience
 	}
+	foundGroups := map[string]bool{}
+	selectedGroups := map[string]bool{}
+	for _, group := range a.StudentGroups {
+		selectedGroups[strings.TrimSpace(group)] = true
+	}
 	seen := map[string]bool{}
 	result := []models.ExamAssignment{}
 	for {
@@ -85,11 +101,27 @@ func (s *TestSessionService) examRecipients(ctx context.Context, a models.ExamAu
 			if _, err := uuid.Parse(person.Uuid); err != nil {
 				return nil, models.ErrExamDirectory
 			}
+			matchedGroup := ""
+			if a.Kind == "groups" {
+				for _, record := range person.Students {
+					if record.FacultyCode == a.FacultyCode && record.Course == a.Course && selectedGroups[record.Group] {
+						matchedGroup = record.Group
+						foundGroups[record.Group] = true
+						break
+					}
+				}
+				if matchedGroup == "" {
+					continue
+				}
+			}
 			if !seen[person.Uuid] {
 				seen[person.Uuid] = true
 				group := ""
 				if len(person.Students) > 0 {
 					group = person.Students[0].Group
+					if matchedGroup != "" {
+						group = matchedGroup
+					}
 				}
 				result = append(result, models.ExamAssignment{MDMUserUUID: person.Uuid, FullName: person.FullName, StudentGroup: group, CreatedAt: s.now()})
 			}
@@ -107,6 +139,13 @@ func (s *TestSessionService) examRecipients(ctx context.Context, a models.ExamAu
 	}
 	if len(result) == 0 {
 		return nil, models.ErrExamAudience
+	}
+	if a.Kind == "groups" {
+		for group := range selectedGroups {
+			if !foundGroups[group] {
+				return nil, models.ErrExamAudience
+			}
+		}
 	}
 	if a.Kind == "students" {
 		for _, id := range q.UserUuids {

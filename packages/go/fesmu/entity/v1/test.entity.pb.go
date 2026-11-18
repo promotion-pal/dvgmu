@@ -331,6 +331,7 @@ type TestSession struct {
 	Version       v1.TestVersion `protobuf:"varint,19,opt,name=version,proto3,enum=contract.enum.v1.TestVersion" json:"version,omitempty"`
 	Audience      *ExamAudience  `protobuf:"bytes,20,opt,name=audience,proto3" json:"audience,omitempty"`
 	AssignedCount int32          `protobuf:"varint,21,opt,name=assigned_count,json=assignedCount,proto3" json:"assigned_count,omitempty"`
+	ExamV2        bool           `protobuf:"varint,23,opt,name=exam_v2,json=examV2,proto3" json:"exam_v2,omitempty"`
 	// Full recipient list is returned on the staff session results page.
 	Recipients    []*ExamRecipient `protobuf:"bytes,22,rep,name=recipients,proto3" json:"recipients,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -514,6 +515,13 @@ func (x *TestSession) GetAssignedCount() int32 {
 	return 0
 }
 
+func (x *TestSession) GetExamV2() bool {
+	if x != nil {
+		return x.ExamV2
+	}
+	return false
+}
+
 func (x *TestSession) GetRecipients() []*ExamRecipient {
 	if x != nil {
 		return x.Recipients
@@ -530,6 +538,7 @@ type ExamAudience struct {
 	Course        int32    `protobuf:"varint,3,opt,name=course,proto3" json:"course,omitempty"`
 	StudentGroup  string   `protobuf:"bytes,4,opt,name=student_group,json=studentGroup,proto3" json:"student_group,omitempty"`
 	StudentUuids  []string `protobuf:"bytes,5,rep,name=student_uuids,json=studentUuids,proto3" json:"student_uuids,omitempty"`
+	StudentGroups []string `protobuf:"bytes,6,rep,name=student_groups,json=studentGroups,proto3" json:"student_groups,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -595,6 +604,13 @@ func (x *ExamAudience) GetStudentGroup() string {
 func (x *ExamAudience) GetStudentUuids() []string {
 	if x != nil {
 		return x.StudentUuids
+	}
+	return nil
+}
+
+func (x *ExamAudience) GetStudentGroups() []string {
+	if x != nil {
+		return x.StudentGroups
 	}
 	return nil
 }
@@ -1047,7 +1063,7 @@ const file_fesmu_entity_v1_test_entity_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04text\x18\x02 \x01(\tR\x04text\x12\x1d\n" +
 	"\n" +
-	"is_correct\x18\x03 \x01(\bR\tisCorrect\"\xdb\x06\n" +
+	"is_correct\x18\x03 \x01(\bR\tisCorrect\"\xf4\x06\n" +
 	"\vTestSession\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x17\n" +
 	"\atest_id\x18\x02 \x01(\x03R\x06testId\x12\x14\n" +
@@ -1074,16 +1090,18 @@ const file_fesmu_entity_v1_test_entity_proto_rawDesc = "" +
 	"\foption_count\x18\x12 \x01(\x05R\voptionCount\x127\n" +
 	"\aversion\x18\x13 \x01(\x0e2\x1d.contract.enum.v1.TestVersionR\aversion\x12<\n" +
 	"\baudience\x18\x14 \x01(\v2 .contract.entity.v1.ExamAudienceR\baudience\x12%\n" +
-	"\x0eassigned_count\x18\x15 \x01(\x05R\rassignedCount\x12A\n" +
+	"\x0eassigned_count\x18\x15 \x01(\x05R\rassignedCount\x12\x17\n" +
+	"\aexam_v2\x18\x17 \x01(\bR\x06examV2\x12A\n" +
 	"\n" +
 	"recipients\x18\x16 \x03(\v2!.contract.entity.v1.ExamRecipientR\n" +
-	"recipients\"\xa7\x01\n" +
+	"recipients\"\xce\x01\n" +
 	"\fExamAudience\x12\x12\n" +
 	"\x04kind\x18\x01 \x01(\tR\x04kind\x12!\n" +
 	"\ffaculty_code\x18\x02 \x01(\x05R\vfacultyCode\x12\x16\n" +
 	"\x06course\x18\x03 \x01(\x05R\x06course\x12#\n" +
 	"\rstudent_group\x18\x04 \x01(\tR\fstudentGroup\x12#\n" +
-	"\rstudent_uuids\x18\x05 \x03(\tR\fstudentUuids\"\xae\x01\n" +
+	"\rstudent_uuids\x18\x05 \x03(\tR\fstudentUuids\x12%\n" +
+	"\x0estudent_groups\x18\x06 \x03(\tR\rstudentGroups\"\xae\x01\n" +
 	"\rExamRecipient\x12\"\n" +
 	"\rmdm_user_uuid\x18\x01 \x01(\tR\vmdmUserUuid\x12\x1b\n" +
 	"\tfull_name\x18\x02 \x01(\tR\bfullName\x12#\n" +

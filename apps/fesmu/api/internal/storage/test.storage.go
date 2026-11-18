@@ -29,7 +29,7 @@ func withQuestions(q *gorm.DB) *gorm.DB {
 }
 
 func (s *TestStorage) TestFetch(ctx context.Context, filter models.TestFilter) ([]*models.Test, error) {
-	q := s.db.WithContext(ctx).Model(&models.Test{})
+	q := s.db.WithContext(ctx).Model(&models.Test{}).Where("COALESCE((exam_settings->>'enabled')::boolean,false)=false")
 	if topic := strings.TrimSpace(filter.Topic); topic != "" {
 		q = q.Where("topic ILIKE ?", "%"+escapeLike(topic)+"%")
 	}

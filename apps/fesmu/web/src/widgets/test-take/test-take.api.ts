@@ -41,13 +41,15 @@ export const testTakeApi = {
             durationMinutes: response.durationMinutes,
             questionCount: response.questionCount,
             isOpen: response.isOpen,
+ instructionRequired: response.instructionRequired,
+ instruction: response.instruction,
             opensAt: response.opensAt ? timestampDate(response.opensAt) : undefined,
             closesAt: response.closesAt ? timestampDate(response.closesAt) : undefined,
         };
     },
 
-    async start(token: string, fullName: string, studentGroup: string, recordBook?: string): Promise<TestTakeState> {
-        return fromState(await client.testTakeStart({ token, fullName, studentGroup, recordBook }));
+    async start(token: string, fullName: string, studentGroup: string, recordBook?: string, instructionAccepted = false): Promise<TestTakeState> {
+        return fromState(await client.testTakeStart({ token, fullName, studentGroup, recordBook, instructionAccepted }));
     },
 
     async state(attemptToken: string): Promise<TestTakeState> {

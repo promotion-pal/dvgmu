@@ -15,6 +15,7 @@ const toDate = (timestamp?: Timestamp) => (timestamp ? timestampDate(timestamp) 
 const fromSession = (message: SessionMessage): TestSession => ({
     id: message.id.toString(),
  assignedCount:message.assignedCount,
+ examV2:message.examV2,
  recipients:message.recipients.map(person=>({mdmUserUuid:person.mdmUserUuid,fullName:person.fullName,studentGroup:person.studentGroup,issuedAt:toDate(person.issuedAt)})),
  audience:message.audience,
     testId: message.testId ? message.testId.toString() : undefined,
@@ -59,12 +60,12 @@ export const examTestSessionApi: TestSessionApi = {
     async create(testId: string, values: TestSessionForm): Promise<TestSession> {
         const response = await client.testSessionCreate({
             testId: BigInt(testId),
- audience:{kind:values.audience.kind,facultyCode:Number(values.audience.facultyCode),course:Number(values.audience.course),studentGroup:values.audience.studentGroup,studentUuids:values.audience.studentUuids},
+ audience:{kind:values.audience.kind,facultyCode:Number(values.audience.facultyCode),course:Number(values.audience.course),studentGroup:values.audience.studentGroup,studentGroups:values.audience.studentGroups,studentUuids:values.audience.studentUuids},
             durationMinutes: Number(values.durationMinutes),
             questionCount: Number(values.questionCount || 0),
             optionCount: Number(values.optionCount || 0),
             shuffle: values.shuffle,
-            showResult: false,
+            showResult: values.showResult,
             note: values.note,
             opensAt: values.opensAt ? timestampFromDate(new Date(values.opensAt)) : undefined,
             closesAt: values.closesAt ? timestampFromDate(new Date(values.closesAt)) : undefined,

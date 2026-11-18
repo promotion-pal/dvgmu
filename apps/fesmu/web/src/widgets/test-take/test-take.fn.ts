@@ -101,10 +101,12 @@ const useTestTake = (token: string, api: TestTakeApi = testTakeApi, exam = false
         }
     };
 
-    const onStart = async (values: TestTakeStartForm) => {
+    const [instructionAccepted,setInstructionAccepted]=useState(false);
+ const onStart = async (values: TestTakeStartForm) => {
+ if(info?.instructionRequired && !instructionAccepted){toast.error("Подтвердите ознакомление с инструкцией");return;}
         try {
             storageScope.current=await scopeFor(values.recordBook);
-            const next = await api.start(token, values.fullName, values.studentGroup, exam ? values.recordBook : undefined);
+            const next = await api.start(token, values.fullName, values.studentGroup, exam ? values.recordBook : undefined,instructionAccepted);
             saveAttempt(storageScope.current, next.attemptToken);
             setCurrent(0);
             apply(next);
@@ -247,6 +249,7 @@ const useTestTake = (token: string, api: TestTakeApi = testTakeApi, exam = false
     const answered = state ? state.questions.filter((question) => state.picked[question.id]?.length).length : 0;
 
     return {
+        instructionAccepted,setInstructionAccepted,
         exam,
         recordBook,
         load,

@@ -1,4 +1,4 @@
-h1:yzlDQn+lNDdHrQOGvLSlFkrs8+PVI3jXDtG98FttISk=
+h1:HAustFs6s0JdFBflhklqxsXdvUpe2lZiZXEZpaIFU7U=
 20261001120000_test.sql h1:WoFw540MWd/tntpnOFNjOxs+DiTKagT6M5E2rWW0ZpA=
 20261002060902_test_faculty.sql h1:5T1mAI3iaTWV0uTfUPLdOIL8EU34pjwFGOPJpV17fWk=
 20261002080000_test_department.sql h1:3Cggiwq5AkizUcKQtE3p1QL2kr3GK6yNVwxtTd0u3CA=
@@ -14,3 +14,4 @@ h1:yzlDQn+lNDdHrQOGvLSlFkrs8+PVI3jXDtG98FttISk=
 20261109180000_exam_once_policy.sql h1:MMZ1ib2pEDF8aAoag+4lhsKDfFMUzYZFYvDYv65351o=
 20261109190000_exam_recipient_identity.sql h1:K3PEUX2npoXC9da0biIN0IDyF3/Kh60aaMKt20rgBxI=
 20261109200000_exam_session_attempt_policy.sql h1:0SdUSBS3cibyuFt09+qTbPkidDOt6SFyCgeCRUNrib0=
+20261118120000_exam_v2.sql h1:dW+Y9noQLHyXw28S7J5/bJavyGdFwtaqkPgE0lI9cBM=

@@ -23,7 +23,7 @@ func TestSessionStorageNew(db *gorm.DB) *TestSessionStorage {
 
 // The list leaves the frozen questions out: they can run to hundreds per session.
 const testSessionListColumns = `test_sessions.id, test_sessions.test_id, test_sessions.token, test_sessions.topic,
-	test_sessions.audience, (SELECT count(*) FROM exam_assignments WHERE exam_assignments.session_id=test_sessions.id) AS assigned_count, test_sessions.department, test_sessions.description, test_sessions.note, test_sessions.duration_minutes,
+	test_sessions.exam_settings, test_sessions.audience, (SELECT count(*) FROM exam_assignments WHERE exam_assignments.session_id=test_sessions.id) AS assigned_count, test_sessions.department, test_sessions.description, test_sessions.note, test_sessions.duration_minutes,
 	test_sessions.question_count, test_sessions.option_count, test_sessions.pick_version, test_sessions.version, test_sessions.distinct_questions, test_sessions.shuffle, test_sessions.show_result, test_sessions.is_open,
 	test_sessions.opens_at, test_sessions.closes_at, test_sessions.created_at, test_sessions.updated_at,
 	CASE WHEN test_sessions.pick_version >= 1 THEN test_sessions.distinct_questions
@@ -143,7 +143,7 @@ func (s *TestSessionStorage) TestAttemptUpdate(
 		if err := change(&attempt, &session); err != nil {
 			return err
 		}
-		return tx.Model(&attempt).Select("status", "answers", "score", "total", "finished_at").Updates(&attempt).Error
+		return tx.Model(&attempt).Select("status", "answers", "score", "total", "finished_at", "events").Updates(&attempt).Error
 	})
 	if err != nil {
 		return nil, nil, err
@@ -154,14 +154,7 @@ func (s *TestSessionStorage) TestAttemptUpdate(
 // TestAttemptFinalize stores the grade of an attempt whose time ran out,
 // unless it was finished meanwhile.
 func (s *TestSessionStorage) TestAttemptFinalize(ctx context.Context, attempt *models.TestAttempt) error {
-	return s.db.WithContext(ctx).Model(&models.TestAttempt{}).
-		Where("id = ? AND status = ?", attempt.ID, enum.TestAttemptStatus_TEST_ATTEMPT_STATUS_IN_PROGRESS).
-		Updates(map[string]any{
-			"status":      attempt.Status,
-			"score":       attempt.Score,
-			"total":       attempt.Total,
-			"finished_at": attempt.FinishedAt,
-		}).Error
+	return s.db.WithContext(ctx).Model(&models.TestAttempt{}).Where("id = ? AND status = ?", attempt.ID, enum.TestAttemptStatus_TEST_ATTEMPT_STATUS_IN_PROGRESS).Select("status", "score", "total", "finished_at", "events").Updates(attempt).Error
 }
 
 // Deleting a result explicitly releases this student's subject entitlement.

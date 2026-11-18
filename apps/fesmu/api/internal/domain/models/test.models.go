@@ -38,7 +38,8 @@ const (
 // Test is a staff-built test: a topic and its questions. Lives in its own
 // database (test_db), apart from the infrastructure tables.
 type Test struct {
-	ID int64 `gorm:"primaryKey;autoIncrement"`
+	ExamSettings ExamV2Settings `gorm:"type:jsonb;serializer:json;not null;default:'{}'"`
+	ID           int64          `gorm:"primaryKey;autoIncrement"`
 
 	Department   string                `gorm:"size:255;not null;default:'';index"`
 	Discipline   string                `gorm:"size:255;not null;default:'';index"`

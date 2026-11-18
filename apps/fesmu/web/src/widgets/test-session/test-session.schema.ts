@@ -10,8 +10,9 @@ export { TestAttemptStatus };
 export interface TestSession {
     id: string;
     assignedCount?: number;
+ examV2?:boolean;
     recipients?: {mdmUserUuid:string;fullName:string;studentGroup:string;issuedAt?:Date}[];
-    audience?: {kind:string;facultyCode:number;course:number;studentGroup:string;studentUuids:string[]};
+    audience?: {kind:string;facultyCode:number;course:number;studentGroup:string;studentGroups?:string[];studentUuids:string[]};
     /** Undefined once the test itself was deleted; the session keeps its copy. */
     testId?: string;
     token: string;
@@ -92,9 +93,10 @@ const wholeNumber = z.string().trim().regex(/^\d*$/, "Только цифры");
 /** The "hand out a test" form; the server checks the same rules. */
 export const testSessionSchema = z.object({
     audience: z.object({
-        kind: z.enum(["", "course", "group", "students"]),
+        kind: z.enum(["", "course", "group", "groups", "students"]),
         facultyCode: z.string(), course: z.string(), studentGroup: z.string(),
-        studentUuids: z.array(z.string()),
+        studentGroups:z.array(z.string()),
+ studentUuids: z.array(z.string()),
     }),
     durationMinutes: wholeNumber
         .min(1, "Укажите время на прохождение")
@@ -118,7 +120,7 @@ export const testSessionSchema = z.object({
 export type TestSessionForm = z.infer<typeof testSessionSchema>;
 
 export const emptyTestSessionForm = (): TestSessionForm => ({
-    audience: {kind:"",facultyCode:"",course:"",studentGroup:"",studentUuids:[]},
+    audience: {kind:"",facultyCode:"",course:"",studentGroup:"",studentGroups:[],studentUuids:[]},
  durationMinutes: "30",
     questionCount: "",
     optionCount: "",

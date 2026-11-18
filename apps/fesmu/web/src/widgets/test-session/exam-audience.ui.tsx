@@ -58,14 +58,15 @@ export function ExamAudienceFields() {
         if (name === "facultyCode")
             form.setValue("audience.course", "");
         form.setValue("audience.studentGroup", "");
+ form.setValue("audience.studentGroups", []);
     };
     const toggle = (uuid: string) => form.setValue("audience.studentUuids", a.studentUuids.includes(uuid) ? a.studentUuids.filter(id => id !== uuid) : [...a.studentUuids, uuid], { shouldValidate: true });
     const errors = form.formState.errors.audience;
     return <fieldset className="flex flex-col gap-3 rounded-xl border p-4">
   <legend className="px-1 font-semibold">Кому назначить экзамен</legend>
   <label className="text-sm">Назначение
-   <select className={selectClass} {...form.register("audience.kind")} onChange={e => { form.setValue("audience", { kind: e.target.value as TestSessionForm["audience"]["kind"], facultyCode: "", course: "", studentGroup: "", studentUuids: [] }); setQuery(""); }}>
-    <option value="course">Всему курсу факультета</option><option value="group">Учебной группе</option><option value="students">Определённым студентам</option>
+   <select className={selectClass} {...form.register("audience.kind")} onChange={e => { form.setValue("audience", { kind: e.target.value as TestSessionForm["audience"]["kind"], facultyCode: "", course: "", studentGroup: "", studentGroups:[], studentUuids: [] }); setQuery(""); }}>
+    <option value="course">Всему курсу факультета</option><option value="group">Учебной группе</option><option value="groups">Нескольким группам</option><option value="students">Определённым студентам</option>
    </select>
   </label>
   <div className="grid gap-3 sm:grid-cols-2">
@@ -76,10 +77,11 @@ export function ExamAudienceFields() {
     <select className={selectClass} value={a.course} onChange={e => reset("course", e.target.value)}><option value="">{a.kind !== "students" ? "Выберите курс" : "Все курсы"}</option>{courses.map(c => <option key={c} value={c}>{c} курс</option>)}</select>
    </label>
   </div>
-  {a.kind !== "course" && <label className="text-sm">Группа
+  {a.kind !== "course" && a.kind!=="groups" && <label className="text-sm">Группа
    <select className={selectClass} {...form.register("audience.studentGroup")}><option value="">{a.kind === "group" ? "Выберите группу" : "Все группы"}</option>{groups.map(g => <option key={g} value={g}>{g}</option>)}</select>
   </label>}
-  {a.kind === "students" && <>
+  {a.kind==="groups"&&<div className="grid max-h-48 gap-2 overflow-auto rounded border p-3">{groups.map(group=><label key={group} className="flex gap-2"><input type="checkbox" checked={a.studentGroups.includes(group)} onChange={e=>form.setValue("audience.studentGroups",e.target.checked?[...a.studentGroups,group]:a.studentGroups.filter(g=>g!==group))}/>{group}</label>)}</div>}
+ {a.kind === "students" && <>
    <label className="text-sm">Поиск студента в MDM<input className={selectClass} value={query} onChange={e => setQuery(e.target.value)} placeholder="Фамилия, имя или отчество" maxLength={100}/></label>
    {!!a.studentUuids.length && <div className="flex flex-wrap gap-2">{a.studentUuids.map(id => <Button key={id} type="button" variant="secondary" size="sm" onClick={() => toggle(id)}>{labels[id] || "Студент"} ×</Button>)}</div>}
    <div className="max-h-60 overflow-y-auto rounded-md border" aria-busy={busy}>
@@ -93,8 +95,8 @@ export function ExamAudienceFields() {
   </>}
   {!busy && !error && total===0 && !query && !a.facultyCode && !a.course && !a.studentGroup && <p role="status" className="text-sm text-muted-foreground">В этом MDM не найдены доступные учебные записи студентов. Проверьте, что список студентов загружен в нужное окружение MDM.</p>}
   {busy && <p className="text-sm text-muted-foreground" role="status">Запрашиваем MDM…</p>}
-  {error ? <div role="alert" className="text-sm text-destructive">{error} <Button type="button" size="sm" variant="outline" onClick={() => setRetry(v => v + 1)}>Повторить</Button></div> : <p className="text-sm text-muted-foreground">{a.kind === "students" ? `Выбрано студентов: ${a.studentUuids.length}` : `По фильтрам MDM найдено студентов: ${total}`}</p>}
-  {[errors?.kind, errors?.facultyCode, errors?.course, errors?.studentGroup, errors?.studentUuids].map((err, i) => err?.message ? <p key={i} role="alert" className="text-sm text-destructive">{err.message}</p> : null)}
+  {error ? <div role="alert" className="text-sm text-destructive">{error} <Button type="button" size="sm" variant="outline" onClick={() => setRetry(v => v + 1)}>Повторить</Button></div> : <p className="text-sm text-muted-foreground">{a.kind === "groups" ? `Выбрано групп: ${a.studentGroups.length}. Состав студентов будет получен из MDM при выдаче.` : a.kind === "students" ? `Выбрано студентов: ${a.studentUuids.length}` : `По фильтрам MDM найдено студентов: ${total}`}</p>}
+  {[errors?.kind, errors?.facultyCode, errors?.course, errors?.studentGroup, errors?.studentUuids,errors?.studentGroups].map((err, i) => err?.message ? <p key={i} role="alert" className="text-sm text-destructive">{err.message}</p> : null)}
   <p className="text-xs text-muted-foreground">Будет сохранён текущий список выбранных студентов по UUID MDM. На общей странице студент вводит номер зачётки и видит только назначенные ему экзамены.</p>
  </fieldset>;
 }

@@ -62,7 +62,7 @@ func (s *TestSessionService) TestSessionCreate(ctx context.Context, testID int64
 		return nil, err
 	}
 
-	if s.exam {
+	if s.exam && !test.ExamSettings.Enabled {
 		params.ShowResult = false
 	}
 	session, err := models.NewTestSession(test, params, rand.Text(), s.now())

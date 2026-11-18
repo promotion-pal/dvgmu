@@ -269,3 +269,27 @@ func TestExamSessionRecipientsBatchLegacyIdentityAndPreserveSnapshots(t *testing
 		t.Fatal("directory outage hid assignments")
 	}
 }
+
+func TestExamMultipleGroupsUseOneCourseQueryAndStableRecipientSnapshot(t *testing.T) {
+	d := &fakeExamDirectory{fetch: func(q *pb.UserDirectoryFetchRequest) (*pb.UserDirectoryFetchResponse, error) {
+		if q.FacultyCode != 20 || q.Course != 2 || q.StudentGroup != "" || q.ProfileKind != "student" || !q.ActiveStudentsOnly {
+			t.Fatalf("groups must share scoped MDM query: %v", q)
+		}
+		return &pb.UserDirectoryFetchResponse{ProfileKind: "student", Users: []*pb.UserDirectoryEntry{
+			{Uuid: assignedUUID, FullName: "Первый", Students: []*pb.UserDirectoryStudent{{FacultyCode: 20, Course: 2, Group: "201"}}},
+			{Uuid: otherUUID, FullName: "Второй", Students: []*pb.UserDirectoryStudent{{FacultyCode: 20, Course: 2, Group: "202"}}},
+			{Uuid: "33333333-3333-4333-8333-333333333333", FullName: "Не назначен", Students: []*pb.UserDirectoryStudent{{FacultyCode: 20, Course: 2, Group: "203"}}},
+		}}, nil
+	}}
+	s := NewTestSessionService(nil, nil, nil).WithExamDirectory(d)
+	list, err := s.examRecipients(context.Background(), models.ExamAudience{Kind: "groups", FacultyCode: 20, Course: 2, StudentGroups: []string{"201", "202"}})
+	if err != nil || len(list) != 2 || len(d.calls) != 1 {
+		t.Fatalf("incorrect group assignment: %v %v", list, err)
+	}
+	if list[0].StudentGroup != "201" || list[1].StudentGroup != "202" {
+		t.Fatal("recipient group lost")
+	}
+	if _, err := s.examRecipients(context.Background(), models.ExamAudience{Kind: "groups", FacultyCode: 20, Course: 2, StudentGroups: []string{"201", "999"}}); !errors.Is(err, models.ErrExamAudience) {
+		t.Fatal("missing selected group silently ignored", err)
+	}
+}

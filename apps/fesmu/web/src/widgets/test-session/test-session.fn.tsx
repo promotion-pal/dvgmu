@@ -59,10 +59,11 @@ const useTestSessionCreate = (api: TestSessionApi = testSessionApi, exam = false
         if (!target) return;
         if(exam) {
             const a=values.audience;
-            if(!a.kind || ((a.kind==="course" || a.kind==="group") && !a.facultyCode)) {form.setError("audience.facultyCode",{message:"Выберите факультет и тип назначения"});return;}
-            if((a.kind==="course" || a.kind==="group") && !a.course){form.setError("audience.course",{message:"Выберите курс"});return;}
+            if(!a.kind || ((a.kind==="course" || a.kind==="group" || a.kind==="groups") && !a.facultyCode)) {form.setError("audience.facultyCode",{message:"Выберите факультет и тип назначения"});return;}
+            if((a.kind==="course" || a.kind==="group" || a.kind==="groups") && !a.course){form.setError("audience.course",{message:"Выберите курс"});return;}
             if(a.kind==="group" && !a.studentGroup){form.setError("audience.studentGroup",{message:"Выберите группу"});return;}
-            if(a.kind==="students" && !a.studentUuids.length){form.setError("audience.studentUuids",{message:"Выберите студентов"});return;}
+            if(a.kind==="groups" && !a.studentGroups.length){form.setError("audience.studentGroups",{message:"Выберите группы"});return;}
+ if(a.kind==="students" && !a.studentUuids.length){form.setError("audience.studentUuids",{message:"Выберите студентов"});return;}
         }
         const count = Number(values.questionCount || 0);
         if (count > target.questionCount) {
@@ -93,7 +94,8 @@ const useTestSessions = (api: TestSessionApi = testSessionApi, exam = false) => 
         setLoading(true);
         setError(false);
         try {
-            setSessions(await api.fetch());
+            const list=await api.fetch();
+ setSessions(exam?list.filter(session=>!session.examV2):list);
         } catch (err) {
             console.error("Ошибка при получении сессий:", err);
             setError(true);

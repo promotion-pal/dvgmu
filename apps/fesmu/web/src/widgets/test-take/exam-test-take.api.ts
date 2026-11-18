@@ -26,9 +26,9 @@ const fromState = (message: TestTakeStateResponse): TestTakeState => {
             answers: question.answers.map((answer) => ({ id: answer.id.toString(), text: answer.text })),
         })),
         picked: Object.fromEntries(message.answers.map((answer) => [answer.questionId.toString(), answer.answerIds.map(String)])),
-        showResult: false,
-        score: 0,
-        total: 0,
+        showResult: message.showResult,
+        score: message.score,
+        total: message.total,
     };
 };
 
@@ -42,13 +42,15 @@ export const examTestTakeApi: TestTakeApi = {
             durationMinutes: response.durationMinutes,
             questionCount: response.questionCount,
             isOpen: response.isOpen,
+ instructionRequired: response.instructionRequired,
+ instruction: response.instruction,
             opensAt: response.opensAt ? timestampDate(response.opensAt) : undefined,
             closesAt: response.closesAt ? timestampDate(response.closesAt) : undefined,
         };
     },
 
-    async start(token: string, fullName: string, studentGroup: string, recordBook?: string): Promise<TestTakeState> {
-        return fromState(await client.testTakeStart({ token, fullName, studentGroup, recordBook }));
+    async start(token: string, fullName: string, studentGroup: string, recordBook?: string, instructionAccepted = false): Promise<TestTakeState> {
+        return fromState(await client.testTakeStart({ token, fullName, studentGroup, recordBook, instructionAccepted }));
     },
 
     async state(attemptToken: string): Promise<TestTakeState> {

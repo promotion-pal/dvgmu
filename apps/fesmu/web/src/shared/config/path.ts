@@ -32,6 +32,8 @@ const ROUTE = {
     SESSION_RESULTS: `${LK}/tests/sessions/:id`,
   },
   EXAM_TESTS: {
+ V2: `${LK}/exam-testing/v2`,
+ MY_RESULTS: `${LK}/my/exam-results`,
     BUILDER: `${LK}/exam-testing`,
     SESSIONS: `${LK}/exam-testing/sessions`,
     SESSION_RESULTS: `${LK}/exam-testing/sessions/:id`,

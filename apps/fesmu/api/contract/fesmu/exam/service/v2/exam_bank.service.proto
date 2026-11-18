@@ -1,0 +1,40 @@
+syntax = "proto3";
+package contract.exam.service.v2;
+import "fesmu/service/v1/test.service.proto";
+option go_package = "service_v2;service_pb";
+service ExamBankService {
+ rpc BankFetch(BankFetchRequest) returns (BankFetchResponse);
+ rpc BankSave(BankSaveRequest) returns (BankSaveResponse);
+ rpc BankDelete(BankDeleteRequest) returns (BankDeleteResponse);
+ rpc VariantsGenerate(VariantsGenerateRequest) returns (VariantsGenerateResponse);
+ rpc ReportFetch(ReportFetchRequest) returns (ReportFetchResponse);
+ rpc AIReviewFetch(AIReviewFetchRequest) returns (AIReviewFetchResponse);
+ rpc PreviewFetch(PreviewFetchRequest) returns (PreviewFetchResponse);
+}
+service ExamStudentService { rpc ResultsFetch(StudentResultsRequest) returns (ReportFetchResponse); }
+message Bank {
+ int64 id=1; int64 revision=2; string specialty=3; int32 semester=4;
+ string discipline=5; string academic_year=6; string season=7;
+ repeated BankSection sections=8; int32 variant_count=9; int32 duration_minutes=10;
+ bool show_result=11; string approved_by=12; string review_notes=13;
+ double excellent=14; double good=15; double satisfactory=16;
+ string ai_review_notes=17; string faculty=18;
+}
+message BankSection { string name=1; int32 quota=2; repeated contract.service.v1.TestQuestionInput questions=3; }
+message BankFetchRequest {}
+message BankFetchResponse { repeated Bank banks=1; repeated GeneratedVariant variants=2; }
+message BankSaveRequest { Bank bank=1; }
+message BankSaveResponse { Bank bank=1; }
+message BankDeleteRequest { int64 id=1; int64 revision=2; }
+message BankDeleteResponse {}
+message VariantsGenerateRequest { int64 bank_id=1; int64 revision=2; }
+message VariantsGenerateResponse { repeated GeneratedVariant variants=1; }
+message GeneratedVariant { int64 id=1; int64 bank_id=2; int64 test_id=3; string title=4; int32 duration_minutes=5; bool show_result=6; }
+message ReportFetchRequest { int64 session_id=1; string academic_year=2; string season=3; }
+message ReportFetchResponse { string report_json=1; }
+message PreviewFetchRequest { int64 test_id=1; }
+message PreviewFetchResponse { repeated contract.service.v1.TestQuestionInput questions=1; int32 duration_minutes=2; }
+message StudentResultsRequest {}
+
+message AIReviewFetchRequest { int64 bank_id=1; int64 revision=2; }
+message AIReviewFetchResponse { string notes=1; }

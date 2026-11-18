@@ -56,7 +56,8 @@ const (
 // frozen copy of the questions, so editing or deleting the test later
 // doesn't change what the students were asked or how they were graded.
 type TestSession struct {
-	ID int64 `gorm:"primaryKey;autoIncrement"`
+	ExamSettings ExamV2Settings `gorm:"type:jsonb;serializer:json;not null;default:'{}'"`
+	ID           int64          `gorm:"primaryKey;autoIncrement"`
 
 	// nil once the test was deleted.
 	TestID *int64 `gorm:"index"`
@@ -118,8 +119,10 @@ type TestSnapshotAnswer struct {
 // TestAttempt is one student's run through a session. Seed fixes which
 // questions they got and in what order, so it never has to be stored.
 type TestAttempt struct {
-	ID        int64 `gorm:"primaryKey;autoIncrement"`
-	SessionID int64 `gorm:"not null;index"`
+	InstructionAcceptedAt *time.Time
+	Events                []TestAttemptEvent `gorm:"type:jsonb;serializer:json"`
+	ID                    int64              `gorm:"primaryKey;autoIncrement"`
+	SessionID             int64              `gorm:"not null;index"`
 
 	// The student's key to the attempt; no login is involved.
 	Token        string `gorm:"size:64;not null;uniqueIndex"`
@@ -161,6 +164,7 @@ type TestSessionParams struct {
 func NewTestSession(test *Test, params TestSessionParams, token string, now time.Time) (*TestSession, error) {
 	s := &TestSession{
 		TestID:          &test.ID,
+		ExamSettings:    test.ExamSettings,
 		Audience:        params.Audience,
 		Token:           token,
 		Topic:           test.Topic,
@@ -437,10 +441,11 @@ func mixOptions(rng *rand.Rand, options []TestSnapshotAnswer, n int) (out []Test
 }
 
 type TestAttemptParams struct {
-	RecordBook   string
-	MDMUserUUID  string
-	FullName     string
-	StudentGroup string
+	InstructionAccepted bool
+	RecordBook          string
+	MDMUserUUID         string
+	FullName            string
+	StudentGroup        string
 }
 
 // NewTestAttempt starts the clock for one student.
@@ -464,6 +469,13 @@ func NewTestAttempt(session *TestSession, params TestAttemptParams, token string
 		StartedAt:    now,
 		Deadline:     now.Add(time.Duration(session.DurationMinutes) * time.Minute),
 	}
+	if session.ExamSettings.Enabled {
+		if !params.InstructionAccepted {
+			return nil, testInvalid("подтвердите ознакомление с инструкцией")
+		}
+		a.InstructionAcceptedAt = &now
+		a.Events = []TestAttemptEvent{{At: now, Kind: "instruction_accepted"}, {At: now, Kind: "started"}}
+	}
 	if a.FullName == "" {
 		return nil, testInvalid("укажите ФИО")
 	}
@@ -485,6 +497,9 @@ func (a *TestAttempt) InProgress() bool {
 
 // Expired: still marked in progress, but its time (with the grace) is up.
 func (a *TestAttempt) Expired(now time.Time) bool {
+	if a.InstructionAcceptedAt != nil {
+		return a.InProgress() && !now.Before(a.Deadline)
+	}
 	return a.InProgress() && now.After(a.Deadline.Add(TestAttemptGrace))
 }
 
@@ -513,6 +528,9 @@ func (a *TestAttempt) SetAnswer(questions []TestSnapshotQuestion, questionID int
 		return testInvalid("в этом вопросе выберите один вариант")
 	}
 
+	if a.InstructionAcceptedAt != nil {
+		a.Events = append(a.Events, TestAttemptEvent{At: now, Kind: "answer_saved", QuestionID: questionID, AnswerIDs: picked})
+	}
 	a.Answers = slices.DeleteFunc(a.Answers, func(x TestAttemptAnswer) bool { return x.QuestionID == questionID })
 	if len(picked) > 0 {
 		a.Answers = append(a.Answers, TestAttemptAnswer{QuestionID: questionID, AnswerIDs: picked})
@@ -532,6 +550,9 @@ func (a *TestAttempt) Finish(questions []TestSnapshotQuestion, now time.Time) {
 		finished = a.Deadline
 	} else {
 		a.Status = enum.TestAttemptStatus_TEST_ATTEMPT_STATUS_FINISHED
+	}
+	if a.InstructionAcceptedAt != nil {
+		a.Events = append(a.Events, TestAttemptEvent{At: finished, Kind: "finished"})
 	}
 	a.FinishedAt = &finished
 	a.Score, a.Total = a.Grade(questions)
@@ -590,6 +611,7 @@ func (s *TestSession) ToProto() *entity.TestSession {
 	out := &entity.TestSession{
 		Audience:        s.Audience.ToProto(),
 		AssignedCount:   int32(s.AssignedCount),
+		ExamV2:          s.ExamSettings.Enabled,
 		Id:              s.ID,
 		Token:           s.Token,
 		Topic:           s.Topic,

@@ -80,7 +80,8 @@ const TestTakeIntro: FC<{ take: TestTake }> = ({ take }) => {
                                 <li>Каждый ответ сохраняется сразу — если страница закроется, откройте ссылку снова в этом же браузере.</li>
                                 <li>Когда время выйдет, тест завершится сам с сохранёнными ответами.</li>
                             </ul>
-                            <Button type="submit" size="lg" disabled={form.formState.isSubmitting}>
+                            {info.instructionRequired && <div className="rounded-lg border p-4 text-sm"><p className="whitespace-pre-line">{info.instruction}</p><label className="mt-3 flex items-center gap-2"><input type="checkbox" checked={take.instructionAccepted} onChange={event=>take.setInstructionAccepted(event.target.checked)} />С инструкцией ознакомлен(а)</label></div>}
+ <Button type="submit" size="lg" disabled={form.formState.isSubmitting || Boolean(info.instructionRequired && !take.instructionAccepted)}>
                                 {form.formState.isSubmitting ? "Запуск…" : "Начать тест"}
                             </Button>
                         </form>

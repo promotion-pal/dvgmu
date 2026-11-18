@@ -78,6 +78,7 @@ message TestSession {
   contract.enum.v1.TestVersion version = 19;
   ExamAudience audience = 20;
   int32 assigned_count = 21;
+ bool exam_v2=23;
   // Full recipient list is returned on the staff session results page.
   repeated ExamRecipient recipients = 22;
 }
@@ -90,6 +91,7 @@ message ExamAudience {
   int32 course = 3;
   string student_group = 4;
   repeated string student_uuids = 5;
+ repeated string student_groups = 6;
 }
 
 message ExamRecipient {

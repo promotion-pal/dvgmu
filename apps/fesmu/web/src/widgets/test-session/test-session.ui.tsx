@@ -126,7 +126,7 @@ const QuestionPickHint: FC<{ form: SessionCreate["form"]; total: number; mixed: 
 };
 
 /** Staff: hand a test out — time limit and options — then copy the link. */
-const TestSessionCreateModal: FC<{ state: SessionCreate; exam?: boolean }> = ({ state, exam = state.exam }) => {
+const TestSessionCreateModal: FC<{ state: SessionCreate; exam?: boolean; examV2?:boolean }> = ({ state, exam = state.exam, examV2=false }) => {
     const { form, target, created, handleSubmit } = state;
 
     return (
@@ -196,7 +196,7 @@ const TestSessionCreateModal: FC<{ state: SessionCreate; exam?: boolean }> = ({ 
                         </div>
                         <div className="flex flex-col gap-3">
                             <PromFieldSwitch<TestSessionForm> name="shuffle" label="Перемешивать вопросы и варианты ответа" />
-                            {exam ? <p className="text-sm text-muted-foreground">Одна попытка в этой сессии. После сдачи экзамен исчезнет из списка студента. Результат сообщит преподаватель.</p> : <PromFieldSwitch<TestSessionForm> name="showResult" label="Показать студенту результат после завершения" />}
+                            {exam && !examV2 ? <p className="text-sm text-muted-foreground">Одна попытка в этой сессии. После сдачи экзамен исчезнет из списка студента. Результат сообщит преподаватель.</p> : <PromFieldSwitch<TestSessionForm> name="showResult" label="Показать студенту результат после завершения" />}
                         </div>
                         <QuestionPickHint form={form} total={target?.questionCount ?? 0} mixed={Boolean(target?.mixed)} />
                         <p className="text-xs text-muted-foreground">
@@ -257,7 +257,7 @@ const SessionRow: FC<{ session: TestSession; state: Sessions }> = ({ session, st
                 </Badge>
             </div>
             <div className="text-xs break-words text-muted-foreground">{[session.department, session.note].filter(Boolean).join(" · ")}</div>
-            {state.exam && <p className="mt-1 text-xs text-muted-foreground">{session.audience?.kind ? `${session.audience.kind==="course"?`${session.audience.course} курс`:session.audience.kind==="group"?`Группа ${session.audience.studentGroup}`:"Индивидуальное назначение"} · назначено студентов: ${session.assignedCount??0}` : "Студенты не назначены — откройте доступ заново в банке экзаменов"}</p>}
+            {state.exam && <p className="mt-1 text-xs text-muted-foreground">{session.audience?.kind ? `${session.audience.kind==="course"?`${session.audience.course} курс`:session.audience.kind==="groups"?`Группы: ${(session.audience.studentGroups??[]).join(", ")}`:session.audience.kind==="group"?`Группа ${session.audience.studentGroup}`:"Индивидуальное назначение"} · назначено студентов: ${session.assignedCount??0}` : "Студенты не назначены — откройте доступ заново в банке экзаменов"}</p>}
         </TableCell>
         <TableCell className="whitespace-nowrap text-sm">
             <div className="flex items-center gap-1">
@@ -424,7 +424,7 @@ const TestSessionResultsHeader: FC<{ state: SessionResults }> = ({ state }) => {
                     </>
                 )}
                 <span>·</span>
-                <span>{!state.exam && session.showResult ? "студент видит результат" : "результат студенту не показывается"}</span>
+                <span>{(!state.exam || session.examV2) && session.showResult ? "студент видит результат" : "результат студенту не показывается"}</span>
                 {sessionWindow(session) && (
                     <>
                         <span>·</span>

@@ -106,6 +106,8 @@ message TestTakeInfoRequest {
 }
 
 message TestTakeInfoResponse {
+ bool instruction_required=8;
+ string instruction=9;
     string topic = 1;
     string description = 2;
     int32 duration_minutes = 3;
@@ -118,6 +120,7 @@ message TestTakeInfoResponse {
 }
 
 message TestTakeStartRequest {
+ bool instruction_accepted=5;
     string token = 1;
     string full_name = 2;
     string student_group = 3;

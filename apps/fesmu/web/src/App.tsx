@@ -21,6 +21,7 @@ import ScheduleEditorPage from "./page/ScheduleEditor";
 import ScheduleHallPage from "./page/ScheduleHall";
 import ComputerClassPage from "./page/ComputerClass";
 import TestBuilderPage from "./page/TestBuilder";
+ import ExamV2Page, {MyExamResultsPage} from "./page/ExamV2";
 import ExamTestingPublicPage from "./page/public/ExamTestingPublic";
 import { TestVersion } from "@fesmu/contract/fesmu/enum/v1/test.enum_pb";
 import TestSessionsPage from "./page/TestSessions";
@@ -110,8 +111,10 @@ function App() {
             <Route path={ROUTE.TESTS.SESSIONS} element={<TestSessionsPage />} />
             <Route path={ROUTE.TESTS.SESSION_RESULTS} element={<TestSessionResultsPage />} />
           </Route>
-          <Route element={<AllowSection section={PermissionSection.EXAM_TESTS} />}>
-            <Route path={ROUTE.EXAM_TESTS.BUILDER} element={<TestBuilderPage version={TestVersion.V1} exam />} />
+          <Route path={ROUTE.EXAM_TESTS.MY_RESULTS} element={<MyExamResultsPage />} />
+ <Route element={<AllowSection section={PermissionSection.EXAM_TESTS} />}>
+            <Route path={ROUTE.EXAM_TESTS.V2} element={<ExamV2Page />} />
+ <Route path={ROUTE.EXAM_TESTS.BUILDER} element={<TestBuilderPage version={TestVersion.V1} exam />} />
             <Route path={ROUTE.EXAM_TESTS.SESSIONS} element={<TestSessionsPage exam />} />
             <Route path={ROUTE.EXAM_TESTS.SESSION_RESULTS} element={<TestSessionResultsPage exam />} />
           </Route>
