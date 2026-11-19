@@ -5,8 +5,9 @@ NC    := $(shell tput sgr0 2>/dev/null)
 GENERATED := packages/go packages/ts
 TICKETS_COMPOSE := docker compose -f services/tickets/docker-compose.dev.yml
 MDM_COMPOSE := docker compose -f services/mdm/docker-compose.dev.yml
+TASKS_COMPOSE := docker compose -f services/tasks/docker-compose.dev.yml
 
-.PHONY: proto dev dev-stop tickets-migrate-diff tickets-migrate-lint tickets-migrate-status mdm-migrate-diff mdm-migrate-lint mdm-migrate-status
+.PHONY: proto dev dev-stop tickets-migrate-diff tickets-migrate-lint tickets-migrate-status mdm-migrate-diff mdm-migrate-lint mdm-migrate-status tasks-dev tasks-dev-stop tasks-migrate-diff tasks-migrate-lint tasks-migrate-status
 
 dev:
 	@$(TICKETS_COMPOSE) up -d --build
@@ -34,6 +35,21 @@ mdm-migrate-lint:
 
 mdm-migrate-status:
 	@cd services/mdm && atlas migrate status --env gorm
+
+tasks-dev:
+	@$(TASKS_COMPOSE) up -d --build
+
+tasks-dev-stop:
+	@$(TASKS_COMPOSE) down
+
+tasks-migrate-diff:
+	@cd services/tasks && atlas migrate diff --env gorm
+
+tasks-migrate-lint:
+	@cd services/tasks && atlas migrate lint --env gorm --latest 1
+
+tasks-migrate-status:
+	@cd services/tasks && atlas migrate status --env gorm
 
 proto:
 	@echo "$(CYAN)📝  Generating protobuf with Buf...$(NC)"

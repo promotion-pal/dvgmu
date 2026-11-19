@@ -10,3 +10,4 @@ breaking:
 modules:
   - path: services/tickets/contract
   - path: services/mdm/contract
+  - path: services/tasks/contract

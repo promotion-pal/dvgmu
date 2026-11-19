@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package tasks.entity;
+
+import "google/protobuf/timestamp.proto";
+
+message Task {
+  string uuid = 1;
+  string number = 2;
+  string title = 3;
+  google.protobuf.Timestamp created_at = 4;
+  google.protobuf.Timestamp updated_at = 5;
+  int64 version = 6;
+}

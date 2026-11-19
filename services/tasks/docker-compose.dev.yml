@@ -1,0 +1,39 @@
+services:
+  dvgmu_tasks_db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: ${TASKS_POSTGRES_USER:-root}
+      POSTGRES_PASSWORD: ${TASKS_POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${TASKS_POSTGRES_DB:-dvgmu_tasks_db}
+    ports:
+      - "${TASKS_POSTGRES_PORT:-5448}:5432"
+    volumes:
+      - tasks_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  dvgmu_tasks_api:
+    build:
+      context: ../..
+      dockerfile: services/tasks/Dockerfile
+    command: ["./tasks", "--config=config/local.yaml"]
+    depends_on:
+      dvgmu_tasks_db:
+        condition: service_healthy
+    ports:
+      - "${TASKS_GRPC_PORT:-4052}:4052"
+    environment:
+      DB_HOST: dvgmu_tasks_db
+      DB_PORT: "5432"
+      DB_USER: ${TASKS_POSTGRES_USER:-root}
+      DB_PASSWORD: ${TASKS_POSTGRES_PASSWORD:-password}
+      DB_NAME: ${TASKS_POSTGRES_DB:-dvgmu_tasks_db}
+      DB_SSLMODE: disable
+      GRPC_PORT: "4052"
+    restart: unless-stopped
+
+volumes:
+  tasks_pgdata:

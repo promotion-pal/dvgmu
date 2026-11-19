@@ -1,0 +1,13 @@
+env: local
+
+grpc:
+  port: 4052
+  timeout: 5s
+
+database:
+  host: localhost
+  port: 5448
+  user: root
+  password: password
+  dbname: dvgmu_tasks_db
+  sslmode: disable
