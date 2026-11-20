@@ -2,7 +2,7 @@ import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
 import { Layout, PublicLayout } from "./widgets/layout";
 import type { UserRole } from "@fesmu/contract/fesmu/enum/v1/user.enum_pb";
 import { PermissionGate, RoleGate, UserGate } from "./widgets/user-gate";
-import { PermissionAction, PermissionSection, PURCHASE_SECTIONS, PURCHASE_V3_PERMS, permsFor, permsForAny } from "./shared/config/permissions";
+import { PermissionAction, PermissionSection, PURCHASE_SECTIONS, permsFor, permsForAny } from "./shared/config/permissions";
 import CertificatesPage from "./page/admin/certificates/Certificates";
 import DeaneryStudentsPage from "./page/deanery/DeaneryStudents";
 import { firstAllowedUrl } from "./widgets/layout/sidebar";
@@ -172,8 +172,8 @@ function App() {
           <Route element={<PermissionGate permissions={permsForAny(PURCHASE_SECTIONS)}><Outlet /></PermissionGate>}>
             <Route path={ROUTE.PURCHASE.V2} element={<PurchaseV2Page />} />
           </Route>
-          {/* Закупки v3: любое право purchase.*; этапы и кнопки — по ответу api */}
-          <Route path={ROUTE.PURCHASE.V3} element={<PermissionGate permissions={PURCHASE_V3_PERMS}><PurchaseV3Page /></PermissionGate>} />
+          {/* Закупки v3: доступно любому вошедшему пользователю */}
+          <Route path={ROUTE.PURCHASE.V3} element={<PurchaseV3Page />} />
         </Route>
 
         {/* Vaccination sign-up stands apart from the app: no sidebar or header, still behind the sign-in. */}

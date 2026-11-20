@@ -257,7 +257,7 @@ func (s *Service) EmployeeFetch(ctx context.Context, department int32) ([]*entit
 	if err != nil {
 		return nil, err
 	}
-	if !a.can(permLotManage) && !a.can(permDirectories) {
+	if !a.can(permLotManage) && !a.can(permDirectories) && !a.can(permLotFullEdit) {
 		return nil, needPerm(permLotManage)
 	}
 	if s.profiles == nil {

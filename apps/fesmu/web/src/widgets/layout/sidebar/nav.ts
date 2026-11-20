@@ -2,7 +2,7 @@ import type { ComponentType } from "react";
 import type { UserRole } from "@fesmu/contract/fesmu/enum/v1/user.enum_pb";
 import { BookOpenTextIcon, ChartColumnIcon, QrCodeIcon, BriefcaseIcon, LibraryIcon, Building2Icon, FileCheckIcon, CalendarDaysIcon, CalendarRangeIcon, ClipboardListIcon, FileTextIcon, GraduationCapIcon, HourglassIcon, ListChecksIcon, ListTodoIcon, MonitorIcon, ReceiptTextIcon, ShieldCheckIcon, ShoppingBagIcon, ShoppingCartIcon, TicketIcon, UsersIcon } from "lucide-react";
 import { ACCESS } from "@/shared/config/access";
-import { PermissionSection, PURCHASE_SECTIONS, PURCHASE_V3_PERMS, permsFor, permsForAny } from "@/shared/config/permissions";
+import { PermissionSection, PURCHASE_SECTIONS, permsFor, permsForAny } from "@/shared/config/permissions";
 import { ROUTE } from "@/shared/config/path";
 
 interface NavItem {
@@ -61,8 +61,8 @@ const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
     {
         label: "Закупки",
         items: [
-            // Любое право закупок v3 (purchase.*); этапы и кнопки — по правам, отделу и направлению.
-            { title: "Закупки", url: ROUTE.PURCHASE.V3, icon: ShoppingBagIcon, permissions: PURCHASE_V3_PERMS },
+            // Раздел доступен любому вошедшему пользователю.
+            { title: "Закупки", url: ROUTE.PURCHASE.V3, icon: ShoppingBagIcon },
         ],
     },
     {

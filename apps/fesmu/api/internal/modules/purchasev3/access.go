@@ -368,6 +368,9 @@ func (s *Service) actorOf(ctx context.Context) (actor, error) {
 			a.perms[p] = true
 		}
 	}
+	// Full editing is available to every authenticated portal user; it is not
+	// assigned through access sets or tied to an MDM department.
+	a.perms[permLotFullEdit] = true
 	name, position, departments, err := s.profiles.profile(ctx, u.UUID)
 	if err != nil {
 		s.log.Warn("purchase v3: mdm profile unavailable", "uuid", u.UUID, "error", err.Error())

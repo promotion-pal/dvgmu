@@ -133,7 +133,6 @@ export const PURCHASE_PERMISSIONS: {
     { key: PurchasePermission.LOT_ACCEPTANCE, group: "Закупки: подготовка и исполнение", label: "Приёмка", description: "Приёмка поставленного товара или оказанной услуги" },
     { key: PurchasePermission.LOT_INVENTORY, group: "Закупки: подготовка и исполнение", label: "Постановка на учёт в инвентаре", description: "Внесение принятых товаров в инвентарь портала ДВГМУ" },
     { key: PurchasePermission.DIRECTORIES, group: "Закупки: администрирование", label: "Справочники закупок", description: "Проректоры и их направления, отделы, виды закупок" },
-    { key: PurchasePermission.LOT_FULL_EDIT, group: "Закупки: администрирование", label: "Полное редактирование закупок", description: "Редактировать любые поля на любом этапе, добавлять любые документы и вручную менять статус закупки" },
 ];
 
 /** Любое право закупок v3 открывает страницу «Закупки»; что на ней можно — решает api. */
