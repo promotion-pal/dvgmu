@@ -24,7 +24,7 @@ services:
       dvgmu_tasks_db:
         condition: service_healthy
     ports:
-      - "${TASKS_GRPC_PORT:-4052}:4052"
+      - "127.0.0.1:${TASKS_GRPC_PORT:-4052}:4052"
     environment:
       DB_HOST: dvgmu_tasks_db
       DB_PORT: "5432"
@@ -33,6 +33,7 @@ services:
       DB_NAME: ${TASKS_POSTGRES_DB:-dvgmu_tasks_db}
       DB_SSLMODE: disable
       GRPC_PORT: "4052"
+      GRPC_HOST: "0.0.0.0"
     restart: unless-stopped
 
 volumes:

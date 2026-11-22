@@ -6,6 +6,8 @@
   "exports": {
     "./tickets/entity/ticket.entity_pb": "./tickets/entity/ticket.entity_pb.ts",
     "./tickets/service/ticket.service_pb": "./tickets/service/ticket.service_pb.ts",
+    "./tasks/entity/direction_pb": "./tasks/entity/direction_pb.ts",
+    "./tasks/service/direction_service_pb": "./tasks/service/direction_service_pb.ts",
     "./mdm/entity/user.entity_pb": "./mdm/entity/user.entity_pb.ts",
     "./mdm/enum/user.enum_pb": "./mdm/enum/user.enum_pb.ts",
     "./mdm/service/user.service_pb": "./mdm/service/user.service_pb.ts"

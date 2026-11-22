@@ -1,6 +1,7 @@
 FROM golang:1.26-alpine AS build
 
 WORKDIR /src
+COPY packages/go packages/go
 COPY services/tasks/go.mod services/tasks/go.sum services/tasks/
 WORKDIR /src/services/tasks
 RUN --mount=type=cache,target=/go/pkg/mod go mod download

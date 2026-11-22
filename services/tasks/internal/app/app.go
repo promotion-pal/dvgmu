@@ -6,6 +6,8 @@ import (
 	"dvgmu/tasks"
 	grpcapp "dvgmu/tasks/internal/app/grpc"
 	"dvgmu/tasks/internal/config"
+	taskgrpc "dvgmu/tasks/internal/grpc"
+	"dvgmu/tasks/internal/service"
 	"dvgmu/tasks/internal/storage"
 	"github.com/pressly/goose/v3"
 )
@@ -33,5 +35,6 @@ func New(log *slog.Logger, cfg *config.Config) *App {
 	}
 	log.Info("task database migrations applied")
 
-	return &App{GRPCServer: grpcapp.New(log, sqlDB.PingContext, cfg.GRPC)}
+	controller := taskgrpc.NewDirectionController(service.NewDirectionService(storage.NewDirectionStorage(db)), log)
+	return &App{GRPCServer: grpcapp.New(log, sqlDB.PingContext, cfg, controller)}
 }

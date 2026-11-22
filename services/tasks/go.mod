@@ -4,12 +4,16 @@ go 1.26.4
 
 require (
 	ariga.io/atlas-provider-gorm v0.6.1
+	connectrpc.com/connect v1.20.0
+	fesmu/contract v0.0.0
 	github.com/ilyakaznacheev/cleanenv v1.5.0
 	github.com/joho/godotenv v1.5.1
 	github.com/pressly/goose/v3 v3.27.3
 	gorm.io/driver/postgres v1.6.2
 	gorm.io/gorm v1.31.2
 )
+
+replace fesmu/contract => ../../packages/go
 
 require (
 	ariga.io/atlas v0.36.2-0.20250806044935-5bb51a0a956e // indirect
@@ -89,4 +93,3 @@ require (
 	gorm.io/driver/sqlserver v1.5.4 // indirect
 	olympos.io/encoding/edn v0.0.0-20201019073823-d3554ca0b0a3 // indirect
 )
-

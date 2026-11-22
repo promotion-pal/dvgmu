@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package tasks.service;
+
+import "tasks/entity/direction.proto";
+
+service DirectionService {
+  rpc CreateDirection(CreateDirectionRequest) returns (CreateDirectionResponse);
+  rpc GetDirection(GetDirectionRequest) returns (GetDirectionResponse);
+  rpc ListDirections(ListDirectionsRequest) returns (ListDirectionsResponse);
+  rpc UpdateDirection(UpdateDirectionRequest) returns (UpdateDirectionResponse);
+  // Permanently deletes a direction and returns its last stored state.
+  rpc DeleteDirection(DeleteDirectionRequest) returns (DeleteDirectionResponse);
+}
+
+message CreateDirectionRequest {
+  string code = 1;
+  string name = 2;
+  int32 sort_order = 3;
+}
+
+message CreateDirectionResponse {
+  tasks.entity.Direction direction = 1;
+}
+
+message GetDirectionRequest {
+  int64 id = 1;
+}
+
+message GetDirectionResponse {
+  tasks.entity.Direction direction = 1;
+}
+
+message ListDirectionsRequest {
+  int32 page_size = 1;
+  int64 after_id = 2;
+}
+
+message ListDirectionsResponse {
+  repeated tasks.entity.Direction directions = 1;
+  int64 next_after_id = 2;
+}
+
+message UpdateDirectionRequest {
+  int64 id = 1;
+  optional string code = 2;
+  optional string name = 3;
+  optional int32 sort_order = 4;
+  optional bool active = 5;
+}
+
+message UpdateDirectionResponse {
+  tasks.entity.Direction direction = 1;
+}
+
+message DeleteDirectionRequest {
+  int64 id = 1;
+}
+
+message DeleteDirectionResponse {
+  tasks.entity.Direction direction = 1;
+}

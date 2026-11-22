@@ -5,10 +5,13 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
+	"net"
 	"net/http"
+	"strconv"
 	"time"
 
 	"dvgmu/tasks/internal/config"
+	"fesmu/contract/tasks/service/serviceconnect"
 )
 
 type App struct {
@@ -17,10 +20,13 @@ type App struct {
 	port       int
 }
 
-func New(log *slog.Logger, ping func(context.Context) error, cfg config.GRPCConfig) *App {
+func New(log *slog.Logger, ping func(context.Context) error, cfg *config.Config, directions serviceconnect.DirectionServiceHandler) *App {
 	mux := http.NewServeMux()
+	if cfg.Env == "local" {
+		mux.Handle(serviceconnect.NewDirectionServiceHandler(directions))
+	}
 	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, r *http.Request) {
-		ctx, cancel := context.WithTimeout(r.Context(), cfg.Timeout)
+		ctx, cancel := context.WithTimeout(r.Context(), cfg.GRPC.Timeout)
 		defer cancel()
 		if err := ping(ctx); err != nil {
 			http.Error(w, "database unavailable", http.StatusServiceUnavailable)
@@ -35,12 +41,12 @@ func New(log *slog.Logger, ping func(context.Context) error, cfg config.GRPCConf
 	return &App{
 		log: log,
 		httpServer: &http.Server{
-			Addr:              fmt.Sprintf(":%d", cfg.Port),
+			Addr:              net.JoinHostPort(cfg.GRPC.Host, strconv.Itoa(cfg.GRPC.Port)),
 			Handler:           mux,
-			ReadHeaderTimeout: cfg.Timeout,
+			ReadHeaderTimeout: cfg.GRPC.Timeout,
 			Protocols:         protocols,
 		},
-		port: cfg.Port,
+		port: cfg.GRPC.Port,
 	}
 }
 
