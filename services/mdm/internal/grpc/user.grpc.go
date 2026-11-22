@@ -56,6 +56,14 @@ func (c *UserController) UserUpdate(ctx context.Context, req *connect.Request[se
 	return connect.NewResponse(&servicepb.UserUpdateResponse{User: user.ToProto()}), nil
 }
 
+func (c *UserController) UserRolesSet(ctx context.Context, req *connect.Request[servicepb.UserRolesSetRequest]) (*connect.Response[servicepb.UserRolesSetResponse], error) {
+	user, err := c.service.RolesSet(ctx, req.Msg.GetId(), req.Msg.GetRoles())
+	if err != nil {
+		return nil, userError(err)
+	}
+	return connect.NewResponse(&servicepb.UserRolesSetResponse{User: user.ToProto()}), nil
+}
+
 func userParams(firstName, lastName string, patronymic *string, email string, phone *string, birthday *timestamppb.Timestamp) models.UserCreateParams {
 	params := models.UserCreateParams{
 		FirstName: firstName,
@@ -82,6 +90,8 @@ func userError(err error) error {
 	case errors.Is(err, models.ErrUserAlreadyExists):
 		return connect.NewError(connect.CodeAlreadyExists, err)
 	case errors.Is(err, models.ErrInvalidUser):
+		return connect.NewError(connect.CodeInvalidArgument, err)
+	case errors.Is(err, models.ErrInvalidRole):
 		return connect.NewError(connect.CodeInvalidArgument, err)
 	default:
 		return connect.NewError(connect.CodeInternal, err)

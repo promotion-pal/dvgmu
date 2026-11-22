@@ -3,7 +3,8 @@ import { NavLink } from "react-router";
 import { AnimatePresence, domAnimation, LazyMotion, MotionConfig } from "motion/react";
 import * as m from "motion/react-m";
 import { ROUTER } from "@/shared/config/path";
-import { DEFAULT_USER_ID, useUserProvider } from "@/features/provider/user.provider";
+import { DEFAULT_USER_ID, useUserProvider, userHasPermission } from "@/features/provider/user.provider";
+import { UserPermission } from "@fesmu/contract/mdm/enum/user.enum_pb";
 import {
   BookOpen,
   CircleHelp,
@@ -31,6 +32,7 @@ const workspaceItems = [
 
 export function Sidebar({ children }: { children: ReactNode }) {
   const { user, status } = useUserProvider();
+  const canOpenTasks = userHasPermission(user, UserPermission.USER_TASK_READ) || userHasPermission(user, UserPermission.USER_TASK_CREATE);
   const me = useUserProvider((state) => state.me);
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -134,7 +136,7 @@ export function Sidebar({ children }: { children: ReactNode }) {
 
             <nav aria-label="Основная навигация" className="flex-1 overflow-y-auto px-3 py-4">
               <SidebarSection title="Платформа" collapsed={collapsed}>
-                {navigation.map(({ title, icon: Icon, href }) => (
+                {navigation.filter((item) => item.href !== ROUTER.TASKS || canOpenTasks).map(({ title, icon: Icon, href }) => (
                   <NavLink
                     className={({ isActive }) => `group flex h-9 items-center gap-3 rounded-md px-2.5 text-sm transition-colors ${isActive ? "bg-slate-100 font-medium text-slate-950" : "text-slate-600 hover:bg-slate-50 hover:text-slate-950"} ${isDesktopCollapsed ? "md:justify-center md:gap-0 md:px-0" : ""}`}
                     end

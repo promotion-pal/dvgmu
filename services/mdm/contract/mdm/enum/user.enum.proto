@@ -12,6 +12,13 @@ enum UserStatus {
     USER_STATUS_INACTIVE = 2;
 }
 
+enum UserRole {
+    USER_ROLE_UNSPECIFIED = 0;
+    USER_ROLE_STUDENT = 1;
+    USER_ROLE_EMPLOYEE = 2;
+    USER_ROLE_ADMIN = 3;
+}
+
 enum UserGender {
     USER_GENDER_UNSPECIFIED = 0;
     USER_GENDER_MALE = 1;
@@ -64,4 +71,13 @@ enum UserEmployeeDepartment {
     USER_EMPLOYEE_DEPARTMENT_UNSPECIFIED = 0;
     // ИТ-отдел
     USER_EMPLOYEE_DEPARTMENT_IT = 1;
+}
+
+enum UserPermission {
+    USER_PERMISSION_UNSPECIFIED = 0;
+    // Task
+    USER_TASK_READ = 1;
+    USER_TASK_CREATE = 2;
+    USER_TASK_UPDATE = 3;
+    USER_TASK_DELETE = 4;
 }

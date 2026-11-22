@@ -35,6 +35,7 @@ services:
       DB_NAME: ${POSTGRES_DB:-dvgmu_tickets_db}
       DB_SSLMODE: disable
       GRPC_PORT: "4000"
+      MDM_URL: ${MDM_URL:-http://dvgmu_mdm_api:4000}
     networks:
       - traefik-network
 

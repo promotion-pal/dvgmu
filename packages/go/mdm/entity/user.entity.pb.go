@@ -28,15 +28,17 @@ type User struct {
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Uuid          string                 `protobuf:"bytes,2,opt,name=uuid,proto3" json:"uuid,omitempty"`
 	AdObjectId    *string                `protobuf:"bytes,3,opt,name=ad_object_id,json=adObjectId,proto3,oneof" json:"ad_object_id,omitempty"`
-	FirstName     string                 `protobuf:"bytes,4,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"`
-	LastName      string                 `protobuf:"bytes,5,opt,name=last_name,json=lastName,proto3" json:"last_name,omitempty"`
-	Patronymic    *string                `protobuf:"bytes,6,opt,name=patronymic,proto3,oneof" json:"patronymic,omitempty"`
-	Email         string                 `protobuf:"bytes,7,opt,name=email,proto3" json:"email,omitempty"`
-	Phone         *string                `protobuf:"bytes,8,opt,name=phone,proto3,oneof" json:"phone,omitempty"`
-	Status        enum.UserStatus        `protobuf:"varint,9,opt,name=status,proto3,enum=contract.enum.UserStatus" json:"status,omitempty"`
-	Birthday      *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=birthday,proto3,oneof" json:"birthday,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	Permission    *UserPermission        `protobuf:"bytes,4,opt,name=permission,proto3" json:"permission,omitempty"`
+	Roles         []enum.UserRole        `protobuf:"varint,5,rep,packed,name=roles,proto3,enum=contract.enum.UserRole" json:"roles,omitempty"`
+	LastName      string                 `protobuf:"bytes,6,opt,name=last_name,json=lastName,proto3" json:"last_name,omitempty"`
+	FirstName     string                 `protobuf:"bytes,7,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"`
+	Patronymic    *string                `protobuf:"bytes,8,opt,name=patronymic,proto3,oneof" json:"patronymic,omitempty"`
+	Email         string                 `protobuf:"bytes,9,opt,name=email,proto3" json:"email,omitempty"`
+	Phone         *string                `protobuf:"bytes,10,opt,name=phone,proto3,oneof" json:"phone,omitempty"`
+	Status        enum.UserStatus        `protobuf:"varint,11,opt,name=status,proto3,enum=contract.enum.UserStatus" json:"status,omitempty"`
+	Birthday      *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=birthday,proto3,oneof" json:"birthday,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,13,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,14,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -92,16 +94,30 @@ func (x *User) GetAdObjectId() string {
 	return ""
 }
 
-func (x *User) GetFirstName() string {
+func (x *User) GetPermission() *UserPermission {
 	if x != nil {
-		return x.FirstName
+		return x.Permission
 	}
-	return ""
+	return nil
+}
+
+func (x *User) GetRoles() []enum.UserRole {
+	if x != nil {
+		return x.Roles
+	}
+	return nil
 }
 
 func (x *User) GetLastName() string {
 	if x != nil {
 		return x.LastName
+	}
+	return ""
+}
+
+func (x *User) GetFirstName() string {
+	if x != nil {
+		return x.FirstName
 	}
 	return ""
 }
@@ -199,37 +215,96 @@ func (x *UserFull) GetUser() *User {
 	return nil
 }
 
+type UserPermission struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserUuid      string                 `protobuf:"bytes,1,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"`
+	Permissions   []enum.UserPermission  `protobuf:"varint,2,rep,packed,name=permissions,proto3,enum=contract.enum.UserPermission" json:"permissions,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserPermission) Reset() {
+	*x = UserPermission{}
+	mi := &file_mdm_entity_user_entity_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserPermission) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserPermission) ProtoMessage() {}
+
+func (x *UserPermission) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_entity_user_entity_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserPermission.ProtoReflect.Descriptor instead.
+func (*UserPermission) Descriptor() ([]byte, []int) {
+	return file_mdm_entity_user_entity_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *UserPermission) GetUserUuid() string {
+	if x != nil {
+		return x.UserUuid
+	}
+	return ""
+}
+
+func (x *UserPermission) GetPermissions() []enum.UserPermission {
+	if x != nil {
+		return x.Permissions
+	}
+	return nil
+}
+
 var File_mdm_entity_user_entity_proto protoreflect.FileDescriptor
 
 const file_mdm_entity_user_entity_proto_rawDesc = "" +
 	"\n" +
-	"\x1cmdm/entity/user.entity.proto\x12\x0fcontract.entity\x1a\x18mdm/enum/user.enum.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x80\x04\n" +
+	"\x1cmdm/entity/user.entity.proto\x12\x0fcontract.entity\x1a\x18mdm/enum/user.enum.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xf0\x04\n" +
 	"\x04User\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04uuid\x18\x02 \x01(\tR\x04uuid\x12%\n" +
 	"\fad_object_id\x18\x03 \x01(\tH\x00R\n" +
-	"adObjectId\x88\x01\x01\x12\x1d\n" +
+	"adObjectId\x88\x01\x01\x12?\n" +
 	"\n" +
-	"first_name\x18\x04 \x01(\tR\tfirstName\x12\x1b\n" +
-	"\tlast_name\x18\x05 \x01(\tR\blastName\x12#\n" +
+	"permission\x18\x04 \x01(\v2\x1f.contract.entity.UserPermissionR\n" +
+	"permission\x12-\n" +
+	"\x05roles\x18\x05 \x03(\x0e2\x17.contract.enum.UserRoleR\x05roles\x12\x1b\n" +
+	"\tlast_name\x18\x06 \x01(\tR\blastName\x12\x1d\n" +
 	"\n" +
-	"patronymic\x18\x06 \x01(\tH\x01R\n" +
+	"first_name\x18\a \x01(\tR\tfirstName\x12#\n" +
+	"\n" +
+	"patronymic\x18\b \x01(\tH\x01R\n" +
 	"patronymic\x88\x01\x01\x12\x14\n" +
-	"\x05email\x18\a \x01(\tR\x05email\x12\x19\n" +
-	"\x05phone\x18\b \x01(\tH\x02R\x05phone\x88\x01\x01\x121\n" +
-	"\x06status\x18\t \x01(\x0e2\x19.contract.enum.UserStatusR\x06status\x12;\n" +
-	"\bbirthday\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampH\x03R\bbirthday\x88\x01\x01\x129\n" +
+	"\x05email\x18\t \x01(\tR\x05email\x12\x19\n" +
+	"\x05phone\x18\n" +
+	" \x01(\tH\x02R\x05phone\x88\x01\x01\x121\n" +
+	"\x06status\x18\v \x01(\x0e2\x19.contract.enum.UserStatusR\x06status\x12;\n" +
+	"\bbirthday\x18\f \x01(\v2\x1a.google.protobuf.TimestampH\x03R\bbirthday\x88\x01\x01\x129\n" +
 	"\n" +
-	"created_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
+	"created_at\x18\r \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
-	"updated_at\x18\f \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAtB\x0f\n" +
+	"updated_at\x18\x0e \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAtB\x0f\n" +
 	"\r_ad_object_idB\r\n" +
 	"\v_patronymicB\b\n" +
 	"\x06_phoneB\v\n" +
 	"\t_birthday\"5\n" +
 	"\bUserFull\x12)\n" +
-	"\x04user\x18\x01 \x01(\v2\x15.contract.entity.UserR\x04userB\x9e\x01\n" +
+	"\x04user\x18\x01 \x01(\v2\x15.contract.entity.UserR\x04user\"n\n" +
+	"\x0eUserPermission\x12\x1b\n" +
+	"\tuser_uuid\x18\x01 \x01(\tR\buserUuid\x12?\n" +
+	"\vpermissions\x18\x02 \x03(\x0e2\x1d.contract.enum.UserPermissionR\vpermissionsB\x9e\x01\n" +
 	"\x13com.contract.entityB\x0fUserEntityProtoP\x01Z\x19fesmu/contract/mdm/entity\xa2\x02\x03CEX\xaa\x02\x0fContract.Entity\xca\x02\x0fContract\\Entity\xe2\x02\x1bContract\\Entity\\GPBMetadata\xea\x02\x10Contract::Entityb\x06proto3"
 
 var (
@@ -244,24 +319,30 @@ func file_mdm_entity_user_entity_proto_rawDescGZIP() []byte {
 	return file_mdm_entity_user_entity_proto_rawDescData
 }
 
-var file_mdm_entity_user_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_mdm_entity_user_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_mdm_entity_user_entity_proto_goTypes = []any{
 	(*User)(nil),                  // 0: contract.entity.User
 	(*UserFull)(nil),              // 1: contract.entity.UserFull
-	(enum.UserStatus)(0),          // 2: contract.enum.UserStatus
-	(*timestamppb.Timestamp)(nil), // 3: google.protobuf.Timestamp
+	(*UserPermission)(nil),        // 2: contract.entity.UserPermission
+	(enum.UserRole)(0),            // 3: contract.enum.UserRole
+	(enum.UserStatus)(0),          // 4: contract.enum.UserStatus
+	(*timestamppb.Timestamp)(nil), // 5: google.protobuf.Timestamp
+	(enum.UserPermission)(0),      // 6: contract.enum.UserPermission
 }
 var file_mdm_entity_user_entity_proto_depIdxs = []int32{
-	2, // 0: contract.entity.User.status:type_name -> contract.enum.UserStatus
-	3, // 1: contract.entity.User.birthday:type_name -> google.protobuf.Timestamp
-	3, // 2: contract.entity.User.created_at:type_name -> google.protobuf.Timestamp
-	3, // 3: contract.entity.User.updated_at:type_name -> google.protobuf.Timestamp
-	0, // 4: contract.entity.UserFull.user:type_name -> contract.entity.User
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	2, // 0: contract.entity.User.permission:type_name -> contract.entity.UserPermission
+	3, // 1: contract.entity.User.roles:type_name -> contract.enum.UserRole
+	4, // 2: contract.entity.User.status:type_name -> contract.enum.UserStatus
+	5, // 3: contract.entity.User.birthday:type_name -> google.protobuf.Timestamp
+	5, // 4: contract.entity.User.created_at:type_name -> google.protobuf.Timestamp
+	5, // 5: contract.entity.User.updated_at:type_name -> google.protobuf.Timestamp
+	0, // 6: contract.entity.UserFull.user:type_name -> contract.entity.User
+	6, // 7: contract.entity.UserPermission.permissions:type_name -> contract.enum.UserPermission
+	8, // [8:8] is the sub-list for method output_type
+	8, // [8:8] is the sub-list for method input_type
+	8, // [8:8] is the sub-list for extension type_name
+	8, // [8:8] is the sub-list for extension extendee
+	0, // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_mdm_entity_user_entity_proto_init() }
@@ -276,7 +357,7 @@ func file_mdm_entity_user_entity_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_mdm_entity_user_entity_proto_rawDesc), len(file_mdm_entity_user_entity_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

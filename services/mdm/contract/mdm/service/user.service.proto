@@ -13,6 +13,7 @@ service UserService {
   rpc UserFetchByID(UserFetchByIDRequest) returns (UserFetchByIDResponse);
   rpc UserCreate(UserCreateRequest) returns (UserCreateResponse);
   rpc UserUpdate(UserUpdateRequest) returns (UserUpdateResponse);
+  rpc UserRolesSet(UserRolesSetRequest) returns (UserRolesSetResponse);
 }
 
 message UserFetchRequest {}
@@ -42,3 +43,9 @@ message UserUpdateRequest {
   contract.enum.UserStatus status = 8;
 }
 message UserUpdateResponse { contract.entity.User user = 1; }
+
+message UserRolesSetRequest {
+  int64 id = 1;
+  repeated contract.enum.UserRole roles = 2;
+}
+message UserRolesSetResponse { contract.entity.User user = 1; }

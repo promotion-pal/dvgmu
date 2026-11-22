@@ -6,3 +6,6 @@ grpc:
 
 database:
   sslmode: disable
+
+mdm:
+  url: http://dvgmu_mdm_api:4000

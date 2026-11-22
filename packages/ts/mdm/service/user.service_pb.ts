@@ -6,7 +6,7 @@ import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegen
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import type { User } from "../entity/user.entity_pb";
 import { file_mdm_entity_user_entity } from "../entity/user.entity_pb";
-import type { UserStatus } from "../enum/user.enum_pb";
+import type { UserRole, UserStatus } from "../enum/user.enum_pb";
 import { file_mdm_enum_user_enum } from "../enum/user.enum_pb";
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
@@ -16,7 +16,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file mdm/service/user.service.proto.
  */
 export const file_mdm_service_user_service: GenFile = /*@__PURE__*/
-  fileDesc("Ch5tZG0vc2VydmljZS91c2VyLnNlcnZpY2UucHJvdG8SEGNvbnRyYWN0LnNlcnZpY2UiEgoQVXNlckZldGNoUmVxdWVzdCI5ChFVc2VyRmV0Y2hSZXNwb25zZRIkCgV1c2VycxgBIAMoCzIVLmNvbnRyYWN0LmVudGl0eS5Vc2VyIiIKFFVzZXJGZXRjaEJ5SURSZXF1ZXN0EgoKAmlkGAEgASgDIjwKFVVzZXJGZXRjaEJ5SURSZXNwb25zZRIjCgR1c2VyGAEgASgLMhUuY29udHJhY3QuZW50aXR5LlVzZXIizwEKEVVzZXJDcmVhdGVSZXF1ZXN0EhIKCmZpcnN0X25hbWUYASABKAkSEQoJbGFzdF9uYW1lGAIgASgJEhcKCnBhdHJvbnltaWMYAyABKAlIAIgBARINCgVlbWFpbBgEIAEoCRISCgVwaG9uZRgFIAEoCUgBiAEBEjEKCGJpcnRoZGF5GAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgCiAEBQg0KC19wYXRyb255bWljQggKBl9waG9uZUILCglfYmlydGhkYXkiOQoSVXNlckNyZWF0ZVJlc3BvbnNlEiMKBHVzZXIYASABKAsyFS5jb250cmFjdC5lbnRpdHkuVXNlciKGAgoRVXNlclVwZGF0ZVJlcXVlc3QSCgoCaWQYASABKAMSEgoKZmlyc3RfbmFtZRgCIAEoCRIRCglsYXN0X25hbWUYAyABKAkSFwoKcGF0cm9ueW1pYxgEIAEoCUgAiAEBEg0KBWVtYWlsGAUgASgJEhIKBXBob25lGAYgASgJSAGIAQESMQoIYmlydGhkYXkYByABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSAKIAQESKQoGc3RhdHVzGAggASgOMhkuY29udHJhY3QuZW51bS5Vc2VyU3RhdHVzQg0KC19wYXRyb255bWljQggKBl9waG9uZUILCglfYmlydGhkYXkiOQoSVXNlclVwZGF0ZVJlc3BvbnNlEiMKBHVzZXIYASABKAsyFS5jb250cmFjdC5lbnRpdHkuVXNlcjL3AgoLVXNlclNlcnZpY2USVAoJVXNlckZldGNoEiIuY29udHJhY3Quc2VydmljZS5Vc2VyRmV0Y2hSZXF1ZXN0GiMuY29udHJhY3Quc2VydmljZS5Vc2VyRmV0Y2hSZXNwb25zZRJgCg1Vc2VyRmV0Y2hCeUlEEiYuY29udHJhY3Quc2VydmljZS5Vc2VyRmV0Y2hCeUlEUmVxdWVzdBonLmNvbnRyYWN0LnNlcnZpY2UuVXNlckZldGNoQnlJRFJlc3BvbnNlElcKClVzZXJDcmVhdGUSIy5jb250cmFjdC5zZXJ2aWNlLlVzZXJDcmVhdGVSZXF1ZXN0GiQuY29udHJhY3Quc2VydmljZS5Vc2VyQ3JlYXRlUmVzcG9uc2USVwoKVXNlclVwZGF0ZRIjLmNvbnRyYWN0LnNlcnZpY2UuVXNlclVwZGF0ZVJlcXVlc3QaJC5jb250cmFjdC5zZXJ2aWNlLlVzZXJVcGRhdGVSZXNwb25zZUKlAQoUY29tLmNvbnRyYWN0LnNlcnZpY2VCEFVzZXJTZXJ2aWNlUHJvdG9QAVoaZmVzbXUvY29udHJhY3QvbWRtL3NlcnZpY2WiAgNDU1iqAhBDb250cmFjdC5TZXJ2aWNlygIQQ29udHJhY3RcU2VydmljZeICHENvbnRyYWN0XFNlcnZpY2VcR1BCTWV0YWRhdGHqAhFDb250cmFjdDo6U2VydmljZWIGcHJvdG8z", [file_mdm_entity_user_entity, file_mdm_enum_user_enum, file_google_protobuf_timestamp]);
+  fileDesc("Ch5tZG0vc2VydmljZS91c2VyLnNlcnZpY2UucHJvdG8SEGNvbnRyYWN0LnNlcnZpY2UiEgoQVXNlckZldGNoUmVxdWVzdCI5ChFVc2VyRmV0Y2hSZXNwb25zZRIkCgV1c2VycxgBIAMoCzIVLmNvbnRyYWN0LmVudGl0eS5Vc2VyIiIKFFVzZXJGZXRjaEJ5SURSZXF1ZXN0EgoKAmlkGAEgASgDIjwKFVVzZXJGZXRjaEJ5SURSZXNwb25zZRIjCgR1c2VyGAEgASgLMhUuY29udHJhY3QuZW50aXR5LlVzZXIizwEKEVVzZXJDcmVhdGVSZXF1ZXN0EhIKCmZpcnN0X25hbWUYASABKAkSEQoJbGFzdF9uYW1lGAIgASgJEhcKCnBhdHJvbnltaWMYAyABKAlIAIgBARINCgVlbWFpbBgEIAEoCRISCgVwaG9uZRgFIAEoCUgBiAEBEjEKCGJpcnRoZGF5GAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgCiAEBQg0KC19wYXRyb255bWljQggKBl9waG9uZUILCglfYmlydGhkYXkiOQoSVXNlckNyZWF0ZVJlc3BvbnNlEiMKBHVzZXIYASABKAsyFS5jb250cmFjdC5lbnRpdHkuVXNlciKGAgoRVXNlclVwZGF0ZVJlcXVlc3QSCgoCaWQYASABKAMSEgoKZmlyc3RfbmFtZRgCIAEoCRIRCglsYXN0X25hbWUYAyABKAkSFwoKcGF0cm9ueW1pYxgEIAEoCUgAiAEBEg0KBWVtYWlsGAUgASgJEhIKBXBob25lGAYgASgJSAGIAQESMQoIYmlydGhkYXkYByABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSAKIAQESKQoGc3RhdHVzGAggASgOMhkuY29udHJhY3QuZW51bS5Vc2VyU3RhdHVzQg0KC19wYXRyb255bWljQggKBl9waG9uZUILCglfYmlydGhkYXkiOQoSVXNlclVwZGF0ZVJlc3BvbnNlEiMKBHVzZXIYASABKAsyFS5jb250cmFjdC5lbnRpdHkuVXNlciJJChNVc2VyUm9sZXNTZXRSZXF1ZXN0EgoKAmlkGAEgASgDEiYKBXJvbGVzGAIgAygOMhcuY29udHJhY3QuZW51bS5Vc2VyUm9sZSI7ChRVc2VyUm9sZXNTZXRSZXNwb25zZRIjCgR1c2VyGAEgASgLMhUuY29udHJhY3QuZW50aXR5LlVzZXIy1gMKC1VzZXJTZXJ2aWNlElQKCVVzZXJGZXRjaBIiLmNvbnRyYWN0LnNlcnZpY2UuVXNlckZldGNoUmVxdWVzdBojLmNvbnRyYWN0LnNlcnZpY2UuVXNlckZldGNoUmVzcG9uc2USYAoNVXNlckZldGNoQnlJRBImLmNvbnRyYWN0LnNlcnZpY2UuVXNlckZldGNoQnlJRFJlcXVlc3QaJy5jb250cmFjdC5zZXJ2aWNlLlVzZXJGZXRjaEJ5SURSZXNwb25zZRJXCgpVc2VyQ3JlYXRlEiMuY29udHJhY3Quc2VydmljZS5Vc2VyQ3JlYXRlUmVxdWVzdBokLmNvbnRyYWN0LnNlcnZpY2UuVXNlckNyZWF0ZVJlc3BvbnNlElcKClVzZXJVcGRhdGUSIy5jb250cmFjdC5zZXJ2aWNlLlVzZXJVcGRhdGVSZXF1ZXN0GiQuY29udHJhY3Quc2VydmljZS5Vc2VyVXBkYXRlUmVzcG9uc2USXQoMVXNlclJvbGVzU2V0EiUuY29udHJhY3Quc2VydmljZS5Vc2VyUm9sZXNTZXRSZXF1ZXN0GiYuY29udHJhY3Quc2VydmljZS5Vc2VyUm9sZXNTZXRSZXNwb25zZUKlAQoUY29tLmNvbnRyYWN0LnNlcnZpY2VCEFVzZXJTZXJ2aWNlUHJvdG9QAVoaZmVzbXUvY29udHJhY3QvbWRtL3NlcnZpY2WiAgNDU1iqAhBDb250cmFjdC5TZXJ2aWNlygIQQ29udHJhY3RcU2VydmljZeICHENvbnRyYWN0XFNlcnZpY2VcR1BCTWV0YWRhdGHqAhFDb250cmFjdDo6U2VydmljZWIGcHJvdG8z", [file_mdm_entity_user_entity, file_mdm_enum_user_enum, file_google_protobuf_timestamp]);
 
 /**
  * @generated from message contract.service.UserFetchRequest
@@ -211,6 +211,45 @@ export const UserUpdateResponseSchema: GenMessage<UserUpdateResponse> = /*@__PUR
   messageDesc(file_mdm_service_user_service, 7);
 
 /**
+ * @generated from message contract.service.UserRolesSetRequest
+ */
+export type UserRolesSetRequest = Message<"contract.service.UserRolesSetRequest"> & {
+  /**
+   * @generated from field: int64 id = 1;
+   */
+  id: bigint;
+
+  /**
+   * @generated from field: repeated contract.enum.UserRole roles = 2;
+   */
+  roles: UserRole[];
+};
+
+/**
+ * Describes the message contract.service.UserRolesSetRequest.
+ * Use `create(UserRolesSetRequestSchema)` to create a new message.
+ */
+export const UserRolesSetRequestSchema: GenMessage<UserRolesSetRequest> = /*@__PURE__*/
+  messageDesc(file_mdm_service_user_service, 8);
+
+/**
+ * @generated from message contract.service.UserRolesSetResponse
+ */
+export type UserRolesSetResponse = Message<"contract.service.UserRolesSetResponse"> & {
+  /**
+   * @generated from field: contract.entity.User user = 1;
+   */
+  user?: User | undefined;
+};
+
+/**
+ * Describes the message contract.service.UserRolesSetResponse.
+ * Use `create(UserRolesSetResponseSchema)` to create a new message.
+ */
+export const UserRolesSetResponseSchema: GenMessage<UserRolesSetResponse> = /*@__PURE__*/
+  messageDesc(file_mdm_service_user_service, 9);
+
+/**
  * @generated from service contract.service.UserService
  */
 export const UserService: GenService<{
@@ -245,6 +284,14 @@ export const UserService: GenService<{
     methodKind: "unary";
     input: typeof UserUpdateRequestSchema;
     output: typeof UserUpdateResponseSchema;
+  },
+  /**
+   * @generated from rpc contract.service.UserService.UserRolesSet
+   */
+  userRolesSet: {
+    methodKind: "unary";
+    input: typeof UserRolesSetRequestSchema;
+    output: typeof UserRolesSetResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_mdm_service_user_service, 0);

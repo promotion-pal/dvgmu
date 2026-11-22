@@ -12,6 +12,22 @@ type UserRepository interface {
 	UserByID(context.Context, int64) (*models.User, error)
 	UserCreate(context.Context, *models.User) error
 	UserUpdate(context.Context, *models.User) error
+	UserRolesSet(context.Context, int64, []models.UserRole) (*models.User, error)
+}
+
+func (s *UserService) RolesSet(ctx context.Context, id int64, roles []enum.UserRole) (*models.User, error) {
+	if id <= 0 {
+		return nil, models.ErrUserNotFound
+	}
+	roles, err := models.NormalizeRoles(roles)
+	if err != nil {
+		return nil, err
+	}
+	stored := make([]models.UserRole, 0, len(roles))
+	for _, role := range roles {
+		stored = append(stored, models.UserRole{UserID: id, Role: role})
+	}
+	return s.repository.UserRolesSet(ctx, id, stored)
 }
 
 type UserService struct {

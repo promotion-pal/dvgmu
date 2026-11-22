@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 import { createTask, listTasks, type TaskItem } from "@/features/tasks/api";
 import { useFetchState } from "@/features/lib/fetch";
+import { useUserProvider, userHasPermission } from "@/features/provider/user.provider";
+import { UserPermission } from "@fesmu/contract/mdm/enum/user.enum_pb";
 
 export function useTickets() {
+  const user = useUserProvider((state) => state.user);
+  const canRead = userHasPermission(user, UserPermission.USER_TASK_READ);
+  const canCreate = userHasPermission(user, UserPermission.USER_TASK_CREATE);
   const {
     list: tickets,
     loading,
@@ -17,10 +22,14 @@ export function useTickets() {
     let active = true;
 
     async function loadTickets() {
+      if (!canRead || !user) {
+        setLoading(false);
+        return;
+      }
       setLoading(true);
       setError(false);
       try {
-        const result = await listTasks();
+        const result = await listTasks(user.id);
         if (active) setList(result);
       } catch {
         if (active) setError(true);
@@ -33,13 +42,14 @@ export function useTickets() {
     return () => {
       active = false;
     };
-  }, [setError, setList, setLoading]);
+  }, [canRead, user, setError, setList, setLoading]);
 
   const refetch = async () => {
+    if (!canRead || !user) return;
     setLoading(true);
     setError(false);
     try {
-      setList(await listTasks());
+      setList(await listTasks(user.id));
     } catch {
       setError(true);
     } finally {
@@ -48,10 +58,11 @@ export function useTickets() {
   };
 
   const createTicket = async (title: string) => {
+    if (!canCreate || !user) return null;
     setSaving(true);
     setError(false);
     try {
-      const ticket = await createTask(title);
+      const ticket = await createTask(title, user.id);
       setList((current) => [ticket, ...current]);
       return ticket;
     } catch {
@@ -62,5 +73,5 @@ export function useTickets() {
     }
   };
 
-  return { tickets, loading, saving, error, refetch, createTicket };
+  return { tickets, loading, saving, error, refetch, createTicket, canRead, canCreate };
 }

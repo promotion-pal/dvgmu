@@ -12,6 +12,11 @@ type Config struct {
 	Env      string         `yaml:"env" env:"ENV" env-default:"local"`
 	GRPC     GRPCConfig     `yaml:"grpc"`
 	Database DatabaseConfig `yaml:"database"`
+	MDM      MDMConfig      `yaml:"mdm"`
+}
+
+type MDMConfig struct {
+	URL string `yaml:"url" env:"MDM_URL" env-default:"http://localhost:4051"`
 }
 
 type GRPCConfig struct {

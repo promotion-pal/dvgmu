@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { ArrowRight, BookOpen, ClipboardList, FileText } from "lucide-react";
 import { NavLink, Route, Routes } from "react-router";
 import { ROUTER } from "@/shared/config/path";
@@ -5,6 +6,8 @@ import { DEFAULT_USER_ID, useUserProvider } from "@/features/provider/user.provi
 import { TicketsWidget } from "@/widgets/tickets";
 import { Button } from "@/shared/ui/button";
 import { Card, CardAction, CardContent, CardDescription, CardHeader } from "@/shared/ui/card";
+import { UserPermission, UserRole } from "@fesmu/contract/mdm/enum/user.enum_pb";
+import { userHasPermission } from "@/features/provider/user.provider";
 
 const modules = [
   {
@@ -45,6 +48,7 @@ export function IndexPage() {
 
 function DashboardPage() {
   const { status, user } = useUserProvider();
+  const canOpenTasks = userHasPermission(user, UserPermission.USER_TASK_READ) || userHasPermission(user, UserPermission.USER_TASK_CREATE);
 
   return (
     <main className="min-h-screen bg-slate-100 px-3 py-5 text-slate-800 sm:px-6 sm:py-10">
@@ -86,7 +90,7 @@ function DashboardPage() {
             </div>
           </div>
           <div className="grid gap-3 md:grid-cols-3">
-            {modules.map(({ title, description, href, icon: Icon, color }) => (
+            {modules.filter((module) => module.href !== ROUTER.TASKS || canOpenTasks).map(({ title, description, href, icon: Icon, color }) => (
               <NavLink
                 className="group block rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
                 key={href}
@@ -112,7 +116,11 @@ function DashboardPage() {
 }
 
 function ProfilePage() {
-  const { status, user } = useUserProvider();
+  const { status, user, availableUsers, fetchUsers, fetchById } = useUserProvider();
+
+  useEffect(() => {
+    if (import.meta.env.DEV) void fetchUsers();
+  }, [fetchUsers]);
 
   return (
     <main className="min-h-screen bg-slate-100 px-3 py-5 text-slate-800 sm:px-6 sm:py-10">
@@ -125,9 +133,28 @@ function ProfilePage() {
             </CardDescription>
           </div>
           <CardAction>
-            <span className="rounded-full bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-600">
-              ID: {user?.id.toString() ?? DEFAULT_USER_ID.toString()}
-            </span>
+            <div className="flex flex-col items-end gap-2">
+              <span className="rounded-full bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-600">
+                ID: {user?.id.toString() ?? DEFAULT_USER_ID.toString()}
+              </span>
+              {import.meta.env.DEV && (
+                <label className="flex items-center gap-2 text-xs text-slate-500">
+                  Тестовый профиль
+                  <select
+                    aria-label="Тестовый профиль"
+                    className="max-w-44 rounded-md border border-slate-200 bg-white px-2 py-1.5 text-xs text-slate-700"
+                    value={user?.id.toString() ?? ""}
+                    onChange={(event) => void fetchById(BigInt(event.target.value))}
+                  >
+                    {availableUsers.map((candidate) => (
+                      <option key={candidate.id.toString()} value={candidate.id.toString()}>
+                        {candidate.firstName} {candidate.lastName} · {candidate.id.toString()}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
+            </div>
           </CardAction>
         </CardHeader>
         {user && (
@@ -143,6 +170,23 @@ function ProfilePage() {
                 value={user.birthday ? new Date(Number(user.birthday.seconds) * 1000).toLocaleDateString("ru-RU") : "Не указана"}
               />
               <ProfileField label="UUID" value={user.uuid} />
+              <ProfileField
+                label="Роли"
+                value={user.roles.map((role) => ({
+                  [UserRole.STUDENT]: "STUDENT",
+                  [UserRole.EMPLOYEE]: "EMPLOYEE",
+                  [UserRole.ADMIN]: "ADMIN",
+                } as Record<number, string>)[role]).filter(Boolean).join(", ") || "Не назначены"}
+              />
+              <ProfileField
+                label="Доступы"
+                value={user.permission?.permissions.map((permission) => ({
+                  [UserPermission.USER_TASK_READ]: "TASK_READ",
+                  [UserPermission.USER_TASK_CREATE]: "TASK_CREATE",
+                  [UserPermission.USER_TASK_UPDATE]: "TASK_UPDATE",
+                  [UserPermission.USER_TASK_DELETE]: "TASK_DELETE",
+                } as Record<number, string>)[permission]).filter(Boolean).join(", ") || "Не назначены"}
+              />
             </dl>
           </CardContent>
         )}

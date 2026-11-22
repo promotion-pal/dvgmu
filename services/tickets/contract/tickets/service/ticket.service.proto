@@ -13,13 +13,14 @@ service TaskService {
 
 message CreateTaskRequest {
   string title = 1;
+  int64 user_id = 2;
 }
 
 message CreateTaskResponse {
   contract.tickets.entity.Task task = 1;
 }
 
-message ListTasksRequest {}
+message ListTasksRequest { int64 user_id = 1; }
 
 message ListTasksResponse {
   repeated contract.tickets.entity.Task tasks = 1;

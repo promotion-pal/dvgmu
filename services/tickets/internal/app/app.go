@@ -2,13 +2,16 @@ package app
 
 import (
 	"log/slog"
+	"net/http"
 
 	"dvgmu/tickets"
+	"dvgmu/tickets/internal/access"
 	grpcapp "dvgmu/tickets/internal/app/grpc"
 	"dvgmu/tickets/internal/config"
 	ticketgrpc "dvgmu/tickets/internal/grpc"
 	"dvgmu/tickets/internal/service"
 	"dvgmu/tickets/internal/storage"
+	"fesmu/contract/mdm/service/serviceconnect"
 	"github.com/pressly/goose/v3"
 )
 
@@ -36,7 +39,9 @@ func New(log *slog.Logger, cfg *config.Config) *App {
 	log.Info("task database migrations applied")
 
 	taskStorage := storage.NewTaskStorage(db)
-	taskService := service.NewTaskService(taskStorage)
+	mdmClient := serviceconnect.NewUserServiceClient(&http.Client{Timeout: cfg.GRPC.Timeout}, cfg.MDM.URL)
+	permissionChecker := access.NewMDM(mdmClient)
+	taskService := service.NewTaskService(taskStorage, permissionChecker)
 	controller := ticketgrpc.NewTaskController(taskService)
 	return &App{GRPCServer: grpcapp.New(log, controller, cfg.GRPC.Port)}
 }

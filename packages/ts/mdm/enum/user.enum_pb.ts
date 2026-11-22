@@ -9,7 +9,7 @@ import { enumDesc, fileDesc } from "@bufbuild/protobuf/codegenv2";
  * Describes the file mdm/enum/user.enum.proto.
  */
 export const file_mdm_enum_user_enum: GenFile = /*@__PURE__*/
-  fileDesc("ChhtZG0vZW51bS91c2VyLmVudW0ucHJvdG8SDWNvbnRyYWN0LmVudW0qWwoKVXNlclN0YXR1cxIbChdVU0VSX1NUQVRVU19VTlNQRUNJRklFRBAAEhYKElVTRVJfU1RBVFVTX0FDVElWRRABEhgKFFVTRVJfU1RBVFVTX0lOQUNUSVZFEAIqVwoKVXNlckdlbmRlchIbChdVU0VSX0dFTkRFUl9VTlNQRUNJRklFRBAAEhQKEFVTRVJfR0VOREVSX01BTEUQARIWChJVU0VSX0dFTkRFUl9GRU1BTEUQAirPAQoPVXNlck5hdGlvbmFsaXR5EiAKHFVTRVJfTkFUSU9OQUxJVFlfVU5TUEVDSUZJRUQQABIYChRVU0VSX05BVElPTkFMSVRZX1JVUxABEhgKFFVTRVJfTkFUSU9OQUxJVFlfQkxSEAISGAoUVVNFUl9OQVRJT05BTElUWV9LQVoQAxIYChRVU0VSX05BVElPTkFMSVRZX1VaQhAEEhgKFFVTRVJfTkFUSU9OQUxJVFlfS0daEAUSGAoUVVNFUl9OQVRJT05BTElUWV9DSE4QBiqOAgoRVXNlclN0dWRlbnRTdGF0dXMSIwofVVNFUl9TVFVERU5UX1NUQVRVU19VTlNQRUNJRklFRBAAEiAKHFVTRVJfU1RVREVOVF9TVEFUVVNfU1RVRFlJTkcQARIgChxVU0VSX1NUVURFTlRfU1RBVFVTX0VYUEVMTEVEEAISJgoiVVNFUl9TVFVERU5UX1NUQVRVU19BQ0FERU1JQ19MRUFWRRADEiAKHFVTRVJfU1RVREVOVF9TVEFUVVNfUkVTVE9SRUQQBBIhCh1VU0VSX1NUVURFTlRfU1RBVFVTX0dSQURVQVRFRBAFEiMKH1VTRVJfU1RVREVOVF9TVEFUVVNfVFJBTlNGRVJSRUQQBirwAQoYVXNlclN0dWRlbnRFZHVjYXRpb25Gb3JtEisKJ1VTRVJfU1RVREVOVF9FRFVDQVRJT05fRk9STV9VTlNQRUNJRklFRBAAEiYKIlVTRVJfU1RVREVOVF9FRFVDQVRJT05fRk9STV9CVURHRVQQARImCiJVU0VSX1NUVURFTlRfRURVQ0FUSU9OX0ZPUk1fVEFSR0VUEAISKAokVVNFUl9TVFVERU5UX0VEVUNBVElPTl9GT1JNX0NPTlRSQUNUEAMSLQopVVNFUl9TVFVERU5UX0VEVUNBVElPTl9GT1JNX1NQRUNJQUxfUVVPVEEQBCqfAgoSVXNlckVtcGxveWVlU3RhdHVzEiQKIFVTRVJfUFJFU0VOQ0VfU1RBVFVTX1VOU1BFQ0lGSUVEEAASIgoeVVNFUl9QUkVTRU5DRV9TVEFUVVNfQVZBSUxBQkxFEAESIQodVVNFUl9QUkVTRU5DRV9TVEFUVVNfVkFDQVRJT04QAhIjCh9VU0VSX1BSRVNFTkNFX1NUQVRVU19TSUNLX0xFQVZFEAMSJwojVVNFUl9QUkVTRU5DRV9TVEFUVVNfUEFSRU5UQUxfTEVBVkUQBBImCiJVU0VSX1BSRVNFTkNFX1NUQVRVU19PVVRfT0ZfT0ZGSUNFEAUSJgoiVVNFUl9QUkVTRU5DRV9TVEFUVVNfQlVTSU5FU1NfVFJJUBAGKmMKFlVzZXJFbXBsb3llZURlcGFydG1lbnQSKAokVVNFUl9FTVBMT1lFRV9ERVBBUlRNRU5UX1VOU1BFQ0lGSUVEEAASHwobVVNFUl9FTVBMT1lFRV9ERVBBUlRNRU5UX0lUEAFCkAEKEWNvbS5jb250cmFjdC5lbnVtQg1Vc2VyRW51bVByb3RvUAFaF2Zlc211L2NvbnRyYWN0L21kbS9lbnVtogIDQ0VYqgINQ29udHJhY3QuRW51bcoCDUNvbnRyYWN0XEVudW3iAhlDb250cmFjdFxFbnVtXEdQQk1ldGFkYXRh6gIOQ29udHJhY3Q6OkVudW1iBnByb3RvMw");
+  fileDesc("ChhtZG0vZW51bS91c2VyLmVudW0ucHJvdG8SDWNvbnRyYWN0LmVudW0qWwoKVXNlclN0YXR1cxIbChdVU0VSX1NUQVRVU19VTlNQRUNJRklFRBAAEhYKElVTRVJfU1RBVFVTX0FDVElWRRABEhgKFFVTRVJfU1RBVFVTX0lOQUNUSVZFEAIqaQoIVXNlclJvbGUSGQoVVVNFUl9ST0xFX1VOU1BFQ0lGSUVEEAASFQoRVVNFUl9ST0xFX1NUVURFTlQQARIWChJVU0VSX1JPTEVfRU1QTE9ZRUUQAhITCg9VU0VSX1JPTEVfQURNSU4QAypXCgpVc2VyR2VuZGVyEhsKF1VTRVJfR0VOREVSX1VOU1BFQ0lGSUVEEAASFAoQVVNFUl9HRU5ERVJfTUFMRRABEhYKElVTRVJfR0VOREVSX0ZFTUFMRRACKs8BCg9Vc2VyTmF0aW9uYWxpdHkSIAocVVNFUl9OQVRJT05BTElUWV9VTlNQRUNJRklFRBAAEhgKFFVTRVJfTkFUSU9OQUxJVFlfUlVTEAESGAoUVVNFUl9OQVRJT05BTElUWV9CTFIQAhIYChRVU0VSX05BVElPTkFMSVRZX0tBWhADEhgKFFVTRVJfTkFUSU9OQUxJVFlfVVpCEAQSGAoUVVNFUl9OQVRJT05BTElUWV9LR1oQBRIYChRVU0VSX05BVElPTkFMSVRZX0NIThAGKo4CChFVc2VyU3R1ZGVudFN0YXR1cxIjCh9VU0VSX1NUVURFTlRfU1RBVFVTX1VOU1BFQ0lGSUVEEAASIAocVVNFUl9TVFVERU5UX1NUQVRVU19TVFVEWUlORxABEiAKHFVTRVJfU1RVREVOVF9TVEFUVVNfRVhQRUxMRUQQAhImCiJVU0VSX1NUVURFTlRfU1RBVFVTX0FDQURFTUlDX0xFQVZFEAMSIAocVVNFUl9TVFVERU5UX1NUQVRVU19SRVNUT1JFRBAEEiEKHVVTRVJfU1RVREVOVF9TVEFUVVNfR1JBRFVBVEVEEAUSIwofVVNFUl9TVFVERU5UX1NUQVRVU19UUkFOU0ZFUlJFRBAGKvABChhVc2VyU3R1ZGVudEVkdWNhdGlvbkZvcm0SKwonVVNFUl9TVFVERU5UX0VEVUNBVElPTl9GT1JNX1VOU1BFQ0lGSUVEEAASJgoiVVNFUl9TVFVERU5UX0VEVUNBVElPTl9GT1JNX0JVREdFVBABEiYKIlVTRVJfU1RVREVOVF9FRFVDQVRJT05fRk9STV9UQVJHRVQQAhIoCiRVU0VSX1NUVURFTlRfRURVQ0FUSU9OX0ZPUk1fQ09OVFJBQ1QQAxItCilVU0VSX1NUVURFTlRfRURVQ0FUSU9OX0ZPUk1fU1BFQ0lBTF9RVU9UQRAEKp8CChJVc2VyRW1wbG95ZWVTdGF0dXMSJAogVVNFUl9QUkVTRU5DRV9TVEFUVVNfVU5TUEVDSUZJRUQQABIiCh5VU0VSX1BSRVNFTkNFX1NUQVRVU19BVkFJTEFCTEUQARIhCh1VU0VSX1BSRVNFTkNFX1NUQVRVU19WQUNBVElPThACEiMKH1VTRVJfUFJFU0VOQ0VfU1RBVFVTX1NJQ0tfTEVBVkUQAxInCiNVU0VSX1BSRVNFTkNFX1NUQVRVU19QQVJFTlRBTF9MRUFWRRAEEiYKIlVTRVJfUFJFU0VOQ0VfU1RBVFVTX09VVF9PRl9PRkZJQ0UQBRImCiJVU0VSX1BSRVNFTkNFX1NUQVRVU19CVVNJTkVTU19UUklQEAYqYwoWVXNlckVtcGxveWVlRGVwYXJ0bWVudBIoCiRVU0VSX0VNUExPWUVFX0RFUEFSVE1FTlRfVU5TUEVDSUZJRUQQABIfChtVU0VSX0VNUExPWUVFX0RFUEFSVE1FTlRfSVQQASqHAQoOVXNlclBlcm1pc3Npb24SHwobVVNFUl9QRVJNSVNTSU9OX1VOU1BFQ0lGSUVEEAASEgoOVVNFUl9UQVNLX1JFQUQQARIUChBVU0VSX1RBU0tfQ1JFQVRFEAISFAoQVVNFUl9UQVNLX1VQREFURRADEhQKEFVTRVJfVEFTS19ERUxFVEUQBEKQAQoRY29tLmNvbnRyYWN0LmVudW1CDVVzZXJFbnVtUHJvdG9QAVoXZmVzbXUvY29udHJhY3QvbWRtL2VudW2iAgNDRViqAg1Db250cmFjdC5FbnVtygINQ29udHJhY3RcRW51beICGUNvbnRyYWN0XEVudW1cR1BCTWV0YWRhdGHqAg5Db250cmFjdDo6RW51bWIGcHJvdG8z");
 
 /**
  * @generated from enum contract.enum.UserStatus
@@ -38,6 +38,37 @@ export const UserStatusSchema: GenEnum<UserStatus> = /*@__PURE__*/
   enumDesc(file_mdm_enum_user_enum, 0);
 
 /**
+ * @generated from enum contract.enum.UserRole
+ */
+export enum UserRole {
+  /**
+   * @generated from enum value: USER_ROLE_UNSPECIFIED = 0;
+   */
+  UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: USER_ROLE_STUDENT = 1;
+   */
+  STUDENT = 1,
+
+  /**
+   * @generated from enum value: USER_ROLE_EMPLOYEE = 2;
+   */
+  EMPLOYEE = 2,
+
+  /**
+   * @generated from enum value: USER_ROLE_ADMIN = 3;
+   */
+  ADMIN = 3,
+}
+
+/**
+ * Describes the enum contract.enum.UserRole.
+ */
+export const UserRoleSchema: GenEnum<UserRole> = /*@__PURE__*/
+  enumDesc(file_mdm_enum_user_enum, 1);
+
+/**
  * @generated from enum contract.enum.UserGender
  */
 export enum UserGender {
@@ -61,7 +92,7 @@ export enum UserGender {
  * Describes the enum contract.enum.UserGender.
  */
 export const UserGenderSchema: GenEnum<UserGender> = /*@__PURE__*/
-  enumDesc(file_mdm_enum_user_enum, 1);
+  enumDesc(file_mdm_enum_user_enum, 2);
 
 /**
  * @generated from enum contract.enum.UserNationality
@@ -107,7 +138,7 @@ export enum UserNationality {
  * Describes the enum contract.enum.UserNationality.
  */
 export const UserNationalitySchema: GenEnum<UserNationality> = /*@__PURE__*/
-  enumDesc(file_mdm_enum_user_enum, 2);
+  enumDesc(file_mdm_enum_user_enum, 3);
 
 /**
  * @generated from enum contract.enum.UserStudentStatus
@@ -165,7 +196,7 @@ export enum UserStudentStatus {
  * Describes the enum contract.enum.UserStudentStatus.
  */
 export const UserStudentStatusSchema: GenEnum<UserStudentStatus> = /*@__PURE__*/
-  enumDesc(file_mdm_enum_user_enum, 3);
+  enumDesc(file_mdm_enum_user_enum, 4);
 
 /**
  * @generated from enum contract.enum.UserStudentEducationForm
@@ -201,7 +232,7 @@ export enum UserStudentEducationForm {
  * Describes the enum contract.enum.UserStudentEducationForm.
  */
 export const UserStudentEducationFormSchema: GenEnum<UserStudentEducationForm> = /*@__PURE__*/
-  enumDesc(file_mdm_enum_user_enum, 4);
+  enumDesc(file_mdm_enum_user_enum, 5);
 
 /**
  * @generated from enum contract.enum.UserEmployeeStatus
@@ -259,7 +290,7 @@ export enum UserEmployeeStatus {
  * Describes the enum contract.enum.UserEmployeeStatus.
  */
 export const UserEmployeeStatusSchema: GenEnum<UserEmployeeStatus> = /*@__PURE__*/
-  enumDesc(file_mdm_enum_user_enum, 5);
+  enumDesc(file_mdm_enum_user_enum, 6);
 
 /**
  * @generated from enum contract.enum.UserEmployeeDepartment
@@ -282,4 +313,42 @@ export enum UserEmployeeDepartment {
  * Describes the enum contract.enum.UserEmployeeDepartment.
  */
 export const UserEmployeeDepartmentSchema: GenEnum<UserEmployeeDepartment> = /*@__PURE__*/
-  enumDesc(file_mdm_enum_user_enum, 6);
+  enumDesc(file_mdm_enum_user_enum, 7);
+
+/**
+ * @generated from enum contract.enum.UserPermission
+ */
+export enum UserPermission {
+  /**
+   * @generated from enum value: USER_PERMISSION_UNSPECIFIED = 0;
+   */
+  USER_PERMISSION_UNSPECIFIED = 0,
+
+  /**
+   * Task
+   *
+   * @generated from enum value: USER_TASK_READ = 1;
+   */
+  USER_TASK_READ = 1,
+
+  /**
+   * @generated from enum value: USER_TASK_CREATE = 2;
+   */
+  USER_TASK_CREATE = 2,
+
+  /**
+   * @generated from enum value: USER_TASK_UPDATE = 3;
+   */
+  USER_TASK_UPDATE = 3,
+
+  /**
+   * @generated from enum value: USER_TASK_DELETE = 4;
+   */
+  USER_TASK_DELETE = 4,
+}
+
+/**
+ * Describes the enum contract.enum.UserPermission.
+ */
+export const UserPermissionSchema: GenEnum<UserPermission> = /*@__PURE__*/
+  enumDesc(file_mdm_enum_user_enum, 8);

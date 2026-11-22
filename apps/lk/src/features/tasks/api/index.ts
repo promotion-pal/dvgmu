@@ -14,8 +14,8 @@ const client = createClient(
   createGrpcWebTransport({ baseUrl: ENV.API }),
 );
 
-export async function listTasks(): Promise<TaskItem[]> {
-  const response = await client.listTasks({});
+export async function listTasks(userId: bigint): Promise<TaskItem[]> {
+  const response = await client.listTasks({ userId });
   return response.tasks.map((task) => ({
     id: task.id.toString(),
     title: task.title,
@@ -23,8 +23,8 @@ export async function listTasks(): Promise<TaskItem[]> {
   }));
 }
 
-export async function createTask(title: string): Promise<TaskItem> {
-  const response = await client.createTask({ title });
+export async function createTask(title: string, userId: bigint): Promise<TaskItem> {
+  const response = await client.createTask({ title, userId });
   if (!response.task) throw new Error("Сервис не вернул созданную задачу");
   return {
     id: response.task.id.toString(),

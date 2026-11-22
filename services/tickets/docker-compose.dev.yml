@@ -33,6 +33,7 @@ services:
       DB_NAME: ${POSTGRES_DB:-dvgmu_tickets_db}
       DB_SSLMODE: disable
       GRPC_PORT: "4050"
+      MDM_URL: http://host.docker.internal:4051
     restart: unless-stopped
 
 volumes:

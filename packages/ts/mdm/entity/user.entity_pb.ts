@@ -4,7 +4,7 @@
 
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
-import type { UserStatus } from "../enum/user.enum_pb";
+import type { UserPermission as UserPermission$1, UserRole, UserStatus } from "../enum/user.enum_pb";
 import { file_mdm_enum_user_enum } from "../enum/user.enum_pb";
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file mdm/entity/user.entity.proto.
  */
 export const file_mdm_entity_user_entity: GenFile = /*@__PURE__*/
-  fileDesc("ChxtZG0vZW50aXR5L3VzZXIuZW50aXR5LnByb3RvEg9jb250cmFjdC5lbnRpdHkikwMKBFVzZXISCgoCaWQYASABKAMSDAoEdXVpZBgCIAEoCRIZCgxhZF9vYmplY3RfaWQYAyABKAlIAIgBARISCgpmaXJzdF9uYW1lGAQgASgJEhEKCWxhc3RfbmFtZRgFIAEoCRIXCgpwYXRyb255bWljGAYgASgJSAGIAQESDQoFZW1haWwYByABKAkSEgoFcGhvbmUYCCABKAlIAogBARIpCgZzdGF0dXMYCSABKA4yGS5jb250cmFjdC5lbnVtLlVzZXJTdGF0dXMSMQoIYmlydGhkYXkYCiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSAOIAQESLgoKY3JlYXRlZF9hdBgLIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKdXBkYXRlZF9hdBgMIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCDwoNX2FkX29iamVjdF9pZEINCgtfcGF0cm9ueW1pY0IICgZfcGhvbmVCCwoJX2JpcnRoZGF5Ii8KCFVzZXJGdWxsEiMKBHVzZXIYASABKAsyFS5jb250cmFjdC5lbnRpdHkuVXNlckKeAQoTY29tLmNvbnRyYWN0LmVudGl0eUIPVXNlckVudGl0eVByb3RvUAFaGWZlc211L2NvbnRyYWN0L21kbS9lbnRpdHmiAgNDRViqAg9Db250cmFjdC5FbnRpdHnKAg9Db250cmFjdFxFbnRpdHniAhtDb250cmFjdFxFbnRpdHlcR1BCTWV0YWRhdGHqAhBDb250cmFjdDo6RW50aXR5YgZwcm90bzM", [file_mdm_enum_user_enum, file_google_protobuf_timestamp]);
+  fileDesc("ChxtZG0vZW50aXR5L3VzZXIuZW50aXR5LnByb3RvEg9jb250cmFjdC5lbnRpdHki8AMKBFVzZXISCgoCaWQYASABKAMSDAoEdXVpZBgCIAEoCRIZCgxhZF9vYmplY3RfaWQYAyABKAlIAIgBARIzCgpwZXJtaXNzaW9uGAQgASgLMh8uY29udHJhY3QuZW50aXR5LlVzZXJQZXJtaXNzaW9uEiYKBXJvbGVzGAUgAygOMhcuY29udHJhY3QuZW51bS5Vc2VyUm9sZRIRCglsYXN0X25hbWUYBiABKAkSEgoKZmlyc3RfbmFtZRgHIAEoCRIXCgpwYXRyb255bWljGAggASgJSAGIAQESDQoFZW1haWwYCSABKAkSEgoFcGhvbmUYCiABKAlIAogBARIpCgZzdGF0dXMYCyABKA4yGS5jb250cmFjdC5lbnVtLlVzZXJTdGF0dXMSMQoIYmlydGhkYXkYDCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSAOIAQESLgoKY3JlYXRlZF9hdBgNIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKdXBkYXRlZF9hdBgOIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCDwoNX2FkX29iamVjdF9pZEINCgtfcGF0cm9ueW1pY0IICgZfcGhvbmVCCwoJX2JpcnRoZGF5Ii8KCFVzZXJGdWxsEiMKBHVzZXIYASABKAsyFS5jb250cmFjdC5lbnRpdHkuVXNlciJXCg5Vc2VyUGVybWlzc2lvbhIRCgl1c2VyX3V1aWQYASABKAkSMgoLcGVybWlzc2lvbnMYAiADKA4yHS5jb250cmFjdC5lbnVtLlVzZXJQZXJtaXNzaW9uQp4BChNjb20uY29udHJhY3QuZW50aXR5Qg9Vc2VyRW50aXR5UHJvdG9QAVoZZmVzbXUvY29udHJhY3QvbWRtL2VudGl0eaICA0NFWKoCD0NvbnRyYWN0LkVudGl0ecoCD0NvbnRyYWN0XEVudGl0eeICG0NvbnRyYWN0XEVudGl0eVxHUEJNZXRhZGF0YeoCEENvbnRyYWN0OjpFbnRpdHliBnByb3RvMw", [file_mdm_enum_user_enum, file_google_protobuf_timestamp]);
 
 /**
  * @generated from message contract.entity.User
@@ -36,47 +36,57 @@ export type User = Message<"contract.entity.User"> & {
   adObjectId?: string | undefined;
 
   /**
-   * @generated from field: string first_name = 4;
+   * @generated from field: contract.entity.UserPermission permission = 4;
    */
-  firstName: string;
+  permission?: UserPermission | undefined;
 
   /**
-   * @generated from field: string last_name = 5;
+   * @generated from field: repeated contract.enum.UserRole roles = 5;
+   */
+  roles: UserRole[];
+
+  /**
+   * @generated from field: string last_name = 6;
    */
   lastName: string;
 
   /**
-   * @generated from field: optional string patronymic = 6;
+   * @generated from field: string first_name = 7;
+   */
+  firstName: string;
+
+  /**
+   * @generated from field: optional string patronymic = 8;
    */
   patronymic?: string | undefined;
 
   /**
-   * @generated from field: string email = 7;
+   * @generated from field: string email = 9;
    */
   email: string;
 
   /**
-   * @generated from field: optional string phone = 8;
+   * @generated from field: optional string phone = 10;
    */
   phone?: string | undefined;
 
   /**
-   * @generated from field: contract.enum.UserStatus status = 9;
+   * @generated from field: contract.enum.UserStatus status = 11;
    */
   status: UserStatus;
 
   /**
-   * @generated from field: optional google.protobuf.Timestamp birthday = 10;
+   * @generated from field: optional google.protobuf.Timestamp birthday = 12;
    */
   birthday?: Timestamp | undefined;
 
   /**
-   * @generated from field: google.protobuf.Timestamp created_at = 11;
+   * @generated from field: google.protobuf.Timestamp created_at = 13;
    */
   createdAt?: Timestamp | undefined;
 
   /**
-   * @generated from field: google.protobuf.Timestamp updated_at = 12;
+   * @generated from field: google.protobuf.Timestamp updated_at = 14;
    */
   updatedAt?: Timestamp | undefined;
 };
@@ -104,3 +114,25 @@ export type UserFull = Message<"contract.entity.UserFull"> & {
  */
 export const UserFullSchema: GenMessage<UserFull> = /*@__PURE__*/
   messageDesc(file_mdm_entity_user_entity, 1);
+
+/**
+ * @generated from message contract.entity.UserPermission
+ */
+export type UserPermission = Message<"contract.entity.UserPermission"> & {
+  /**
+   * @generated from field: string user_uuid = 1;
+   */
+  userUuid: string;
+
+  /**
+   * @generated from field: repeated contract.enum.UserPermission permissions = 2;
+   */
+  permissions: UserPermission$1[];
+};
+
+/**
+ * Describes the message contract.entity.UserPermission.
+ * Use `create(UserPermissionSchema)` to create a new message.
+ */
+export const UserPermissionSchema: GenMessage<UserPermission> = /*@__PURE__*/
+  messageDesc(file_mdm_entity_user_entity, 2);

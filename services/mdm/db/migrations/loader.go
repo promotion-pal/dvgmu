@@ -12,6 +12,8 @@ import (
 func main() {
 	statements, err := gormschema.New("postgres").Load(
 		&models.User{},
+		&models.UserRole{},
+		&models.UserPermissionRecord{},
 	)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "failed to load GORM schema: %v\n", err)

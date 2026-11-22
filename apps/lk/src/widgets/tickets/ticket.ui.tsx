@@ -4,7 +4,7 @@ import { useTickets } from "./ticket.fn";
 import { Card } from "@/shared/ui/card";
 
 export function TicketsWidget() {
-  const { tickets, loading, saving, error, refetch, createTicket } = useTickets();
+  const { tickets, loading, saving, error, refetch, createTicket, canRead, canCreate } = useTickets();
   const [title, setTitle] = useState("");
 
   async function submit(event: FormEvent<HTMLFormElement>) {
@@ -24,7 +24,7 @@ export function TicketsWidget() {
           </div>
         </header>
 
-        <form onSubmit={submit}>
+        {canCreate && <form onSubmit={submit}>
           <label className="mb-2.5 block text-sm font-semibold text-slate-700" htmlFor="task-title">Новая задача</label>
           <div className="flex flex-col gap-2.5 sm:flex-row">
             <input
@@ -40,11 +40,13 @@ export function TicketsWidget() {
               {saving ? "Создаю…" : "Создать"}
             </button>
           </div>
-        </form>
+        </form>}
 
         {error && <p className="mt-3.5 text-sm text-red-700" role="alert">Не удалось выполнить запрос</p>}
 
-        <section className="mt-9" aria-labelledby="task-list-title">
+        {!canCreate && !canRead && <p className="mt-6 text-sm text-slate-500">Нет доступа к задачам</p>}
+
+        {canRead ? <section className="mt-9" aria-labelledby="task-list-title">
           <div className="flex items-center gap-2.5 border-b border-slate-100 pb-3">
             <h2 className="m-0 text-[17px] font-semibold text-slate-900" id="task-list-title">Список</h2>
             <span className="grid size-6 place-items-center rounded-full bg-slate-100 px-1 text-xs text-slate-600">{tickets.length}</span>
@@ -71,7 +73,7 @@ export function TicketsWidget() {
               Повторить загрузку
             </button>
           )}
-        </section>
+        </section> : canCreate && <p className="mt-6 text-sm text-slate-500">Нет доступа к списку задач</p>}
       </Card>
     </main>
   );

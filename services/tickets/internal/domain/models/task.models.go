@@ -5,7 +5,11 @@ import (
 	"time"
 )
 
-var ErrTitleRequired = errors.New("title is required")
+var (
+	ErrTitleRequired    = errors.New("title is required")
+	ErrPermissionDenied = errors.New("permission denied")
+	ErrUserIDRequired   = errors.New("user id is required")
+)
 
 type Task struct {
 	ID        int64     `gorm:"primaryKey;autoIncrement"`

@@ -2,6 +2,7 @@ import { createClient } from "@connectrpc/connect";
 import { createGrpcWebTransport } from "@connectrpc/connect-web";
 import { UserService } from "@fesmu/contract/mdm/service/user.service_pb";
 import type { User } from "@fesmu/contract/mdm/entity/user.entity_pb";
+import { UserPermission } from "@fesmu/contract/mdm/enum/user.enum_pb";
 import { create } from "zustand";
 import { ENV } from "@/shared/config/env";
 
@@ -10,16 +11,18 @@ const userClient = createClient(
   createGrpcWebTransport({ baseUrl: ENV.MDM }),
 );
 
-export const DEFAULT_USER_ID = 1n;
+export const DEFAULT_USER_ID = 5n;
 type UserStatus = "idle" | "loading" | "ready" | "unauthenticated" | "error";
 
 interface UserProviderState {
   status: UserStatus;
   user: User | null;
+  availableUsers: User[];
   userId: bigint;
   error: Error | null;
   me: () => Promise<void>;
   fetchById: (id: bigint) => Promise<User>;
+  fetchUsers: () => Promise<User[]>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   reset: () => void;
@@ -28,6 +31,7 @@ interface UserProviderState {
 export const useUserProvider = create<UserProviderState>((set, get) => ({
   status: "idle",
   user: null,
+  availableUsers: [],
   userId: DEFAULT_USER_ID,
   error: null,
 
@@ -52,6 +56,12 @@ export const useUserProvider = create<UserProviderState>((set, get) => ({
     }
   },
 
+  fetchUsers: async () => {
+    const response = await userClient.userFetch({});
+    set({ availableUsers: response.users });
+    return response.users;
+  },
+
   login: async (_email, _password) => {
     set({ status: "unauthenticated", user: null, error: null });
   },
@@ -64,3 +74,7 @@ export const useUserProvider = create<UserProviderState>((set, get) => ({
 }));
 
 export type { User, UserStatus };
+
+export function userHasPermission(user: User | null, permission: UserPermission): boolean {
+  return user?.permission?.permissions.includes(permission) ?? false;
+}

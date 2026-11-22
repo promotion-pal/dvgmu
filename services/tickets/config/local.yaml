@@ -11,3 +11,6 @@ database:
   password: password
   dbname: dvgmu_tickets_db
   sslmode: disable
+
+mdm:
+  url: http://localhost:4051

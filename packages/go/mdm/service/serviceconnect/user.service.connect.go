@@ -42,6 +42,9 @@ const (
 	UserServiceUserCreateProcedure = "/contract.service.UserService/UserCreate"
 	// UserServiceUserUpdateProcedure is the fully-qualified name of the UserService's UserUpdate RPC.
 	UserServiceUserUpdateProcedure = "/contract.service.UserService/UserUpdate"
+	// UserServiceUserRolesSetProcedure is the fully-qualified name of the UserService's UserRolesSet
+	// RPC.
+	UserServiceUserRolesSetProcedure = "/contract.service.UserService/UserRolesSet"
 )
 
 // UserServiceClient is a client for the contract.service.UserService service.
@@ -50,6 +53,7 @@ type UserServiceClient interface {
 	UserFetchByID(context.Context, *connect.Request[service.UserFetchByIDRequest]) (*connect.Response[service.UserFetchByIDResponse], error)
 	UserCreate(context.Context, *connect.Request[service.UserCreateRequest]) (*connect.Response[service.UserCreateResponse], error)
 	UserUpdate(context.Context, *connect.Request[service.UserUpdateRequest]) (*connect.Response[service.UserUpdateResponse], error)
+	UserRolesSet(context.Context, *connect.Request[service.UserRolesSetRequest]) (*connect.Response[service.UserRolesSetResponse], error)
 }
 
 // NewUserServiceClient constructs a client for the contract.service.UserService service. By
@@ -87,6 +91,12 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(userServiceMethods.ByName("UserUpdate")),
 			connect.WithClientOptions(opts...),
 		),
+		userRolesSet: connect.NewClient[service.UserRolesSetRequest, service.UserRolesSetResponse](
+			httpClient,
+			baseURL+UserServiceUserRolesSetProcedure,
+			connect.WithSchema(userServiceMethods.ByName("UserRolesSet")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -96,6 +106,7 @@ type userServiceClient struct {
 	userFetchByID *connect.Client[service.UserFetchByIDRequest, service.UserFetchByIDResponse]
 	userCreate    *connect.Client[service.UserCreateRequest, service.UserCreateResponse]
 	userUpdate    *connect.Client[service.UserUpdateRequest, service.UserUpdateResponse]
+	userRolesSet  *connect.Client[service.UserRolesSetRequest, service.UserRolesSetResponse]
 }
 
 // UserFetch calls contract.service.UserService.UserFetch.
@@ -118,12 +129,18 @@ func (c *userServiceClient) UserUpdate(ctx context.Context, req *connect.Request
 	return c.userUpdate.CallUnary(ctx, req)
 }
 
+// UserRolesSet calls contract.service.UserService.UserRolesSet.
+func (c *userServiceClient) UserRolesSet(ctx context.Context, req *connect.Request[service.UserRolesSetRequest]) (*connect.Response[service.UserRolesSetResponse], error) {
+	return c.userRolesSet.CallUnary(ctx, req)
+}
+
 // UserServiceHandler is an implementation of the contract.service.UserService service.
 type UserServiceHandler interface {
 	UserFetch(context.Context, *connect.Request[service.UserFetchRequest]) (*connect.Response[service.UserFetchResponse], error)
 	UserFetchByID(context.Context, *connect.Request[service.UserFetchByIDRequest]) (*connect.Response[service.UserFetchByIDResponse], error)
 	UserCreate(context.Context, *connect.Request[service.UserCreateRequest]) (*connect.Response[service.UserCreateResponse], error)
 	UserUpdate(context.Context, *connect.Request[service.UserUpdateRequest]) (*connect.Response[service.UserUpdateResponse], error)
+	UserRolesSet(context.Context, *connect.Request[service.UserRolesSetRequest]) (*connect.Response[service.UserRolesSetResponse], error)
 }
 
 // NewUserServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -157,6 +174,12 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(userServiceMethods.ByName("UserUpdate")),
 		connect.WithHandlerOptions(opts...),
 	)
+	userServiceUserRolesSetHandler := connect.NewUnaryHandler(
+		UserServiceUserRolesSetProcedure,
+		svc.UserRolesSet,
+		connect.WithSchema(userServiceMethods.ByName("UserRolesSet")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/contract.service.UserService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case UserServiceUserFetchProcedure:
@@ -167,6 +190,8 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 			userServiceUserCreateHandler.ServeHTTP(w, r)
 		case UserServiceUserUpdateProcedure:
 			userServiceUserUpdateHandler.ServeHTTP(w, r)
+		case UserServiceUserRolesSetProcedure:
+			userServiceUserRolesSetHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -190,4 +215,8 @@ func (UnimplementedUserServiceHandler) UserCreate(context.Context, *connect.Requ
 
 func (UnimplementedUserServiceHandler) UserUpdate(context.Context, *connect.Request[service.UserUpdateRequest]) (*connect.Response[service.UserUpdateResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.UserUpdate is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) UserRolesSet(context.Context, *connect.Request[service.UserRolesSetRequest]) (*connect.Response[service.UserRolesSetResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.UserRolesSet is not implemented"))
 }

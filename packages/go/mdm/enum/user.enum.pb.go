@@ -70,6 +70,58 @@ func (UserStatus) EnumDescriptor() ([]byte, []int) {
 	return file_mdm_enum_user_enum_proto_rawDescGZIP(), []int{0}
 }
 
+type UserRole int32
+
+const (
+	UserRole_USER_ROLE_UNSPECIFIED UserRole = 0
+	UserRole_USER_ROLE_STUDENT     UserRole = 1
+	UserRole_USER_ROLE_EMPLOYEE    UserRole = 2
+	UserRole_USER_ROLE_ADMIN       UserRole = 3
+)
+
+// Enum value maps for UserRole.
+var (
+	UserRole_name = map[int32]string{
+		0: "USER_ROLE_UNSPECIFIED",
+		1: "USER_ROLE_STUDENT",
+		2: "USER_ROLE_EMPLOYEE",
+		3: "USER_ROLE_ADMIN",
+	}
+	UserRole_value = map[string]int32{
+		"USER_ROLE_UNSPECIFIED": 0,
+		"USER_ROLE_STUDENT":     1,
+		"USER_ROLE_EMPLOYEE":    2,
+		"USER_ROLE_ADMIN":       3,
+	}
+)
+
+func (x UserRole) Enum() *UserRole {
+	p := new(UserRole)
+	*p = x
+	return p
+}
+
+func (x UserRole) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (UserRole) Descriptor() protoreflect.EnumDescriptor {
+	return file_mdm_enum_user_enum_proto_enumTypes[1].Descriptor()
+}
+
+func (UserRole) Type() protoreflect.EnumType {
+	return &file_mdm_enum_user_enum_proto_enumTypes[1]
+}
+
+func (x UserRole) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use UserRole.Descriptor instead.
+func (UserRole) EnumDescriptor() ([]byte, []int) {
+	return file_mdm_enum_user_enum_proto_rawDescGZIP(), []int{1}
+}
+
 type UserGender int32
 
 const (
@@ -103,11 +155,11 @@ func (x UserGender) String() string {
 }
 
 func (UserGender) Descriptor() protoreflect.EnumDescriptor {
-	return file_mdm_enum_user_enum_proto_enumTypes[1].Descriptor()
+	return file_mdm_enum_user_enum_proto_enumTypes[2].Descriptor()
 }
 
 func (UserGender) Type() protoreflect.EnumType {
-	return &file_mdm_enum_user_enum_proto_enumTypes[1]
+	return &file_mdm_enum_user_enum_proto_enumTypes[2]
 }
 
 func (x UserGender) Number() protoreflect.EnumNumber {
@@ -116,7 +168,7 @@ func (x UserGender) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use UserGender.Descriptor instead.
 func (UserGender) EnumDescriptor() ([]byte, []int) {
-	return file_mdm_enum_user_enum_proto_rawDescGZIP(), []int{1}
+	return file_mdm_enum_user_enum_proto_rawDescGZIP(), []int{2}
 }
 
 type UserNationality int32
@@ -164,11 +216,11 @@ func (x UserNationality) String() string {
 }
 
 func (UserNationality) Descriptor() protoreflect.EnumDescriptor {
-	return file_mdm_enum_user_enum_proto_enumTypes[2].Descriptor()
+	return file_mdm_enum_user_enum_proto_enumTypes[3].Descriptor()
 }
 
 func (UserNationality) Type() protoreflect.EnumType {
-	return &file_mdm_enum_user_enum_proto_enumTypes[2]
+	return &file_mdm_enum_user_enum_proto_enumTypes[3]
 }
 
 func (x UserNationality) Number() protoreflect.EnumNumber {
@@ -177,7 +229,7 @@ func (x UserNationality) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use UserNationality.Descriptor instead.
 func (UserNationality) EnumDescriptor() ([]byte, []int) {
-	return file_mdm_enum_user_enum_proto_rawDescGZIP(), []int{2}
+	return file_mdm_enum_user_enum_proto_rawDescGZIP(), []int{3}
 }
 
 type UserStudentStatus int32
@@ -225,11 +277,11 @@ func (x UserStudentStatus) String() string {
 }
 
 func (UserStudentStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_mdm_enum_user_enum_proto_enumTypes[3].Descriptor()
+	return file_mdm_enum_user_enum_proto_enumTypes[4].Descriptor()
 }
 
 func (UserStudentStatus) Type() protoreflect.EnumType {
-	return &file_mdm_enum_user_enum_proto_enumTypes[3]
+	return &file_mdm_enum_user_enum_proto_enumTypes[4]
 }
 
 func (x UserStudentStatus) Number() protoreflect.EnumNumber {
@@ -238,7 +290,7 @@ func (x UserStudentStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use UserStudentStatus.Descriptor instead.
 func (UserStudentStatus) EnumDescriptor() ([]byte, []int) {
-	return file_mdm_enum_user_enum_proto_rawDescGZIP(), []int{3}
+	return file_mdm_enum_user_enum_proto_rawDescGZIP(), []int{4}
 }
 
 type UserStudentEducationForm int32
@@ -280,11 +332,11 @@ func (x UserStudentEducationForm) String() string {
 }
 
 func (UserStudentEducationForm) Descriptor() protoreflect.EnumDescriptor {
-	return file_mdm_enum_user_enum_proto_enumTypes[4].Descriptor()
+	return file_mdm_enum_user_enum_proto_enumTypes[5].Descriptor()
 }
 
 func (UserStudentEducationForm) Type() protoreflect.EnumType {
-	return &file_mdm_enum_user_enum_proto_enumTypes[4]
+	return &file_mdm_enum_user_enum_proto_enumTypes[5]
 }
 
 func (x UserStudentEducationForm) Number() protoreflect.EnumNumber {
@@ -293,7 +345,7 @@ func (x UserStudentEducationForm) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use UserStudentEducationForm.Descriptor instead.
 func (UserStudentEducationForm) EnumDescriptor() ([]byte, []int) {
-	return file_mdm_enum_user_enum_proto_rawDescGZIP(), []int{4}
+	return file_mdm_enum_user_enum_proto_rawDescGZIP(), []int{5}
 }
 
 type UserEmployeeStatus int32
@@ -341,11 +393,11 @@ func (x UserEmployeeStatus) String() string {
 }
 
 func (UserEmployeeStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_mdm_enum_user_enum_proto_enumTypes[5].Descriptor()
+	return file_mdm_enum_user_enum_proto_enumTypes[6].Descriptor()
 }
 
 func (UserEmployeeStatus) Type() protoreflect.EnumType {
-	return &file_mdm_enum_user_enum_proto_enumTypes[5]
+	return &file_mdm_enum_user_enum_proto_enumTypes[6]
 }
 
 func (x UserEmployeeStatus) Number() protoreflect.EnumNumber {
@@ -354,7 +406,7 @@ func (x UserEmployeeStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use UserEmployeeStatus.Descriptor instead.
 func (UserEmployeeStatus) EnumDescriptor() ([]byte, []int) {
-	return file_mdm_enum_user_enum_proto_rawDescGZIP(), []int{5}
+	return file_mdm_enum_user_enum_proto_rawDescGZIP(), []int{6}
 }
 
 type UserEmployeeDepartment int32
@@ -388,11 +440,11 @@ func (x UserEmployeeDepartment) String() string {
 }
 
 func (UserEmployeeDepartment) Descriptor() protoreflect.EnumDescriptor {
-	return file_mdm_enum_user_enum_proto_enumTypes[6].Descriptor()
+	return file_mdm_enum_user_enum_proto_enumTypes[7].Descriptor()
 }
 
 func (UserEmployeeDepartment) Type() protoreflect.EnumType {
-	return &file_mdm_enum_user_enum_proto_enumTypes[6]
+	return &file_mdm_enum_user_enum_proto_enumTypes[7]
 }
 
 func (x UserEmployeeDepartment) Number() protoreflect.EnumNumber {
@@ -401,7 +453,63 @@ func (x UserEmployeeDepartment) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use UserEmployeeDepartment.Descriptor instead.
 func (UserEmployeeDepartment) EnumDescriptor() ([]byte, []int) {
-	return file_mdm_enum_user_enum_proto_rawDescGZIP(), []int{6}
+	return file_mdm_enum_user_enum_proto_rawDescGZIP(), []int{7}
+}
+
+type UserPermission int32
+
+const (
+	UserPermission_USER_PERMISSION_UNSPECIFIED UserPermission = 0
+	// Task
+	UserPermission_USER_TASK_READ   UserPermission = 1
+	UserPermission_USER_TASK_CREATE UserPermission = 2
+	UserPermission_USER_TASK_UPDATE UserPermission = 3
+	UserPermission_USER_TASK_DELETE UserPermission = 4
+)
+
+// Enum value maps for UserPermission.
+var (
+	UserPermission_name = map[int32]string{
+		0: "USER_PERMISSION_UNSPECIFIED",
+		1: "USER_TASK_READ",
+		2: "USER_TASK_CREATE",
+		3: "USER_TASK_UPDATE",
+		4: "USER_TASK_DELETE",
+	}
+	UserPermission_value = map[string]int32{
+		"USER_PERMISSION_UNSPECIFIED": 0,
+		"USER_TASK_READ":              1,
+		"USER_TASK_CREATE":            2,
+		"USER_TASK_UPDATE":            3,
+		"USER_TASK_DELETE":            4,
+	}
+)
+
+func (x UserPermission) Enum() *UserPermission {
+	p := new(UserPermission)
+	*p = x
+	return p
+}
+
+func (x UserPermission) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (UserPermission) Descriptor() protoreflect.EnumDescriptor {
+	return file_mdm_enum_user_enum_proto_enumTypes[8].Descriptor()
+}
+
+func (UserPermission) Type() protoreflect.EnumType {
+	return &file_mdm_enum_user_enum_proto_enumTypes[8]
+}
+
+func (x UserPermission) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use UserPermission.Descriptor instead.
+func (UserPermission) EnumDescriptor() ([]byte, []int) {
+	return file_mdm_enum_user_enum_proto_rawDescGZIP(), []int{8}
 }
 
 var File_mdm_enum_user_enum_proto protoreflect.FileDescriptor
@@ -413,7 +521,12 @@ const file_mdm_enum_user_enum_proto_rawDesc = "" +
 	"UserStatus\x12\x1b\n" +
 	"\x17USER_STATUS_UNSPECIFIED\x10\x00\x12\x16\n" +
 	"\x12USER_STATUS_ACTIVE\x10\x01\x12\x18\n" +
-	"\x14USER_STATUS_INACTIVE\x10\x02*W\n" +
+	"\x14USER_STATUS_INACTIVE\x10\x02*i\n" +
+	"\bUserRole\x12\x19\n" +
+	"\x15USER_ROLE_UNSPECIFIED\x10\x00\x12\x15\n" +
+	"\x11USER_ROLE_STUDENT\x10\x01\x12\x16\n" +
+	"\x12USER_ROLE_EMPLOYEE\x10\x02\x12\x13\n" +
+	"\x0fUSER_ROLE_ADMIN\x10\x03*W\n" +
 	"\n" +
 	"UserGender\x12\x1b\n" +
 	"\x17USER_GENDER_UNSPECIFIED\x10\x00\x12\x14\n" +
@@ -451,7 +564,13 @@ const file_mdm_enum_user_enum_proto_rawDesc = "" +
 	"\"USER_PRESENCE_STATUS_BUSINESS_TRIP\x10\x06*c\n" +
 	"\x16UserEmployeeDepartment\x12(\n" +
 	"$USER_EMPLOYEE_DEPARTMENT_UNSPECIFIED\x10\x00\x12\x1f\n" +
-	"\x1bUSER_EMPLOYEE_DEPARTMENT_IT\x10\x01B\x90\x01\n" +
+	"\x1bUSER_EMPLOYEE_DEPARTMENT_IT\x10\x01*\x87\x01\n" +
+	"\x0eUserPermission\x12\x1f\n" +
+	"\x1bUSER_PERMISSION_UNSPECIFIED\x10\x00\x12\x12\n" +
+	"\x0eUSER_TASK_READ\x10\x01\x12\x14\n" +
+	"\x10USER_TASK_CREATE\x10\x02\x12\x14\n" +
+	"\x10USER_TASK_UPDATE\x10\x03\x12\x14\n" +
+	"\x10USER_TASK_DELETE\x10\x04B\x90\x01\n" +
 	"\x11com.contract.enumB\rUserEnumProtoP\x01Z\x17fesmu/contract/mdm/enum\xa2\x02\x03CEX\xaa\x02\rContract.Enum\xca\x02\rContract\\Enum\xe2\x02\x19Contract\\Enum\\GPBMetadata\xea\x02\x0eContract::Enumb\x06proto3"
 
 var (
@@ -466,15 +585,17 @@ func file_mdm_enum_user_enum_proto_rawDescGZIP() []byte {
 	return file_mdm_enum_user_enum_proto_rawDescData
 }
 
-var file_mdm_enum_user_enum_proto_enumTypes = make([]protoimpl.EnumInfo, 7)
+var file_mdm_enum_user_enum_proto_enumTypes = make([]protoimpl.EnumInfo, 9)
 var file_mdm_enum_user_enum_proto_goTypes = []any{
 	(UserStatus)(0),               // 0: contract.enum.UserStatus
-	(UserGender)(0),               // 1: contract.enum.UserGender
-	(UserNationality)(0),          // 2: contract.enum.UserNationality
-	(UserStudentStatus)(0),        // 3: contract.enum.UserStudentStatus
-	(UserStudentEducationForm)(0), // 4: contract.enum.UserStudentEducationForm
-	(UserEmployeeStatus)(0),       // 5: contract.enum.UserEmployeeStatus
-	(UserEmployeeDepartment)(0),   // 6: contract.enum.UserEmployeeDepartment
+	(UserRole)(0),                 // 1: contract.enum.UserRole
+	(UserGender)(0),               // 2: contract.enum.UserGender
+	(UserNationality)(0),          // 3: contract.enum.UserNationality
+	(UserStudentStatus)(0),        // 4: contract.enum.UserStudentStatus
+	(UserStudentEducationForm)(0), // 5: contract.enum.UserStudentEducationForm
+	(UserEmployeeStatus)(0),       // 6: contract.enum.UserEmployeeStatus
+	(UserEmployeeDepartment)(0),   // 7: contract.enum.UserEmployeeDepartment
+	(UserPermission)(0),           // 8: contract.enum.UserPermission
 }
 var file_mdm_enum_user_enum_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
@@ -494,7 +615,7 @@ func file_mdm_enum_user_enum_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_mdm_enum_user_enum_proto_rawDesc), len(file_mdm_enum_user_enum_proto_rawDesc)),
-			NumEnums:      7,
+			NumEnums:      9,
 			NumMessages:   0,
 			NumExtensions: 0,
 			NumServices:   0,

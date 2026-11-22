@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file tickets/service/ticket.service.proto.
  */
 export const file_tickets_service_ticket_service: GenFile = /*@__PURE__*/
-  fileDesc("CiR0aWNrZXRzL3NlcnZpY2UvdGlja2V0LnNlcnZpY2UucHJvdG8SGGNvbnRyYWN0LnRpY2tldHMuc2VydmljZSIiChFDcmVhdGVUYXNrUmVxdWVzdBINCgV0aXRsZRgBIAEoCSJBChJDcmVhdGVUYXNrUmVzcG9uc2USKwoEdGFzaxgBIAEoCzIdLmNvbnRyYWN0LnRpY2tldHMuZW50aXR5LlRhc2siEgoQTGlzdFRhc2tzUmVxdWVzdCJBChFMaXN0VGFza3NSZXNwb25zZRIsCgV0YXNrcxgBIAMoCzIdLmNvbnRyYWN0LnRpY2tldHMuZW50aXR5LlRhc2sy3AEKC1Rhc2tTZXJ2aWNlEmcKCkNyZWF0ZVRhc2sSKy5jb250cmFjdC50aWNrZXRzLnNlcnZpY2UuQ3JlYXRlVGFza1JlcXVlc3QaLC5jb250cmFjdC50aWNrZXRzLnNlcnZpY2UuQ3JlYXRlVGFza1Jlc3BvbnNlEmQKCUxpc3RUYXNrcxIqLmNvbnRyYWN0LnRpY2tldHMuc2VydmljZS5MaXN0VGFza3NSZXF1ZXN0GisuY29udHJhY3QudGlja2V0cy5zZXJ2aWNlLkxpc3RUYXNrc1Jlc3BvbnNlQtQBChxjb20uY29udHJhY3QudGlja2V0cy5zZXJ2aWNlQhJUaWNrZXRTZXJ2aWNlUHJvdG9QAVoeZmVzbXUvY29udHJhY3QvdGlja2V0cy9zZXJ2aWNlogIDQ1RTqgIYQ29udHJhY3QuVGlja2V0cy5TZXJ2aWNlygIYQ29udHJhY3RcVGlja2V0c1xTZXJ2aWNl4gIkQ29udHJhY3RcVGlja2V0c1xTZXJ2aWNlXEdQQk1ldGFkYXRh6gIaQ29udHJhY3Q6OlRpY2tldHM6OlNlcnZpY2ViBnByb3RvMw", [file_tickets_entity_ticket_entity]);
+  fileDesc("CiR0aWNrZXRzL3NlcnZpY2UvdGlja2V0LnNlcnZpY2UucHJvdG8SGGNvbnRyYWN0LnRpY2tldHMuc2VydmljZSIzChFDcmVhdGVUYXNrUmVxdWVzdBINCgV0aXRsZRgBIAEoCRIPCgd1c2VyX2lkGAIgASgDIkEKEkNyZWF0ZVRhc2tSZXNwb25zZRIrCgR0YXNrGAEgASgLMh0uY29udHJhY3QudGlja2V0cy5lbnRpdHkuVGFzayIjChBMaXN0VGFza3NSZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAMiQQoRTGlzdFRhc2tzUmVzcG9uc2USLAoFdGFza3MYASADKAsyHS5jb250cmFjdC50aWNrZXRzLmVudGl0eS5UYXNrMtwBCgtUYXNrU2VydmljZRJnCgpDcmVhdGVUYXNrEisuY29udHJhY3QudGlja2V0cy5zZXJ2aWNlLkNyZWF0ZVRhc2tSZXF1ZXN0GiwuY29udHJhY3QudGlja2V0cy5zZXJ2aWNlLkNyZWF0ZVRhc2tSZXNwb25zZRJkCglMaXN0VGFza3MSKi5jb250cmFjdC50aWNrZXRzLnNlcnZpY2UuTGlzdFRhc2tzUmVxdWVzdBorLmNvbnRyYWN0LnRpY2tldHMuc2VydmljZS5MaXN0VGFza3NSZXNwb25zZULUAQocY29tLmNvbnRyYWN0LnRpY2tldHMuc2VydmljZUISVGlja2V0U2VydmljZVByb3RvUAFaHmZlc211L2NvbnRyYWN0L3RpY2tldHMvc2VydmljZaICA0NUU6oCGENvbnRyYWN0LlRpY2tldHMuU2VydmljZcoCGENvbnRyYWN0XFRpY2tldHNcU2VydmljZeICJENvbnRyYWN0XFRpY2tldHNcU2VydmljZVxHUEJNZXRhZGF0YeoCGkNvbnRyYWN0OjpUaWNrZXRzOjpTZXJ2aWNlYgZwcm90bzM", [file_tickets_entity_ticket_entity]);
 
 /**
  * @generated from message contract.tickets.service.CreateTaskRequest
@@ -22,6 +22,11 @@ export type CreateTaskRequest = Message<"contract.tickets.service.CreateTaskRequ
    * @generated from field: string title = 1;
    */
   title: string;
+
+  /**
+   * @generated from field: int64 user_id = 2;
+   */
+  userId: bigint;
 };
 
 /**
@@ -52,6 +57,10 @@ export const CreateTaskResponseSchema: GenMessage<CreateTaskResponse> = /*@__PUR
  * @generated from message contract.tickets.service.ListTasksRequest
  */
 export type ListTasksRequest = Message<"contract.tickets.service.ListTasksRequest"> & {
+  /**
+   * @generated from field: int64 user_id = 1;
+   */
+  userId: bigint;
 };
 
 /**

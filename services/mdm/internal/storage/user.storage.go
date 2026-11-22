@@ -72,8 +72,36 @@ func (s *UserStorage) UserUpdate(ctx context.Context, user *models.User) error {
 	return nil
 }
 
+func (s *UserStorage) UserRolesSet(ctx context.Context, id int64, roles []models.UserRole) (*models.User, error) {
+	var user models.User
+	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		if err := ensureUserExists(tx, id); err != nil {
+			return err
+		}
+		if err := tx.Where("user_id = ?", id).Delete(&models.UserRole{}).Error; err != nil {
+			return fmt.Errorf("delete user roles: %w", err)
+		}
+		for i := range roles {
+			roles[i].UserID = id
+		}
+		if len(roles) > 0 {
+			if err := tx.Create(&roles).Error; err != nil {
+				return fmt.Errorf("set user roles: %w", err)
+			}
+		}
+		return tx.Preload("Roles").First(&user, "id = ?", id).Error
+	})
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, models.ErrUserNotFound
+	}
+	if err != nil {
+		return nil, fmt.Errorf("set roles for user %d: %w", id, err)
+	}
+	return &user, nil
+}
+
 func (s *UserStorage) userQuery(ctx context.Context) *gorm.DB {
-	return s.db.WithContext(ctx)
+	return s.db.WithContext(ctx).Preload("Roles").Preload("Permissions")
 }
 
 func ensureUserExists(tx *gorm.DB, id int64) error {
