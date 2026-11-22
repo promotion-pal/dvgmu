@@ -28,6 +28,7 @@ func New(
 	catalog serviceconnect.CatalogServiceHandler,
 	statuses serviceconnect.StatusServiceHandler,
 	priorities serviceconnect.PriorityServiceHandler,
+	forms serviceconnect.ServiceFormServiceHandler,
 ) *App {
 	mux := http.NewServeMux()
 	if cfg.Env == "local" {
@@ -35,6 +36,7 @@ func New(
 		mux.Handle(serviceconnect.NewCatalogServiceHandler(catalog))
 		mux.Handle(serviceconnect.NewStatusServiceHandler(statuses))
 		mux.Handle(serviceconnect.NewPriorityServiceHandler(priorities))
+		mux.Handle(serviceconnect.NewServiceFormServiceHandler(forms))
 	}
 	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, r *http.Request) {
 		ctx, cancel := context.WithTimeout(r.Context(), cfg.GRPC.Timeout)

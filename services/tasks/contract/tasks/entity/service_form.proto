@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package tasks.entity;
+
+enum FormFieldType {
+  FORM_FIELD_TYPE_UNSPECIFIED = 0;
+  FORM_FIELD_TYPE_SHORT_TEXT = 1;
+  FORM_FIELD_TYPE_LONG_TEXT = 2;
+  FORM_FIELD_TYPE_NUMBER = 3;
+  FORM_FIELD_TYPE_DATE = 4;
+  FORM_FIELD_TYPE_BOOLEAN = 5;
+  FORM_FIELD_TYPE_SINGLE_CHOICE = 6;
+  FORM_FIELD_TYPE_MULTIPLE_CHOICE = 7;
+  FORM_FIELD_TYPE_ATTACHMENT = 8;
+}
+
+message FormField {
+  string code = 1;
+  string name = 2;
+  FormFieldType type = 3;
+  optional bool required = 4;
+  int32 sort_order = 5;
+  oneof settings {
+    FormTextSettings text = 6;
+    FormNumberSettings number = 7;
+    FormChoiceSettings choice = 8;
+    FormAttachmentSettings attachment = 9;
+  }
+}
+
+message FormTextSettings {
+  int32 max_length = 1;
+}
+
+message FormNumberSettings {
+  optional double min = 1;
+  optional double max = 2;
+}
+
+message FormChoiceSettings {
+  repeated FormChoiceOption options = 1;
+}
+
+message FormChoiceOption {
+  string code = 1;
+  string name = 2;
+}
+
+message FormAttachmentSettings {
+  repeated string allowed_mime_types = 1;
+  int32 max_files = 2;
+  int64 max_file_size_bytes = 3;
+}
+
+message ServiceFormSchema {
+  repeated FormField fields = 1;
+}
