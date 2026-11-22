@@ -210,8 +210,10 @@ type BankSection struct {
 	// Legacy flat banks are automatically exposed as a topic on read/save.
 	//
 	// Deprecated: Marked as deprecated in fesmu/exam/service/v2/exam_bank.service.proto.
-	Questions     []*v1.TestQuestionInput `protobuf:"bytes,3,rep,name=questions,proto3" json:"questions,omitempty"`
-	Topics        []*BankTopic            `protobuf:"bytes,4,rep,name=topics,proto3" json:"topics,omitempty"`
+	Questions []*v1.TestQuestionInput `protobuf:"bytes,3,rep,name=questions,proto3" json:"questions,omitempty"`
+	Topics    []*BankTopic            `protobuf:"bytes,4,rep,name=topics,proto3" json:"topics,omitempty"`
+	// Temporary ready-made section: include every question, quota is derived.
+	ReadyVariant  bool `protobuf:"varint,5,opt,name=ready_variant,json=readyVariant,proto3" json:"ready_variant,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -273,6 +275,13 @@ func (x *BankSection) GetTopics() []*BankTopic {
 		return x.Topics
 	}
 	return nil
+}
+
+func (x *BankSection) GetReadyVariant() bool {
+	if x != nil {
+		return x.ReadyVariant
+	}
+	return false
 }
 
 // A topic may be entered manually, imported from files or copied from a saved test.
@@ -1132,12 +1141,13 @@ const file_fesmu_exam_service_v2_exam_bank_service_proto_rawDesc = "" +
 	"\x04good\x18\x0f \x01(\x01R\x04good\x12\"\n" +
 	"\fsatisfactory\x18\x10 \x01(\x01R\fsatisfactory\x12&\n" +
 	"\x0fai_review_notes\x18\x11 \x01(\tR\raiReviewNotes\x12\x18\n" +
-	"\afaculty\x18\x12 \x01(\tR\afaculty\"\xbe\x01\n" +
+	"\afaculty\x18\x12 \x01(\tR\afaculty\"\xe3\x01\n" +
 	"\vBankSection\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x14\n" +
 	"\x05quota\x18\x02 \x01(\x05R\x05quota\x12H\n" +
 	"\tquestions\x18\x03 \x03(\v2&.contract.service.v1.TestQuestionInputB\x02\x18\x01R\tquestions\x12;\n" +
-	"\x06topics\x18\x04 \x03(\v2#.contract.exam.service.v2.BankTopicR\x06topics\"e\n" +
+	"\x06topics\x18\x04 \x03(\v2#.contract.exam.service.v2.BankTopicR\x06topics\x12#\n" +
+	"\rready_variant\x18\x05 \x01(\bR\freadyVariant\"e\n" +
 	"\tBankTopic\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12D\n" +
 	"\tquestions\x18\x02 \x03(\v2&.contract.service.v1.TestQuestionInputR\tquestions\"\x12\n" +

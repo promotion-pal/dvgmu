@@ -168,7 +168,12 @@ export default function ExamV2Page() {
     const patch = (values: Partial<Bank>) => { setBank(b => b ? { ...b, ...values, approvedBy: values.approvedBy ?? "" } : b); setDirty(true); };
     const changeSection = (index: number, values: Partial<Bank["sections"][number]>) => {
         if (bank)
-            patch({ sections: bank.sections.map((s, i) => i === index ? { ...s, ...values } : s) });
+            patch({ sections: bank.sections.map((s, i) => {
+                    if (i !== index)
+                        return s;
+                    const changed = { ...s, ...values };
+                    return changed.readyVariant ? { ...changed, quota: sectionQuestions(changed).length } : changed;
+                }) });
     };
     const save = () => run(async () => {
         if (!bank)
@@ -222,14 +227,45 @@ export default function ExamV2Page() {
             changeSection(sectionIndex, { topics: [...section.topics, ...topics] });
         }
     };
+    const readTopics = async (files: File[]) => Promise.all(files.map(async (file) => {
+        const draft = await examTestBuilderApi.importParse(file);
+        return create(BankTopicSchema, { name: file.name.replace(/\.(txt|docx)$/i, ""), questions: draft.form.questions.map(q => create(TestQuestionInputSchema, { text: q.text, image: q.image, answers: q.answers })) });
+    }));
     const importFiles = (sectionIndex: number, files: File[], topicIndex?: number) => run(async () => {
         if (!bank || !files.length)
             return;
-        const topics = await Promise.all(files.map(async (file) => {
-            const draft = await examTestBuilderApi.importParse(file);
-            return create(BankTopicSchema, { name: file.name.replace(/\.(txt|docx)$/i, ""), questions: draft.form.questions.map(q => create(TestQuestionInputSchema, { text: q.text, image: q.image, answers: q.answers })) });
-        }));
-        addQuestions(sectionIndex, topics, topicIndex);
+        addQuestions(sectionIndex, await readTopics(files), topicIndex);
+    });
+    const importReadySections = (files: File[]) => run(async () => {
+        if (!bank || !files.length)
+            return;
+        const topics = await readTopics(files);
+        if (bankRef.current !== bank)
+            throw new Error("Банк изменился во время загрузки. Повторите импорт для текущей редакции.");
+        const seen = new Set(bank.sections.flatMap(section => sectionQuestions(section).map(q => questionKey(q.text))));
+        const names = new Set(bank.sections.map(section => section.name.trim().toLocaleLowerCase("ru")));
+        const sections = topics.map(topic => {
+            if (!topic.questions.length)
+                throw new Error(`Файл «${topic.name}» не содержит вопросов. Пакет не добавлен.`);
+            for (const [i, q] of topic.questions.entries()) {
+                if (q.answers.filter(answer => answer.isCorrect).length !== 1)
+                    throw new Error(`«${topic.name}», вопрос ${i + 1}: нужен ровно один правильный ответ. Пакет не добавлен.`);
+                const key = questionKey(q.text);
+                if (seen.has(key))
+                    throw new Error(`Повтор вопроса: ${q.text}. Пакет не добавлен.`);
+                seen.add(key);
+            }
+            let name = topic.name.trim() || "Готовый раздел";
+            for (let n = 2; names.has(name.toLocaleLowerCase("ru")); n++)
+                name = `${topic.name.trim() || "Готовый раздел"} (${n})`;
+            names.add(name.toLocaleLowerCase("ru"));
+            return create(BankSectionSchema, { name, readyVariant: true, quota: topic.questions.length, topics: [topic] });
+        });
+        if (bank.sections.reduce((sum, section) => sum + section.quota, 0) + sections.reduce((sum, section) => sum + section.quota, 0) > 500)
+            throw new Error("В одном экзаменационном варианте допускается не больше 500 вопросов. Пакет не добавлен.");
+        if (bank.sections.length + sections.length > 100)
+            throw new Error("В экзамене допускается не больше 100 разделов. Пакет не добавлен.");
+        patch({ sections: [...bank.sections, ...sections] });
     });
     const importSource = (sectionIndex: number, source: string) => run(async () => {
         if (!bank)
@@ -265,6 +301,7 @@ export default function ExamV2Page() {
   <p className="text-sm text-muted-foreground">Например: Сестринское дело → Экзамен → Кардиология (5) + Эндокринология (25) = вариант из 30 случайных вопросов.</p>
   {bank.sections.map((section, index) => <SectionEditor key={index} section={section} index={index} busy={busy} sources={sources} sourcesLoaded={sourcesLoaded} variants={variants} onLoadSources={() => void loadSources()} onChange={changed => changeSection(index, changed)} onRemove={() => patch({ sections: bank.sections.filter((_, i) => i !== index) })} onImport={(files, topicIndex) => void importFiles(index, files, topicIndex)} onSource={source => void importSource(index, source)}/>)}
 
+  <Can section={PermissionSection.EXAM_TESTS}><div className="rounded-xl border border-violet-300 p-4"><h3 className="font-semibold">Готовый раздел из файла — временный режим</h3><p className="mt-1 text-sm text-muted-foreground">Загрузите заранее собранный вариант. Каждый файл создаст отдельный раздел текущего экзамена, все вопросы из него войдут в вариант без случайной выборки.</p><label className="mt-3 block text-sm">Загрузить готовый раздел (.txt / .docx)<input className={field} type="file" multiple accept=".txt,.docx" disabled={busy} onChange={e => { void importReadySections(Array.from(e.target.files ?? [])); e.target.value = ""; }}/></label></div></Can>
   <Can section={PermissionSection.EXAM_TESTS}><div className="grid items-end gap-3 rounded-lg border border-dashed p-4 md:grid-cols-[1fr_180px_auto]"><label className="text-sm">Название нового раздела<input className={field} value={sectionName} onChange={e => setSectionName(e.target.value)} placeholder="Например: Кардиология"/></label><label className="text-sm">Случайных вопросов<input className={field} type="number" min={1} max={500} value={sectionQuota} onChange={e => setSectionQuota(e.target.value)}/></label><Button variant="outline" disabled={busy || !sectionName.trim() || number(sectionQuota) < 1 || number(sectionQuota) > 500 || !Number.isInteger(number(sectionQuota))} onClick={() => { patch({ sections: [...bank.sections, create(BankSectionSchema, { name: sectionName.trim(), quota: number(sectionQuota) })] }); setSectionName(""); }}>Создать раздел</Button></div><label>Заключение специалиста УМР<textarea className={field} value={bank.reviewNotes} onChange={e => patch({ reviewNotes: e.target.value })}/></label><label>Замечания ИИ<textarea className={field} readOnly value={bank.aiReviewNotes} placeholder="Провайдер настраивается администратором. Проверка структуры выполняется при сохранении."/></label><Button variant="outline" disabled={busy || dirty || bank.id === 0n} onClick={() => void run(async () => { const r = await client.aIReviewFetch({ bankId: bank.id, revision: bank.revision }); patch({ aiReviewNotes: r.notes }); })}>Запросить ИИ-проверку сохранённого банка</Button><label className="flex items-center gap-2"><input type="checkbox" checked={Boolean(bank.approvedBy)} onChange={e => patch({ approvedBy: e.target.checked ? "approve" : "" })}/>Согласовано специалистом УМР (автор согласования фиксируется автоматически)</label><div className="flex flex-wrap gap-2"><Button disabled={busy} onClick={() => void save()}>Сохранить банк</Button><Button variant="outline" disabled={busy || dirty || !bank.approvedBy || bank.id === 0n} onClick={() => void run(async () => { await client.variantsGenerate({ bankId: bank.id, revision: bank.revision }); await load(); setTab("variants"); })}>Сформировать варианты</Button>{bank.id > 0n && <Button variant="destructive" disabled={busy} onClick={() => {
                         if (confirm("Удалить банк? Уже выданные сессии и их результаты сохранятся."))
                             void run(async () => { await client.bankDelete({ id: bank.id, revision: bank.revision }); setBank(undefined); await load(); });

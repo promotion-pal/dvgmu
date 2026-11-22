@@ -71,19 +71,23 @@ export function SectionEditor({ section, index, busy, onChange, onRemove, onImpo
     return <section className="flex flex-col gap-4 rounded-xl border p-4">
   <div className="grid items-end gap-3 md:grid-cols-[1fr_180px_auto]">
    <label className="text-sm font-medium">Название раздела<input className={field} value={section.name} onChange={e => onChange({ ...section, name: e.target.value })}/></label>
-   <label className="text-sm font-medium">Случайных вопросов в варианте<input className={field} type="number" min={0} max={500} value={section.quota} onChange={e => onChange({ ...section, quota: Number(e.target.value) || 0 })}/></label>
+   <label className="text-sm font-medium">{section.readyVariant ? "Включаются все вопросы" : "Случайных вопросов в варианте"}<input className={field} type="number" min={0} max={500} readOnly={section.readyVariant} value={section.readyVariant ? available : section.quota} onChange={e => onChange({ ...section, quota: Number(e.target.value) || 0 })}/></label>
    <Can section={PermissionSection.EXAM_TESTS}><Button variant="ghost" disabled={busy} onClick={onRemove}>Удалить раздел</Button></Can>
   </div>
-  <p className="text-sm">Тем: <strong>{section.topics.length}</strong> · В банке: <strong>{available}</strong> · В вариант попадёт: <strong>{section.quota}</strong>. Вопросы выбираются случайно из всех тем этого раздела.</p>
+  {section.readyVariant ? <p className="rounded-lg border border-violet-300 bg-violet-50 p-3 text-sm text-violet-950"><strong>Готовый раздел.</strong> Все {available} вопросов включаются целиком, без случайной выборки. Количество обновляется автоматически при добавлении или удалении вопросов.</p> : <p className="text-sm">Тем: <strong>{section.topics.length}</strong> · В банке: <strong>{available}</strong> · В вариант попадёт: <strong>{section.quota}</strong>. Вопросы выбираются случайно из всех тем этого раздела.</p>}
   {section.quota > available && <p role="status" className="text-sm text-amber-700">Для квоты {section.quota} добавьте ещё {section.quota - available} вопросов в темы раздела.</p>}
+  {!section.readyVariant && <>
   <Can section={PermissionSection.EXAM_TESTS}>
    <div className="grid gap-3 rounded-lg border border-dashed p-3 md:grid-cols-2">
     <label className="text-sm">Импортировать темы из файлов<input className={field} type="file" multiple accept=".txt,.docx" disabled={busy} onChange={e => { onImport(Array.from(e.target.files ?? [])); e.target.value = ""; }}/><span className="text-xs text-muted-foreground">Каждый файл станет отдельной темой со своими вопросами.</span></label>
     <div className="flex flex-col justify-end gap-2"><label className="text-sm">Новая тема<input className={field} value={topicName} onChange={e => setTopicName(e.target.value)} placeholder="Например: Нарушения ритма"/></label><Button variant="outline" disabled={busy || !topicName.trim()} onClick={() => { onChange({ ...section, topics: [...section.topics, create(BankTopicSchema, { name: topicName.trim() })] }); setTopicName(""); }}>Создать тему</Button></div>
-    <div className="flex flex-col gap-2 md:col-span-2"><label className="text-sm">Добавить сохранённый тест как тему<select aria-label="Источник вопросов" className={field} value="" disabled={busy} onChange={e => { if (e.target.value)
-        onSource(e.target.value); }}><option value="">Выберите тест или готовый вариант</option>{!!sources.length && <optgroup label="Сохранённые тесты">{sources.map(test => <option key={test.id} value={`test:${test.id}`}>{test.title}</option>)}</optgroup>}{!!variants.length && <optgroup label="Готовые варианты экзаменов">{variants.map(v => <option key={String(v.id)} value={`variant:${v.testId}`}>{v.title}</option>)}</optgroup>}</select></label>{!sourcesLoaded && <Button variant="outline" disabled={busy} onClick={onLoadSources}>Загрузить список сохранённых тестов</Button>}</div>
+    <div className="flex flex-col gap-2 md:col-span-2"><label className="text-sm">Добавить сохранённый тест как тему<select aria-label="Источник вопросов" className={field} value="" disabled={busy} onChange={e => {
+                if (e.target.value)
+                    onSource(e.target.value);
+            }}><option value="">Выберите тест или готовый вариант</option>{!!sources.length && <optgroup label="Сохранённые тесты">{sources.map(test => <option key={test.id} value={`test:${test.id}`}>{test.title}</option>)}</optgroup>}{!!variants.length && <optgroup label="Готовые варианты экзаменов">{variants.map(v => <option key={String(v.id)} value={`variant:${v.testId}`}>{v.title}</option>)}</optgroup>}</select></label>{!sourcesLoaded && <Button variant="outline" disabled={busy} onClick={onLoadSources}>Загрузить список сохранённых тестов</Button>}</div>
    </div>
   </Can>
+  </>}
   {section.topics.map((topic, topicIndex) => <TopicEditor key={topicIndex} prefix={`section-${index}-topic-${topicIndex}`} topic={topic} busy={busy} onChange={changed => onChange({ ...section, topics: section.topics.map((old, i) => i === topicIndex ? changed : old) })} onRemove={() => onChange({ ...section, topics: section.topics.filter((_, i) => i !== topicIndex) })} onImport={files => onImport(files, topicIndex)}/>)}
   {!section.topics.length && <p className="text-sm text-muted-foreground">Добавьте тему, загрузите файлы или выберите сохранённый тест, чтобы наполнить раздел.</p>}
  </section>;

@@ -9,6 +9,7 @@ import (
 	"dvgmu/api/internal/domain/models"
 	pb "fesmu/contract/fesmu/exam/service/v2"
 	svc "fesmu/contract/fesmu/service/v1"
+	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -131,5 +132,85 @@ func TestGeneratedSessionCannotLoseSectionQuotasByTakingSubset(t *testing.T) {
 	input.QuestionCount = 20
 	if s, err := models.NewTestSession(test, input, "token", time.Now()); err != nil || s.AskedCount() != 20 {
 		t.Fatal("legacy subset behavior changed", err)
+	}
+}
+
+func TestReadySectionIncludesAllQuestionsAlongsideRandomSections(t *testing.T) {
+	b := nursingBank()
+	ready := topic("Готовый вариант из файла", 7)
+	b.Sections = append(b.Sections, &pb.BankSection{Name: "Готовый раздел", Quota: 1, ReadyVariant: true, Topics: []*pb.BankTopic{ready}})
+	for n := 0; n < 10; n++ {
+		selected, err := VariantSections(b)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if len(selected) != 3 || len(selected[0].Questions) != 5 || len(selected[1].Questions) != 25 {
+			t.Fatal("random section quotas changed")
+		}
+		fixed := selected[2]
+		if !fixed.ReadyVariant || fixed.Quota != 7 || len(fixed.Questions) != 7 || len(params(b, selected).Questions) != 37 {
+			t.Fatal("ready section did not contribute every question")
+		}
+		for i, q := range ready.Questions {
+			if !proto.Equal(q, fixed.Questions[i]) {
+				t.Fatal("ready section was shuffled or resampled")
+			}
+		}
+	}
+	if b.Sections[2].Quota != 7 {
+		t.Fatal("client-supplied smaller quota must not remove ready questions")
+	}
+}
+func TestReadySectionQuotaFollowsEditsAndSurvivesStorage(t *testing.T) {
+	b := nursingBank()
+	ready := topic("Готовый", 4)
+	fixed := &pb.BankSection{Name: "Все вопросы", ReadyVariant: true, Quota: 99, Topics: []*pb.BankTopic{ready}}
+	b.Sections = append(b.Sections, fixed)
+	if err := Validate(b); err != nil || fixed.Quota != 4 {
+		t.Fatalf("derived quota: %v / %d", err, fixed.Quota)
+	}
+	ready.Questions = ready.Questions[1:]
+	ready.Questions = append(ready.Questions, topic("Дополненные вопросы", 2).Questions...)
+	if err := Validate(b); err != nil || fixed.Quota != 5 {
+		t.Fatalf("edited quota: %v / %d", err, fixed.Quota)
+	}
+	data, err := protojson.Marshal(b)
+	if err != nil {
+		t.Fatal(err)
+	}
+	loaded, err := Decode(BankRecord{ID: 8, Revision: 2, Payload: data})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !loaded.Sections[2].ReadyVariant || loaded.Sections[2].Quota != 5 || len(SectionQuestions(loaded.Sections[2])) != 5 {
+		t.Fatal("ready mode was not persisted")
+	}
+}
+func TestReadySectionDoesNotBypassQuestionValidation(t *testing.T) {
+	cases := []struct {
+		name    string
+		section func(*pb.Bank) *pb.BankSection
+	}{
+		{"empty", func(*pb.Bank) *pb.BankSection { return &pb.BankSection{Name: "Готовый", ReadyVariant: true} }},
+		{"duplicate", func(b *pb.Bank) *pb.BankSection {
+			return &pb.BankSection{Name: "Готовый", ReadyVariant: true, Topics: []*pb.BankTopic{{Name: "Из файла", Questions: b.Sections[0].Topics[0].Questions}}}
+		}},
+		{"multiple correct", func(*pb.Bank) *pb.BankSection {
+			t := topic("Готовый", 1)
+			t.Questions[0].Answers[1].IsCorrect = true
+			return &pb.BankSection{Name: "Готовый", ReadyVariant: true, Topics: []*pb.BankTopic{t}}
+		}},
+		{"over exam limit", func(*pb.Bank) *pb.BankSection {
+			return &pb.BankSection{Name: "Готовый", ReadyVariant: true, Topics: []*pb.BankTopic{topic("Готовый", 471)}}
+		}},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			b := nursingBank()
+			b.Sections = append(b.Sections, tc.section(b))
+			if _, err := VariantSections(b); err == nil {
+				t.Fatal("invalid ready section accepted")
+			}
+		})
 	}
 }

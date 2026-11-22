@@ -27,6 +27,8 @@ message BankSection {
  // Legacy flat banks are automatically exposed as a topic on read/save.
  repeated contract.service.v1.TestQuestionInput questions=3 [deprecated=true];
  repeated BankTopic topics=4;
+ // Temporary ready-made section: include every question, quota is derived.
+ bool ready_variant=5;
 }
 // A topic may be entered manually, imported from files or copied from a saved test.
 message BankTopic { string name=1; repeated contract.service.v1.TestQuestionInput questions=2; }

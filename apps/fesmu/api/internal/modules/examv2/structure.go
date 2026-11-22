@@ -18,22 +18,28 @@ func NormalizeStructure(b *pb.Bank) {
 		return
 	}
 	for _, section := range b.Sections {
-		if section == nil || len(section.Questions) == 0 {
+		if section == nil {
 			continue
 		}
-		name := "Вопросы раздела"
-		used := map[string]bool{}
-		for _, topic := range section.Topics {
-			if topic != nil {
-				used[strings.ToLower(strings.TrimSpace(topic.Name))] = true
+		if len(section.Questions) > 0 {
+			name := "Вопросы раздела"
+			used := map[string]bool{}
+			for _, topic := range section.Topics {
+				if topic != nil {
+					used[strings.ToLower(strings.TrimSpace(topic.Name))] = true
+				}
 			}
+			for n := 2; used[strings.ToLower(name)]; n++ {
+				name = fmt.Sprintf("Вопросы раздела %d", n)
+			}
+			section.Topics = append([]*pb.BankTopic{{Name: name, Questions: section.Questions}}, section.Topics...)
+			section.Questions = nil
 		}
-		for n := 2; used[strings.ToLower(name)]; n++ {
-			name = fmt.Sprintf("Вопросы раздела %d", n)
+		if section.ReadyVariant {
+			section.Quota = int32(len(SectionQuestions(section)))
 		}
-		section.Topics = append([]*pb.BankTopic{{Name: name, Questions: section.Questions}}, section.Topics...)
-		section.Questions = nil
 	}
+
 }
 
 func SectionQuestions(section *pb.BankSection) []*svc.TestQuestionInput {
@@ -51,6 +57,7 @@ func SectionQuestions(section *pb.BankSection) []*svc.TestQuestionInput {
 
 // Every question in a section's combined pool is equally eligible. A quota is
 // per section, not per topic. Sampling is without replacement within a variant.
+// Ready-made sections instead keep every question in its source order.
 func VariantSections(b *pb.Bank) ([]*pb.BankSection, error) {
 	if err := Validate(b); err != nil {
 		return nil, err
@@ -58,7 +65,12 @@ func VariantSections(b *pb.Bank) ([]*pb.BankSection, error) {
 	out := make([]*pb.BankSection, 0, len(b.Sections))
 	for _, section := range b.Sections {
 		pool := SectionQuestions(section)
-		selected := &pb.BankSection{Name: section.Name, Quota: section.Quota}
+		selected := &pb.BankSection{Name: section.Name, Quota: section.Quota, ReadyVariant: section.ReadyVariant}
+		if section.ReadyVariant {
+			selected.Questions = append(selected.Questions, pool...)
+			out = append(out, selected)
+			continue
+		}
 		order := rand.Perm(len(pool))
 		for _, index := range order[:int(section.Quota)] {
 			selected.Questions = append(selected.Questions, pool[index])

@@ -182,6 +182,9 @@ func Validate(b *pb.Bank) error {
 		}
 		names[key] = true
 		pool := SectionQuestions(s)
+		if s.ReadyVariant && len(pool) == 0 {
+			return bad("готовый раздел «" + s.Name + "» не содержит вопросов")
+		}
 		if s.Quota < 0 || int(s.Quota) > len(pool) {
 			return bad(fmt.Sprintf("раздел «%s»: нужно %d случайных вопросов, в темах доступно %d", s.Name, s.Quota, len(pool)))
 		}
