@@ -20,11 +20,19 @@ type App struct {
 	port       int
 }
 
-func New(log *slog.Logger, ping func(context.Context) error, cfg *config.Config, directions serviceconnect.DirectionServiceHandler, catalog serviceconnect.CatalogServiceHandler) *App {
+func New(
+	log *slog.Logger,
+	ping func(context.Context) error,
+	cfg *config.Config,
+	directions serviceconnect.DirectionServiceHandler,
+	catalog serviceconnect.CatalogServiceHandler,
+	statuses serviceconnect.StatusServiceHandler,
+) *App {
 	mux := http.NewServeMux()
 	if cfg.Env == "local" {
 		mux.Handle(serviceconnect.NewDirectionServiceHandler(directions))
 		mux.Handle(serviceconnect.NewCatalogServiceHandler(catalog))
+		mux.Handle(serviceconnect.NewStatusServiceHandler(statuses))
 	}
 	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, r *http.Request) {
 		ctx, cancel := context.WithTimeout(r.Context(), cfg.GRPC.Timeout)

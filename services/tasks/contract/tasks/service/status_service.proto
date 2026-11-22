@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package tasks.service;
+
+import "tasks/entity/status.proto";
+
+service StatusService {
+  rpc CreateStatus(CreateStatusRequest) returns (CreateStatusResponse);
+  rpc GetStatus(GetStatusRequest) returns (GetStatusResponse);
+  rpc ListStatuses(ListStatusesRequest) returns (ListStatusesResponse);
+  rpc UpdateStatus(UpdateStatusRequest) returns (UpdateStatusResponse);
+  // Permanently deletes a status and returns its last stored state.
+  rpc DeleteStatus(DeleteStatusRequest) returns (DeleteStatusResponse);
+}
+
+message CreateStatusRequest {
+  string code = 1;
+  string name = 2;
+  int32 sort_order = 3;
+  bool terminal = 4;
+}
+
+message CreateStatusResponse {
+  tasks.entity.Status status = 1;
+}
+
+message GetStatusRequest {
+  int64 id = 1;
+}
+
+message GetStatusResponse {
+  tasks.entity.Status status = 1;
+}
+
+message StatusCursor {
+  int32 sort_order = 1;
+  int64 id = 2;
+}
+
+message ListStatusesRequest {
+  int32 page_size = 1;
+  StatusCursor after = 2;
+  optional bool active = 3;
+}
+
+message ListStatusesResponse {
+  repeated tasks.entity.Status statuses = 1;
+  StatusCursor next_cursor = 2;
+}
+
+message UpdateStatusRequest {
+  int64 id = 1;
+  optional string code = 2;
+  optional string name = 3;
+  optional int32 sort_order = 4;
+  optional bool active = 5;
+  optional bool terminal = 6;
+}
+
+message UpdateStatusResponse {
+  tasks.entity.Status status = 1;
+}
+
+message DeleteStatusRequest {
+  int64 id = 1;
+}
+
+message DeleteStatusResponse {
+  tasks.entity.Status status = 1;
+}

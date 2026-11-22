@@ -9,6 +9,8 @@
     "./tasks/entity/direction_pb": "./tasks/entity/direction_pb.ts",
     "./tasks/entity/service_pb": "./tasks/entity/service_pb.ts",
     "./tasks/service/catalog_service_pb": "./tasks/service/catalog_service_pb.ts",
+    "./tasks/entity/status_pb": "./tasks/entity/status_pb.ts",
+    "./tasks/service/status_service_pb": "./tasks/service/status_service_pb.ts",
     "./tasks/service/direction_service_pb": "./tasks/service/direction_service_pb.ts",
     "./mdm/entity/user.entity_pb": "./mdm/entity/user.entity_pb.ts",
     "./mdm/enum/user.enum_pb": "./mdm/enum/user.enum_pb.ts",

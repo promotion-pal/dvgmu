@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package tasks.entity;
+
+message Status {
+  int64 id = 1;
+  string code = 2;
+  string name = 3;
+  int32 sort_order = 4;
+  optional bool active = 5;
+  optional bool terminal = 6;
+}
