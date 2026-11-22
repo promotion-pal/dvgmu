@@ -13,6 +13,7 @@ var (
 
 type Task struct {
 	ID        int64     `gorm:"primaryKey;autoIncrement"`
+	UserID    int64     `gorm:"column:user_id;not null;index"`
 	Title     string    `gorm:"not null"`
 	CreatedAt time.Time `gorm:"not null"`
 }

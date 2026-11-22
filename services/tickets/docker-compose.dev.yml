@@ -2,11 +2,11 @@ services:
   dvgmu_apps_ticket_db:
     image: postgres:17
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-root}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
-      POSTGRES_DB: ${POSTGRES_DB:-dvgmu_tickets_db}
+      POSTGRES_USER: ${TICKETS_DB_USER:-root}
+      POSTGRES_PASSWORD: ${TICKETS_DB_PASSWORD:-password}
+      POSTGRES_DB: ${TICKETS_DB_NAME:-dvgmu_tickets_db}
     ports:
-      - "${POSTGRES_PORT:-5446}:5432"
+      - "${TICKETS_DB_PORT:-5446}:5432"
     volumes:
       - tickets_pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -28,12 +28,13 @@ services:
     environment:
       DB_HOST: dvgmu_apps_ticket_db
       DB_PORT: "5432"
-      DB_USER: ${POSTGRES_USER:-root}
-      DB_PASSWORD: ${POSTGRES_PASSWORD:-password}
-      DB_NAME: ${POSTGRES_DB:-dvgmu_tickets_db}
+      DB_USER: ${TICKETS_DB_USER:-root}
+      DB_PASSWORD: ${TICKETS_DB_PASSWORD:-password}
+      DB_NAME: ${TICKETS_DB_NAME:-dvgmu_tickets_db}
       DB_SSLMODE: disable
       GRPC_PORT: "4050"
-      MDM_URL: http://host.docker.internal:4051
+      MDM_URL: ${TICKETS_DEV_MDM_URL:-http://host.docker.internal:4051}
+      GATEWAY_SHARED_SECRET: ${GATEWAY_SHARED_SECRET:?Set GATEWAY_SHARED_SECRET in .env}
     restart: unless-stopped
 
 volumes:

@@ -25,7 +25,6 @@ const (
 type CreateTaskRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Title         string                 `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
-	UserId        int64                  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -65,13 +64,6 @@ func (x *CreateTaskRequest) GetTitle() string {
 		return x.Title
 	}
 	return ""
-}
-
-func (x *CreateTaskRequest) GetUserId() int64 {
-	if x != nil {
-		return x.UserId
-	}
-	return 0
 }
 
 type CreateTaskResponse struct {
@@ -120,7 +112,6 @@ func (x *CreateTaskResponse) GetTask() *entity.Task {
 
 type ListTasksRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -153,13 +144,6 @@ func (x *ListTasksRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use ListTasksRequest.ProtoReflect.Descriptor instead.
 func (*ListTasksRequest) Descriptor() ([]byte, []int) {
 	return file_tickets_service_ticket_service_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *ListTasksRequest) GetUserId() int64 {
-	if x != nil {
-		return x.UserId
-	}
-	return 0
 }
 
 type ListTasksResponse struct {
@@ -210,14 +194,12 @@ var File_tickets_service_ticket_service_proto protoreflect.FileDescriptor
 
 const file_tickets_service_ticket_service_proto_rawDesc = "" +
 	"\n" +
-	"$tickets/service/ticket.service.proto\x12\x18contract.tickets.service\x1a\"tickets/entity/ticket.entity.proto\"B\n" +
+	"$tickets/service/ticket.service.proto\x12\x18contract.tickets.service\x1a\"tickets/entity/ticket.entity.proto\"8\n" +
 	"\x11CreateTaskRequest\x12\x14\n" +
-	"\x05title\x18\x01 \x01(\tR\x05title\x12\x17\n" +
-	"\auser_id\x18\x02 \x01(\x03R\x06userId\"G\n" +
+	"\x05title\x18\x01 \x01(\tR\x05titleJ\x04\b\x02\x10\x03R\auser_id\"G\n" +
 	"\x12CreateTaskResponse\x121\n" +
-	"\x04task\x18\x01 \x01(\v2\x1d.contract.tickets.entity.TaskR\x04task\"+\n" +
-	"\x10ListTasksRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x03R\x06userId\"H\n" +
+	"\x04task\x18\x01 \x01(\v2\x1d.contract.tickets.entity.TaskR\x04task\"!\n" +
+	"\x10ListTasksRequestJ\x04\b\x01\x10\x02R\auser_id\"H\n" +
 	"\x11ListTasksResponse\x123\n" +
 	"\x05tasks\x18\x01 \x03(\v2\x1d.contract.tickets.entity.TaskR\x05tasks2\xdc\x01\n" +
 	"\vTaskService\x12g\n" +

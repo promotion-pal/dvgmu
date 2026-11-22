@@ -23,9 +23,9 @@ func (s *TaskStorage) Create(ctx context.Context, task *models.Task) error {
 	return nil
 }
 
-func (s *TaskStorage) Fetch(ctx context.Context) ([]models.Task, error) {
+func (s *TaskStorage) Fetch(ctx context.Context, userID int64) ([]models.Task, error) {
 	var tasks []models.Task
-	if err := s.db.WithContext(ctx).Order("id DESC").Find(&tasks).Error; err != nil {
+	if err := s.db.WithContext(ctx).Where("user_id = ?", userID).Order("id DESC").Find(&tasks).Error; err != nil {
 		return nil, fmt.Errorf("list tasks: %w", err)
 	}
 	return tasks, nil

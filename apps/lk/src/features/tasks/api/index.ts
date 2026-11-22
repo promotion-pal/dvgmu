@@ -1,7 +1,7 @@
 import { createClient } from "@connectrpc/connect";
-import { createGrpcWebTransport } from "@connectrpc/connect-web";
 import { TaskService } from "@fesmu/contract/tickets/service/ticket.service_pb";
 import { ENV } from "@/shared/config/env";
+import { createAuthenticatedTransport } from "@/shared/lib/connect-transport";
 
 export type TaskItem = {
   id: string;
@@ -11,11 +11,11 @@ export type TaskItem = {
 
 const client = createClient(
   TaskService,
-  createGrpcWebTransport({ baseUrl: ENV.API }),
+  createAuthenticatedTransport(ENV.API),
 );
 
-export async function listTasks(userId: bigint): Promise<TaskItem[]> {
-  const response = await client.listTasks({ userId });
+export async function listTasks(): Promise<TaskItem[]> {
+  const response = await client.listTasks({});
   return response.tasks.map((task) => ({
     id: task.id.toString(),
     title: task.title,
@@ -23,8 +23,8 @@ export async function listTasks(userId: bigint): Promise<TaskItem[]> {
   }));
 }
 
-export async function createTask(title: string, userId: bigint): Promise<TaskItem> {
-  const response = await client.createTask({ title, userId });
+export async function createTask(title: string): Promise<TaskItem> {
+  const response = await client.createTask({ title });
   if (!response.task) throw new Error("Сервис не вернул созданную задачу");
   return {
     id: response.task.id.toString(),

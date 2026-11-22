@@ -5,17 +5,39 @@ NC    := $(shell tput sgr0 2>/dev/null)
 GENERATED := packages/go packages/ts
 TICKETS_COMPOSE := docker compose -f services/tickets/docker-compose.dev.yml
 MDM_COMPOSE := docker compose -f services/mdm/docker-compose.dev.yml
+AUTH_COMPOSE := docker compose -f services/auth/docker-compose.dev.yml
+GATEWAY_COMPOSE := docker compose -f services/api-gateway/docker-compose.dev.yml
 
-.PHONY: proto dev dev-stop tickets-migrate-diff tickets-migrate-lint tickets-migrate-status mdm-migrate-diff mdm-migrate-lint mdm-migrate-status
+.PHONY: proto dev dev-stop prod-up prod-down auth-test-user tickets-migrate-diff tickets-migrate-lint tickets-migrate-status mdm-migrate-diff mdm-migrate-lint mdm-migrate-status
 
 dev:
 	@$(TICKETS_COMPOSE) up -d --build
 	@$(MDM_COMPOSE) up -d --build
+	@$(AUTH_COMPOSE) up -d --build
+	@$(GATEWAY_COMPOSE) up -d --build
 	@pnpm --dir apps/lk dev
 
 dev-stop:
 	@$(TICKETS_COMPOSE) down
 	@$(MDM_COMPOSE) down
+	@$(AUTH_COMPOSE) down
+	@$(GATEWAY_COMPOSE) down
+
+prod-up:
+	@docker network inspect dvgmu-backend >/dev/null 2>&1 || docker network create dvgmu-backend
+	@docker compose -f services/mdm/docker-compose.yml up -d --build
+	@docker compose -f services/tickets/docker-compose.yml up -d --build
+	@docker compose -f services/auth/docker-compose.yml up -d --build
+	@docker compose -f services/api-gateway/docker-compose.yml up -d --build
+
+prod-down:
+	@docker compose -f services/api-gateway/docker-compose.yml down
+	@docker compose -f services/auth/docker-compose.yml down
+	@docker compose -f services/tickets/docker-compose.yml down
+	@docker compose -f services/mdm/docker-compose.yml down
+
+auth-test-user:
+	@$(AUTH_COMPOSE) run --rm dvgmu_auth ./auth-test-user
 
 tickets-migrate-diff:
 	@cd services/tickets && atlas migrate diff --env gorm

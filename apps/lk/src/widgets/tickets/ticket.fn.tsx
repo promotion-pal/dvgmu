@@ -29,7 +29,7 @@ export function useTickets() {
       setLoading(true);
       setError(false);
       try {
-        const result = await listTasks(user.id);
+        const result = await listTasks();
         if (active) setList(result);
       } catch {
         if (active) setError(true);
@@ -49,7 +49,7 @@ export function useTickets() {
     setLoading(true);
     setError(false);
     try {
-      setList(await listTasks(user.id));
+    setList(await listTasks());
     } catch {
       setError(true);
     } finally {
@@ -62,7 +62,7 @@ export function useTickets() {
     setSaving(true);
     setError(false);
     try {
-      const ticket = await createTask(title, user.id);
+      const ticket = await createTask(title);
       setList((current) => [ticket, ...current]);
       return ticket;
     } catch {

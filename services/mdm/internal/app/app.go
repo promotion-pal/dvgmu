@@ -39,6 +39,6 @@ func New(log *slog.Logger, cfg *config.Config) *App {
 
 	userStorage := storage.NewUserStorage(db)
 	userService := service.NewUserService(userStorage)
-	userController := grpc.NewUserController(userService)
+	userController := grpc.NewUserController(userService, cfg.InternalServiceToken, cfg.GatewaySharedSecret)
 	return &App{GRPCServer: grpcapp.New(log, userController, cfg.GRPC.Port, cfg.GRPC.AllowedOrigins)}
 }

@@ -40,8 +40,8 @@ func New(log *slog.Logger, cfg *config.Config) *App {
 
 	taskStorage := storage.NewTaskStorage(db)
 	mdmClient := serviceconnect.NewUserServiceClient(&http.Client{Timeout: cfg.GRPC.Timeout}, cfg.MDM.URL)
-	permissionChecker := access.NewMDM(mdmClient)
+	permissionChecker := access.NewMDM(mdmClient, cfg.GatewaySharedSecret)
 	taskService := service.NewTaskService(taskStorage, permissionChecker)
-	controller := ticketgrpc.NewTaskController(taskService)
+	controller := ticketgrpc.NewTaskController(taskService, cfg.GatewaySharedSecret)
 	return &App{GRPCServer: grpcapp.New(log, controller, cfg.GRPC.Port)}
 }

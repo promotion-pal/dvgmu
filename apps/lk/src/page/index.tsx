@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { ArrowRight, BookOpen, ClipboardList, FileText } from "lucide-react";
 import { NavLink, Route, Routes } from "react-router";
 import { ROUTER } from "@/shared/config/path";
-import { DEFAULT_USER_ID, useUserProvider } from "@/features/provider/user.provider";
+import { useUserProvider } from "@/features/provider/user.provider";
 import { TicketsWidget } from "@/widgets/tickets";
 import { Button } from "@/shared/ui/button";
 import { Card, CardAction, CardContent, CardDescription, CardHeader } from "@/shared/ui/card";
@@ -73,7 +73,7 @@ function DashboardPage() {
             {status === "error" && <span className="text-sm text-red-700">Не удалось загрузить пользователя</span>}
           </div>
           <span className="shrink-0 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-600">
-            ID: {user?.id.toString() ?? DEFAULT_USER_ID.toString()}
+            ID: {user?.id.toString() ?? "—"}
           </span>
           <Button asChild size="lg" className="h-10 gap-2 rounded-lg bg-blue-700 px-4 text-white hover:bg-blue-800">
             <NavLink to={ROUTER.PROFILE}>
@@ -117,10 +117,11 @@ function DashboardPage() {
 
 function ProfilePage() {
   const { status, user, availableUsers, fetchUsers, fetchById } = useUserProvider();
+  const canManageUsers = user?.roles.includes(UserRole.ADMIN) ?? false;
 
   useEffect(() => {
-    if (import.meta.env.DEV) void fetchUsers();
-  }, [fetchUsers]);
+    if (import.meta.env.DEV && canManageUsers) void fetchUsers();
+  }, [canManageUsers, fetchUsers]);
 
   return (
     <main className="min-h-screen bg-slate-100 px-3 py-5 text-slate-800 sm:px-6 sm:py-10">
@@ -135,9 +136,9 @@ function ProfilePage() {
           <CardAction>
             <div className="flex flex-col items-end gap-2">
               <span className="rounded-full bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-600">
-                ID: {user?.id.toString() ?? DEFAULT_USER_ID.toString()}
+                ID: {user?.id.toString() ?? "—"}
               </span>
-              {import.meta.env.DEV && (
+              {import.meta.env.DEV && canManageUsers && (
                 <label className="flex items-center gap-2 text-xs text-slate-500">
                   Тестовый профиль
                   <select

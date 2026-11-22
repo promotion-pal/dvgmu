@@ -1,24 +1,24 @@
 import { createClient } from "@connectrpc/connect";
-import { createGrpcWebTransport } from "@connectrpc/connect-web";
 import { UserService } from "@fesmu/contract/mdm/service/user.service_pb";
 import type { User } from "@fesmu/contract/mdm/entity/user.entity_pb";
 import { UserPermission } from "@fesmu/contract/mdm/enum/user.enum_pb";
 import { create } from "zustand";
 import { ENV } from "@/shared/config/env";
+import { createAuthenticatedTransport } from "@/shared/lib/connect-transport";
+import { clearAuthSession, getAccessToken, getAuthenticatedUserId, setAuthSession } from "./auth.session";
 
 const userClient = createClient(
   UserService,
-  createGrpcWebTransport({ baseUrl: ENV.MDM }),
+  createAuthenticatedTransport(ENV.MDM),
 );
 
-export const DEFAULT_USER_ID = 5n;
 type UserStatus = "idle" | "loading" | "ready" | "unauthenticated" | "error";
 
 interface UserProviderState {
   status: UserStatus;
   user: User | null;
   availableUsers: User[];
-  userId: bigint;
+  userId: bigint | null;
   error: Error | null;
   me: () => Promise<void>;
   fetchById: (id: bigint) => Promise<User>;
@@ -32,14 +32,23 @@ export const useUserProvider = create<UserProviderState>((set, get) => ({
   status: "idle",
   user: null,
   availableUsers: [],
-  userId: DEFAULT_USER_ID,
+  userId: null,
   error: null,
 
   me: async () => {
     if (get().status === "loading" || get().status === "ready") return;
+    const userId = getAuthenticatedUserId();
+    if (!getAccessToken() || userId === null) {
+      clearAuthSession();
+      set({ status: "unauthenticated", user: null, userId: null, error: null });
+      return;
+    }
     try {
-      await get().fetchById(DEFAULT_USER_ID);
-    } catch {}
+      await get().fetchById(userId);
+    } catch (cause) {
+      const error = cause instanceof Error ? cause : new Error("Не удалось проверить сессию");
+      set({ status: "error", user: null, userId, error });
+    }
   },
 
   fetchById: async (id) => {
@@ -62,15 +71,42 @@ export const useUserProvider = create<UserProviderState>((set, get) => ({
     return response.users;
   },
 
-  login: async (_email, _password) => {
-    set({ status: "unauthenticated", user: null, error: null });
+  login: async (email, password) => {
+    set({ status: "loading", error: null });
+    try {
+      const response = await fetch(`${ENV.AUTH}/v1/auth/token`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      if (!response.ok) {
+        const message = await response.text();
+        throw new Error(message || "Не удалось войти");
+      }
+      const payload = (await response.json()) as { access_token?: string; user_id?: string };
+      if (!payload.access_token || !payload.user_id || !/^\d+$/.test(payload.user_id)) {
+        throw new Error("Auth вернул некорректный ответ");
+      }
+      const userId = BigInt(payload.user_id);
+      setAuthSession(payload.access_token, userId);
+      await get().fetchById(userId);
+    } catch (cause) {
+      clearAuthSession();
+      const error = cause instanceof Error ? cause : new Error("Не удалось войти");
+      set({ status: "unauthenticated", user: null, userId: null, error });
+      throw error;
+    }
   },
 
   logout: async () => {
-    set({ status: "unauthenticated", user: null, error: null });
+    clearAuthSession();
+    set({ status: "unauthenticated", user: null, userId: null, error: null });
   },
 
-  reset: () => set({ status: "idle", user: null, userId: DEFAULT_USER_ID, error: null }),
+  reset: () => {
+    clearAuthSession();
+    set({ status: "idle", user: null, userId: null, error: null });
+  },
 }));
 
 export type { User, UserStatus };

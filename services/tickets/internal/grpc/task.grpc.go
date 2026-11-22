@@ -2,7 +2,10 @@ package grpc
 
 import (
 	"context"
+	"crypto/subtle"
 	"errors"
+	"net/http"
+	"strconv"
 
 	"connectrpc.com/connect"
 	"dvgmu/tickets/internal/domain/models"
@@ -12,15 +15,20 @@ import (
 )
 
 type TaskController struct {
-	service *service.TaskService
+	service      *service.TaskService
+	sharedSecret string
 }
 
-func NewTaskController(taskService *service.TaskService) *TaskController {
-	return &TaskController{service: taskService}
+func NewTaskController(taskService *service.TaskService, sharedSecret string) *TaskController {
+	return &TaskController{service: taskService, sharedSecret: sharedSecret}
 }
 
 func (c *TaskController) CreateTask(ctx context.Context, req *connect.Request[servicepb.CreateTaskRequest]) (*connect.Response[servicepb.CreateTaskResponse], error) {
-	task, err := c.service.Create(ctx, req.Msg.GetUserId(), req.Msg.GetTitle())
+	userID, err := c.authenticatedUserID(req.Header())
+	if err != nil {
+		return nil, err
+	}
+	task, err := c.service.Create(ctx, userID, req.Msg.GetTitle())
 	if err != nil {
 		return nil, taskError(err)
 	}
@@ -28,7 +36,11 @@ func (c *TaskController) CreateTask(ctx context.Context, req *connect.Request[se
 }
 
 func (c *TaskController) ListTasks(ctx context.Context, req *connect.Request[servicepb.ListTasksRequest]) (*connect.Response[servicepb.ListTasksResponse], error) {
-	tasks, err := c.service.Fetch(ctx, req.Msg.GetUserId())
+	userID, err := c.authenticatedUserID(req.Header())
+	if err != nil {
+		return nil, err
+	}
+	tasks, err := c.service.Fetch(ctx, userID)
 	if err != nil {
 		return nil, taskError(err)
 	}
@@ -37,6 +49,17 @@ func (c *TaskController) ListTasks(ctx context.Context, req *connect.Request[ser
 		response.Tasks = append(response.Tasks, toProtoTask(&tasks[i]))
 	}
 	return connect.NewResponse(response), nil
+}
+
+func (c *TaskController) authenticatedUserID(header http.Header) (int64, error) {
+	if c.sharedSecret == "" || subtle.ConstantTimeCompare([]byte(header.Get("X-Gateway-Secret")), []byte(c.sharedSecret)) != 1 {
+		return 0, connect.NewError(connect.CodeUnauthenticated, errors.New("trusted gateway identity required"))
+	}
+	userID, err := strconv.ParseInt(header.Get("X-Authenticated-User-ID"), 10, 64)
+	if err != nil || userID <= 0 {
+		return 0, connect.NewError(connect.CodeUnauthenticated, models.ErrUserIDRequired)
+	}
+	return userID, nil
 }
 
 func taskError(err error) error {

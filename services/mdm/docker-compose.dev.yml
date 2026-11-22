@@ -2,11 +2,11 @@ services:
   dvgmu_mdm_db:
     image: postgres:17
     environment:
-      POSTGRES_USER: ${MDM_POSTGRES_USER:-root}
-      POSTGRES_PASSWORD: ${MDM_POSTGRES_PASSWORD:-password}
-      POSTGRES_DB: ${MDM_POSTGRES_DB:-dvgmu_mdm_db}
+      POSTGRES_USER: ${MDM_DB_USER:-root}
+      POSTGRES_PASSWORD: ${MDM_DB_PASSWORD:-password}
+      POSTGRES_DB: ${MDM_DB_NAME:-dvgmu_mdm_db}
     ports:
-      - "${MDM_POSTGRES_PORT:-5447}:5432"
+      - "${MDM_DB_PORT:-5447}:5432"
     volumes:
       - mdm_pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -28,11 +28,13 @@ services:
     environment:
       DB_HOST: dvgmu_mdm_db
       DB_PORT: "5432"
-      DB_USER: ${MDM_POSTGRES_USER:-root}
-      DB_PASSWORD: ${MDM_POSTGRES_PASSWORD:-password}
-      DB_NAME: ${MDM_POSTGRES_DB:-dvgmu_mdm_db}
+      DB_USER: ${MDM_DB_USER:-root}
+      DB_PASSWORD: ${MDM_DB_PASSWORD:-password}
+      DB_NAME: ${MDM_DB_NAME:-dvgmu_mdm_db}
       DB_SSLMODE: disable
       GRPC_PORT: "4051"
+      GATEWAY_SHARED_SECRET: ${GATEWAY_SHARED_SECRET:?Set GATEWAY_SHARED_SECRET in .env}
+      INTERNAL_SERVICE_TOKEN: ${INTERNAL_SERVICE_TOKEN:?Set INTERNAL_SERVICE_TOKEN in .env}
     restart: unless-stopped
 
 volumes:

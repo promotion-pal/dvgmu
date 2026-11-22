@@ -9,9 +9,11 @@ import (
 )
 
 type Config struct {
-	Env      string         `yaml:"env" env:"ENV" env-default:"local"`
-	GRPC     GRPCConfig     `yaml:"grpc"`
-	Database DatabaseConfig `yaml:"database"`
+	Env                  string         `yaml:"env" env:"ENV" env-default:"local"`
+	InternalServiceToken string         `env:"INTERNAL_SERVICE_TOKEN"`
+	GatewaySharedSecret  string         `env:"GATEWAY_SHARED_SECRET"`
+	GRPC                 GRPCConfig     `yaml:"grpc"`
+	Database             DatabaseConfig `yaml:"database"`
 }
 
 type GRPCConfig struct {

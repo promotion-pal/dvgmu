@@ -1,0 +1,19 @@
+services:
+  dvgmu_api_gateway:
+    build:
+      context: ../..
+      dockerfile: services/api-gateway/Dockerfile
+    ports:
+      - "${GATEWAY_PORT:-4052}:4052"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      GATEWAY_PORT: "4052"
+      GATEWAY_AUTH_URL: ${GATEWAY_AUTH_URL:-http://host.docker.internal:4053}
+      GATEWAY_MDM_URL: ${GATEWAY_MDM_URL:-http://host.docker.internal:4051}
+      GATEWAY_TICKETS_URL: ${GATEWAY_TICKETS_URL:-http://host.docker.internal:4050}
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env}
+      GATEWAY_SHARED_SECRET: ${GATEWAY_SHARED_SECRET:?Set GATEWAY_SHARED_SECRET in .env}
+      JWT_ISSUER: dvgmu-auth
+      GATEWAY_ALLOWED_ORIGINS: ${GATEWAY_ALLOWED_ORIGINS:-http://localhost:5173}
+    restart: unless-stopped

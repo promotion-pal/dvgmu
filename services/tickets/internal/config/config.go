@@ -9,10 +9,11 @@ import (
 )
 
 type Config struct {
-	Env      string         `yaml:"env" env:"ENV" env-default:"local"`
-	GRPC     GRPCConfig     `yaml:"grpc"`
-	Database DatabaseConfig `yaml:"database"`
-	MDM      MDMConfig      `yaml:"mdm"`
+	Env                 string         `yaml:"env" env:"ENV" env-default:"local"`
+	GRPC                GRPCConfig     `yaml:"grpc"`
+	Database            DatabaseConfig `yaml:"database"`
+	MDM                 MDMConfig      `yaml:"mdm"`
+	GatewaySharedSecret string         `env:"GATEWAY_SHARED_SECRET"`
 }
 
 type MDMConfig struct {

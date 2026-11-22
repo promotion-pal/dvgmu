@@ -3,13 +3,13 @@ services:
     container_name: dvgmu_apps_ticket_db
     image: postgres:17
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-root}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
-      POSTGRES_DB: ${POSTGRES_DB:-dvgmu_tickets_db}
+      POSTGRES_USER: ${TICKETS_DB_USER:-root}
+      POSTGRES_PASSWORD: ${TICKETS_DB_PASSWORD:-password}
+      POSTGRES_DB: ${TICKETS_DB_NAME:-dvgmu_tickets_db}
     volumes:
       - ./db/postgres:/var/lib/postgresql/data
     networks:
-      - traefik-network
+      - dvgmu-backend
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
@@ -28,20 +28,22 @@ services:
       dvgmu_apps_ticket_db:
         condition: service_healthy
     environment:
-      DB_HOST: ${POSTGRES_HOST:-dvgmu_apps_ticket_db}
+      DB_HOST: ${TICKETS_DB_HOST:-dvgmu_apps_ticket_db}
       DB_PORT: "5432"
-      DB_USER: ${POSTGRES_USER:-root}
-      DB_PASSWORD: ${POSTGRES_PASSWORD:-password}
-      DB_NAME: ${POSTGRES_DB:-dvgmu_tickets_db}
+      DB_USER: ${TICKETS_DB_USER:-root}
+      DB_PASSWORD: ${TICKETS_DB_PASSWORD:-password}
+      DB_NAME: ${TICKETS_DB_NAME:-dvgmu_tickets_db}
       DB_SSLMODE: disable
       GRPC_PORT: "4000"
-      MDM_URL: ${MDM_URL:-http://dvgmu_mdm_api:4000}
+      MDM_URL: ${TICKETS_MDM_URL:-http://dvgmu_mdm_api:4000}
+      GATEWAY_SHARED_SECRET: ${GATEWAY_SHARED_SECRET:?Set GATEWAY_SHARED_SECRET in .env}
     networks:
-      - traefik-network
+      - dvgmu-backend
 
 networks:
-  traefik-network:
+  dvgmu-backend:
     external: true
+    name: dvgmu-backend
 
 volumes:
   dvgmu_apps_ticket_pgdata:

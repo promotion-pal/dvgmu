@@ -1,5 +1,8 @@
+const gateway = import.meta.env.VITE_GATEWAY_URL || (import.meta.env.DEV ? "http://localhost:4052" : window.location.origin);
+
 export const ENV = {
-  API: import.meta.env.VITE_API_URL ?? "http://localhost:4050",
-  MDM: import.meta.env.VITE_MDM_API_URL ?? "http://localhost:4051",
-  AUTH: import.meta.env.VITE_AUTH_URL ?? "https://auth.fesmu.ru",
+  GATEWAY: gateway,
+  API: `${gateway}/api/tickets`,
+  MDM: `${gateway}/api/mdm`,
+  AUTH: `${gateway}/auth`,
 };

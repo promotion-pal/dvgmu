@@ -1,0 +1,33 @@
+services:
+  dvgmu_api_gateway:
+    container_name: dvgmu_api_gateway
+    build:
+      context: ../..
+      dockerfile: services/api-gateway/Dockerfile
+    environment:
+      GATEWAY_PORT: "4000"
+      GATEWAY_AUTH_URL: http://dvgmu_auth:4000
+      GATEWAY_MDM_URL: http://dvgmu_mdm_api:4000
+      GATEWAY_TICKETS_URL: http://dvgmu_apps_ticket_api:4000
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET}
+      GATEWAY_SHARED_SECRET: ${GATEWAY_SHARED_SECRET:?Set GATEWAY_SHARED_SECRET}
+      JWT_ISSUER: dvgmu-auth
+      GATEWAY_ALLOWED_ORIGINS: ${GATEWAY_PROD_ALLOWED_ORIGINS:-https://lk.dvgmu.promotion-pal.ru}
+    networks:
+      - traefik-network
+      - dvgmu-backend
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.dvgmu-api.rule=Host(`${GATEWAY_DOMAIN:-lk.dvgmu.promotion-pal.ru}`) && (PathPrefix(`/api`) || PathPrefix(`/auth`))
+      - traefik.http.routers.dvgmu-api.entrypoints=${TRAEFIK_ENTRYPOINTS:-websecure}
+      - traefik.http.routers.dvgmu-api.tls=true
+      - traefik.http.routers.dvgmu-api.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}
+      - traefik.http.services.dvgmu-api.loadbalancer.server.port=4000
+    restart: unless-stopped
+
+networks:
+  traefik-network:
+    external: true
+  dvgmu-backend:
+    external: true
+    name: dvgmu-backend

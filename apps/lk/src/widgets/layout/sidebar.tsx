@@ -3,7 +3,7 @@ import { NavLink } from "react-router";
 import { AnimatePresence, domAnimation, LazyMotion, MotionConfig } from "motion/react";
 import * as m from "motion/react-m";
 import { ROUTER } from "@/shared/config/path";
-import { DEFAULT_USER_ID, useUserProvider, userHasPermission } from "@/features/provider/user.provider";
+import { useUserProvider, userHasPermission } from "@/features/provider/user.provider";
 import { UserPermission } from "@fesmu/contract/mdm/enum/user.enum_pb";
 import {
   BookOpen,
@@ -12,6 +12,7 @@ import {
   Command,
   FileText,
   House,
+  LogOut,
   Menu,
   PanelLeftClose,
   PanelLeftOpen,
@@ -32,18 +33,14 @@ const workspaceItems = [
 
 export function Sidebar({ children }: { children: ReactNode }) {
   const { user, status } = useUserProvider();
+  const logout = useUserProvider((state) => state.logout);
   const canOpenTasks = userHasPermission(user, UserPermission.USER_TASK_READ) || userHasPermission(user, UserPermission.USER_TASK_CREATE);
-  const me = useUserProvider((state) => state.me);
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(() => window.matchMedia("(max-width: 767px)").matches);
   const [viewportWidth, setViewportWidth] = useState(() => window.innerWidth);
   const isDesktopCollapsed = collapsed && !isMobile;
   const sidebarWidth = isDesktopCollapsed ? 72 : isMobile ? Math.min(288, viewportWidth - 16) : 256;
-
-  useEffect(() => {
-    void me();
-  }, [me]);
 
   useEffect(() => {
     const media = window.matchMedia("(max-width: 767px)");
@@ -183,7 +180,7 @@ export function Sidebar({ children }: { children: ReactNode }) {
                     {user ? `${user.firstName} ${user.lastName}` : status === "loading" ? "Загружаю профиль…" : "Профиль"}
                   </span>
                   <span className="block truncate text-xs text-slate-500">
-                    ID: {user?.id.toString() ?? DEFAULT_USER_ID.toString()}
+                    ID: {user?.id.toString() ?? "—"}
                   </span>
                 </SidebarLabel>
               </NavLink>
@@ -197,6 +194,15 @@ export function Sidebar({ children }: { children: ReactNode }) {
                   <SidebarLabel collapsed={isDesktopCollapsed} className="min-w-0">Настройки</SidebarLabel>
                 </button>
               </div>
+              <button
+                className={`mt-1 flex h-9 w-full items-center justify-center gap-2 rounded-md px-2 text-xs text-slate-500 hover:bg-slate-100 hover:text-slate-900 ${isDesktopCollapsed ? "md:gap-0 md:px-0" : ""}`}
+                onClick={() => void logout()}
+                title="Выйти"
+                type="button"
+              >
+                <LogOut aria-hidden="true" className="size-4 shrink-0" />
+                <SidebarLabel collapsed={isDesktopCollapsed}>Выйти</SidebarLabel>
+              </button>
             </footer>
           </m.aside>
 

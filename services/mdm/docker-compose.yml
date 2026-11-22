@@ -3,13 +3,13 @@ services:
     container_name: dvgmu_mdm_db
     image: postgres:17
     environment:
-      POSTGRES_USER: ${MDM_POSTGRES_USER:-root}
-      POSTGRES_PASSWORD: ${MDM_POSTGRES_PASSWORD:-password}
-      POSTGRES_DB: ${MDM_POSTGRES_DB:-dvgmu_mdm_db}
+      POSTGRES_USER: ${MDM_DB_USER:-root}
+      POSTGRES_PASSWORD: ${MDM_DB_PASSWORD:-password}
+      POSTGRES_DB: ${MDM_DB_NAME:-dvgmu_mdm_db}
     volumes:
       - ./db/postgres:/var/lib/postgresql/data
     networks:
-      - traefik-network
+      - dvgmu-backend
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
@@ -27,18 +27,21 @@ services:
       dvgmu_mdm_db:
         condition: service_healthy
     environment:
-      DB_HOST: ${MDM_POSTGRES_HOST:-dvgmu_mdm_db}
+      DB_HOST: ${MDM_DB_HOST:-dvgmu_mdm_db}
       DB_PORT: "5432"
-      DB_USER: ${MDM_POSTGRES_USER:-root}
-      DB_PASSWORD: ${MDM_POSTGRES_PASSWORD:-password}
-      DB_NAME: ${MDM_POSTGRES_DB:-dvgmu_mdm_db}
+      DB_USER: ${MDM_DB_USER:-root}
+      DB_PASSWORD: ${MDM_DB_PASSWORD:-password}
+      DB_NAME: ${MDM_DB_NAME:-dvgmu_mdm_db}
       DB_SSLMODE: disable
       GRPC_PORT: "4000"
       GRPC_ALLOWED_ORIGINS: ${MDM_ALLOWED_ORIGINS:-https://lk.dvgmu.promotion-pal.ru}
+      GATEWAY_SHARED_SECRET: ${GATEWAY_SHARED_SECRET:?Set GATEWAY_SHARED_SECRET in .env}
+      INTERNAL_SERVICE_TOKEN: ${INTERNAL_SERVICE_TOKEN:?Set INTERNAL_SERVICE_TOKEN in .env}
     networks:
-      - traefik-network
+      - dvgmu-backend
     restart: unless-stopped
 
 networks:
-  traefik-network:
+  dvgmu-backend:
     external: true
+    name: dvgmu-backend

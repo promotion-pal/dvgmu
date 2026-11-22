@@ -30,7 +30,7 @@ func (s *TaskService) Create(ctx context.Context, userID int64, title string) (*
 	if title == "" {
 		return nil, models.ErrTitleRequired
 	}
-	task := &models.Task{Title: title}
+	task := &models.Task{UserID: userID, Title: title}
 	if err := s.storage.Create(ctx, task); err != nil {
 		return nil, err
 	}
@@ -41,5 +41,5 @@ func (s *TaskService) Fetch(ctx context.Context, userID int64) ([]models.Task, e
 	if err := s.permissions.CheckPermission(ctx, userID, enum.UserPermission_USER_TASK_READ); err != nil {
 		return nil, err
 	}
-	return s.storage.Fetch(ctx)
+	return s.storage.Fetch(ctx, userID)
 }
