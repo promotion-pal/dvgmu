@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package tasks.service;
+
+import "tasks/entity/priority.proto";
+
+service PriorityService {
+  rpc CreatePriority(CreatePriorityRequest) returns (CreatePriorityResponse);
+  rpc GetPriority(GetPriorityRequest) returns (GetPriorityResponse);
+  rpc ListPriorities(ListPrioritiesRequest) returns (ListPrioritiesResponse);
+  rpc UpdatePriority(UpdatePriorityRequest) returns (UpdatePriorityResponse);
+  // Permanently deletes a priority and returns its last stored state.
+  rpc DeletePriority(DeletePriorityRequest) returns (DeletePriorityResponse);
+}
+
+message CreatePriorityRequest {
+  string code = 1;
+  string name = 2;
+  int32 sort_order = 3;
+}
+
+message CreatePriorityResponse {
+  tasks.entity.Priority priority = 1;
+}
+
+message GetPriorityRequest {
+  int64 id = 1;
+}
+
+message GetPriorityResponse {
+  tasks.entity.Priority priority = 1;
+}
+
+message PriorityCursor {
+  int32 sort_order = 1;
+  int64 id = 2;
+}
+
+message ListPrioritiesRequest {
+  int32 page_size = 1;
+  PriorityCursor after = 2;
+  optional bool active = 3;
+}
+
+message ListPrioritiesResponse {
+  repeated tasks.entity.Priority priorities = 1;
+  PriorityCursor next_cursor = 2;
+}
+
+message UpdatePriorityRequest {
+  int64 id = 1;
+  optional string code = 2;
+  optional string name = 3;
+  optional int32 sort_order = 4;
+  optional bool active = 5;
+}
+
+message UpdatePriorityResponse {
+  tasks.entity.Priority priority = 1;
+}
+
+message DeletePriorityRequest {
+  int64 id = 1;
+}
+
+message DeletePriorityResponse {
+  tasks.entity.Priority priority = 1;
+}
