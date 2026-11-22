@@ -20,7 +20,16 @@ message Bank {
  double excellent=14; double good=15; double satisfactory=16;
  string ai_review_notes=17; string faculty=18;
 }
-message BankSection { string name=1; int32 quota=2; repeated contract.service.v1.TestQuestionInput questions=3; }
+// A section contributes quota random questions pooled across all its topics.
+message BankSection {
+ string name=1;
+ int32 quota=2;
+ // Legacy flat banks are automatically exposed as a topic on read/save.
+ repeated contract.service.v1.TestQuestionInput questions=3 [deprecated=true];
+ repeated BankTopic topics=4;
+}
+// A topic may be entered manually, imported from files or copied from a saved test.
+message BankTopic { string name=1; repeated contract.service.v1.TestQuestionInput questions=2; }
 message BankFetchRequest {}
 message BankFetchResponse { repeated Bank banks=1; repeated GeneratedVariant variants=2; }
 message BankSaveRequest { Bank bank=1; }

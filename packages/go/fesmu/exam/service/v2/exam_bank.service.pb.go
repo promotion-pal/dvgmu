@@ -202,11 +202,16 @@ func (x *Bank) GetFaculty() string {
 	return ""
 }
 
+// A section contributes quota random questions pooled across all its topics.
 type BankSection struct {
-	state         protoimpl.MessageState  `protogen:"open.v1"`
-	Name          string                  `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Quota         int32                   `protobuf:"varint,2,opt,name=quota,proto3" json:"quota,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	Name  string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Quota int32                  `protobuf:"varint,2,opt,name=quota,proto3" json:"quota,omitempty"`
+	// Legacy flat banks are automatically exposed as a topic on read/save.
+	//
+	// Deprecated: Marked as deprecated in fesmu/exam/service/v2/exam_bank.service.proto.
 	Questions     []*v1.TestQuestionInput `protobuf:"bytes,3,rep,name=questions,proto3" json:"questions,omitempty"`
+	Topics        []*BankTopic            `protobuf:"bytes,4,rep,name=topics,proto3" json:"topics,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -255,7 +260,68 @@ func (x *BankSection) GetQuota() int32 {
 	return 0
 }
 
+// Deprecated: Marked as deprecated in fesmu/exam/service/v2/exam_bank.service.proto.
 func (x *BankSection) GetQuestions() []*v1.TestQuestionInput {
+	if x != nil {
+		return x.Questions
+	}
+	return nil
+}
+
+func (x *BankSection) GetTopics() []*BankTopic {
+	if x != nil {
+		return x.Topics
+	}
+	return nil
+}
+
+// A topic may be entered manually, imported from files or copied from a saved test.
+type BankTopic struct {
+	state         protoimpl.MessageState  `protogen:"open.v1"`
+	Name          string                  `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Questions     []*v1.TestQuestionInput `protobuf:"bytes,2,rep,name=questions,proto3" json:"questions,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BankTopic) Reset() {
+	*x = BankTopic{}
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BankTopic) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BankTopic) ProtoMessage() {}
+
+func (x *BankTopic) ProtoReflect() protoreflect.Message {
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BankTopic.ProtoReflect.Descriptor instead.
+func (*BankTopic) Descriptor() ([]byte, []int) {
+	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *BankTopic) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *BankTopic) GetQuestions() []*v1.TestQuestionInput {
 	if x != nil {
 		return x.Questions
 	}
@@ -270,7 +336,7 @@ type BankFetchRequest struct {
 
 func (x *BankFetchRequest) Reset() {
 	*x = BankFetchRequest{}
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[2]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -282,7 +348,7 @@ func (x *BankFetchRequest) String() string {
 func (*BankFetchRequest) ProtoMessage() {}
 
 func (x *BankFetchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[2]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -295,7 +361,7 @@ func (x *BankFetchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BankFetchRequest.ProtoReflect.Descriptor instead.
 func (*BankFetchRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{2}
+	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{3}
 }
 
 type BankFetchResponse struct {
@@ -308,7 +374,7 @@ type BankFetchResponse struct {
 
 func (x *BankFetchResponse) Reset() {
 	*x = BankFetchResponse{}
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[3]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -320,7 +386,7 @@ func (x *BankFetchResponse) String() string {
 func (*BankFetchResponse) ProtoMessage() {}
 
 func (x *BankFetchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[3]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -333,7 +399,7 @@ func (x *BankFetchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BankFetchResponse.ProtoReflect.Descriptor instead.
 func (*BankFetchResponse) Descriptor() ([]byte, []int) {
-	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{3}
+	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *BankFetchResponse) GetBanks() []*Bank {
@@ -359,7 +425,7 @@ type BankSaveRequest struct {
 
 func (x *BankSaveRequest) Reset() {
 	*x = BankSaveRequest{}
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[4]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -371,7 +437,7 @@ func (x *BankSaveRequest) String() string {
 func (*BankSaveRequest) ProtoMessage() {}
 
 func (x *BankSaveRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[4]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -384,7 +450,7 @@ func (x *BankSaveRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BankSaveRequest.ProtoReflect.Descriptor instead.
 func (*BankSaveRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{4}
+	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *BankSaveRequest) GetBank() *Bank {
@@ -403,7 +469,7 @@ type BankSaveResponse struct {
 
 func (x *BankSaveResponse) Reset() {
 	*x = BankSaveResponse{}
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[5]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -415,7 +481,7 @@ func (x *BankSaveResponse) String() string {
 func (*BankSaveResponse) ProtoMessage() {}
 
 func (x *BankSaveResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[5]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -428,7 +494,7 @@ func (x *BankSaveResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BankSaveResponse.ProtoReflect.Descriptor instead.
 func (*BankSaveResponse) Descriptor() ([]byte, []int) {
-	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{5}
+	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *BankSaveResponse) GetBank() *Bank {
@@ -448,7 +514,7 @@ type BankDeleteRequest struct {
 
 func (x *BankDeleteRequest) Reset() {
 	*x = BankDeleteRequest{}
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[6]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -460,7 +526,7 @@ func (x *BankDeleteRequest) String() string {
 func (*BankDeleteRequest) ProtoMessage() {}
 
 func (x *BankDeleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[6]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -473,7 +539,7 @@ func (x *BankDeleteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BankDeleteRequest.ProtoReflect.Descriptor instead.
 func (*BankDeleteRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{6}
+	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *BankDeleteRequest) GetId() int64 {
@@ -498,7 +564,7 @@ type BankDeleteResponse struct {
 
 func (x *BankDeleteResponse) Reset() {
 	*x = BankDeleteResponse{}
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[7]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -510,7 +576,7 @@ func (x *BankDeleteResponse) String() string {
 func (*BankDeleteResponse) ProtoMessage() {}
 
 func (x *BankDeleteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[7]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -523,7 +589,7 @@ func (x *BankDeleteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BankDeleteResponse.ProtoReflect.Descriptor instead.
 func (*BankDeleteResponse) Descriptor() ([]byte, []int) {
-	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{7}
+	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{8}
 }
 
 type VariantsGenerateRequest struct {
@@ -536,7 +602,7 @@ type VariantsGenerateRequest struct {
 
 func (x *VariantsGenerateRequest) Reset() {
 	*x = VariantsGenerateRequest{}
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[8]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -548,7 +614,7 @@ func (x *VariantsGenerateRequest) String() string {
 func (*VariantsGenerateRequest) ProtoMessage() {}
 
 func (x *VariantsGenerateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[8]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -561,7 +627,7 @@ func (x *VariantsGenerateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VariantsGenerateRequest.ProtoReflect.Descriptor instead.
 func (*VariantsGenerateRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{8}
+	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *VariantsGenerateRequest) GetBankId() int64 {
@@ -587,7 +653,7 @@ type VariantsGenerateResponse struct {
 
 func (x *VariantsGenerateResponse) Reset() {
 	*x = VariantsGenerateResponse{}
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[9]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -599,7 +665,7 @@ func (x *VariantsGenerateResponse) String() string {
 func (*VariantsGenerateResponse) ProtoMessage() {}
 
 func (x *VariantsGenerateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[9]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -612,7 +678,7 @@ func (x *VariantsGenerateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VariantsGenerateResponse.ProtoReflect.Descriptor instead.
 func (*VariantsGenerateResponse) Descriptor() ([]byte, []int) {
-	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{9}
+	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *VariantsGenerateResponse) GetVariants() []*GeneratedVariant {
@@ -636,7 +702,7 @@ type GeneratedVariant struct {
 
 func (x *GeneratedVariant) Reset() {
 	*x = GeneratedVariant{}
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[10]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -648,7 +714,7 @@ func (x *GeneratedVariant) String() string {
 func (*GeneratedVariant) ProtoMessage() {}
 
 func (x *GeneratedVariant) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[10]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -661,7 +727,7 @@ func (x *GeneratedVariant) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GeneratedVariant.ProtoReflect.Descriptor instead.
 func (*GeneratedVariant) Descriptor() ([]byte, []int) {
-	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{10}
+	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *GeneratedVariant) GetId() int64 {
@@ -717,7 +783,7 @@ type ReportFetchRequest struct {
 
 func (x *ReportFetchRequest) Reset() {
 	*x = ReportFetchRequest{}
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[11]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -729,7 +795,7 @@ func (x *ReportFetchRequest) String() string {
 func (*ReportFetchRequest) ProtoMessage() {}
 
 func (x *ReportFetchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[11]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -742,7 +808,7 @@ func (x *ReportFetchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReportFetchRequest.ProtoReflect.Descriptor instead.
 func (*ReportFetchRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{11}
+	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *ReportFetchRequest) GetSessionId() int64 {
@@ -775,7 +841,7 @@ type ReportFetchResponse struct {
 
 func (x *ReportFetchResponse) Reset() {
 	*x = ReportFetchResponse{}
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[12]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -787,7 +853,7 @@ func (x *ReportFetchResponse) String() string {
 func (*ReportFetchResponse) ProtoMessage() {}
 
 func (x *ReportFetchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[12]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -800,7 +866,7 @@ func (x *ReportFetchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReportFetchResponse.ProtoReflect.Descriptor instead.
 func (*ReportFetchResponse) Descriptor() ([]byte, []int) {
-	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{12}
+	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *ReportFetchResponse) GetReportJson() string {
@@ -819,7 +885,7 @@ type PreviewFetchRequest struct {
 
 func (x *PreviewFetchRequest) Reset() {
 	*x = PreviewFetchRequest{}
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[13]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -831,7 +897,7 @@ func (x *PreviewFetchRequest) String() string {
 func (*PreviewFetchRequest) ProtoMessage() {}
 
 func (x *PreviewFetchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[13]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -844,7 +910,7 @@ func (x *PreviewFetchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PreviewFetchRequest.ProtoReflect.Descriptor instead.
 func (*PreviewFetchRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{13}
+	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *PreviewFetchRequest) GetTestId() int64 {
@@ -864,7 +930,7 @@ type PreviewFetchResponse struct {
 
 func (x *PreviewFetchResponse) Reset() {
 	*x = PreviewFetchResponse{}
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[14]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -876,7 +942,7 @@ func (x *PreviewFetchResponse) String() string {
 func (*PreviewFetchResponse) ProtoMessage() {}
 
 func (x *PreviewFetchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[14]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -889,7 +955,7 @@ func (x *PreviewFetchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PreviewFetchResponse.ProtoReflect.Descriptor instead.
 func (*PreviewFetchResponse) Descriptor() ([]byte, []int) {
-	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{14}
+	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *PreviewFetchResponse) GetQuestions() []*v1.TestQuestionInput {
@@ -914,7 +980,7 @@ type StudentResultsRequest struct {
 
 func (x *StudentResultsRequest) Reset() {
 	*x = StudentResultsRequest{}
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[15]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -926,7 +992,7 @@ func (x *StudentResultsRequest) String() string {
 func (*StudentResultsRequest) ProtoMessage() {}
 
 func (x *StudentResultsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[15]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -939,7 +1005,7 @@ func (x *StudentResultsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StudentResultsRequest.ProtoReflect.Descriptor instead.
 func (*StudentResultsRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{15}
+	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{16}
 }
 
 type AIReviewFetchRequest struct {
@@ -952,7 +1018,7 @@ type AIReviewFetchRequest struct {
 
 func (x *AIReviewFetchRequest) Reset() {
 	*x = AIReviewFetchRequest{}
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[16]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -964,7 +1030,7 @@ func (x *AIReviewFetchRequest) String() string {
 func (*AIReviewFetchRequest) ProtoMessage() {}
 
 func (x *AIReviewFetchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[16]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -977,7 +1043,7 @@ func (x *AIReviewFetchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AIReviewFetchRequest.ProtoReflect.Descriptor instead.
 func (*AIReviewFetchRequest) Descriptor() ([]byte, []int) {
-	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{16}
+	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *AIReviewFetchRequest) GetBankId() int64 {
@@ -1003,7 +1069,7 @@ type AIReviewFetchResponse struct {
 
 func (x *AIReviewFetchResponse) Reset() {
 	*x = AIReviewFetchResponse{}
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[17]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1015,7 +1081,7 @@ func (x *AIReviewFetchResponse) String() string {
 func (*AIReviewFetchResponse) ProtoMessage() {}
 
 func (x *AIReviewFetchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[17]
+	mi := &file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1028,7 +1094,7 @@ func (x *AIReviewFetchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AIReviewFetchResponse.ProtoReflect.Descriptor instead.
 func (*AIReviewFetchResponse) Descriptor() ([]byte, []int) {
-	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{17}
+	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *AIReviewFetchResponse) GetNotes() string {
@@ -1066,11 +1132,15 @@ const file_fesmu_exam_service_v2_exam_bank_service_proto_rawDesc = "" +
 	"\x04good\x18\x0f \x01(\x01R\x04good\x12\"\n" +
 	"\fsatisfactory\x18\x10 \x01(\x01R\fsatisfactory\x12&\n" +
 	"\x0fai_review_notes\x18\x11 \x01(\tR\raiReviewNotes\x12\x18\n" +
-	"\afaculty\x18\x12 \x01(\tR\afaculty\"}\n" +
+	"\afaculty\x18\x12 \x01(\tR\afaculty\"\xbe\x01\n" +
 	"\vBankSection\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x14\n" +
-	"\x05quota\x18\x02 \x01(\x05R\x05quota\x12D\n" +
-	"\tquestions\x18\x03 \x03(\v2&.contract.service.v1.TestQuestionInputR\tquestions\"\x12\n" +
+	"\x05quota\x18\x02 \x01(\x05R\x05quota\x12H\n" +
+	"\tquestions\x18\x03 \x03(\v2&.contract.service.v1.TestQuestionInputB\x02\x18\x01R\tquestions\x12;\n" +
+	"\x06topics\x18\x04 \x03(\v2#.contract.exam.service.v2.BankTopicR\x06topics\"e\n" +
+	"\tBankTopic\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12D\n" +
+	"\tquestions\x18\x02 \x03(\v2&.contract.service.v1.TestQuestionInputR\tquestions\"\x12\n" +
 	"\x10BankFetchRequest\"\x91\x01\n" +
 	"\x11BankFetchResponse\x124\n" +
 	"\x05banks\x18\x01 \x03(\v2\x1e.contract.exam.service.v2.BankR\x05banks\x12F\n" +
@@ -1140,58 +1210,61 @@ func file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP() []byte {
 	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescData
 }
 
-var file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
+var file_fesmu_exam_service_v2_exam_bank_service_proto_msgTypes = make([]protoimpl.MessageInfo, 19)
 var file_fesmu_exam_service_v2_exam_bank_service_proto_goTypes = []any{
 	(*Bank)(nil),                     // 0: contract.exam.service.v2.Bank
 	(*BankSection)(nil),              // 1: contract.exam.service.v2.BankSection
-	(*BankFetchRequest)(nil),         // 2: contract.exam.service.v2.BankFetchRequest
-	(*BankFetchResponse)(nil),        // 3: contract.exam.service.v2.BankFetchResponse
-	(*BankSaveRequest)(nil),          // 4: contract.exam.service.v2.BankSaveRequest
-	(*BankSaveResponse)(nil),         // 5: contract.exam.service.v2.BankSaveResponse
-	(*BankDeleteRequest)(nil),        // 6: contract.exam.service.v2.BankDeleteRequest
-	(*BankDeleteResponse)(nil),       // 7: contract.exam.service.v2.BankDeleteResponse
-	(*VariantsGenerateRequest)(nil),  // 8: contract.exam.service.v2.VariantsGenerateRequest
-	(*VariantsGenerateResponse)(nil), // 9: contract.exam.service.v2.VariantsGenerateResponse
-	(*GeneratedVariant)(nil),         // 10: contract.exam.service.v2.GeneratedVariant
-	(*ReportFetchRequest)(nil),       // 11: contract.exam.service.v2.ReportFetchRequest
-	(*ReportFetchResponse)(nil),      // 12: contract.exam.service.v2.ReportFetchResponse
-	(*PreviewFetchRequest)(nil),      // 13: contract.exam.service.v2.PreviewFetchRequest
-	(*PreviewFetchResponse)(nil),     // 14: contract.exam.service.v2.PreviewFetchResponse
-	(*StudentResultsRequest)(nil),    // 15: contract.exam.service.v2.StudentResultsRequest
-	(*AIReviewFetchRequest)(nil),     // 16: contract.exam.service.v2.AIReviewFetchRequest
-	(*AIReviewFetchResponse)(nil),    // 17: contract.exam.service.v2.AIReviewFetchResponse
-	(*v1.TestQuestionInput)(nil),     // 18: contract.service.v1.TestQuestionInput
+	(*BankTopic)(nil),                // 2: contract.exam.service.v2.BankTopic
+	(*BankFetchRequest)(nil),         // 3: contract.exam.service.v2.BankFetchRequest
+	(*BankFetchResponse)(nil),        // 4: contract.exam.service.v2.BankFetchResponse
+	(*BankSaveRequest)(nil),          // 5: contract.exam.service.v2.BankSaveRequest
+	(*BankSaveResponse)(nil),         // 6: contract.exam.service.v2.BankSaveResponse
+	(*BankDeleteRequest)(nil),        // 7: contract.exam.service.v2.BankDeleteRequest
+	(*BankDeleteResponse)(nil),       // 8: contract.exam.service.v2.BankDeleteResponse
+	(*VariantsGenerateRequest)(nil),  // 9: contract.exam.service.v2.VariantsGenerateRequest
+	(*VariantsGenerateResponse)(nil), // 10: contract.exam.service.v2.VariantsGenerateResponse
+	(*GeneratedVariant)(nil),         // 11: contract.exam.service.v2.GeneratedVariant
+	(*ReportFetchRequest)(nil),       // 12: contract.exam.service.v2.ReportFetchRequest
+	(*ReportFetchResponse)(nil),      // 13: contract.exam.service.v2.ReportFetchResponse
+	(*PreviewFetchRequest)(nil),      // 14: contract.exam.service.v2.PreviewFetchRequest
+	(*PreviewFetchResponse)(nil),     // 15: contract.exam.service.v2.PreviewFetchResponse
+	(*StudentResultsRequest)(nil),    // 16: contract.exam.service.v2.StudentResultsRequest
+	(*AIReviewFetchRequest)(nil),     // 17: contract.exam.service.v2.AIReviewFetchRequest
+	(*AIReviewFetchResponse)(nil),    // 18: contract.exam.service.v2.AIReviewFetchResponse
+	(*v1.TestQuestionInput)(nil),     // 19: contract.service.v1.TestQuestionInput
 }
 var file_fesmu_exam_service_v2_exam_bank_service_proto_depIdxs = []int32{
 	1,  // 0: contract.exam.service.v2.Bank.sections:type_name -> contract.exam.service.v2.BankSection
-	18, // 1: contract.exam.service.v2.BankSection.questions:type_name -> contract.service.v1.TestQuestionInput
-	0,  // 2: contract.exam.service.v2.BankFetchResponse.banks:type_name -> contract.exam.service.v2.Bank
-	10, // 3: contract.exam.service.v2.BankFetchResponse.variants:type_name -> contract.exam.service.v2.GeneratedVariant
-	0,  // 4: contract.exam.service.v2.BankSaveRequest.bank:type_name -> contract.exam.service.v2.Bank
-	0,  // 5: contract.exam.service.v2.BankSaveResponse.bank:type_name -> contract.exam.service.v2.Bank
-	10, // 6: contract.exam.service.v2.VariantsGenerateResponse.variants:type_name -> contract.exam.service.v2.GeneratedVariant
-	18, // 7: contract.exam.service.v2.PreviewFetchResponse.questions:type_name -> contract.service.v1.TestQuestionInput
-	2,  // 8: contract.exam.service.v2.ExamBankService.BankFetch:input_type -> contract.exam.service.v2.BankFetchRequest
-	4,  // 9: contract.exam.service.v2.ExamBankService.BankSave:input_type -> contract.exam.service.v2.BankSaveRequest
-	6,  // 10: contract.exam.service.v2.ExamBankService.BankDelete:input_type -> contract.exam.service.v2.BankDeleteRequest
-	8,  // 11: contract.exam.service.v2.ExamBankService.VariantsGenerate:input_type -> contract.exam.service.v2.VariantsGenerateRequest
-	11, // 12: contract.exam.service.v2.ExamBankService.ReportFetch:input_type -> contract.exam.service.v2.ReportFetchRequest
-	16, // 13: contract.exam.service.v2.ExamBankService.AIReviewFetch:input_type -> contract.exam.service.v2.AIReviewFetchRequest
-	13, // 14: contract.exam.service.v2.ExamBankService.PreviewFetch:input_type -> contract.exam.service.v2.PreviewFetchRequest
-	15, // 15: contract.exam.service.v2.ExamStudentService.ResultsFetch:input_type -> contract.exam.service.v2.StudentResultsRequest
-	3,  // 16: contract.exam.service.v2.ExamBankService.BankFetch:output_type -> contract.exam.service.v2.BankFetchResponse
-	5,  // 17: contract.exam.service.v2.ExamBankService.BankSave:output_type -> contract.exam.service.v2.BankSaveResponse
-	7,  // 18: contract.exam.service.v2.ExamBankService.BankDelete:output_type -> contract.exam.service.v2.BankDeleteResponse
-	9,  // 19: contract.exam.service.v2.ExamBankService.VariantsGenerate:output_type -> contract.exam.service.v2.VariantsGenerateResponse
-	12, // 20: contract.exam.service.v2.ExamBankService.ReportFetch:output_type -> contract.exam.service.v2.ReportFetchResponse
-	17, // 21: contract.exam.service.v2.ExamBankService.AIReviewFetch:output_type -> contract.exam.service.v2.AIReviewFetchResponse
-	14, // 22: contract.exam.service.v2.ExamBankService.PreviewFetch:output_type -> contract.exam.service.v2.PreviewFetchResponse
-	12, // 23: contract.exam.service.v2.ExamStudentService.ResultsFetch:output_type -> contract.exam.service.v2.ReportFetchResponse
-	16, // [16:24] is the sub-list for method output_type
-	8,  // [8:16] is the sub-list for method input_type
-	8,  // [8:8] is the sub-list for extension type_name
-	8,  // [8:8] is the sub-list for extension extendee
-	0,  // [0:8] is the sub-list for field type_name
+	19, // 1: contract.exam.service.v2.BankSection.questions:type_name -> contract.service.v1.TestQuestionInput
+	2,  // 2: contract.exam.service.v2.BankSection.topics:type_name -> contract.exam.service.v2.BankTopic
+	19, // 3: contract.exam.service.v2.BankTopic.questions:type_name -> contract.service.v1.TestQuestionInput
+	0,  // 4: contract.exam.service.v2.BankFetchResponse.banks:type_name -> contract.exam.service.v2.Bank
+	11, // 5: contract.exam.service.v2.BankFetchResponse.variants:type_name -> contract.exam.service.v2.GeneratedVariant
+	0,  // 6: contract.exam.service.v2.BankSaveRequest.bank:type_name -> contract.exam.service.v2.Bank
+	0,  // 7: contract.exam.service.v2.BankSaveResponse.bank:type_name -> contract.exam.service.v2.Bank
+	11, // 8: contract.exam.service.v2.VariantsGenerateResponse.variants:type_name -> contract.exam.service.v2.GeneratedVariant
+	19, // 9: contract.exam.service.v2.PreviewFetchResponse.questions:type_name -> contract.service.v1.TestQuestionInput
+	3,  // 10: contract.exam.service.v2.ExamBankService.BankFetch:input_type -> contract.exam.service.v2.BankFetchRequest
+	5,  // 11: contract.exam.service.v2.ExamBankService.BankSave:input_type -> contract.exam.service.v2.BankSaveRequest
+	7,  // 12: contract.exam.service.v2.ExamBankService.BankDelete:input_type -> contract.exam.service.v2.BankDeleteRequest
+	9,  // 13: contract.exam.service.v2.ExamBankService.VariantsGenerate:input_type -> contract.exam.service.v2.VariantsGenerateRequest
+	12, // 14: contract.exam.service.v2.ExamBankService.ReportFetch:input_type -> contract.exam.service.v2.ReportFetchRequest
+	17, // 15: contract.exam.service.v2.ExamBankService.AIReviewFetch:input_type -> contract.exam.service.v2.AIReviewFetchRequest
+	14, // 16: contract.exam.service.v2.ExamBankService.PreviewFetch:input_type -> contract.exam.service.v2.PreviewFetchRequest
+	16, // 17: contract.exam.service.v2.ExamStudentService.ResultsFetch:input_type -> contract.exam.service.v2.StudentResultsRequest
+	4,  // 18: contract.exam.service.v2.ExamBankService.BankFetch:output_type -> contract.exam.service.v2.BankFetchResponse
+	6,  // 19: contract.exam.service.v2.ExamBankService.BankSave:output_type -> contract.exam.service.v2.BankSaveResponse
+	8,  // 20: contract.exam.service.v2.ExamBankService.BankDelete:output_type -> contract.exam.service.v2.BankDeleteResponse
+	10, // 21: contract.exam.service.v2.ExamBankService.VariantsGenerate:output_type -> contract.exam.service.v2.VariantsGenerateResponse
+	13, // 22: contract.exam.service.v2.ExamBankService.ReportFetch:output_type -> contract.exam.service.v2.ReportFetchResponse
+	18, // 23: contract.exam.service.v2.ExamBankService.AIReviewFetch:output_type -> contract.exam.service.v2.AIReviewFetchResponse
+	15, // 24: contract.exam.service.v2.ExamBankService.PreviewFetch:output_type -> contract.exam.service.v2.PreviewFetchResponse
+	13, // 25: contract.exam.service.v2.ExamStudentService.ResultsFetch:output_type -> contract.exam.service.v2.ReportFetchResponse
+	18, // [18:26] is the sub-list for method output_type
+	10, // [10:18] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_fesmu_exam_service_v2_exam_bank_service_proto_init() }
@@ -1205,7 +1278,7 @@ func file_fesmu_exam_service_v2_exam_bank_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_fesmu_exam_service_v2_exam_bank_service_proto_rawDesc), len(file_fesmu_exam_service_v2_exam_bank_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   18,
+			NumMessages:   19,
 			NumExtensions: 0,
 			NumServices:   2,
 		},

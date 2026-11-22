@@ -151,13 +151,13 @@ const TestSessionCreateModal: FC<{ state: SessionCreate; exam?: boolean; examV2?
                                 allowedPattern={/^\d{0,3}$/}
                                 className={FIELD_CLASS}
                             />
-                            <PromFieldInput<TestSessionForm>
+                            {examV2 ? <p className="self-center text-sm text-muted-foreground">Все {target?.questionCount ?? 0} вопросов по структуре разделов. Чтобы изменить состав, задайте другие квоты и сформируйте новый вариант.</p> : <PromFieldInput<TestSessionForm>
                                 name="questionCount"
                                 label="Вопросов в попытке"
                                 placeholder={`Все (${target?.questionCount ?? 0})`}
                                 allowedPattern={/^\d{0,3}$/}
                                 className={FIELD_CLASS}
-                            />
+                            />}
                         </div>
                         {target?.mixed && (
                             <div className="flex flex-col gap-1">

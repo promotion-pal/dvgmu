@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file fesmu/exam/service/v2/exam_bank.service.proto.
  */
 export const file_fesmu_exam_service_v2_exam_bank_service: GenFile = /*@__PURE__*/
-  fileDesc("Ci1mZXNtdS9leGFtL3NlcnZpY2UvdjIvZXhhbV9iYW5rLnNlcnZpY2UucHJvdG8SGGNvbnRyYWN0LmV4YW0uc2VydmljZS52MiKPAwoEQmFuaxIKCgJpZBgBIAEoAxIQCghyZXZpc2lvbhgCIAEoAxIRCglzcGVjaWFsdHkYAyABKAkSEAoIc2VtZXN0ZXIYBCABKAUSEgoKZGlzY2lwbGluZRgFIAEoCRIVCg1hY2FkZW1pY195ZWFyGAYgASgJEg4KBnNlYXNvbhgHIAEoCRI3CghzZWN0aW9ucxgIIAMoCzIlLmNvbnRyYWN0LmV4YW0uc2VydmljZS52Mi5CYW5rU2VjdGlvbhIVCg12YXJpYW50X2NvdW50GAkgASgFEhgKEGR1cmF0aW9uX21pbnV0ZXMYCiABKAUSEwoLc2hvd19yZXN1bHQYCyABKAgSEwoLYXBwcm92ZWRfYnkYDCABKAkSFAoMcmV2aWV3X25vdGVzGA0gASgJEhEKCWV4Y2VsbGVudBgOIAEoARIMCgRnb29kGA8gASgBEhQKDHNhdGlzZmFjdG9yeRgQIAEoARIXCg9haV9yZXZpZXdfbm90ZXMYESABKAkSDwoHZmFjdWx0eRgSIAEoCSJlCgtCYW5rU2VjdGlvbhIMCgRuYW1lGAEgASgJEg0KBXF1b3RhGAIgASgFEjkKCXF1ZXN0aW9ucxgDIAMoCzImLmNvbnRyYWN0LnNlcnZpY2UudjEuVGVzdFF1ZXN0aW9uSW5wdXQiEgoQQmFua0ZldGNoUmVxdWVzdCKAAQoRQmFua0ZldGNoUmVzcG9uc2USLQoFYmFua3MYASADKAsyHi5jb250cmFjdC5leGFtLnNlcnZpY2UudjIuQmFuaxI8Cgh2YXJpYW50cxgCIAMoCzIqLmNvbnRyYWN0LmV4YW0uc2VydmljZS52Mi5HZW5lcmF0ZWRWYXJpYW50Ij8KD0JhbmtTYXZlUmVxdWVzdBIsCgRiYW5rGAEgASgLMh4uY29udHJhY3QuZXhhbS5zZXJ2aWNlLnYyLkJhbmsiQAoQQmFua1NhdmVSZXNwb25zZRIsCgRiYW5rGAEgASgLMh4uY29udHJhY3QuZXhhbS5zZXJ2aWNlLnYyLkJhbmsiMQoRQmFua0RlbGV0ZVJlcXVlc3QSCgoCaWQYASABKAMSEAoIcmV2aXNpb24YAiABKAMiFAoSQmFua0RlbGV0ZVJlc3BvbnNlIjwKF1ZhcmlhbnRzR2VuZXJhdGVSZXF1ZXN0Eg8KB2JhbmtfaWQYASABKAMSEAoIcmV2aXNpb24YAiABKAMiWAoYVmFyaWFudHNHZW5lcmF0ZVJlc3BvbnNlEjwKCHZhcmlhbnRzGAEgAygLMiouY29udHJhY3QuZXhhbS5zZXJ2aWNlLnYyLkdlbmVyYXRlZFZhcmlhbnQifgoQR2VuZXJhdGVkVmFyaWFudBIKCgJpZBgBIAEoAxIPCgdiYW5rX2lkGAIgASgDEg8KB3Rlc3RfaWQYAyABKAMSDQoFdGl0bGUYBCABKAkSGAoQZHVyYXRpb25fbWludXRlcxgFIAEoBRITCgtzaG93X3Jlc3VsdBgGIAEoCCJPChJSZXBvcnRGZXRjaFJlcXVlc3QSEgoKc2Vzc2lvbl9pZBgBIAEoAxIVCg1hY2FkZW1pY195ZWFyGAIgASgJEg4KBnNlYXNvbhgDIAEoCSIqChNSZXBvcnRGZXRjaFJlc3BvbnNlEhMKC3JlcG9ydF9qc29uGAEgASgJIiYKE1ByZXZpZXdGZXRjaFJlcXVlc3QSDwoHdGVzdF9pZBgBIAEoAyJrChRQcmV2aWV3RmV0Y2hSZXNwb25zZRI5CglxdWVzdGlvbnMYASADKAsyJi5jb250cmFjdC5zZXJ2aWNlLnYxLlRlc3RRdWVzdGlvbklucHV0EhgKEGR1cmF0aW9uX21pbnV0ZXMYAiABKAUiFwoVU3R1ZGVudFJlc3VsdHNSZXF1ZXN0IjkKFEFJUmV2aWV3RmV0Y2hSZXF1ZXN0Eg8KB2JhbmtfaWQYASABKAMSEAoIcmV2aXNpb24YAiABKAMiJgoVQUlSZXZpZXdGZXRjaFJlc3BvbnNlEg0KBW5vdGVzGAEgASgJMosGCg9FeGFtQmFua1NlcnZpY2USZAoJQmFua0ZldGNoEiouY29udHJhY3QuZXhhbS5zZXJ2aWNlLnYyLkJhbmtGZXRjaFJlcXVlc3QaKy5jb250cmFjdC5leGFtLnNlcnZpY2UudjIuQmFua0ZldGNoUmVzcG9uc2USYQoIQmFua1NhdmUSKS5jb250cmFjdC5leGFtLnNlcnZpY2UudjIuQmFua1NhdmVSZXF1ZXN0GiouY29udHJhY3QuZXhhbS5zZXJ2aWNlLnYyLkJhbmtTYXZlUmVzcG9uc2USZwoKQmFua0RlbGV0ZRIrLmNvbnRyYWN0LmV4YW0uc2VydmljZS52Mi5CYW5rRGVsZXRlUmVxdWVzdBosLmNvbnRyYWN0LmV4YW0uc2VydmljZS52Mi5CYW5rRGVsZXRlUmVzcG9uc2USeQoQVmFyaWFudHNHZW5lcmF0ZRIxLmNvbnRyYWN0LmV4YW0uc2VydmljZS52Mi5WYXJpYW50c0dlbmVyYXRlUmVxdWVzdBoyLmNvbnRyYWN0LmV4YW0uc2VydmljZS52Mi5WYXJpYW50c0dlbmVyYXRlUmVzcG9uc2USagoLUmVwb3J0RmV0Y2gSLC5jb250cmFjdC5leGFtLnNlcnZpY2UudjIuUmVwb3J0RmV0Y2hSZXF1ZXN0Gi0uY29udHJhY3QuZXhhbS5zZXJ2aWNlLnYyLlJlcG9ydEZldGNoUmVzcG9uc2UScAoNQUlSZXZpZXdGZXRjaBIuLmNvbnRyYWN0LmV4YW0uc2VydmljZS52Mi5BSVJldmlld0ZldGNoUmVxdWVzdBovLmNvbnRyYWN0LmV4YW0uc2VydmljZS52Mi5BSVJldmlld0ZldGNoUmVzcG9uc2USbQoMUHJldmlld0ZldGNoEi0uY29udHJhY3QuZXhhbS5zZXJ2aWNlLnYyLlByZXZpZXdGZXRjaFJlcXVlc3QaLi5jb250cmFjdC5leGFtLnNlcnZpY2UudjIuUHJldmlld0ZldGNoUmVzcG9uc2UyhAEKEkV4YW1TdHVkZW50U2VydmljZRJuCgxSZXN1bHRzRmV0Y2gSLy5jb250cmFjdC5leGFtLnNlcnZpY2UudjIuU3R1ZGVudFJlc3VsdHNSZXF1ZXN0Gi0uY29udHJhY3QuZXhhbS5zZXJ2aWNlLnYyLlJlcG9ydEZldGNoUmVzcG9uc2VC5wEKHGNvbS5jb250cmFjdC5leGFtLnNlcnZpY2UudjJCFEV4YW1CYW5rU2VydmljZVByb3RvUAFaLmZlc211L2NvbnRyYWN0L2Zlc211L2V4YW0vc2VydmljZS92MjtzZXJ2aWNldjKiAgNDRVOqAhhDb250cmFjdC5FeGFtLlNlcnZpY2UuVjLKAhhDb250cmFjdFxFeGFtXFNlcnZpY2VcVjLiAiRDb250cmFjdFxFeGFtXFNlcnZpY2VcVjJcR1BCTWV0YWRhdGHqAhtDb250cmFjdDo6RXhhbTo6U2VydmljZTo6VjJiBnByb3RvMw", [file_fesmu_service_v1_test_service]);
+  fileDesc("Ci1mZXNtdS9leGFtL3NlcnZpY2UvdjIvZXhhbV9iYW5rLnNlcnZpY2UucHJvdG8SGGNvbnRyYWN0LmV4YW0uc2VydmljZS52MiKPAwoEQmFuaxIKCgJpZBgBIAEoAxIQCghyZXZpc2lvbhgCIAEoAxIRCglzcGVjaWFsdHkYAyABKAkSEAoIc2VtZXN0ZXIYBCABKAUSEgoKZGlzY2lwbGluZRgFIAEoCRIVCg1hY2FkZW1pY195ZWFyGAYgASgJEg4KBnNlYXNvbhgHIAEoCRI3CghzZWN0aW9ucxgIIAMoCzIlLmNvbnRyYWN0LmV4YW0uc2VydmljZS52Mi5CYW5rU2VjdGlvbhIVCg12YXJpYW50X2NvdW50GAkgASgFEhgKEGR1cmF0aW9uX21pbnV0ZXMYCiABKAUSEwoLc2hvd19yZXN1bHQYCyABKAgSEwoLYXBwcm92ZWRfYnkYDCABKAkSFAoMcmV2aWV3X25vdGVzGA0gASgJEhEKCWV4Y2VsbGVudBgOIAEoARIMCgRnb29kGA8gASgBEhQKDHNhdGlzZmFjdG9yeRgQIAEoARIXCg9haV9yZXZpZXdfbm90ZXMYESABKAkSDwoHZmFjdWx0eRgSIAEoCSKeAQoLQmFua1NlY3Rpb24SDAoEbmFtZRgBIAEoCRINCgVxdW90YRgCIAEoBRI9CglxdWVzdGlvbnMYAyADKAsyJi5jb250cmFjdC5zZXJ2aWNlLnYxLlRlc3RRdWVzdGlvbklucHV0QgIYARIzCgZ0b3BpY3MYBCADKAsyIy5jb250cmFjdC5leGFtLnNlcnZpY2UudjIuQmFua1RvcGljIlQKCUJhbmtUb3BpYxIMCgRuYW1lGAEgASgJEjkKCXF1ZXN0aW9ucxgCIAMoCzImLmNvbnRyYWN0LnNlcnZpY2UudjEuVGVzdFF1ZXN0aW9uSW5wdXQiEgoQQmFua0ZldGNoUmVxdWVzdCKAAQoRQmFua0ZldGNoUmVzcG9uc2USLQoFYmFua3MYASADKAsyHi5jb250cmFjdC5leGFtLnNlcnZpY2UudjIuQmFuaxI8Cgh2YXJpYW50cxgCIAMoCzIqLmNvbnRyYWN0LmV4YW0uc2VydmljZS52Mi5HZW5lcmF0ZWRWYXJpYW50Ij8KD0JhbmtTYXZlUmVxdWVzdBIsCgRiYW5rGAEgASgLMh4uY29udHJhY3QuZXhhbS5zZXJ2aWNlLnYyLkJhbmsiQAoQQmFua1NhdmVSZXNwb25zZRIsCgRiYW5rGAEgASgLMh4uY29udHJhY3QuZXhhbS5zZXJ2aWNlLnYyLkJhbmsiMQoRQmFua0RlbGV0ZVJlcXVlc3QSCgoCaWQYASABKAMSEAoIcmV2aXNpb24YAiABKAMiFAoSQmFua0RlbGV0ZVJlc3BvbnNlIjwKF1ZhcmlhbnRzR2VuZXJhdGVSZXF1ZXN0Eg8KB2JhbmtfaWQYASABKAMSEAoIcmV2aXNpb24YAiABKAMiWAoYVmFyaWFudHNHZW5lcmF0ZVJlc3BvbnNlEjwKCHZhcmlhbnRzGAEgAygLMiouY29udHJhY3QuZXhhbS5zZXJ2aWNlLnYyLkdlbmVyYXRlZFZhcmlhbnQifgoQR2VuZXJhdGVkVmFyaWFudBIKCgJpZBgBIAEoAxIPCgdiYW5rX2lkGAIgASgDEg8KB3Rlc3RfaWQYAyABKAMSDQoFdGl0bGUYBCABKAkSGAoQZHVyYXRpb25fbWludXRlcxgFIAEoBRITCgtzaG93X3Jlc3VsdBgGIAEoCCJPChJSZXBvcnRGZXRjaFJlcXVlc3QSEgoKc2Vzc2lvbl9pZBgBIAEoAxIVCg1hY2FkZW1pY195ZWFyGAIgASgJEg4KBnNlYXNvbhgDIAEoCSIqChNSZXBvcnRGZXRjaFJlc3BvbnNlEhMKC3JlcG9ydF9qc29uGAEgASgJIiYKE1ByZXZpZXdGZXRjaFJlcXVlc3QSDwoHdGVzdF9pZBgBIAEoAyJrChRQcmV2aWV3RmV0Y2hSZXNwb25zZRI5CglxdWVzdGlvbnMYASADKAsyJi5jb250cmFjdC5zZXJ2aWNlLnYxLlRlc3RRdWVzdGlvbklucHV0EhgKEGR1cmF0aW9uX21pbnV0ZXMYAiABKAUiFwoVU3R1ZGVudFJlc3VsdHNSZXF1ZXN0IjkKFEFJUmV2aWV3RmV0Y2hSZXF1ZXN0Eg8KB2JhbmtfaWQYASABKAMSEAoIcmV2aXNpb24YAiABKAMiJgoVQUlSZXZpZXdGZXRjaFJlc3BvbnNlEg0KBW5vdGVzGAEgASgJMosGCg9FeGFtQmFua1NlcnZpY2USZAoJQmFua0ZldGNoEiouY29udHJhY3QuZXhhbS5zZXJ2aWNlLnYyLkJhbmtGZXRjaFJlcXVlc3QaKy5jb250cmFjdC5leGFtLnNlcnZpY2UudjIuQmFua0ZldGNoUmVzcG9uc2USYQoIQmFua1NhdmUSKS5jb250cmFjdC5leGFtLnNlcnZpY2UudjIuQmFua1NhdmVSZXF1ZXN0GiouY29udHJhY3QuZXhhbS5zZXJ2aWNlLnYyLkJhbmtTYXZlUmVzcG9uc2USZwoKQmFua0RlbGV0ZRIrLmNvbnRyYWN0LmV4YW0uc2VydmljZS52Mi5CYW5rRGVsZXRlUmVxdWVzdBosLmNvbnRyYWN0LmV4YW0uc2VydmljZS52Mi5CYW5rRGVsZXRlUmVzcG9uc2USeQoQVmFyaWFudHNHZW5lcmF0ZRIxLmNvbnRyYWN0LmV4YW0uc2VydmljZS52Mi5WYXJpYW50c0dlbmVyYXRlUmVxdWVzdBoyLmNvbnRyYWN0LmV4YW0uc2VydmljZS52Mi5WYXJpYW50c0dlbmVyYXRlUmVzcG9uc2USagoLUmVwb3J0RmV0Y2gSLC5jb250cmFjdC5leGFtLnNlcnZpY2UudjIuUmVwb3J0RmV0Y2hSZXF1ZXN0Gi0uY29udHJhY3QuZXhhbS5zZXJ2aWNlLnYyLlJlcG9ydEZldGNoUmVzcG9uc2UScAoNQUlSZXZpZXdGZXRjaBIuLmNvbnRyYWN0LmV4YW0uc2VydmljZS52Mi5BSVJldmlld0ZldGNoUmVxdWVzdBovLmNvbnRyYWN0LmV4YW0uc2VydmljZS52Mi5BSVJldmlld0ZldGNoUmVzcG9uc2USbQoMUHJldmlld0ZldGNoEi0uY29udHJhY3QuZXhhbS5zZXJ2aWNlLnYyLlByZXZpZXdGZXRjaFJlcXVlc3QaLi5jb250cmFjdC5leGFtLnNlcnZpY2UudjIuUHJldmlld0ZldGNoUmVzcG9uc2UyhAEKEkV4YW1TdHVkZW50U2VydmljZRJuCgxSZXN1bHRzRmV0Y2gSLy5jb250cmFjdC5leGFtLnNlcnZpY2UudjIuU3R1ZGVudFJlc3VsdHNSZXF1ZXN0Gi0uY29udHJhY3QuZXhhbS5zZXJ2aWNlLnYyLlJlcG9ydEZldGNoUmVzcG9uc2VC5wEKHGNvbS5jb250cmFjdC5leGFtLnNlcnZpY2UudjJCFEV4YW1CYW5rU2VydmljZVByb3RvUAFaLmZlc211L2NvbnRyYWN0L2Zlc211L2V4YW0vc2VydmljZS92MjtzZXJ2aWNldjKiAgNDRVOqAhhDb250cmFjdC5FeGFtLlNlcnZpY2UuVjLKAhhDb250cmFjdFxFeGFtXFNlcnZpY2VcVjLiAiRDb250cmFjdFxFeGFtXFNlcnZpY2VcVjJcR1BCTWV0YWRhdGHqAhtDb250cmFjdDo6RXhhbTo6U2VydmljZTo6VjJiBnByb3RvMw", [file_fesmu_service_v1_test_service]);
 
 /**
  * @generated from message contract.exam.service.v2.Bank
@@ -117,6 +117,8 @@ export const BankSchema: GenMessage<Bank> = /*@__PURE__*/
   messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 0);
 
 /**
+ * A section contributes quota random questions pooled across all its topics.
+ *
  * @generated from message contract.exam.service.v2.BankSection
  */
 export type BankSection = Message<"contract.exam.service.v2.BankSection"> & {
@@ -131,9 +133,17 @@ export type BankSection = Message<"contract.exam.service.v2.BankSection"> & {
   quota: number;
 
   /**
-   * @generated from field: repeated contract.service.v1.TestQuestionInput questions = 3;
+   * Legacy flat banks are automatically exposed as a topic on read/save.
+   *
+   * @generated from field: repeated contract.service.v1.TestQuestionInput questions = 3 [deprecated = true];
+   * @deprecated
    */
   questions: TestQuestionInput[];
+
+  /**
+   * @generated from field: repeated contract.exam.service.v2.BankTopic topics = 4;
+   */
+  topics: BankTopic[];
 };
 
 /**
@@ -142,6 +152,30 @@ export type BankSection = Message<"contract.exam.service.v2.BankSection"> & {
  */
 export const BankSectionSchema: GenMessage<BankSection> = /*@__PURE__*/
   messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 1);
+
+/**
+ * A topic may be entered manually, imported from files or copied from a saved test.
+ *
+ * @generated from message contract.exam.service.v2.BankTopic
+ */
+export type BankTopic = Message<"contract.exam.service.v2.BankTopic"> & {
+  /**
+   * @generated from field: string name = 1;
+   */
+  name: string;
+
+  /**
+   * @generated from field: repeated contract.service.v1.TestQuestionInput questions = 2;
+   */
+  questions: TestQuestionInput[];
+};
+
+/**
+ * Describes the message contract.exam.service.v2.BankTopic.
+ * Use `create(BankTopicSchema)` to create a new message.
+ */
+export const BankTopicSchema: GenMessage<BankTopic> = /*@__PURE__*/
+  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 2);
 
 /**
  * @generated from message contract.exam.service.v2.BankFetchRequest
@@ -154,7 +188,7 @@ export type BankFetchRequest = Message<"contract.exam.service.v2.BankFetchReques
  * Use `create(BankFetchRequestSchema)` to create a new message.
  */
 export const BankFetchRequestSchema: GenMessage<BankFetchRequest> = /*@__PURE__*/
-  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 2);
+  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 3);
 
 /**
  * @generated from message contract.exam.service.v2.BankFetchResponse
@@ -176,7 +210,7 @@ export type BankFetchResponse = Message<"contract.exam.service.v2.BankFetchRespo
  * Use `create(BankFetchResponseSchema)` to create a new message.
  */
 export const BankFetchResponseSchema: GenMessage<BankFetchResponse> = /*@__PURE__*/
-  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 3);
+  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 4);
 
 /**
  * @generated from message contract.exam.service.v2.BankSaveRequest
@@ -193,7 +227,7 @@ export type BankSaveRequest = Message<"contract.exam.service.v2.BankSaveRequest"
  * Use `create(BankSaveRequestSchema)` to create a new message.
  */
 export const BankSaveRequestSchema: GenMessage<BankSaveRequest> = /*@__PURE__*/
-  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 4);
+  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 5);
 
 /**
  * @generated from message contract.exam.service.v2.BankSaveResponse
@@ -210,7 +244,7 @@ export type BankSaveResponse = Message<"contract.exam.service.v2.BankSaveRespons
  * Use `create(BankSaveResponseSchema)` to create a new message.
  */
 export const BankSaveResponseSchema: GenMessage<BankSaveResponse> = /*@__PURE__*/
-  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 5);
+  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 6);
 
 /**
  * @generated from message contract.exam.service.v2.BankDeleteRequest
@@ -232,7 +266,7 @@ export type BankDeleteRequest = Message<"contract.exam.service.v2.BankDeleteRequ
  * Use `create(BankDeleteRequestSchema)` to create a new message.
  */
 export const BankDeleteRequestSchema: GenMessage<BankDeleteRequest> = /*@__PURE__*/
-  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 6);
+  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 7);
 
 /**
  * @generated from message contract.exam.service.v2.BankDeleteResponse
@@ -245,7 +279,7 @@ export type BankDeleteResponse = Message<"contract.exam.service.v2.BankDeleteRes
  * Use `create(BankDeleteResponseSchema)` to create a new message.
  */
 export const BankDeleteResponseSchema: GenMessage<BankDeleteResponse> = /*@__PURE__*/
-  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 7);
+  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 8);
 
 /**
  * @generated from message contract.exam.service.v2.VariantsGenerateRequest
@@ -267,7 +301,7 @@ export type VariantsGenerateRequest = Message<"contract.exam.service.v2.Variants
  * Use `create(VariantsGenerateRequestSchema)` to create a new message.
  */
 export const VariantsGenerateRequestSchema: GenMessage<VariantsGenerateRequest> = /*@__PURE__*/
-  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 8);
+  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 9);
 
 /**
  * @generated from message contract.exam.service.v2.VariantsGenerateResponse
@@ -284,7 +318,7 @@ export type VariantsGenerateResponse = Message<"contract.exam.service.v2.Variant
  * Use `create(VariantsGenerateResponseSchema)` to create a new message.
  */
 export const VariantsGenerateResponseSchema: GenMessage<VariantsGenerateResponse> = /*@__PURE__*/
-  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 9);
+  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 10);
 
 /**
  * @generated from message contract.exam.service.v2.GeneratedVariant
@@ -326,7 +360,7 @@ export type GeneratedVariant = Message<"contract.exam.service.v2.GeneratedVarian
  * Use `create(GeneratedVariantSchema)` to create a new message.
  */
 export const GeneratedVariantSchema: GenMessage<GeneratedVariant> = /*@__PURE__*/
-  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 10);
+  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 11);
 
 /**
  * @generated from message contract.exam.service.v2.ReportFetchRequest
@@ -353,7 +387,7 @@ export type ReportFetchRequest = Message<"contract.exam.service.v2.ReportFetchRe
  * Use `create(ReportFetchRequestSchema)` to create a new message.
  */
 export const ReportFetchRequestSchema: GenMessage<ReportFetchRequest> = /*@__PURE__*/
-  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 11);
+  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 12);
 
 /**
  * @generated from message contract.exam.service.v2.ReportFetchResponse
@@ -370,7 +404,7 @@ export type ReportFetchResponse = Message<"contract.exam.service.v2.ReportFetchR
  * Use `create(ReportFetchResponseSchema)` to create a new message.
  */
 export const ReportFetchResponseSchema: GenMessage<ReportFetchResponse> = /*@__PURE__*/
-  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 12);
+  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 13);
 
 /**
  * @generated from message contract.exam.service.v2.PreviewFetchRequest
@@ -387,7 +421,7 @@ export type PreviewFetchRequest = Message<"contract.exam.service.v2.PreviewFetch
  * Use `create(PreviewFetchRequestSchema)` to create a new message.
  */
 export const PreviewFetchRequestSchema: GenMessage<PreviewFetchRequest> = /*@__PURE__*/
-  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 13);
+  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 14);
 
 /**
  * @generated from message contract.exam.service.v2.PreviewFetchResponse
@@ -409,7 +443,7 @@ export type PreviewFetchResponse = Message<"contract.exam.service.v2.PreviewFetc
  * Use `create(PreviewFetchResponseSchema)` to create a new message.
  */
 export const PreviewFetchResponseSchema: GenMessage<PreviewFetchResponse> = /*@__PURE__*/
-  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 14);
+  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 15);
 
 /**
  * @generated from message contract.exam.service.v2.StudentResultsRequest
@@ -422,7 +456,7 @@ export type StudentResultsRequest = Message<"contract.exam.service.v2.StudentRes
  * Use `create(StudentResultsRequestSchema)` to create a new message.
  */
 export const StudentResultsRequestSchema: GenMessage<StudentResultsRequest> = /*@__PURE__*/
-  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 15);
+  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 16);
 
 /**
  * @generated from message contract.exam.service.v2.AIReviewFetchRequest
@@ -444,7 +478,7 @@ export type AIReviewFetchRequest = Message<"contract.exam.service.v2.AIReviewFet
  * Use `create(AIReviewFetchRequestSchema)` to create a new message.
  */
 export const AIReviewFetchRequestSchema: GenMessage<AIReviewFetchRequest> = /*@__PURE__*/
-  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 16);
+  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 17);
 
 /**
  * @generated from message contract.exam.service.v2.AIReviewFetchResponse
@@ -461,7 +495,7 @@ export type AIReviewFetchResponse = Message<"contract.exam.service.v2.AIReviewFe
  * Use `create(AIReviewFetchResponseSchema)` to create a new message.
  */
 export const AIReviewFetchResponseSchema: GenMessage<AIReviewFetchResponse> = /*@__PURE__*/
-  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 17);
+  messageDesc(file_fesmu_exam_service_v2_exam_bank_service, 18);
 
 /**
  * @generated from service contract.exam.service.v2.ExamBankService

@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"math/rand/v2"
 	"net/http"
 	"strings"
 	"time"
@@ -91,6 +90,9 @@ func Decode(r BankRecord) (*pb.Bank, error) {
 	err := protojson.Unmarshal(r.Payload, b)
 	b.Id = r.ID
 	b.Revision = r.Revision
+	if err == nil {
+		NormalizeStructure(b)
+	}
 	return b, err
 }
 func variant(r VariantRecord) *pb.GeneratedVariant {
@@ -128,7 +130,7 @@ func (m *Module) BankFetch(ctx context.Context, _ *connect.Request[pb.BankFetchR
 func params(b *pb.Bank, questions []*pb.BankSection) models.TestParams {
 	p := models.TestParams{Department: b.Specialty, Discipline: b.Discipline, Semester: int(b.Semester), Topic: b.Discipline, Version: enum.TestVersion_TEST_VERSION_V1}
 	for _, section := range questions {
-		for _, q := range section.Questions {
+		for _, q := range SectionQuestions(section) {
 			item := models.TestQuestionParams{Text: q.Text, Image: q.Image}
 			for _, a := range q.Answers {
 				item.Answers = append(item.Answers, models.TestAnswerParams{Text: a.Text, IsCorrect: a.IsCorrect})
@@ -142,6 +144,7 @@ func Validate(b *pb.Bank) error {
 	if b == nil {
 		return bad("заполните банк")
 	}
+	NormalizeStructure(b)
 	b.Specialty = strings.TrimSpace(b.Specialty)
 	b.Faculty = strings.TrimSpace(b.Faculty)
 	b.AcademicYear = strings.TrimSpace(b.AcademicYear)
@@ -169,33 +172,29 @@ func Validate(b *pb.Bank) error {
 	total := 0
 	all := 0
 	for _, s := range b.Sections {
-		key := strings.ToLower(strings.TrimSpace(s.Name))
+		if s == nil {
+			return bad("пустой раздел")
+		}
+		s.Name = strings.TrimSpace(s.Name)
+		key := strings.ToLower(s.Name)
 		if key == "" || names[key] {
 			return bad("названия разделов должны быть непустыми и уникальными")
 		}
 		names[key] = true
-		if s.Quota < 0 || int(s.Quota) > len(s.Questions) {
-			return bad("раздел «" + s.Name + "»: заданий в варианте больше, чем в банке")
+		pool := SectionQuestions(s)
+		if s.Quota < 0 || int(s.Quota) > len(pool) {
+			return bad(fmt.Sprintf("раздел «%s»: нужно %d случайных вопросов, в темах доступно %d", s.Name, s.Quota, len(pool)))
 		}
 		total += int(s.Quota)
-		all += len(s.Questions)
-		for _, q := range s.Questions {
-			key := models.QuestionKey(q.Text)
-			if seen[key] {
-				return bad("повторяющийся вопрос: " + q.Text)
-			}
-			seen[key] = true
+		all += len(pool)
+		if len(s.Topics) > 100 {
+			return bad("в разделе допускается не больше 100 тем")
 		}
-		p := params(b, []*pb.BankSection{s})
-		if len(p.Questions) > 0 {
-			if _, err := models.NewTest(p, time.Now()); err != nil {
-				return bad(err.Error())
-			}
-			if err := models.ValidateExamParams(p); err != nil {
-				return bad(err.Error())
-			}
+		if err := validateTopics(b, s, seen); err != nil {
+			return err
 		}
 	}
+
 	if total < 1 || total > 500 || all > 10000 {
 		return bad("в варианте должно быть 1–500 заданий, в банке — не больше 10000")
 	}
@@ -279,14 +278,9 @@ func (m *Module) VariantsGenerate(ctx context.Context, req *connect.Request[pb.V
 			return bad("варианты можно сформировать после согласования специалистом УМР")
 		}
 		for i := 0; i < int(b.VariantCount); i++ {
-			selected := []*pb.BankSection{}
-			for _, s := range b.Sections {
-				part := &pb.BankSection{Name: s.Name}
-				order := rand.Perm(len(s.Questions))
-				for _, index := range order[:int(s.Quota)] {
-					part.Questions = append(part.Questions, s.Questions[index])
-				}
-				selected = append(selected, part)
+			selected, err := VariantSections(b)
+			if err != nil {
+				return err
 			}
 			p := params(b, selected)
 			p.Topic = fmt.Sprintf("%s %s · %s · %02d", b.AcademicYear, b.Discipline, map[string]string{"winter": "зима", "summer": "лето"}[b.Season], i+1)

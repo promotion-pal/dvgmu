@@ -162,6 +162,10 @@ type TestSessionParams struct {
 
 // NewTestSession freezes test into a session reachable by token.
 func NewTestSession(test *Test, params TestSessionParams, token string, now time.Time) (*TestSession, error) {
+	if test.ExamSettings.Enabled && params.QuestionCount != 0 && params.QuestionCount != len(test.Questions) {
+		return nil, testInvalid("экзамен V2 выдаётся целиком по структуре разделов; измените квоты и сформируйте новый вариант")
+	}
+
 	s := &TestSession{
 		TestID:          &test.ID,
 		ExamSettings:    test.ExamSettings,

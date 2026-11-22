@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { createClient, ConnectError } from "@connectrpc/connect";
 import { create } from "@bufbuild/protobuf";
-import { ExamBankService, ExamStudentService, BankSchema, BankSectionSchema } from "@fesmu/contract/fesmu/exam/service/v2/exam_bank.service_pb";
-import type { Bank, GeneratedVariant } from "@fesmu/contract/fesmu/exam/service/v2/exam_bank.service_pb";
-import { TestQuestionInputSchema, TestAnswerInputSchema } from "@fesmu/contract/fesmu/service/v1/test.service_pb";
+import { ExamBankService, ExamStudentService, BankSchema, BankSectionSchema, BankTopicSchema } from "@fesmu/contract/fesmu/exam/service/v2/exam_bank.service_pb";
+import type { Bank, BankTopic, GeneratedVariant } from "@fesmu/contract/fesmu/exam/service/v2/exam_bank.service_pb";
+import { TestQuestionInputSchema } from "@fesmu/contract/fesmu/service/v1/test.service_pb";
 import type { TestQuestionInput } from "@fesmu/contract/fesmu/service/v1/test.service_pb";
 import { connectTransport } from "@/shared/config/api";
 import { ROUTE } from "@/shared/config/path";
@@ -16,14 +16,15 @@ import { TestSessionCreateModal, examTestSessionApi, useTestSessionCreate } from
 import type { TestSession } from "@/widgets/test-session/test-session.schema";
 import { Can } from "@/features/access";
 import { PermissionSection } from "@/shared/config/permissions";
+import { SectionEditor, questionKey, sectionQuestions } from "./exam-v2/SectionEditor";
+import type { SourceTest } from "./exam-v2/SectionEditor";
 const client = createClient(ExamBankService, connectTransport);
 const ownClient = createClient(ExamStudentService, connectTransport);
 const specialties = ["Лечебное дело", "Педиатрия", "Стоматология", "Фармация", "Медицинская биохимия", "Клиническая психология", "Социальная работа", "Сестринское дело", "Фармация медико-фармацевтического колледжа", "Стоматология профилактическая медико-фармацевтического колледжа"];
 const field = "w-full rounded-md border bg-background p-2 text-sm";
 const errorText = (e: unknown) => e instanceof ConnectError ? e.rawMessage : e instanceof Error ? e.message : "Не удалось выполнить действие";
-const fresh = () => create(BankSchema, { specialty: "Педиатрия", faculty: "Педиатрический факультет", semester: 3, academicYear: "2026/2027", season: "winter", variantCount: 1, durationMinutes: 20, excellent: 90, good: 80, satisfactory: 70, sections: [{ name: "Раздел 1", quota: 1, questions: [] }] });
+const fresh = () => create(BankSchema, { specialty: "Педиатрия", faculty: "Педиатрический факультет", semester: 3, academicYear: "2026/2027", season: "winter", variantCount: 1, durationMinutes: 20, excellent: 90, good: 80, satisfactory: 70, sections: [] });
 const number = (value: string) => Number(value) || 0;
-const newQuestion = () => create(TestQuestionInputSchema, { text: "", answers: [{ text: "", isCorrect: true }, { text: "", isCorrect: false }] });
 const esc = (value: unknown) => String(value ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]!));
 function printHtml(title: string, html: string) {
     const w = window.open("", "_blank");
@@ -169,10 +170,6 @@ export default function ExamV2Page() {
         if (bank)
             patch({ sections: bank.sections.map((s, i) => i === index ? { ...s, ...values } : s) });
     };
-    const changeQuestion = (section: number, index: number, q: TestQuestionInput) => {
-        if (bank)
-            changeSection(section, { questions: bank.sections[section].questions.map((old, i) => i === index ? q : old) });
-    };
     const save = () => run(async () => {
         if (!bank)
             return;
@@ -181,25 +178,79 @@ export default function ExamV2Page() {
         setDirty(false);
         await load();
     });
-    const importFiles = (index: number, files: File[]) => run(async () => {
-        if (!bank || !files.length)
+    const bankRef = useRef(bank);
+    bankRef.current = bank;
+    const [sources, setSources] = useState<SourceTest[]>([]);
+    const [sourcesLoaded, setSourcesLoaded] = useState(false);
+    const [sectionName, setSectionName] = useState("");
+    const [sectionQuota, setSectionQuota] = useState("5");
+    const loadSources = () => run(async () => {
+        if (sourcesLoaded)
             return;
-        const drafts = await Promise.all(files.map(file => examTestBuilderApi.importParse(file)));
-        const questions = drafts.flatMap(d => d.form.questions.map(q => create(TestQuestionInputSchema, { text: q.text, image: q.image, answers: q.answers })));
-        for (const [i, q] of questions.entries())
+        const tests = await examTestBuilderApi.fetch();
+        setSources(tests.map(test => ({ id: test.id, title: test.topic, questions: test.questions.map(q => create(TestQuestionInputSchema, { text: q.text, image: q.image?.hash, answers: q.answers.map(a => ({ text: a.text, isCorrect: a.isCorrect })) })) })));
+        setSourcesLoaded(true);
+    });
+    const addQuestions = (sectionIndex: number, newTopics: BankTopic[], topicIndex?: number) => {
+        if (!bank)
+            return;
+        if (bankRef.current !== bank)
+            throw new Error("Банк изменился во время загрузки. Повторите импорт для текущей редакции.");
+        const incoming = newTopics.flatMap(topic => topic.questions);
+        const seen = new Set(bank.sections.flatMap(section => sectionQuestions(section).map(q => questionKey(q.text))));
+        for (const [i, q] of incoming.entries()) {
             if (q.answers.filter(a => a.isCorrect).length !== 1)
-                throw new Error(`Задание ${i + 1}: нужен ровно один правильный ответ. Пакет не добавлен.`);
-        const seen = new Set(bank.sections.flatMap(s => s.questions.map(q => q.text.trim().toLocaleLowerCase("ru"))));
-        for (const q of questions) {
-            const key = q.text.trim().toLocaleLowerCase("ru");
+                throw new Error(`Вопрос ${i + 1}: нужен ровно один правильный ответ. Пакет не добавлен.`);
+            const key = questionKey(q.text);
             if (seen.has(key))
                 throw new Error(`Повтор вопроса: ${q.text}. Пакет не добавлен.`);
             seen.add(key);
         }
-        changeSection(index, { questions: [...bank.sections[index].questions, ...questions] });
+        const section = bank.sections[sectionIndex];
+        if (topicIndex !== undefined) {
+            changeSection(sectionIndex, { topics: section.topics.map((old, i) => i === topicIndex ? { ...old, questions: [...old.questions, ...incoming] } : old) });
+        }
+        else {
+            const used = new Set(section.topics.map(topic => topic.name.trim().toLocaleLowerCase("ru")));
+            const topics = newTopics.map(topic => {
+                let name = topic.name.trim() || "Импортированный тест";
+                for (let suffix = 2; used.has(name.toLocaleLowerCase("ru")); suffix++)
+                    name = `${topic.name.trim() || "Импортированный тест"} (${suffix})`;
+                used.add(name.toLocaleLowerCase("ru"));
+                return { ...topic, name };
+            });
+            changeSection(sectionIndex, { topics: [...section.topics, ...topics] });
+        }
+    };
+    const importFiles = (sectionIndex: number, files: File[], topicIndex?: number) => run(async () => {
+        if (!bank || !files.length)
+            return;
+        const topics = await Promise.all(files.map(async (file) => {
+            const draft = await examTestBuilderApi.importParse(file);
+            return create(BankTopicSchema, { name: file.name.replace(/\.(txt|docx)$/i, ""), questions: draft.form.questions.map(q => create(TestQuestionInputSchema, { text: q.text, image: q.image, answers: q.answers })) });
+        }));
+        addQuestions(sectionIndex, topics, topicIndex);
+    });
+    const importSource = (sectionIndex: number, source: string) => run(async () => {
+        if (!bank)
+            return;
+        const [kind, id] = source.split(":");
+        if (kind === "test") {
+            const test = sources.find(test => test.id === id);
+            if (!test)
+                return;
+            addQuestions(sectionIndex, [create(BankTopicSchema, { name: test.title, questions: test.questions })]);
+        }
+        else if (kind === "variant") {
+            const variant = variants.find(v => String(v.testId) === id);
+            if (!variant)
+                return;
+            const draft = await client.previewFetch({ testId: BigInt(id) });
+            addQuestions(sectionIndex, [create(BankTopicSchema, { name: variant.title, questions: draft.questions })]);
+        }
     });
     const showReport = () => run(async () => { const r = await client.reportFetch({ sessionId: BigInt(sessionID || 0), academicYear: year, season }); setReport(JSON.parse(r.reportJson) as Report); });
-    return <CommonWrapper title="Экзаменационное тестирование V2" description="Банк по разделам · структура вариантов · согласование · расписание · протоколы и статистика">
+    return <CommonWrapper title="Экзаменационное тестирование V2" description="Дисциплины → разделы → темы · случайные вопросы по квотам · согласование · расписание · протоколы и статистика">
   <div className="mb-5 flex flex-wrap gap-2">{[["banks", "Банк и структура"], ["variants", "Варианты и расписание"], ["reports", "Отчёты и анализ"]].map(([key, title]) => <Button key={key} variant={tab === key ? "default" : "outline"} onClick={() => setTab(key)}>{title}</Button>)}<Button variant="ghost" disabled={busy} onClick={() => void run(load)}>Обновить</Button><Button asChild variant="ghost"><Link to={ROUTE.EXAM_TESTS.BUILDER}>Экзамены V1</Link></Button><Button asChild variant="outline"><a href={ROUTE.PUBLIC.EXAM_TESTING} target="_blank" rel="noreferrer">Общая ссылка класса</a></Button></div>
   {error && <p role="alert" className="mb-4 rounded-lg border border-red-400 p-4 text-red-600">{error}</p>}{busy && <p role="status" className="mb-4 text-sm text-muted-foreground">Обработка…</p>}
   {tab === "banks" && <div className="grid gap-5 lg:grid-cols-[280px_1fr]"><Card className="h-fit gap-3 p-4"><Can section={PermissionSection.EXAM_TESTS}><Button disabled={busy} onClick={() => { setBank(fresh()); setDirty(true); }}>Новая дисциплина</Button></Can>{banks.map(b => <button className={`rounded border p-3 text-left text-sm ${bank?.id === b.id ? "border-violet-500" : ""}`} key={String(b.id)} onClick={() => {
@@ -211,8 +262,10 @@ export default function ExamV2Page() {
   {bank && <Card className="gap-5 p-5"><div className="grid gap-4 md:grid-cols-2"><label>Специальность<input list="exam-specialties" className={field} value={bank.specialty} onChange={e => patch({ specialty: e.target.value })}/><datalist id="exam-specialties">{[...new Set([...specialties, ...banks.map(b => b.specialty)])].map(s => <option key={s} value={s}/>)}</datalist></label><label>Факультет<input className={field} value={bank.faculty} onChange={e => patch({ faculty: e.target.value })}/></label><label>Дисциплина<input className={field} value={bank.discipline} onChange={e => patch({ discipline: e.target.value })}/></label><label>Семестр<input type="number" min={1} max={12} className={field} value={bank.semester} onChange={e => patch({ semester: number(e.target.value) })}/></label><label>Учебный год<input className={field} value={bank.academicYear} onChange={e => patch({ academicYear: e.target.value })}/></label><label>Сессия<select className={field} value={bank.season} onChange={e => patch({ season: e.target.value })}><option value="winter">Зимняя</option><option value="summer">Летняя</option></select></label><label>Время, минут<input type="number" min={1} max={600} className={field} value={bank.durationMinutes} onChange={e => patch({ durationMinutes: number(e.target.value) })}/></label><label>Количество вариантов<input type="number" min={1} max={100} className={field} value={bank.variantCount} onChange={e => patch({ variantCount: number(e.target.value) })}/></label><label className="flex items-center gap-2"><input type="checkbox" checked={bank.showResult} onChange={e => patch({ showResult: e.target.checked })}/>Показать студенту результат</label></div>
   <div className="grid gap-3 md:grid-cols-3">{([['excellent', 'Отлично, от %'], ['good', 'Хорошо, от %'], ['satisfactory', 'Удовлетворительно, от %']] as const).map(([key, label]) => <label key={key}>{label}<input className={field} type="number" min={1} max={100} value={bank[key]} onChange={e => patch({ [key]: number(e.target.value) })}/></label>)}</div>
   <h2 className="font-semibold">Структура варианта: {bank.sections.reduce((sum, s) => sum + s.quota, 0)} заданий</h2>
-  {bank.sections.map((section, index) => <div key={index} className="flex flex-col gap-3 rounded-lg border p-4"><div className="grid gap-2 md:grid-cols-[1fr_140px_auto]"><label>Раздел<input className={field} value={section.name} onChange={e => changeSection(index, { name: e.target.value })}/></label><label>Заданий в варианте<input className={field} type="number" min={0} max={section.questions.length} value={section.quota} onChange={e => changeSection(index, { quota: number(e.target.value) })}/></label><Can section={PermissionSection.EXAM_TESTS}><Button variant="ghost" onClick={() => patch({ sections: bank.sections.filter((_, i) => i !== index) })}>Удалить раздел</Button></Can></div><p className="text-sm">В банке: {section.questions.length}. Внутри одного варианта задания не повторяются; между вариантами возможны пересечения.</p><Can section={PermissionSection.EXAM_TESTS}><label className="text-sm">Пакетный импорт .txt / .docx<input type="file" accept=".txt,.docx" multiple disabled={busy} className={field} onChange={e => { void importFiles(index, Array.from(e.target.files ?? [])); e.target.value = ""; }}/></label><Button variant="outline" onClick={() => changeSection(index, { questions: [...section.questions, newQuestion()] })}>Добавить задание</Button></Can><details><summary className="cursor-pointer">Просмотр и редактирование ({section.questions.length})</summary><div className="mt-3 flex max-h-[560px] flex-col gap-4 overflow-auto">{section.questions.map((q, qi) => <div key={qi} className="rounded border p-3"><textarea aria-label={`Вопрос ${qi + 1}`} className={field} rows={2} value={q.text} onChange={e => changeQuestion(index, qi, { ...q, text: e.target.value })}/>{q.answers.map((a, ai) => <div className="mt-2 flex items-center gap-2" key={ai}><input aria-label={`Верный ответ ${ai + 1}`} type="radio" name={`correct-${index}-${qi}`} checked={a.isCorrect} onChange={() => changeQuestion(index, qi, { ...q, answers: q.answers.map((old, i) => ({ ...old, isCorrect: i === ai })) })}/><input className={field} value={a.text} onChange={e => changeQuestion(index, qi, { ...q, answers: q.answers.map((old, i) => i === ai ? { ...old, text: e.target.value } : old) })}/><Button variant="ghost" disabled={q.answers.length <= 2} onClick={() => changeQuestion(index, qi, { ...q, answers: q.answers.filter((_, i) => i !== ai) })}>×</Button></div>)}<div className="mt-2 flex gap-2"><Button variant="ghost" disabled={q.answers.length >= 30} onClick={() => changeQuestion(index, qi, { ...q, answers: [...q.answers, create(TestAnswerInputSchema, { text: "", isCorrect: false })] })}>Добавить ответ</Button><Button variant="ghost" onClick={() => changeSection(index, { questions: section.questions.filter((_, i) => i !== qi) })}>Удалить задание</Button></div></div>)}</div></details></div>)}
-  <Can section={PermissionSection.EXAM_TESTS}><Button variant="outline" onClick={() => patch({ sections: [...bank.sections, create(BankSectionSchema, { name: `Раздел ${bank.sections.length + 1}`, quota: 0 })] })}>Добавить раздел</Button><label>Заключение специалиста УМР<textarea className={field} value={bank.reviewNotes} onChange={e => patch({ reviewNotes: e.target.value })}/></label><label>Замечания ИИ<textarea className={field} readOnly value={bank.aiReviewNotes} placeholder="Провайдер настраивается администратором. Проверка структуры выполняется при сохранении."/></label><Button variant="outline" disabled={busy || dirty || bank.id === 0n} onClick={() => void run(async () => { const r = await client.aIReviewFetch({ bankId: bank.id, revision: bank.revision }); patch({ aiReviewNotes: r.notes }); })}>Запросить ИИ-проверку сохранённого банка</Button><label className="flex items-center gap-2"><input type="checkbox" checked={Boolean(bank.approvedBy)} onChange={e => patch({ approvedBy: e.target.checked ? "approve" : "" })}/>Согласовано специалистом УМР (автор согласования фиксируется автоматически)</label><div className="flex flex-wrap gap-2"><Button disabled={busy} onClick={() => void save()}>Сохранить банк</Button><Button variant="outline" disabled={busy || dirty || !bank.approvedBy || bank.id === 0n} onClick={() => void run(async () => { await client.variantsGenerate({ bankId: bank.id, revision: bank.revision }); await load(); setTab("variants"); })}>Сформировать варианты</Button>{bank.id > 0n && <Button variant="destructive" disabled={busy} onClick={() => {
+  <p className="text-sm text-muted-foreground">Например: Сестринское дело → Экзамен → Кардиология (5) + Эндокринология (25) = вариант из 30 случайных вопросов.</p>
+  {bank.sections.map((section, index) => <SectionEditor key={index} section={section} index={index} busy={busy} sources={sources} sourcesLoaded={sourcesLoaded} variants={variants} onLoadSources={() => void loadSources()} onChange={changed => changeSection(index, changed)} onRemove={() => patch({ sections: bank.sections.filter((_, i) => i !== index) })} onImport={(files, topicIndex) => void importFiles(index, files, topicIndex)} onSource={source => void importSource(index, source)}/>)}
+
+  <Can section={PermissionSection.EXAM_TESTS}><div className="grid items-end gap-3 rounded-lg border border-dashed p-4 md:grid-cols-[1fr_180px_auto]"><label className="text-sm">Название нового раздела<input className={field} value={sectionName} onChange={e => setSectionName(e.target.value)} placeholder="Например: Кардиология"/></label><label className="text-sm">Случайных вопросов<input className={field} type="number" min={1} max={500} value={sectionQuota} onChange={e => setSectionQuota(e.target.value)}/></label><Button variant="outline" disabled={busy || !sectionName.trim() || number(sectionQuota) < 1 || number(sectionQuota) > 500 || !Number.isInteger(number(sectionQuota))} onClick={() => { patch({ sections: [...bank.sections, create(BankSectionSchema, { name: sectionName.trim(), quota: number(sectionQuota) })] }); setSectionName(""); }}>Создать раздел</Button></div><label>Заключение специалиста УМР<textarea className={field} value={bank.reviewNotes} onChange={e => patch({ reviewNotes: e.target.value })}/></label><label>Замечания ИИ<textarea className={field} readOnly value={bank.aiReviewNotes} placeholder="Провайдер настраивается администратором. Проверка структуры выполняется при сохранении."/></label><Button variant="outline" disabled={busy || dirty || bank.id === 0n} onClick={() => void run(async () => { const r = await client.aIReviewFetch({ bankId: bank.id, revision: bank.revision }); patch({ aiReviewNotes: r.notes }); })}>Запросить ИИ-проверку сохранённого банка</Button><label className="flex items-center gap-2"><input type="checkbox" checked={Boolean(bank.approvedBy)} onChange={e => patch({ approvedBy: e.target.checked ? "approve" : "" })}/>Согласовано специалистом УМР (автор согласования фиксируется автоматически)</label><div className="flex flex-wrap gap-2"><Button disabled={busy} onClick={() => void save()}>Сохранить банк</Button><Button variant="outline" disabled={busy || dirty || !bank.approvedBy || bank.id === 0n} onClick={() => void run(async () => { await client.variantsGenerate({ bankId: bank.id, revision: bank.revision }); await load(); setTab("variants"); })}>Сформировать варианты</Button>{bank.id > 0n && <Button variant="destructive" disabled={busy} onClick={() => {
                         if (confirm("Удалить банк? Уже выданные сессии и их результаты сохранятся."))
                             void run(async () => { await client.bankDelete({ id: bank.id, revision: bank.revision }); setBank(undefined); await load(); });
                     }}>Удалить банк</Button>}</div></Can></Card>}</div>}
