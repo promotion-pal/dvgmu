@@ -71,12 +71,17 @@ func (g *Gateway) Handler() http.Handler {
 func (g *Gateway) cors(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		origin := r.Header.Get("Origin")
-		if origin != "" && slices.Contains(g.config.AllowedOrigins, origin) {
+		if origin != "" && !slices.Contains(g.config.AllowedOrigins, origin) {
+			http.Error(w, "origin is not allowed", http.StatusForbidden)
+			return
+		}
+		if origin != "" {
 			w.Header().Set("Access-Control-Allow-Origin", origin)
 			w.Header().Add("Vary", "Origin")
 			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-			w.Header().Set("Access-Control-Allow-Headers", "Authorization, Content-Type, Connect-Protocol-Version, Connect-Timeout-Ms, Grpc-Timeout, X-Grpc-Web, X-User-Agent")
+			w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Connect-Protocol-Version, Connect-Timeout-Ms, Grpc-Timeout, X-Grpc-Web, X-User-Agent")
 			w.Header().Set("Access-Control-Expose-Headers", "Grpc-Status, Grpc-Message, Grpc-Status-Details-Bin")
+			w.Header().Set("Access-Control-Allow-Credentials", "true")
 		}
 		if r.Method == http.MethodOptions {
 			w.WriteHeader(http.StatusNoContent)
@@ -88,18 +93,18 @@ func (g *Gateway) cors(next http.Handler) http.Handler {
 
 func (g *Gateway) authenticate(prefix string, next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if prefix == "/auth/" && strings.HasPrefix(r.URL.Path, "/auth/v1/auth/") {
+		if prefix == "/auth/" && isPublicAuthRoute(r) {
 			next.ServeHTTP(w, r)
 			return
 		}
-		header := strings.TrimSpace(r.Header.Get("Authorization"))
-		if !strings.HasPrefix(header, "Bearer ") {
-			http.Error(w, "missing bearer token", http.StatusUnauthorized)
+		cookie, err := r.Cookie(token.AccessTokenCookieName)
+		if err != nil {
+			http.Error(w, "authentication cookie is required", http.StatusUnauthorized)
 			return
 		}
-		claims, err := token.Verify(strings.TrimSpace(strings.TrimPrefix(header, "Bearer ")), []byte(g.config.JWTSecret), g.config.JWTIssuer, time.Now())
+		claims, err := token.Verify(cookie.Value, []byte(g.config.JWTSecret), g.config.JWTIssuer, time.Now())
 		if err != nil {
-			http.Error(w, "invalid or expired bearer token", http.StatusUnauthorized)
+			http.Error(w, "invalid or expired authentication cookie", http.StatusUnauthorized)
 			return
 		}
 		for _, key := range []string{"X-Authenticated-User-ID", "X-Authenticated-User-UUID", "X-Authenticated-Roles", "X-Authenticated-Permissions", "X-Gateway-Secret"} {
@@ -111,8 +116,24 @@ func (g *Gateway) authenticate(prefix string, next http.Handler) http.Handler {
 		r.Header.Set("X-Authenticated-Permissions", strings.Join(claims.Permissions, ","))
 		r.Header.Set("X-Gateway-Secret", g.config.SharedSecret)
 		r.Header.Del("Authorization")
+		if prefix != "/auth/" {
+			r.Header.Del("Cookie")
+		}
 		next.ServeHTTP(w, r)
 	})
+}
+
+func isPublicAuthRoute(r *http.Request) bool {
+	switch {
+	case r.Method == http.MethodPost && r.URL.Path == "/auth/v1/auth/token":
+		return true
+	case r.Method == http.MethodGet && r.URL.Path == "/auth/v1/auth/session":
+		return true
+	case r.Method == http.MethodPost && r.URL.Path == "/auth/v1/auth/logout":
+		return true
+	default:
+		return false
+	}
 }
 
 func newProxy(prefix, rawTarget string) (http.Handler, error) {

@@ -11,6 +11,8 @@ import (
 	"time"
 )
 
+const AccessTokenCookieName = "dvgmu_access_token"
+
 var (
 	ErrInvalidToken = errors.New("invalid access token")
 	ErrExpiredToken = errors.New("access token expired")

@@ -13,10 +13,12 @@ import (
 )
 
 type Config struct {
-	Port      string
-	JWTSecret string
-	JWTIssuer string
-	TokenTTL  time.Duration
+	Port         string
+	JWTSecret    string
+	JWTIssuer    string
+	TokenTTL     time.Duration
+	CookieSecure bool
+	CookieDomain string
 }
 
 type ExternalIdentity struct {
@@ -48,10 +50,8 @@ type UserClient interface {
 }
 
 type tokenResponse struct {
-	AccessToken string `json:"access_token"`
-	UserID      string `json:"user_id"`
-	TokenType   string `json:"token_type"`
-	ExpiresIn   int64  `json:"expires_in"`
+	UserID    string `json:"user_id"`
+	ExpiresIn int64  `json:"expires_in"`
 }
 
 type User struct {
@@ -79,6 +79,8 @@ func (s *Service) Handler() http.Handler {
 		w.WriteHeader(http.StatusNoContent)
 	})
 	s.provider.RegisterRoutes(mux, s.completeLogin)
+	mux.HandleFunc("GET /v1/auth/session", s.session)
+	mux.HandleFunc("POST /v1/auth/logout", s.logout)
 	return mux
 }
 
@@ -98,6 +100,41 @@ func (s *Service) completeLogin(w http.ResponseWriter, r *http.Request, external
 		http.Error(w, "user account is inactive", http.StatusForbidden)
 		return
 	}
+	s.writeSession(w, user)
+}
+
+func (s *Service) session(w http.ResponseWriter, r *http.Request) {
+	cookie, err := r.Cookie(token.AccessTokenCookieName)
+	if err != nil {
+		http.Error(w, "authentication required", http.StatusUnauthorized)
+		return
+	}
+	claims, err := token.Verify(cookie.Value, []byte(s.config.JWTSecret), s.config.JWTIssuer, time.Now())
+	if err != nil {
+		s.clearSessionCookie(w)
+		http.Error(w, "session expired", http.StatusUnauthorized)
+		return
+	}
+	user, err := s.users.UserFetchByID(r.Context(), claims.UserID)
+	if err != nil {
+		s.log.Error("could not refresh user session", slog.Int64("user_id", claims.UserID), slog.String("error", err.Error()))
+		http.Error(w, "could not load user profile", http.StatusBadGateway)
+		return
+	}
+	if !user.Active || user.UUID != claims.Subject {
+		s.clearSessionCookie(w)
+		http.Error(w, "user session is no longer valid", http.StatusUnauthorized)
+		return
+	}
+	s.writeSession(w, user)
+}
+
+func (s *Service) logout(w http.ResponseWriter, _ *http.Request) {
+	s.clearSessionCookie(w)
+	w.WriteHeader(http.StatusNoContent)
+}
+
+func (s *Service) writeSession(w http.ResponseWriter, user *User) {
 	now := time.Now()
 	claims := token.Claims{
 		Issuer:      s.config.JWTIssuer,
@@ -114,6 +151,31 @@ func (s *Service) completeLogin(w http.ResponseWriter, r *http.Request, external
 		http.Error(w, "could not issue access token", http.StatusInternalServerError)
 		return
 	}
+	http.SetCookie(w, &http.Cookie{
+		Name:     token.AccessTokenCookieName,
+		Value:    accessToken,
+		Path:     "/",
+		Domain:   s.config.CookieDomain,
+		Expires:  now.Add(s.config.TokenTTL),
+		MaxAge:   int(s.config.TokenTTL.Seconds()),
+		HttpOnly: true,
+		Secure:   s.config.CookieSecure,
+		SameSite: http.SameSiteLaxMode,
+	})
 	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(tokenResponse{AccessToken: accessToken, UserID: strconv.FormatInt(user.ID, 10), TokenType: "Bearer", ExpiresIn: int64(s.config.TokenTTL.Seconds())})
+	_ = json.NewEncoder(w).Encode(tokenResponse{UserID: strconv.FormatInt(user.ID, 10), ExpiresIn: int64(s.config.TokenTTL.Seconds())})
+}
+
+func (s *Service) clearSessionCookie(w http.ResponseWriter) {
+	http.SetCookie(w, &http.Cookie{
+		Name:     token.AccessTokenCookieName,
+		Value:    "",
+		Path:     "/",
+		Domain:   s.config.CookieDomain,
+		Expires:  time.Unix(1, 0),
+		MaxAge:   -1,
+		HttpOnly: true,
+		Secure:   s.config.CookieSecure,
+		SameSite: http.SameSiteLaxMode,
+	})
 }

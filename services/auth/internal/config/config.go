@@ -9,6 +9,8 @@ type Config struct {
 	JWTIssuer        string
 	MDMURL           string
 	MDMInternalToken string
+	CookieSecure     bool
+	CookieDomain     string
 	Database         Database
 }
 
@@ -29,6 +31,8 @@ func Load() Config {
 		JWTIssuer:        env("JWT_ISSUER", "dvgmu-auth"),
 		MDMURL:           env("AUTH_MDM_URL", "http://localhost:4051"),
 		MDMInternalToken: os.Getenv("AUTH_MDM_INTERNAL_TOKEN"),
+		CookieSecure:     envBool("AUTH_COOKIE_SECURE", os.Getenv("ENV") == "production"),
+		CookieDomain:     os.Getenv("AUTH_COOKIE_DOMAIN"),
 		Database: Database{
 			Host:     env("DB_HOST", "localhost"),
 			Port:     env("DB_PORT", "5448"),
@@ -38,6 +42,14 @@ func Load() Config {
 			SSLMode:  env("DB_SSLMODE", "disable"),
 		},
 	}
+}
+
+func envBool(key string, fallback bool) bool {
+	value := os.Getenv(key)
+	if value == "" {
+		return fallback
+	}
+	return value == "true" || value == "1"
 }
 
 func env(key, fallback string) string {

@@ -51,10 +51,12 @@ func New(cfg config.Config, log *slog.Logger) (*App, error) {
 	mapper := testdb.NewMapper(identities)
 	mdm := serviceconnect.NewUserServiceClient(&http.Client{Timeout: 5 * time.Second}, cfg.MDMURL)
 	core, err := auth.New(auth.Config{
-		Port:      cfg.Port,
-		JWTSecret: cfg.JWTSecret,
-		JWTIssuer: cfg.JWTIssuer,
-		TokenTTL:  15 * time.Minute,
+		Port:         cfg.Port,
+		JWTSecret:    cfg.JWTSecret,
+		JWTIssuer:    cfg.JWTIssuer,
+		TokenTTL:     15 * time.Minute,
+		CookieSecure: cfg.CookieSecure,
+		CookieDomain: cfg.CookieDomain,
 	}, provider, mapper, mdmUserClient{client: mdm, internalToken: cfg.MDMInternalToken}, log)
 	if err != nil {
 		return nil, err

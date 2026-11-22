@@ -5,14 +5,14 @@ import { UserPermission } from "@fesmu/contract/mdm/enum/user.enum_pb";
 import { create } from "zustand";
 import { ENV } from "@/shared/config/env";
 import { createAuthenticatedTransport } from "@/shared/lib/connect-transport";
-import { clearAuthSession, getAccessToken, getAuthenticatedUserId, setAuthSession } from "./auth.session";
+import { clearLegacyAuthStorage } from "./auth.session";
 
 const userClient = createClient(
   UserService,
   createAuthenticatedTransport(ENV.MDM),
 );
 
-type UserStatus = "idle" | "loading" | "ready" | "unauthenticated" | "error";
+type UserStatus = "idle" | "checking" | "loading" | "ready" | "unauthenticated" | "error";
 
 interface UserProviderState {
   status: UserStatus;
@@ -25,6 +25,8 @@ interface UserProviderState {
   fetchUsers: () => Promise<User[]>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  refreshSession: () => Promise<void>;
+  expireSession: () => void;
   reset: () => void;
 }
 
@@ -36,18 +38,22 @@ export const useUserProvider = create<UserProviderState>((set, get) => ({
   error: null,
 
   me: async () => {
-    if (get().status === "loading" || get().status === "ready") return;
-    const userId = getAuthenticatedUserId();
-    if (!getAccessToken() || userId === null) {
-      clearAuthSession();
-      set({ status: "unauthenticated", user: null, userId: null, error: null });
-      return;
-    }
+    if (["checking", "loading", "ready"].includes(get().status)) return;
+    clearLegacyAuthStorage();
+    set({ status: "checking", user: null, userId: null, error: null });
     try {
-      await get().fetchById(userId);
+      const response = await fetch(`${ENV.AUTH}/v1/auth/session`, { credentials: "include" });
+      if (response.status === 401) {
+        set({ status: "unauthenticated", user: null, userId: null, error: null });
+        return;
+      }
+      if (!response.ok) throw new Error((await response.text()) || "Не удалось проверить сессию");
+      const payload = (await response.json()) as { user_id?: string };
+      if (!payload.user_id || !/^\d+$/.test(payload.user_id)) throw new Error("Auth вернул некорректный ID пользователя");
+      await get().fetchById(BigInt(payload.user_id));
     } catch (cause) {
       const error = cause instanceof Error ? cause : new Error("Не удалось проверить сессию");
-      set({ status: "error", user: null, userId, error });
+      set({ status: "error", user: null, userId: null, error });
     }
   },
 
@@ -76,6 +82,7 @@ export const useUserProvider = create<UserProviderState>((set, get) => ({
     try {
       const response = await fetch(`${ENV.AUTH}/v1/auth/token`, {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
@@ -83,15 +90,13 @@ export const useUserProvider = create<UserProviderState>((set, get) => ({
         const message = await response.text();
         throw new Error(message || "Не удалось войти");
       }
-      const payload = (await response.json()) as { access_token?: string; user_id?: string };
-      if (!payload.access_token || !payload.user_id || !/^\d+$/.test(payload.user_id)) {
+      const payload = (await response.json()) as { user_id?: string };
+      if (!payload.user_id || !/^\d+$/.test(payload.user_id)) {
         throw new Error("Auth вернул некорректный ответ");
       }
-      const userId = BigInt(payload.user_id);
-      setAuthSession(payload.access_token, userId);
-      await get().fetchById(userId);
+      clearLegacyAuthStorage();
+      await get().fetchById(BigInt(payload.user_id));
     } catch (cause) {
-      clearAuthSession();
       const error = cause instanceof Error ? cause : new Error("Не удалось войти");
       set({ status: "unauthenticated", user: null, userId: null, error });
       throw error;
@@ -99,12 +104,44 @@ export const useUserProvider = create<UserProviderState>((set, get) => ({
   },
 
   logout: async () => {
-    clearAuthSession();
+    try {
+      await fetch(`${ENV.AUTH}/v1/auth/logout`, { method: "POST", credentials: "include" });
+    } catch {
+    } finally {
+      clearLegacyAuthStorage();
+      set({ status: "unauthenticated", user: null, userId: null, error: null });
+    }
+  },
+
+  refreshSession: async () => {
+    if (get().status !== "ready") return;
+    try {
+      const response = await fetch(`${ENV.AUTH}/v1/auth/session`, { credentials: "include" });
+      if (response.status === 401) {
+        get().expireSession();
+        return;
+      }
+      if (!response.ok) throw new Error((await response.text()) || "Не удалось обновить сессию");
+      const payload = (await response.json()) as { user_id?: string };
+      if (!payload.user_id || !/^\d+$/.test(payload.user_id)) throw new Error("Auth вернул некорректный ID пользователя");
+      const currentID = get().userId;
+      const refreshedID = BigInt(payload.user_id);
+      const profile = await userClient.userFetchByID({ id: refreshedID });
+      if (!profile.user) throw new Error("MDM не вернул пользователя");
+      set({ status: "ready", user: profile.user, userId: refreshedID, error: null });
+      if (currentID !== refreshedID) set({ availableUsers: [] });
+    } catch (cause) {
+      set({ error: cause instanceof Error ? cause : new Error("Не удалось обновить сессию") });
+    }
+  },
+
+  expireSession: () => {
+    clearLegacyAuthStorage();
     set({ status: "unauthenticated", user: null, userId: null, error: null });
   },
 
   reset: () => {
-    clearAuthSession();
+    clearLegacyAuthStorage();
     set({ status: "idle", user: null, userId: null, error: null });
   },
 }));
