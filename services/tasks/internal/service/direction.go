@@ -13,7 +13,7 @@ import (
 
 var ErrInvalidDirection = errors.New("invalid direction")
 
-var directionCodePattern = regexp.MustCompile(`^[a-z0-9][a-z0-9_-]{0,63}$`)
+var catalogCodePattern = regexp.MustCompile(`^[a-z0-9][a-z0-9_-]{0,63}$`)
 
 type DirectionService struct {
 	storage *storage.DirectionStorage
@@ -32,7 +32,7 @@ func NewDirectionService(storage *storage.DirectionStorage) *DirectionService {
 
 func (s *DirectionService) Create(ctx context.Context, code, name string, sortOrder int32) (models.Direction, error) {
 	direction := models.Direction{Code: strings.TrimSpace(code), Name: strings.TrimSpace(name), SortOrder: sortOrder, Active: true}
-	if !directionCodePattern.MatchString(direction.Code) || !validDirectionName(direction.Name) {
+	if !catalogCodePattern.MatchString(direction.Code) || !validCatalogName(direction.Name) {
 		return models.Direction{}, ErrInvalidDirection
 	}
 	err := s.storage.Create(ctx, &direction)
@@ -70,14 +70,14 @@ func (s *DirectionService) Update(ctx context.Context, id int64, update Directio
 	changes := make(map[string]any)
 	if update.Code != nil {
 		code := strings.TrimSpace(*update.Code)
-		if !directionCodePattern.MatchString(code) {
+		if !catalogCodePattern.MatchString(code) {
 			return models.Direction{}, ErrInvalidDirection
 		}
 		changes["code"] = code
 	}
 	if update.Name != nil {
 		name := strings.TrimSpace(*update.Name)
-		if !validDirectionName(name) {
+		if !validCatalogName(name) {
 			return models.Direction{}, ErrInvalidDirection
 		}
 		changes["name"] = name
@@ -101,6 +101,6 @@ func (s *DirectionService) Delete(ctx context.Context, id int64) (models.Directi
 	return s.storage.Delete(ctx, id)
 }
 
-func validDirectionName(name string) bool {
+func validCatalogName(name string) bool {
 	return name != "" && !strings.ContainsRune(name, 0) && utf8.RuneCountInString(name) <= 150
 }

@@ -35,6 +35,7 @@ func New(log *slog.Logger, cfg *config.Config) *App {
 	}
 	log.Info("task database migrations applied")
 
-	controller := taskgrpc.NewDirectionController(service.NewDirectionService(storage.NewDirectionStorage(db)), log)
-	return &App{GRPCServer: grpcapp.New(log, sqlDB.PingContext, cfg, controller)}
+	directions := taskgrpc.NewDirectionController(service.NewDirectionService(storage.NewDirectionStorage(db)), log)
+	catalog := taskgrpc.NewCatalogController(service.NewCatalogService(storage.NewServiceStorage(db)), log)
+	return &App{GRPCServer: grpcapp.New(log, sqlDB.PingContext, cfg, directions, catalog)}
 }
