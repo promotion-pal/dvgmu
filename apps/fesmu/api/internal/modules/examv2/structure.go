@@ -9,6 +9,7 @@ import (
 	"dvgmu/api/internal/domain/models"
 	pb "fesmu/contract/fesmu/exam/service/v2"
 	svc "fesmu/contract/fesmu/service/v1"
+	"google.golang.org/protobuf/proto"
 )
 
 // NormalizeStructure upgrades legacy JSON in memory. Old rows remain readable;
@@ -146,4 +147,37 @@ func generatedTitle(b *pb.Bank, index int) string {
 		return b.Discipline
 	}
 	return fmt.Sprintf("%s %s · %s · %02d", b.AcademicYear, b.Discipline, map[string]string{"winter": "зима", "summer": "лето"}[b.Season], index+1)
+}
+
+// Ready uploads are independent tests. Only ordinary sections are assembled
+// together using their random quotas.
+type examPublication struct {
+	Title    string
+	Sections []*pb.BankSection
+}
+
+func publicationPlans(b *pb.Bank) ([]examPublication, error) {
+	if err := Validate(b); err != nil {
+		return nil, err
+	}
+	var plans []examPublication
+	ordinary := proto.Clone(b).(*pb.Bank)
+	ordinary.Sections = nil
+	for _, section := range b.Sections {
+		if section.ReadyVariant {
+			plans = append(plans, examPublication{Title: section.Name, Sections: []*pb.BankSection{section}})
+		} else {
+			ordinary.Sections = append(ordinary.Sections, section)
+		}
+	}
+	if len(ordinary.Sections) > 0 {
+		for i := 0; i < int(b.VariantCount); i++ {
+			selected, err := VariantSections(ordinary)
+			if err != nil {
+				return nil, err
+			}
+			plans = append(plans, examPublication{Title: generatedTitle(ordinary, i), Sections: selected})
+		}
+	}
+	return plans, nil
 }

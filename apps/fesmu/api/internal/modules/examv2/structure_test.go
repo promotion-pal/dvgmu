@@ -196,8 +196,8 @@ func TestReadySectionDoesNotBypassQuestionValidation(t *testing.T) {
 			t.Questions[0].Answers[1].IsCorrect = true
 			return &pb.BankSection{Name: "Готовый", ReadyVariant: true, Topics: []*pb.BankTopic{t}}
 		}},
-		{"over exam limit", func(*pb.Bank) *pb.BankSection {
-			return &pb.BankSection{Name: "Готовый", ReadyVariant: true, Topics: []*pb.BankTopic{topic("Готовый", 471)}}
+		{"over independent test limit", func(*pb.Bank) *pb.BankSection {
+			return &pb.BankSection{Name: "Готовый", ReadyVariant: true, Topics: []*pb.BankTopic{topic("Готовый", 501)}}
 		}},
 	}
 	for _, tc := range cases {

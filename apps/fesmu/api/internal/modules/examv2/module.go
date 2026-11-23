@@ -190,7 +190,13 @@ func Validate(b *pb.Bank) error {
 		if s.Quota < 0 || int(s.Quota) > len(pool) {
 			return bad(fmt.Sprintf("раздел «%s»: нужно %d случайных вопросов, в темах доступно %d", s.Name, s.Quota, len(pool)))
 		}
-		total += int(s.Quota)
+		if s.ReadyVariant {
+			if len(pool) > 500 {
+				return bad("в готовом тесте допускается не больше 500 вопросов")
+			}
+		} else {
+			total += int(s.Quota)
+		}
 		all += len(pool)
 		if len(s.Topics) > 100 {
 			return bad("в разделе допускается не больше 100 тем")
@@ -200,7 +206,7 @@ func Validate(b *pb.Bank) error {
 		}
 	}
 
-	if total < 1 || total > 500 || all > 10000 {
+	if (!IsReadyExam(b) && total < 1) || total > 500 || all > 10000 {
 		return bad("в варианте должно быть 1–500 заданий, в банке — не больше 10000")
 	}
 	return nil
@@ -272,13 +278,13 @@ func (m *Module) VariantsGenerate(ctx context.Context, req *connect.Request[pb.V
 		if err := Validate(b); err != nil {
 			return err
 		}
-		for i := 0; i < int(b.VariantCount); i++ {
-			selected, err := VariantSections(b)
-			if err != nil {
-				return err
-			}
-			p := params(b, selected)
-			p.Topic = generatedTitle(b, i)
+		plans, err := publicationPlans(b)
+		if err != nil {
+			return err
+		}
+		for _, plan := range plans {
+			p := params(b, plan.Sections)
+			p.Topic = plan.Title
 			test, err := models.NewTest(p, time.Now())
 			if err != nil {
 				return bad(err.Error())
