@@ -12,7 +12,7 @@ func TestReadyExamKeepsOneCompleteTest(t *testing.T) {
 	if b.VariantCount != 1 {
 		t.Fatal("ready exam created numbered copies")
 	}
-	if generatedTitle(b, 0) != b.Discipline {
+	if generatedTitle(b, 0) != b.Sections[0].Name {
 		t.Fatal("ready exam title changed")
 	}
 	sections, err := VariantSections(b)

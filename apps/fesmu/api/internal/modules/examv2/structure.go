@@ -140,6 +140,9 @@ func IsReadyExam(b *pb.Bank) bool {
 
 func generatedTitle(b *pb.Bank, index int) string {
 	if IsReadyExam(b) {
+		if len(b.Sections) == 1 {
+			return b.Sections[0].Name
+		}
 		return b.Discipline
 	}
 	return fmt.Sprintf("%s %s · %s · %02d", b.AcademicYear, b.Discipline, map[string]string{"winter": "зима", "summer": "лето"}[b.Season], index+1)
