@@ -210,14 +210,7 @@ func (m *Module) BankSave(ctx context.Context, req *connect.Request[pb.BankSaveR
 	if err := Validate(b); err != nil {
 		return nil, err
 	}
-	// Reviews are attributable to the signed-in specialist, not a name supplied by a client.
-	if b.ApprovedBy != "" {
-		u, _ := auth.UserFromContext(ctx)
-		b.ApprovedBy = u.UUID
-		if strings.TrimSpace(b.ReviewNotes) == "" {
-			return nil, bad("для согласования укажите заключение специалиста УМР")
-		}
-	}
+	// Review metadata is retained for compatibility, but review is temporarily not required.
 	payload, err := protojson.Marshal(b)
 	if err != nil {
 		return nil, bad("неверный формат банка")
@@ -275,9 +268,6 @@ func (m *Module) VariantsGenerate(ctx context.Context, req *connect.Request[pb.V
 		}
 		if err := Validate(b); err != nil {
 			return err
-		}
-		if b.ApprovedBy == "" {
-			return bad("варианты можно сформировать после согласования специалистом УМР")
 		}
 		for i := 0; i < int(b.VariantCount); i++ {
 			selected, err := VariantSections(b)

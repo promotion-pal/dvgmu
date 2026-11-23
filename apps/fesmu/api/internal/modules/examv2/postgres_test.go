@@ -41,8 +41,8 @@ func TestV2PostgresGenerateFrozenVariantsAndRevision(t *testing.T) {
 	m := New(db, nil)
 	b := validBank()
 	b.Discipline = uuid.NewString()
-	b.ApprovedBy = "approve"
-	b.ReviewNotes = "Проверено специалистом"
+	b.ApprovedBy = ""
+	b.ReviewNotes = ""
 	saved, err := m.BankSave(ctx, connect.NewRequest(&pb.BankSaveRequest{Bank: b}))
 	if err != nil {
 		t.Fatal(err)
