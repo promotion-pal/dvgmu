@@ -1,72 +1,33 @@
 package examv2
 
 import (
-	"strings"
-	"testing"
-
+	pb "fesmu/contract/fesmu/exam/service/v2"
 	svc "fesmu/contract/fesmu/service/v1"
 	"google.golang.org/protobuf/proto"
+	"testing"
 )
 
-func duplicateFixture() *svc.TestQuestionInput {
-	return &svc.TestQuestionInput{Text: "Выберите вещество", Answers: []*svc.TestAnswerInput{{Text: "Натрий", IsCorrect: true}, {Text: "Калий"}}}
-}
-func TestFullQuestionIdentityAllowsDifferentTasksWithSameStem(t *testing.T) {
-	for _, tc := range []struct {
-		name   string
-		change func(*svc.TestQuestionInput)
-	}{
-		{"different answers", func(q *svc.TestQuestionInput) { q.Answers[1].Text = "Кальций" }},
-		{"different image", func(q *svc.TestQuestionInput) { q.Image = strings.Repeat("a", 64) }},
-		{"significant punctuation", func(q *svc.TestQuestionInput) { q.Text = "Выберите вещество+" }},
-	} {
-		t.Run(tc.name, func(t *testing.T) {
-			b := validBank()
-			a := duplicateFixture()
-			other := proto.Clone(a).(*svc.TestQuestionInput)
-			tc.change(other)
-			b.Sections[0].Questions = []*svc.TestQuestionInput{a, other}
-			b.Sections[0].Quota = 2
-			if err := Validate(b); err != nil {
-				t.Fatal("different full tasks were rejected", err)
-			}
-			selected, err := VariantSections(b)
-			if err != nil || len(selected[0].Questions) != 2 {
-				t.Fatal("distinct questions lost during generation", err)
-			}
-		})
+func TestRepeatedQuestionsAreAcceptedAndPreserved(t *testing.T) {
+	q := &svc.TestQuestionInput{Text: "Одинаковый вопрос", Answers: []*svc.TestAnswerInput{{Text: "Да", IsCorrect: true}, {Text: "Нет"}}}
+	changed := proto.Clone(q).(*svc.TestQuestionInput)
+	changed.Answers[0].IsCorrect = false
+	changed.Answers[1].IsCorrect = true
+	b := validBank()
+	b.Sections = []*pb.BankSection{
+		{Name: "Обычный", Quota: 3, Topics: []*pb.BankTopic{
+			{Name: "Первая тема", Questions: []*svc.TestQuestionInput{q, proto.Clone(q).(*svc.TestQuestionInput)}},
+			{Name: "Вторая тема", Questions: []*svc.TestQuestionInput{proto.Clone(q).(*svc.TestQuestionInput)}},
+		}},
+		{Name: "Готовый", ReadyVariant: true, Topics: []*pb.BankTopic{{Name: "Файл", Questions: []*svc.TestQuestionInput{proto.Clone(q).(*svc.TestQuestionInput), changed}}}},
 	}
-	a := duplicateFixture()
-	a.Text = "Заряд Na+"
-	b := proto.Clone(a).(*svc.TestQuestionInput)
-	b.Text = "Заряд Na-"
-	if questionIdentity(a) == questionIdentity(b) {
-		t.Fatal("charge symbols must not disappear")
+	if err := Validate(b); err != nil {
+		t.Fatal("repeated content must not block saving", err)
 	}
-	a.Text = "Доза 0,1 мг"
-	b.Text = "Доза 01 мг"
-	if questionIdentity(a) == questionIdentity(b) {
-		t.Fatal("decimal punctuation must not disappear")
+	sections, err := VariantSections(b)
+	if err != nil {
+		t.Fatal("repeated content must not block generation", err)
 	}
-}
-func TestDuplicateErrorIdentifiesBothLocationsAndAnswerConflicts(t *testing.T) {
-	a := duplicateFixture()
-	b := proto.Clone(a).(*svc.TestQuestionInput)
-	b.Text = "  ВЫБЕРИТЕ   вещество "
-	b.Answers[0], b.Answers[1] = b.Answers[1], b.Answers[0]
-	seen := map[string]questionOccurrence{}
-	first := "раздел «Кардиология», тема «Первый файл», вопрос №3"
-	second := "раздел «Готовый вариант», тема «Второй файл», вопрос №7"
-	if err := registerQuestion(seen, a, first); err != nil {
-		t.Fatal(err)
-	}
-	err := registerQuestion(seen, b, second)
-	if err == nil || !strings.Contains(err.Error(), first) || !strings.Contains(err.Error(), second) {
-		t.Fatalf("duplicate location missing: %v", err)
-	}
-	b.Answers[0].IsCorrect = !b.Answers[0].IsCorrect
-	b.Answers[1].IsCorrect = !b.Answers[1].IsCorrect
-	if err := registerQuestion(seen, b, second); err == nil || !strings.Contains(err.Error(), "Разметка правильного ответа отличается") {
-		t.Fatalf("answer-key conflict hidden: %v", err)
+	if len(sections[0].Questions) != 3 || len(sections[1].Questions) != 2 || len(params(b, sections).Questions) != 5 {
+		t.Fatal("repeated entries were silently removed")
 	}
 }

@@ -80,7 +80,7 @@ func VariantSections(b *pb.Bank) ([]*pb.BankSection, error) {
 	return out, nil
 }
 
-func validateTopics(b *pb.Bank, section *pb.BankSection, seen map[string]questionOccurrence) error {
+func validateTopics(b *pb.Bank, section *pb.BankSection) error {
 	names := map[string]bool{}
 	for _, topic := range section.Topics {
 		if topic == nil {
@@ -92,7 +92,7 @@ func validateTopics(b *pb.Bank, section *pb.BankSection, seen map[string]questio
 			return bad("раздел «" + section.Name + "»: задайте непустые и уникальные названия тем")
 		}
 		names[key] = true
-		for questionIndex, q := range topic.Questions {
+		for _, q := range topic.Questions {
 			if q == nil {
 				return bad("тема «" + topic.Name + "»: пустой вопрос")
 			}
@@ -101,10 +101,7 @@ func validateTopics(b *pb.Bank, section *pb.BankSection, seen map[string]questio
 					return bad("тема «" + topic.Name + "»: пустой ответ")
 				}
 			}
-			location := fmt.Sprintf("раздел «%s», тема «%s», вопрос №%d", section.Name, topic.Name, questionIndex+1)
-			if err := registerQuestion(seen, q, location); err != nil {
-				return err
-			}
+
 		}
 		p := params(b, []*pb.BankSection{{Questions: topic.Questions}})
 		if len(p.Questions) > 0 {

@@ -71,7 +71,6 @@ func TestTopicStructureRejectsInvalidQuotasNamesAndDuplicates(t *testing.T) {
 		{"negative quota", func(b *pb.Bank) { b.Sections[0].Quota = -1 }},
 		{"empty topic name", func(b *pb.Bank) { b.Sections[0].Topics[0].Name = " " }},
 		{"duplicate topic name", func(b *pb.Bank) { b.Sections[0].Topics[1].Name = " нарушения РИТМА " }},
-		{"duplicate question across topics", func(b *pb.Bank) { b.Sections[1].Topics[0].Questions[0] = b.Sections[0].Topics[0].Questions[0] }},
 		{"multiple correct", func(b *pb.Bank) { b.Sections[0].Topics[0].Questions[0].Answers[1].IsCorrect = true }},
 		{"nil topic", func(b *pb.Bank) { b.Sections[0].Topics[0] = nil }},
 	}
@@ -192,9 +191,6 @@ func TestReadySectionDoesNotBypassQuestionValidation(t *testing.T) {
 		section func(*pb.Bank) *pb.BankSection
 	}{
 		{"empty", func(*pb.Bank) *pb.BankSection { return &pb.BankSection{Name: "Готовый", ReadyVariant: true} }},
-		{"duplicate", func(b *pb.Bank) *pb.BankSection {
-			return &pb.BankSection{Name: "Готовый", ReadyVariant: true, Topics: []*pb.BankTopic{{Name: "Из файла", Questions: b.Sections[0].Topics[0].Questions}}}
-		}},
 		{"multiple correct", func(*pb.Bank) *pb.BankSection {
 			t := topic("Готовый", 1)
 			t.Questions[0].Answers[1].IsCorrect = true

@@ -168,7 +168,6 @@ func Validate(b *pb.Bank) error {
 		return bad("добавьте от 1 до 100 разделов")
 	}
 	names := map[string]bool{}
-	seen := map[string]questionOccurrence{}
 	total := 0
 	all := 0
 	for _, s := range b.Sections {
@@ -193,7 +192,7 @@ func Validate(b *pb.Bank) error {
 		if len(s.Topics) > 100 {
 			return bad("в разделе допускается не больше 100 тем")
 		}
-		if err := validateTopics(b, s, seen); err != nil {
+		if err := validateTopics(b, s); err != nil {
 			return err
 		}
 	}

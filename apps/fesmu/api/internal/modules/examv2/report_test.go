@@ -26,9 +26,6 @@ func TestBankRejectsInvalidQuotasAndMultipleAnswers(t *testing.T) {
 		func(b *pb.Bank) { b.Sections[0].Quota = 2 },
 		func(b *pb.Bank) { b.Sections[0].Questions[0].Answers[1].IsCorrect = true },
 		func(b *pb.Bank) { b.Sections[0].Questions[0].Answers[0].IsCorrect = false },
-		func(b *pb.Bank) {
-			b.Sections = append(b.Sections, &pb.BankSection{Name: "Другой", Quota: 1, Questions: b.Sections[0].Questions})
-		},
 		func(b *pb.Bank) { b.Good = b.Excellent },
 		func(b *pb.Bank) { b.Semester = 13 },
 	} {
