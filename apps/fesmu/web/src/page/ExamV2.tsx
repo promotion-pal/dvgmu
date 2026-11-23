@@ -16,8 +16,9 @@ import { TestSessionCreateModal, examTestSessionApi, useTestSessionCreate } from
 import type { TestSession } from "@/widgets/test-session/test-session.schema";
 import { Can } from "@/features/access";
 import { PermissionSection } from "@/shared/config/permissions";
-import { SectionEditor, questionKey, sectionQuestions } from "./exam-v2/SectionEditor";
+import { SectionEditor, sectionQuestions } from "./exam-v2/SectionEditor";
 import type { SourceTest } from "./exam-v2/SectionEditor";
+import { existingQuestions, registerImportedTopic } from "./exam-v2/question-validation";
 const client = createClient(ExamBankService, connectTransport);
 const ownClient = createClient(ExamStudentService, connectTransport);
 const specialties = ["Лечебное дело", "Педиатрия", "Стоматология", "Фармация", "Медицинская биохимия", "Клиническая психология", "Социальная работа", "Сестринское дело", "Фармация медико-фармацевтического колледжа", "Стоматология профилактическая медико-фармацевтического колледжа"];
@@ -202,16 +203,13 @@ export default function ExamV2Page() {
         if (bankRef.current !== bank)
             throw new Error("Банк изменился во время загрузки. Повторите импорт для текущей редакции.");
         const incoming = newTopics.flatMap(topic => topic.questions);
-        const seen = new Set(bank.sections.flatMap(section => sectionQuestions(section).map(q => questionKey(q.text))));
-        for (const [i, q] of incoming.entries()) {
-            if (q.answers.filter(a => a.isCorrect).length !== 1)
-                throw new Error(`Вопрос ${i + 1}: нужен ровно один правильный ответ. Пакет не добавлен.`);
-            const key = questionKey(q.text);
-            if (seen.has(key))
-                throw new Error(`Повтор вопроса: ${q.text}. Пакет не добавлен.`);
-            seen.add(key);
-        }
+        const seen = existingQuestions(bank.sections);
         const section = bank.sections[sectionIndex];
+        for (const topic of newTopics) {
+            // Keep the file/test name and file-local index visible in errors even
+            // when importing a package into one existing topic.
+            registerImportedTopic(seen, topic.questions, section.name, topic.name);
+        }
         if (topicIndex !== undefined) {
             changeSection(sectionIndex, { topics: section.topics.map((old, i) => i === topicIndex ? { ...old, questions: [...old.questions, ...incoming] } : old) });
         }
@@ -242,19 +240,12 @@ export default function ExamV2Page() {
         const topics = await readTopics(files);
         if (bankRef.current !== bank)
             throw new Error("Банк изменился во время загрузки. Повторите импорт для текущей редакции.");
-        const seen = new Set(bank.sections.flatMap(section => sectionQuestions(section).map(q => questionKey(q.text))));
+        const seen = existingQuestions(bank.sections);
         const names = new Set(bank.sections.map(section => section.name.trim().toLocaleLowerCase("ru")));
         const sections = topics.map(topic => {
             if (!topic.questions.length)
                 throw new Error(`Файл «${topic.name}» не содержит вопросов. Пакет не добавлен.`);
-            for (const [i, q] of topic.questions.entries()) {
-                if (q.answers.filter(answer => answer.isCorrect).length !== 1)
-                    throw new Error(`«${topic.name}», вопрос ${i + 1}: нужен ровно один правильный ответ. Пакет не добавлен.`);
-                const key = questionKey(q.text);
-                if (seen.has(key))
-                    throw new Error(`Повтор вопроса: ${q.text}. Пакет не добавлен.`);
-                seen.add(key);
-            }
+            registerImportedTopic(seen, topic.questions, topic.name, topic.name);
             let name = topic.name.trim() || "Готовый раздел";
             for (let n = 2; names.has(name.toLocaleLowerCase("ru")); n++)
                 name = `${topic.name.trim() || "Готовый раздел"} (${n})`;

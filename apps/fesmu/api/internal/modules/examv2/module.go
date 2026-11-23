@@ -168,7 +168,7 @@ func Validate(b *pb.Bank) error {
 		return bad("добавьте от 1 до 100 разделов")
 	}
 	names := map[string]bool{}
-	seen := map[string]bool{}
+	seen := map[string]questionOccurrence{}
 	total := 0
 	all := 0
 	for _, s := range b.Sections {

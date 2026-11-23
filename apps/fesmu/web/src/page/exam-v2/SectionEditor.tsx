@@ -8,7 +8,6 @@ import { Button } from "@/shared/ui/button";
 import { Can } from "@/features/access";
 import { PermissionSection } from "@/shared/config/permissions";
 const field = "w-full rounded-md border bg-background p-2 text-sm";
-export const questionKey = (text: string) => text.toLocaleLowerCase("ru").replace(/ё/g, "е").replace(/[^\p{L}\p{N}]+/gu, " ").trim();
 export const sectionQuestions = (section: BankSection) => [...section.questions, ...section.topics.flatMap(topic => topic.questions)];
 export type SourceTest = {
     id: string;
