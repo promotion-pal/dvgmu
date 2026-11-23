@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import {generationBlocker,generateSavedVariants} from "../src/page/exam-v2/generation.ts";
+import {generationBlocker,generateSavedVariants,isReadyExam,variantsForBank} from "../src/page/exam-v2/generation.ts";
 const bank=()=>({id:5n,revision:2n,approvedBy:"specialist",reviewNotes:"Проверено УМР"});
 test("unsaved bank is saved before generating with the returned identity",async()=>{
  const calls:string[]=[];
@@ -31,4 +31,14 @@ test("failed save never starts generation",async()=>{
 });
 test("empty generation response is not presented as success",async()=>{
  await assert.rejects(generateSavedVariants(bank(),false,{save:async b=>b,generate:async()=>[]}),/не вернул/);
+});
+
+test("ready exams and lists remain attached to the selected bank",()=>{
+ assert.equal(isReadyExam({sections:[{readyVariant:true}]}),true);
+ assert.equal(isReadyExam({sections:[{readyVariant:true},{readyVariant:false}]}),false);
+ assert.equal(isReadyExam({sections:[]}),false);
+ const variants=[{bankId:1n,id:1n},{bankId:2n,id:2n}];
+ assert.deepEqual(variantsForBank(variants,{id:2n,revision:1n}),[variants[1]]);
+ assert.deepEqual(variantsForBank(variants,{id:0n,revision:0n}),[]);
+ assert.deepEqual(variantsForBank(variants,undefined),[]);
 });

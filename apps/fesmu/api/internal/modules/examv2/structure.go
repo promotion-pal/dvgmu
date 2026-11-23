@@ -124,3 +124,23 @@ func validateTopicQuestions(p models.TestParams) error {
 	}
 	return nil
 }
+
+// A fully prepared exam has one fixed set; generating copies adds no value.
+func IsReadyExam(b *pb.Bank) bool {
+	if b == nil || len(b.Sections) == 0 {
+		return false
+	}
+	for _, section := range b.Sections {
+		if section == nil || !section.ReadyVariant {
+			return false
+		}
+	}
+	return true
+}
+
+func generatedTitle(b *pb.Bank, index int) string {
+	if IsReadyExam(b) {
+		return b.Discipline
+	}
+	return fmt.Sprintf("%s %s · %s · %02d", b.AcademicYear, b.Discipline, map[string]string{"winter": "зима", "summer": "лето"}[b.Season], index+1)
+}

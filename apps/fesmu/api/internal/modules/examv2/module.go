@@ -145,6 +145,9 @@ func Validate(b *pb.Bank) error {
 		return bad("заполните банк")
 	}
 	NormalizeStructure(b)
+	if IsReadyExam(b) {
+		b.VariantCount = 1
+	}
 	b.Specialty = strings.TrimSpace(b.Specialty)
 	b.Faculty = strings.TrimSpace(b.Faculty)
 	b.AcademicYear = strings.TrimSpace(b.AcademicYear)
@@ -275,7 +278,7 @@ func (m *Module) VariantsGenerate(ctx context.Context, req *connect.Request[pb.V
 				return err
 			}
 			p := params(b, selected)
-			p.Topic = fmt.Sprintf("%s %s · %s · %02d", b.AcademicYear, b.Discipline, map[string]string{"winter": "зима", "summer": "лето"}[b.Season], i+1)
+			p.Topic = generatedTitle(b, i)
 			test, err := models.NewTest(p, time.Now())
 			if err != nil {
 				return bad(err.Error())
