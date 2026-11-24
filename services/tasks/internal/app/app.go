@@ -40,5 +40,6 @@ func New(log *slog.Logger, cfg *config.Config) *App {
 	statuses := taskgrpc.NewStatusController(service.NewStatusService(storage.NewStatusStorage(db)), log)
 	priorities := taskgrpc.NewPriorityController(service.NewPriorityService(storage.NewPriorityStorage(db)), log)
 	forms := taskgrpc.NewServiceFormController(service.NewServiceFormService(storage.NewServiceFormStorage(db)), log)
-	return &App{GRPCServer: grpcapp.New(log, sqlDB.PingContext, cfg, directions, catalog, statuses, priorities, forms)}
+	settings := taskgrpc.NewServiceSettingsController(service.NewServiceSettingsService(storage.NewServiceSettingsStorage(db)), log)
+	return &App{GRPCServer: grpcapp.New(log, sqlDB.PingContext, cfg, directions, catalog, statuses, priorities, forms, settings)}
 }
