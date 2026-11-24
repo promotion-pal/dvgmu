@@ -1,6 +1,6 @@
 export type GeneratableBank={id:bigint;revision:bigint};
 export function generationBlocker(bank:GeneratableBank|undefined):string|undefined{
- if(!bank)return "Выберите банк во вкладке «Банк и структура».";
+ if(!bank)return "Выберите банк во вкладке «Банки вопросов».";
  return undefined;
 }
 export async function generateSavedVariants<T extends GeneratableBank,V>(bank:T,dirty:boolean,api:{save:(bank:T)=>Promise<T>;generate:(id:bigint,revision:bigint)=>Promise<V[]>}):Promise<{bank:T;variants:V[]}>{

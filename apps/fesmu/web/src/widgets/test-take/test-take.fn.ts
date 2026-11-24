@@ -189,6 +189,7 @@ const useTestTake = (token: string, api: TestTakeApi = testTakeApi, exam = false
     const confirmFinish = () => {
         if (!state) return;
         const left = state.questions.filter((question) => !(state.picked[question.id]?.length)).length;
+        if (left) { toast.error(`Ответьте на все вопросы: осталось ${left}.`); return; }
         const ask = left ? `Без ответа осталось вопросов: ${left}. Завершить тест?` : "Завершить тест? Изменить ответы будет нельзя.";
         if (!finishing && confirm(ask)) finish();
     };
@@ -212,8 +213,8 @@ const useTestTake = (token: string, api: TestTakeApi = testTakeApi, exam = false
             void finish();
         };
         const onVisibility = () => { if (document.visibilityState !== "visible") disqualify(); };
-        document.addEventListener("visibilitychange", onVisibility);
-        window.addEventListener("blur", disqualify);
+        if (!exam) document.addEventListener("visibilitychange", onVisibility);
+        if (!exam) window.addEventListener("blur", disqualify);
         const blockCopy = (event: Event) => event.preventDefault();
         document.addEventListener("copy", blockCopy);
         document.addEventListener("cut", blockCopy);
@@ -231,7 +232,7 @@ const useTestTake = (token: string, api: TestTakeApi = testTakeApi, exam = false
             document.removeEventListener("keydown", blockShortcut);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [running, state?.attemptToken]);
+    }, [running, state?.attemptToken, exam]);
 
     // The deadline on the student's clock.
     const deadline = state ? state.deadline - state.clockOffset : undefined;

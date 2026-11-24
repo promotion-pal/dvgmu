@@ -258,7 +258,7 @@ const TestTakeQuestions: FC<{ take: TestTake }> = ({ take }) => {
                             <ArrowRightIcon className="size-4" />
                         </Button>
                     )}
-                    <Button onClick={confirmFinish} disabled={finishing} variant={last ? "default" : "secondary"}>
+                    <Button onClick={confirmFinish} disabled={finishing || answered < state.questions.length} title={answered < state.questions.length ? "Ответьте на все вопросы" : undefined} variant={last ? "default" : "secondary"}>
                         {finishing ? "Завершение…" : (
                             <>
                                 Завершить<span className="hidden sm:inline"> тест</span>

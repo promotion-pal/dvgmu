@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/rand"
 	"errors"
+	"fmt"
 	"log/slog"
 	mrand "math/rand/v2"
 	"time"
@@ -258,6 +259,13 @@ func (s *TestSessionService) TestTakeAnswer(ctx context.Context, attemptToken st
 
 func (s *TestSessionService) TestTakeFinish(ctx context.Context, attemptToken string) (*TestAttemptView, error) {
 	view, err := s.updateAttempt(ctx, "TestSession.TestTakeFinish", attemptToken, func(a *models.TestAttempt, questions []models.TestSnapshotQuestion, now time.Time) error {
+		if s.exam && a.InProgress() && now.Before(a.Deadline) {
+			for _, question := range questions {
+				if len(a.Picked(question.ID)) == 0 {
+					return fmt.Errorf("%w: ответьте на все вопросы перед завершением", models.ErrTestInvalid)
+				}
+			}
+		}
 		a.Finish(questions, now)
 		return nil
 	})
