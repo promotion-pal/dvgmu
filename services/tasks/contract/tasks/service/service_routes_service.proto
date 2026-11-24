@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package tasks.service;
+
+service ServiceRoutesService {
+  rpc GetServiceRoutes(GetServiceRoutesRequest) returns (GetServiceRoutesResponse);
+  rpc UpdateServiceRoutes(UpdateServiceRoutesRequest) returns (UpdateServiceRoutesResponse);
+}
+
+message ServiceRouteRule {
+  // An empty value matches any applicant department as a fallback.
+  string applicant_department_id = 1;
+  string queue_id = 2;
+  // Defaults to true when omitted on update.
+  optional bool active = 3;
+}
+
+message GetServiceRoutesRequest {
+  int64 service_id = 1;
+}
+
+message GetServiceRoutesResponse {
+  int64 service_id = 1;
+  int64 version = 2;
+  repeated ServiceRouteRule rules = 3;
+}
+
+message UpdateServiceRoutesRequest {
+  int64 service_id = 1;
+  // Use 0 for an unconfigured service and the current version otherwise.
+  int64 expected_version = 2;
+  // Replaces all rules. An empty list removes all rules.
+  repeated ServiceRouteRule rules = 3;
+}
+
+message UpdateServiceRoutesResponse {
+  int64 service_id = 1;
+  int64 version = 2;
+  repeated ServiceRouteRule rules = 3;
+}

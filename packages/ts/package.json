@@ -16,6 +16,7 @@
     "./tasks/entity/service_form_pb": "./tasks/entity/service_form_pb.ts",
     "./tasks/service/service_form_service_pb": "./tasks/service/service_form_service_pb.ts",
     "./tasks/service/service_settings_service_pb": "./tasks/service/service_settings_service_pb.ts",
+    "./tasks/service/service_routes_service_pb": "./tasks/service/service_routes_service_pb.ts",
     "./tasks/service/direction_service_pb": "./tasks/service/direction_service_pb.ts",
     "./mdm/entity/user.entity_pb": "./mdm/entity/user.entity_pb.ts",
     "./mdm/enum/user.enum_pb": "./mdm/enum/user.enum_pb.ts",
