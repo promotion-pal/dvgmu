@@ -786,6 +786,7 @@ type ReportFetchRequest struct {
 	SessionId     int64                  `protobuf:"varint,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
 	AcademicYear  string                 `protobuf:"bytes,2,opt,name=academic_year,json=academicYear,proto3" json:"academic_year,omitempty"`
 	Season        string                 `protobuf:"bytes,3,opt,name=season,proto3" json:"season,omitempty"`
+	TestId        int64                  `protobuf:"varint,4,opt,name=test_id,json=testId,proto3" json:"test_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -839,6 +840,13 @@ func (x *ReportFetchRequest) GetSeason() string {
 		return x.Season
 	}
 	return ""
+}
+
+func (x *ReportFetchRequest) GetTestId() int64 {
+	if x != nil {
+		return x.TestId
+	}
+	return 0
 }
 
 type ReportFetchResponse struct {
@@ -1175,12 +1183,13 @@ const file_fesmu_exam_service_v2_exam_bank_service_proto_rawDesc = "" +
 	"\x05title\x18\x04 \x01(\tR\x05title\x12)\n" +
 	"\x10duration_minutes\x18\x05 \x01(\x05R\x0fdurationMinutes\x12\x1f\n" +
 	"\vshow_result\x18\x06 \x01(\bR\n" +
-	"showResult\"p\n" +
+	"showResult\"\x89\x01\n" +
 	"\x12ReportFetchRequest\x12\x1d\n" +
 	"\n" +
 	"session_id\x18\x01 \x01(\x03R\tsessionId\x12#\n" +
 	"\racademic_year\x18\x02 \x01(\tR\facademicYear\x12\x16\n" +
-	"\x06season\x18\x03 \x01(\tR\x06season\"6\n" +
+	"\x06season\x18\x03 \x01(\tR\x06season\x12\x17\n" +
+	"\atest_id\x18\x04 \x01(\x03R\x06testId\"6\n" +
 	"\x13ReportFetchResponse\x12\x1f\n" +
 	"\vreport_json\x18\x01 \x01(\tR\n" +
 	"reportJson\".\n" +

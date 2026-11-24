@@ -31,6 +31,8 @@ type ItemStat struct {
 	Unanswered     int               `json:"unanswered"`
 }
 type StudentRow struct {
+	TestID                *int64                     `json:"test_id,omitempty"`
+	TestTitle             string                     `json:"test_title"`
 	AskedQuestionIDs      []int64                    `json:"asked_question_ids"`
 	ID                    int64                      `json:"id"`
 	SessionID             int64                      `json:"session_id"`
@@ -88,7 +90,7 @@ func Analyze(session *models.TestSession, views []service.TestAttemptView) Repor
 			askedIDs = append(askedIDs, q.ID)
 		}
 		p := percent(a.Score, a.Total)
-		out.Students = append(out.Students, StudentRow{AskedQuestionIDs: askedIDs, ID: a.ID, SessionID: session.ID, Name: a.FullName, Group: a.StudentGroup, Score: a.Score, Total: a.Total, Percent: p, Grade: session.ExamSettings.Grade(p), Status: int32(a.Status), StartedAt: a.StartedAt, FinishedAt: a.FinishedAt, Answers: a.Answers, Events: a.Events, InstructionAcceptedAt: a.InstructionAcceptedAt, Settings: session.ExamSettings})
+		out.Students = append(out.Students, StudentRow{TestID: session.TestID, TestTitle: session.Topic, AskedQuestionIDs: askedIDs, ID: a.ID, SessionID: session.ID, Name: a.FullName, Group: a.StudentGroup, Score: a.Score, Total: a.Total, Percent: p, Grade: session.ExamSettings.Grade(p), Status: int32(a.Status), StartedAt: a.StartedAt, FinishedAt: a.FinishedAt, Answers: a.Answers, Events: a.Events, InstructionAcceptedAt: a.InstructionAcceptedAt, Settings: session.ExamSettings})
 	}
 	sort.SliceStable(completed, func(i, j int) bool { return completed[i].Attempt.Score > completed[j].Attempt.Score })
 	for _, q := range session.Questions {
@@ -239,6 +241,9 @@ func (m *Module) ReportFetch(ctx context.Context, req *connect.Request[pb.Report
 		out = Report{Title: "Сводный отчёт V2", Method: Method, Students: []StudentRow{}}
 		var sessions []models.TestSession
 		q := m.db.WithContext(ctx).Where("exam_settings->>'enabled'='true'")
+		if req.Msg.TestId > 0 {
+			q = q.Where("test_id=?", req.Msg.TestId)
+		}
 		if req.Msg.AcademicYear != "" {
 			q = q.Where("exam_settings->>'academic_year'=?", req.Msg.AcademicYear)
 		}
@@ -254,6 +259,10 @@ func (m *Module) ReportFetch(ctx context.Context, req *connect.Request[pb.Report
 				return nil, dbError(err)
 			}
 			report := Analyze(session, views)
+			if req.Msg.TestId > 0 && out.Title == "Сводный отчёт V2" {
+				out.Title = session.Topic
+				out.Settings = session.ExamSettings
+			}
 			out.Students = append(out.Students, report.Students...)
 		}
 		rank(out.Students)
