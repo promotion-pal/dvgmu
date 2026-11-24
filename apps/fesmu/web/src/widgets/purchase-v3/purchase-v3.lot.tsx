@@ -472,6 +472,17 @@ const FullEditPanel: FC<{ state: PurchaseV3State; l: PurchaseLot }> = ({ state, 
         <Card className="gap-4 border-amber-500/50 p-4">
             <p className="text-sm font-semibold">Полное редактирование закупки</p>
             <p className="text-xs text-muted-foreground">Сохраняйте каждый блок отдельно. Поля доступны независимо от текущего этапа.</p>
+            <Section title="Статус закупки">
+                <div className="grid gap-2 sm:grid-cols-[1fr_1fr_auto]">
+                    <select className={FIELD_CLASS} value={status} onChange={(e) => setStatus(Number(e.target.value) as PurchaseLotStatus)}>
+                        {statuses.map((s) => <option key={s} value={s}>{LOT_STATUS(s).label}</option>)}
+                    </select>
+                    <input className={FIELD_CLASS} value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Комментарий к ручному переходу" maxLength={2048} />
+                    <Button size="sm" disabled={state.busy || (status === l.status && !comment.trim() && planType === l.planType && Number(planYear || 0) === l.planYear && assigneeUuid === l.assigneeUuid && implementingDepartment === l.implementingDepartment && curatorId === l.curatorId.toString() && commissionComment === l.commissionComment && itemType === l.itemType)} onClick={async () => {
+                        if (await state.setLotStatus(l, status, comment.trim(), { planType, planYear: Number(planYear) || 0, assigneeUuid, implementingDepartment, curatorId: BigInt(curatorId || "0"), commissionComment, itemType })) setComment("");
+                    }}>Установить статус</Button>
+                </div>
+            </Section>
             <Section title="Наименование, описание, характеристики и коды">
                 <ContentForm state={state} l={{ ...l, status: PurchaseLotStatus.SPECIFICATION_CHECK }} />
             </Section>
@@ -485,17 +496,6 @@ const FullEditPanel: FC<{ state: PurchaseV3State; l: PurchaseLot }> = ({ state, 
             </Section>
             <Section title="Приёмка"><AcceptanceForm state={state} l={l} /></Section>
             <Section title="Инвентарные номера"><InventoryForm state={state} l={l} /></Section>
-            <Section title="Статус закупки">
-                <div className="grid gap-2 sm:grid-cols-[1fr_1fr_auto]">
-                    <select className={FIELD_CLASS} value={status} onChange={(e) => setStatus(Number(e.target.value) as PurchaseLotStatus)}>
-                        {statuses.map((s) => <option key={s} value={s}>{LOT_STATUS(s).label}</option>)}
-                    </select>
-                    <input className={FIELD_CLASS} value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Комментарий к ручному переходу" maxLength={2048} />
-                    <Button size="sm" disabled={state.busy || (status === l.status && !comment.trim() && planType === l.planType && Number(planYear || 0) === l.planYear && assigneeUuid === l.assigneeUuid && implementingDepartment === l.implementingDepartment && curatorId === l.curatorId.toString() && commissionComment === l.commissionComment && itemType === l.itemType)} onClick={async () => {
-                        if (await state.setLotStatus(l, status, comment.trim(), { planType, planYear: Number(planYear) || 0, assigneeUuid, implementingDepartment, curatorId: BigInt(curatorId || "0"), commissionComment, itemType })) setComment("");
-                    }}>Установить статус</Button>
-                </div>
-            </Section>
             <Section title="План и назначение">
                 <div className="grid gap-2 sm:grid-cols-2">
                     <Field label="Тип закупки"><select className={FIELD_CLASS} value={itemType} onChange={(e) => setItemType(Number(e.target.value) as PurchaseItemType)}><option value={PurchaseItemType.PRODUCT}>Товар</option><option value={PurchaseItemType.SERVICE}>Услуга</option></select></Field>
