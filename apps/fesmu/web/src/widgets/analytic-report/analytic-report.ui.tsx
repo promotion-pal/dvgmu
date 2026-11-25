@@ -400,9 +400,15 @@ export const AnalyticSummaryCard: FC<{
   onOpen: () => void;
   /** Карточка категории: вместо QR — число объектов. */
   objectsCount?: number;
-}> = ({ entity, onOpen, objectsCount }) => {
+  /** Показывать значения всех метрик сразу в карточке объекта. */
+  showAllFields?: boolean;
+}> = ({ entity, onOpen, objectsCount, showAllFields = false }) => {
   const brief = useMemo(() => summarizeAnalytic(entity), [entity]);
   const metrics = brief.activeFields.filter((f) => f.role !== "identity");
+  const fieldSummaries = useMemo(
+    () => showAllFields ? metrics.map((def) => summarizeField(entity.ratings, def)) : [],
+    [showAllFields, entity.ratings, metrics],
+  );
   const missingSoapCount = entity.type === AnalyticType.TOILET
     ? entity.ratings.filter((rating) => !rating.hasSoap).length
     : 0;
@@ -427,6 +433,21 @@ export const AnalyticSummaryCard: FC<{
         </span>
       </div>
       <p className="text-xs text-muted-foreground">{brief.headlineHint}</p>
+      {showAllFields && fieldSummaries.length > 0 && (
+        <div className="grid grid-cols-2 gap-2">
+          {fieldSummaries.map((summary) => (
+            <div key={summary.def.key} className="min-w-0 rounded-lg bg-muted/40 p-2.5">
+              <p className="truncate text-xs text-muted-foreground" title={summary.def.label}>{summary.def.label}</p>
+              <p className="mt-1 break-words text-sm font-semibold">
+                {summary.answered ? fieldHeadline(summary) : "Нет данных"}
+              </p>
+              {summary.def.kind !== "bool" && (
+                <p className="mt-0.5 text-xs text-muted-foreground">Ответили: {summary.answered}</p>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
       {entity.type === AnalyticType.TOILET && missingSoapCount > 0 && (
         <Badge variant="destructive" className="h-auto w-fit whitespace-normal py-1 text-left">
           ⚠ Нет мыла: {missingSoapCount} {plural(missingSoapCount, "ответ", "ответа", "ответов")}

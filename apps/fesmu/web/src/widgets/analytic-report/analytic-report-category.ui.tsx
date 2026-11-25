@@ -238,6 +238,7 @@ export const AnalyticCategoryReport: FC = () => {
                 <AnalyticSummaryCard
                   key={item.id.toString()}
                   entity={item}
+                  showAllFields
                   onOpen={() => navigate(`${ROUTE.ANALYTICS.REPORT}/${item.id}`)}
                 />
               ))}
