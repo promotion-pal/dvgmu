@@ -2,6 +2,7 @@
 import type { FC} from "react";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { BriefcaseIcon, ChartColumnIcon, GraduationCapIcon, ShieldCheckIcon, ToiletIcon, WrenchIcon } from "lucide-react";
 import { cn } from "@/shared/lib/utils";
 import { analyticShortName } from "@/widgets/analytic/analytic.utils";
 import { ROUTE } from "@/shared/config/path";
@@ -69,6 +70,23 @@ const FieldStatCard: FC<{ summary: FieldSummary }> = ({ summary }) => (
     </p>
   </div>
 );
+
+const iconForAnalyticType = (type: AnalyticType) => {
+  switch (type) {
+    case AnalyticType.WORKPLACE:
+      return BriefcaseIcon;
+    case AnalyticType.LECTURE:
+      return GraduationCapIcon;
+    case AnalyticType.TOILET:
+      return ToiletIcon;
+    case AnalyticType.INFORMATION_SECURITY:
+      return ShieldCheckIcon;
+    case AnalyticType.TECHNICAL_SUPPLY:
+      return WrenchIcon;
+    default:
+      return ChartColumnIcon;
+  }
+};
 
 export const AnalyticDetail: FC<{
   entity: Analytic;
@@ -206,11 +224,15 @@ export const AnalyticSummaryCard: FC<{
   const missingSoapCount = entity.type === AnalyticType.TOILET
     ? entity.ratings.filter((rating) => !rating.hasSoap).length
     : 0;
+  const TypeIcon = iconForAnalyticType(entity.type);
 
   return (
-    <div className="relative flex h-full min-h-[28rem] min-w-0 flex-col gap-3 rounded-xl border p-4 pb-28">
-      <div className="flex items-start justify-between gap-2">
-        <p className="min-w-0 break-words font-semibold leading-tight" title={entity.name}>
+    <div className="relative flex h-full min-w-0 flex-col gap-3 rounded-xl border p-4">
+      <div className="flex min-w-0 items-center gap-3 pr-2">
+        <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+          <TypeIcon className="size-5" aria-hidden="true" />
+        </span>
+        <p className="min-w-0 flex-1 break-words font-semibold leading-tight" title={entity.name}>
           {analyticShortName(entity)}
         </p>
         <Badge variant="secondary" className="shrink-0">
@@ -220,13 +242,25 @@ export const AnalyticSummaryCard: FC<{
         </Badge>
       </div>
 
-      <div className="flex items-baseline gap-2">
+      {entity.type === AnalyticType.TOILET && missingSoapCount > 0 && (
+        <Badge
+          variant="destructive"
+          className={cn(
+            "h-auto w-fit whitespace-normal py-1 text-left",
+            "xl:absolute xl:right-4 xl:top-[4.5rem] xl:max-w-[48%]",
+          )}
+        >
+          ⚠ Нет мыла: {missingSoapCount} {plural(missingSoapCount, "ответ", "ответа", "ответов")}
+        </Badge>
+      )}
+
+      <div className={cn("flex items-baseline gap-2", missingSoapCount > 0 && "xl:max-w-[48%]")}>
         <span className="text-2xl font-semibold">{brief.headline}</span>
         <span className="text-xs text-muted-foreground">
           {brief.responses} {plural(brief.responses, "ответ", "ответа", "ответов")}
         </span>
       </div>
-      <p className="text-xs text-muted-foreground">{brief.headlineHint}</p>
+      <p className={cn("text-xs text-muted-foreground", missingSoapCount > 0 && "xl:max-w-[48%]")}>{brief.headlineHint}</p>
       {showAllFields && fieldSummaries.length > 0 && (
         <div className="grid grid-cols-2 gap-2">
           {fieldSummaries.map((summary) => (
@@ -242,13 +276,7 @@ export const AnalyticSummaryCard: FC<{
           ))}
         </div>
       )}
-      {entity.type === AnalyticType.TOILET && missingSoapCount > 0 && (
-        <Badge variant="destructive" className="h-auto w-fit whitespace-normal py-1 text-left">
-          ⚠ Нет мыла: {missingSoapCount} {plural(missingSoapCount, "ответ", "ответа", "ответов")}
-        </Badge>
-      )}
-
-      <div className="absolute inset-x-4 bottom-4 flex flex-col gap-2">
+      <div className="mt-auto flex flex-col gap-2">
         {objectsCount === undefined && (
           <p className="text-xs text-muted-foreground">QR {entity.qr.toString()}</p>
         )}
@@ -324,12 +352,13 @@ export const AnalyticReportComponent: FC = () => {
           <CommonServiceError service="аналитики" onRetry={report.retry} />
         }
       >
-        <div className="grid auto-rows-fr gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {categories.map((group) => (
             <AnalyticSummaryCard
               key={group.type}
               entity={group.merged}
               objectsCount={group.objects.length}
+              showAllFields
               onOpen={() =>
                 navigate(ROUTE.ANALYTICS.REPORT_CATEGORY.replace(":type", String(group.type)))
               }
