@@ -414,7 +414,7 @@ export const AnalyticSummaryCard: FC<{
     : 0;
 
   return (
-    <div className="flex min-w-0 flex-col gap-3 rounded-xl border p-4">
+    <div className="flex h-full min-w-0 flex-col gap-3 rounded-xl border p-4">
       <div className="flex items-start justify-between gap-2">
         <p className="min-w-0 break-words font-semibold leading-tight" title={entity.name}>
           {analyticShortName(entity)}
@@ -473,7 +473,7 @@ export const AnalyticSummaryCard: FC<{
       <button
         type="button"
         onClick={onOpen}
-        className="mt-1 inline-flex items-center justify-center rounded-lg border px-3 py-1.5 text-sm hover:bg-muted"
+        className="mt-auto inline-flex h-11 w-full items-center justify-center rounded-lg border px-3 text-sm hover:bg-muted"
       >
         Подробнее
       </button>
