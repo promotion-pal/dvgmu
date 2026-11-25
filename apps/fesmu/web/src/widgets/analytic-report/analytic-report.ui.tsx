@@ -13,7 +13,7 @@ import { FieldDistributionChart } from "@/shared/components/chart";
 import { Badge } from "@/shared/ui/badge";
 import { Card } from "@/shared/ui/card";
 import { Input } from "@/shared/ui/input";
-import type { AnalyticType } from "@fesmu/contract/analytics/enum/analytic.enum_pb";
+import { AnalyticType } from "@fesmu/contract/analytics/enum/analytic.enum_pb";
 import type { Analytic } from "@fesmu/contract/analytics/entity/analytic.entity_pb";
 
 import {
@@ -46,6 +46,7 @@ const fieldHeadline = (summary: FieldSummary): string => {
     case "rating":
       return summary.average ? `${summary.average} / 5` : "Н/Д";
     case "bool":
+      if (summary.def.key === "hasSoap") return `Нет мыла: ${100 - summary.truePercent}%`;
       return `${summary.truePercent}%`;
     case "enum":
     case "enumList":
@@ -155,42 +156,50 @@ const RespondentsTable: FC<{
   return (
     <div className="flex flex-col gap-3">
       {hasAnyRespondents && (
-        <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
-          <Input
-            placeholder="Поиск по ФИО"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full sm:max-w-[220px]"
-          />
-          <select
-            value={sort}
-            onChange={(e) => setSort(e.target.value as RespondentSortMode)}
-            className="rounded-md border bg-background px-2 py-1.5 text-xs sm:w-auto"
-          >
-            {SORT_OPTIONS.map((o) => (
-              <option key={o.value} value={o.value}>
-                {o.label}
-              </option>
-            ))}
-          </select>
-          {filterFields.map((f) => (
+        <section className="rounded-lg border bg-muted/20 p-3">
+          <div className="mb-2">
+            <p className="text-sm font-semibold">Фильтры ответов</p>
+            <p className="text-xs text-muted-foreground">Поиск по ФИО, сортировка и отбор по значению поля.</p>
+          </div>
+          <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
+            <Input
+              placeholder="Поиск по ФИО"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full sm:max-w-[220px]"
+            />
             <select
-              key={f.def.key}
-              value={fieldFilters[f.def.key] ?? ""}
-              onChange={(e) =>
-                setFieldFilters((prev) => ({ ...prev, [f.def.key]: e.target.value }))
-              }
-              className="max-w-[200px] rounded-md border bg-background px-2 py-1.5 text-xs"
+              value={sort}
+              onChange={(e) => setSort(e.target.value as RespondentSortMode)}
+              aria-label="Сортировка ответов"
+              className="rounded-md border bg-background px-2 py-1.5 text-xs sm:w-auto"
             >
-              <option value="">{f.def.label}: все</option>
-              {f.buckets.map((b) => (
-                <option key={b.label} value={b.label}>
-                  {b.label} ({b.count})
+              {SORT_OPTIONS.map((o) => (
+                <option key={o.value} value={o.value}>
+                  {o.label}
                 </option>
               ))}
             </select>
-          ))}
-        </div>
+            {filterFields.map((f) => (
+              <select
+                key={f.def.key}
+                value={fieldFilters[f.def.key] ?? ""}
+                onChange={(e) =>
+                  setFieldFilters((prev) => ({ ...prev, [f.def.key]: e.target.value }))
+                }
+                aria-label={`Фильтр: ${f.def.label}`}
+                className="max-w-full rounded-md border bg-background px-2 py-1.5 text-xs sm:max-w-[200px]"
+              >
+                <option value="">{f.def.label}: все</option>
+                {f.buckets.map((b) => (
+                  <option key={b.label} value={b.label}>
+                    {b.label} ({b.count})
+                  </option>
+                ))}
+              </select>
+            ))}
+          </div>
+        </section>
       )}
 
       {rows.length === 0 ? (
@@ -389,6 +398,9 @@ export const AnalyticSummaryCard: FC<{
 }> = ({ entity, onOpen, objectsCount }) => {
   const brief = useMemo(() => summarizeAnalytic(entity), [entity]);
   const metrics = brief.activeFields.filter((f) => f.role !== "identity");
+  const missingSoapCount = entity.type === AnalyticType.TOILET
+    ? entity.ratings.filter((rating) => !rating.hasSoap).length
+    : 0;
 
   return (
     <div className="flex min-w-0 flex-col gap-3 rounded-xl border p-4">
@@ -410,6 +422,11 @@ export const AnalyticSummaryCard: FC<{
         </span>
       </div>
       <p className="text-xs text-muted-foreground">{brief.headlineHint}</p>
+      {entity.type === AnalyticType.TOILET && missingSoapCount > 0 && (
+        <Badge variant="destructive" className="h-auto w-fit whitespace-normal py-1 text-left">
+          ⚠ Нет мыла: {missingSoapCount} {plural(missingSoapCount, "ответ", "ответа", "ответов")}
+        </Badge>
+      )}
 
       <div className="flex flex-wrap gap-1 text-xs text-muted-foreground">
         {objectsCount === undefined && (
