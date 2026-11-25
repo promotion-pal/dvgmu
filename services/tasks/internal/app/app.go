@@ -2,15 +2,20 @@ package app
 
 import (
 	"log/slog"
+	"net/http"
 	"time"
 	_ "time/tzdata"
 
 	"dvgmu/tasks"
+	"dvgmu/tasks/internal/access"
 	grpcapp "dvgmu/tasks/internal/app/grpc"
 	"dvgmu/tasks/internal/config"
 	taskgrpc "dvgmu/tasks/internal/grpc"
 	"dvgmu/tasks/internal/service"
 	"dvgmu/tasks/internal/storage"
+	"fesmu/authsession"
+	mdmconnect "fesmu/contract/mdm/service/serviceconnect"
+	"fesmu/contract/tasks/service/serviceconnect"
 	"github.com/pressly/goose/v3"
 )
 
@@ -48,6 +53,16 @@ func New(log *slog.Logger, cfg *config.Config) *App {
 	if err != nil {
 		panic(err)
 	}
-	tasks := taskgrpc.NewTaskController(service.NewTaskService(storage.NewTaskStorage(db), numberLocation), cfg.LocalApplicant, log)
-	return &App{GRPCServer: grpcapp.New(log, sqlDB.PingContext, cfg, directions, catalog, statuses, priorities, forms, settings, routes, tasks)}
+	var taskHandler serviceconnect.TaskServiceHandler
+	if cfg.Auth.JWKSURL != "" || cfg.Auth.MDMURL != "" {
+		if cfg.Auth.JWKSURL == "" || cfg.Auth.MDMURL == "" {
+			panic("CreateTask requires both TASKS_AUTH_JWKS_URL and TASKS_MDM_URL")
+		}
+		keys := authsession.NewJWKS(cfg.Auth.JWKSURL)
+		verifier := authsession.NewVerifier(keys, cfg.Auth.Issuer, cfg.Auth.Audience, cfg.Auth.CookieName)
+		mdm := mdmconnect.NewUserServiceClient(&http.Client{Timeout: 5 * time.Second}, cfg.Auth.MDMURL)
+		applicant := access.NewApplicantResolver(verifier, mdm, log)
+		taskHandler = taskgrpc.NewTaskController(service.NewTaskService(storage.NewTaskStorage(db), numberLocation), applicant, log)
+	}
+	return &App{GRPCServer: grpcapp.New(log, sqlDB.PingContext, cfg, directions, catalog, statuses, priorities, forms, settings, routes, taskHandler)}
 }

@@ -28,6 +28,7 @@ import (
 	"dvgmu/api/internal/service/packages/certificate"
 	"dvgmu/api/internal/service/packages/user"
 	"dvgmu/api/internal/storage"
+	"fesmu/authsession"
 	examserviceconnect "fesmu/contract/fesmu/exam/service/v1/servicev1connect"
 	examv2connect "fesmu/contract/fesmu/exam/service/v2/servicev2connect"
 	serviceconnect "fesmu/contract/fesmu/service/v1/servicev1connect"
@@ -157,7 +158,7 @@ func New(
 		if jwksURL == "" {
 			jwksURL = strings.TrimRight(cfg.Auth.ServiceURL, "/") + "/.well-known/jwks.json"
 		}
-		authInterceptor = auth.NewInterceptor(auth.NewJWKS(jwksURL), cfg.Auth.Issuer, cfg.Auth.Audience, cfg.Auth.CookieName)
+		authInterceptor = auth.NewInterceptor(authsession.NewJWKS(jwksURL), cfg.Auth.Issuer, cfg.Auth.Audience, cfg.Auth.CookieName)
 		authInterceptor.Skip[serviceconnect.ScheduleCollectServiceScheduleCollectCreateProcedure] = true
 		// The group timetable is public information shown on the students' page
 		// (/schedule): reading it needs no login, editing it does.
@@ -317,6 +318,7 @@ func New(
 		userHandler,
 		cfg.Packages.MDM,
 		cfg.Packages.Tasks,
+		cfg.Packages.Requests,
 		cfg.Packages.Analytics,
 		cfg.Packages.Auth,
 		cfg.Auth.InternalToken,

@@ -1,4 +1,13 @@
+*
+!packages/
+!packages/go/
+!packages/go/**
+!packages/authsession/
+!packages/authsession/**
+!services/
+!services/tasks/
+!services/tasks/**
+**/.git
+**/.env
+**/.env.*
 **/node_modules
-**/dist
-**/.pnpm-store
-.git

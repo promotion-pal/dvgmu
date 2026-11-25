@@ -1,9 +1,5 @@
 env: local
 
-local_applicant:
-  id: local-applicant
-  department_id: simulation
-
 grpc:
   port: 4052
   timeout: 5s

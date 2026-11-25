@@ -3,6 +3,8 @@
 !packages/
 !packages/go/
 !packages/go/**
+!packages/authsession/
+!packages/authsession/**
 !apps/
 !apps/fesmu/
 !apps/fesmu/api/

@@ -4,6 +4,7 @@ go 1.26.4
 
 require (
 	ariga.io/atlas-provider-gorm v0.6.1
+	fesmu/authsession v0.0.0
 	connectrpc.com/connect v1.20.0
 	connectrpc.com/grpcreflect v1.3.0
 	github.com/golang-jwt/jwt/v5 v5.3.1
@@ -114,3 +115,5 @@ require fesmu/contract v0.0.0
 
 // Сгенерированный Go всех схем — make proto в корне монорепо.
 replace fesmu/contract => ../../../packages/go
+
+replace fesmu/authsession => ../../../packages/authsession

@@ -22,6 +22,7 @@ import (
 	examserviceconnect "fesmu/contract/fesmu/exam/service/v1/servicev1connect"
 	serviceconnect "fesmu/contract/fesmu/service/v1/servicev1connect"
 	mdmserviceconnect "fesmu/contract/mdm/service/serviceconnect"
+	requestserviceconnect "fesmu/contract/tasks/service/serviceconnect"
 	tasksserviceconnect "fesmu/contract/tickets/service/serviceconnect"
 )
 
@@ -56,6 +57,7 @@ func New(
 	userHandler *grpc.UserHandler,
 	mdmURL string,
 	tasksURL string,
+	requestsURL string,
 	analyticsURL string,
 	authURL string,
 	authToken string,
@@ -176,6 +178,9 @@ func New(
 	mux.Handle("GET /users", mdmProxy)
 	mux.Handle("/"+tasksserviceconnect.TicketDormitoryServiceName+"/", tasksProxy)
 	mux.Handle("/"+tasksserviceconnect.TicketBuildServiceName+"/", tasksProxy)
+	if requestsURL != "" {
+		mux.Handle(requestserviceconnect.TaskServiceCreateTaskProcedure, proxy.NewServicePassthrough(requestsURL))
+	}
 	mux.Handle("/"+analyticsserviceconnect.AnalyticServiceName+"/", analyticsProxy)
 	mux.Handle("/"+authv2connect.IdentityServiceName+"/", authProxy)
 

@@ -42,6 +42,8 @@ func New(
 		mux.Handle(serviceconnect.NewServiceFormServiceHandler(forms))
 		mux.Handle(serviceconnect.NewServiceSettingsServiceHandler(settings))
 		mux.Handle(serviceconnect.NewServiceRoutesServiceHandler(routes))
+	}
+	if tasks != nil {
 		mux.Handle(serviceconnect.NewTaskServiceHandler(tasks))
 	}
 	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, r *http.Request) {

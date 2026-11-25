@@ -67,6 +67,7 @@ type PackagesConfig struct {
 	Auth      string `yaml:"package_auth" env:"PACKAGE_AUTH"`
 	Files     string `yaml:"package_files" env:"PACKAGE_FILES"`
 	Tasks     string `yaml:"package_tasks" env:"PACKAGE_TASKS"`
+	Requests  string `yaml:"package_requests" env:"PACKAGE_REQUESTS"`
 	Analytics string `yaml:"package_analytics" env:"PACKAGE_ANALYTICS"`
 }
 

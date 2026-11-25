@@ -33,6 +33,7 @@
 | **mdm** | `services/mdm` | Главный справочник людей: пользователи, студенты, сотрудники, роли, доступы, подразделения, связка с AD (`ad_object_id`) | да | auth, fesmu api, sync |
 | **analytics** | `services/analytics` | Опросы по QR и их ответы | да | fesmu api |
 | **tickets** | `services/tickets` | Заявки (общежитие, здания) | да | fesmu api |
+| **tasks** | `services/tasks` | Каталог услуг, формы и регистрация заявок | да | fesmu api |
 | **file** | `services/file` | Генерация документов (справки), разбор Excel | да | fesmu api |
 | **notification** | `services/notification` | Отправка писем (SMTP) | — | сейчас в репозитории никто не вызывает |
 | **sync** | `services/sync` | Сверка MDM ↔ AD: читает обе стороны и пишет расхождения в лог | — | запускается по таймеру |
@@ -76,7 +77,10 @@
 | fesmu api | auth | прокси `contract.auth.v2.IdentityService` (служебный токен) | страница «Авторизация» в админке |
 | fesmu api | mdm | прокси `contract.service.UserService` | люди, роли, доступы (только ADMIN) |
 | fesmu api | analytics | прокси (только чтение) + модуль `survey` (запись) | опросы и отчёты |
-| fesmu api | tickets | прокси (право раздела «Заявки») | заявки |
+| fesmu api | tickets | прокси (право раздела «Заявки») | заявки общежитий и зданий |
+| fesmu api | tasks | прокси `CreateTask`, `PACKAGE_REQUESTS` | регистрация заявки на услугу |
+| tasks | auth | `/.well-known/jwks.json` | проверка сессии FESMU через общий пакет `packages/authsession` |
+| tasks | mdm | `UserFetchByUUID` | проверка профиля и получение подразделения заявителя |
 | fesmu api | file | клиент `FilesService` | справки |
 | auth | AD FS | WS-Trust | проверка пароля → objectGUID |
 | auth | mdm | `UserFetchByADObjectID` (служебный токен) | человек и роли по objectGUID |
@@ -93,6 +97,10 @@
    - Нашёл и активен → auth ставит cookie `fesmu_at` (JWT, 15 мин) и `fesmu_rt` (refresh, 30 дней) и возвращает пользователя в портал.
    - Не нашёл → вход есть, но `/me` отвечает `not_linked`.
 5. fesmu api проверяет `fesmu_at` по ключу из JWKS auth и пускает по ролям и правам из токена.
+
+При вызове `CreateTask` портал передаёт сессию в `tasks`. Сервис проверяет токен, берёт UUID автора из него и проверяет активность профиля в MDM. Если MDM вернул одно подразделение, оно сохраняется в заявке. Очередь определяется общим маршрутом услуги.
+
+Локальный `make dev-up` подключает `tasks` к auth и MDM. `CreateTask` доступен через API портала на `localhost:18200`, а справочники и маршруты — через веб-портал или напрямую на `localhost:4052`. Для отдельного запуска `tasks` нужны `TASKS_AUTH_JWKS_URL` и `TASKS_MDM_URL`, чтобы включить `CreateTask`.
 
 ## 5. Общие схемы (контракты)
 

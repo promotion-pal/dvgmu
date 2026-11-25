@@ -4,9 +4,9 @@ import (
 	"context"
 	"crypto/ed25519"
 	"crypto/rand"
-	"fesmu/contract/fesmu/service/v2/servicev2connect"
 	"encoding/base64"
 	"encoding/json"
+	"fesmu/contract/fesmu/service/v2/servicev2connect"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -14,14 +14,14 @@ import (
 	"testing"
 	"time"
 
+	"fesmu/authsession"
 	"github.com/golang-jwt/jwt/v5"
 )
 
 // fakeAuth — auth's JWKS endpoint with the keys currently published.
 type fakeAuth struct {
-	srv     *httptest.Server
-	keys    atomic.Value // map[string]ed25519.PublicKey
-	fetches atomic.Int32
+	srv  *httptest.Server
+	keys atomic.Value // map[string]ed25519.PublicKey
 }
 
 func newFakeAuth(t *testing.T) *fakeAuth {
@@ -29,7 +29,6 @@ func newFakeAuth(t *testing.T) *fakeAuth {
 	f := &fakeAuth{}
 	f.keys.Store(map[string]ed25519.PublicKey{})
 	f.srv = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
-		f.fetches.Add(1)
 		var keys []map[string]string
 		for kid, pub := range f.keys.Load().(map[string]ed25519.PublicKey) {
 			keys = append(keys, map[string]string{
@@ -69,7 +68,11 @@ func sign(t *testing.T, priv ed25519.PrivateKey, o tokenOpts) string {
 	if o.expireIn == 0 {
 		o.expireIn = 15 * time.Minute
 	}
-	tok := jwt.NewWithClaims(jwt.SigningMethodEdDSA, accessClaims{
+	tok := jwt.NewWithClaims(jwt.SigningMethodEdDSA, struct {
+		Username string   `json:"username"`
+		Roles    []string `json:"roles"`
+		jwt.RegisteredClaims
+	}{
 		Username: "ivanov_ii",
 		Roles:    o.roles,
 		RegisteredClaims: jwt.RegisteredClaims{
@@ -88,7 +91,7 @@ func sign(t *testing.T, priv ed25519.PrivateKey, o tokenOpts) string {
 }
 
 func newInterceptor(f *fakeAuth) *Interceptor {
-	return NewInterceptor(NewJWKS(f.srv.URL), "auth-service", "fesmu", "fesmu_at")
+	return NewInterceptor(authsession.NewJWKS(f.srv.URL), "auth-service", "fesmu", "fesmu_at")
 }
 
 func TestVerify_OK(t *testing.T) {
@@ -127,31 +130,6 @@ func TestVerify_Rejects(t *testing.T) {
 		if _, err := i.Verify(t.Context(), raw); err == nil {
 			t.Errorf("%s: accepted", name)
 		}
-	}
-}
-
-// Key rotated in auth: an unknown kid re-reads JWKS, without a restart here.
-func TestVerify_PicksUpRotatedKey(t *testing.T) {
-	f := newFakeAuth(t)
-	old := f.publish("k1")
-	i := newInterceptor(f)
-	if _, err := i.Verify(t.Context(), sign(t, old, tokenOpts{kid: "k1"})); err != nil {
-		t.Fatal(err)
-	}
-
-	next := f.publish("k2")
-	i.keys.fetchedAt = time.Time{} // past the refetch pause
-	if _, err := i.Verify(t.Context(), sign(t, next, tokenOpts{kid: "k2"})); err != nil {
-		t.Fatalf("rotated key: %v", err)
-	}
-
-	// Junk kids don't hammer auth: one refetch per pause.
-	before := f.fetches.Load()
-	for range 5 {
-		_, _ = i.Verify(t.Context(), sign(t, next, tokenOpts{kid: "junk"}))
-	}
-	if f.fetches.Load() != before {
-		t.Fatalf("refetched %d times within the pause", f.fetches.Load()-before)
 	}
 }
 

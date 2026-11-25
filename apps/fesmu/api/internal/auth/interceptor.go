@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"connectrpc.com/connect"
-	"github.com/golang-jwt/jwt/v5"
+	"fesmu/authsession"
 )
 
 type contextKey string
@@ -24,14 +24,7 @@ const (
 )
 
 // User is the signed-in person behind the access token: the MDM user.
-type User struct {
-	UUID     string // MDM uuid
-	Username string // sAMAccountName
-	Roles    []string
-	// Permissions — права на отдельные действия внутри раздела
-	// ("certificate.view"); каталог — internal/auth/permissions.go.
-	Permissions []string
-}
+type User authsession.User
 
 // HasRole: one of roles, or ADMIN, which passes every check.
 func (u *User) HasRole(roles ...string) bool {
@@ -43,21 +36,11 @@ func (u *User) HasRole(roles ...string) bool {
 	return false
 }
 
-type accessClaims struct {
-	Username string   `json:"username"`
-	Roles    []string `json:"roles"`
-	Perms    []string `json:"perms"`
-	jwt.RegisteredClaims
-}
-
 // Interceptor lets a Connect call through only with a valid auth access
 // token in the cookie. The token is checked here, against auth's public key
 // (JWKS) — no call to auth per request.
 type Interceptor struct {
-	keys       *JWKS
-	issuer     string
-	audience   string
-	cookieName string
+	verifier *authsession.Verifier
 	// Skip — открытые процедуры (публичные страницы): без входа.
 	Skip map[string]bool
 	// Optional — открытые процедуры, которым важно, кто вошёл: сессию
@@ -76,16 +59,13 @@ type Interceptor struct {
 	Sections map[string][]Section
 }
 
-func NewInterceptor(keys *JWKS, issuer, audience, cookieName string) *Interceptor {
+func NewInterceptor(keys *authsession.JWKS, issuer, audience, cookieName string) *Interceptor {
 	return &Interceptor{
-		keys:       keys,
-		issuer:     issuer,
-		audience:   audience,
-		cookieName: cookieName,
-		Skip:       map[string]bool{},
-		Optional:   map[string]bool{},
-		Access:     map[string][]string{},
-		Sections:   map[string][]Section{},
+		verifier: authsession.NewVerifier(keys, issuer, audience, cookieName),
+		Skip:     map[string]bool{},
+		Optional: map[string]bool{},
+		Access:   map[string][]string{},
+		Sections: map[string][]Section{},
 	}
 }
 
@@ -155,15 +135,11 @@ func (i *Interceptor) WrapStreamingClient(next connect.StreamingClientFunc) conn
 }
 
 func (i *Interceptor) authenticate(ctx context.Context, header http.Header) (context.Context, error) {
-	raw, err := i.tokenFromCookie(header)
+	user, err := i.verifier.FromHeader(ctx, header)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeUnauthenticated, err)
 	}
-	user, err := i.Verify(ctx, raw)
-	if err != nil {
-		return nil, connect.NewError(connect.CodeUnauthenticated, err)
-	}
-	return context.WithValue(ctx, userKey, user), nil
+	return context.WithValue(ctx, userKey, (*User)(user)), nil
 }
 
 // maybeAuthenticate adds the user to ctx when the session is valid and
@@ -178,37 +154,8 @@ func (i *Interceptor) maybeAuthenticate(ctx context.Context, header http.Header)
 // Verify checks the access token: EdDSA signature by auth's key, issuer,
 // audience, expiry.
 func (i *Interceptor) Verify(ctx context.Context, raw string) (*User, error) {
-	claims := &accessClaims{}
-	_, err := jwt.ParseWithClaims(raw, claims,
-		func(t *jwt.Token) (any, error) {
-			kid, _ := t.Header["kid"].(string)
-			return i.keys.Key(ctx, kid)
-		},
-		jwt.WithValidMethods([]string{jwt.SigningMethodEdDSA.Alg()}),
-		jwt.WithIssuer(i.issuer),
-		jwt.WithAudience(i.audience),
-		jwt.WithExpirationRequired(),
-	)
-	if err != nil {
-		return nil, errors.New("invalid or expired session")
-	}
-	if claims.Subject == "" {
-		return nil, errors.New("access token has no subject")
-	}
-	return &User{UUID: claims.Subject, Username: claims.Username, Roles: claims.Roles, Permissions: claims.Perms}, nil
-}
-
-func (i *Interceptor) tokenFromCookie(header http.Header) (string, error) {
-	cookieHeader := header.Get("Cookie")
-	if cookieHeader == "" {
-		return "", errors.New("missing session cookie")
-	}
-	req := &http.Request{Header: http.Header{"Cookie": {cookieHeader}}}
-	c, err := req.Cookie(i.cookieName)
-	if err != nil || c.Value == "" {
-		return "", errors.New("missing session cookie")
-	}
-	return c.Value, nil
+	user, err := i.verifier.Verify(ctx, raw)
+	return (*User)(user), err
 }
 
 func UserFromContext(ctx context.Context) (*User, bool) {

@@ -6,7 +6,7 @@ import (
 	"log/slog"
 
 	"connectrpc.com/connect"
-	"dvgmu/tasks/internal/config"
+	"dvgmu/tasks/internal/access"
 	"dvgmu/tasks/internal/service"
 	"dvgmu/tasks/internal/storage"
 	entity "fesmu/contract/tasks/entity"
@@ -17,21 +17,25 @@ import (
 
 type TaskController struct {
 	service   *service.TaskService
-	applicant config.LocalApplicantConfig
+	applicant *access.ApplicantResolver
 	log       *slog.Logger
 }
 
-func NewTaskController(service *service.TaskService, applicant config.LocalApplicantConfig, log *slog.Logger) *TaskController {
+func NewTaskController(service *service.TaskService, applicant *access.ApplicantResolver, log *slog.Logger) *TaskController {
 	return &TaskController{service: service, applicant: applicant, log: log}
 }
 
 func (c *TaskController) CreateTask(ctx context.Context, req *connect.Request[api.CreateTaskRequest]) (*connect.Response[api.CreateTaskResponse], error) {
+	applicant, err := c.applicant.Resolve(ctx, req.Header())
+	if err != nil {
+		return nil, err
+	}
 	input := service.TaskRegistration{
 		ServiceID: req.Msg.ServiceId, FormVersion: req.Msg.FormVersion,
 		Title: req.Msg.Title, Description: req.Msg.Description, ExtraFields: req.Msg.ExtraFields,
 		IdempotencyKey: req.Msg.IdempotencyKey,
 	}
-	task, err := c.service.Create(ctx, input, c.applicant.ID, c.applicant.DepartmentID)
+	task, err := c.service.Create(ctx, input, applicant.ID, applicant.DepartmentID)
 	if err != nil {
 		return nil, c.rpcError(err)
 	}

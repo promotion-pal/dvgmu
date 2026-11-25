@@ -6,6 +6,7 @@ FROM golang:1.26-alpine AS build
 # повторяет репозиторий.
 WORKDIR /src
 COPY packages/go packages/go
+COPY packages/authsession packages/authsession
 COPY apps/fesmu/api apps/fesmu/api
 WORKDIR /src/apps/fesmu/api
 

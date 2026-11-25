@@ -78,7 +78,8 @@ func (s *TaskStorage) Create(ctx context.Context, task models.Task, key models.T
 		if err != nil {
 			return err
 		}
-		resolution := routes.Resolve(task.AuthorDepartmentIDAtCreation)
+		// All applicants for the same service use its common route.
+		resolution := routes.Resolve("")
 		task.ServiceID = &serviceID
 		task.DirectionID = &service.DirectionID
 		task.StatusID = &settings.InitialStatusID

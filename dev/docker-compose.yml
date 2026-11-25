@@ -26,7 +26,7 @@ services:
       - ./postgres-init.sql:/docker-entrypoint-initdb.d/init.sql:ro
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U postgres"]
       interval: 2s
       retries: 30
 
@@ -104,7 +104,7 @@ services:
     volumes:
       - tasks-pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d tasks"]
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U postgres -d tasks"]
       interval: 2s
       retries: 30
 
@@ -115,10 +115,15 @@ services:
       <<: *db
       DB_HOST: tasks-db
       DB_NAME: tasks
-      GRPC_HOST: 0.0.0.0
+      GRPC_HOST: "0.0.0.0"
       GRPC_PORT: "4052"
+      TASKS_AUTH_JWKS_URL: http://auth:4000/.well-known/jwks.json
+      TASKS_MDM_URL: http://mdm:4000
     ports: ["127.0.0.1:${TASKS_GRPC_PORT:-4052}:4052"]
-    depends_on: { tasks-db: { condition: service_healthy } }
+    depends_on:
+      tasks-db: { condition: service_healthy }
+      auth: { condition: service_started }
+      mdm: { condition: service_started }
 
   notification:
     build: { context: .., dockerfile: services/notification/api/Dockerfile }
@@ -160,6 +165,7 @@ services:
       PACKAGE_ANALYTICS: http://analytics:4000
       PACKAGE_FILES: http://file:4000
       PACKAGE_TASKS: http://tickets:4000
+      PACKAGE_REQUESTS: http://tasks:4052
       AUTH_SERVICE_URL: http://auth:4000
       AUTH_JWKS_URL: http://auth:4000/.well-known/jwks.json
       AUTH_PUBLIC_URL: http://localhost:18201
@@ -167,7 +173,7 @@ services:
       AUTH_JWT_ISSUER: auth-service
       AUTH_JWT_AUDIENCE: fesmu
     ports: ["127.0.0.1:18200:4000"]
-    depends_on: [postgres, mdm, auth, analytics, file, tickets]
+    depends_on: [postgres, mdm, auth, analytics, file, tickets, tasks]
 
   seed-students:
     profiles: [tools]
