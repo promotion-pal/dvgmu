@@ -1,0 +1,19 @@
+exclude: '(?:^|/)pnpm-lock\.yaml$|(?:_pb\.ts|\.pb\.go|\.connect\.go)$|\.min\.(?:[cm]?js|css)$'
+
+repos:
+  - repo: local
+    hooks:
+      - id: prettier
+        name: Format web code and configs with Prettier
+        entry: prettier --write --
+        language: node
+        additional_dependencies: [prettier@3.10.1]
+        files: '\.(?:[cm]?[jt]s|[jt]sx|css|scss|html|jsonc?|ya?ml)$'
+        types: [text]
+
+      - id: check-line-length
+        name: Check for lines over 1200 characters
+        entry: python tools/check_line_length.py
+        language: python
+        files: '\.(?:[cm]?[jt]s|[jt]sx|css|scss|html|jsonc?|ya?ml|go|proto)$'
+        types: [text]
