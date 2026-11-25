@@ -1,0 +1,9 @@
+.git
+db/postgres
+storage
+output
+dormitory
+analytics
+*.test
+coverage.out
+coverage.html

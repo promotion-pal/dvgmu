@@ -1,0 +1,7 @@
+env: local
+
+grpc:
+  port: 4041
+  timeout: 5s
+  allowed_origins:
+    - http://localhost:5174

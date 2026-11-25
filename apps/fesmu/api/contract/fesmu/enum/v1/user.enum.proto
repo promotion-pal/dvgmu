@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package contract.enum.v1;
+
+option go_package = "enum_v1;enum_pb";
+
+// What a user may do in fesmu. ADMIN passes every role check. Roles are set
+// in MDM and arrive in the auth access token by name; the numbers here are
+// fesmu's own and differ from MDM's.
+enum UserRole {
+  USER_ROLE_UNSPECIFIED = 0;
+  USER_ROLE_ADMIN = 1;
+  USER_ROLE_STAFF = 2;
+  USER_ROLE_STUDENT = 3;
+  USER_ROLE_TEACHER = 4;
+}

@@ -1,0 +1,58 @@
+env: dev
+
+grpc:
+  port: 4060
+  timeout: 5s
+  allowed_origins:
+    - http://localhost:3000
+    - http://localhost:5173
+    - http://localhost:5174
+
+packages:
+  package_mdm: "http://127.0.0.1:7070"
+  package_auth: "http://127.0.0.1:8040"
+  package_files: "http://127.0.0.1:4030"
+  package_tasks: "http://127.0.0.1:4050"
+  package_analytics: "http://127.0.0.1:4040"
+
+databases:
+  purchase_db:
+    host: "localhost"
+    port: 5452
+    user: "root"
+    password: "pass"
+    dbname: "fesmu_core_purchase_db"
+    sslmode: "disable"
+
+  infrastructure_db:
+    host: "localhost"
+    port: 5454
+    user: "root"
+    password: "pass"
+    dbname: "fesmu_core_infrastructure_db"
+    sslmode: "disable"
+
+  test_db:
+    host: "localhost"
+    port: 5456
+    user: "root"
+    password: "pass"
+    dbname: "fesmu_core_test_db"
+    sslmode: "disable"
+
+  exam_test_db:
+    host: "localhost"
+    port: 5462
+    user: "root"
+    password: "pass"
+    dbname: "fesmu_core_exam_test_db"
+    sslmode: "disable"
+
+  library_db:
+    host: "localhost"
+    port: 5460
+    user: "root"
+    password: "pass"
+    dbname: "fesmu_core_library_db"
+    sslmode: "disable"
+

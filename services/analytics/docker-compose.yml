@@ -1,0 +1,55 @@
+services:
+  dvgmu_apps_analytic_db:
+    container_name: "dvgmu_apps_analytic_db"
+    image: postgres:17
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - dvgmu_apps_analytic_pgdata:/var/lib/postgresql/data
+    networks:
+      - traefik-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  dvgmu_apps_analytic_api:
+    container_name: "dvgmu_apps_analytic_api"
+    build:
+      context: "../.."  # корень монорепо: нужен packages/go
+      dockerfile: "services/analytics/api/Dockerfile"
+      network: host
+    restart: unless-stopped
+    depends_on:
+      dvgmu_apps_analytic_db:
+        condition: service_healthy
+    environment:
+      DB_HOST: ${POSTGRES_HOST:-dvgmu_apps_analytic_db}
+      DB_PORT: "5432"
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_NAME: ${POSTGRES_DB}
+      DB_SSLMODE: disable
+      GRPC_PORT: "4000"
+      REEVALUATION: ${ANALYTIC_REEVALUATION:-0}
+      TZ: ${ANALYTIC_TZ:-Asia/Vladivostok}
+    networks:
+      - traefik-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-network"
+      - "traefik.http.routers.analytic-secure.rule=Host(`analytics.dvgmu.promotion-pal.ru`)"
+      - "traefik.http.routers.analytic-secure.entrypoints=websecure"
+      - "traefik.http.routers.analytic-secure.tls.certresolver=letsencrypt"
+      - "traefik.http.services.analytic-web.loadbalancer.server.port=4000"
+
+networks:
+  traefik-network:
+    external: true
+
+volumes:
+  dvgmu_apps_analytic_pgdata:

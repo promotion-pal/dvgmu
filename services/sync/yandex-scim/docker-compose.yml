@@ -1,0 +1,24 @@
+services:
+  dvgmu_apps_yandex_scim:
+    container_name: "dvgmu_apps_yandex_scim"
+    image: registry.yandexcloud.net/cn1v24roe2k2kcqihnke/adscim:latest
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ:-Asia/Vladivostok}
+    volumes:
+      - ./config/application.json:/app/config/application.json:ro
+      - yandex_scim_logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3402/actuator/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    networks:
+      - traefik-network
+
+volumes:
+  yandex_scim_logs:
+
+networks:
+  traefik-network:
+    external: true

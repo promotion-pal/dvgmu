@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package contract.fesmu.exam.service.v1;
+
+import "fesmu/service/v1/test.service.proto";
+
+option go_package = "exam_service_v1;exam_service_pb";
+
+// Staff API for the isolated examination-test database. The request and
+// response messages intentionally match the regular test builder.
+service ExamTestService {
+  rpc TestFetch (contract.service.v1.TestFetchRequest) returns (contract.service.v1.TestFetchResponse);
+  rpc TestByID (contract.service.v1.TestByIDRequest) returns (contract.service.v1.TestByIDResponse);
+  rpc TestCreate (contract.service.v1.TestCreateRequest) returns (contract.service.v1.TestCreateResponse);
+  rpc TestUpdate (contract.service.v1.TestUpdateRequest) returns (contract.service.v1.TestUpdateResponse);
+  rpc TestDelete (contract.service.v1.TestDeleteRequest) returns (contract.service.v1.TestDeleteResponse);
+  rpc TestExport (contract.service.v1.TestExportRequest) returns (contract.service.v1.TestExportResponse);
+  rpc TestImportParse (contract.service.v1.TestImportParseRequest) returns (contract.service.v1.TestImportParseResponse);
+  rpc TestExportStatusUpdate (contract.service.v1.TestExportStatusUpdateRequest) returns (contract.service.v1.TestExportStatusUpdateResponse);
+  rpc TestImageUpload (contract.service.v1.TestImageUploadRequest) returns (contract.service.v1.TestImageUploadResponse);
+}

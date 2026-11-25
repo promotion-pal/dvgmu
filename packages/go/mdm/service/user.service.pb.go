@@ -104,109 +104,22 @@ func (x *UserFetchResponse) GetUsers() []*entity.User {
 	return nil
 }
 
-type UserFetchByIDRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UserFetchByIDRequest) Reset() {
-	*x = UserFetchByIDRequest{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UserFetchByIDRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UserFetchByIDRequest) ProtoMessage() {}
-
-func (x *UserFetchByIDRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UserFetchByIDRequest.ProtoReflect.Descriptor instead.
-func (*UserFetchByIDRequest) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *UserFetchByIDRequest) GetId() int64 {
-	if x != nil {
-		return x.Id
-	}
-	return 0
-}
-
-type UserFetchByIDResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	User          *entity.User           `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UserFetchByIDResponse) Reset() {
-	*x = UserFetchByIDResponse{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UserFetchByIDResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UserFetchByIDResponse) ProtoMessage() {}
-
-func (x *UserFetchByIDResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UserFetchByIDResponse.ProtoReflect.Descriptor instead.
-func (*UserFetchByIDResponse) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *UserFetchByIDResponse) GetUser() *entity.User {
-	if x != nil {
-		return x.User
-	}
-	return nil
-}
-
 type UserCreateRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	FirstName     string                 `protobuf:"bytes,1,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	LastName      string                 `protobuf:"bytes,2,opt,name=last_name,json=lastName,proto3" json:"last_name,omitempty"`
-	Patronymic    *string                `protobuf:"bytes,3,opt,name=patronymic,proto3,oneof" json:"patronymic,omitempty"`
-	Email         string                 `protobuf:"bytes,4,opt,name=email,proto3" json:"email,omitempty"`
-	Phone         *string                `protobuf:"bytes,5,opt,name=phone,proto3,oneof" json:"phone,omitempty"`
-	Birthday      *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=birthday,proto3,oneof" json:"birthday,omitempty"`
+	FirstName     string                 `protobuf:"bytes,3,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"`
+	Patronymic    *string                `protobuf:"bytes,4,opt,name=patronymic,proto3,oneof" json:"patronymic,omitempty"`
+	Email         *string                `protobuf:"bytes,5,opt,name=email,proto3,oneof" json:"email,omitempty"`
+	Phone         *string                `protobuf:"bytes,6,opt,name=phone,proto3,oneof" json:"phone,omitempty"`
+	Birthday      *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=birthday,proto3,oneof" json:"birthday,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *UserCreateRequest) Reset() {
 	*x = UserCreateRequest{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[4]
+	mi := &file_mdm_service_user_service_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -218,7 +131,7 @@ func (x *UserCreateRequest) String() string {
 func (*UserCreateRequest) ProtoMessage() {}
 
 func (x *UserCreateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[4]
+	mi := &file_mdm_service_user_service_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -231,19 +144,26 @@ func (x *UserCreateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserCreateRequest.ProtoReflect.Descriptor instead.
 func (*UserCreateRequest) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{4}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *UserCreateRequest) GetFirstName() string {
+func (x *UserCreateRequest) GetId() int64 {
 	if x != nil {
-		return x.FirstName
+		return x.Id
 	}
-	return ""
+	return 0
 }
 
 func (x *UserCreateRequest) GetLastName() string {
 	if x != nil {
 		return x.LastName
+	}
+	return ""
+}
+
+func (x *UserCreateRequest) GetFirstName() string {
+	if x != nil {
+		return x.FirstName
 	}
 	return ""
 }
@@ -256,8 +176,8 @@ func (x *UserCreateRequest) GetPatronymic() string {
 }
 
 func (x *UserCreateRequest) GetEmail() string {
-	if x != nil {
-		return x.Email
+	if x != nil && x.Email != nil {
+		return *x.Email
 	}
 	return ""
 }
@@ -277,15 +197,19 @@ func (x *UserCreateRequest) GetBirthday() *timestamppb.Timestamp {
 }
 
 type UserCreateResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	User          *entity.User           `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	Id                int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Success           bool                   `protobuf:"varint,2,opt,name=success,proto3" json:"success,omitempty"`
+	Message           string                 `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
+	Email             string                 `protobuf:"bytes,4,opt,name=email,proto3" json:"email,omitempty"`
+	TemporaryPassword string                 `protobuf:"bytes,5,opt,name=temporary_password,json=temporaryPassword,proto3" json:"temporary_password,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *UserCreateResponse) Reset() {
 	*x = UserCreateResponse{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[5]
+	mi := &file_mdm_service_user_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -297,7 +221,7 @@ func (x *UserCreateResponse) String() string {
 func (*UserCreateResponse) ProtoMessage() {}
 
 func (x *UserCreateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[5]
+	mi := &file_mdm_service_user_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -310,33 +234,60 @@ func (x *UserCreateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserCreateResponse.ProtoReflect.Descriptor instead.
 func (*UserCreateResponse) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{5}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *UserCreateResponse) GetUser() *entity.User {
+func (x *UserCreateResponse) GetId() int64 {
 	if x != nil {
-		return x.User
+		return x.Id
 	}
-	return nil
+	return 0
+}
+
+func (x *UserCreateResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *UserCreateResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *UserCreateResponse) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *UserCreateResponse) GetTemporaryPassword() string {
+	if x != nil {
+		return x.TemporaryPassword
+	}
+	return ""
 }
 
 type UserUpdateRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	FirstName     string                 `protobuf:"bytes,2,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"`
-	LastName      string                 `protobuf:"bytes,3,opt,name=last_name,json=lastName,proto3" json:"last_name,omitempty"`
+	LastName      string                 `protobuf:"bytes,2,opt,name=last_name,json=lastName,proto3" json:"last_name,omitempty"`
+	FirstName     string                 `protobuf:"bytes,3,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"`
 	Patronymic    *string                `protobuf:"bytes,4,opt,name=patronymic,proto3,oneof" json:"patronymic,omitempty"`
-	Email         string                 `protobuf:"bytes,5,opt,name=email,proto3" json:"email,omitempty"`
+	Email         *string                `protobuf:"bytes,5,opt,name=email,proto3,oneof" json:"email,omitempty"`
 	Phone         *string                `protobuf:"bytes,6,opt,name=phone,proto3,oneof" json:"phone,omitempty"`
 	Birthday      *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=birthday,proto3,oneof" json:"birthday,omitempty"`
-	Status        enum.UserStatus        `protobuf:"varint,8,opt,name=status,proto3,enum=contract.enum.UserStatus" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *UserUpdateRequest) Reset() {
 	*x = UserUpdateRequest{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[6]
+	mi := &file_mdm_service_user_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -348,7 +299,7 @@ func (x *UserUpdateRequest) String() string {
 func (*UserUpdateRequest) ProtoMessage() {}
 
 func (x *UserUpdateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[6]
+	mi := &file_mdm_service_user_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -361,7 +312,7 @@ func (x *UserUpdateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserUpdateRequest.ProtoReflect.Descriptor instead.
 func (*UserUpdateRequest) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{6}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *UserUpdateRequest) GetId() int64 {
@@ -371,16 +322,16 @@ func (x *UserUpdateRequest) GetId() int64 {
 	return 0
 }
 
-func (x *UserUpdateRequest) GetFirstName() string {
+func (x *UserUpdateRequest) GetLastName() string {
 	if x != nil {
-		return x.FirstName
+		return x.LastName
 	}
 	return ""
 }
 
-func (x *UserUpdateRequest) GetLastName() string {
+func (x *UserUpdateRequest) GetFirstName() string {
 	if x != nil {
-		return x.LastName
+		return x.FirstName
 	}
 	return ""
 }
@@ -393,8 +344,8 @@ func (x *UserUpdateRequest) GetPatronymic() string {
 }
 
 func (x *UserUpdateRequest) GetEmail() string {
-	if x != nil {
-		return x.Email
+	if x != nil && x.Email != nil {
+		return *x.Email
 	}
 	return ""
 }
@@ -413,23 +364,17 @@ func (x *UserUpdateRequest) GetBirthday() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *UserUpdateRequest) GetStatus() enum.UserStatus {
-	if x != nil {
-		return x.Status
-	}
-	return enum.UserStatus(0)
-}
-
 type UserUpdateResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	User          *entity.User           `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *UserUpdateResponse) Reset() {
 	*x = UserUpdateResponse{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[7]
+	mi := &file_mdm_service_user_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -441,7 +386,7 @@ func (x *UserUpdateResponse) String() string {
 func (*UserUpdateResponse) ProtoMessage() {}
 
 func (x *UserUpdateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[7]
+	mi := &file_mdm_service_user_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -454,12 +399,2953 @@ func (x *UserUpdateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserUpdateResponse.ProtoReflect.Descriptor instead.
 func (*UserUpdateResponse) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *UserUpdateResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *UserUpdateResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+type UserDeleteRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserDeleteRequest) Reset() {
+	*x = UserDeleteRequest{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserDeleteRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserDeleteRequest) ProtoMessage() {}
+
+func (x *UserDeleteRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserDeleteRequest.ProtoReflect.Descriptor instead.
+func (*UserDeleteRequest) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *UserDeleteRequest) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+type UserDeleteResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserDeleteResponse) Reset() {
+	*x = UserDeleteResponse{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserDeleteResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserDeleteResponse) ProtoMessage() {}
+
+func (x *UserDeleteResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserDeleteResponse.ProtoReflect.Descriptor instead.
+func (*UserDeleteResponse) Descriptor() ([]byte, []int) {
 	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *UserUpdateResponse) GetUser() *entity.User {
+func (x *UserDeleteResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *UserDeleteResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+type UserDeleteBatchRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Ids           []int64                `protobuf:"varint,1,rep,packed,name=ids,proto3" json:"ids,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserDeleteBatchRequest) Reset() {
+	*x = UserDeleteBatchRequest{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserDeleteBatchRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserDeleteBatchRequest) ProtoMessage() {}
+
+func (x *UserDeleteBatchRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserDeleteBatchRequest.ProtoReflect.Descriptor instead.
+func (*UserDeleteBatchRequest) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *UserDeleteBatchRequest) GetIds() []int64 {
+	if x != nil {
+		return x.Ids
+	}
+	return nil
+}
+
+type UserDeleteBatchResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	DeletedCount  int64                  `protobuf:"varint,3,opt,name=deleted_count,json=deletedCount,proto3" json:"deleted_count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserDeleteBatchResponse) Reset() {
+	*x = UserDeleteBatchResponse{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserDeleteBatchResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserDeleteBatchResponse) ProtoMessage() {}
+
+func (x *UserDeleteBatchResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserDeleteBatchResponse.ProtoReflect.Descriptor instead.
+func (*UserDeleteBatchResponse) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *UserDeleteBatchResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *UserDeleteBatchResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *UserDeleteBatchResponse) GetDeletedCount() int64 {
+	if x != nil {
+		return x.DeletedCount
+	}
+	return 0
+}
+
+type UserFetchByIDRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserFetchByIDRequest) Reset() {
+	*x = UserFetchByIDRequest{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserFetchByIDRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserFetchByIDRequest) ProtoMessage() {}
+
+func (x *UserFetchByIDRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserFetchByIDRequest.ProtoReflect.Descriptor instead.
+func (*UserFetchByIDRequest) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *UserFetchByIDRequest) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+type UserFetchByIDResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Profile       *entity.UserFull       `protobuf:"bytes,1,opt,name=profile,proto3" json:"profile,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserFetchByIDResponse) Reset() {
+	*x = UserFetchByIDResponse{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserFetchByIDResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserFetchByIDResponse) ProtoMessage() {}
+
+func (x *UserFetchByIDResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserFetchByIDResponse.ProtoReflect.Descriptor instead.
+func (*UserFetchByIDResponse) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *UserFetchByIDResponse) GetProfile() *entity.UserFull {
+	if x != nil {
+		return x.Profile
+	}
+	return nil
+}
+
+type UserFetchByUUIDRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserFetchByUUIDRequest) Reset() {
+	*x = UserFetchByUUIDRequest{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserFetchByUUIDRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserFetchByUUIDRequest) ProtoMessage() {}
+
+func (x *UserFetchByUUIDRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserFetchByUUIDRequest.ProtoReflect.Descriptor instead.
+func (*UserFetchByUUIDRequest) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *UserFetchByUUIDRequest) GetUuid() string {
+	if x != nil {
+		return x.Uuid
+	}
+	return ""
+}
+
+type UserFetchByUUIDResponse struct {
+	state                protoimpl.MessageState        `protogen:"open.v1"`
+	User                 *entity.User                  `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	Username             string                        `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
+	EffectivePermissions []string                      `protobuf:"bytes,3,rep,name=effective_permissions,json=effectivePermissions,proto3" json:"effective_permissions,omitempty"`
+	Departments          []enum.UserEmployeeDepartment `protobuf:"varint,4,rep,packed,name=departments,proto3,enum=contract.enum.UserEmployeeDepartment" json:"departments,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
+}
+
+func (x *UserFetchByUUIDResponse) Reset() {
+	*x = UserFetchByUUIDResponse{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserFetchByUUIDResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserFetchByUUIDResponse) ProtoMessage() {}
+
+func (x *UserFetchByUUIDResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserFetchByUUIDResponse.ProtoReflect.Descriptor instead.
+func (*UserFetchByUUIDResponse) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *UserFetchByUUIDResponse) GetUser() *entity.User {
 	if x != nil {
 		return x.User
+	}
+	return nil
+}
+
+func (x *UserFetchByUUIDResponse) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *UserFetchByUUIDResponse) GetEffectivePermissions() []string {
+	if x != nil {
+		return x.EffectivePermissions
+	}
+	return nil
+}
+
+func (x *UserFetchByUUIDResponse) GetDepartments() []enum.UserEmployeeDepartment {
+	if x != nil {
+		return x.Departments
+	}
+	return nil
+}
+
+type UserFetchByADObjectIDRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	AdObjectId    string                 `protobuf:"bytes,1,opt,name=ad_object_id,json=adObjectId,proto3" json:"ad_object_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserFetchByADObjectIDRequest) Reset() {
+	*x = UserFetchByADObjectIDRequest{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserFetchByADObjectIDRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserFetchByADObjectIDRequest) ProtoMessage() {}
+
+func (x *UserFetchByADObjectIDRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserFetchByADObjectIDRequest.ProtoReflect.Descriptor instead.
+func (*UserFetchByADObjectIDRequest) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *UserFetchByADObjectIDRequest) GetAdObjectId() string {
+	if x != nil {
+		return x.AdObjectId
+	}
+	return ""
+}
+
+type UserFetchByADObjectIDResponse struct {
+	state                protoimpl.MessageState        `protogen:"open.v1"`
+	User                 *entity.User                  `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	Username             string                        `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
+	EffectivePermissions []string                      `protobuf:"bytes,3,rep,name=effective_permissions,json=effectivePermissions,proto3" json:"effective_permissions,omitempty"`
+	Departments          []enum.UserEmployeeDepartment `protobuf:"varint,4,rep,packed,name=departments,proto3,enum=contract.enum.UserEmployeeDepartment" json:"departments,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
+}
+
+func (x *UserFetchByADObjectIDResponse) Reset() {
+	*x = UserFetchByADObjectIDResponse{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserFetchByADObjectIDResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserFetchByADObjectIDResponse) ProtoMessage() {}
+
+func (x *UserFetchByADObjectIDResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserFetchByADObjectIDResponse.ProtoReflect.Descriptor instead.
+func (*UserFetchByADObjectIDResponse) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *UserFetchByADObjectIDResponse) GetUser() *entity.User {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
+func (x *UserFetchByADObjectIDResponse) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *UserFetchByADObjectIDResponse) GetEffectivePermissions() []string {
+	if x != nil {
+		return x.EffectivePermissions
+	}
+	return nil
+}
+
+func (x *UserFetchByADObjectIDResponse) GetDepartments() []enum.UserEmployeeDepartment {
+	if x != nil {
+		return x.Departments
+	}
+	return nil
+}
+
+type ActivationIssueRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ActivationIssueRequest) Reset() {
+	*x = ActivationIssueRequest{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ActivationIssueRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ActivationIssueRequest) ProtoMessage() {}
+
+func (x *ActivationIssueRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ActivationIssueRequest.ProtoReflect.Descriptor instead.
+func (*ActivationIssueRequest) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *ActivationIssueRequest) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+type ActivationIssueResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+	ExpiresAt     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ActivationIssueResponse) Reset() {
+	*x = ActivationIssueResponse{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ActivationIssueResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ActivationIssueResponse) ProtoMessage() {}
+
+func (x *ActivationIssueResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ActivationIssueResponse.ProtoReflect.Descriptor instead.
+func (*ActivationIssueResponse) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *ActivationIssueResponse) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+func (x *ActivationIssueResponse) GetExpiresAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.ExpiresAt
+	}
+	return nil
+}
+
+type UserPermissionsSetRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Permissions   []string               `protobuf:"bytes,2,rep,name=permissions,proto3" json:"permissions,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserPermissionsSetRequest) Reset() {
+	*x = UserPermissionsSetRequest{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserPermissionsSetRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserPermissionsSetRequest) ProtoMessage() {}
+
+func (x *UserPermissionsSetRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserPermissionsSetRequest.ProtoReflect.Descriptor instead.
+func (*UserPermissionsSetRequest) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *UserPermissionsSetRequest) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *UserPermissionsSetRequest) GetPermissions() []string {
+	if x != nil {
+		return x.Permissions
+	}
+	return nil
+}
+
+type UserPermissionsSetResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	User          *entity.User           `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserPermissionsSetResponse) Reset() {
+	*x = UserPermissionsSetResponse{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserPermissionsSetResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserPermissionsSetResponse) ProtoMessage() {}
+
+func (x *UserPermissionsSetResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserPermissionsSetResponse.ProtoReflect.Descriptor instead.
+func (*UserPermissionsSetResponse) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *UserPermissionsSetResponse) GetUser() *entity.User {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
+type UserPermissionGroupsSetRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	GroupIds      []int64                `protobuf:"varint,2,rep,packed,name=group_ids,json=groupIds,proto3" json:"group_ids,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserPermissionGroupsSetRequest) Reset() {
+	*x = UserPermissionGroupsSetRequest{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserPermissionGroupsSetRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserPermissionGroupsSetRequest) ProtoMessage() {}
+
+func (x *UserPermissionGroupsSetRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserPermissionGroupsSetRequest.ProtoReflect.Descriptor instead.
+func (*UserPermissionGroupsSetRequest) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *UserPermissionGroupsSetRequest) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *UserPermissionGroupsSetRequest) GetGroupIds() []int64 {
+	if x != nil {
+		return x.GroupIds
+	}
+	return nil
+}
+
+type UserPermissionGroupsSetResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	User          *entity.User           `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserPermissionGroupsSetResponse) Reset() {
+	*x = UserPermissionGroupsSetResponse{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserPermissionGroupsSetResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserPermissionGroupsSetResponse) ProtoMessage() {}
+
+func (x *UserPermissionGroupsSetResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserPermissionGroupsSetResponse.ProtoReflect.Descriptor instead.
+func (*UserPermissionGroupsSetResponse) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *UserPermissionGroupsSetResponse) GetUser() *entity.User {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
+type UserPermissionGroupAssignmentsFetchRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserPermissionGroupAssignmentsFetchRequest) Reset() {
+	*x = UserPermissionGroupAssignmentsFetchRequest{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserPermissionGroupAssignmentsFetchRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserPermissionGroupAssignmentsFetchRequest) ProtoMessage() {}
+
+func (x *UserPermissionGroupAssignmentsFetchRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserPermissionGroupAssignmentsFetchRequest.ProtoReflect.Descriptor instead.
+func (*UserPermissionGroupAssignmentsFetchRequest) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{22}
+}
+
+type UserPermissionGroupAssignment struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	GroupId       int64                  `protobuf:"varint,2,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserPermissionGroupAssignment) Reset() {
+	*x = UserPermissionGroupAssignment{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserPermissionGroupAssignment) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserPermissionGroupAssignment) ProtoMessage() {}
+
+func (x *UserPermissionGroupAssignment) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserPermissionGroupAssignment.ProtoReflect.Descriptor instead.
+func (*UserPermissionGroupAssignment) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *UserPermissionGroupAssignment) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *UserPermissionGroupAssignment) GetGroupId() int64 {
+	if x != nil {
+		return x.GroupId
+	}
+	return 0
+}
+
+type UserPermissionGroupAssignmentsFetchResponse struct {
+	state         protoimpl.MessageState           `protogen:"open.v1"`
+	Assignments   []*UserPermissionGroupAssignment `protobuf:"bytes,1,rep,name=assignments,proto3" json:"assignments,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserPermissionGroupAssignmentsFetchResponse) Reset() {
+	*x = UserPermissionGroupAssignmentsFetchResponse{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserPermissionGroupAssignmentsFetchResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserPermissionGroupAssignmentsFetchResponse) ProtoMessage() {}
+
+func (x *UserPermissionGroupAssignmentsFetchResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserPermissionGroupAssignmentsFetchResponse.ProtoReflect.Descriptor instead.
+func (*UserPermissionGroupAssignmentsFetchResponse) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *UserPermissionGroupAssignmentsFetchResponse) GetAssignments() []*UserPermissionGroupAssignment {
+	if x != nil {
+		return x.Assignments
+	}
+	return nil
+}
+
+type UserDepartmentsSetRequest struct {
+	state         protoimpl.MessageState        `protogen:"open.v1"`
+	Id            int64                         `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Departments   []enum.UserEmployeeDepartment `protobuf:"varint,2,rep,packed,name=departments,proto3,enum=contract.enum.UserEmployeeDepartment" json:"departments,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserDepartmentsSetRequest) Reset() {
+	*x = UserDepartmentsSetRequest{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserDepartmentsSetRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserDepartmentsSetRequest) ProtoMessage() {}
+
+func (x *UserDepartmentsSetRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserDepartmentsSetRequest.ProtoReflect.Descriptor instead.
+func (*UserDepartmentsSetRequest) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{25}
+}
+
+func (x *UserDepartmentsSetRequest) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *UserDepartmentsSetRequest) GetDepartments() []enum.UserEmployeeDepartment {
+	if x != nil {
+		return x.Departments
+	}
+	return nil
+}
+
+type UserDepartmentsSetResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	User          *entity.User           `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserDepartmentsSetResponse) Reset() {
+	*x = UserDepartmentsSetResponse{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[26]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserDepartmentsSetResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserDepartmentsSetResponse) ProtoMessage() {}
+
+func (x *UserDepartmentsSetResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[26]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserDepartmentsSetResponse.ProtoReflect.Descriptor instead.
+func (*UserDepartmentsSetResponse) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *UserDepartmentsSetResponse) GetUser() *entity.User {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
+type UserPositionSetRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Position      string                 `protobuf:"bytes,2,opt,name=position,proto3" json:"position,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserPositionSetRequest) Reset() {
+	*x = UserPositionSetRequest{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[27]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserPositionSetRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserPositionSetRequest) ProtoMessage() {}
+
+func (x *UserPositionSetRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[27]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserPositionSetRequest.ProtoReflect.Descriptor instead.
+func (*UserPositionSetRequest) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{27}
+}
+
+func (x *UserPositionSetRequest) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *UserPositionSetRequest) GetPosition() string {
+	if x != nil {
+		return x.Position
+	}
+	return ""
+}
+
+type UserPositionSetResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	User          *entity.User           `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserPositionSetResponse) Reset() {
+	*x = UserPositionSetResponse{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[28]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserPositionSetResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserPositionSetResponse) ProtoMessage() {}
+
+func (x *UserPositionSetResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[28]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserPositionSetResponse.ProtoReflect.Descriptor instead.
+func (*UserPositionSetResponse) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{28}
+}
+
+func (x *UserPositionSetResponse) GetUser() *entity.User {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
+type UserPermissionGroupFetchRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserPermissionGroupFetchRequest) Reset() {
+	*x = UserPermissionGroupFetchRequest{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[29]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserPermissionGroupFetchRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserPermissionGroupFetchRequest) ProtoMessage() {}
+
+func (x *UserPermissionGroupFetchRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[29]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserPermissionGroupFetchRequest.ProtoReflect.Descriptor instead.
+func (*UserPermissionGroupFetchRequest) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{29}
+}
+
+type UserPermissionGroupFetchResponse struct {
+	state         protoimpl.MessageState        `protogen:"open.v1"`
+	Groups        []*entity.UserPermissionGroup `protobuf:"bytes,1,rep,name=groups,proto3" json:"groups,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserPermissionGroupFetchResponse) Reset() {
+	*x = UserPermissionGroupFetchResponse{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[30]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserPermissionGroupFetchResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserPermissionGroupFetchResponse) ProtoMessage() {}
+
+func (x *UserPermissionGroupFetchResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[30]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserPermissionGroupFetchResponse.ProtoReflect.Descriptor instead.
+func (*UserPermissionGroupFetchResponse) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{30}
+}
+
+func (x *UserPermissionGroupFetchResponse) GetGroups() []*entity.UserPermissionGroup {
+	if x != nil {
+		return x.Groups
+	}
+	return nil
+}
+
+type UserPermissionGroupSaveRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	Permissions   []string               `protobuf:"bytes,4,rep,name=permissions,proto3" json:"permissions,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserPermissionGroupSaveRequest) Reset() {
+	*x = UserPermissionGroupSaveRequest{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[31]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserPermissionGroupSaveRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserPermissionGroupSaveRequest) ProtoMessage() {}
+
+func (x *UserPermissionGroupSaveRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[31]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserPermissionGroupSaveRequest.ProtoReflect.Descriptor instead.
+func (*UserPermissionGroupSaveRequest) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{31}
+}
+
+func (x *UserPermissionGroupSaveRequest) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *UserPermissionGroupSaveRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *UserPermissionGroupSaveRequest) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *UserPermissionGroupSaveRequest) GetPermissions() []string {
+	if x != nil {
+		return x.Permissions
+	}
+	return nil
+}
+
+type UserPermissionGroupSaveResponse struct {
+	state         protoimpl.MessageState      `protogen:"open.v1"`
+	Group         *entity.UserPermissionGroup `protobuf:"bytes,1,opt,name=group,proto3" json:"group,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserPermissionGroupSaveResponse) Reset() {
+	*x = UserPermissionGroupSaveResponse{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[32]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserPermissionGroupSaveResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserPermissionGroupSaveResponse) ProtoMessage() {}
+
+func (x *UserPermissionGroupSaveResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[32]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserPermissionGroupSaveResponse.ProtoReflect.Descriptor instead.
+func (*UserPermissionGroupSaveResponse) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{32}
+}
+
+func (x *UserPermissionGroupSaveResponse) GetGroup() *entity.UserPermissionGroup {
+	if x != nil {
+		return x.Group
+	}
+	return nil
+}
+
+type UserPermissionGroupDeleteRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserPermissionGroupDeleteRequest) Reset() {
+	*x = UserPermissionGroupDeleteRequest{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[33]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserPermissionGroupDeleteRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserPermissionGroupDeleteRequest) ProtoMessage() {}
+
+func (x *UserPermissionGroupDeleteRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[33]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserPermissionGroupDeleteRequest.ProtoReflect.Descriptor instead.
+func (*UserPermissionGroupDeleteRequest) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{33}
+}
+
+func (x *UserPermissionGroupDeleteRequest) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+type UserPermissionGroupDeleteResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserPermissionGroupDeleteResponse) Reset() {
+	*x = UserPermissionGroupDeleteResponse{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[34]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserPermissionGroupDeleteResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserPermissionGroupDeleteResponse) ProtoMessage() {}
+
+func (x *UserPermissionGroupDeleteResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[34]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserPermissionGroupDeleteResponse.ProtoReflect.Descriptor instead.
+func (*UserPermissionGroupDeleteResponse) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{34}
+}
+
+type UserRolesSetRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Roles         []enum.UserRole        `protobuf:"varint,2,rep,packed,name=roles,proto3,enum=contract.enum.UserRole" json:"roles,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserRolesSetRequest) Reset() {
+	*x = UserRolesSetRequest{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[35]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserRolesSetRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserRolesSetRequest) ProtoMessage() {}
+
+func (x *UserRolesSetRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[35]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserRolesSetRequest.ProtoReflect.Descriptor instead.
+func (*UserRolesSetRequest) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{35}
+}
+
+func (x *UserRolesSetRequest) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *UserRolesSetRequest) GetRoles() []enum.UserRole {
+	if x != nil {
+		return x.Roles
+	}
+	return nil
+}
+
+type UserRolesSetResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	User          *entity.User           `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserRolesSetResponse) Reset() {
+	*x = UserRolesSetResponse{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[36]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserRolesSetResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserRolesSetResponse) ProtoMessage() {}
+
+func (x *UserRolesSetResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[36]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserRolesSetResponse.ProtoReflect.Descriptor instead.
+func (*UserRolesSetResponse) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{36}
+}
+
+func (x *UserRolesSetResponse) GetUser() *entity.User {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
+type UserCreateBatchRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Users         []*UserCreateBatchItem `protobuf:"bytes,1,rep,name=users,proto3" json:"users,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserCreateBatchRequest) Reset() {
+	*x = UserCreateBatchRequest{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[37]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserCreateBatchRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserCreateBatchRequest) ProtoMessage() {}
+
+func (x *UserCreateBatchRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[37]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserCreateBatchRequest.ProtoReflect.Descriptor instead.
+func (*UserCreateBatchRequest) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{37}
+}
+
+func (x *UserCreateBatchRequest) GetUsers() []*UserCreateBatchItem {
+	if x != nil {
+		return x.Users
+	}
+	return nil
+}
+
+type UserCreateBatchItem struct {
+	state         protoimpl.MessageState    `protogen:"open.v1"`
+	LastName      string                    `protobuf:"bytes,1,opt,name=last_name,json=lastName,proto3" json:"last_name,omitempty"`
+	FirstName     string                    `protobuf:"bytes,2,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"`
+	Patronymic    *string                   `protobuf:"bytes,3,opt,name=patronymic,proto3,oneof" json:"patronymic,omitempty"`
+	Email         *string                   `protobuf:"bytes,4,opt,name=email,proto3,oneof" json:"email,omitempty"`
+	Phone         *string                   `protobuf:"bytes,5,opt,name=phone,proto3,oneof" json:"phone,omitempty"`
+	Birthday      *timestamppb.Timestamp    `protobuf:"bytes,6,opt,name=birthday,proto3,oneof" json:"birthday,omitempty"`
+	Passport      *PassportCreateRequest    `protobuf:"bytes,7,opt,name=passport,proto3,oneof" json:"passport,omitempty"`
+	Educations    []*EducationCreateRequest `protobuf:"bytes,8,rep,name=educations,proto3" json:"educations,omitempty"`
+	Military      *MilitaryCreateRequest    `protobuf:"bytes,9,opt,name=military,proto3,oneof" json:"military,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserCreateBatchItem) Reset() {
+	*x = UserCreateBatchItem{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[38]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserCreateBatchItem) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserCreateBatchItem) ProtoMessage() {}
+
+func (x *UserCreateBatchItem) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[38]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserCreateBatchItem.ProtoReflect.Descriptor instead.
+func (*UserCreateBatchItem) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{38}
+}
+
+func (x *UserCreateBatchItem) GetLastName() string {
+	if x != nil {
+		return x.LastName
+	}
+	return ""
+}
+
+func (x *UserCreateBatchItem) GetFirstName() string {
+	if x != nil {
+		return x.FirstName
+	}
+	return ""
+}
+
+func (x *UserCreateBatchItem) GetPatronymic() string {
+	if x != nil && x.Patronymic != nil {
+		return *x.Patronymic
+	}
+	return ""
+}
+
+func (x *UserCreateBatchItem) GetEmail() string {
+	if x != nil && x.Email != nil {
+		return *x.Email
+	}
+	return ""
+}
+
+func (x *UserCreateBatchItem) GetPhone() string {
+	if x != nil && x.Phone != nil {
+		return *x.Phone
+	}
+	return ""
+}
+
+func (x *UserCreateBatchItem) GetBirthday() *timestamppb.Timestamp {
+	if x != nil {
+		return x.Birthday
+	}
+	return nil
+}
+
+func (x *UserCreateBatchItem) GetPassport() *PassportCreateRequest {
+	if x != nil {
+		return x.Passport
+	}
+	return nil
+}
+
+func (x *UserCreateBatchItem) GetEducations() []*EducationCreateRequest {
+	if x != nil {
+		return x.Educations
+	}
+	return nil
+}
+
+func (x *UserCreateBatchItem) GetMilitary() *MilitaryCreateRequest {
+	if x != nil {
+		return x.Military
+	}
+	return nil
+}
+
+type UserCreateBatchResponse struct {
+	state         protoimpl.MessageState   `protogen:"open.v1"`
+	Results       []*UserCreateBatchResult `protobuf:"bytes,1,rep,name=results,proto3" json:"results,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserCreateBatchResponse) Reset() {
+	*x = UserCreateBatchResponse{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[39]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserCreateBatchResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserCreateBatchResponse) ProtoMessage() {}
+
+func (x *UserCreateBatchResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[39]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserCreateBatchResponse.ProtoReflect.Descriptor instead.
+func (*UserCreateBatchResponse) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{39}
+}
+
+func (x *UserCreateBatchResponse) GetResults() []*UserCreateBatchResult {
+	if x != nil {
+		return x.Results
+	}
+	return nil
+}
+
+type UserCreateBatchResult struct {
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	Index             int32                  `protobuf:"varint,1,opt,name=index,proto3" json:"index,omitempty"`
+	Success           bool                   `protobuf:"varint,2,opt,name=success,proto3" json:"success,omitempty"`
+	Message           string                 `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
+	UserId            int64                  `protobuf:"varint,4,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Email             string                 `protobuf:"bytes,5,opt,name=email,proto3" json:"email,omitempty"`
+	TemporaryPassword string                 `protobuf:"bytes,6,opt,name=temporary_password,json=temporaryPassword,proto3" json:"temporary_password,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *UserCreateBatchResult) Reset() {
+	*x = UserCreateBatchResult{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[40]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserCreateBatchResult) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserCreateBatchResult) ProtoMessage() {}
+
+func (x *UserCreateBatchResult) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[40]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserCreateBatchResult.ProtoReflect.Descriptor instead.
+func (*UserCreateBatchResult) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{40}
+}
+
+func (x *UserCreateBatchResult) GetIndex() int32 {
+	if x != nil {
+		return x.Index
+	}
+	return 0
+}
+
+func (x *UserCreateBatchResult) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *UserCreateBatchResult) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *UserCreateBatchResult) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *UserCreateBatchResult) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *UserCreateBatchResult) GetTemporaryPassword() string {
+	if x != nil {
+		return x.TemporaryPassword
+	}
+	return ""
+}
+
+type PassportCreateRequest struct {
+	state               protoimpl.MessageState `protogen:"open.v1"`
+	UserId              int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Series              string                 `protobuf:"bytes,2,opt,name=series,proto3" json:"series,omitempty"`
+	Number              string                 `protobuf:"bytes,3,opt,name=number,proto3" json:"number,omitempty"`
+	Authority           string                 `protobuf:"bytes,4,opt,name=authority,proto3" json:"authority,omitempty"`
+	IssueDate           string                 `protobuf:"bytes,5,opt,name=issue_date,json=issueDate,proto3" json:"issue_date,omitempty"`
+	ExpiryDate          string                 `protobuf:"bytes,6,opt,name=expiry_date,json=expiryDate,proto3" json:"expiry_date,omitempty"`
+	DepartmentCode      string                 `protobuf:"bytes,7,opt,name=department_code,json=departmentCode,proto3" json:"department_code,omitempty"`
+	Snils               string                 `protobuf:"bytes,8,opt,name=snils,proto3" json:"snils,omitempty"`
+	BirthPlace          string                 `protobuf:"bytes,9,opt,name=birth_place,json=birthPlace,proto3" json:"birth_place,omitempty"`
+	Gender              enum.UserGender        `protobuf:"varint,10,opt,name=gender,proto3,enum=contract.enum.UserGender" json:"gender,omitempty"`
+	Nationality         enum.UserNationality   `protobuf:"varint,11,opt,name=nationality,proto3,enum=contract.enum.UserNationality" json:"nationality,omitempty"`
+	RegistrationDate    string                 `protobuf:"bytes,12,opt,name=registration_date,json=registrationDate,proto3" json:"registration_date,omitempty"`
+	ResidentialAddress  string                 `protobuf:"bytes,13,opt,name=residential_address,json=residentialAddress,proto3" json:"residential_address,omitempty"`
+	RegistrationAddress string                 `protobuf:"bytes,14,opt,name=registration_address,json=registrationAddress,proto3" json:"registration_address,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
+}
+
+func (x *PassportCreateRequest) Reset() {
+	*x = PassportCreateRequest{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[41]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PassportCreateRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PassportCreateRequest) ProtoMessage() {}
+
+func (x *PassportCreateRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[41]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PassportCreateRequest.ProtoReflect.Descriptor instead.
+func (*PassportCreateRequest) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{41}
+}
+
+func (x *PassportCreateRequest) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *PassportCreateRequest) GetSeries() string {
+	if x != nil {
+		return x.Series
+	}
+	return ""
+}
+
+func (x *PassportCreateRequest) GetNumber() string {
+	if x != nil {
+		return x.Number
+	}
+	return ""
+}
+
+func (x *PassportCreateRequest) GetAuthority() string {
+	if x != nil {
+		return x.Authority
+	}
+	return ""
+}
+
+func (x *PassportCreateRequest) GetIssueDate() string {
+	if x != nil {
+		return x.IssueDate
+	}
+	return ""
+}
+
+func (x *PassportCreateRequest) GetExpiryDate() string {
+	if x != nil {
+		return x.ExpiryDate
+	}
+	return ""
+}
+
+func (x *PassportCreateRequest) GetDepartmentCode() string {
+	if x != nil {
+		return x.DepartmentCode
+	}
+	return ""
+}
+
+func (x *PassportCreateRequest) GetSnils() string {
+	if x != nil {
+		return x.Snils
+	}
+	return ""
+}
+
+func (x *PassportCreateRequest) GetBirthPlace() string {
+	if x != nil {
+		return x.BirthPlace
+	}
+	return ""
+}
+
+func (x *PassportCreateRequest) GetGender() enum.UserGender {
+	if x != nil {
+		return x.Gender
+	}
+	return enum.UserGender(0)
+}
+
+func (x *PassportCreateRequest) GetNationality() enum.UserNationality {
+	if x != nil {
+		return x.Nationality
+	}
+	return enum.UserNationality(0)
+}
+
+func (x *PassportCreateRequest) GetRegistrationDate() string {
+	if x != nil {
+		return x.RegistrationDate
+	}
+	return ""
+}
+
+func (x *PassportCreateRequest) GetResidentialAddress() string {
+	if x != nil {
+		return x.ResidentialAddress
+	}
+	return ""
+}
+
+func (x *PassportCreateRequest) GetRegistrationAddress() string {
+	if x != nil {
+		return x.RegistrationAddress
+	}
+	return ""
+}
+
+type PassportCreateResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	PassportId    int64                  `protobuf:"varint,3,opt,name=passport_id,json=passportId,proto3" json:"passport_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PassportCreateResponse) Reset() {
+	*x = PassportCreateResponse{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[42]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PassportCreateResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PassportCreateResponse) ProtoMessage() {}
+
+func (x *PassportCreateResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[42]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PassportCreateResponse.ProtoReflect.Descriptor instead.
+func (*PassportCreateResponse) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{42}
+}
+
+func (x *PassportCreateResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *PassportCreateResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *PassportCreateResponse) GetPassportId() int64 {
+	if x != nil {
+		return x.PassportId
+	}
+	return 0
+}
+
+type EducationCreateRequest struct {
+	state                  protoimpl.MessageState `protogen:"open.v1"`
+	UserId                 int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Type                   enum.EducationType     `protobuf:"varint,2,opt,name=type,proto3,enum=contract.enum.EducationType" json:"type,omitempty"`
+	Status                 enum.EducationStatus   `protobuf:"varint,3,opt,name=status,proto3,enum=contract.enum.EducationStatus" json:"status,omitempty"`
+	Series                 string                 `protobuf:"bytes,4,opt,name=series,proto3" json:"series,omitempty"`
+	Number                 string                 `protobuf:"bytes,5,opt,name=number,proto3" json:"number,omitempty"`
+	RegistrationNumber     string                 `protobuf:"bytes,6,opt,name=registration_number,json=registrationNumber,proto3" json:"registration_number,omitempty"`
+	IssueDate              *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=issue_date,json=issueDate,proto3" json:"issue_date,omitempty"`
+	InstitutionInn         string                 `protobuf:"bytes,8,opt,name=institution_inn,json=institutionInn,proto3" json:"institution_inn,omitempty"`
+	InstitutionName        string                 `protobuf:"bytes,9,opt,name=institution_name,json=institutionName,proto3" json:"institution_name,omitempty"`
+	InstitutionCity        string                 `protobuf:"bytes,10,opt,name=institution_city,json=institutionCity,proto3" json:"institution_city,omitempty"`
+	InstitutionRegion      string                 `protobuf:"bytes,11,opt,name=institution_region,json=institutionRegion,proto3" json:"institution_region,omitempty"`
+	InstitutionCountryCode string                 `protobuf:"bytes,12,opt,name=institution_country_code,json=institutionCountryCode,proto3" json:"institution_country_code,omitempty"`
+	SpecialtyCode          string                 `protobuf:"bytes,13,opt,name=specialty_code,json=specialtyCode,proto3" json:"specialty_code,omitempty"`
+	SpecialtyName          string                 `protobuf:"bytes,14,opt,name=specialty_name,json=specialtyName,proto3" json:"specialty_name,omitempty"`
+	Qualification          string                 `protobuf:"bytes,15,opt,name=qualification,proto3" json:"qualification,omitempty"`
+	Honors                 string                 `protobuf:"bytes,16,opt,name=honors,proto3" json:"honors,omitempty"`
+	SupplementSeries       string                 `protobuf:"bytes,17,opt,name=supplement_series,json=supplementSeries,proto3" json:"supplement_series,omitempty"`
+	SupplementNumber       string                 `protobuf:"bytes,18,opt,name=supplement_number,json=supplementNumber,proto3" json:"supplement_number,omitempty"`
+	IsOriginal             bool                   `protobuf:"varint,19,opt,name=is_original,json=isOriginal,proto3" json:"is_original,omitempty"`
+	IsVerifiedViaFrdo      bool                   `protobuf:"varint,20,opt,name=is_verified_via_frdo,json=isVerifiedViaFrdo,proto3" json:"is_verified_via_frdo,omitempty"`
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
+}
+
+func (x *EducationCreateRequest) Reset() {
+	*x = EducationCreateRequest{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[43]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EducationCreateRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EducationCreateRequest) ProtoMessage() {}
+
+func (x *EducationCreateRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[43]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EducationCreateRequest.ProtoReflect.Descriptor instead.
+func (*EducationCreateRequest) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{43}
+}
+
+func (x *EducationCreateRequest) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *EducationCreateRequest) GetType() enum.EducationType {
+	if x != nil {
+		return x.Type
+	}
+	return enum.EducationType(0)
+}
+
+func (x *EducationCreateRequest) GetStatus() enum.EducationStatus {
+	if x != nil {
+		return x.Status
+	}
+	return enum.EducationStatus(0)
+}
+
+func (x *EducationCreateRequest) GetSeries() string {
+	if x != nil {
+		return x.Series
+	}
+	return ""
+}
+
+func (x *EducationCreateRequest) GetNumber() string {
+	if x != nil {
+		return x.Number
+	}
+	return ""
+}
+
+func (x *EducationCreateRequest) GetRegistrationNumber() string {
+	if x != nil {
+		return x.RegistrationNumber
+	}
+	return ""
+}
+
+func (x *EducationCreateRequest) GetIssueDate() *timestamppb.Timestamp {
+	if x != nil {
+		return x.IssueDate
+	}
+	return nil
+}
+
+func (x *EducationCreateRequest) GetInstitutionInn() string {
+	if x != nil {
+		return x.InstitutionInn
+	}
+	return ""
+}
+
+func (x *EducationCreateRequest) GetInstitutionName() string {
+	if x != nil {
+		return x.InstitutionName
+	}
+	return ""
+}
+
+func (x *EducationCreateRequest) GetInstitutionCity() string {
+	if x != nil {
+		return x.InstitutionCity
+	}
+	return ""
+}
+
+func (x *EducationCreateRequest) GetInstitutionRegion() string {
+	if x != nil {
+		return x.InstitutionRegion
+	}
+	return ""
+}
+
+func (x *EducationCreateRequest) GetInstitutionCountryCode() string {
+	if x != nil {
+		return x.InstitutionCountryCode
+	}
+	return ""
+}
+
+func (x *EducationCreateRequest) GetSpecialtyCode() string {
+	if x != nil {
+		return x.SpecialtyCode
+	}
+	return ""
+}
+
+func (x *EducationCreateRequest) GetSpecialtyName() string {
+	if x != nil {
+		return x.SpecialtyName
+	}
+	return ""
+}
+
+func (x *EducationCreateRequest) GetQualification() string {
+	if x != nil {
+		return x.Qualification
+	}
+	return ""
+}
+
+func (x *EducationCreateRequest) GetHonors() string {
+	if x != nil {
+		return x.Honors
+	}
+	return ""
+}
+
+func (x *EducationCreateRequest) GetSupplementSeries() string {
+	if x != nil {
+		return x.SupplementSeries
+	}
+	return ""
+}
+
+func (x *EducationCreateRequest) GetSupplementNumber() string {
+	if x != nil {
+		return x.SupplementNumber
+	}
+	return ""
+}
+
+func (x *EducationCreateRequest) GetIsOriginal() bool {
+	if x != nil {
+		return x.IsOriginal
+	}
+	return false
+}
+
+func (x *EducationCreateRequest) GetIsVerifiedViaFrdo() bool {
+	if x != nil {
+		return x.IsVerifiedViaFrdo
+	}
+	return false
+}
+
+type EducationCreateResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	EducationId   int64                  `protobuf:"varint,3,opt,name=education_id,json=educationId,proto3" json:"education_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EducationCreateResponse) Reset() {
+	*x = EducationCreateResponse{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[44]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EducationCreateResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EducationCreateResponse) ProtoMessage() {}
+
+func (x *EducationCreateResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[44]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EducationCreateResponse.ProtoReflect.Descriptor instead.
+func (*EducationCreateResponse) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{44}
+}
+
+func (x *EducationCreateResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *EducationCreateResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *EducationCreateResponse) GetEducationId() int64 {
+	if x != nil {
+		return x.EducationId
+	}
+	return 0
+}
+
+type MilitaryCreateRequest struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	UserId             int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Commissariat       string                 `protobuf:"bytes,2,opt,name=commissariat,proto3" json:"commissariat,omitempty"`
+	VusCode            string                 `protobuf:"bytes,3,opt,name=vus_code,json=vusCode,proto3" json:"vus_code,omitempty"`
+	Rank               enum.MilitaryRank      `protobuf:"varint,4,opt,name=rank,proto3,enum=contract.enum.MilitaryRank" json:"rank,omitempty"`
+	Document           enum.MilitaryDocument  `protobuf:"varint,5,opt,name=document,proto3,enum=contract.enum.MilitaryDocument" json:"document,omitempty"`
+	Validity           enum.MilitaryValidity  `protobuf:"varint,6,opt,name=validity,proto3,enum=contract.enum.MilitaryValidity" json:"validity,omitempty"`
+	HasDeferment       bool                   `protobuf:"varint,7,opt,name=has_deferment,json=hasDeferment,proto3" json:"has_deferment,omitempty"`
+	DefermentExpiresAt *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=deferment_expires_at,json=defermentExpiresAt,proto3" json:"deferment_expires_at,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *MilitaryCreateRequest) Reset() {
+	*x = MilitaryCreateRequest{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[45]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MilitaryCreateRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MilitaryCreateRequest) ProtoMessage() {}
+
+func (x *MilitaryCreateRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[45]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MilitaryCreateRequest.ProtoReflect.Descriptor instead.
+func (*MilitaryCreateRequest) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{45}
+}
+
+func (x *MilitaryCreateRequest) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *MilitaryCreateRequest) GetCommissariat() string {
+	if x != nil {
+		return x.Commissariat
+	}
+	return ""
+}
+
+func (x *MilitaryCreateRequest) GetVusCode() string {
+	if x != nil {
+		return x.VusCode
+	}
+	return ""
+}
+
+func (x *MilitaryCreateRequest) GetRank() enum.MilitaryRank {
+	if x != nil {
+		return x.Rank
+	}
+	return enum.MilitaryRank(0)
+}
+
+func (x *MilitaryCreateRequest) GetDocument() enum.MilitaryDocument {
+	if x != nil {
+		return x.Document
+	}
+	return enum.MilitaryDocument(0)
+}
+
+func (x *MilitaryCreateRequest) GetValidity() enum.MilitaryValidity {
+	if x != nil {
+		return x.Validity
+	}
+	return enum.MilitaryValidity(0)
+}
+
+func (x *MilitaryCreateRequest) GetHasDeferment() bool {
+	if x != nil {
+		return x.HasDeferment
+	}
+	return false
+}
+
+func (x *MilitaryCreateRequest) GetDefermentExpiresAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.DefermentExpiresAt
+	}
+	return nil
+}
+
+type MilitaryCreateResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	MilitaryId    int64                  `protobuf:"varint,3,opt,name=military_id,json=militaryId,proto3" json:"military_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MilitaryCreateResponse) Reset() {
+	*x = MilitaryCreateResponse{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[46]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MilitaryCreateResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MilitaryCreateResponse) ProtoMessage() {}
+
+func (x *MilitaryCreateResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[46]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MilitaryCreateResponse.ProtoReflect.Descriptor instead.
+func (*MilitaryCreateResponse) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{46}
+}
+
+func (x *MilitaryCreateResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *MilitaryCreateResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *MilitaryCreateResponse) GetMilitaryId() int64 {
+	if x != nil {
+		return x.MilitaryId
+	}
+	return 0
+}
+
+type StudentCreateRequest struct {
+	state          protoimpl.MessageState        `protogen:"open.v1"`
+	UserId         int64                         `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Group          string                        `protobuf:"bytes,2,opt,name=group,proto3" json:"group,omitempty"`
+	RecordBook     string                        `protobuf:"bytes,3,opt,name=record_book,json=recordBook,proto3" json:"record_book,omitempty"`
+	Status         enum.UserStudentStatus        `protobuf:"varint,4,opt,name=status,proto3,enum=contract.enum.UserStudentStatus" json:"status,omitempty"`
+	EducationForm  enum.UserStudentEducationForm `protobuf:"varint,5,opt,name=education_form,json=educationForm,proto3,enum=contract.enum.UserStudentEducationForm" json:"education_form,omitempty"`
+	NeedsDormitory bool                          `protobuf:"varint,6,opt,name=needs_dormitory,json=needsDormitory,proto3" json:"needs_dormitory,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *StudentCreateRequest) Reset() {
+	*x = StudentCreateRequest{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[47]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StudentCreateRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StudentCreateRequest) ProtoMessage() {}
+
+func (x *StudentCreateRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[47]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StudentCreateRequest.ProtoReflect.Descriptor instead.
+func (*StudentCreateRequest) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{47}
+}
+
+func (x *StudentCreateRequest) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *StudentCreateRequest) GetGroup() string {
+	if x != nil {
+		return x.Group
+	}
+	return ""
+}
+
+func (x *StudentCreateRequest) GetRecordBook() string {
+	if x != nil {
+		return x.RecordBook
+	}
+	return ""
+}
+
+func (x *StudentCreateRequest) GetStatus() enum.UserStudentStatus {
+	if x != nil {
+		return x.Status
+	}
+	return enum.UserStudentStatus(0)
+}
+
+func (x *StudentCreateRequest) GetEducationForm() enum.UserStudentEducationForm {
+	if x != nil {
+		return x.EducationForm
+	}
+	return enum.UserStudentEducationForm(0)
+}
+
+func (x *StudentCreateRequest) GetNeedsDormitory() bool {
+	if x != nil {
+		return x.NeedsDormitory
+	}
+	return false
+}
+
+type StudentCreateResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	StudentId     int64                  `protobuf:"varint,3,opt,name=student_id,json=studentId,proto3" json:"student_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StudentCreateResponse) Reset() {
+	*x = StudentCreateResponse{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[48]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StudentCreateResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StudentCreateResponse) ProtoMessage() {}
+
+func (x *StudentCreateResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[48]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StudentCreateResponse.ProtoReflect.Descriptor instead.
+func (*StudentCreateResponse) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{48}
+}
+
+func (x *StudentCreateResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *StudentCreateResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *StudentCreateResponse) GetStudentId() int64 {
+	if x != nil {
+		return x.StudentId
+	}
+	return 0
+}
+
+type StudentFetchRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StudentFetchRequest) Reset() {
+	*x = StudentFetchRequest{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[49]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StudentFetchRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StudentFetchRequest) ProtoMessage() {}
+
+func (x *StudentFetchRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[49]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StudentFetchRequest.ProtoReflect.Descriptor instead.
+func (*StudentFetchRequest) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{49}
+}
+
+// Данные учащегося вместе с его профилем пользователя — одним запросом,
+// без отдельного похода за каждым User по отдельности.
+type StudentWithUser struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Student       *entity.Student        `protobuf:"bytes,1,opt,name=student,proto3" json:"student,omitempty"`
+	User          *entity.User           `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StudentWithUser) Reset() {
+	*x = StudentWithUser{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[50]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StudentWithUser) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StudentWithUser) ProtoMessage() {}
+
+func (x *StudentWithUser) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[50]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StudentWithUser.ProtoReflect.Descriptor instead.
+func (*StudentWithUser) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{50}
+}
+
+func (x *StudentWithUser) GetStudent() *entity.Student {
+	if x != nil {
+		return x.Student
+	}
+	return nil
+}
+
+func (x *StudentWithUser) GetUser() *entity.User {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
+type StudentFetchResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Students      []*StudentWithUser     `protobuf:"bytes,1,rep,name=students,proto3" json:"students,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StudentFetchResponse) Reset() {
+	*x = StudentFetchResponse{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[51]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StudentFetchResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StudentFetchResponse) ProtoMessage() {}
+
+func (x *StudentFetchResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[51]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StudentFetchResponse.ProtoReflect.Descriptor instead.
+func (*StudentFetchResponse) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{51}
+}
+
+func (x *StudentFetchResponse) GetStudents() []*StudentWithUser {
+	if x != nil {
+		return x.Students
+	}
+	return nil
+}
+
+type EmployeeCreateRequest struct {
+	state         protoimpl.MessageState      `protogen:"open.v1"`
+	UserId        int64                       `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Department    enum.UserEmployeeDepartment `protobuf:"varint,2,opt,name=department,proto3,enum=contract.enum.UserEmployeeDepartment" json:"department,omitempty"`
+	Status        enum.UserEmployeeStatus     `protobuf:"varint,3,opt,name=status,proto3,enum=contract.enum.UserEmployeeStatus" json:"status,omitempty"`
+	Position      enum.UserEmployeePosition   `protobuf:"varint,4,opt,name=position,proto3,enum=contract.enum.UserEmployeePosition" json:"position,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EmployeeCreateRequest) Reset() {
+	*x = EmployeeCreateRequest{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[52]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EmployeeCreateRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EmployeeCreateRequest) ProtoMessage() {}
+
+func (x *EmployeeCreateRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[52]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EmployeeCreateRequest.ProtoReflect.Descriptor instead.
+func (*EmployeeCreateRequest) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{52}
+}
+
+func (x *EmployeeCreateRequest) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *EmployeeCreateRequest) GetDepartment() enum.UserEmployeeDepartment {
+	if x != nil {
+		return x.Department
+	}
+	return enum.UserEmployeeDepartment(0)
+}
+
+func (x *EmployeeCreateRequest) GetStatus() enum.UserEmployeeStatus {
+	if x != nil {
+		return x.Status
+	}
+	return enum.UserEmployeeStatus(0)
+}
+
+func (x *EmployeeCreateRequest) GetPosition() enum.UserEmployeePosition {
+	if x != nil {
+		return x.Position
+	}
+	return enum.UserEmployeePosition(0)
+}
+
+type EmployeeCreateResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	EmployeeId    int64                  `protobuf:"varint,3,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EmployeeCreateResponse) Reset() {
+	*x = EmployeeCreateResponse{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[53]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EmployeeCreateResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EmployeeCreateResponse) ProtoMessage() {}
+
+func (x *EmployeeCreateResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[53]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EmployeeCreateResponse.ProtoReflect.Descriptor instead.
+func (*EmployeeCreateResponse) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{53}
+}
+
+func (x *EmployeeCreateResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *EmployeeCreateResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *EmployeeCreateResponse) GetEmployeeId() int64 {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return 0
+}
+
+type EmployeeFetchRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EmployeeFetchRequest) Reset() {
+	*x = EmployeeFetchRequest{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[54]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EmployeeFetchRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EmployeeFetchRequest) ProtoMessage() {}
+
+func (x *EmployeeFetchRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[54]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EmployeeFetchRequest.ProtoReflect.Descriptor instead.
+func (*EmployeeFetchRequest) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{54}
+}
+
+type EmployeeWithUser struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Employee      *entity.Employee       `protobuf:"bytes,1,opt,name=employee,proto3" json:"employee,omitempty"`
+	User          *entity.User           `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EmployeeWithUser) Reset() {
+	*x = EmployeeWithUser{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[55]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EmployeeWithUser) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EmployeeWithUser) ProtoMessage() {}
+
+func (x *EmployeeWithUser) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[55]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EmployeeWithUser.ProtoReflect.Descriptor instead.
+func (*EmployeeWithUser) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{55}
+}
+
+func (x *EmployeeWithUser) GetEmployee() *entity.Employee {
+	if x != nil {
+		return x.Employee
+	}
+	return nil
+}
+
+func (x *EmployeeWithUser) GetUser() *entity.User {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
+type EmployeeFetchResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Employees     []*EmployeeWithUser    `protobuf:"bytes,1,rep,name=employees,proto3" json:"employees,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EmployeeFetchResponse) Reset() {
+	*x = EmployeeFetchResponse{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[56]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EmployeeFetchResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EmployeeFetchResponse) ProtoMessage() {}
+
+func (x *EmployeeFetchResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[56]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EmployeeFetchResponse.ProtoReflect.Descriptor instead.
+func (*EmployeeFetchResponse) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{56}
+}
+
+func (x *EmployeeFetchResponse) GetEmployees() []*EmployeeWithUser {
+	if x != nil {
+		return x.Employees
 	}
 	return nil
 }
@@ -468,53 +3354,294 @@ var File_mdm_service_user_service_proto protoreflect.FileDescriptor
 
 const file_mdm_service_user_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1emdm/service/user.service.proto\x12\x10contract.service\x1a\x1cmdm/entity/user.entity.proto\x1a\x18mdm/enum/user.enum.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x12\n" +
+	"\x1emdm/service/user.service.proto\x12\x10contract.service\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18mdm/enum/user.enum.proto\x1a\x17mdm/enum/doc.enum.proto\x1a\x1cmdm/entity/user.entity.proto\x1a\x1fmdm/entity/student.entity.proto\x1a mdm/entity/employee.entity.proto\"\x12\n" +
 	"\x10UserFetchRequest\"@\n" +
 	"\x11UserFetchResponse\x12+\n" +
-	"\x05users\x18\x01 \x03(\v2\x15.contract.entity.UserR\x05users\"&\n" +
-	"\x14UserFetchByIDRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"B\n" +
-	"\x15UserFetchByIDResponse\x12)\n" +
-	"\x04user\x18\x01 \x01(\v2\x15.contract.entity.UserR\x04user\"\x88\x02\n" +
-	"\x11UserCreateRequest\x12\x1d\n" +
+	"\x05users\x18\x01 \x03(\v2\x15.contract.entity.UserR\x05users\"\xa7\x02\n" +
+	"\x11UserCreateRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1b\n" +
+	"\tlast_name\x18\x02 \x01(\tR\blastName\x12\x1d\n" +
 	"\n" +
-	"first_name\x18\x01 \x01(\tR\tfirstName\x12\x1b\n" +
-	"\tlast_name\x18\x02 \x01(\tR\blastName\x12#\n" +
-	"\n" +
-	"patronymic\x18\x03 \x01(\tH\x00R\n" +
-	"patronymic\x88\x01\x01\x12\x14\n" +
-	"\x05email\x18\x04 \x01(\tR\x05email\x12\x19\n" +
-	"\x05phone\x18\x05 \x01(\tH\x01R\x05phone\x88\x01\x01\x12;\n" +
-	"\bbirthday\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampH\x02R\bbirthday\x88\x01\x01B\r\n" +
-	"\v_patronymicB\b\n" +
-	"\x06_phoneB\v\n" +
-	"\t_birthday\"?\n" +
-	"\x12UserCreateResponse\x12)\n" +
-	"\x04user\x18\x01 \x01(\v2\x15.contract.entity.UserR\x04user\"\xcb\x02\n" +
-	"\x11UserUpdateRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1d\n" +
-	"\n" +
-	"first_name\x18\x02 \x01(\tR\tfirstName\x12\x1b\n" +
-	"\tlast_name\x18\x03 \x01(\tR\blastName\x12#\n" +
+	"first_name\x18\x03 \x01(\tR\tfirstName\x12#\n" +
 	"\n" +
 	"patronymic\x18\x04 \x01(\tH\x00R\n" +
-	"patronymic\x88\x01\x01\x12\x14\n" +
-	"\x05email\x18\x05 \x01(\tR\x05email\x12\x19\n" +
-	"\x05phone\x18\x06 \x01(\tH\x01R\x05phone\x88\x01\x01\x12;\n" +
-	"\bbirthday\x18\a \x01(\v2\x1a.google.protobuf.TimestampH\x02R\bbirthday\x88\x01\x01\x121\n" +
-	"\x06status\x18\b \x01(\x0e2\x19.contract.enum.UserStatusR\x06statusB\r\n" +
+	"patronymic\x88\x01\x01\x12\x19\n" +
+	"\x05email\x18\x05 \x01(\tH\x01R\x05email\x88\x01\x01\x12\x19\n" +
+	"\x05phone\x18\x06 \x01(\tH\x02R\x05phone\x88\x01\x01\x12;\n" +
+	"\bbirthday\x18\a \x01(\v2\x1a.google.protobuf.TimestampH\x03R\bbirthday\x88\x01\x01B\r\n" +
 	"\v_patronymicB\b\n" +
+	"\x06_emailB\b\n" +
 	"\x06_phoneB\v\n" +
-	"\t_birthday\"?\n" +
-	"\x12UserUpdateResponse\x12)\n" +
-	"\x04user\x18\x01 \x01(\v2\x15.contract.entity.UserR\x04user2\xf7\x02\n" +
+	"\t_birthday\"\x9d\x01\n" +
+	"\x12UserCreateResponse\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x18\n" +
+	"\asuccess\x18\x02 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x03 \x01(\tR\amessage\x12\x14\n" +
+	"\x05email\x18\x04 \x01(\tR\x05email\x12-\n" +
+	"\x12temporary_password\x18\x05 \x01(\tR\x11temporaryPassword\"\xa7\x02\n" +
+	"\x11UserUpdateRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1b\n" +
+	"\tlast_name\x18\x02 \x01(\tR\blastName\x12\x1d\n" +
+	"\n" +
+	"first_name\x18\x03 \x01(\tR\tfirstName\x12#\n" +
+	"\n" +
+	"patronymic\x18\x04 \x01(\tH\x00R\n" +
+	"patronymic\x88\x01\x01\x12\x19\n" +
+	"\x05email\x18\x05 \x01(\tH\x01R\x05email\x88\x01\x01\x12\x19\n" +
+	"\x05phone\x18\x06 \x01(\tH\x02R\x05phone\x88\x01\x01\x12;\n" +
+	"\bbirthday\x18\a \x01(\v2\x1a.google.protobuf.TimestampH\x03R\bbirthday\x88\x01\x01B\r\n" +
+	"\v_patronymicB\b\n" +
+	"\x06_emailB\b\n" +
+	"\x06_phoneB\v\n" +
+	"\t_birthday\"H\n" +
+	"\x12UserUpdateResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\"#\n" +
+	"\x11UserDeleteRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"H\n" +
+	"\x12UserDeleteResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\"*\n" +
+	"\x16UserDeleteBatchRequest\x12\x10\n" +
+	"\x03ids\x18\x01 \x03(\x03R\x03ids\"r\n" +
+	"\x17UserDeleteBatchResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12#\n" +
+	"\rdeleted_count\x18\x03 \x01(\x03R\fdeletedCount\"&\n" +
+	"\x14UserFetchByIDRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"L\n" +
+	"\x15UserFetchByIDResponse\x123\n" +
+	"\aprofile\x18\x01 \x01(\v2\x19.contract.entity.UserFullR\aprofile\",\n" +
+	"\x16UserFetchByUUIDRequest\x12\x12\n" +
+	"\x04uuid\x18\x01 \x01(\tR\x04uuid\"\xde\x01\n" +
+	"\x17UserFetchByUUIDResponse\x12)\n" +
+	"\x04user\x18\x01 \x01(\v2\x15.contract.entity.UserR\x04user\x12\x1a\n" +
+	"\busername\x18\x02 \x01(\tR\busername\x123\n" +
+	"\x15effective_permissions\x18\x03 \x03(\tR\x14effectivePermissions\x12G\n" +
+	"\vdepartments\x18\x04 \x03(\x0e2%.contract.enum.UserEmployeeDepartmentR\vdepartments\"@\n" +
+	"\x1cUserFetchByADObjectIDRequest\x12 \n" +
+	"\fad_object_id\x18\x01 \x01(\tR\n" +
+	"adObjectId\"\xe4\x01\n" +
+	"\x1dUserFetchByADObjectIDResponse\x12)\n" +
+	"\x04user\x18\x01 \x01(\v2\x15.contract.entity.UserR\x04user\x12\x1a\n" +
+	"\busername\x18\x02 \x01(\tR\busername\x123\n" +
+	"\x15effective_permissions\x18\x03 \x03(\tR\x14effectivePermissions\x12G\n" +
+	"\vdepartments\x18\x04 \x03(\x0e2%.contract.enum.UserEmployeeDepartmentR\vdepartments\"(\n" +
+	"\x16ActivationIssueRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"h\n" +
+	"\x17ActivationIssueResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\tR\x04code\x129\n" +
+	"\n" +
+	"expires_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\texpiresAt\"M\n" +
+	"\x19UserPermissionsSetRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12 \n" +
+	"\vpermissions\x18\x02 \x03(\tR\vpermissions\"G\n" +
+	"\x1aUserPermissionsSetResponse\x12)\n" +
+	"\x04user\x18\x01 \x01(\v2\x15.contract.entity.UserR\x04user\"M\n" +
+	"\x1eUserPermissionGroupsSetRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1b\n" +
+	"\tgroup_ids\x18\x02 \x03(\x03R\bgroupIds\"L\n" +
+	"\x1fUserPermissionGroupsSetResponse\x12)\n" +
+	"\x04user\x18\x01 \x01(\v2\x15.contract.entity.UserR\x04user\",\n" +
+	"*UserPermissionGroupAssignmentsFetchRequest\"S\n" +
+	"\x1dUserPermissionGroupAssignment\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x03R\x06userId\x12\x19\n" +
+	"\bgroup_id\x18\x02 \x01(\x03R\agroupId\"\x80\x01\n" +
+	"+UserPermissionGroupAssignmentsFetchResponse\x12Q\n" +
+	"\vassignments\x18\x01 \x03(\v2/.contract.service.UserPermissionGroupAssignmentR\vassignments\"t\n" +
+	"\x19UserDepartmentsSetRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12G\n" +
+	"\vdepartments\x18\x02 \x03(\x0e2%.contract.enum.UserEmployeeDepartmentR\vdepartments\"G\n" +
+	"\x1aUserDepartmentsSetResponse\x12)\n" +
+	"\x04user\x18\x01 \x01(\v2\x15.contract.entity.UserR\x04user\"D\n" +
+	"\x16UserPositionSetRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1a\n" +
+	"\bposition\x18\x02 \x01(\tR\bposition\"D\n" +
+	"\x17UserPositionSetResponse\x12)\n" +
+	"\x04user\x18\x01 \x01(\v2\x15.contract.entity.UserR\x04user\"!\n" +
+	"\x1fUserPermissionGroupFetchRequest\"`\n" +
+	" UserPermissionGroupFetchResponse\x12<\n" +
+	"\x06groups\x18\x01 \x03(\v2$.contract.entity.UserPermissionGroupR\x06groups\"\x9b\x01\n" +
+	"\x1eUserPermissionGroupSaveRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
+	"\vdescription\x18\x03 \x01(\tR\vdescription\x12 \n" +
+	"\vpermissions\x18\x04 \x03(\tR\vpermissionsJ\x04\b\x05\x10\x06R\vdepartments\"]\n" +
+	"\x1fUserPermissionGroupSaveResponse\x12:\n" +
+	"\x05group\x18\x01 \x01(\v2$.contract.entity.UserPermissionGroupR\x05group\"2\n" +
+	" UserPermissionGroupDeleteRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"#\n" +
+	"!UserPermissionGroupDeleteResponse\"T\n" +
+	"\x13UserRolesSetRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12-\n" +
+	"\x05roles\x18\x02 \x03(\x0e2\x17.contract.enum.UserRoleR\x05roles\"A\n" +
+	"\x14UserRolesSetResponse\x12)\n" +
+	"\x04user\x18\x01 \x01(\v2\x15.contract.entity.UserR\x04user\"U\n" +
+	"\x16UserCreateBatchRequest\x12;\n" +
+	"\x05users\x18\x01 \x03(\v2%.contract.service.UserCreateBatchItemR\x05users\"\x91\x04\n" +
+	"\x13UserCreateBatchItem\x12\x1b\n" +
+	"\tlast_name\x18\x01 \x01(\tR\blastName\x12\x1d\n" +
+	"\n" +
+	"first_name\x18\x02 \x01(\tR\tfirstName\x12#\n" +
+	"\n" +
+	"patronymic\x18\x03 \x01(\tH\x00R\n" +
+	"patronymic\x88\x01\x01\x12\x19\n" +
+	"\x05email\x18\x04 \x01(\tH\x01R\x05email\x88\x01\x01\x12\x19\n" +
+	"\x05phone\x18\x05 \x01(\tH\x02R\x05phone\x88\x01\x01\x12;\n" +
+	"\bbirthday\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampH\x03R\bbirthday\x88\x01\x01\x12H\n" +
+	"\bpassport\x18\a \x01(\v2'.contract.service.PassportCreateRequestH\x04R\bpassport\x88\x01\x01\x12H\n" +
+	"\n" +
+	"educations\x18\b \x03(\v2(.contract.service.EducationCreateRequestR\n" +
+	"educations\x12H\n" +
+	"\bmilitary\x18\t \x01(\v2'.contract.service.MilitaryCreateRequestH\x05R\bmilitary\x88\x01\x01B\r\n" +
+	"\v_patronymicB\b\n" +
+	"\x06_emailB\b\n" +
+	"\x06_phoneB\v\n" +
+	"\t_birthdayB\v\n" +
+	"\t_passportB\v\n" +
+	"\t_military\"\\\n" +
+	"\x17UserCreateBatchResponse\x12A\n" +
+	"\aresults\x18\x01 \x03(\v2'.contract.service.UserCreateBatchResultR\aresults\"\xbf\x01\n" +
+	"\x15UserCreateBatchResult\x12\x14\n" +
+	"\x05index\x18\x01 \x01(\x05R\x05index\x12\x18\n" +
+	"\asuccess\x18\x02 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x03 \x01(\tR\amessage\x12\x17\n" +
+	"\auser_id\x18\x04 \x01(\x03R\x06userId\x12\x14\n" +
+	"\x05email\x18\x05 \x01(\tR\x05email\x12-\n" +
+	"\x12temporary_password\x18\x06 \x01(\tR\x11temporaryPassword\"\xa4\x04\n" +
+	"\x15PassportCreateRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x03R\x06userId\x12\x16\n" +
+	"\x06series\x18\x02 \x01(\tR\x06series\x12\x16\n" +
+	"\x06number\x18\x03 \x01(\tR\x06number\x12\x1c\n" +
+	"\tauthority\x18\x04 \x01(\tR\tauthority\x12\x1d\n" +
+	"\n" +
+	"issue_date\x18\x05 \x01(\tR\tissueDate\x12\x1f\n" +
+	"\vexpiry_date\x18\x06 \x01(\tR\n" +
+	"expiryDate\x12'\n" +
+	"\x0fdepartment_code\x18\a \x01(\tR\x0edepartmentCode\x12\x14\n" +
+	"\x05snils\x18\b \x01(\tR\x05snils\x12\x1f\n" +
+	"\vbirth_place\x18\t \x01(\tR\n" +
+	"birthPlace\x121\n" +
+	"\x06gender\x18\n" +
+	" \x01(\x0e2\x19.contract.enum.UserGenderR\x06gender\x12@\n" +
+	"\vnationality\x18\v \x01(\x0e2\x1e.contract.enum.UserNationalityR\vnationality\x12+\n" +
+	"\x11registration_date\x18\f \x01(\tR\x10registrationDate\x12/\n" +
+	"\x13residential_address\x18\r \x01(\tR\x12residentialAddress\x121\n" +
+	"\x14registration_address\x18\x0e \x01(\tR\x13registrationAddress\"m\n" +
+	"\x16PassportCreateResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12\x1f\n" +
+	"\vpassport_id\x18\x03 \x01(\x03R\n" +
+	"passportId\"\xd7\x06\n" +
+	"\x16EducationCreateRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x03R\x06userId\x120\n" +
+	"\x04type\x18\x02 \x01(\x0e2\x1c.contract.enum.EducationTypeR\x04type\x126\n" +
+	"\x06status\x18\x03 \x01(\x0e2\x1e.contract.enum.EducationStatusR\x06status\x12\x16\n" +
+	"\x06series\x18\x04 \x01(\tR\x06series\x12\x16\n" +
+	"\x06number\x18\x05 \x01(\tR\x06number\x12/\n" +
+	"\x13registration_number\x18\x06 \x01(\tR\x12registrationNumber\x129\n" +
+	"\n" +
+	"issue_date\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tissueDate\x12'\n" +
+	"\x0finstitution_inn\x18\b \x01(\tR\x0einstitutionInn\x12)\n" +
+	"\x10institution_name\x18\t \x01(\tR\x0finstitutionName\x12)\n" +
+	"\x10institution_city\x18\n" +
+	" \x01(\tR\x0finstitutionCity\x12-\n" +
+	"\x12institution_region\x18\v \x01(\tR\x11institutionRegion\x128\n" +
+	"\x18institution_country_code\x18\f \x01(\tR\x16institutionCountryCode\x12%\n" +
+	"\x0especialty_code\x18\r \x01(\tR\rspecialtyCode\x12%\n" +
+	"\x0especialty_name\x18\x0e \x01(\tR\rspecialtyName\x12$\n" +
+	"\rqualification\x18\x0f \x01(\tR\rqualification\x12\x16\n" +
+	"\x06honors\x18\x10 \x01(\tR\x06honors\x12+\n" +
+	"\x11supplement_series\x18\x11 \x01(\tR\x10supplementSeries\x12+\n" +
+	"\x11supplement_number\x18\x12 \x01(\tR\x10supplementNumber\x12\x1f\n" +
+	"\vis_original\x18\x13 \x01(\bR\n" +
+	"isOriginal\x12/\n" +
+	"\x14is_verified_via_frdo\x18\x14 \x01(\bR\x11isVerifiedViaFrdo\"p\n" +
+	"\x17EducationCreateResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12!\n" +
+	"\feducation_id\x18\x03 \x01(\x03R\veducationId\"\x8d\x03\n" +
+	"\x15MilitaryCreateRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x03R\x06userId\x12\"\n" +
+	"\fcommissariat\x18\x02 \x01(\tR\fcommissariat\x12\x19\n" +
+	"\bvus_code\x18\x03 \x01(\tR\avusCode\x12/\n" +
+	"\x04rank\x18\x04 \x01(\x0e2\x1b.contract.enum.MilitaryRankR\x04rank\x12;\n" +
+	"\bdocument\x18\x05 \x01(\x0e2\x1f.contract.enum.MilitaryDocumentR\bdocument\x12;\n" +
+	"\bvalidity\x18\x06 \x01(\x0e2\x1f.contract.enum.MilitaryValidityR\bvalidity\x12#\n" +
+	"\rhas_deferment\x18\a \x01(\bR\fhasDeferment\x12L\n" +
+	"\x14deferment_expires_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\x12defermentExpiresAt\"m\n" +
+	"\x16MilitaryCreateResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12\x1f\n" +
+	"\vmilitary_id\x18\x03 \x01(\x03R\n" +
+	"militaryId\"\x99\x02\n" +
+	"\x14StudentCreateRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x03R\x06userId\x12\x14\n" +
+	"\x05group\x18\x02 \x01(\tR\x05group\x12\x1f\n" +
+	"\vrecord_book\x18\x03 \x01(\tR\n" +
+	"recordBook\x128\n" +
+	"\x06status\x18\x04 \x01(\x0e2 .contract.enum.UserStudentStatusR\x06status\x12N\n" +
+	"\x0eeducation_form\x18\x05 \x01(\x0e2'.contract.enum.UserStudentEducationFormR\reducationForm\x12'\n" +
+	"\x0fneeds_dormitory\x18\x06 \x01(\bR\x0eneedsDormitory\"j\n" +
+	"\x15StudentCreateResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12\x1d\n" +
+	"\n" +
+	"student_id\x18\x03 \x01(\x03R\tstudentId\"\x15\n" +
+	"\x13StudentFetchRequest\"p\n" +
+	"\x0fStudentWithUser\x122\n" +
+	"\astudent\x18\x01 \x01(\v2\x18.contract.entity.StudentR\astudent\x12)\n" +
+	"\x04user\x18\x02 \x01(\v2\x15.contract.entity.UserR\x04user\"U\n" +
+	"\x14StudentFetchResponse\x12=\n" +
+	"\bstudents\x18\x01 \x03(\v2!.contract.service.StudentWithUserR\bstudents\"\xf3\x01\n" +
+	"\x15EmployeeCreateRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x03R\x06userId\x12E\n" +
+	"\n" +
+	"department\x18\x02 \x01(\x0e2%.contract.enum.UserEmployeeDepartmentR\n" +
+	"department\x129\n" +
+	"\x06status\x18\x03 \x01(\x0e2!.contract.enum.UserEmployeeStatusR\x06status\x12?\n" +
+	"\bposition\x18\x04 \x01(\x0e2#.contract.enum.UserEmployeePositionR\bposition\"m\n" +
+	"\x16EmployeeCreateResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12\x1f\n" +
+	"\vemployee_id\x18\x03 \x01(\x03R\n" +
+	"employeeId\"\x16\n" +
+	"\x14EmployeeFetchRequest\"t\n" +
+	"\x10EmployeeWithUser\x125\n" +
+	"\bemployee\x18\x01 \x01(\v2\x19.contract.entity.EmployeeR\bemployee\x12)\n" +
+	"\x04user\x18\x02 \x01(\v2\x15.contract.entity.UserR\x04user\"Y\n" +
+	"\x15EmployeeFetchResponse\x12@\n" +
+	"\temployees\x18\x01 \x03(\v2\".contract.service.EmployeeWithUserR\temployees2\xfd\x15\n" +
 	"\vUserService\x12T\n" +
-	"\tUserFetch\x12\".contract.service.UserFetchRequest\x1a#.contract.service.UserFetchResponse\x12`\n" +
-	"\rUserFetchByID\x12&.contract.service.UserFetchByIDRequest\x1a'.contract.service.UserFetchByIDResponse\x12W\n" +
+	"\tUserFetch\x12\".contract.service.UserFetchRequest\x1a#.contract.service.UserFetchResponse\x12W\n" +
 	"\n" +
-	"UserCreate\x12#.contract.service.UserCreateRequest\x1a$.contract.service.UserCreateResponse\x12W\n" +
+	"UserCreate\x12#.contract.service.UserCreateRequest\x1a$.contract.service.UserCreateResponse\x12`\n" +
+	"\rUserFetchByID\x12&.contract.service.UserFetchByIDRequest\x1a'.contract.service.UserFetchByIDResponse\x12f\n" +
+	"\x0fUserCreateBatch\x12(.contract.service.UserCreateBatchRequest\x1a).contract.service.UserCreateBatchResponse\x12W\n" +
 	"\n" +
-	"UserUpdate\x12#.contract.service.UserUpdateRequest\x1a$.contract.service.UserUpdateResponseB\xa5\x01\n" +
+	"UserUpdate\x12#.contract.service.UserUpdateRequest\x1a$.contract.service.UserUpdateResponse\x12W\n" +
+	"\n" +
+	"UserDelete\x12#.contract.service.UserDeleteRequest\x1a$.contract.service.UserDeleteResponse\x12f\n" +
+	"\x0fUserDeleteBatch\x12(.contract.service.UserDeleteBatchRequest\x1a).contract.service.UserDeleteBatchResponse\x12f\n" +
+	"\x0fUserFetchByUUID\x12(.contract.service.UserFetchByUUIDRequest\x1a).contract.service.UserFetchByUUIDResponse\x12x\n" +
+	"\x15UserFetchByADObjectID\x12..contract.service.UserFetchByADObjectIDRequest\x1a/.contract.service.UserFetchByADObjectIDResponse\x12f\n" +
+	"\x0fActivationIssue\x12(.contract.service.ActivationIssueRequest\x1a).contract.service.ActivationIssueResponse\x12]\n" +
+	"\fUserRolesSet\x12%.contract.service.UserRolesSetRequest\x1a&.contract.service.UserRolesSetResponse\x12o\n" +
+	"\x12UserPermissionsSet\x12+.contract.service.UserPermissionsSetRequest\x1a,.contract.service.UserPermissionsSetResponse\x12~\n" +
+	"\x17UserPermissionGroupsSet\x120.contract.service.UserPermissionGroupsSetRequest\x1a1.contract.service.UserPermissionGroupsSetResponse\x12\xa2\x01\n" +
+	"#UserPermissionGroupAssignmentsFetch\x12<.contract.service.UserPermissionGroupAssignmentsFetchRequest\x1a=.contract.service.UserPermissionGroupAssignmentsFetchResponse\x12o\n" +
+	"\x12UserDepartmentsSet\x12+.contract.service.UserDepartmentsSetRequest\x1a,.contract.service.UserDepartmentsSetResponse\x12f\n" +
+	"\x0fUserPositionSet\x12(.contract.service.UserPositionSetRequest\x1a).contract.service.UserPositionSetResponse\x12\x81\x01\n" +
+	"\x18UserPermissionGroupFetch\x121.contract.service.UserPermissionGroupFetchRequest\x1a2.contract.service.UserPermissionGroupFetchResponse\x12~\n" +
+	"\x17UserPermissionGroupSave\x120.contract.service.UserPermissionGroupSaveRequest\x1a1.contract.service.UserPermissionGroupSaveResponse\x12\x84\x01\n" +
+	"\x19UserPermissionGroupDelete\x122.contract.service.UserPermissionGroupDeleteRequest\x1a3.contract.service.UserPermissionGroupDeleteResponse\x12c\n" +
+	"\x0ePassportCreate\x12'.contract.service.PassportCreateRequest\x1a(.contract.service.PassportCreateResponse\x12f\n" +
+	"\x0fEducationCreate\x12(.contract.service.EducationCreateRequest\x1a).contract.service.EducationCreateResponse\x12c\n" +
+	"\x0eMilitaryCreate\x12'.contract.service.MilitaryCreateRequest\x1a(.contract.service.MilitaryCreateResponse\x12`\n" +
+	"\rStudentCreate\x12&.contract.service.StudentCreateRequest\x1a'.contract.service.StudentCreateResponse\x12]\n" +
+	"\fStudentFetch\x12%.contract.service.StudentFetchRequest\x1a&.contract.service.StudentFetchResponse\x12c\n" +
+	"\x0eEmployeeCreate\x12'.contract.service.EmployeeCreateRequest\x1a(.contract.service.EmployeeCreateResponse\x12`\n" +
+	"\rEmployeeFetch\x12&.contract.service.EmployeeFetchRequest\x1a'.contract.service.EmployeeFetchResponseB\xa5\x01\n" +
 	"\x14com.contract.serviceB\x10UserServiceProtoP\x01Z\x1afesmu/contract/mdm/service\xa2\x02\x03CSX\xaa\x02\x10Contract.Service\xca\x02\x10Contract\\Service\xe2\x02\x1cContract\\Service\\GPBMetadata\xea\x02\x11Contract::Serviceb\x06proto3"
 
 var (
@@ -529,41 +3656,188 @@ func file_mdm_service_user_service_proto_rawDescGZIP() []byte {
 	return file_mdm_service_user_service_proto_rawDescData
 }
 
-var file_mdm_service_user_service_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_mdm_service_user_service_proto_msgTypes = make([]protoimpl.MessageInfo, 57)
 var file_mdm_service_user_service_proto_goTypes = []any{
-	(*UserFetchRequest)(nil),      // 0: contract.service.UserFetchRequest
-	(*UserFetchResponse)(nil),     // 1: contract.service.UserFetchResponse
-	(*UserFetchByIDRequest)(nil),  // 2: contract.service.UserFetchByIDRequest
-	(*UserFetchByIDResponse)(nil), // 3: contract.service.UserFetchByIDResponse
-	(*UserCreateRequest)(nil),     // 4: contract.service.UserCreateRequest
-	(*UserCreateResponse)(nil),    // 5: contract.service.UserCreateResponse
-	(*UserUpdateRequest)(nil),     // 6: contract.service.UserUpdateRequest
-	(*UserUpdateResponse)(nil),    // 7: contract.service.UserUpdateResponse
-	(*entity.User)(nil),           // 8: contract.entity.User
-	(*timestamppb.Timestamp)(nil), // 9: google.protobuf.Timestamp
-	(enum.UserStatus)(0),          // 10: contract.enum.UserStatus
+	(*UserFetchRequest)(nil),                            // 0: contract.service.UserFetchRequest
+	(*UserFetchResponse)(nil),                           // 1: contract.service.UserFetchResponse
+	(*UserCreateRequest)(nil),                           // 2: contract.service.UserCreateRequest
+	(*UserCreateResponse)(nil),                          // 3: contract.service.UserCreateResponse
+	(*UserUpdateRequest)(nil),                           // 4: contract.service.UserUpdateRequest
+	(*UserUpdateResponse)(nil),                          // 5: contract.service.UserUpdateResponse
+	(*UserDeleteRequest)(nil),                           // 6: contract.service.UserDeleteRequest
+	(*UserDeleteResponse)(nil),                          // 7: contract.service.UserDeleteResponse
+	(*UserDeleteBatchRequest)(nil),                      // 8: contract.service.UserDeleteBatchRequest
+	(*UserDeleteBatchResponse)(nil),                     // 9: contract.service.UserDeleteBatchResponse
+	(*UserFetchByIDRequest)(nil),                        // 10: contract.service.UserFetchByIDRequest
+	(*UserFetchByIDResponse)(nil),                       // 11: contract.service.UserFetchByIDResponse
+	(*UserFetchByUUIDRequest)(nil),                      // 12: contract.service.UserFetchByUUIDRequest
+	(*UserFetchByUUIDResponse)(nil),                     // 13: contract.service.UserFetchByUUIDResponse
+	(*UserFetchByADObjectIDRequest)(nil),                // 14: contract.service.UserFetchByADObjectIDRequest
+	(*UserFetchByADObjectIDResponse)(nil),               // 15: contract.service.UserFetchByADObjectIDResponse
+	(*ActivationIssueRequest)(nil),                      // 16: contract.service.ActivationIssueRequest
+	(*ActivationIssueResponse)(nil),                     // 17: contract.service.ActivationIssueResponse
+	(*UserPermissionsSetRequest)(nil),                   // 18: contract.service.UserPermissionsSetRequest
+	(*UserPermissionsSetResponse)(nil),                  // 19: contract.service.UserPermissionsSetResponse
+	(*UserPermissionGroupsSetRequest)(nil),              // 20: contract.service.UserPermissionGroupsSetRequest
+	(*UserPermissionGroupsSetResponse)(nil),             // 21: contract.service.UserPermissionGroupsSetResponse
+	(*UserPermissionGroupAssignmentsFetchRequest)(nil),  // 22: contract.service.UserPermissionGroupAssignmentsFetchRequest
+	(*UserPermissionGroupAssignment)(nil),               // 23: contract.service.UserPermissionGroupAssignment
+	(*UserPermissionGroupAssignmentsFetchResponse)(nil), // 24: contract.service.UserPermissionGroupAssignmentsFetchResponse
+	(*UserDepartmentsSetRequest)(nil),                   // 25: contract.service.UserDepartmentsSetRequest
+	(*UserDepartmentsSetResponse)(nil),                  // 26: contract.service.UserDepartmentsSetResponse
+	(*UserPositionSetRequest)(nil),                      // 27: contract.service.UserPositionSetRequest
+	(*UserPositionSetResponse)(nil),                     // 28: contract.service.UserPositionSetResponse
+	(*UserPermissionGroupFetchRequest)(nil),             // 29: contract.service.UserPermissionGroupFetchRequest
+	(*UserPermissionGroupFetchResponse)(nil),            // 30: contract.service.UserPermissionGroupFetchResponse
+	(*UserPermissionGroupSaveRequest)(nil),              // 31: contract.service.UserPermissionGroupSaveRequest
+	(*UserPermissionGroupSaveResponse)(nil),             // 32: contract.service.UserPermissionGroupSaveResponse
+	(*UserPermissionGroupDeleteRequest)(nil),            // 33: contract.service.UserPermissionGroupDeleteRequest
+	(*UserPermissionGroupDeleteResponse)(nil),           // 34: contract.service.UserPermissionGroupDeleteResponse
+	(*UserRolesSetRequest)(nil),                         // 35: contract.service.UserRolesSetRequest
+	(*UserRolesSetResponse)(nil),                        // 36: contract.service.UserRolesSetResponse
+	(*UserCreateBatchRequest)(nil),                      // 37: contract.service.UserCreateBatchRequest
+	(*UserCreateBatchItem)(nil),                         // 38: contract.service.UserCreateBatchItem
+	(*UserCreateBatchResponse)(nil),                     // 39: contract.service.UserCreateBatchResponse
+	(*UserCreateBatchResult)(nil),                       // 40: contract.service.UserCreateBatchResult
+	(*PassportCreateRequest)(nil),                       // 41: contract.service.PassportCreateRequest
+	(*PassportCreateResponse)(nil),                      // 42: contract.service.PassportCreateResponse
+	(*EducationCreateRequest)(nil),                      // 43: contract.service.EducationCreateRequest
+	(*EducationCreateResponse)(nil),                     // 44: contract.service.EducationCreateResponse
+	(*MilitaryCreateRequest)(nil),                       // 45: contract.service.MilitaryCreateRequest
+	(*MilitaryCreateResponse)(nil),                      // 46: contract.service.MilitaryCreateResponse
+	(*StudentCreateRequest)(nil),                        // 47: contract.service.StudentCreateRequest
+	(*StudentCreateResponse)(nil),                       // 48: contract.service.StudentCreateResponse
+	(*StudentFetchRequest)(nil),                         // 49: contract.service.StudentFetchRequest
+	(*StudentWithUser)(nil),                             // 50: contract.service.StudentWithUser
+	(*StudentFetchResponse)(nil),                        // 51: contract.service.StudentFetchResponse
+	(*EmployeeCreateRequest)(nil),                       // 52: contract.service.EmployeeCreateRequest
+	(*EmployeeCreateResponse)(nil),                      // 53: contract.service.EmployeeCreateResponse
+	(*EmployeeFetchRequest)(nil),                        // 54: contract.service.EmployeeFetchRequest
+	(*EmployeeWithUser)(nil),                            // 55: contract.service.EmployeeWithUser
+	(*EmployeeFetchResponse)(nil),                       // 56: contract.service.EmployeeFetchResponse
+	(*entity.User)(nil),                                 // 57: contract.entity.User
+	(*timestamppb.Timestamp)(nil),                       // 58: google.protobuf.Timestamp
+	(*entity.UserFull)(nil),                             // 59: contract.entity.UserFull
+	(enum.UserEmployeeDepartment)(0),                    // 60: contract.enum.UserEmployeeDepartment
+	(*entity.UserPermissionGroup)(nil),                  // 61: contract.entity.UserPermissionGroup
+	(enum.UserRole)(0),                                  // 62: contract.enum.UserRole
+	(enum.UserGender)(0),                                // 63: contract.enum.UserGender
+	(enum.UserNationality)(0),                           // 64: contract.enum.UserNationality
+	(enum.EducationType)(0),                             // 65: contract.enum.EducationType
+	(enum.EducationStatus)(0),                           // 66: contract.enum.EducationStatus
+	(enum.MilitaryRank)(0),                              // 67: contract.enum.MilitaryRank
+	(enum.MilitaryDocument)(0),                          // 68: contract.enum.MilitaryDocument
+	(enum.MilitaryValidity)(0),                          // 69: contract.enum.MilitaryValidity
+	(enum.UserStudentStatus)(0),                         // 70: contract.enum.UserStudentStatus
+	(enum.UserStudentEducationForm)(0),                  // 71: contract.enum.UserStudentEducationForm
+	(*entity.Student)(nil),                              // 72: contract.entity.Student
+	(enum.UserEmployeeStatus)(0),                        // 73: contract.enum.UserEmployeeStatus
+	(enum.UserEmployeePosition)(0),                      // 74: contract.enum.UserEmployeePosition
+	(*entity.Employee)(nil),                             // 75: contract.entity.Employee
 }
 var file_mdm_service_user_service_proto_depIdxs = []int32{
-	8,  // 0: contract.service.UserFetchResponse.users:type_name -> contract.entity.User
-	8,  // 1: contract.service.UserFetchByIDResponse.user:type_name -> contract.entity.User
-	9,  // 2: contract.service.UserCreateRequest.birthday:type_name -> google.protobuf.Timestamp
-	8,  // 3: contract.service.UserCreateResponse.user:type_name -> contract.entity.User
-	9,  // 4: contract.service.UserUpdateRequest.birthday:type_name -> google.protobuf.Timestamp
-	10, // 5: contract.service.UserUpdateRequest.status:type_name -> contract.enum.UserStatus
-	8,  // 6: contract.service.UserUpdateResponse.user:type_name -> contract.entity.User
-	0,  // 7: contract.service.UserService.UserFetch:input_type -> contract.service.UserFetchRequest
-	2,  // 8: contract.service.UserService.UserFetchByID:input_type -> contract.service.UserFetchByIDRequest
-	4,  // 9: contract.service.UserService.UserCreate:input_type -> contract.service.UserCreateRequest
-	6,  // 10: contract.service.UserService.UserUpdate:input_type -> contract.service.UserUpdateRequest
-	1,  // 11: contract.service.UserService.UserFetch:output_type -> contract.service.UserFetchResponse
-	3,  // 12: contract.service.UserService.UserFetchByID:output_type -> contract.service.UserFetchByIDResponse
-	5,  // 13: contract.service.UserService.UserCreate:output_type -> contract.service.UserCreateResponse
-	7,  // 14: contract.service.UserService.UserUpdate:output_type -> contract.service.UserUpdateResponse
-	11, // [11:15] is the sub-list for method output_type
-	7,  // [7:11] is the sub-list for method input_type
-	7,  // [7:7] is the sub-list for extension type_name
-	7,  // [7:7] is the sub-list for extension extendee
-	0,  // [0:7] is the sub-list for field type_name
+	57, // 0: contract.service.UserFetchResponse.users:type_name -> contract.entity.User
+	58, // 1: contract.service.UserCreateRequest.birthday:type_name -> google.protobuf.Timestamp
+	58, // 2: contract.service.UserUpdateRequest.birthday:type_name -> google.protobuf.Timestamp
+	59, // 3: contract.service.UserFetchByIDResponse.profile:type_name -> contract.entity.UserFull
+	57, // 4: contract.service.UserFetchByUUIDResponse.user:type_name -> contract.entity.User
+	60, // 5: contract.service.UserFetchByUUIDResponse.departments:type_name -> contract.enum.UserEmployeeDepartment
+	57, // 6: contract.service.UserFetchByADObjectIDResponse.user:type_name -> contract.entity.User
+	60, // 7: contract.service.UserFetchByADObjectIDResponse.departments:type_name -> contract.enum.UserEmployeeDepartment
+	58, // 8: contract.service.ActivationIssueResponse.expires_at:type_name -> google.protobuf.Timestamp
+	57, // 9: contract.service.UserPermissionsSetResponse.user:type_name -> contract.entity.User
+	57, // 10: contract.service.UserPermissionGroupsSetResponse.user:type_name -> contract.entity.User
+	23, // 11: contract.service.UserPermissionGroupAssignmentsFetchResponse.assignments:type_name -> contract.service.UserPermissionGroupAssignment
+	60, // 12: contract.service.UserDepartmentsSetRequest.departments:type_name -> contract.enum.UserEmployeeDepartment
+	57, // 13: contract.service.UserDepartmentsSetResponse.user:type_name -> contract.entity.User
+	57, // 14: contract.service.UserPositionSetResponse.user:type_name -> contract.entity.User
+	61, // 15: contract.service.UserPermissionGroupFetchResponse.groups:type_name -> contract.entity.UserPermissionGroup
+	61, // 16: contract.service.UserPermissionGroupSaveResponse.group:type_name -> contract.entity.UserPermissionGroup
+	62, // 17: contract.service.UserRolesSetRequest.roles:type_name -> contract.enum.UserRole
+	57, // 18: contract.service.UserRolesSetResponse.user:type_name -> contract.entity.User
+	38, // 19: contract.service.UserCreateBatchRequest.users:type_name -> contract.service.UserCreateBatchItem
+	58, // 20: contract.service.UserCreateBatchItem.birthday:type_name -> google.protobuf.Timestamp
+	41, // 21: contract.service.UserCreateBatchItem.passport:type_name -> contract.service.PassportCreateRequest
+	43, // 22: contract.service.UserCreateBatchItem.educations:type_name -> contract.service.EducationCreateRequest
+	45, // 23: contract.service.UserCreateBatchItem.military:type_name -> contract.service.MilitaryCreateRequest
+	40, // 24: contract.service.UserCreateBatchResponse.results:type_name -> contract.service.UserCreateBatchResult
+	63, // 25: contract.service.PassportCreateRequest.gender:type_name -> contract.enum.UserGender
+	64, // 26: contract.service.PassportCreateRequest.nationality:type_name -> contract.enum.UserNationality
+	65, // 27: contract.service.EducationCreateRequest.type:type_name -> contract.enum.EducationType
+	66, // 28: contract.service.EducationCreateRequest.status:type_name -> contract.enum.EducationStatus
+	58, // 29: contract.service.EducationCreateRequest.issue_date:type_name -> google.protobuf.Timestamp
+	67, // 30: contract.service.MilitaryCreateRequest.rank:type_name -> contract.enum.MilitaryRank
+	68, // 31: contract.service.MilitaryCreateRequest.document:type_name -> contract.enum.MilitaryDocument
+	69, // 32: contract.service.MilitaryCreateRequest.validity:type_name -> contract.enum.MilitaryValidity
+	58, // 33: contract.service.MilitaryCreateRequest.deferment_expires_at:type_name -> google.protobuf.Timestamp
+	70, // 34: contract.service.StudentCreateRequest.status:type_name -> contract.enum.UserStudentStatus
+	71, // 35: contract.service.StudentCreateRequest.education_form:type_name -> contract.enum.UserStudentEducationForm
+	72, // 36: contract.service.StudentWithUser.student:type_name -> contract.entity.Student
+	57, // 37: contract.service.StudentWithUser.user:type_name -> contract.entity.User
+	50, // 38: contract.service.StudentFetchResponse.students:type_name -> contract.service.StudentWithUser
+	60, // 39: contract.service.EmployeeCreateRequest.department:type_name -> contract.enum.UserEmployeeDepartment
+	73, // 40: contract.service.EmployeeCreateRequest.status:type_name -> contract.enum.UserEmployeeStatus
+	74, // 41: contract.service.EmployeeCreateRequest.position:type_name -> contract.enum.UserEmployeePosition
+	75, // 42: contract.service.EmployeeWithUser.employee:type_name -> contract.entity.Employee
+	57, // 43: contract.service.EmployeeWithUser.user:type_name -> contract.entity.User
+	55, // 44: contract.service.EmployeeFetchResponse.employees:type_name -> contract.service.EmployeeWithUser
+	0,  // 45: contract.service.UserService.UserFetch:input_type -> contract.service.UserFetchRequest
+	2,  // 46: contract.service.UserService.UserCreate:input_type -> contract.service.UserCreateRequest
+	10, // 47: contract.service.UserService.UserFetchByID:input_type -> contract.service.UserFetchByIDRequest
+	37, // 48: contract.service.UserService.UserCreateBatch:input_type -> contract.service.UserCreateBatchRequest
+	4,  // 49: contract.service.UserService.UserUpdate:input_type -> contract.service.UserUpdateRequest
+	6,  // 50: contract.service.UserService.UserDelete:input_type -> contract.service.UserDeleteRequest
+	8,  // 51: contract.service.UserService.UserDeleteBatch:input_type -> contract.service.UserDeleteBatchRequest
+	12, // 52: contract.service.UserService.UserFetchByUUID:input_type -> contract.service.UserFetchByUUIDRequest
+	14, // 53: contract.service.UserService.UserFetchByADObjectID:input_type -> contract.service.UserFetchByADObjectIDRequest
+	16, // 54: contract.service.UserService.ActivationIssue:input_type -> contract.service.ActivationIssueRequest
+	35, // 55: contract.service.UserService.UserRolesSet:input_type -> contract.service.UserRolesSetRequest
+	18, // 56: contract.service.UserService.UserPermissionsSet:input_type -> contract.service.UserPermissionsSetRequest
+	20, // 57: contract.service.UserService.UserPermissionGroupsSet:input_type -> contract.service.UserPermissionGroupsSetRequest
+	22, // 58: contract.service.UserService.UserPermissionGroupAssignmentsFetch:input_type -> contract.service.UserPermissionGroupAssignmentsFetchRequest
+	25, // 59: contract.service.UserService.UserDepartmentsSet:input_type -> contract.service.UserDepartmentsSetRequest
+	27, // 60: contract.service.UserService.UserPositionSet:input_type -> contract.service.UserPositionSetRequest
+	29, // 61: contract.service.UserService.UserPermissionGroupFetch:input_type -> contract.service.UserPermissionGroupFetchRequest
+	31, // 62: contract.service.UserService.UserPermissionGroupSave:input_type -> contract.service.UserPermissionGroupSaveRequest
+	33, // 63: contract.service.UserService.UserPermissionGroupDelete:input_type -> contract.service.UserPermissionGroupDeleteRequest
+	41, // 64: contract.service.UserService.PassportCreate:input_type -> contract.service.PassportCreateRequest
+	43, // 65: contract.service.UserService.EducationCreate:input_type -> contract.service.EducationCreateRequest
+	45, // 66: contract.service.UserService.MilitaryCreate:input_type -> contract.service.MilitaryCreateRequest
+	47, // 67: contract.service.UserService.StudentCreate:input_type -> contract.service.StudentCreateRequest
+	49, // 68: contract.service.UserService.StudentFetch:input_type -> contract.service.StudentFetchRequest
+	52, // 69: contract.service.UserService.EmployeeCreate:input_type -> contract.service.EmployeeCreateRequest
+	54, // 70: contract.service.UserService.EmployeeFetch:input_type -> contract.service.EmployeeFetchRequest
+	1,  // 71: contract.service.UserService.UserFetch:output_type -> contract.service.UserFetchResponse
+	3,  // 72: contract.service.UserService.UserCreate:output_type -> contract.service.UserCreateResponse
+	11, // 73: contract.service.UserService.UserFetchByID:output_type -> contract.service.UserFetchByIDResponse
+	39, // 74: contract.service.UserService.UserCreateBatch:output_type -> contract.service.UserCreateBatchResponse
+	5,  // 75: contract.service.UserService.UserUpdate:output_type -> contract.service.UserUpdateResponse
+	7,  // 76: contract.service.UserService.UserDelete:output_type -> contract.service.UserDeleteResponse
+	9,  // 77: contract.service.UserService.UserDeleteBatch:output_type -> contract.service.UserDeleteBatchResponse
+	13, // 78: contract.service.UserService.UserFetchByUUID:output_type -> contract.service.UserFetchByUUIDResponse
+	15, // 79: contract.service.UserService.UserFetchByADObjectID:output_type -> contract.service.UserFetchByADObjectIDResponse
+	17, // 80: contract.service.UserService.ActivationIssue:output_type -> contract.service.ActivationIssueResponse
+	36, // 81: contract.service.UserService.UserRolesSet:output_type -> contract.service.UserRolesSetResponse
+	19, // 82: contract.service.UserService.UserPermissionsSet:output_type -> contract.service.UserPermissionsSetResponse
+	21, // 83: contract.service.UserService.UserPermissionGroupsSet:output_type -> contract.service.UserPermissionGroupsSetResponse
+	24, // 84: contract.service.UserService.UserPermissionGroupAssignmentsFetch:output_type -> contract.service.UserPermissionGroupAssignmentsFetchResponse
+	26, // 85: contract.service.UserService.UserDepartmentsSet:output_type -> contract.service.UserDepartmentsSetResponse
+	28, // 86: contract.service.UserService.UserPositionSet:output_type -> contract.service.UserPositionSetResponse
+	30, // 87: contract.service.UserService.UserPermissionGroupFetch:output_type -> contract.service.UserPermissionGroupFetchResponse
+	32, // 88: contract.service.UserService.UserPermissionGroupSave:output_type -> contract.service.UserPermissionGroupSaveResponse
+	34, // 89: contract.service.UserService.UserPermissionGroupDelete:output_type -> contract.service.UserPermissionGroupDeleteResponse
+	42, // 90: contract.service.UserService.PassportCreate:output_type -> contract.service.PassportCreateResponse
+	44, // 91: contract.service.UserService.EducationCreate:output_type -> contract.service.EducationCreateResponse
+	46, // 92: contract.service.UserService.MilitaryCreate:output_type -> contract.service.MilitaryCreateResponse
+	48, // 93: contract.service.UserService.StudentCreate:output_type -> contract.service.StudentCreateResponse
+	51, // 94: contract.service.UserService.StudentFetch:output_type -> contract.service.StudentFetchResponse
+	53, // 95: contract.service.UserService.EmployeeCreate:output_type -> contract.service.EmployeeCreateResponse
+	56, // 96: contract.service.UserService.EmployeeFetch:output_type -> contract.service.EmployeeFetchResponse
+	71, // [71:97] is the sub-list for method output_type
+	45, // [45:71] is the sub-list for method input_type
+	45, // [45:45] is the sub-list for extension type_name
+	45, // [45:45] is the sub-list for extension extendee
+	0,  // [0:45] is the sub-list for field type_name
 }
 
 func init() { file_mdm_service_user_service_proto_init() }
@@ -571,15 +3845,16 @@ func file_mdm_service_user_service_proto_init() {
 	if File_mdm_service_user_service_proto != nil {
 		return
 	}
+	file_mdm_service_user_service_proto_msgTypes[2].OneofWrappers = []any{}
 	file_mdm_service_user_service_proto_msgTypes[4].OneofWrappers = []any{}
-	file_mdm_service_user_service_proto_msgTypes[6].OneofWrappers = []any{}
+	file_mdm_service_user_service_proto_msgTypes[38].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_mdm_service_user_service_proto_rawDesc), len(file_mdm_service_user_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   57,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

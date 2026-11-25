@@ -1,0 +1,17 @@
+env: prod
+
+grpc:
+  port: 4000
+  timeout: 5s
+
+databases:
+  purchase_db:
+    sslmode: disable
+  infrastructure_db:
+    sslmode: disable
+  test_db:
+    sslmode: disable
+  exam_test_db:
+    sslmode: disable
+  library_db:
+    sslmode: disable

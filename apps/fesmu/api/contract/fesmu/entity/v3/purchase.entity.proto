@@ -1,0 +1,363 @@
+syntax = "proto3";
+
+package contract.entity.v3;
+
+import "google/protobuf/timestamp.proto";
+import "fesmu/enum/v3/purchase.enum.proto";
+import "mdm/enum/user.enum.proto";
+
+option go_package = "entity_v3;entity_pb";
+
+// Money is in kopecks throughout, so sums never pick up float errors.
+// Departments are MDM's (UserEmployeeDepartment): the author's department
+// comes from their profile, never from the call.
+
+// The signed-in user as the purchase flow sees them: the page shows what
+// these allow, the server checks the same on every call.
+message PurchaseMe {
+  string uuid = 1;
+  string name = 2;
+  // MDM departments; empty when the profile has none.
+  repeated contract.enum.UserEmployeeDepartment departments = 3;
+  // The vice-rector directions bound to this user (PurchaseCurator.id).
+  repeated int64 curator_ids = 4;
+  // Effective purchase permissions; ADMIN has all of them.
+  repeated contract.enum.v3.PurchasePermission permissions = 5;
+  bool admin = 6;
+  // Job title from MDM; empty until set on the «Роли» page.
+  string position = 7;
+}
+
+// A vice-rector's direction: "Проректор по цифровой трансформации". The
+// departments it curates are PurchaseDepartment.curator_id; the portal user
+// who is this vice-rector sees and approves for the whole direction.
+message PurchaseCurator {
+  int64 id = 1;
+  // "Проректор по цифровой трансформации".
+  string title = 2;
+  // "ЦТ", "АХУ": for tables and charts.
+  string short_title = 3;
+  // Full name of whoever holds the post.
+  string person_name = 4;
+  // The portal user (MDM uuid); empty until the administrator binds one.
+  string user_uuid = 5;
+  string user_name = 6;
+  int32 sort_order = 7;
+}
+
+// An MDM department and the vice-rector direction it belongs to.
+message PurchaseDepartment {
+  contract.enum.UserEmployeeDepartment department = 1;
+  string name = 2;
+  // 0 until the administrator assigns one; requests of such a department
+  // stop at the head with a hint to fill the directory.
+  int64 curator_id = 3;
+}
+
+// What kind of purchase an ОКПД2 prefix is, and which department carries such
+// purchases out: suggests the implementing department and fills the codes.
+message PurchaseCategory {
+  int64 id = 1;
+  string name = 2;
+  string okpd2_prefix = 3;
+  contract.enum.UserEmployeeDepartment implementing_department = 4;
+}
+
+// Someone a head may give a purchase to prepare.
+message PurchaseEmployee {
+  string uuid = 1;
+  string name = 2;
+  contract.enum.UserEmployeeDepartment department = 3;
+}
+
+// One employee's work in the module over a period, from the log.
+message PurchaseActivity {
+  string uuid = 1;
+  string name = 2;
+  // From MDM; empty when unknown.
+  string position = 3;
+  repeated contract.enum.UserEmployeeDepartment departments = 4;
+  // Every logged action.
+  int32 total = 5;
+  // Requests filed.
+  int32 created = 6;
+  // Stages passed on ("Продолжить").
+  int32 forwards = 7;
+  // Records returned or rejected.
+  int32 returns = 8;
+  // Edits: content, terms, codes, merges.
+  int32 edits = 9;
+  // Files added: КП, documents, protocols.
+  int32 files = 10;
+  // Distinct requests and purchases touched.
+  int32 records = 11;
+  // Days with at least one action.
+  int32 active_days = 12;
+  google.protobuf.Timestamp first_at = 13;
+  google.protobuf.Timestamp last_at = 14;
+  // Roles acted in.
+  repeated contract.enum.v3.PurchaseRole roles = 15;
+  // The latest actions, newest first.
+  repeated PurchaseLog recent = 16;
+  // Times the «Закупки» page was opened, and the latest.
+  int32 visits = 17;
+  google.protobuf.Timestamp last_visit_at = 18;
+}
+
+// A stage's latest sign-off, shown to the next stages as "who approved".
+// Going back to a stage drops the sign-offs of it and every later one.
+message PurchaseSignOff {
+  contract.enum.v3.PurchaseRole role = 1;
+  // The stage that was signed off.
+  oneof stage {
+    contract.enum.v3.PurchaseRequestStatus request_status = 2;
+    contract.enum.v3.PurchaseLotStatus lot_status = 3;
+  }
+  string name = 4;
+  string uuid = 5;
+  string comment = 6;
+  google.protobuf.Timestamp at = 7;
+}
+
+// One change, never edited: who, in which role, what, why.
+message PurchaseLog {
+  int64 id = 1;
+  contract.enum.v3.PurchaseLogTarget target = 2;
+  int64 target_id = 3;
+  contract.enum.v3.PurchaseRole role = 4;
+  string actor_name = 5;
+  string actor_uuid = 6;
+  // Machine key: "forward", "return", "update", "merge", ...
+  string action = 7;
+  // What happened, in words.
+  string text = 8;
+  string comment = 9;
+  google.protobuf.Timestamp created_at = 10;
+}
+
+// What the signed-in user may do with a record right now: the page shows
+// these buttons and nothing else.
+message PurchaseAllowed {
+  repeated contract.enum.v3.PurchaseMove moves = 1;
+  // May save the fields of the current stage.
+  bool edit = 2;
+  // REQUEST: the author may delete it while under review or rework.
+  // LOT: the implementing head may disband it while forming.
+  bool remove = 3;
+  // The user acts here by their own rights (department, direction, given
+  // to them), not only as an administrator: such records are their tasks.
+  bool mine = 4;
+}
+
+message PurchaseRequest {
+  int64 id = 1;
+  string title = 2;
+  contract.enum.v3.PurchaseItemType item_type = 3;
+  double quantity = 4;
+  string unit = 5;
+  // Why it is needed.
+  string description = 6;
+
+  // The author's department (MDM profile): its head reviews the request.
+  contract.enum.UserEmployeeDepartment department = 7;
+  string author_uuid = 8;
+  string author_name = 9;
+  // The vice-rector over the department, from the directory.
+  int64 curator_id = 10;
+  // The department that carries the purchase out; set when the vice-rector
+  // approves, UNSPECIFIED until then.
+  contract.enum.UserEmployeeDepartment implementing_department = 11;
+  // The one the title suggests (by category); UNSPECIFIED if none.
+  contract.enum.UserEmployeeDepartment suggested_department = 12;
+
+  contract.enum.v3.PurchaseRequestStatus status = 13;
+  // The purchase it went into; 0 while it is not in one.
+  int64 lot_id = 14;
+  // The request the head merged it into; 0 if none.
+  int64 merged_into_id = 15;
+
+  repeated PurchaseSignOff sign_offs = 16;
+  // The comment of the last return or rejection.
+  string last_comment = 17;
+  repeated PurchaseLog logs = 18;
+  PurchaseAllowed allowed = 19;
+  google.protobuf.Timestamp created_at = 20;
+  google.protobuf.Timestamp updated_at = 21;
+  // When the request came to its stage, and by when the stage must be done
+  // (its term in working days); unset at a final status.
+  google.protobuf.Timestamp stage_since = 22;
+  google.protobuf.Timestamp stage_due = 23;
+}
+
+// A commercial offer (КП) the assignee attaches; the economist prices the
+// purchase by them.
+message PurchaseQuotation {
+  int64 id = 1;
+  int64 lot_id = 2;
+  string supplier = 3;
+  string supplier_inn = 4;
+  int64 unit_price = 5;
+  string note = 6;
+  string file_name = 7;
+  int64 file_size = 8;
+  string created_by = 9;
+  google.protobuf.Timestamp created_at = 10;
+}
+
+// A file of a purchase: ТЗ, contract, acceptance act and so on.
+message PurchaseDocument {
+  int64 id = 1;
+  int64 lot_id = 2;
+  contract.enum.v3.PurchaseDocumentKind kind = 3;
+  string file_name = 4;
+  int64 file_size = 5;
+  string note = 6;
+  string created_by = 7;
+  google.protobuf.Timestamp created_at = 8;
+}
+
+message PurchaseLot {
+  int64 id = 1;
+  string title = 2;
+  string description = 3;
+  contract.enum.v3.PurchaseItemType item_type = 4;
+  double quantity = 5;
+  string unit = 6;
+
+  contract.enum.UserEmployeeDepartment implementing_department = 7;
+  // The vice-rector over the implementing department.
+  int64 curator_id = 8;
+  contract.enum.v3.PurchaseLotStatus status = 9;
+  // Who prepares the characteristics, offers and ТЗ; empty until assigned.
+  string assignee_uuid = 10;
+  string assignee_name = 11;
+
+  // — Stage I: the assignee's characteristics, the vice-rector's reasons.
+  // Characteristics of the object, standardised for all merged requests.
+  string specification = 12;
+  // What the purchase is for — the vice-rector's word to the commission.
+  string curator_justification = 13;
+
+  // — Classifier codes, filled from the category directory at the head's
+  // check and corrected by the economist.
+  string okpd2 = 14;
+  string ktru = 15;
+  string okved = 16;
+  // Filled automatically and nobody has checked them yet.
+  bool codes_auto = 17;
+
+  // — The economist, before the commission.
+  contract.enum.v3.PurchaseFundingSource funding_source = 18;
+  string kosgu = 19;
+  // НМЦК the economist approved; 0 until then.
+  int64 nmck = 20;
+  string economist_comment = 21;
+  // From the offers: the average and lowest unit price, average × quantity,
+  // and the coefficient of variation in percent (over 33 — offers diverge,
+  // п. 5.3 of the regulation).
+  int64 unit_price = 22;
+  int64 min_unit_price = 23;
+  int64 calc_amount = 24;
+  double price_variation = 25;
+  // What the purchase costs now: final cost, else НМЦК, else calc_amount.
+  int64 total_amount = 26;
+
+  // — The budget commission.
+  contract.enum.v3.PurchasePlanType plan_type = 27;
+  int32 plan_year = 28;
+  // The protocol of the latest decision; 0 until one.
+  int64 protocol_id = 29;
+  string commission_comment = 30;
+
+  // — Stage II: ТЗ, final cost, law and method.
+  // Text of the ТЗ; the signed file is a PurchaseDocument of kind TECH_SPEC.
+  string tech_spec = 31;
+  // The economist's final cost after the ТЗ; 0 until then.
+  int64 final_cost = 32;
+  string final_cost_comment = 33;
+  contract.enum.v3.PurchaseLaw law = 34;
+  contract.enum.v3.PurchaseMethod method = 35;
+  string contract_service_comment = 36;
+
+  // — Stage III: execution, filled by the procurement department.
+  // Notice number in ЕИС; empty for a single supplier.
+  string notice_number = 37;
+  google.protobuf.Timestamp notice_at = 38;
+  string supplier = 39;
+  string supplier_inn = 40;
+  string contract_number = 41;
+  google.protobuf.Timestamp contract_at = 42;
+  int64 contract_amount = 43;
+  // When the contract is to be fulfilled by.
+  google.protobuf.Timestamp delivery_due = 44;
+  google.protobuf.Timestamp delivered_at = 45;
+  google.protobuf.Timestamp accepted_at = 46;
+  string acceptance_comment = 47;
+  // Inventory numbers of the items registered in the portal's inventory.
+  repeated string inventory_numbers = 48;
+  google.protobuf.Timestamp completed_at = 49;
+
+  repeated int64 request_ids = 50;
+  repeated PurchaseQuotation quotations = 51;
+  repeated PurchaseDocument documents = 52;
+  repeated PurchaseSignOff sign_offs = 53;
+  // The comment of the last return or rejection.
+  string last_comment = 54;
+  repeated PurchaseLog logs = 55;
+  PurchaseAllowed allowed = 56;
+  string created_by = 57;
+  google.protobuf.Timestamp created_at = 58;
+  google.protobuf.Timestamp updated_at = 59;
+  // When the purchase came to its stage, and by when the stage must be done:
+  // its term in working days; during delivery — the contract's term.
+  google.protobuf.Timestamp stage_since = 60;
+  google.protobuf.Timestamp stage_due = 61;
+  // The purchase's control date as a whole, and why it is so.
+  google.protobuf.Timestamp due_at = 62;
+  string due_comment = 63;
+  // What to check after the purchase was brought over from a plan or
+  // registry, one remark per line; empty once someone checked it.
+  string review_note = 64;
+}
+
+// One purchase's line in a commission protocol.
+message PurchaseProtocolDecision {
+  int64 lot_id = 1;
+  // As it was at the meeting.
+  string lot_title = 2;
+  int64 curator_id = 3;
+  int64 amount = 4;
+  contract.enum.v3.PurchaseCommissionDecision decision = 5;
+  // APPROVE: planned or unplanned, and the plan's year.
+  contract.enum.v3.PurchasePlanType plan_type = 6;
+  int32 plan_year = 7;
+  string comment = 8;
+}
+
+// A budget commission meeting: its decisions move the purchases, and the
+// approved ones become purchases proper.
+message PurchaseProtocol {
+  int64 id = 1;
+  string number = 2;
+  google.protobuf.Timestamp held_at = 3;
+  string chairman = 4;
+  string secretary = 5;
+  string comment = 6;
+  repeated PurchaseProtocolDecision decisions = 7;
+  // The signed protocol, once uploaded.
+  string file_name = 8;
+  int64 file_size = 9;
+  string created_by = 10;
+  google.protobuf.Timestamp created_at = 11;
+}
+
+message PurchaseCodeSuggestion {
+  bool found = 1;
+  string okpd2 = 2;
+  string ktru = 3;
+  string okved = 4;
+  // The classifier's name for what was matched.
+  string name = 5;
+  // The category's implementing department; UNSPECIFIED if none.
+  contract.enum.UserEmployeeDepartment implementing_department = 6;
+}

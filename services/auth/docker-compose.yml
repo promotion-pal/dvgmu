@@ -1,0 +1,135 @@
+# Один файл и для прода, и для тестового стенда рядом с ним.
+# STAND пустой (прод) → проект "auth", контейнеры dvgmu_apps_auth_*, роутер auth-secure.
+# STAND=3_0 (стенд)   → проект dvgmu_apps_3_0_auth, контейнеры dvgmu_apps_3_0_auth_*,
+#                       свой том БД и свой домен AUTH_DOMAIN. См. README → «Тестовый стенд».
+name: ${STAND:+dvgmu_apps_${STAND}_}auth
+
+services:
+  # Ключи сервисов (auth_api/auth_db) намеренно НЕ совпадают с именами
+  # контейнеров: имя сервиса — DNS-алиас в traefik-network, и у стенда оно
+  # не должно перехватывать прод-имя dvgmu_apps_auth_api.
+  auth_api:
+    container_name: "dvgmu_apps${STAND:+_${STAND}}_auth_api"
+    build:
+      context: "../.."  # корень монорепо: нужен packages/go
+      dockerfile: "services/auth/api/Dockerfile"
+      network: host
+    restart: unless-stopped
+    environment:
+      GRPC_PORT: "4000"
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000,http://localhost:5173,https://auth.dvgmu.promotion-pal.ru}
+      AUTH_INTERNAL_TOKEN: ${AUTH_INTERNAL_TOKEN}
+      # SSO-сессия IdP (вход через AD, без привязки к MDM)
+      AUTH_JWT_SECRET: ${AUTH_JWT_SECRET}
+      AUTH_ACCESS_TOKEN_TTL: ${AUTH_ACCESS_TOKEN_TTL:-24h}
+      # LDAP: objectGUID/UPN по логину (fallback, если AD FS их не прислал)
+      AUTH_LDAP_URL: ${AUTH_LDAP_URL}
+      AUTH_LDAP_START_TLS: ${AUTH_LDAP_START_TLS:-false}
+      AUTH_LDAP_INSECURE_SKIP_VERIFY: ${AUTH_LDAP_INSECURE_SKIP_VERIFY:-false}
+      AUTH_LDAP_BIND_DN: ${AUTH_LDAP_BIND_DN}
+      AUTH_LDAP_BIND_PASSWORD: ${AUTH_LDAP_BIND_PASSWORD}
+      AUTH_LDAP_BASE_DN: ${AUTH_LDAP_BASE_DN}
+      AUTH_LDAP_USER_FILTER: ${AUTH_LDAP_USER_FILTER:-(sAMAccountName=%s)}
+      # SAML IdP для Yandex 360 и форма /login
+      AUTH_SAML_IDP_ENTITY_ID: ${AUTH_SAML_IDP_ENTITY_ID:-https://auth.dvgmu.promotion-pal.ru/saml/idp/metadata}
+      AUTH_SAML_IDP_BASE_URL: ${AUTH_SAML_IDP_BASE_URL:-https://auth.dvgmu.promotion-pal.ru}
+      AUTH_SAML_IDP_CERT_PEM: ${AUTH_SAML_IDP_CERT_PEM}
+      AUTH_SAML_IDP_KEY_PEM: ${AUTH_SAML_IDP_KEY_PEM}
+      AUTH_SAML_IDP_SP_ENTITY_ID: ${AUTH_SAML_IDP_SP_ENTITY_ID:-https://yandex.ru/}
+      AUTH_SAML_IDP_SP_ACS_URLS: ${AUTH_SAML_IDP_SP_ACS_URLS:-https://passport.yandex.ru/auth/sso/commit}
+      AUTH_SAML_IDP_EMAIL_DOMAIN: ${AUTH_SAML_IDP_EMAIL_DOMAIN}
+      AUTH_SAML_IDP_NAMEID: ${AUTH_SAML_IDP_NAMEID:-email}
+      AUTH_SAML_IDP_NAME_ID_FORMAT: ${AUTH_SAML_IDP_NAME_ID_FORMAT:-urn:oasis:names:tc:SAML:2.0:nameid-format:persistent}
+      AUTH_SAML_IDP_COOKIE_DOMAIN: ${AUTH_SAML_IDP_COOKIE_DOMAIN:-.dvgmu.promotion-pal.ru}
+      AUTH_SAML_IDP_COOKIE_NAME: ${AUTH_SAML_IDP_COOKIE_NAME:-dvgmu_session}
+      AUTH_SAML_IDP_HELPDESK_URL: ${AUTH_SAML_IDP_HELPDESK_URL:-https://hd.fesmu.ru}
+      AUTH_SAML_IDP_FORCE_LOGIN: ${AUTH_SAML_IDP_FORCE_LOGIN:-true}
+      AUTH_LOGIN_ALLOWED_RETURN_HOSTS: ${AUTH_LOGIN_ALLOWED_RETURN_HOSTS}
+      AUTH_LOGIN_DEFAULT_RETURN_URL: ${AUTH_LOGIN_DEFAULT_RETURN_URL}
+      # AD FS (WS-Trust): проверка пароля. RELYING_PARTY_ID — тот, что заведён
+      # в AD FS; стенд может использовать идентификатор прода.
+      AUTH_ADFS_WSTRUST_URL: ${AUTH_ADFS_WSTRUST_URL}
+      AUTH_ADFS_RELYING_PARTY_ID: ${AUTH_ADFS_RELYING_PARTY_ID}
+      AUTH_ADFS_SIGNING_CERT_PEM: ${AUTH_ADFS_SIGNING_CERT_PEM}
+      AUTH_ADFS_OBJECT_GUID_CLAIM: ${AUTH_ADFS_OBJECT_GUID_CLAIM}
+      AUTH_ADFS_UPN_SUFFIX: ${AUTH_ADFS_UPN_SUFFIX}
+      AUTH_ADFS_INSECURE_SKIP_VERIFY: ${AUTH_ADFS_INSECURE_SKIP_VERIFY:-false}
+      AUTH_ADFS_TIMEOUT: ${AUTH_ADFS_TIMEOUT:-10s}
+      # Токены fesmu (только для связанных с MDM)
+      AUTH_MDM_SERVICE_URL: ${AUTH_MDM_SERVICE_URL:-http://dvgmu_apps${STAND:+_${STAND}}_mdm_api:4000}
+      AUTH_JWT_SIGNING_KEY_PEM: ${AUTH_JWT_SIGNING_KEY_PEM}
+      AUTH_ACCESS_TTL: ${AUTH_ACCESS_TTL:-15m}
+      AUTH_REFRESH_TTL: ${AUTH_REFRESH_TTL:-720h}
+      AUTH_COOKIE_DOMAIN: ${AUTH_COOKIE_DOMAIN}
+      # Активация кодом и смена пароля (/activate, /password)
+      AUTH_MDM_INTERNAL_TOKEN: ${AUTH_MDM_INTERNAL_TOKEN}
+      AUTH_LDAP_PWD_URL: ${AUTH_LDAP_PWD_URL}
+      AUTH_LDAP_PWD_BIND_DN: ${AUTH_LDAP_PWD_BIND_DN}
+      AUTH_LDAP_PWD_BIND_PASSWORD: ${AUTH_LDAP_PWD_BIND_PASSWORD}
+      AUTH_LDAP_PWD_INSECURE_SKIP_VERIFY: ${AUTH_LDAP_PWD_INSECURE_SKIP_VERIFY:-false}
+      # Смена пароля самим пользователем (/password) по Kerberos — без служебной
+      # учётки. Пустой REALM — заглушка.
+      AUTH_KRB_REALM: ${AUTH_KRB_REALM:-}
+      AUTH_KRB_KDC: ${AUTH_KRB_KDC:-dvgmu-ad.dvgmu.local:88}
+      AUTH_KRB_KPASSWD: ${AUTH_KRB_KPASSWD:-dvgmu-ad.dvgmu.local:464}
+      # Хост БД не берётся из .env: auth_db виден только во внутренней сети
+      # своего проекта, так стенд физически не может попасть в прод-базу.
+      AUTH_DB_HOST: auth_db
+      AUTH_DB_PORT: "5432"
+      AUTH_DB_USER: ${AUTH_DB_USER:-auth}
+      AUTH_DB_PASSWORD: ${AUTH_DB_PASSWORD}
+      AUTH_DB_NAME: ${AUTH_DB_NAME:-}
+      AUTH_DB_SSLMODE: ${AUTH_DB_SSLMODE:-disable}
+      TZ: ${AUTH_TZ:-Asia/Vladivostok}
+    depends_on:
+      auth_db:
+        condition: service_healthy
+    extra_hosts:
+      - "dvgmu-ad.dvgmu.local:192.168.2.222"
+    networks:
+      - default
+      - traefik-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-network"
+      - "traefik.http.routers.auth${STAND:+-${STAND}}-secure.rule=Host(`${AUTH_DOMAIN:-auth.dvgmu.promotion-pal.ru}`)"
+      - "traefik.http.routers.auth${STAND:+-${STAND}}-secure.entrypoints=websecure"
+      - "traefik.http.routers.auth${STAND:+-${STAND}}-secure.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.auth${STAND:+-${STAND}}-secure.service=auth${STAND:+-${STAND}}-web"
+      # Те же адреса входа на чужом хосте AUTH_PATH_HOST (напр. core.fesmu.ru):
+      # пока сетевой фильтр не пропускает AUTH_DOMAIN, вход живёт на уже
+      # открытом домене. Правило длиннее, чем Host(...) у приложения, поэтому
+      # Traefik отдаёт эти пути auth. Без AUTH_PATH_HOST — дубль своего домена.
+      - "traefik.http.routers.auth${STAND:+-${STAND}}-paths.rule=Host(`${AUTH_PATH_HOST:-${AUTH_DOMAIN:-auth.dvgmu.promotion-pal.ru}}`) && (PathPrefix(`/login`) || PathPrefix(`/logout`) || PathPrefix(`/activate`) || PathPrefix(`/password`) || PathPrefix(`/saml/`) || PathPrefix(`/api/v1/auth/`) || Path(`/.well-known/jwks.json`))"
+      - "traefik.http.routers.auth${STAND:+-${STAND}}-paths.entrypoints=websecure"
+      - "traefik.http.routers.auth${STAND:+-${STAND}}-paths.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.auth${STAND:+-${STAND}}-paths.service=auth${STAND:+-${STAND}}-web"
+      - "traefik.http.services.auth${STAND:+-${STAND}}-web.loadbalancer.server.port=4000"
+
+  auth_db:
+    image: "postgres:17-alpine"
+    container_name: "dvgmu_apps${STAND:+_${STAND}}_auth_db"
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${AUTH_DB_USER:-auth}
+      POSTGRES_PASSWORD: ${AUTH_DB_PASSWORD}
+      POSTGRES_DB: ${AUTH_DB_NAME:-auth}
+      TZ: ${AUTH_TZ:-Asia/Vladivostok}
+    volumes:
+      # Полное имя тома = <проект>_dvgmu_apps_auth_pgdata: у прода
+      # auth_dvgmu_apps_auth_pgdata (как сейчас), у стенда — своё.
+      - "dvgmu_apps_auth_pgdata:/var/lib/postgresql/data"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${AUTH_DB_USER:-auth} -d ${AUTH_DB_NAME:-auth}"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+    networks:
+      - default
+
+networks:
+  traefik-network:
+    external: true
+
+volumes:
+  dvgmu_apps_auth_pgdata:

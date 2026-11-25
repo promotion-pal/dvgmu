@@ -1,0 +1,172 @@
+# Локальный запуск всего портала (make dev-up). Прод и стенд не затрагивает:
+# свой проект fesmu_local, свои контейнеры, порты только на localhost.
+#
+#   веб       http://localhost:18300
+#   fesmu api http://localhost:18200
+#   auth      http://localhost:18201   (вход через adfs-mock вместо AD FS)
+#   mdm       http://localhost:18205   (для make dev-seed)
+#
+# Вместо AD — adfs-mock (dev/adfs-mock/users.json): тот же протокол WS-Trust,
+# что у AD FS, auth работает без изменений кода.
+name: fesmu_local
+
+x-db: &db
+  DB_HOST: postgres
+  DB_PORT: "5432"
+  DB_USER: postgres
+  DB_PASSWORD: postgres
+  DB_SSLMODE: disable
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./postgres-init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      retries: 30
+
+  adfs:
+    build: ./adfs-mock
+
+  mdm:
+    build: { context: .., dockerfile: services/mdm/api/Dockerfile }
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: "5432"
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mdm
+      DB_SSLMODE: disable
+      GRPC_PORT: "4000"
+      MDM_INTERNAL_TOKEN: dev-mdm-token
+      # 32 байта hex — только для локальных данных.
+      PASSPORT_ENCRYPTION_KEY: 000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f
+      ALLOWED_ORIGINS: http://localhost:18300
+    ports: ["127.0.0.1:18205:4000"]
+    depends_on: { postgres: { condition: service_healthy } }
+
+  auth:
+    build: { context: .., dockerfile: services/auth/api/Dockerfile }
+    environment:
+      ENV: local
+      GRPC_PORT: "4000"
+      AUTH_DB_HOST: postgres
+      AUTH_DB_PORT: "5432"
+      AUTH_DB_USER: postgres
+      AUTH_DB_PASSWORD: postgres
+      AUTH_DB_NAME: auth
+      AUTH_DB_SSLMODE: disable
+      # Вход: пароль проверяет adfs-mock вместо AD FS; подпись не проверяется.
+      AUTH_ADFS_WSTRUST_URL: http://adfs:8080/adfs/services/trust/13/usernamemixed
+      AUTH_ADFS_RELYING_PARTY_ID: urn:fesmu:local
+      AUTH_ADFS_OBJECT_GUID_CLAIM: http://schemas.microsoft.com/identity/claims/objectguid
+      AUTH_ADFS_UPN_SUFFIX: "@fesmu.local"
+      # Человек ищется в MDM по objectGUID.
+      AUTH_MDM_SERVICE_URL: http://mdm:4000
+      AUTH_MDM_INTERNAL_TOKEN: dev-mdm-token
+      AUTH_INTERNAL_TOKEN: dev-auth-token
+      # Ключ JWT не задан — генерируется при старте (токены живут до рестарта auth).
+      AUTH_JWT_ISSUER: auth-service
+      AUTH_JWT_AUDIENCE: fesmu
+      AUTH_LOGIN_ALLOWED_RETURN_HOSTS: localhost:18300
+      AUTH_LOGIN_DEFAULT_RETURN_URL: http://localhost:18300/
+      AUTH_SAML_IDP_BASE_URL: http://localhost:18201
+      AUTH_SAML_IDP_COOKIE_DOMAIN: localhost
+      ALLOWED_ORIGINS: http://localhost:18300
+    ports: ["127.0.0.1:18201:4000"]
+    depends_on: [postgres, mdm, adfs]
+
+  analytics:
+    build: { context: .., dockerfile: services/analytics/api/Dockerfile }
+    environment: { <<: *db, DB_NAME: analytics, GRPC_PORT: "4000" }
+    depends_on: { postgres: { condition: service_healthy } }
+
+  file:
+    build: { context: .., dockerfile: services/file/api/Dockerfile }
+    environment: { <<: *db, DB_NAME: file, GRPC_PORT: "4000", STORAGE_BASE_PATH: /tmp/storage }
+    depends_on: { postgres: { condition: service_healthy } }
+
+  tickets:
+    build: { context: .., dockerfile: services/tickets/api/Dockerfile }
+    environment: { <<: *db, DB_NAME: tickets, GRPC_PORT: "4000" }
+    depends_on: { postgres: { condition: service_healthy } }
+
+  notification:
+    build: { context: .., dockerfile: services/notification/api/Dockerfile }
+    environment:
+      GRPC_PORT: "4000"
+      SMTP_HOST: localhost
+      SMTP_PORT: "25"
+      SMTP_FROM: portal@fesmu.local
+
+  api:
+    build: { context: .., dockerfile: apps/fesmu/api/Dockerfile }
+    environment:
+      ENV: local
+      GRPC_PORT: "4000"
+      ALLOWED_ORIGINS: http://localhost:18300
+      DB_SSLMODE: disable
+      POSTGRES_HOST_PURCHASE: postgres
+      POSTGRES_USER_PURCHASE: postgres
+      POSTGRES_PASSWORD_PURCHASE: postgres
+      POSTGRES_DB_PURCHASE: fesmu_purchase
+      INFRASTRUCTURE_POSTGRES_HOST: postgres
+      INFRASTRUCTURE_POSTGRES_USER: postgres
+      INFRASTRUCTURE_POSTGRES_PASSWORD: postgres
+      INFRASTRUCTURE_POSTGRES_DB: fesmu_infrastructure
+      TEST_POSTGRES_HOST: postgres
+      TEST_POSTGRES_USER: postgres
+      TEST_POSTGRES_PASSWORD: postgres
+      TEST_POSTGRES_DB: fesmu_tests
+      EXAM_TEST_POSTGRES_HOST: postgres
+      EXAM_TEST_POSTGRES_USER: postgres
+      EXAM_TEST_POSTGRES_PASSWORD: postgres
+      EXAM_TEST_POSTGRES_DB: fesmu_exam_tests
+      POSTGRES_HOST_LIBRARY: postgres
+      POSTGRES_USER_LIBRARY: postgres
+      POSTGRES_PASSWORD_LIBRARY: postgres
+      POSTGRES_DB_LIBRARY: fesmu_library
+      PACKAGE_MDM: http://mdm:4000
+      PACKAGE_AUTH: http://auth:4000
+      PACKAGE_ANALYTICS: http://analytics:4000
+      PACKAGE_FILES: http://file:4000
+      PACKAGE_TASKS: http://tickets:4000
+      AUTH_SERVICE_URL: http://auth:4000
+      AUTH_JWKS_URL: http://auth:4000/.well-known/jwks.json
+      AUTH_PUBLIC_URL: http://localhost:18201
+      AUTH_INTERNAL_TOKEN: dev-auth-token
+      AUTH_JWT_ISSUER: auth-service
+      AUTH_JWT_AUDIENCE: fesmu
+    ports: ["127.0.0.1:18200:4000"]
+    depends_on: [postgres, mdm, auth, analytics, file, tickets]
+
+  seed-students:
+    profiles: [tools]
+    build:
+      context: ..
+      dockerfile: apps/fesmu/api/Dockerfile.seed-students
+    environment:
+      PACKAGE_MDM: http://mdm:4000
+      MDM_INTERNAL_TOKEN: dev-mdm-token
+    volumes:
+      - ../services/mdm/api/seeds/student-roster.csv:/seed/student-roster.csv:ro
+    depends_on: [mdm]
+
+  web:
+    build:
+      context: ..
+      dockerfile: apps/fesmu/web/Dockerfile
+      args:
+        API_URL: http://localhost:18200
+        AUTH_URL: http://localhost:18201
+        VERSION: local
+    ports: ["127.0.0.1:18300:3000"]
+    depends_on: [api]
+
+volumes:
+  pgdata:

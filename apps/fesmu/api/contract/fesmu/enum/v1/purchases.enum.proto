@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package contract.enum.v1;
+
+option go_package = "enum_v1;enum_pb";
+
+enum PurchaseRequisitionStatus {
+  PURCHASE_REQUISITION_STATUS_UNSPECIFIED = 0;
+  PURCHASE_REQUISITION_STATUS_IN_WORK = 1;
+  PURCHASE_REQUISITION_STATUS_CURATOR_REVIEW = 2;
+  PURCHASE_REQUISITION_STATUS_ECONOMIST_REVIEW = 3;
+  PURCHASE_REQUISITION_STATUS_HEAD_REVIEW = 4;
+  PURCHASE_REQUISITION_STATUS_REWORK = 5;
+  PURCHASE_REQUISITION_STATUS_REJECTED = 6;
+  PURCHASE_REQUISITION_STATUS_ACCEPTED = 7;
+}
+
+enum PurchaseRequisitionType {
+  PURCHASE_REQUISITION_TYPE_UNSPECIFIED = 0;
+  PURCHASE_REQUISITION_TYPE_SERVICE = 1;
+  PURCHASE_REQUISITION_TYPE_PRODUCT = 2;
+}
+
+enum PurchaseStatus {
+  PURCHASE_STATUS_UNSPECIFIED = 0;
+  PURCHASE_STATUS_IN_WORK = 1;               // В работе (список начальника отдела)
+  PURCHASE_STATUS_EVALUATION = 2;            // Оценка
+  PURCHASE_STATUS_BUDGET_COMMISSION = 3;     // Бюджетная комиссия
+  PURCHASE_STATUS_PLANNING = 4;              // Планирование (форма закона + сроки)
+  PURCHASE_STATUS_TOR_FORMATION = 5;         // Формирование ТЗ
+  PURCHASE_STATUS_TOR_REVIEW = 6;            // Проверка ТЗ
+  PURCHASE_STATUS_TOR_REWORK = 7;            // Доработка ТЗ (макс. 2 возврата)
+  PURCHASE_STATUS_TOR_REJECTED = 8;          // Отказ ТЗ
+  PURCHASE_STATUS_TOR_ACCEPTED = 9;          // Принятие ТЗ
+  PURCHASE_STATUS_AWAITING_QUOTATION = 10;   // Ожидание КП
+  PURCHASE_STATUS_NMCK_APPROVAL = 11;        // Утверждение НМЦК и получение КП
+  PURCHASE_STATUS_PUBLICATION = 12;          // Опубликовано контрактной службой
+  PURCHASE_STATUS_CONTRACT_CONCLUSION = 13;  // Заключение контракта
+  PURCHASE_STATUS_CONTRACT_EXECUTION = 14;   // Исполнение контракта (приёмка)
+  PURCHASE_STATUS_CONTRACT_PAYMENT = 15;     // Оплата контракта
+  PURCHASE_STATUS_COMPLETED = 16;            // Выполнена
+  PURCHASE_STATUS_REJECTED = 17;             // Отклонена
+}
+
+enum PurchaseAttachmentKind {
+  PURCHASE_ATTACHMENT_KIND_UNSPECIFIED = 0;
+  PURCHASE_ATTACHMENT_KIND_TOR = 1;   // Техническое задание (Word)
+  PURCHASE_ATTACHMENT_KIND_MEMO = 2;  // Служебная записка
+  PURCHASE_ATTACHMENT_KIND_LAW = 3;   // Закон / правила закупки
+}

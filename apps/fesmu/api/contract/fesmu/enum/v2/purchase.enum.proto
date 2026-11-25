@@ -1,0 +1,101 @@
+syntax = "proto3";
+
+package contract.enum.v2;
+
+option go_package = "enum_v2;enum_pb";
+
+// Who acts in the purchase flow, in the order a request travels.
+enum PurchaseActorRole {
+  PURCHASE_ACTOR_ROLE_UNSPECIFIED = 0;
+  PURCHASE_ACTOR_ROLE_EMPLOYEE = 1;           // Сотрудник — подаёт заявку
+  PURCHASE_ACTOR_ROLE_DEPT_HEAD = 2;          // Начальник отдела
+  PURCHASE_ACTOR_ROLE_VICE_RECTOR = 3;        // Курирующий проректор
+  PURCHASE_ACTOR_ROLE_ECONOMIST = 4;          // Экономический отдел
+  PURCHASE_ACTOR_ROLE_BUDGET_COMMISSION = 5;  // Бюджетная комиссия
+}
+
+// An employee's request: the head of its department, the vice-rector over
+// that department, then the implementing department, whose head puts it into
+// a purchase.
+enum PurchaseRequestStatus {
+  PURCHASE_REQUEST_STATUS_UNSPECIFIED = 0;
+  PURCHASE_REQUEST_STATUS_HEAD_REVIEW = 1;         // У начальника отдела
+  PURCHASE_REQUEST_STATUS_REWORK = 2;              // Возвращена сотруднику
+  PURCHASE_REQUEST_STATUS_VICE_RECTOR_REVIEW = 3;  // У проректора, курирующего отдел
+  PURCHASE_REQUEST_STATUS_IN_LOT = 4;              // Включена в закупку
+  PURCHASE_REQUEST_STATUS_REJECTED = 5;            // Отклонена
+  PURCHASE_REQUEST_STATUS_MERGED = 6;              // Объединена начальником в другую заявку
+  PURCHASE_REQUEST_STATUS_IMPLEMENTER_REVIEW = 7;  // У реализующего отдела, ждёт объединения в закупку
+}
+
+// What is bought.
+enum PurchaseItemType {
+  PURCHASE_ITEM_TYPE_UNSPECIFIED = 0;
+  PURCHASE_ITEM_TYPE_PRODUCT = 1;  // Товар
+  PURCHASE_ITEM_TYPE_SERVICE = 2;  // Услуга
+}
+
+enum PurchaseRequestAction {
+  PURCHASE_REQUEST_ACTION_UNSPECIFIED = 0;
+  PURCHASE_REQUEST_ACTION_SUBMIT = 1;              // Сотрудник: отправить снова после доработки
+  PURCHASE_REQUEST_ACTION_HEAD_APPROVE = 2;        // Начальник: согласовать → проректору
+  PURCHASE_REQUEST_ACTION_HEAD_RETURN = 3;         // Начальник: вернуть сотруднику
+  PURCHASE_REQUEST_ACTION_HEAD_REJECT = 4;         // Начальник: отклонить
+  PURCHASE_REQUEST_ACTION_VICE_RECTOR_RETURN = 5;  // Проректор: вернуть начальнику
+  PURCHASE_REQUEST_ACTION_VICE_RECTOR_REJECT = 6;  // Проректор: отклонить
+  PURCHASE_REQUEST_ACTION_VICE_RECTOR_APPROVE = 7; // Проректор: согласовать → реализующему отделу
+  PURCHASE_REQUEST_ACTION_IMPLEMENTER_RETURN = 8;  // Реализующий начальник: вернуть проректору
+}
+
+// A purchase (lot): requests the implementing department's head merged.
+// In flow order: FORMING → SPECIFICATION → IMPLEMENTER_CHECK →
+// VICE_RECTOR_REVIEW → ECONOMIST_REVIEW → BUDGET_COMMISSION → APPROVED.
+enum PurchaseLotStatus {
+  PURCHASE_LOT_STATUS_UNSPECIFIED = 0;
+  PURCHASE_LOT_STATUS_FORMING = 1;            // У реализующего начальника: состав, исполнитель
+  PURCHASE_LOT_STATUS_ECONOMIST_REVIEW = 2;   // Экономический отдел: коды и бюджет
+  PURCHASE_LOT_STATUS_BUDGET_COMMISSION = 3;  // На бюджетной комиссии
+  PURCHASE_LOT_STATUS_APPROVED = 4;           // Включена в ПФХД
+  PURCHASE_LOT_STATUS_REJECTED = 5;           // Отклонена комиссией
+  PURCHASE_LOT_STATUS_SPECIFICATION = 6;      // У исполнителя: характеристики, стандартизация, КП
+  PURCHASE_LOT_STATUS_IMPLEMENTER_CHECK = 7;  // Реализующий начальник проверяет работу исполнителя
+  PURCHASE_LOT_STATUS_VICE_RECTOR_REVIEW = 8; // У проректора, курирующего реализующий отдел
+}
+
+enum PurchaseLotAction {
+  PURCHASE_LOT_ACTION_UNSPECIFIED = 0;
+  PURCHASE_LOT_ACTION_SEND_TO_ECONOMIST = 1;  // Проректор: согласовать → экономический отдел
+  PURCHASE_LOT_ACTION_ECONOMIST_APPROVE = 2;  // Экономист → бюджетная комиссия
+  PURCHASE_LOT_ACTION_ECONOMIST_RETURN = 3;   // Экономист → назад проректору
+  PURCHASE_LOT_ACTION_COMMISSION_APPROVE = 4; // Комиссия: включить в ПФХД
+  PURCHASE_LOT_ACTION_COMMISSION_REJECT = 5;  // Комиссия: отклонить
+  PURCHASE_LOT_ACTION_COMMISSION_RETURN = 6;  // Комиссия → назад экономисту
+  PURCHASE_LOT_ACTION_DISBAND = 7;            // Реализующий начальник: расформировать, заявки обратно
+  PURCHASE_LOT_ACTION_ASSIGN = 8;             // Реализующий начальник: передать исполнителю
+  PURCHASE_LOT_ACTION_SPEC_DONE = 9;          // Исполнитель: готово → начальнику на проверку
+  PURCHASE_LOT_ACTION_SPEC_RETURN = 10;       // Исполнитель: вернуть начальнику
+  PURCHASE_LOT_ACTION_CHECK_APPROVE = 11;     // Реализующий начальник: принять → проректору
+  PURCHASE_LOT_ACTION_CHECK_RETURN = 12;      // Реализующий начальник: вернуть исполнителю
+  PURCHASE_LOT_ACTION_VICE_RECTOR_RETURN = 13; // Проректор: вернуть реализующему начальнику
+}
+
+// ПФХД splits approved purchases into planned and unplanned ones.
+enum PurchasePlanType {
+  PURCHASE_PLAN_TYPE_UNSPECIFIED = 0;
+  PURCHASE_PLAN_TYPE_PLANNED = 1;    // Плановая
+  PURCHASE_PLAN_TYPE_UNPLANNED = 2;  // Внеплановая
+}
+
+enum PurchaseFundingSource {
+  PURCHASE_FUNDING_SOURCE_UNSPECIFIED = 0;
+  PURCHASE_FUNDING_SOURCE_STATE_TASK = 1;      // Субсидия на госзадание
+  PURCHASE_FUNDING_SOURCE_TARGET_SUBSIDY = 2;  // Целевая субсидия
+  PURCHASE_FUNDING_SOURCE_INCOME = 3;          // Приносящая доход деятельность
+  PURCHASE_FUNDING_SOURCE_OMS = 4;             // Средства ОМС
+}
+
+enum PurchaseLogTarget {
+  PURCHASE_LOG_TARGET_UNSPECIFIED = 0;
+  PURCHASE_LOG_TARGET_REQUEST = 1;
+  PURCHASE_LOG_TARGET_LOT = 2;
+}

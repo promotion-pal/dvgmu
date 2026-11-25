@@ -1,0 +1,11 @@
+export { QrDesigner } from "./qr-designer";
+export { buildQrMatrix } from "./qr-matrix";
+export { renderQrPoster, printImage, qrContrast } from "./qr-render";
+export { QR_PRESETS, QR_FORMATS, defaultDesign, applyPreset } from "./qr-presets";
+export type { QrDesign, QrFormat, QrDotStyle, QrEyeStyle, QrPreset, QrSubtitleBg, QrSubtitlePosition, QrTitlePosition } from "./qr-presets";
+export { QR_ARTS } from "./qr-art";
+export type { QrArt, QrArtGeometry, QrArtId } from "./qr-art";
+export { QrBatchExport } from "./qr-batch";
+export type { QrBatchItem } from "./qr-batch";
+export { renderSheet, renderSheetsPdf, buildPdf, SHEET, SHEET_TILES } from "./qr-sheet";
+export type { SheetTile, SheetItem } from "./qr-sheet";

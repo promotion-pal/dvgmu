@@ -1,0 +1,13 @@
+# Сборка веба fesmu идёт из корня монорепо — пускаем в контекст только нужное,
+# чтобы не тащить сервисы, их базы и чужие node_modules.
+*
+!package.json
+!pnpm-workspace.yaml
+!pnpm-lock.yaml
+!.npmrc
+!apps/fesmu/web
+!packages
+**/node_modules
+**/dist
+**/.env
+**/.env.*

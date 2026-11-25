@@ -1,0 +1,16 @@
+# Сборка идёт из корня монорепо — пускаем в контекст только этот api и packages/go.
+*
+!packages/
+!packages/go/
+!packages/go/**
+!services/
+!services/notification/
+!services/notification/api/
+!services/notification/api/**
+services/notification/api/*.test
+services/notification/api/coverage.out
+services/notification/api/coverage.html
+services/notification/api/notification
+**/.git
+**/.env
+**/.env.*

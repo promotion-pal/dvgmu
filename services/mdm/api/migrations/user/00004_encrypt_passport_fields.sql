@@ -1,0 +1,11 @@
+-- +goose Up
+ALTER TABLE passports
+    ALTER COLUMN series TYPE VARCHAR(255),
+    ALTER COLUMN number TYPE VARCHAR(255),
+    ALTER COLUMN snils TYPE VARCHAR(255);
+
+-- +goose Down
+ALTER TABLE passports
+    ALTER COLUMN series TYPE VARCHAR(16),
+    ALTER COLUMN number TYPE VARCHAR(16),
+    ALTER COLUMN snils TYPE VARCHAR(32);

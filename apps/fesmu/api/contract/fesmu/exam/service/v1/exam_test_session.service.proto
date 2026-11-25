@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package contract.fesmu.exam.service.v1;
+
+import "fesmu/service/v1/test_session.service.proto";
+import "mdm/service/user_directory.service.proto";
+
+option go_package = "exam_service_v1;exam_service_pb";
+
+// The examination-test link, registration and attempt API. Students use the
+// same anonymous flow and registration fields as regular test sessions.
+service ExamTestSessionService {
+  // Staff-only, student directory for selecting exam recipients.
+  rpc ExamAudienceFetch (contract.service.UserDirectoryFetchRequest) returns (contract.service.UserDirectoryFetchResponse);
+  // Public computer-class catalogue: only currently available exams, no questions or results.
+  rpc ExamPublicFetch (ExamPublicFetchRequest) returns (ExamPublicFetchResponse);
+  rpc TestSessionCreate (contract.service.v1.TestSessionCreateRequest) returns (contract.service.v1.TestSessionCreateResponse);
+  rpc TestSessionFetch (contract.service.v1.TestSessionFetchRequest) returns (contract.service.v1.TestSessionFetchResponse);
+  rpc TestSessionOpenUpdate (contract.service.v1.TestSessionOpenUpdateRequest) returns (contract.service.v1.TestSessionOpenUpdateResponse);
+  rpc TestSessionDelete (contract.service.v1.TestSessionDeleteRequest) returns (contract.service.v1.TestSessionDeleteResponse);
+  rpc TestAttemptFetch (contract.service.v1.TestAttemptFetchRequest) returns (contract.service.v1.TestAttemptFetchResponse);
+  rpc TestAttemptDelete (contract.service.v1.TestAttemptDeleteRequest) returns (contract.service.v1.TestAttemptDeleteResponse);
+  rpc TestTakeInfo (contract.service.v1.TestTakeInfoRequest) returns (contract.service.v1.TestTakeInfoResponse);
+  rpc TestTakeStart (contract.service.v1.TestTakeStartRequest) returns (contract.service.v1.TestTakeStateResponse);
+  rpc TestTakeState (contract.service.v1.TestTakeStateRequest) returns (contract.service.v1.TestTakeStateResponse);
+  rpc TestTakeAnswer (contract.service.v1.TestTakeAnswerRequest) returns (contract.service.v1.TestTakeAnswerResponse);
+  rpc TestTakeFinish (contract.service.v1.TestTakeFinishRequest) returns (contract.service.v1.TestTakeStateResponse);
+}
+
+message ExamPublicFetchRequest {
+  string record_book = 1;
+}
+
+message ExamPublicFetchResponse {
+  repeated ExamPublicTest list = 1;
+  ExamPublicStudent student = 2;
+}
+
+message ExamPublicStudent {
+  string full_name = 1;
+  string student_group = 2;
+  string faculty = 3;
+  int32 course = 4;
+}
+
+message ExamPublicTest {
+  int64 test_id = 1;
+  string token = 2;
+  string faculty = 3;
+  int32 semester = 4;
+  string subject = 5;
+  string title = 6;
+  int32 duration_minutes = 7;
+}

@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package contract.enum.v1;
+
+option go_package = "enum_v1;enum_pb";
+
+enum InventoryStatus {
+  INVENTORY_STATUS_UNSPECIFIED = 0;
+  INVENTORY_STATUS_IN_USE = 1;
+  INVENTORY_STATUS_IN_STORAGE = 2;
+  INVENTORY_STATUS_UNDER_REPAIR = 3;
+  INVENTORY_STATUS_WRITTEN_OFF = 4;
+}
+
+enum InventoryType {
+  INVENTORY_TYPE_UNSPECIFIED = 0;
+  INVENTORY_TYPE_EQUIPMENT = 1;
+  INVENTORY_TYPE_FURNITURE = 2;
+  INVENTORY_TYPE_ELECTRONICS = 3;
+  INVENTORY_TYPE_OTHER = 4;
+}

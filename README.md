@@ -1,42 +1,103 @@
-# DVGМУ
+# fesmu — монорепозиторий ДВГМУ
 
-Монорепозиторий включает фронтенд личного кабинета (`apps/lk`), protobuf-контракты (`services/tickets/contract`) и сервис задач на Go (`services/tickets`).
+Портал fesmu, общие сервисы (вход, MDM, аналитика, заявки, файлы…) и сайты в одном
+репозитории. Собран из `dvgmu_apps` и `fesmu` (ветки release/3.0).
 
-## Требования
+Как сервисы связаны, как работает вход и общие схемы — [ARCHITECTURE.md](ARCHITECTURE.md).
+Локальный запуск всего портала без AD — `make dev-up` (раздел 7 там же).
 
-- Docker Compose
-- Node.js и pnpm (версия из `package.json`)
-- Go
-- Buf CLI для генерации protobuf
-- Atlas CLI для команд миграций
+## Устройство
 
-## Первичная настройка
+```
+apps/
+  fesmu/api           бэкенд портала (Go)
+  fesmu/web           фронтенд портала (React + Vite)
+  ksm, guide, profile, unistom, course   статические сайты
+services/             сервисы — у каждого своя БД, compose, .env; схемы в api/contract
+packages/
+  go/                 Go-модуль fesmu/contract — сгенерированный Go всех схем
+  ts/                 пакет @fesmu/contract — сгенерированный TS всех схем
+buf.yaml              workspace всех схем
+buf.gen.yaml          генерация всех схем
+Makefile              make proto, make proto-check
+```
 
-```sh
-cp .env.example .env
+## Схемы — только buf
+
+- Схема лежит у владельца в папке с его именем:
+  `services/mdm/api/contract/mdm/{entity,enum,service}`,
+  `apps/fesmu/api/contract/fesmu/{entity,enum,service}/vN`, у auth — `auth/v1`, `auth/v2`.
+- Путь файла начинается с имени владельца, поэтому он уникален всегда, а импорт показывает,
+  чья это схема: `import "mdm/entity/user.entity.proto"`.
+- Сгенерированный код лежит только в `packages/`. В сервисах сгенерированного кода нет.
+
+```bash
+make proto         # buf generate: Go → packages/go, TS → packages/ts
+make proto-check   # сгенерированный код совпадает со схемами (это же в CI)
+```
+
+**Go.** Один модуль `fesmu/contract` в `packages/go`. Go-пакет = `fesmu/contract/` + папка
+схемы: `fesmu/contract/mdm/entity`, `fesmu/contract/fesmu/service/v1`,
+`fesmu/contract/auth/v2`. Бэкенд подключает модуль в своём `go.mod`:
+
+```
+require fesmu/contract v0.0.0
+replace fesmu/contract => ../../../packages/go
+```
+
+Поэтому Docker-образ бэкенда собирается из корня репозитория: ему нужны и папка api, и
+`packages/go`.
+
+**TS.** Пакет `@fesmu/contract` в `packages/ts`, по владельцам:
+`@fesmu/contract/mdm/entity/user.entity_pb`, `@fesmu/contract/fesmu/entity/v1/…`,
+`@fesmu/contract/auth/v2/…`. Приложение подключает одну зависимость
+`"@fesmu/contract": "workspace:*"`.
+
+dormitory, mentor и ojs — отдельные модули со своей генерацией, в общую схему не входят.
+У dormitory и mentor имена proto-пакетов совпадают с mdm (`contract.entity.User`): папка
+решает конфликт путей, но не имён — для них нужна новая версия API с уникальными пакетами.
+
+**Фронт — один pnpm workspace.** В корне `package.json`, `pnpm-workspace.yaml`,
+`pnpm-lock.yaml`. Веб fesmu берёт `@fesmu/contract` из `packages/ts`. Docker-образ веба
+собирается из корня, но в контекст попадает только нужное — см.
+`apps/fesmu/web/Dockerfile.dockerignore`.
+
+```bash
 pnpm install
+cd apps/fesmu/web && pnpm dev
 ```
 
-`.env` используется Docker Compose. Локальный файл не добавляется в Git.
+## Pre-commit
 
-## Основные команды Make
+После установки [pre-commit](https://pre-commit.com/#installation) подключите хук в корне репозитория:
 
-| Команда | Действие |
-| --- | --- |
-| `make dev` | Собирает и запускает Postgres, сервис задач и MDM в Docker, затем запускает Vite. Фронтенд доступен на `http://localhost:5173`, API задач — на порту `4050`, MDM — `4051`. |
-| `make dev-stop` | Останавливает локальные контейнеры. Данные обеих баз сохраняются в Docker volumes. |
-| `make proto` | Генерирует Go и TypeScript код из protobuf-контрактов в `services/tickets/contract`. |
-| `make tickets-migrate-status` | Показывает состояние миграций Atlas. |
-| `make tickets-migrate-diff` | Создаёт миграцию на основе Go-моделей. |
-| `make tickets-migrate-lint` | Проверяет последние миграции. |
-| `make mdm-migrate-status` | Показывает состояние миграций MDM. |
-| `make mdm-migrate-diff` | Создаёт миграцию MDM на основе Go-моделей. |
-| `make mdm-migrate-lint` | Проверяет последние миграции MDM. |
-
-Для локальной разработки сервис использует настройки `services/tickets/config/local.yaml`; значения подключения к Postgres можно менять через `.env`.
-
-Миграционные команды выполняются из `services/tickets` и требуют установленного Atlas CLI. Для проверки production Compose:
-
-```sh
-docker compose -f services/tickets/docker-compose.yml config
+```bash
+pre-commit install
 ```
+
+При коммите Prettier форматирует добавленные в индекс веб-файлы и конфиги с целевой шириной 100 символов.
+Проверка отклоняет строки длиннее 1200 символов в этих файлах, Go и `.proto`. Сгенерированный Protobuf,
+lock-файлы, минифицированные ассеты и SQL-миграции пропускаются. Если Prettier изменил файлы,
+проверьте правки, снова добавьте их через `git add` и повторите коммит.
+
+## Стенд и прод
+
+Один скрипт для сервисов и приложений; без `STAND=…` в `.env` он откажется работать, чтобы
+не задеть прод-контейнеры:
+
+```bash
+./stand.sh mdm up -d --build
+./stand.sh fesmu up -d --build
+```
+
+`.env` в git не хранятся — на сервере их нужно положить в новые пути
+(`services/<svc>/.env`, `apps/fesmu/.env`).
+
+## Перед первым push
+
+- `.github/workflows/deploy.yml` перенесён из `dvgmu_apps` как есть: он выкатывает сервисы на
+  прод из `/home/rostik/work/dvgmu_apps`. До переключения прода на этот репозиторий его нужно
+  перенастроить (путь `ROOT`, фильтры путей, выкатку fesmu).
+- Подробности по старым частям: `docs/PROJECT_OVERVIEW.md`, `docs/stand.md`, `apps/fesmu/docs/`.
+# dvgmu
+# dvgmu

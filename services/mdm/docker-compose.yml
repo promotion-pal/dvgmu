@@ -1,43 +1,49 @@
+# Один файл и для прода, и для тестового стенда рядом с ним.
+# STAND пустой (прод) → проект "mdm", контейнеры dvgmu_apps_mdm_*.
+# STAND=3_0 (стенд)   → проект dvgmu_apps_3_0_mdm, контейнеры dvgmu_apps_3_0_mdm_*.
+# Данные БД — ./db рядом с этим файлом, у стенда это своя папка.
+name: ${STAND:+dvgmu_apps_${STAND}_}mdm
+
 services:
-  dvgmu_mdm_db:
-    container_name: dvgmu_mdm_db
+  # Ключи сервисов (mdm_api/mdm_db) намеренно НЕ совпадают с именами
+  # контейнеров: имя сервиса — DNS-алиас в traefik-network, и у стенда оно
+  # не должно перехватывать прод-имя dvgmu_apps_mdm_api.
+  mdm_api:
+    container_name: "dvgmu_apps${STAND:+_${STAND}}_mdm_api"
+    build:
+      context: "../.."  # корень монорепо: нужен packages/go
+      dockerfile: "services/mdm/api/Dockerfile"
+    env_file:
+      - .env
+    environment:
+      # Не из .env: mdm_db виден только во внутренней сети своего проекта.
+      POSTGRES_HOST: mdm_db
+      POSTGRES_PORT: "5432"
+    restart: unless-stopped
+    networks:
+      - default
+      - traefik-network
+    depends_on:
+      mdm_db:
+        condition: service_healthy
+
+  mdm_db:
+    container_name: "dvgmu_apps${STAND:+_${STAND}}_mdm_db"
     image: postgres:17
     environment:
-      POSTGRES_USER: ${MDM_POSTGRES_USER:-root}
-      POSTGRES_PASSWORD: ${MDM_POSTGRES_PASSWORD:-password}
-      POSTGRES_DB: ${MDM_POSTGRES_DB:-dvgmu_mdm_db}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
-      - ./db/postgres:/var/lib/postgresql/data
-    networks:
-      - traefik-network
+      - ./db:/var/lib/postgresql/data
     restart: unless-stopped
+    networks:
+      - default
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
-      interval: 5s
-      timeout: 3s
-      retries: 10
-
-  dvgmu_mdm_api:
-    container_name: dvgmu_mdm_api
-    build:
-      context: ../..
-      dockerfile: services/mdm/Dockerfile
-      network: host
-    depends_on:
-      dvgmu_mdm_db:
-        condition: service_healthy
-    environment:
-      DB_HOST: ${MDM_POSTGRES_HOST:-dvgmu_mdm_db}
-      DB_PORT: "5432"
-      DB_USER: ${MDM_POSTGRES_USER:-root}
-      DB_PASSWORD: ${MDM_POSTGRES_PASSWORD:-password}
-      DB_NAME: ${MDM_POSTGRES_DB:-dvgmu_mdm_db}
-      DB_SSLMODE: disable
-      GRPC_PORT: "4000"
-      GRPC_ALLOWED_ORIGINS: ${MDM_ALLOWED_ORIGINS:-https://lk.dvgmu.promotion-pal.ru}
-    networks:
-      - traefik-network
-    restart: unless-stopped
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 networks:
   traefik-network:

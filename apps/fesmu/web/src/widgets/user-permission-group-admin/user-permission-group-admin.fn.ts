@@ -1,0 +1,128 @@
+import { useFetchState } from "@/features/lib/fetch";
+import type { UserPermissionGroup } from "@fesmu/contract/mdm/entity/user.entity_pb";
+import { UserService } from "@fesmu/contract/mdm/service/user.service_pb";
+import { connectTransport } from "@/shared/config/api";
+import { ConnectError, createClient } from "@connectrpc/connect";
+import { toast } from "sonner";
+import { PermissionAction, PermissionSection, perm } from "@/shared/config/permissions";
+import type { PermissionSection as PermissionSectionType } from "@/shared/config/permissions";
+
+const userClient = createClient(UserService, connectTransport);
+
+/** Галочка «Просмотр»/«Изменение» раздела: изменение включает просмотр,
+ *  снятый просмотр снимает и изменение. */
+const toggleSectionAction = (codes: string[], section: PermissionSectionType, action: PermissionAction, on: boolean) => {
+    const fetch = perm(section, PermissionAction.FETCH);
+    const post = perm(section, PermissionAction.POST);
+    const next = new Set(codes);
+    if (on) {
+        next.add(fetch);
+        if (action === PermissionAction.POST) next.add(post);
+    } else {
+        next.delete(post);
+        if (action === PermissionAction.FETCH) next.delete(fetch);
+    }
+    return [...next].sort();
+};
+
+/** Переключатель группы: включить — открыть все её разделы на просмотр,
+ *  выключить — снять с них всё. */
+const toggleSections = (codes: string[], sections: PermissionSectionType[], on: boolean) => {
+    const next = new Set(codes);
+    for (const section of sections) {
+        if (section === PermissionSection.HALLS) {
+            next.delete(perm(section, PermissionAction.FETCH));
+            if (on) next.add(perm(section, PermissionAction.POST));
+            else next.delete(perm(section, PermissionAction.POST));
+            continue;
+        }
+        if (on) next.add(perm(section, PermissionAction.FETCH));
+        else {
+            next.delete(perm(section, PermissionAction.FETCH));
+            next.delete(perm(section, PermissionAction.POST));
+        }
+    }
+    return [...next].sort();
+};
+
+const toggleHallManagement = (codes: string[], on: boolean) => {
+    const next = new Set(codes);
+    next.delete(perm(PermissionSection.HALLS, PermissionAction.FETCH));
+    if (on) next.add(perm(PermissionSection.HALLS, PermissionAction.POST));
+    else next.delete(perm(PermissionSection.HALLS, PermissionAction.POST));
+    return [...next].sort();
+};
+
+/** Черновик набора в окне правки; id 0 — новый. */
+interface UserPermissionGroupDraft {
+    id: bigint;
+    name: string;
+    description: string;
+    permissions: string[];
+}
+
+const emptyDraft = (): UserPermissionGroupDraft => ({ id: 0n, name: "", description: "", permissions: [] });
+
+const toDraft = (g: UserPermissionGroup): UserPermissionGroupDraft => ({
+    id: g.id,
+    name: g.name,
+    description: g.description,
+    // Migrate the legacy view-only hall bit away without silently granting
+    // moderation; halls.post is the sole permission for this section.
+    permissions: g.permissions.filter((permission) => permission !== perm(PermissionSection.HALLS, PermissionAction.FETCH)),
+});
+
+const useUserPermissionGroups = () => {
+    const state = useFetchState<UserPermissionGroup>();
+
+    const fetch = async () => {
+        state.setLoading(true);
+        state.setError(false);
+        try {
+            const response = await userClient.userPermissionGroupFetch({});
+            state.setList(response.groups);
+        } catch (error) {
+            console.error("Ошибка при получении наборов доступа:", error);
+            state.setError(true);
+        } finally {
+            state.setLoading(false);
+        }
+    };
+
+    /** true — сохранено (окно можно закрыть). */
+    const save = async (draft: UserPermissionGroupDraft): Promise<boolean> => {
+        try {
+            const response = await userClient.userPermissionGroupSave(draft);
+            const saved = response.group;
+            if (saved) {
+                state.setList((list) =>
+                    draft.id === 0n
+                        ? [...list, saved].sort((a, b) => a.name.localeCompare(b.name, "ru"))
+                        : list.map((g) => (g.id === saved.id ? saved : g)),
+                );
+            }
+            toast.success(`Доступ «${draft.name.trim()}» сохранён`);
+            return true;
+        } catch (error) {
+            console.error("Ошибка при сохранении набора:", error);
+            toast.error(`Не удалось сохранить: ${ConnectError.from(error).rawMessage}`);
+            return false;
+        }
+    };
+
+    const remove = async (group: UserPermissionGroup) => {
+        try {
+            await userClient.userPermissionGroupDelete({ id: group.id });
+            state.setList((list) => list.filter((g) => g.id !== group.id));
+            toast.success(`Доступ «${group.name}» удалён`);
+        } catch (error) {
+            console.error("Ошибка при удалении набора:", error);
+            toast.error(`Не удалось удалить: ${ConnectError.from(error).rawMessage}`);
+        }
+    };
+
+    return { groups: state, fetch, save, remove };
+};
+
+export { emptyDraft, toDraft, toggleHallManagement, toggleSectionAction, toggleSections, useUserPermissionGroups };
+export type { UserPermissionGroupDraft };

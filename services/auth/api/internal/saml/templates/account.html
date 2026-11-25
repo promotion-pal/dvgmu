@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>{{.Title}}</title>
+  <style>
+    :root { color-scheme: light dark; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f4f5f7; color: #1a1a1a;
+    }
+    .card {
+      width: 100%; max-width: 380px; margin: 24px;
+      background: #fff; border-radius: 12px; padding: 32px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 8px 24px rgba(0,0,0,.06);
+    }
+    h1 { margin: 0 0 4px; font-size: 20px; }
+    p.sub { margin: 0 0 24px; color: #6b7280; font-size: 13px; }
+    label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; }
+    input[type=text], input[type=password] {
+      width: 100%; padding: 10px 12px; margin-bottom: 16px;
+      border: 1px solid #d1d5db; border-radius: 8px; font-size: 15px; background: #fff; color: inherit;
+    }
+    input.code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .12em; text-transform: uppercase; }
+    input:focus { outline: 2px solid #3b82f6; outline-offset: 0; border-color: transparent; }
+    button, a.btn {
+      display: block; width: 100%; padding: 11px; border: 0; border-radius: 8px; text-align: center;
+      background: #2563eb; color: #fff; font-size: 15px; font-weight: 600; cursor: pointer; text-decoration: none;
+    }
+    button:hover, a.btn:hover { background: #1d4ed8; }
+    .error, .ok {
+      margin-bottom: 16px; padding: 10px 12px; border-radius: 8px; font-size: 13px;
+    }
+    .error { background: #fee2e2; color: #991b1b; }
+    .ok { background: #dcfce7; color: #166534; }
+    .hint { margin: -8px 0 16px; color: #6b7280; font-size: 12px; }
+    .links { margin-top: 16px; font-size: 13px; text-align: center; }
+    .links a { color: #2563eb; }
+    @media (prefers-color-scheme: dark) {
+      body { background: #0f172a; color: #e2e8f0; }
+      .card { background: #1e293b; box-shadow: none; }
+      p.sub, .hint { color: #94a3b8; }
+      input[type=text], input[type=password] { background: #0f172a; border-color: #334155; }
+      .error { background: #7f1d1d; color: #fecaca; }
+      .ok { background: #14532d; color: #bbf7d0; }
+      .links a { color: #93c5fd; }
+    }
+  </style>
+</head>
+<body>
+  <form class="card" method="post" action="{{.FormURL}}">
+    <h1>{{.Title}}</h1>
+    {{if .Error}}<div class="error">{{.Error}}</div>{{end}}
+
+    {{if eq .Step "code"}}
+    <p class="sub">Код активации выдаёт администратор. Он действует 14 дней.</p>
+    <label for="username">Логин</label>
+    <input id="username" name="username" type="text" value="{{.Username}}" autocomplete="username"
+           autocapitalize="none" autocorrect="off" spellcheck="false" autofocus required>
+    <label for="code">Код активации</label>
+    <input id="code" class="code" name="code" type="text" placeholder="XXXX-XXXX" autocomplete="one-time-code"
+           autocapitalize="characters" spellcheck="false" required>
+    <input type="hidden" name="step" value="code">
+    <button type="submit">Продолжить</button>
+
+    {{else if eq .Step "new"}}
+    <p class="sub">Логин <b>{{.Username}}</b>. Придумайте пароль — им вы будете входить везде: почта, сайты университета.</p>
+    <label for="password">Новый пароль</label>
+    <input id="password" name="password" type="password" autocomplete="new-password" autofocus required minlength="8">
+    <p class="hint">Не короче 8 символов: заглавные и строчные буквы, цифры. Без имени и логина.</p>
+    <label for="confirm">Повторите пароль</label>
+    <input id="confirm" name="confirm" type="password" autocomplete="new-password" required minlength="8">
+    <input type="hidden" name="username" value="{{.Username}}">
+    <input type="hidden" name="code" value="{{.Code}}">
+    <input type="hidden" name="step" value="set">
+    <button type="submit">Сохранить пароль и войти</button>
+
+    {{else if eq .Step "change"}}
+    <p class="sub">Смена пароля доменной учётной записи — в том числе когда пароль нужно сменить при первом входе.</p>
+    {{if .Notice}}<div class="ok">{{.Notice}}</div>{{end}}
+    <label for="username">Логин</label>
+    <input id="username" name="username" type="text" value="{{.Username}}" autocomplete="username"
+           autocapitalize="none" autocorrect="off" spellcheck="false" {{if not .Username}}autofocus{{end}} required>
+    <label for="current">Текущий пароль</label>
+    <input id="current" name="current" type="password" autocomplete="current-password" required>
+    <label for="password">Новый пароль</label>
+    <input id="password" name="password" type="password" autocomplete="new-password" required minlength="8">
+    <p class="hint">Не короче 8 символов: заглавные и строчные буквы, цифры. Без имени и логина.</p>
+    <label for="confirm">Повторите пароль</label>
+    <input id="confirm" name="confirm" type="password" autocomplete="new-password" required minlength="8">
+    <button type="submit">Сменить пароль</button>
+
+    {{else if eq .Step "done"}}
+    <div class="ok">{{.Notice}}</div>
+    <a class="btn" href="{{.LoginURL}}">Войти</a>
+    {{end}}
+
+    {{if .ReturnURL}}<input type="hidden" name="return" value="{{.ReturnURL}}">{{end}}
+    <div class="links"><a href="{{.LoginURL}}">← Ко входу</a></div>
+  </form>
+</body>
+</html>

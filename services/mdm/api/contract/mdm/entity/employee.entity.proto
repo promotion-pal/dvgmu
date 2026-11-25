@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package contract.entity;
+
+option go_package = "entity;entity_pb";
+
+import "mdm/enum/user.enum.proto";
+import "google/protobuf/timestamp.proto";
+
+message Employee {
+    int64 id = 1;
+    int64 user_id = 2;
+
+    contract.enum.UserEmployeeDepartment department = 3;
+    google.protobuf.Timestamp created_at = 4;
+    google.protobuf.Timestamp updated_at = 5;
+
+    contract.enum.UserEmployeeStatus status = 6;
+    // Должность сотрудника.
+    contract.enum.UserEmployeePosition position = 7;
+    // Ключ строки источника для идемпотентной загрузки назначений.
+    string source_key = 8;
+}

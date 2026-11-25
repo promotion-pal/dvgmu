@@ -1,0 +1,10 @@
+env: prod
+
+grpc:
+  port: 4000
+  timeout: 5s
+  cors_allowed_origins:
+    - https://mentor.dvgmu.promotion-pal.ru
+
+database:
+  sslmode: disable

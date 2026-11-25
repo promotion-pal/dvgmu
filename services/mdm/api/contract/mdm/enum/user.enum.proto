@@ -1,0 +1,940 @@
+syntax = "proto3";
+
+package contract.enum;
+
+option go_package = "enum;enum_pb";
+
+// User
+
+enum UserStatus {
+    USER_STATUS_UNSPECIFIED = 0;
+    USER_STATUS_ACTIVE = 1;
+    USER_STATUS_INACTIVE = 2;
+}
+
+enum UserRole {
+    USER_ROLE_UNSPECIFIED = 0;
+    USER_ROLE_STUDENT = 1;
+    USER_ROLE_STAFF = 2;
+    USER_ROLE_TEACHER = 3;
+    USER_ROLE_ADMIN = 4;
+}
+
+enum UserGender {
+    USER_GENDER_UNSPECIFIED = 0;
+    USER_GENDER_MALE = 1;
+    USER_GENDER_FEMALE = 2;
+}
+
+enum UserNationality {
+    USER_NATIONALITY_UNSPECIFIED = 0;
+    USER_NATIONALITY_RUS = 1;
+    USER_NATIONALITY_BLR = 2;
+    USER_NATIONALITY_KAZ = 3;
+    USER_NATIONALITY_UZB = 4;
+    USER_NATIONALITY_KGZ = 5;
+    USER_NATIONALITY_CHN = 6;
+}
+
+// Student
+
+enum UserStudentStatus {
+    USER_STUDENT_STATUS_UNSPECIFIED = 0;
+    USER_STUDENT_STATUS_STUDYING = 1;         // Учится
+    USER_STUDENT_STATUS_EXPELLED = 2;         // Отчислен
+    USER_STUDENT_STATUS_ACADEMIC_LEAVE = 3;    // В академическом отпуске
+    USER_STUDENT_STATUS_RESTORED = 4;          // Восстановлен
+    USER_STUDENT_STATUS_GRADUATED = 5;         // Выпустился (завершил обучение)
+    USER_STUDENT_STATUS_TRANSFERRED = 6;       // Переведен
+}
+
+enum UserStudentEducationForm {
+    USER_STUDENT_EDUCATION_FORM_UNSPECIFIED = 0;
+    USER_STUDENT_EDUCATION_FORM_BUDGET = 1;
+    USER_STUDENT_EDUCATION_FORM_TARGET = 2;
+    USER_STUDENT_EDUCATION_FORM_CONTRACT = 3;
+    USER_STUDENT_EDUCATION_FORM_SPECIAL_QUOTA = 4;
+}
+
+// Employee
+
+enum UserEmployeeStatus {
+USER_PRESENCE_STATUS_UNSPECIFIED = 0;
+    USER_PRESENCE_STATUS_AVAILABLE = 1;       // На связи / Работает
+    USER_PRESENCE_STATUS_VACATION = 2;        // В отпуске (Vacation)
+    USER_PRESENCE_STATUS_SICK_LEAVE = 3;      // На больничном (Sick Leave)
+    USER_PRESENCE_STATUS_PARENTAL_LEAVE = 4;  // В декрете (Maternity/Paternity)
+    USER_PRESENCE_STATUS_OUT_OF_OFFICE = 5;   // Отгул / Нет на месте сегодня (OOO)
+    USER_PRESENCE_STATUS_BUSINESS_TRIP = 6;   // В командировке (Business Trip)
+}
+
+enum UserEmployeeDepartment {
+    USER_EMPLOYEE_DEPARTMENT_UNSPECIFIED = 0;
+    // ИТ-отдел
+    USER_EMPLOYEE_DEPARTMENT_IT = 1;
+    // Кафедра акушерства и гинекологии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_AKUSHERSTVA_I_GINEKOLOGII = 2;
+    // Кафедра анестезиологии-реаниматологии, трансфузиологии и скорой медицинской помощи
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_ANESTEZIOLOGII_REANIMATOLOGII_TRANSFUZIOLOGII_I_SKOROI_MEDITSINSKOI_POMOSHCHI = 3;
+    // Кафедра госпитальной и факультетской педиатрии с курсом пропедевтики детских болезней
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_GOSPITALNOI_I_FAKULTETSKOI_PEDIATRII_S_KURSOM_PROPEDEVTIKI_DETSKIKH_BOLEZNEI = 4;
+    // Кафедра госпитальной терапии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_GOSPITALNOI_TERAPII = 5;
+    // Кафедра дерматовенерологии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_DERMATOVENEROLOGII = 6;
+    // Кафедра детской хирургии, травматологии и ортопедии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_DETSKOI_KHIRURGII_TRAVMATOLOGII_I_ORTOPEDII = 7;
+    // Кафедра инфекционных болезней и эпидемиологии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_INFEKTSIONNYKH_BOLEZNEI_I_EPIDEMIOLOGII = 8;
+    // Кафедра клинической токсикологии и экстремальной медицины
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_KLINICHESKOI_TOKSIKOLOGII_I_EKSTREMALNOI_MEDITSINY = 9;
+    // Кафедра неврологии и нейрохирургии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_NEVROLOGII_I_NEIROKHIRURGII = 10;
+    // Кафедра общей и клинической хирургии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_OBSHCHEI_I_KLINICHESKOI_KHIRURGII = 11;
+    // Кафедра оториноларингологии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_OTORINOLARINGOLOGII = 12;
+    // Кафедра патологической анатомии и судебной медицины
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_PATOLOGICHESKOI_ANATOMII_I_SUDEBNOI_MEDITSINY = 13;
+    // Кафедра поликлинической педиатрии с курсом детских инфекционных болезней
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_POLIKLINICHESKOI_PEDIATRII_S_KURSOM_DETSKIKH_INFEKTSIONNYKH_BOLEZNEI = 14;
+    // Кафедра пропедевтики внутренних болезней с курсом фтизиатрии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_PROPEDEVTIKI_VNUTRENNIKH_BOLEZNEI_S_KURSOM_FTIZIATRII = 15;
+    // Кафедра психиатрии и наркологии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_PSIKHIATRII_I_NARKOLOGII = 16;
+    // Кафедра сестринского дела с курсом социальных дисциплин
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_SESTRINSKOGO_DELA_S_KURSOM_SOTSIALNYKH_DISTSIPLIN = 17;
+    // Кафедра стоматологии детского возраста
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_STOMATOLOGII_DETSKOGO_VOZRASTA = 18;
+    // Кафедра стоматологии ортопедической
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_STOMATOLOGII_ORTOPEDICHESKOI = 19;
+    // Кафедра стоматологии терапевтической
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_STOMATOLOGII_TERAPEVTICHESKOI = 20;
+    // Кафедра стоматологии хирургической и челюстно-лицевой хирургии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_STOMATOLOGII_KHIRURGICHESKOI_I_CHELYUSTNO_LITSEVOI_KHIRURGII = 21;
+    // Кафедра терапии педиатрического и стоматологического факультетов
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_TERAPII_PEDIATRICHESKOGO_I_STOMATOLOGICHESKOGO_FAKULTETOV = 22;
+    // Кафедра травматологии и ортопедии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_TRAVMATOLOGII_I_ORTOPEDII = 23;
+    // Кафедра урологии и нефрологии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_UROLOGII_I_NEFROLOGII = 24;
+    // Кафедра факультетской и поликлинической терапии с курсом эндокринологии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_FAKULTETSKOI_I_POLIKLINICHESKOI_TERAPII_S_KURSOM_ENDOKRINOLOGII = 25;
+    // Кафедра внутренних болезней, гериатрии и инструментальной диагностики
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_VNUTRENNIKH_BOLEZNEI_GERIATRII_I_INSTRUMENTALNOI_DIAGNOSTIKI = 26;
+    // Кафедра педиатрии, неонатологии и перинатологии с курсом неотложной медицины
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_PEDIATRII_NEONATOLOGII_I_PERINATOLOGII_S_KURSOM_NEOTLOZHNOI_MEDITSINY = 27;
+    // Кафедра физической и реабилитационной медицины
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_FIZICHESKOI_I_REABILITATSIONNOI_MEDITSINY = 28;
+    // Кафедра онкологии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_ONKOLOGII = 29;
+    // Кафедра биологической химии и клинической лабораторной диагностики
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_BIOLOGICHESKOI_KHIMII_I_KLINICHESKOI_LABORATORNOI_DIAGNOSTIKI = 30;
+    // Кафедра гистологии, эмбриологии и цитологии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_GISTOLOGII_EMBRIOLOGII_I_TSITOLOGII = 31;
+    // Кафедра иностранных языков
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_INOSTRANNYKH_YAZYKOV = 32;
+    // Кафедра микробиологии, вирусологии и иммунологии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_MIKROBIOLOGII_VIRUSOLOGII_I_IMMUNOLOGII = 33;
+    // Кафедра нормальной и патологической физиологии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_NORMALNOI_I_PATOLOGICHESKOI_FIZIOLOGII = 34;
+    // Кафедра нормальной и топографической анатомии с курсом оперативной хирургии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_NORMALNOI_I_TOPOGRAFICHESKOI_ANATOMII_S_KURSOM_OPERATIVNOI_KHIRURGII = 35;
+    // Кафедра организации и экономики фармации
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_ORGANIZATSII_I_EKONOMIKI_FARMATSII = 36;
+    // Кафедра педагогики и психологии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_PEDAGOGIKI_I_PSIKHOLOGII = 37;
+    // Кафедра фармации и фармакологии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_FARMATSII_I_FARMAKOLOGII = 38;
+    // Кафедра физики, математики и информатики
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_FIZIKI_MATEMATIKI_I_INFORMATIKI = 39;
+    // Кафедра физического воспитания и здоровья
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_FIZICHESKOGO_VOSPITANIYA_I_ZDOROVYA = 40;
+    // Кафедра философии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_FILOSOFII = 41;
+    // Кафедра химии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_KHIMII = 42;
+    // Кафедра гигиены
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_GIGIENY = 43;
+    // Кафедра общественного здоровья и здравоохранения
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_OBSHCHESTVENNOGO_ZDOROVYA_I_ZDRAVOOKHRANENIYA = 44;
+    // Кафедра биологии и генетики
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_BIOLOGII_I_GENETIKI = 45;
+    // Ректорат
+    USER_EMPLOYEE_DEPARTMENT_REKTORAT = 46;
+    // Бухгалтерия
+    USER_EMPLOYEE_DEPARTMENT_BUKHGALTERIYA = 47;
+    // Отдел тестирования
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_TESTIROVANIYA = 48;
+    // Отдел эксплуатации лекционных залов и межкафедральных аудиторий
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_EKSPLUATATSII_LEKTSIONNYKH_ZALOV_I_MEZHKAFEDRALNYKH_AUDITORII = 49;
+    // Издательство учебной литературы и учебных пособий
+    USER_EMPLOYEE_DEPARTMENT_IZDATELSTVO_UCHEBNOI_LITERATURY_I_UCHEBNYKH_POSOBII = 50;
+    // Контрактная служба
+    USER_EMPLOYEE_DEPARTMENT_KONTRAKTNAYA_SLUZHBA = 51;
+    // Канцелярия
+    USER_EMPLOYEE_DEPARTMENT_KANTSELYARIYA = 52;
+    // Отдел планирования и контроля качества образования
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_PLANIROVANIYA_I_KONTROLYA_KACHESTVA_OBRAZOVANIYA = 53;
+    // Медико-фармацевтический колледж
+    USER_EMPLOYEE_DEPARTMENT_MEDIKO_FARMATSEVTICHESKII_KOLLEDZH = 54;
+    // Административно-хозяйственное управление
+    USER_EMPLOYEE_DEPARTMENT_ADMINISTRATIVNO_KHOZYAISTVENNOE_UPRAVLENIE = 55;
+    // Отдел санитарно-хозяйственного обеспечения
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_SANITARNO_KHOZYAISTVENNOGO_OBESPECHENIYA = 56;
+    // Прачечная
+    USER_EMPLOYEE_DEPARTMENT_PRACHECHNAYA = 57;
+    // Учебный корпус №1
+    USER_EMPLOYEE_DEPARTMENT_UCHEBNYI_KORPUS_1 = 58;
+    // Учебный корпус №3
+    USER_EMPLOYEE_DEPARTMENT_UCHEBNYI_KORPUS_3 = 59;
+    // Институт непрерывного профессионального образования и аккредитации
+    USER_EMPLOYEE_DEPARTMENT_INSTITUT_NEPRERYVNOGO_PROFESSIONALNOGO_OBRAZOVANIYA_I_AKKREDITATSII = 60;
+    // Кафедра ДПО
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_DPO = 61;
+    // Редакция газеты "Вестник ДВГМУ"
+    USER_EMPLOYEE_DEPARTMENT_REDAKTSIYA_GAZETY_VESTNIK_DVGMU = 62;
+    // Спецотдел
+    USER_EMPLOYEE_DEPARTMENT_SPETSOTDEL = 63;
+    // Деканат лечебного факультета
+    USER_EMPLOYEE_DEPARTMENT_DEKANAT_LECHEBNOGO_FAKULTETA = 64;
+    // Деканат медико-гуманитарного факультета
+    USER_EMPLOYEE_DEPARTMENT_DEKANAT_MEDIKO_GUMANITARNOGO_FAKULTETA = 65;
+    // Деканат педиатрического факультета
+    USER_EMPLOYEE_DEPARTMENT_DEKANAT_PEDIATRICHESKOGO_FAKULTETA = 66;
+    // Деканат стоматологического факультета
+    USER_EMPLOYEE_DEPARTMENT_DEKANAT_STOMATOLOGICHESKOGO_FAKULTETA = 67;
+    // Деканат факультета фармации и биомедицины
+    USER_EMPLOYEE_DEPARTMENT_DEKANAT_FAKULTETA_FARMATSII_I_BIOMEDITSINY = 68;
+    // Федеральный аккредитационный центр
+    USER_EMPLOYEE_DEPARTMENT_FEDERALNYI_AKKREDITATSIONNYI_TSENTR = 69;
+    // Отдел информационно-технического сопровождения
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_INFORMATSIONNO_TEKHNICHESKOGO_SOPROVOZHDENIYA = 70;
+    // Отдел обеспечения библиотечной деятельности
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_OBESPECHENIYA_BIBLIOTECHNOI_DEYATELNOSTI = 71;
+    // Деканат факультета ординатуры с центром карьеры и трудоустройства
+    USER_EMPLOYEE_DEPARTMENT_DEKANAT_FAKULTETA_ORDINATURY_S_TSENTROM_KARERY_I_TRUDOUSTROISTVA = 72;
+    // Отдел практического обучения
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_PRAKTICHESKOGO_OBUCHENIYA = 73;
+    // Отдел по молодежной политике и воспитательной работе
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_PO_MOLODEZHNOI_POLITIKE_I_VOSPITATELNOI_RABOTE = 74;
+    // Отдел комплектования контингента
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_KOMPLEKTOVANIYA_KONTINGENTA = 75;
+    // Военно-учетный стол
+    USER_EMPLOYEE_DEPARTMENT_VOENNO_UCHETNYI_STOL = 76;
+    // Отдел кадров
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_KADROV = 77;
+    // Департамент проектно-аналитической деятельности
+    USER_EMPLOYEE_DEPARTMENT_DEPARTAMENT_PROEKTNO_ANALITICHESKOI_DEYATELNOSTI = 78;
+    // Проектный офис
+    USER_EMPLOYEE_DEPARTMENT_PROEKTNYI_OFIS = 79;
+    // Планово-экономический отдел
+    USER_EMPLOYEE_DEPARTMENT_PLANOVO_EKONOMICHESKII_OTDEL = 80;
+    // Юридический отдел
+    USER_EMPLOYEE_DEPARTMENT_YURIDICHESKII_OTDEL = 81;
+    // Отдел обеспечения безопасности труда
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_OBESPECHENIYA_BEZOPASNOSTI_TRUDA = 82;
+    // Отдел охраны и дежурных
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_OKHRANY_I_DEZHURNYKH = 83;
+    // Центр довузовской подготовки
+    USER_EMPLOYEE_DEPARTMENT_TSENTR_DOVUZOVSKOI_PODGOTOVKI = 84;
+    // Поликлиники
+    USER_EMPLOYEE_DEPARTMENT_POLIKLINIKI = 85;
+    // Отдел материально-технического снабжения
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_MATERIALNO_TEKHNICHESKOGO_SNABZHENIYA = 86;
+    // Научный отдел
+    USER_EMPLOYEE_DEPARTMENT_NAUCHNYI_OTDEL = 87;
+    // Кафедра анатомии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_ANATOMII = 88;
+    // Архив
+    USER_EMPLOYEE_DEPARTMENT_ARKHIV = 89;
+
+    // ректорат
+    USER_EMPLOYEE_DEPARTMENT_RECTORATE = 90;
+
+    // административно-хозяйственная часть подразделения по оказанию медицинской помощи за счет средств ОМС
+    USER_EMPLOYEE_DEPARTMENT_ADMINISTRATIVNO_KHOZYAYSTVENNAYA_CHAST_PODRAZDELENIYA_PO_OKAZANIYU_MEDITSINSKOY_POMOSHCHI_ZA_SCHET_SREDSTV_OMS = 91;
+
+    // административно-хозяйственная часть подразделения по оказанию платных медицинских услуг
+    USER_EMPLOYEE_DEPARTMENT_ADMINISTRATIVNO_KHOZYAYSTVENNAYA_CHAST_PODRAZDELENIYA_PO_OKAZANIYU_PLATNYKH_MEDITSINSKIKH_USLUG = 92;
+
+    // административно-хозяйственное управление
+    USER_EMPLOYEE_DEPARTMENT_ADMINISTRATIVNO_KHOZYAYSTVENNOE_UPRAVLENIE = 93;
+
+    // административно-хозяйственный отдел подразделения по оказанию медицинской помощи по ОМС
+    USER_EMPLOYEE_DEPARTMENT_ADMINISTRATIVNO_KHOZYAYSTVENNYY_OTDEL_PODRAZDELENIYA_PO_OKAZANIYU_MEDITSINSKOY_POMOSHCHI_PO_OMS = 94;
+
+    // административно-хозяйственный отдел подразделения по оказанию платных медицинских услуг
+    USER_EMPLOYEE_DEPARTMENT_ADMINISTRATIVNO_KHOZYAYSTVENNYY_OTDEL_PODRAZDELENIYA_PO_OKAZANIYU_PLATNYKH_MEDITSINSKIKH_USLUG = 95;
+
+    // военно-учетный стол
+    USER_EMPLOYEE_DEPARTMENT_VOENNO_UCHETNYY_STOL = 96;
+
+    // группа по расчетам с дебиторами и кредиторами
+    USER_EMPLOYEE_DEPARTMENT_GRUPPA_PO_RASCHETAM_S_DEBITORAMI_I_KREDITORAMI = 97;
+
+    // группа по расчету заработной платы
+    USER_EMPLOYEE_DEPARTMENT_GRUPPA_PO_RASCHETU_ZARABOTNOY_PLATY = 98;
+
+    // группа расчетов со студентами
+    USER_EMPLOYEE_DEPARTMENT_GRUPPA_RASCHETOV_SO_STUDENTAMI = 99;
+
+    // деканат факультета ординатуры с центром карьеры и трудоустройства
+    USER_EMPLOYEE_DEPARTMENT_DEKANAT_FAKULTETA_ORDINATURY_S_TSENTROM_KARERY_I_TRUDOUSTROYSTVA = 100;
+
+    // департамент проектно-аналитической деятельности
+    USER_EMPLOYEE_DEPARTMENT_DEPARTAMENT_PROEKTNO_ANALITICHESKOY_DEYATELNOSTI = 101;
+
+    // дневной стационар подразделения по оказанию медицинской помощи по ОМС
+    USER_EMPLOYEE_DEPARTMENT_DNEVNOY_STATSIONAR_PODRAZDELENIYA_PO_OKAZANIYU_MEDITSINSKOY_POMOSHCHI_PO_OMS = 102;
+
+    // издательство учебной литературы и учебных пособий
+    USER_EMPLOYEE_DEPARTMENT_IZDATELSTVO_UCHEBNOY_LITERATURY_I_UCHEBNYKH_POSOBIY = 103;
+
+    // кабинет УЗИ подразделения по оказанию медицинской помощи по ОМС
+    USER_EMPLOYEE_DEPARTMENT_KABINET_UZI_PODRAZDELENIYA_PO_OKAZANIYU_MEDITSINSKOY_POMOSHCHI_PO_OMS = 104;
+
+    // кабинет УЗИ подразделения по оказанию платных медицинских услуг
+    USER_EMPLOYEE_DEPARTMENT_KABINET_UZI_PODRAZDELENIYA_PO_OKAZANIYU_PLATNYKH_MEDITSINSKIKH_USLUG = 105;
+
+    // кафедра анестезиологии-реаниматологии, трансфузиологии и скорой медицинской помощи
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_ANESTEZIOLOGII_REANIMATOLOGII_TRANSFUZIOLOGII_I_SKOROY_MEDITSINSKOY_POMOSHCHI = 106;
+
+    // кафедра биологической химии и клинической лабораторной диагностики
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_BIOLOGICHESKOY_KHIMII_I_KLINICHESKOY_LABORATORNOY_DIAGNOSTIKI = 107;
+
+    // кафедра внутренних болезней, гериатрии и инструментальной диагностики
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_VNUTRENNIKH_BOLEZNEY_GERIATRII_I_INSTRUMENTALNOY_DIAGNOSTIKI = 108;
+
+    // кафедра госпитальной и факультетской педиатрии с курсом пропедевтики детских болезней
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_GOSPITALNOY_I_FAKULTETSKOY_PEDIATRII_S_KURSOM_PROPEDEVTIKI_DETSKIKH_BOLEZNEY = 109;
+
+    // кафедра госпитальной терапии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_GOSPITALNOY_TERAPII = 110;
+
+    // кафедра детской хирургии, травматологии и ортопедии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_DETSKOY_KHIRURGII_TRAVMATOLOGII_I_ORTOPEDII = 111;
+
+    // кафедра иностранных языковов
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_INOSTRANNYKH_YAZYKOVOV = 112;
+
+    // кафедра инфекционных болезней и эпидемиологии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_INFEKTSIONNYKH_BOLEZNEY_I_EPIDEMIOLOGII = 113;
+
+    // кафедра клинической токсикологии и экстремальной медицины
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_KLINICHESKOY_TOKSIKOLOGII_I_EKSTREMALNOY_MEDITSINY = 114;
+
+    // кафедра неврологии и нейрохирургии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_NEVROLOGII_I_NEYROKHIRURGII = 115;
+
+    // кафедра нормальной и патологической физиологии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_NORMALNOY_I_PATOLOGICHESKOY_FIZIOLOGII = 116;
+
+    // кафедра нормальной и топографической анатомии с курсом оперативной хирургии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_NORMALNOY_I_TOPOGRAFICHESKOY_ANATOMII_S_KURSOM_OPERATIVNOY_KHIRURGII = 117;
+
+    // кафедра общей и клинической хирургии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_OBSHCHEY_I_KLINICHESKOY_KHIRURGII = 118;
+
+    // кафедра патологической анатомии и судебной медицины
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_PATOLOGICHESKOY_ANATOMII_I_SUDEBNOY_MEDITSINY = 119;
+
+    // кафедра педиатрии, неонатологии и перинатологии с курсом неотложной медицины
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_PEDIATRII_NEONATOLOGII_I_PERINATOLOGII_S_KURSOM_NEOTLOZHNOY_MEDITSINY = 120;
+
+    // кафедра поликлинической педиатрии с курсом детских инфекционных болезней
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_POLIKLINICHESKOY_PEDIATRII_S_KURSOM_DETSKIKH_INFEKTSIONNYKH_BOLEZNEY = 121;
+
+    // кафедра пропедевтики внутренних болезней с курсом фтизиатрии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_PROPEDEVTIKI_VNUTRENNIKH_BOLEZNEY_S_KURSOM_FTIZIATRII = 122;
+
+    // кафедра стоматологии ортопедической
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_STOMATOLOGII_ORTOPEDICHESKOY = 123;
+
+    // кафедра стоматологии терапевтической
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_STOMATOLOGII_TERAPEVTICHESKOY = 124;
+
+    // кафедра стоматологии хирургической и челюстно-лицевой хирургии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_STOMATOLOGII_KHIRURGICHESKOY_I_CHELYUSTNO_LITSEVOY_KHIRURGII = 125;
+
+    // кафедра факультетской и поликлинической терапии с курсом эндокринологии
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_FAKULTETSKOY_I_POLIKLINICHESKOY_TERAPII_S_KURSOM_ENDOKRINOLOGII = 126;
+
+    // кафедра физической и реабилитационной медицины
+    USER_EMPLOYEE_DEPARTMENT_KAFEDRA_FIZICHESKOY_I_REABILITATSIONNOY_MEDITSINY = 127;
+
+    // клинико-диагностическая лаборатория
+    USER_EMPLOYEE_DEPARTMENT_KLINIKO_DIAGNOSTICHESKAYA_LABORATORIYA = 128;
+
+    // клинико-диагностическая лаборатория подразделения по оказанию медицинской помощи по ОМС
+    USER_EMPLOYEE_DEPARTMENT_KLINIKO_DIAGNOSTICHESKAYA_LABORATORIYA_PODRAZDELENIYA_PO_OKAZANIYU_MEDITSINSKOY_POMOSHCHI_PO_OMS = 129;
+
+    // клинико-диагностическая лаборатория подразделения по оказанию платных медицинских услуг
+    USER_EMPLOYEE_DEPARTMENT_KLINIKO_DIAGNOSTICHESKAYA_LABORATORIYA_PODRAZDELENIYA_PO_OKAZANIYU_PLATNYKH_MEDITSINSKIKH_USLUG = 130;
+
+    // курс организации и экономики фармации
+    USER_EMPLOYEE_DEPARTMENT_KURS_ORGANIZATSII_I_EKONOMIKI_FARMATSII = 131;
+
+    // курс стоматологии ортопедической
+    USER_EMPLOYEE_DEPARTMENT_KURS_STOMATOLOGII_ORTOPEDICHESKOY = 132;
+
+    // курс стоматологии профилактической
+    USER_EMPLOYEE_DEPARTMENT_KURS_STOMATOLOGII_PROFILAKTICHESKOY = 133;
+
+    // курс фармации и фармакологии
+    USER_EMPLOYEE_DEPARTMENT_KURS_FARMATSII_I_FARMAKOLOGII = 134;
+
+    // лечебно-консультативное отделение подразделения по оказанию медицинской помощи по ОМС
+    USER_EMPLOYEE_DEPARTMENT_LECHEBNO_KONSULTATIVNOE_OTDELENIE_PODRAZDELENIYA_PO_OKAZANIYU_MEDITSINSKOY_POMOSHCHI_PO_OMS = 135;
+
+    // лечебно-консультативное отделение подразделения по оказанию платных медицинских услуг
+    USER_EMPLOYEE_DEPARTMENT_LECHEBNO_KONSULTATIVNOE_OTDELENIE_PODRAZDELENIYA_PO_OKAZANIYU_PLATNYKH_MEDITSINSKIKH_USLUG = 136;
+
+    // лечебное отделение подразделения по оказанию медицинской помощи за счет средств ОМС
+    USER_EMPLOYEE_DEPARTMENT_LECHEBNOE_OTDELENIE_PODRAZDELENIYA_PO_OKAZANIYU_MEDITSINSKOY_POMOSHCHI_ZA_SCHET_SREDSTV_OMS = 137;
+
+    // лечебное отделение подразделения по оказанию платных медицинских услуг
+    USER_EMPLOYEE_DEPARTMENT_LECHEBNOE_OTDELENIE_PODRAZDELENIYA_PO_OKAZANIYU_PLATNYKH_MEDITSINSKIKH_USLUG = 138;
+
+    // материальная группа
+    USER_EMPLOYEE_DEPARTMENT_MATERIALNAYA_GRUPPA = 139;
+
+    // медико-фармацевтический колледж
+    USER_EMPLOYEE_DEPARTMENT_MEDIKO_FARMATSEVTICHESKIY_KOLLEDZH = 140;
+
+    // международный отдел
+    USER_EMPLOYEE_DEPARTMENT_MEZHDUNARODNYY_OTDEL = 141;
+
+    // научный отдел
+    USER_EMPLOYEE_DEPARTMENT_NAUCHNYY_OTDEL = 142;
+
+    // общежитие № 2
+    USER_EMPLOYEE_DEPARTMENT_OBSHCHEZHITIE_O_2 = 143;
+
+    // общежитие № 3
+    USER_EMPLOYEE_DEPARTMENT_OBSHCHEZHITIE_O_3 = 144;
+
+    // общежитие № 4
+    USER_EMPLOYEE_DEPARTMENT_OBSHCHEZHITIE_O_4 = 145;
+
+    // общеполиклинический медицинский персонал подразделения по оказанию медицинской помощи за счет средств ОМС
+    USER_EMPLOYEE_DEPARTMENT_OBSHCHEPOLIKLINICHESKIY_MEDITSINSKIY_PERSONAL_PODRAZDELENIYA_PO_OKAZANIYU_MEDITSINSKOY_POMOSHCHI_ZA_SCHET_SREDSTV_OMS = 146;
+
+    // общеполиклинический медицинский персонал подразделения по оказанию медицинской помощи по ОМС
+    USER_EMPLOYEE_DEPARTMENT_OBSHCHEPOLIKLINICHESKIY_MEDITSINSKIY_PERSONAL_PODRAZDELENIYA_PO_OKAZANIYU_MEDITSINSKOY_POMOSHCHI_PO_OMS = 147;
+
+    // общеполиклинический медицинский персонал подразделения по оказанию платных медицинских услуг
+    USER_EMPLOYEE_DEPARTMENT_OBSHCHEPOLIKLINICHESKIY_MEDITSINSKIY_PERSONAL_PODRAZDELENIYA_PO_OKAZANIYU_PLATNYKH_MEDITSINSKIKH_USLUG = 148;
+
+    // общеполиклинический немедицинский персонал подразделения по оказанию медицинской помощи за счет средств ОМС
+    USER_EMPLOYEE_DEPARTMENT_OBSHCHEPOLIKLINICHESKIY_NEMEDITSINSKIY_PERSONAL_PODRAZDELENIYA_PO_OKAZANIYU_MEDITSINSKOY_POMOSHCHI_ZA_SCHET_SREDSTV_OMS = 149;
+
+    // общеполиклинический немедицинский персонал подразделения по оказанию медицинской помощи по ОМС
+    USER_EMPLOYEE_DEPARTMENT_OBSHCHEPOLIKLINICHESKIY_NEMEDITSINSKIY_PERSONAL_PODRAZDELENIYA_PO_OKAZANIYU_MEDITSINSKOY_POMOSHCHI_PO_OMS = 150;
+
+    // общеполиклинический немедицинский персонал подразделения по оказанию платных медицинских услуг
+    USER_EMPLOYEE_DEPARTMENT_OBSHCHEPOLIKLINICHESKIY_NEMEDITSINSKIY_PERSONAL_PODRAZDELENIYA_PO_OKAZANIYU_PLATNYKH_MEDITSINSKIKH_USLUG = 151;
+
+    // ортопедическое отделение подразделения по оказанию платных медицинских услуг
+    USER_EMPLOYEE_DEPARTMENT_ORTOPEDICHESKOE_OTDELENIE_PODRAZDELENIYA_PO_OKAZANIYU_PLATNYKH_MEDITSINSKIKH_USLUG = 152;
+
+    // отдел капитального и текущего ремонта
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_KAPITALNOGO_I_TEKUSHCHEGO_REMONTA = 153;
+
+    // отдел обеспечения библиотечной деятельности
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_OBESPECHENIYA_BIBLIOTECHNOY_DEYATELNOSTI = 154;
+
+    // отдел по мобилизационной подготовке
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_PO_MOBILIZATSIONNOY_PODGOTOVKE = 155;
+
+    // отдел по молодежной политике и воспитательной работе
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_PO_MOLODEZHNOY_POLITIKE_I_VOSPITATELNOY_RABOTE = 156;
+
+    // отдел санитарно-хозяйственного обеспечения
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_SANITARNO_KHOZYAYSTVENNOGO_OBESPECHENIYA = 157;
+
+    // отдел сантехнического и электротехнического обеспечения
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_SANTEKHNICHESKOGO_I_ELEKTROTEKHNICHESKOGO_OBESPECHENIYA = 158;
+
+    // отдел транспорта
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_TRANSPORTA = 159;
+
+    // отдел эксплуатации лекционных залов и межкафедральных аудиторий
+    USER_EMPLOYEE_DEPARTMENT_OTDEL_EKSPLUATATSII_LEKTSIONNYKH_ZALOV_I_MEZHKAFEDRALNYKH_AUDITORIY = 160;
+
+    // планово-экономический отдел
+    USER_EMPLOYEE_DEPARTMENT_PLANOVO_EKONOMICHESKIY_OTDEL = 161;
+
+    // проектный офис
+    USER_EMPLOYEE_DEPARTMENT_PROEKTNYY_OFIS = 162;
+
+    // процедурный кабинет подразделения по оказанию медицинской помощи по ОМС
+    USER_EMPLOYEE_DEPARTMENT_PROTSEDURNYY_KABINET_PODRAZDELENIYA_PO_OKAZANIYU_MEDITSINSKOY_POMOSHCHI_PO_OMS = 163;
+
+    // регистратура подразделения по оказанию медицинской помощи по ОМС
+    USER_EMPLOYEE_DEPARTMENT_REGISTRATURA_PODRAZDELENIYA_PO_OKAZANIYU_MEDITSINSKOY_POMOSHCHI_PO_OMS = 164;
+
+    // регистратура подразделения по оказанию платных медицинских услуг
+    USER_EMPLOYEE_DEPARTMENT_REGISTRATURA_PODRAZDELENIYA_PO_OKAZANIYU_PLATNYKH_MEDITSINSKIKH_USLUG = 165;
+
+    // редакция журнала "Дальневосточный медицинский журнал"
+    USER_EMPLOYEE_DEPARTMENT_REDAKTSIYA_ZHURNALA_DALNEVOSTOCHNYY_MEDITSINSKIY_ZHURNAL = 166;
+
+    // редакция эл. библиотеки ДВГМУ
+    USER_EMPLOYEE_DEPARTMENT_REDAKTSIYA_EL_BIBLIOTEKI_DVGMU = 167;
+
+    // редакция эл. журнала "Вестник общественного здоровья и здравоохранения ДВ России"
+    USER_EMPLOYEE_DEPARTMENT_REDAKTSIYA_EL_ZHURNALA_VESTNIK_OBSHCHESTVENNOGO_ZDOROVYA_I_ZDRAVOOKHRANENIYA_DV_ROSSII = 168;
+
+    // ремонтно-строительная группа
+    USER_EMPLOYEE_DEPARTMENT_REMONTNO_STROITELNAYA_GRUPPA = 169;
+
+    // рентгенкабинет подразделения по оказанию медицинской помощи за счет средств ОМС
+    USER_EMPLOYEE_DEPARTMENT_RENTGENKABINET_PODRAZDELENIYA_PO_OKAZANIYU_MEDITSINSKOY_POMOSHCHI_ZA_SCHET_SREDSTV_OMS = 170;
+
+    // рентгенкабинет подразделения по оказанию медицинской помощи по ОМС
+    USER_EMPLOYEE_DEPARTMENT_RENTGENKABINET_PODRAZDELENIYA_PO_OKAZANIYU_MEDITSINSKOY_POMOSHCHI_PO_OMS = 171;
+
+    // рентгенкабинет подразделения по оказанию платных медицинских услуг
+    USER_EMPLOYEE_DEPARTMENT_RENTGENKABINET_PODRAZDELENIYA_PO_OKAZANIYU_PLATNYKH_MEDITSINSKIKH_USLUG = 172;
+
+    // сектор комплектования и обработки литературы
+    USER_EMPLOYEE_DEPARTMENT_SEKTOR_KOMPLEKTOVANIYA_I_OBRABOTKI_LITERATURY = 173;
+
+    // сектор научной литературы
+    USER_EMPLOYEE_DEPARTMENT_SEKTOR_NAUCHNOY_LITERATURY = 174;
+
+    // сектор справочно-информационной работы и электронных документов
+    USER_EMPLOYEE_DEPARTMENT_SEKTOR_SPRAVOCHNO_INFORMATSIONNOY_RABOTY_I_ELEKTRONNYKH_DOKUMENTOV = 175;
+
+    // сектор учебной литературы
+    USER_EMPLOYEE_DEPARTMENT_SEKTOR_UCHEBNOY_LITERATURY = 176;
+
+    // служба обеспечения деятельности ректората
+    USER_EMPLOYEE_DEPARTMENT_SLUZHBA_OBESPECHENIYA_DEYATELNOSTI_REKTORATA = 177;
+
+    // учебно-вспомогательный персонал
+    USER_EMPLOYEE_DEPARTMENT_UCHEBNO_VSPOMOGATELNYY_PERSONAL = 178;
+
+    // учебный корпус №1
+    USER_EMPLOYEE_DEPARTMENT_UCHEBNYY_KORPUS_O1 = 179;
+
+    // учебный корпус №2
+    USER_EMPLOYEE_DEPARTMENT_UCHEBNYY_KORPUS_O2 = 180;
+
+    // учебный корпус №3
+    USER_EMPLOYEE_DEPARTMENT_UCHEBNYY_KORPUS_O3 = 181;
+
+    // федеральный аккредитационный центр
+    USER_EMPLOYEE_DEPARTMENT_FEDERALNYY_AKKREDITATSIONNYY_TSENTR = 182;
+
+    // физиотерапевтический кабинет подразделения по оказанию медицинской помощи за счет средств ОМС
+    USER_EMPLOYEE_DEPARTMENT_FIZIOTERAPEVTICHESKIY_KABINET_PODRAZDELENIYA_PO_OKAZANIYU_MEDITSINSKOY_POMOSHCHI_ZA_SCHET_SREDSTV_OMS = 183;
+
+    // физиотерапевтический кабинет подразделения по оказанию медицинской помощи по ОМС
+    USER_EMPLOYEE_DEPARTMENT_FIZIOTERAPEVTICHESKIY_KABINET_PODRAZDELENIYA_PO_OKAZANIYU_MEDITSINSKOY_POMOSHCHI_PO_OMS = 184;
+
+    // Центр довузовской подготовки
+    USER_EMPLOYEE_DEPARTMENT_TSENTR_DOVUZOVSKOY_PODGOTOVKI = 185;
+
+    // централизованное стерилизационное отделение подразделения по оказанию медицинской помощи по ОМС
+    USER_EMPLOYEE_DEPARTMENT_TSENTRALIZOVANNOE_STERILIZATSIONNOE_OTDELENIE_PODRAZDELENIYA_PO_OKAZANIYU_MEDITSINSKOY_POMOSHCHI_PO_OMS = 186;
+
+    // централизованное стерилизационное отделение подразделения по оказанию платных медицинских услуг
+    USER_EMPLOYEE_DEPARTMENT_TSENTRALIZOVANNOE_STERILIZATSIONNOE_OTDELENIE_PODRAZDELENIYA_PO_OKAZANIYU_PLATNYKH_MEDITSINSKIKH_USLUG = 187;
+
+    // центральная научно-исследовательская лаборатория
+    USER_EMPLOYEE_DEPARTMENT_TSENTRALNAYA_NAUCHNO_ISSLEDOVATELSKAYA_LABORATORIYA = 188;
+
+    // юридический отдел
+    USER_EMPLOYEE_DEPARTMENT_YURIDICHESKIY_OTDEL = 189;
+}
+
+enum UserEmployeePosition {
+    USER_EMPLOYEE_POSITION_UNSPECIFIED = 0;
+    // ректор
+    USER_EMPLOYEE_POSITION_RECTOR = 1;
+    // администратор баз данных
+    USER_EMPLOYEE_POSITION_ADMINISTRATOR_BAZ_DANNYKH = 2;
+    // акушерка
+    USER_EMPLOYEE_POSITION_AKUSHERKA = 3;
+    // аналитик
+    USER_EMPLOYEE_POSITION_ANALITIK = 4;
+    // аппаратчик
+    USER_EMPLOYEE_POSITION_APPARATCHIK = 5;
+    // архивариус
+    USER_EMPLOYEE_POSITION_ARKHIVARIUS = 6;
+    // ассистент
+    USER_EMPLOYEE_POSITION_ASSISTENT = 7;
+    // ассистент к. н.
+    USER_EMPLOYEE_POSITION_ASSISTENT_K_N = 8;
+    // библиотекарь 1 категории
+    USER_EMPLOYEE_POSITION_BIBLIOTEKAR_1_KATEGORII = 9;
+    // бухгалтер 2 категории
+    USER_EMPLOYEE_POSITION_BUKHGALTER_2_KATEGORII = 10;
+    // ведущий библиотекарь
+    USER_EMPLOYEE_POSITION_VEDUSHCHIY_BIBLIOTEKAR = 11;
+    // ведущий бухгалтер
+    USER_EMPLOYEE_POSITION_VEDUSHCHIY_BUKHGALTER = 12;
+    // ведущий ветеринарный врач
+    USER_EMPLOYEE_POSITION_VEDUSHCHIY_VETERINARNYY_VRACH = 13;
+    // ведущий документовед
+    USER_EMPLOYEE_POSITION_VEDUSHCHIY_DOKUMENTOVED = 14;
+    // ведущий инженер
+    USER_EMPLOYEE_POSITION_VEDUSHCHIY_INZHENER = 15;
+    // ведущий инженер по техническим средствам обучения
+    USER_EMPLOYEE_POSITION_VEDUSHCHIY_INZHENER_PO_TEKHNICHESKIM_SREDSTVAM_OBUCHENIYA = 16;
+    // ведущий научный сотрудник
+    USER_EMPLOYEE_POSITION_VEDUSHCHIY_NAUCHNYY_SOTRUDNIK = 17;
+    // ведущий программист
+    USER_EMPLOYEE_POSITION_VEDUSHCHIY_PROGRAMMIST = 18;
+    // ведущий специалист по закупкам
+    USER_EMPLOYEE_POSITION_VEDUSHCHIY_SPETSIALIST_PO_ZAKUPKAM = 19;
+    // ведущий специалист по кадрам
+    USER_EMPLOYEE_POSITION_VEDUSHCHIY_SPETSIALIST_PO_KADRAM = 20;
+    // ведущий экономист
+    USER_EMPLOYEE_POSITION_VEDUSHCHIY_EKONOMIST = 21;
+    // ведущий юрисконсульт
+    USER_EMPLOYEE_POSITION_VEDUSHCHIY_YURISKONSULT = 22;
+    // водитель автомобиля
+    USER_EMPLOYEE_POSITION_VODITEL_AVTOMOBILYA = 23;
+    // врач клинической лабораторной диагностики
+    USER_EMPLOYEE_POSITION_VRACH_KLINICHESKOY_LABORATORNOY_DIAGNOSTIKI = 24;
+    // врач общей практики (семейный врач)
+    USER_EMPLOYEE_POSITION_VRACH_OBSHCHEY_PRAKTIKI_SEMEYNYY_VRACH = 25;
+    // врач ультразвуковой диагностики
+    USER_EMPLOYEE_POSITION_VRACH_ULTRAZVUKOVOY_DIAGNOSTIKI = 26;
+    // врач функциональной диагностики
+    USER_EMPLOYEE_POSITION_VRACH_FUNKTSIONALNOY_DIAGNOSTIKI = 27;
+    // врач-акушер-гинеколог
+    USER_EMPLOYEE_POSITION_VRACH_AKUSHER_GINEKOLOG = 28;
+    // врач-аллерголог-иммунолог
+    USER_EMPLOYEE_POSITION_VRACH_ALLERGOLOG_IMMUNOLOG = 29;
+    // врач-гастроэнтеролог
+    USER_EMPLOYEE_POSITION_VRACH_GASTROENTEROLOG = 30;
+    // врач-дерматовенеролог
+    USER_EMPLOYEE_POSITION_VRACH_DERMATOVENEROLOG = 31;
+    // врач-кардиолог
+    USER_EMPLOYEE_POSITION_VRACH_KARDIOLOG = 32;
+    // врач-методист
+    USER_EMPLOYEE_POSITION_VRACH_METODIST = 33;
+    // врач-невролог
+    USER_EMPLOYEE_POSITION_VRACH_NEVROLOG = 34;
+    // врач-ортодонт
+    USER_EMPLOYEE_POSITION_VRACH_ORTODONT = 35;
+    // врач-оториноларинголог
+    USER_EMPLOYEE_POSITION_VRACH_OTORINOLARINGOLOG = 36;
+    // врач-офтальмолог
+    USER_EMPLOYEE_POSITION_VRACH_OFTALMOLOG = 37;
+    // врач-профпатолог
+    USER_EMPLOYEE_POSITION_VRACH_PROFPATOLOG = 38;
+    // врач-психиатр
+    USER_EMPLOYEE_POSITION_VRACH_PSIKHIATR = 39;
+    // врач-психиатр-нарколог
+    USER_EMPLOYEE_POSITION_VRACH_PSIKHIATR_NARKOLOG = 40;
+    // врач-рентгенолог
+    USER_EMPLOYEE_POSITION_VRACH_RENTGENOLOG = 41;
+    // врач-стоматолог
+    USER_EMPLOYEE_POSITION_VRACH_STOMATOLOG = 42;
+    // врач-стоматолог детский
+    USER_EMPLOYEE_POSITION_VRACH_STOMATOLOG_DETSKIY = 43;
+    // врач-стоматолог-ортопед
+    USER_EMPLOYEE_POSITION_VRACH_STOMATOLOG_ORTOPED = 44;
+    // врач-стоматолог-терапевт
+    USER_EMPLOYEE_POSITION_VRACH_STOMATOLOG_TERAPEVT = 45;
+    // врач-стоматолог-хирург
+    USER_EMPLOYEE_POSITION_VRACH_STOMATOLOG_KHIRURG = 46;
+    // врач-терапевт
+    USER_EMPLOYEE_POSITION_VRACH_TERAPEVT = 47;
+    // врач-травматолог-ортопед
+    USER_EMPLOYEE_POSITION_VRACH_TRAVMATOLOG_ORTOPED = 48;
+    // врач-уролог
+    USER_EMPLOYEE_POSITION_VRACH_UROLOG = 49;
+    // врач-физиотерапевт
+    USER_EMPLOYEE_POSITION_VRACH_FIZIOTERAPEVT = 50;
+    // врач-хирург
+    USER_EMPLOYEE_POSITION_VRACH_KHIRURG = 51;
+    // врач-эндокринолог
+    USER_EMPLOYEE_POSITION_VRACH_ENDOKRINOLOG = 52;
+    // врач-эпидемиолог
+    USER_EMPLOYEE_POSITION_VRACH_EPIDEMIOLOG = 53;
+    // гардеробщик
+    USER_EMPLOYEE_POSITION_GARDEROBSHCHIK = 54;
+    // гигиенист стоматологический
+    USER_EMPLOYEE_POSITION_GIGIENIST_STOMATOLOGICHESKIY = 55;
+    // главная медицинская сестра
+    USER_EMPLOYEE_POSITION_GLAVNAYA_MEDITSINSKAYA_SESTRA = 56;
+    // главный библиограф
+    USER_EMPLOYEE_POSITION_GLAVNYY_BIBLIOGRAF = 57;
+    // главный библиотекарь
+    USER_EMPLOYEE_POSITION_GLAVNYY_BIBLIOTEKAR = 58;
+    // главный бухгалтер
+    USER_EMPLOYEE_POSITION_GLAVNYY_BUKHGALTER = 59;
+    // главный врач
+    USER_EMPLOYEE_POSITION_GLAVNYY_VRACH = 60;
+    // главный редактор
+    USER_EMPLOYEE_POSITION_GLAVNYY_REDAKTOR = 61;
+    // главный специалист по мобилизационной подготовке
+    USER_EMPLOYEE_POSITION_GLAVNYY_SPETSIALIST_PO_MOBILIZATSIONNOY_PODGOTOVKE = 62;
+    // главный специалист по технической защите информации
+    USER_EMPLOYEE_POSITION_GLAVNYY_SPETSIALIST_PO_TEKHNICHESKOY_ZASHCHITE_INFORMATSII = 63;
+    // дворник
+    USER_EMPLOYEE_POSITION_DVORNIK = 64;
+    // дежурный по общежитию
+    USER_EMPLOYEE_POSITION_DEZHURNYY_PO_OBSHCHEZHITIYU = 65;
+    // декан
+    USER_EMPLOYEE_POSITION_DEKAN = 66;
+    // делопроизводитель
+    USER_EMPLOYEE_POSITION_DELOPROIZVODITEL = 67;
+    // директор
+    USER_EMPLOYEE_POSITION_DIREKTOR = 68;
+    // директор департамента
+    USER_EMPLOYEE_POSITION_DIREKTOR_DEPARTAMENTA = 69;
+    // диспетчер
+    USER_EMPLOYEE_POSITION_DISPETCHER = 70;
+    // документовед
+    USER_EMPLOYEE_POSITION_DOKUMENTOVED = 71;
+    // документовед 2 категории
+    USER_EMPLOYEE_POSITION_DOKUMENTOVED_2_KATEGORII = 72;
+    // документовед II категории
+    USER_EMPLOYEE_POSITION_DOKUMENTOVED_II_KATEGORII = 73;
+    // доцент
+    USER_EMPLOYEE_POSITION_DOTSENT = 74;
+    // доцент д.н.
+    USER_EMPLOYEE_POSITION_DOTSENT_D_N = 75;
+    // доцент к.н.
+    USER_EMPLOYEE_POSITION_DOTSENT_K_N = 76;
+    // заведующая прачечной
+    USER_EMPLOYEE_POSITION_ZAVEDUYUSHCHAYA_PRACHECHNOY = 77;
+    // заведующий архивом
+    USER_EMPLOYEE_POSITION_ZAVEDUYUSHCHIY_ARKHIVOM = 78;
+    // заведующий аспирантурой
+    USER_EMPLOYEE_POSITION_ZAVEDUYUSHCHIY_ASPIRANTUROY = 79;
+    // заведующий издательством
+    USER_EMPLOYEE_POSITION_ZAVEDUYUSHCHIY_IZDATELSTVOM = 80;
+    // заведующий канцелярией
+    USER_EMPLOYEE_POSITION_ZAVEDUYUSHCHIY_KANTSELYARIEY = 81;
+    // заведующий кафедрой
+    USER_EMPLOYEE_POSITION_ZAVEDUYUSHCHIY_KAFEDROY = 82;
+    // заведующий кафедрой к.н.
+    USER_EMPLOYEE_POSITION_ZAVEDUYUSHCHIY_KAFEDROY_K_N = 83;
+    // заведующий лечебным отделением - врач-стоматолог-терапевт
+    USER_EMPLOYEE_POSITION_ZAVEDUYUSHCHIY_LECHEBNYM_OTDELENIEM_VRACH_STOMATOLOG_TERAPEVT = 84;
+    // заведующий лечебным отделением-врач-стоматолог
+    USER_EMPLOYEE_POSITION_ZAVEDUYUSHCHIY_LECHEBNYM_OTDELENIEM_VRACH_STOMATOLOG = 85;
+    // заведующий сектором
+    USER_EMPLOYEE_POSITION_ZAVEDUYUSHCHIY_SEKTOROM = 86;
+    // заведующий складом
+    USER_EMPLOYEE_POSITION_ZAVEDUYUSHCHIY_SKLADOM = 87;
+    // заместитель главного бухгалтера
+    USER_EMPLOYEE_POSITION_ZAMESTITEL_GLAVNOGO_BUKHGALTERA = 88;
+    // заместитель директора
+    USER_EMPLOYEE_POSITION_ZAMESTITEL_DIREKTORA = 89;
+    // заместитель начальника
+    USER_EMPLOYEE_POSITION_ZAMESTITEL_NACHALNIKA = 90;
+    // заместитель первого проректора
+    USER_EMPLOYEE_POSITION_ZAMESTITEL_PERVOGO_PROREKTORA = 91;
+    // заместитель проректора по учебно-воспитательной работе и молодежной политике
+    USER_EMPLOYEE_POSITION_ZAMESTITEL_PROREKTORA_PO_UCHEBNO_VOSPITATELNOY_RABOTE_I_MOLODEZHNOY_POLITIKE = 92;
+    // зубной техник
+    USER_EMPLOYEE_POSITION_ZUBNOY_TEKHNIK = 93;
+    // инженер
+    USER_EMPLOYEE_POSITION_INZHENER = 94;
+    // инженер по качеству 1 категории
+    USER_EMPLOYEE_POSITION_INZHENER_PO_KACHESTVU_1_KATEGORII = 95;
+    // инженер по патентной и изобретательской работе
+    USER_EMPLOYEE_POSITION_INZHENER_PO_PATENTNOY_I_IZOBRETATELSKOY_RABOTE = 96;
+    // инженер по ремонту и обслуживанию медицинского оборудованию
+    USER_EMPLOYEE_POSITION_INZHENER_PO_REMONTU_I_OBSLUZHIVANIYU_MEDITSINSKOGO_OBORUDOVANIYU = 97;
+    // инженер по техническим средствам обучения
+    USER_EMPLOYEE_POSITION_INZHENER_PO_TEKHNICHESKIM_SREDSTVAM_OBUCHENIYA = 98;
+    // инженер-энергетик
+    USER_EMPLOYEE_POSITION_INZHENER_ENERGETIK = 99;
+    // инспектор-дежурный
+    USER_EMPLOYEE_POSITION_INSPEKTOR_DEZHURNYY = 100;
+    // кастелянша
+    USER_EMPLOYEE_POSITION_KASTELYANSHA = 101;
+    // кладовщик
+    USER_EMPLOYEE_POSITION_KLADOVSHCHIK = 102;
+    // комендант
+    USER_EMPLOYEE_POSITION_KOMENDANT = 103;
+    // комендант у/к 1
+    USER_EMPLOYEE_POSITION_KOMENDANT_U_K_1 = 104;
+    // комендант у/к 2
+    USER_EMPLOYEE_POSITION_KOMENDANT_U_K_2 = 105;
+    // корректор
+    USER_EMPLOYEE_POSITION_KORREKTOR = 106;
+    // лаборант
+    USER_EMPLOYEE_POSITION_LABORANT = 107;
+    // лаборант-исследователь
+    USER_EMPLOYEE_POSITION_LABORANT_ISSLEDOVATEL = 108;
+    // маляр
+    USER_EMPLOYEE_POSITION_MALYAR = 109;
+    // медицинская сестра
+    USER_EMPLOYEE_POSITION_MEDITSINSKAYA_SESTRA = 110;
+    // медицинская сестра по физиотерапии
+    USER_EMPLOYEE_POSITION_MEDITSINSKAYA_SESTRA_PO_FIZIOTERAPII = 111;
+    // медицинская сестра процедурной
+    USER_EMPLOYEE_POSITION_MEDITSINSKAYA_SESTRA_PROTSEDURNOY = 112;
+    // медицинская сестра стерилизационной
+    USER_EMPLOYEE_POSITION_MEDITSINSKAYA_SESTRA_STERILIZATSIONNOY = 113;
+    // медицинский лабораторный техник (фельдшер-лаборант)
+    USER_EMPLOYEE_POSITION_MEDITSINSKIY_LABORATORNYY_TEKHNIK_FELDSHER_LABORANT = 114;
+    // медицинский регистратор
+    USER_EMPLOYEE_POSITION_MEDITSINSKIY_REGISTRATOR = 115;
+    // медицинский статистик
+    USER_EMPLOYEE_POSITION_MEDITSINSKIY_STATISTIK = 116;
+    // младший научный сотрудник
+    USER_EMPLOYEE_POSITION_MLADSHIY_NAUCHNYY_SOTRUDNIK = 117;
+    // монтажник санитарно-технических систем и оборудования
+    USER_EMPLOYEE_POSITION_MONTAZHNIK_SANITARNO_TEKHNICHESKIKH_SISTEM_I_OBORUDOVANIYA = 118;
+    // начальник
+    USER_EMPLOYEE_POSITION_NACHALNIK = 119;
+    // начальник отдела
+    USER_EMPLOYEE_POSITION_NACHALNIK_OTDELA = 120;
+    // начальник отдела кадров
+    USER_EMPLOYEE_POSITION_NACHALNIK_OTDELA_KADROV = 121;
+    // начальник спецотдела
+    USER_EMPLOYEE_POSITION_NACHALNIK_SPETSOTDELA = 122;
+    // начальник хозяйственного отдела
+    USER_EMPLOYEE_POSITION_NACHALNIK_KHOZYAYSTVENNOGO_OTDELA = 123;
+    // начальник центра довузовской подготовки
+    USER_EMPLOYEE_POSITION_NACHALNIK_TSENTRA_DOVUZOVSKOY_PODGOTOVKI = 124;
+    // оператор копировальных и множительных машин
+    USER_EMPLOYEE_POSITION_OPERATOR_KOPIROVALNYKH_I_MNOZHITELNYKH_MASHIN = 125;
+    // оператор ЭВ и ВМ
+    USER_EMPLOYEE_POSITION_OPERATOR_EV_I_VM = 126;
+    // первый проректор
+    USER_EMPLOYEE_POSITION_PERVYY_PROREKTOR = 127;
+    // переводчик
+    USER_EMPLOYEE_POSITION_PEREVODCHIK = 128;
+    // плотник
+    USER_EMPLOYEE_POSITION_PLOTNIK = 129;
+    // подсобный рабочий
+    USER_EMPLOYEE_POSITION_PODSOBNYY_RABOCHIY = 130;
+    // помощник врача-эпидемиолога
+    USER_EMPLOYEE_POSITION_POMOSHCHNIK_VRACHA_EPIDEMIOLOGA = 131;
+    // помощник первого проректора
+    USER_EMPLOYEE_POSITION_POMOSHCHNIK_PERVOGO_PROREKTORA = 132;
+    // помощник проректора по лечебной работе и региональному развитию здравоохранения
+    USER_EMPLOYEE_POSITION_POMOSHCHNIK_PROREKTORA_PO_LECHEBNOY_RABOTE_I_REGIONALNOMU_RAZVITIYU_ZDRAVOOKHRANENIYA = 133;
+    // помощник проректора по научной работе
+    USER_EMPLOYEE_POSITION_POMOSHCHNIK_PROREKTORA_PO_NAUCHNOY_RABOTE = 134;
+    // помощник проректора по общим вопросам
+    USER_EMPLOYEE_POSITION_POMOSHCHNIK_PROREKTORA_PO_OBSHCHIM_VOPROSAM = 135;
+    // помощник проректора по учебно-воспитательной работе и молодежной политике
+    USER_EMPLOYEE_POSITION_POMOSHCHNIK_PROREKTORA_PO_UCHEBNO_VOSPITATELNOY_RABOTE_I_MOLODEZHNOY_POLITIKE = 136;
+    // помощник ректора по управлению делами
+    USER_EMPLOYEE_POSITION_POMOSHCHNIK_REKTORA_PO_UPRAVLENIYU_DELAMI = 137;
+    // преподаватель
+    USER_EMPLOYEE_POSITION_PREPODAVATEL = 138;
+    // пресс-секретарь
+    USER_EMPLOYEE_POSITION_PRESS_SEKRETAR = 139;
+    // проректор по лечебной работе и региональному развитию здравоохранения
+    USER_EMPLOYEE_POSITION_PROREKTOR_PO_LECHEBNOY_RABOTE_I_REGIONALNOMU_RAZVITIYU_ZDRAVOOKHRANENIYA = 140;
+    // проректор по научной работе
+    USER_EMPLOYEE_POSITION_PROREKTOR_PO_NAUCHNOY_RABOTE = 141;
+    // проректор по общим вопросам
+    USER_EMPLOYEE_POSITION_PROREKTOR_PO_OBSHCHIM_VOPROSAM = 142;
+    // проректор по учебно-воспитательной работе и молодежной политике
+    USER_EMPLOYEE_POSITION_PROREKTOR_PO_UCHEBNO_VOSPITATELNOY_RABOTE_I_MOLODEZHNOY_POLITIKE = 143;
+    // проректор по цифровой трансформации и информационной безопасности
+    USER_EMPLOYEE_POSITION_PROREKTOR_PO_TSIFROVOY_TRANSFORMATSII_I_INFORMATSIONNOY_BEZOPASNOSTI = 144;
+    // профессор
+    USER_EMPLOYEE_POSITION_PROFESSOR = 145;
+    // психолог
+    USER_EMPLOYEE_POSITION_PSIKHOLOG = 146;
+    // рабочий по уходу за животными
+    USER_EMPLOYEE_POSITION_RABOCHIY_PO_UKHODU_ZA_ZHIVOTNYMI = 147;
+    // редактор
+    USER_EMPLOYEE_POSITION_REDAKTOR = 148;
+    // рентгенолаборант
+    USER_EMPLOYEE_POSITION_RENTGENOLABORANT = 149;
+    // руководитель кружка
+    USER_EMPLOYEE_POSITION_RUKOVODITEL_KRUZHKA = 150;
+    // руководитель практики
+    USER_EMPLOYEE_POSITION_RUKOVODITEL_PRAKTIKI = 151;
+    // советник при ректорате
+    USER_EMPLOYEE_POSITION_SOVETNIK_PRI_REKTORATE = 152;
+    // специалист по воинскому учету
+    USER_EMPLOYEE_POSITION_SPETSIALIST_PO_VOINSKOMU_UCHETU = 153;
+    // специалист по гражданской обороне и чрезвычайным ситуациям
+    USER_EMPLOYEE_POSITION_SPETSIALIST_PO_GRAZHDANSKOY_OBORONE_I_CHREZVYCHAYNYM_SITUATSIYAM = 154;
+    // специалист по закупкам
+    USER_EMPLOYEE_POSITION_SPETSIALIST_PO_ZAKUPKAM = 155;
+    // специалист по мобилизационной подготовке
+    USER_EMPLOYEE_POSITION_SPETSIALIST_PO_MOBILIZATSIONNOY_PODGOTOVKE = 156;
+    // специалист по охране труда
+    USER_EMPLOYEE_POSITION_SPETSIALIST_PO_OKHRANE_TRUDA = 157;
+    // специалист по пожарной профилактике
+    USER_EMPLOYEE_POSITION_SPETSIALIST_PO_POZHARNOY_PROFILAKTIKE = 158;
+    // специалист по работе с иностранными студентами
+    USER_EMPLOYEE_POSITION_SPETSIALIST_PO_RABOTE_S_INOSTRANNYMI_STUDENTAMI = 159;
+    // специалист по работе с молодежью
+    USER_EMPLOYEE_POSITION_SPETSIALIST_PO_RABOTE_S_MOLODEZHYU = 160;
+    // специалист по управлению проектами
+    USER_EMPLOYEE_POSITION_SPETSIALIST_PO_UPRAVLENIYU_PROEKTAMI = 161;
+    // специалист по учебно-методической работе
+    USER_EMPLOYEE_POSITION_SPETSIALIST_PO_UCHEBNO_METODICHESKOY_RABOTE = 162;
+    // специалист по учебно-методической работе 1 категории
+    USER_EMPLOYEE_POSITION_SPETSIALIST_PO_UCHEBNO_METODICHESKOY_RABOTE_1_KATEGORII = 163;
+    // специалист по учебно-методической работе 2 категории
+    USER_EMPLOYEE_POSITION_SPETSIALIST_PO_UCHEBNO_METODICHESKOY_RABOTE_2_KATEGORII = 164;
+    // старшая медицинская сестра
+    USER_EMPLOYEE_POSITION_STARSHAYA_MEDITSINSKAYA_SESTRA = 165;
+    // старший зубной техник
+    USER_EMPLOYEE_POSITION_STARSHIY_ZUBNOY_TEKHNIK = 166;
+    // старший инспектор
+    USER_EMPLOYEE_POSITION_STARSHIY_INSPEKTOR = 167;
+    // старший кассир
+    USER_EMPLOYEE_POSITION_STARSHIY_KASSIR = 168;
+    // старший лаборант
+    USER_EMPLOYEE_POSITION_STARSHIY_LABORANT = 169;
+    // старший научный сотрудник
+    USER_EMPLOYEE_POSITION_STARSHIY_NAUCHNYY_SOTRUDNIK = 170;
+    // старший преподаватель
+    USER_EMPLOYEE_POSITION_STARSHIY_PREPODAVATEL = 171;
+    // старший специалист по закупкам
+    USER_EMPLOYEE_POSITION_STARSHIY_SPETSIALIST_PO_ZAKUPKAM = 172;
+    // старший товаровед
+    USER_EMPLOYEE_POSITION_STARSHIY_TOVAROVED = 173;
+    // сторож
+    USER_EMPLOYEE_POSITION_STOROZH = 174;
+    // техник
+    USER_EMPLOYEE_POSITION_TEKHNIK = 175;
+    // технический редактор 1 категории
+    USER_EMPLOYEE_POSITION_TEKHNICHESKIY_REDAKTOR_1_KATEGORII = 176;
+    // уборщик производственных помещений
+    USER_EMPLOYEE_POSITION_UBORSHCHIK_PROIZVODSTVENNYKH_POMESHCHENIY = 177;
+    // уборщик служебных помещений
+    USER_EMPLOYEE_POSITION_UBORSHCHIK_SLUZHEBNYKH_POMESHCHENIY = 178;
+    // художественный редактор
+    USER_EMPLOYEE_POSITION_KHUDOZHESTVENNYY_REDAKTOR = 179;
+    // электрогазосварщик
+    USER_EMPLOYEE_POSITION_ELEKTROGAZOSVARSHCHIK = 180;
+    // электромонтер по ремонту вторичной коммуникации и связи
+    USER_EMPLOYEE_POSITION_ELEKTROMONTER_PO_REMONTU_VTORICHNOY_KOMMUNIKATSII_I_SVYAZI = 181;
+    // электромонтер по ремонту и обслуживанию электрооборудования
+    USER_EMPLOYEE_POSITION_ELEKTROMONTER_PO_REMONTU_I_OBSLUZHIVANIYU_ELEKTROOBORUDOVANIYA = 182;
+    // юрисконсульт 2 категории
+    USER_EMPLOYEE_POSITION_YURISKONSULT_2_KATEGORII = 183;
+
+    // главный научный сотрудник
+    USER_EMPLOYEE_POSITION_ROSTER_184 = 184;
+    // заведующий лечебно-консультативным отделением-врач общей практики (семейный врач)
+    USER_EMPLOYEE_POSITION_ROSTER_185 = 185;
+    // заведующий лечебным отделением-врач-стоматолог-терапевт
+    USER_EMPLOYEE_POSITION_ROSTER_186 = 186;
+    // заместитель главного врача по клинико-экспертной работе
+    USER_EMPLOYEE_POSITION_ROSTER_187 = 187;
+    // заместитель главного врача по медицинской части
+    USER_EMPLOYEE_POSITION_ROSTER_188 = 188;
+    // заместитель директора по организационному и документационному обеспечению образовательного процесса
+    USER_EMPLOYEE_POSITION_ROSTER_189 = 189;
+    // комендант у
+    USER_EMPLOYEE_POSITION_ROSTER_190 = 190;
+    // медицинская сестра врача общей практики (семейного врача)
+    USER_EMPLOYEE_POSITION_ROSTER_191 = 191;
+    // электромеханик по ремонту и обслуживанию медицинского оборудования
+    USER_EMPLOYEE_POSITION_ROSTER_192 = 192;
+}

@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package contract.service.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "service_v1;service_pb";
+
+// DeaneryService — деканат: студенты своего факультета и коды первого входа.
+// Факультет студента — по первым двум цифрам зачётки, деканат сотрудника —
+// подразделение в MDM. Сотрудник с правом deanery.* видит только своих; ADMIN
+// и сотрудник без подразделения-деканата — всех.
+service DeaneryService {
+    // Студенты своего факультета (deanery.fetch). Поиск и фильтры — на клиенте.
+    rpc DeaneryStudentFetch (DeaneryStudentFetchRequest) returns (DeaneryStudentFetchResponse);
+    // Коды первого входа выбранным студентам (deanery.post). Прежний код
+    // студента перестаёт действовать. Открытый код — только в этом ответе.
+    rpc DeaneryActivationIssue (DeaneryActivationIssueRequest) returns (DeaneryActivationIssueResponse);
+}
+
+message DeaneryStudent {
+    int64 user_id = 1;
+    string full_name = 2;
+    string group = 3;
+    // Курс — первая цифра группы; 0 — не определён.
+    int32 course = 4;
+    string faculty = 5;
+    string record_book = 6;
+    // Логин AD — его студент вводит при первом входе.
+    string login = 7;
+    // Есть учётка AD (связь в MDM): без неё код не выдаётся.
+    bool has_account = 8;
+    // Статус обучения: «Учится», «Отчислен»…
+    string status = 9;
+    // Можно ли выдать код: учётка есть, логин есть, студент учится.
+    bool can_issue = 10;
+    // Почему нельзя — подсказка в таблице.
+    string issue_blocker = 11;
+}
+
+message DeaneryStudentFetchRequest {}
+
+message DeaneryStudentFetchResponse {
+    repeated DeaneryStudent students = 1;
+    repeated string faculties = 2;
+    bool all_faculties = 3;
+    // Демо-режим (DEANERY_DEMO): код «выдаётся» всем, неподходящим — без MDM.
+    bool demo = 4;
+}
+
+message DeaneryActivationIssueRequest {
+    repeated int64 user_ids = 1;
+}
+
+message DeaneryActivationCode {
+    int64 user_id = 1;
+    string full_name = 2;
+    string group = 3;
+    string login = 4;
+    string code = 5;
+    google.protobuf.Timestamp expires_at = 6;
+    // Не выдан — причина; code пустой.
+    string error = 7;
+    // Демо-код: не записан в MDM, войти по нему нельзя.
+    bool demo = 8;
+}
+
+message DeaneryActivationIssueResponse {
+    repeated DeaneryActivationCode codes = 1;
+}

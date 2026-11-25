@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package contract.entity.v1;
+
+import "google/protobuf/timestamp.proto";
+import "fesmu/enum/v1/hall.enum.proto";
+
+option go_package = "entity_v1;entity_pb";
+
+// Hall is a bookable lecture hall / auditorium.
+message Hall {
+  int64 id = 1;
+
+  // Short label as it appears on the room plate, e.g. "ауд. 238" or "Актовый зал".
+  string name = 2;
+  string building = 3;
+  // Calendar colour: one of the schedule tones (sky, emerald, amber, violet, ...).
+  string tone = 4;
+
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+}
+
+// HallBooking is a request for a hall and, once approved, one entry on the
+// hall's calendar: a lecture, a meeting, a record slot — whatever holds the
+// room from time_start to time_end. Only APPROVED bookings hold the room.
+message HallBooking {
+  int64 id = 1;
+  int64 hall_id = 2;
+
+  // ISO date (YYYY-MM-DD).
+  string date = 3;
+  // HH:MM, time_start < time_end, both within the hall's working day.
+  string time_start = 4;
+  string time_end = 5;
+  // What the hall is needed for (the reason of the request).
+  string title = 6;
+
+  // The applicant: full name and how to reach them (e-mail), taken from the
+  // signed-in session. Personal data: filled in only for staff and for the
+  // applicant's own requests, always empty in HallBookingPublicFetch.
+  string organizer = 7;
+  string contact = 8;
+
+  google.protobuf.Timestamp created_at = 9;
+  google.protobuf.Timestamp updated_at = 10;
+
+  contract.enum.v1.HallBookingStatus status = 11;
+  // The applicant's role(s) at the portal, as a label ("Сотрудник").
+  string applicant_role = 12;
+  // The reviewer's decision: comment, who decided and when (empty while PENDING).
+  string review_comment = 13;
+  string reviewed_by = 14;
+  google.protobuf.Timestamp reviewed_at = 15;
+}

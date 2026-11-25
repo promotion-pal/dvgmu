@@ -35,21 +35,121 @@ const (
 const (
 	// UserServiceUserFetchProcedure is the fully-qualified name of the UserService's UserFetch RPC.
 	UserServiceUserFetchProcedure = "/contract.service.UserService/UserFetch"
+	// UserServiceUserCreateProcedure is the fully-qualified name of the UserService's UserCreate RPC.
+	UserServiceUserCreateProcedure = "/contract.service.UserService/UserCreate"
 	// UserServiceUserFetchByIDProcedure is the fully-qualified name of the UserService's UserFetchByID
 	// RPC.
 	UserServiceUserFetchByIDProcedure = "/contract.service.UserService/UserFetchByID"
-	// UserServiceUserCreateProcedure is the fully-qualified name of the UserService's UserCreate RPC.
-	UserServiceUserCreateProcedure = "/contract.service.UserService/UserCreate"
+	// UserServiceUserCreateBatchProcedure is the fully-qualified name of the UserService's
+	// UserCreateBatch RPC.
+	UserServiceUserCreateBatchProcedure = "/contract.service.UserService/UserCreateBatch"
 	// UserServiceUserUpdateProcedure is the fully-qualified name of the UserService's UserUpdate RPC.
 	UserServiceUserUpdateProcedure = "/contract.service.UserService/UserUpdate"
+	// UserServiceUserDeleteProcedure is the fully-qualified name of the UserService's UserDelete RPC.
+	UserServiceUserDeleteProcedure = "/contract.service.UserService/UserDelete"
+	// UserServiceUserDeleteBatchProcedure is the fully-qualified name of the UserService's
+	// UserDeleteBatch RPC.
+	UserServiceUserDeleteBatchProcedure = "/contract.service.UserService/UserDeleteBatch"
+	// UserServiceUserFetchByUUIDProcedure is the fully-qualified name of the UserService's
+	// UserFetchByUUID RPC.
+	UserServiceUserFetchByUUIDProcedure = "/contract.service.UserService/UserFetchByUUID"
+	// UserServiceUserFetchByADObjectIDProcedure is the fully-qualified name of the UserService's
+	// UserFetchByADObjectID RPC.
+	UserServiceUserFetchByADObjectIDProcedure = "/contract.service.UserService/UserFetchByADObjectID"
+	// UserServiceActivationIssueProcedure is the fully-qualified name of the UserService's
+	// ActivationIssue RPC.
+	UserServiceActivationIssueProcedure = "/contract.service.UserService/ActivationIssue"
+	// UserServiceUserRolesSetProcedure is the fully-qualified name of the UserService's UserRolesSet
+	// RPC.
+	UserServiceUserRolesSetProcedure = "/contract.service.UserService/UserRolesSet"
+	// UserServiceUserPermissionsSetProcedure is the fully-qualified name of the UserService's
+	// UserPermissionsSet RPC.
+	UserServiceUserPermissionsSetProcedure = "/contract.service.UserService/UserPermissionsSet"
+	// UserServiceUserPermissionGroupsSetProcedure is the fully-qualified name of the UserService's
+	// UserPermissionGroupsSet RPC.
+	UserServiceUserPermissionGroupsSetProcedure = "/contract.service.UserService/UserPermissionGroupsSet"
+	// UserServiceUserPermissionGroupAssignmentsFetchProcedure is the fully-qualified name of the
+	// UserService's UserPermissionGroupAssignmentsFetch RPC.
+	UserServiceUserPermissionGroupAssignmentsFetchProcedure = "/contract.service.UserService/UserPermissionGroupAssignmentsFetch"
+	// UserServiceUserDepartmentsSetProcedure is the fully-qualified name of the UserService's
+	// UserDepartmentsSet RPC.
+	UserServiceUserDepartmentsSetProcedure = "/contract.service.UserService/UserDepartmentsSet"
+	// UserServiceUserPositionSetProcedure is the fully-qualified name of the UserService's
+	// UserPositionSet RPC.
+	UserServiceUserPositionSetProcedure = "/contract.service.UserService/UserPositionSet"
+	// UserServiceUserPermissionGroupFetchProcedure is the fully-qualified name of the UserService's
+	// UserPermissionGroupFetch RPC.
+	UserServiceUserPermissionGroupFetchProcedure = "/contract.service.UserService/UserPermissionGroupFetch"
+	// UserServiceUserPermissionGroupSaveProcedure is the fully-qualified name of the UserService's
+	// UserPermissionGroupSave RPC.
+	UserServiceUserPermissionGroupSaveProcedure = "/contract.service.UserService/UserPermissionGroupSave"
+	// UserServiceUserPermissionGroupDeleteProcedure is the fully-qualified name of the UserService's
+	// UserPermissionGroupDelete RPC.
+	UserServiceUserPermissionGroupDeleteProcedure = "/contract.service.UserService/UserPermissionGroupDelete"
+	// UserServicePassportCreateProcedure is the fully-qualified name of the UserService's
+	// PassportCreate RPC.
+	UserServicePassportCreateProcedure = "/contract.service.UserService/PassportCreate"
+	// UserServiceEducationCreateProcedure is the fully-qualified name of the UserService's
+	// EducationCreate RPC.
+	UserServiceEducationCreateProcedure = "/contract.service.UserService/EducationCreate"
+	// UserServiceMilitaryCreateProcedure is the fully-qualified name of the UserService's
+	// MilitaryCreate RPC.
+	UserServiceMilitaryCreateProcedure = "/contract.service.UserService/MilitaryCreate"
+	// UserServiceStudentCreateProcedure is the fully-qualified name of the UserService's StudentCreate
+	// RPC.
+	UserServiceStudentCreateProcedure = "/contract.service.UserService/StudentCreate"
+	// UserServiceStudentFetchProcedure is the fully-qualified name of the UserService's StudentFetch
+	// RPC.
+	UserServiceStudentFetchProcedure = "/contract.service.UserService/StudentFetch"
+	// UserServiceEmployeeCreateProcedure is the fully-qualified name of the UserService's
+	// EmployeeCreate RPC.
+	UserServiceEmployeeCreateProcedure = "/contract.service.UserService/EmployeeCreate"
+	// UserServiceEmployeeFetchProcedure is the fully-qualified name of the UserService's EmployeeFetch
+	// RPC.
+	UserServiceEmployeeFetchProcedure = "/contract.service.UserService/EmployeeFetch"
 )
 
 // UserServiceClient is a client for the contract.service.UserService service.
 type UserServiceClient interface {
 	UserFetch(context.Context, *connect.Request[service.UserFetchRequest]) (*connect.Response[service.UserFetchResponse], error)
-	UserFetchByID(context.Context, *connect.Request[service.UserFetchByIDRequest]) (*connect.Response[service.UserFetchByIDResponse], error)
 	UserCreate(context.Context, *connect.Request[service.UserCreateRequest]) (*connect.Response[service.UserCreateResponse], error)
+	UserFetchByID(context.Context, *connect.Request[service.UserFetchByIDRequest]) (*connect.Response[service.UserFetchByIDResponse], error)
+	UserCreateBatch(context.Context, *connect.Request[service.UserCreateBatchRequest]) (*connect.Response[service.UserCreateBatchResponse], error)
 	UserUpdate(context.Context, *connect.Request[service.UserUpdateRequest]) (*connect.Response[service.UserUpdateResponse], error)
+	UserDelete(context.Context, *connect.Request[service.UserDeleteRequest]) (*connect.Response[service.UserDeleteResponse], error)
+	UserDeleteBatch(context.Context, *connect.Request[service.UserDeleteBatchRequest]) (*connect.Response[service.UserDeleteBatchResponse], error)
+	UserFetchByUUID(context.Context, *connect.Request[service.UserFetchByUUIDRequest]) (*connect.Response[service.UserFetchByUUIDResponse], error)
+	// UserFetchByADObjectID — пользователь по objectGUID учётки AD (для auth
+	// после входа через AD FS). NotFound — учётка ещё не связана с MDM.
+	UserFetchByADObjectID(context.Context, *connect.Request[service.UserFetchByADObjectIDRequest]) (*connect.Response[service.UserFetchByADObjectIDResponse], error)
+	// ActivationIssue — новый код активации учётки (прежний перестаёт
+	// действовать). Открытый код отдаётся только здесь, один раз.
+	ActivationIssue(context.Context, *connect.Request[service.ActivationIssueRequest]) (*connect.Response[service.ActivationIssueResponse], error)
+	// UserRolesSet заменяет набор ролей пользователя целиком (пустой — снять все).
+	UserRolesSet(context.Context, *connect.Request[service.UserRolesSetRequest]) (*connect.Response[service.UserRolesSetResponse], error)
+	// UserPermissionsSet заменяет набор прав пользователя целиком.
+	UserPermissionsSet(context.Context, *connect.Request[service.UserPermissionsSetRequest]) (*connect.Response[service.UserPermissionsSetResponse], error)
+	// UserPermissionGroupsSet заменяет выданные пользователю группы прав целиком.
+	UserPermissionGroupsSet(context.Context, *connect.Request[service.UserPermissionGroupsSetRequest]) (*connect.Response[service.UserPermissionGroupsSetResponse], error)
+	UserPermissionGroupAssignmentsFetch(context.Context, *connect.Request[service.UserPermissionGroupAssignmentsFetchRequest]) (*connect.Response[service.UserPermissionGroupAssignmentsFetchResponse], error)
+	// UserDepartmentsSet заменяет подразделения человека (его записи сотрудника)
+	// целиком; пустой набор — убрать все.
+	UserDepartmentsSet(context.Context, *connect.Request[service.UserDepartmentsSetRequest]) (*connect.Response[service.UserDepartmentsSetResponse], error)
+	// UserPositionSet задаёт должность человека; пустая строка — снять.
+	UserPositionSet(context.Context, *connect.Request[service.UserPositionSetRequest]) (*connect.Response[service.UserPositionSetResponse], error)
+	// Наборы доступа: права, собранные администратором под общим именем.
+	UserPermissionGroupFetch(context.Context, *connect.Request[service.UserPermissionGroupFetchRequest]) (*connect.Response[service.UserPermissionGroupFetchResponse], error)
+	// id = 0 — создать, иначе изменить (состав прав заменяется целиком).
+	UserPermissionGroupSave(context.Context, *connect.Request[service.UserPermissionGroupSaveRequest]) (*connect.Response[service.UserPermissionGroupSaveResponse], error)
+	// При удалении группа снимается со всех пользователей, кому она выдана.
+	UserPermissionGroupDelete(context.Context, *connect.Request[service.UserPermissionGroupDeleteRequest]) (*connect.Response[service.UserPermissionGroupDeleteResponse], error)
+	PassportCreate(context.Context, *connect.Request[service.PassportCreateRequest]) (*connect.Response[service.PassportCreateResponse], error)
+	EducationCreate(context.Context, *connect.Request[service.EducationCreateRequest]) (*connect.Response[service.EducationCreateResponse], error)
+	MilitaryCreate(context.Context, *connect.Request[service.MilitaryCreateRequest]) (*connect.Response[service.MilitaryCreateResponse], error)
+	StudentCreate(context.Context, *connect.Request[service.StudentCreateRequest]) (*connect.Response[service.StudentCreateResponse], error)
+	StudentFetch(context.Context, *connect.Request[service.StudentFetchRequest]) (*connect.Response[service.StudentFetchResponse], error)
+	EmployeeCreate(context.Context, *connect.Request[service.EmployeeCreateRequest]) (*connect.Response[service.EmployeeCreateResponse], error)
+	EmployeeFetch(context.Context, *connect.Request[service.EmployeeFetchRequest]) (*connect.Response[service.EmployeeFetchResponse], error)
 }
 
 // NewUserServiceClient constructs a client for the contract.service.UserService service. By
@@ -69,16 +169,22 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(userServiceMethods.ByName("UserFetch")),
 			connect.WithClientOptions(opts...),
 		),
+		userCreate: connect.NewClient[service.UserCreateRequest, service.UserCreateResponse](
+			httpClient,
+			baseURL+UserServiceUserCreateProcedure,
+			connect.WithSchema(userServiceMethods.ByName("UserCreate")),
+			connect.WithClientOptions(opts...),
+		),
 		userFetchByID: connect.NewClient[service.UserFetchByIDRequest, service.UserFetchByIDResponse](
 			httpClient,
 			baseURL+UserServiceUserFetchByIDProcedure,
 			connect.WithSchema(userServiceMethods.ByName("UserFetchByID")),
 			connect.WithClientOptions(opts...),
 		),
-		userCreate: connect.NewClient[service.UserCreateRequest, service.UserCreateResponse](
+		userCreateBatch: connect.NewClient[service.UserCreateBatchRequest, service.UserCreateBatchResponse](
 			httpClient,
-			baseURL+UserServiceUserCreateProcedure,
-			connect.WithSchema(userServiceMethods.ByName("UserCreate")),
+			baseURL+UserServiceUserCreateBatchProcedure,
+			connect.WithSchema(userServiceMethods.ByName("UserCreateBatch")),
 			connect.WithClientOptions(opts...),
 		),
 		userUpdate: connect.NewClient[service.UserUpdateRequest, service.UserUpdateResponse](
@@ -87,15 +193,163 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(userServiceMethods.ByName("UserUpdate")),
 			connect.WithClientOptions(opts...),
 		),
+		userDelete: connect.NewClient[service.UserDeleteRequest, service.UserDeleteResponse](
+			httpClient,
+			baseURL+UserServiceUserDeleteProcedure,
+			connect.WithSchema(userServiceMethods.ByName("UserDelete")),
+			connect.WithClientOptions(opts...),
+		),
+		userDeleteBatch: connect.NewClient[service.UserDeleteBatchRequest, service.UserDeleteBatchResponse](
+			httpClient,
+			baseURL+UserServiceUserDeleteBatchProcedure,
+			connect.WithSchema(userServiceMethods.ByName("UserDeleteBatch")),
+			connect.WithClientOptions(opts...),
+		),
+		userFetchByUUID: connect.NewClient[service.UserFetchByUUIDRequest, service.UserFetchByUUIDResponse](
+			httpClient,
+			baseURL+UserServiceUserFetchByUUIDProcedure,
+			connect.WithSchema(userServiceMethods.ByName("UserFetchByUUID")),
+			connect.WithClientOptions(opts...),
+		),
+		userFetchByADObjectID: connect.NewClient[service.UserFetchByADObjectIDRequest, service.UserFetchByADObjectIDResponse](
+			httpClient,
+			baseURL+UserServiceUserFetchByADObjectIDProcedure,
+			connect.WithSchema(userServiceMethods.ByName("UserFetchByADObjectID")),
+			connect.WithClientOptions(opts...),
+		),
+		activationIssue: connect.NewClient[service.ActivationIssueRequest, service.ActivationIssueResponse](
+			httpClient,
+			baseURL+UserServiceActivationIssueProcedure,
+			connect.WithSchema(userServiceMethods.ByName("ActivationIssue")),
+			connect.WithClientOptions(opts...),
+		),
+		userRolesSet: connect.NewClient[service.UserRolesSetRequest, service.UserRolesSetResponse](
+			httpClient,
+			baseURL+UserServiceUserRolesSetProcedure,
+			connect.WithSchema(userServiceMethods.ByName("UserRolesSet")),
+			connect.WithClientOptions(opts...),
+		),
+		userPermissionsSet: connect.NewClient[service.UserPermissionsSetRequest, service.UserPermissionsSetResponse](
+			httpClient,
+			baseURL+UserServiceUserPermissionsSetProcedure,
+			connect.WithSchema(userServiceMethods.ByName("UserPermissionsSet")),
+			connect.WithClientOptions(opts...),
+		),
+		userPermissionGroupsSet: connect.NewClient[service.UserPermissionGroupsSetRequest, service.UserPermissionGroupsSetResponse](
+			httpClient,
+			baseURL+UserServiceUserPermissionGroupsSetProcedure,
+			connect.WithSchema(userServiceMethods.ByName("UserPermissionGroupsSet")),
+			connect.WithClientOptions(opts...),
+		),
+		userPermissionGroupAssignmentsFetch: connect.NewClient[service.UserPermissionGroupAssignmentsFetchRequest, service.UserPermissionGroupAssignmentsFetchResponse](
+			httpClient,
+			baseURL+UserServiceUserPermissionGroupAssignmentsFetchProcedure,
+			connect.WithSchema(userServiceMethods.ByName("UserPermissionGroupAssignmentsFetch")),
+			connect.WithClientOptions(opts...),
+		),
+		userDepartmentsSet: connect.NewClient[service.UserDepartmentsSetRequest, service.UserDepartmentsSetResponse](
+			httpClient,
+			baseURL+UserServiceUserDepartmentsSetProcedure,
+			connect.WithSchema(userServiceMethods.ByName("UserDepartmentsSet")),
+			connect.WithClientOptions(opts...),
+		),
+		userPositionSet: connect.NewClient[service.UserPositionSetRequest, service.UserPositionSetResponse](
+			httpClient,
+			baseURL+UserServiceUserPositionSetProcedure,
+			connect.WithSchema(userServiceMethods.ByName("UserPositionSet")),
+			connect.WithClientOptions(opts...),
+		),
+		userPermissionGroupFetch: connect.NewClient[service.UserPermissionGroupFetchRequest, service.UserPermissionGroupFetchResponse](
+			httpClient,
+			baseURL+UserServiceUserPermissionGroupFetchProcedure,
+			connect.WithSchema(userServiceMethods.ByName("UserPermissionGroupFetch")),
+			connect.WithClientOptions(opts...),
+		),
+		userPermissionGroupSave: connect.NewClient[service.UserPermissionGroupSaveRequest, service.UserPermissionGroupSaveResponse](
+			httpClient,
+			baseURL+UserServiceUserPermissionGroupSaveProcedure,
+			connect.WithSchema(userServiceMethods.ByName("UserPermissionGroupSave")),
+			connect.WithClientOptions(opts...),
+		),
+		userPermissionGroupDelete: connect.NewClient[service.UserPermissionGroupDeleteRequest, service.UserPermissionGroupDeleteResponse](
+			httpClient,
+			baseURL+UserServiceUserPermissionGroupDeleteProcedure,
+			connect.WithSchema(userServiceMethods.ByName("UserPermissionGroupDelete")),
+			connect.WithClientOptions(opts...),
+		),
+		passportCreate: connect.NewClient[service.PassportCreateRequest, service.PassportCreateResponse](
+			httpClient,
+			baseURL+UserServicePassportCreateProcedure,
+			connect.WithSchema(userServiceMethods.ByName("PassportCreate")),
+			connect.WithClientOptions(opts...),
+		),
+		educationCreate: connect.NewClient[service.EducationCreateRequest, service.EducationCreateResponse](
+			httpClient,
+			baseURL+UserServiceEducationCreateProcedure,
+			connect.WithSchema(userServiceMethods.ByName("EducationCreate")),
+			connect.WithClientOptions(opts...),
+		),
+		militaryCreate: connect.NewClient[service.MilitaryCreateRequest, service.MilitaryCreateResponse](
+			httpClient,
+			baseURL+UserServiceMilitaryCreateProcedure,
+			connect.WithSchema(userServiceMethods.ByName("MilitaryCreate")),
+			connect.WithClientOptions(opts...),
+		),
+		studentCreate: connect.NewClient[service.StudentCreateRequest, service.StudentCreateResponse](
+			httpClient,
+			baseURL+UserServiceStudentCreateProcedure,
+			connect.WithSchema(userServiceMethods.ByName("StudentCreate")),
+			connect.WithClientOptions(opts...),
+		),
+		studentFetch: connect.NewClient[service.StudentFetchRequest, service.StudentFetchResponse](
+			httpClient,
+			baseURL+UserServiceStudentFetchProcedure,
+			connect.WithSchema(userServiceMethods.ByName("StudentFetch")),
+			connect.WithClientOptions(opts...),
+		),
+		employeeCreate: connect.NewClient[service.EmployeeCreateRequest, service.EmployeeCreateResponse](
+			httpClient,
+			baseURL+UserServiceEmployeeCreateProcedure,
+			connect.WithSchema(userServiceMethods.ByName("EmployeeCreate")),
+			connect.WithClientOptions(opts...),
+		),
+		employeeFetch: connect.NewClient[service.EmployeeFetchRequest, service.EmployeeFetchResponse](
+			httpClient,
+			baseURL+UserServiceEmployeeFetchProcedure,
+			connect.WithSchema(userServiceMethods.ByName("EmployeeFetch")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // userServiceClient implements UserServiceClient.
 type userServiceClient struct {
-	userFetch     *connect.Client[service.UserFetchRequest, service.UserFetchResponse]
-	userFetchByID *connect.Client[service.UserFetchByIDRequest, service.UserFetchByIDResponse]
-	userCreate    *connect.Client[service.UserCreateRequest, service.UserCreateResponse]
-	userUpdate    *connect.Client[service.UserUpdateRequest, service.UserUpdateResponse]
+	userFetch                           *connect.Client[service.UserFetchRequest, service.UserFetchResponse]
+	userCreate                          *connect.Client[service.UserCreateRequest, service.UserCreateResponse]
+	userFetchByID                       *connect.Client[service.UserFetchByIDRequest, service.UserFetchByIDResponse]
+	userCreateBatch                     *connect.Client[service.UserCreateBatchRequest, service.UserCreateBatchResponse]
+	userUpdate                          *connect.Client[service.UserUpdateRequest, service.UserUpdateResponse]
+	userDelete                          *connect.Client[service.UserDeleteRequest, service.UserDeleteResponse]
+	userDeleteBatch                     *connect.Client[service.UserDeleteBatchRequest, service.UserDeleteBatchResponse]
+	userFetchByUUID                     *connect.Client[service.UserFetchByUUIDRequest, service.UserFetchByUUIDResponse]
+	userFetchByADObjectID               *connect.Client[service.UserFetchByADObjectIDRequest, service.UserFetchByADObjectIDResponse]
+	activationIssue                     *connect.Client[service.ActivationIssueRequest, service.ActivationIssueResponse]
+	userRolesSet                        *connect.Client[service.UserRolesSetRequest, service.UserRolesSetResponse]
+	userPermissionsSet                  *connect.Client[service.UserPermissionsSetRequest, service.UserPermissionsSetResponse]
+	userPermissionGroupsSet             *connect.Client[service.UserPermissionGroupsSetRequest, service.UserPermissionGroupsSetResponse]
+	userPermissionGroupAssignmentsFetch *connect.Client[service.UserPermissionGroupAssignmentsFetchRequest, service.UserPermissionGroupAssignmentsFetchResponse]
+	userDepartmentsSet                  *connect.Client[service.UserDepartmentsSetRequest, service.UserDepartmentsSetResponse]
+	userPositionSet                     *connect.Client[service.UserPositionSetRequest, service.UserPositionSetResponse]
+	userPermissionGroupFetch            *connect.Client[service.UserPermissionGroupFetchRequest, service.UserPermissionGroupFetchResponse]
+	userPermissionGroupSave             *connect.Client[service.UserPermissionGroupSaveRequest, service.UserPermissionGroupSaveResponse]
+	userPermissionGroupDelete           *connect.Client[service.UserPermissionGroupDeleteRequest, service.UserPermissionGroupDeleteResponse]
+	passportCreate                      *connect.Client[service.PassportCreateRequest, service.PassportCreateResponse]
+	educationCreate                     *connect.Client[service.EducationCreateRequest, service.EducationCreateResponse]
+	militaryCreate                      *connect.Client[service.MilitaryCreateRequest, service.MilitaryCreateResponse]
+	studentCreate                       *connect.Client[service.StudentCreateRequest, service.StudentCreateResponse]
+	studentFetch                        *connect.Client[service.StudentFetchRequest, service.StudentFetchResponse]
+	employeeCreate                      *connect.Client[service.EmployeeCreateRequest, service.EmployeeCreateResponse]
+	employeeFetch                       *connect.Client[service.EmployeeFetchRequest, service.EmployeeFetchResponse]
 }
 
 // UserFetch calls contract.service.UserService.UserFetch.
@@ -103,14 +357,19 @@ func (c *userServiceClient) UserFetch(ctx context.Context, req *connect.Request[
 	return c.userFetch.CallUnary(ctx, req)
 }
 
+// UserCreate calls contract.service.UserService.UserCreate.
+func (c *userServiceClient) UserCreate(ctx context.Context, req *connect.Request[service.UserCreateRequest]) (*connect.Response[service.UserCreateResponse], error) {
+	return c.userCreate.CallUnary(ctx, req)
+}
+
 // UserFetchByID calls contract.service.UserService.UserFetchByID.
 func (c *userServiceClient) UserFetchByID(ctx context.Context, req *connect.Request[service.UserFetchByIDRequest]) (*connect.Response[service.UserFetchByIDResponse], error) {
 	return c.userFetchByID.CallUnary(ctx, req)
 }
 
-// UserCreate calls contract.service.UserService.UserCreate.
-func (c *userServiceClient) UserCreate(ctx context.Context, req *connect.Request[service.UserCreateRequest]) (*connect.Response[service.UserCreateResponse], error) {
-	return c.userCreate.CallUnary(ctx, req)
+// UserCreateBatch calls contract.service.UserService.UserCreateBatch.
+func (c *userServiceClient) UserCreateBatch(ctx context.Context, req *connect.Request[service.UserCreateBatchRequest]) (*connect.Response[service.UserCreateBatchResponse], error) {
+	return c.userCreateBatch.CallUnary(ctx, req)
 }
 
 // UserUpdate calls contract.service.UserService.UserUpdate.
@@ -118,12 +377,153 @@ func (c *userServiceClient) UserUpdate(ctx context.Context, req *connect.Request
 	return c.userUpdate.CallUnary(ctx, req)
 }
 
+// UserDelete calls contract.service.UserService.UserDelete.
+func (c *userServiceClient) UserDelete(ctx context.Context, req *connect.Request[service.UserDeleteRequest]) (*connect.Response[service.UserDeleteResponse], error) {
+	return c.userDelete.CallUnary(ctx, req)
+}
+
+// UserDeleteBatch calls contract.service.UserService.UserDeleteBatch.
+func (c *userServiceClient) UserDeleteBatch(ctx context.Context, req *connect.Request[service.UserDeleteBatchRequest]) (*connect.Response[service.UserDeleteBatchResponse], error) {
+	return c.userDeleteBatch.CallUnary(ctx, req)
+}
+
+// UserFetchByUUID calls contract.service.UserService.UserFetchByUUID.
+func (c *userServiceClient) UserFetchByUUID(ctx context.Context, req *connect.Request[service.UserFetchByUUIDRequest]) (*connect.Response[service.UserFetchByUUIDResponse], error) {
+	return c.userFetchByUUID.CallUnary(ctx, req)
+}
+
+// UserFetchByADObjectID calls contract.service.UserService.UserFetchByADObjectID.
+func (c *userServiceClient) UserFetchByADObjectID(ctx context.Context, req *connect.Request[service.UserFetchByADObjectIDRequest]) (*connect.Response[service.UserFetchByADObjectIDResponse], error) {
+	return c.userFetchByADObjectID.CallUnary(ctx, req)
+}
+
+// ActivationIssue calls contract.service.UserService.ActivationIssue.
+func (c *userServiceClient) ActivationIssue(ctx context.Context, req *connect.Request[service.ActivationIssueRequest]) (*connect.Response[service.ActivationIssueResponse], error) {
+	return c.activationIssue.CallUnary(ctx, req)
+}
+
+// UserRolesSet calls contract.service.UserService.UserRolesSet.
+func (c *userServiceClient) UserRolesSet(ctx context.Context, req *connect.Request[service.UserRolesSetRequest]) (*connect.Response[service.UserRolesSetResponse], error) {
+	return c.userRolesSet.CallUnary(ctx, req)
+}
+
+// UserPermissionsSet calls contract.service.UserService.UserPermissionsSet.
+func (c *userServiceClient) UserPermissionsSet(ctx context.Context, req *connect.Request[service.UserPermissionsSetRequest]) (*connect.Response[service.UserPermissionsSetResponse], error) {
+	return c.userPermissionsSet.CallUnary(ctx, req)
+}
+
+// UserPermissionGroupsSet calls contract.service.UserService.UserPermissionGroupsSet.
+func (c *userServiceClient) UserPermissionGroupsSet(ctx context.Context, req *connect.Request[service.UserPermissionGroupsSetRequest]) (*connect.Response[service.UserPermissionGroupsSetResponse], error) {
+	return c.userPermissionGroupsSet.CallUnary(ctx, req)
+}
+
+// UserPermissionGroupAssignmentsFetch calls
+// contract.service.UserService.UserPermissionGroupAssignmentsFetch.
+func (c *userServiceClient) UserPermissionGroupAssignmentsFetch(ctx context.Context, req *connect.Request[service.UserPermissionGroupAssignmentsFetchRequest]) (*connect.Response[service.UserPermissionGroupAssignmentsFetchResponse], error) {
+	return c.userPermissionGroupAssignmentsFetch.CallUnary(ctx, req)
+}
+
+// UserDepartmentsSet calls contract.service.UserService.UserDepartmentsSet.
+func (c *userServiceClient) UserDepartmentsSet(ctx context.Context, req *connect.Request[service.UserDepartmentsSetRequest]) (*connect.Response[service.UserDepartmentsSetResponse], error) {
+	return c.userDepartmentsSet.CallUnary(ctx, req)
+}
+
+// UserPositionSet calls contract.service.UserService.UserPositionSet.
+func (c *userServiceClient) UserPositionSet(ctx context.Context, req *connect.Request[service.UserPositionSetRequest]) (*connect.Response[service.UserPositionSetResponse], error) {
+	return c.userPositionSet.CallUnary(ctx, req)
+}
+
+// UserPermissionGroupFetch calls contract.service.UserService.UserPermissionGroupFetch.
+func (c *userServiceClient) UserPermissionGroupFetch(ctx context.Context, req *connect.Request[service.UserPermissionGroupFetchRequest]) (*connect.Response[service.UserPermissionGroupFetchResponse], error) {
+	return c.userPermissionGroupFetch.CallUnary(ctx, req)
+}
+
+// UserPermissionGroupSave calls contract.service.UserService.UserPermissionGroupSave.
+func (c *userServiceClient) UserPermissionGroupSave(ctx context.Context, req *connect.Request[service.UserPermissionGroupSaveRequest]) (*connect.Response[service.UserPermissionGroupSaveResponse], error) {
+	return c.userPermissionGroupSave.CallUnary(ctx, req)
+}
+
+// UserPermissionGroupDelete calls contract.service.UserService.UserPermissionGroupDelete.
+func (c *userServiceClient) UserPermissionGroupDelete(ctx context.Context, req *connect.Request[service.UserPermissionGroupDeleteRequest]) (*connect.Response[service.UserPermissionGroupDeleteResponse], error) {
+	return c.userPermissionGroupDelete.CallUnary(ctx, req)
+}
+
+// PassportCreate calls contract.service.UserService.PassportCreate.
+func (c *userServiceClient) PassportCreate(ctx context.Context, req *connect.Request[service.PassportCreateRequest]) (*connect.Response[service.PassportCreateResponse], error) {
+	return c.passportCreate.CallUnary(ctx, req)
+}
+
+// EducationCreate calls contract.service.UserService.EducationCreate.
+func (c *userServiceClient) EducationCreate(ctx context.Context, req *connect.Request[service.EducationCreateRequest]) (*connect.Response[service.EducationCreateResponse], error) {
+	return c.educationCreate.CallUnary(ctx, req)
+}
+
+// MilitaryCreate calls contract.service.UserService.MilitaryCreate.
+func (c *userServiceClient) MilitaryCreate(ctx context.Context, req *connect.Request[service.MilitaryCreateRequest]) (*connect.Response[service.MilitaryCreateResponse], error) {
+	return c.militaryCreate.CallUnary(ctx, req)
+}
+
+// StudentCreate calls contract.service.UserService.StudentCreate.
+func (c *userServiceClient) StudentCreate(ctx context.Context, req *connect.Request[service.StudentCreateRequest]) (*connect.Response[service.StudentCreateResponse], error) {
+	return c.studentCreate.CallUnary(ctx, req)
+}
+
+// StudentFetch calls contract.service.UserService.StudentFetch.
+func (c *userServiceClient) StudentFetch(ctx context.Context, req *connect.Request[service.StudentFetchRequest]) (*connect.Response[service.StudentFetchResponse], error) {
+	return c.studentFetch.CallUnary(ctx, req)
+}
+
+// EmployeeCreate calls contract.service.UserService.EmployeeCreate.
+func (c *userServiceClient) EmployeeCreate(ctx context.Context, req *connect.Request[service.EmployeeCreateRequest]) (*connect.Response[service.EmployeeCreateResponse], error) {
+	return c.employeeCreate.CallUnary(ctx, req)
+}
+
+// EmployeeFetch calls contract.service.UserService.EmployeeFetch.
+func (c *userServiceClient) EmployeeFetch(ctx context.Context, req *connect.Request[service.EmployeeFetchRequest]) (*connect.Response[service.EmployeeFetchResponse], error) {
+	return c.employeeFetch.CallUnary(ctx, req)
+}
+
 // UserServiceHandler is an implementation of the contract.service.UserService service.
 type UserServiceHandler interface {
 	UserFetch(context.Context, *connect.Request[service.UserFetchRequest]) (*connect.Response[service.UserFetchResponse], error)
-	UserFetchByID(context.Context, *connect.Request[service.UserFetchByIDRequest]) (*connect.Response[service.UserFetchByIDResponse], error)
 	UserCreate(context.Context, *connect.Request[service.UserCreateRequest]) (*connect.Response[service.UserCreateResponse], error)
+	UserFetchByID(context.Context, *connect.Request[service.UserFetchByIDRequest]) (*connect.Response[service.UserFetchByIDResponse], error)
+	UserCreateBatch(context.Context, *connect.Request[service.UserCreateBatchRequest]) (*connect.Response[service.UserCreateBatchResponse], error)
 	UserUpdate(context.Context, *connect.Request[service.UserUpdateRequest]) (*connect.Response[service.UserUpdateResponse], error)
+	UserDelete(context.Context, *connect.Request[service.UserDeleteRequest]) (*connect.Response[service.UserDeleteResponse], error)
+	UserDeleteBatch(context.Context, *connect.Request[service.UserDeleteBatchRequest]) (*connect.Response[service.UserDeleteBatchResponse], error)
+	UserFetchByUUID(context.Context, *connect.Request[service.UserFetchByUUIDRequest]) (*connect.Response[service.UserFetchByUUIDResponse], error)
+	// UserFetchByADObjectID — пользователь по objectGUID учётки AD (для auth
+	// после входа через AD FS). NotFound — учётка ещё не связана с MDM.
+	UserFetchByADObjectID(context.Context, *connect.Request[service.UserFetchByADObjectIDRequest]) (*connect.Response[service.UserFetchByADObjectIDResponse], error)
+	// ActivationIssue — новый код активации учётки (прежний перестаёт
+	// действовать). Открытый код отдаётся только здесь, один раз.
+	ActivationIssue(context.Context, *connect.Request[service.ActivationIssueRequest]) (*connect.Response[service.ActivationIssueResponse], error)
+	// UserRolesSet заменяет набор ролей пользователя целиком (пустой — снять все).
+	UserRolesSet(context.Context, *connect.Request[service.UserRolesSetRequest]) (*connect.Response[service.UserRolesSetResponse], error)
+	// UserPermissionsSet заменяет набор прав пользователя целиком.
+	UserPermissionsSet(context.Context, *connect.Request[service.UserPermissionsSetRequest]) (*connect.Response[service.UserPermissionsSetResponse], error)
+	// UserPermissionGroupsSet заменяет выданные пользователю группы прав целиком.
+	UserPermissionGroupsSet(context.Context, *connect.Request[service.UserPermissionGroupsSetRequest]) (*connect.Response[service.UserPermissionGroupsSetResponse], error)
+	UserPermissionGroupAssignmentsFetch(context.Context, *connect.Request[service.UserPermissionGroupAssignmentsFetchRequest]) (*connect.Response[service.UserPermissionGroupAssignmentsFetchResponse], error)
+	// UserDepartmentsSet заменяет подразделения человека (его записи сотрудника)
+	// целиком; пустой набор — убрать все.
+	UserDepartmentsSet(context.Context, *connect.Request[service.UserDepartmentsSetRequest]) (*connect.Response[service.UserDepartmentsSetResponse], error)
+	// UserPositionSet задаёт должность человека; пустая строка — снять.
+	UserPositionSet(context.Context, *connect.Request[service.UserPositionSetRequest]) (*connect.Response[service.UserPositionSetResponse], error)
+	// Наборы доступа: права, собранные администратором под общим именем.
+	UserPermissionGroupFetch(context.Context, *connect.Request[service.UserPermissionGroupFetchRequest]) (*connect.Response[service.UserPermissionGroupFetchResponse], error)
+	// id = 0 — создать, иначе изменить (состав прав заменяется целиком).
+	UserPermissionGroupSave(context.Context, *connect.Request[service.UserPermissionGroupSaveRequest]) (*connect.Response[service.UserPermissionGroupSaveResponse], error)
+	// При удалении группа снимается со всех пользователей, кому она выдана.
+	UserPermissionGroupDelete(context.Context, *connect.Request[service.UserPermissionGroupDeleteRequest]) (*connect.Response[service.UserPermissionGroupDeleteResponse], error)
+	PassportCreate(context.Context, *connect.Request[service.PassportCreateRequest]) (*connect.Response[service.PassportCreateResponse], error)
+	EducationCreate(context.Context, *connect.Request[service.EducationCreateRequest]) (*connect.Response[service.EducationCreateResponse], error)
+	MilitaryCreate(context.Context, *connect.Request[service.MilitaryCreateRequest]) (*connect.Response[service.MilitaryCreateResponse], error)
+	StudentCreate(context.Context, *connect.Request[service.StudentCreateRequest]) (*connect.Response[service.StudentCreateResponse], error)
+	StudentFetch(context.Context, *connect.Request[service.StudentFetchRequest]) (*connect.Response[service.StudentFetchResponse], error)
+	EmployeeCreate(context.Context, *connect.Request[service.EmployeeCreateRequest]) (*connect.Response[service.EmployeeCreateResponse], error)
+	EmployeeFetch(context.Context, *connect.Request[service.EmployeeFetchRequest]) (*connect.Response[service.EmployeeFetchResponse], error)
 }
 
 // NewUserServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -139,16 +539,22 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(userServiceMethods.ByName("UserFetch")),
 		connect.WithHandlerOptions(opts...),
 	)
+	userServiceUserCreateHandler := connect.NewUnaryHandler(
+		UserServiceUserCreateProcedure,
+		svc.UserCreate,
+		connect.WithSchema(userServiceMethods.ByName("UserCreate")),
+		connect.WithHandlerOptions(opts...),
+	)
 	userServiceUserFetchByIDHandler := connect.NewUnaryHandler(
 		UserServiceUserFetchByIDProcedure,
 		svc.UserFetchByID,
 		connect.WithSchema(userServiceMethods.ByName("UserFetchByID")),
 		connect.WithHandlerOptions(opts...),
 	)
-	userServiceUserCreateHandler := connect.NewUnaryHandler(
-		UserServiceUserCreateProcedure,
-		svc.UserCreate,
-		connect.WithSchema(userServiceMethods.ByName("UserCreate")),
+	userServiceUserCreateBatchHandler := connect.NewUnaryHandler(
+		UserServiceUserCreateBatchProcedure,
+		svc.UserCreateBatch,
+		connect.WithSchema(userServiceMethods.ByName("UserCreateBatch")),
 		connect.WithHandlerOptions(opts...),
 	)
 	userServiceUserUpdateHandler := connect.NewUnaryHandler(
@@ -157,16 +563,186 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(userServiceMethods.ByName("UserUpdate")),
 		connect.WithHandlerOptions(opts...),
 	)
+	userServiceUserDeleteHandler := connect.NewUnaryHandler(
+		UserServiceUserDeleteProcedure,
+		svc.UserDelete,
+		connect.WithSchema(userServiceMethods.ByName("UserDelete")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceUserDeleteBatchHandler := connect.NewUnaryHandler(
+		UserServiceUserDeleteBatchProcedure,
+		svc.UserDeleteBatch,
+		connect.WithSchema(userServiceMethods.ByName("UserDeleteBatch")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceUserFetchByUUIDHandler := connect.NewUnaryHandler(
+		UserServiceUserFetchByUUIDProcedure,
+		svc.UserFetchByUUID,
+		connect.WithSchema(userServiceMethods.ByName("UserFetchByUUID")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceUserFetchByADObjectIDHandler := connect.NewUnaryHandler(
+		UserServiceUserFetchByADObjectIDProcedure,
+		svc.UserFetchByADObjectID,
+		connect.WithSchema(userServiceMethods.ByName("UserFetchByADObjectID")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceActivationIssueHandler := connect.NewUnaryHandler(
+		UserServiceActivationIssueProcedure,
+		svc.ActivationIssue,
+		connect.WithSchema(userServiceMethods.ByName("ActivationIssue")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceUserRolesSetHandler := connect.NewUnaryHandler(
+		UserServiceUserRolesSetProcedure,
+		svc.UserRolesSet,
+		connect.WithSchema(userServiceMethods.ByName("UserRolesSet")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceUserPermissionsSetHandler := connect.NewUnaryHandler(
+		UserServiceUserPermissionsSetProcedure,
+		svc.UserPermissionsSet,
+		connect.WithSchema(userServiceMethods.ByName("UserPermissionsSet")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceUserPermissionGroupsSetHandler := connect.NewUnaryHandler(
+		UserServiceUserPermissionGroupsSetProcedure,
+		svc.UserPermissionGroupsSet,
+		connect.WithSchema(userServiceMethods.ByName("UserPermissionGroupsSet")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceUserPermissionGroupAssignmentsFetchHandler := connect.NewUnaryHandler(
+		UserServiceUserPermissionGroupAssignmentsFetchProcedure,
+		svc.UserPermissionGroupAssignmentsFetch,
+		connect.WithSchema(userServiceMethods.ByName("UserPermissionGroupAssignmentsFetch")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceUserDepartmentsSetHandler := connect.NewUnaryHandler(
+		UserServiceUserDepartmentsSetProcedure,
+		svc.UserDepartmentsSet,
+		connect.WithSchema(userServiceMethods.ByName("UserDepartmentsSet")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceUserPositionSetHandler := connect.NewUnaryHandler(
+		UserServiceUserPositionSetProcedure,
+		svc.UserPositionSet,
+		connect.WithSchema(userServiceMethods.ByName("UserPositionSet")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceUserPermissionGroupFetchHandler := connect.NewUnaryHandler(
+		UserServiceUserPermissionGroupFetchProcedure,
+		svc.UserPermissionGroupFetch,
+		connect.WithSchema(userServiceMethods.ByName("UserPermissionGroupFetch")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceUserPermissionGroupSaveHandler := connect.NewUnaryHandler(
+		UserServiceUserPermissionGroupSaveProcedure,
+		svc.UserPermissionGroupSave,
+		connect.WithSchema(userServiceMethods.ByName("UserPermissionGroupSave")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceUserPermissionGroupDeleteHandler := connect.NewUnaryHandler(
+		UserServiceUserPermissionGroupDeleteProcedure,
+		svc.UserPermissionGroupDelete,
+		connect.WithSchema(userServiceMethods.ByName("UserPermissionGroupDelete")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServicePassportCreateHandler := connect.NewUnaryHandler(
+		UserServicePassportCreateProcedure,
+		svc.PassportCreate,
+		connect.WithSchema(userServiceMethods.ByName("PassportCreate")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceEducationCreateHandler := connect.NewUnaryHandler(
+		UserServiceEducationCreateProcedure,
+		svc.EducationCreate,
+		connect.WithSchema(userServiceMethods.ByName("EducationCreate")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceMilitaryCreateHandler := connect.NewUnaryHandler(
+		UserServiceMilitaryCreateProcedure,
+		svc.MilitaryCreate,
+		connect.WithSchema(userServiceMethods.ByName("MilitaryCreate")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceStudentCreateHandler := connect.NewUnaryHandler(
+		UserServiceStudentCreateProcedure,
+		svc.StudentCreate,
+		connect.WithSchema(userServiceMethods.ByName("StudentCreate")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceStudentFetchHandler := connect.NewUnaryHandler(
+		UserServiceStudentFetchProcedure,
+		svc.StudentFetch,
+		connect.WithSchema(userServiceMethods.ByName("StudentFetch")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceEmployeeCreateHandler := connect.NewUnaryHandler(
+		UserServiceEmployeeCreateProcedure,
+		svc.EmployeeCreate,
+		connect.WithSchema(userServiceMethods.ByName("EmployeeCreate")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceEmployeeFetchHandler := connect.NewUnaryHandler(
+		UserServiceEmployeeFetchProcedure,
+		svc.EmployeeFetch,
+		connect.WithSchema(userServiceMethods.ByName("EmployeeFetch")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/contract.service.UserService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case UserServiceUserFetchProcedure:
 			userServiceUserFetchHandler.ServeHTTP(w, r)
-		case UserServiceUserFetchByIDProcedure:
-			userServiceUserFetchByIDHandler.ServeHTTP(w, r)
 		case UserServiceUserCreateProcedure:
 			userServiceUserCreateHandler.ServeHTTP(w, r)
+		case UserServiceUserFetchByIDProcedure:
+			userServiceUserFetchByIDHandler.ServeHTTP(w, r)
+		case UserServiceUserCreateBatchProcedure:
+			userServiceUserCreateBatchHandler.ServeHTTP(w, r)
 		case UserServiceUserUpdateProcedure:
 			userServiceUserUpdateHandler.ServeHTTP(w, r)
+		case UserServiceUserDeleteProcedure:
+			userServiceUserDeleteHandler.ServeHTTP(w, r)
+		case UserServiceUserDeleteBatchProcedure:
+			userServiceUserDeleteBatchHandler.ServeHTTP(w, r)
+		case UserServiceUserFetchByUUIDProcedure:
+			userServiceUserFetchByUUIDHandler.ServeHTTP(w, r)
+		case UserServiceUserFetchByADObjectIDProcedure:
+			userServiceUserFetchByADObjectIDHandler.ServeHTTP(w, r)
+		case UserServiceActivationIssueProcedure:
+			userServiceActivationIssueHandler.ServeHTTP(w, r)
+		case UserServiceUserRolesSetProcedure:
+			userServiceUserRolesSetHandler.ServeHTTP(w, r)
+		case UserServiceUserPermissionsSetProcedure:
+			userServiceUserPermissionsSetHandler.ServeHTTP(w, r)
+		case UserServiceUserPermissionGroupsSetProcedure:
+			userServiceUserPermissionGroupsSetHandler.ServeHTTP(w, r)
+		case UserServiceUserPermissionGroupAssignmentsFetchProcedure:
+			userServiceUserPermissionGroupAssignmentsFetchHandler.ServeHTTP(w, r)
+		case UserServiceUserDepartmentsSetProcedure:
+			userServiceUserDepartmentsSetHandler.ServeHTTP(w, r)
+		case UserServiceUserPositionSetProcedure:
+			userServiceUserPositionSetHandler.ServeHTTP(w, r)
+		case UserServiceUserPermissionGroupFetchProcedure:
+			userServiceUserPermissionGroupFetchHandler.ServeHTTP(w, r)
+		case UserServiceUserPermissionGroupSaveProcedure:
+			userServiceUserPermissionGroupSaveHandler.ServeHTTP(w, r)
+		case UserServiceUserPermissionGroupDeleteProcedure:
+			userServiceUserPermissionGroupDeleteHandler.ServeHTTP(w, r)
+		case UserServicePassportCreateProcedure:
+			userServicePassportCreateHandler.ServeHTTP(w, r)
+		case UserServiceEducationCreateProcedure:
+			userServiceEducationCreateHandler.ServeHTTP(w, r)
+		case UserServiceMilitaryCreateProcedure:
+			userServiceMilitaryCreateHandler.ServeHTTP(w, r)
+		case UserServiceStudentCreateProcedure:
+			userServiceStudentCreateHandler.ServeHTTP(w, r)
+		case UserServiceStudentFetchProcedure:
+			userServiceStudentFetchHandler.ServeHTTP(w, r)
+		case UserServiceEmployeeCreateProcedure:
+			userServiceEmployeeCreateHandler.ServeHTTP(w, r)
+		case UserServiceEmployeeFetchProcedure:
+			userServiceEmployeeFetchHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -180,14 +756,102 @@ func (UnimplementedUserServiceHandler) UserFetch(context.Context, *connect.Reque
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.UserFetch is not implemented"))
 }
 
-func (UnimplementedUserServiceHandler) UserFetchByID(context.Context, *connect.Request[service.UserFetchByIDRequest]) (*connect.Response[service.UserFetchByIDResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.UserFetchByID is not implemented"))
-}
-
 func (UnimplementedUserServiceHandler) UserCreate(context.Context, *connect.Request[service.UserCreateRequest]) (*connect.Response[service.UserCreateResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.UserCreate is not implemented"))
 }
 
+func (UnimplementedUserServiceHandler) UserFetchByID(context.Context, *connect.Request[service.UserFetchByIDRequest]) (*connect.Response[service.UserFetchByIDResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.UserFetchByID is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) UserCreateBatch(context.Context, *connect.Request[service.UserCreateBatchRequest]) (*connect.Response[service.UserCreateBatchResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.UserCreateBatch is not implemented"))
+}
+
 func (UnimplementedUserServiceHandler) UserUpdate(context.Context, *connect.Request[service.UserUpdateRequest]) (*connect.Response[service.UserUpdateResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.UserUpdate is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) UserDelete(context.Context, *connect.Request[service.UserDeleteRequest]) (*connect.Response[service.UserDeleteResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.UserDelete is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) UserDeleteBatch(context.Context, *connect.Request[service.UserDeleteBatchRequest]) (*connect.Response[service.UserDeleteBatchResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.UserDeleteBatch is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) UserFetchByUUID(context.Context, *connect.Request[service.UserFetchByUUIDRequest]) (*connect.Response[service.UserFetchByUUIDResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.UserFetchByUUID is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) UserFetchByADObjectID(context.Context, *connect.Request[service.UserFetchByADObjectIDRequest]) (*connect.Response[service.UserFetchByADObjectIDResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.UserFetchByADObjectID is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) ActivationIssue(context.Context, *connect.Request[service.ActivationIssueRequest]) (*connect.Response[service.ActivationIssueResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.ActivationIssue is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) UserRolesSet(context.Context, *connect.Request[service.UserRolesSetRequest]) (*connect.Response[service.UserRolesSetResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.UserRolesSet is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) UserPermissionsSet(context.Context, *connect.Request[service.UserPermissionsSetRequest]) (*connect.Response[service.UserPermissionsSetResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.UserPermissionsSet is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) UserPermissionGroupsSet(context.Context, *connect.Request[service.UserPermissionGroupsSetRequest]) (*connect.Response[service.UserPermissionGroupsSetResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.UserPermissionGroupsSet is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) UserPermissionGroupAssignmentsFetch(context.Context, *connect.Request[service.UserPermissionGroupAssignmentsFetchRequest]) (*connect.Response[service.UserPermissionGroupAssignmentsFetchResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.UserPermissionGroupAssignmentsFetch is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) UserDepartmentsSet(context.Context, *connect.Request[service.UserDepartmentsSetRequest]) (*connect.Response[service.UserDepartmentsSetResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.UserDepartmentsSet is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) UserPositionSet(context.Context, *connect.Request[service.UserPositionSetRequest]) (*connect.Response[service.UserPositionSetResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.UserPositionSet is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) UserPermissionGroupFetch(context.Context, *connect.Request[service.UserPermissionGroupFetchRequest]) (*connect.Response[service.UserPermissionGroupFetchResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.UserPermissionGroupFetch is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) UserPermissionGroupSave(context.Context, *connect.Request[service.UserPermissionGroupSaveRequest]) (*connect.Response[service.UserPermissionGroupSaveResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.UserPermissionGroupSave is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) UserPermissionGroupDelete(context.Context, *connect.Request[service.UserPermissionGroupDeleteRequest]) (*connect.Response[service.UserPermissionGroupDeleteResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.UserPermissionGroupDelete is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) PassportCreate(context.Context, *connect.Request[service.PassportCreateRequest]) (*connect.Response[service.PassportCreateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.PassportCreate is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) EducationCreate(context.Context, *connect.Request[service.EducationCreateRequest]) (*connect.Response[service.EducationCreateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.EducationCreate is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) MilitaryCreate(context.Context, *connect.Request[service.MilitaryCreateRequest]) (*connect.Response[service.MilitaryCreateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.MilitaryCreate is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) StudentCreate(context.Context, *connect.Request[service.StudentCreateRequest]) (*connect.Response[service.StudentCreateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.StudentCreate is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) StudentFetch(context.Context, *connect.Request[service.StudentFetchRequest]) (*connect.Response[service.StudentFetchResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.StudentFetch is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) EmployeeCreate(context.Context, *connect.Request[service.EmployeeCreateRequest]) (*connect.Response[service.EmployeeCreateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.EmployeeCreate is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) EmployeeFetch(context.Context, *connect.Request[service.EmployeeFetchRequest]) (*connect.Response[service.EmployeeFetchResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.EmployeeFetch is not implemented"))
 }

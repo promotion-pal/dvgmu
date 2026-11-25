@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package contract.entity.v1;
+
+import "google/protobuf/timestamp.proto";
+import "fesmu/enum/v1/user.enum.proto";
+
+option go_package = "entity_v1;entity_pb";
+
+message User {
+  int64 id = 1;
+  int64 mdm_id = 2;
+  string uuid = 5;
+  repeated contract.enum.v1.UserRole roles = 6;
+  // Rights to single actions inside a section ("certificate.view"), from MDM.
+  repeated string permissions = 7;
+
+  google.protobuf.Timestamp created_at = 3;
+  google.protobuf.Timestamp updated_at = 4;
+}

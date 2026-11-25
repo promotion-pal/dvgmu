@@ -1,0 +1,14 @@
+env: prod
+
+grpc:
+  port: 4000
+  timeout: 5s
+
+database:
+  sslmode: disable
+
+storage:
+  base_path: /data/files
+
+word:
+  templates_dir: /app/docs

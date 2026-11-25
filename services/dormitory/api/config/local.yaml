@@ -1,0 +1,13 @@
+env: local
+
+grpc:
+  port: 4000
+  timeout: 5s
+
+database:
+  host: localhost
+  port: 5442
+  user: root
+  password: password
+  dbname: dvgmu_dormitory_db
+  sslmode: disable

@@ -1,0 +1,183 @@
+package examv2
+
+import (
+	"fmt"
+	"math/rand/v2"
+	"strings"
+	"time"
+
+	"dvgmu/api/internal/domain/models"
+	pb "fesmu/contract/fesmu/exam/service/v2"
+	svc "fesmu/contract/fesmu/service/v1"
+	"google.golang.org/protobuf/proto"
+)
+
+// NormalizeStructure upgrades legacy JSON in memory. Old rows remain readable;
+// the next save writes topics without deleting or reinterpreting any question.
+func NormalizeStructure(b *pb.Bank) {
+	if b == nil {
+		return
+	}
+	for _, section := range b.Sections {
+		if section == nil {
+			continue
+		}
+		if len(section.Questions) > 0 {
+			name := "Вопросы раздела"
+			used := map[string]bool{}
+			for _, topic := range section.Topics {
+				if topic != nil {
+					used[strings.ToLower(strings.TrimSpace(topic.Name))] = true
+				}
+			}
+			for n := 2; used[strings.ToLower(name)]; n++ {
+				name = fmt.Sprintf("Вопросы раздела %d", n)
+			}
+			section.Topics = append([]*pb.BankTopic{{Name: name, Questions: section.Questions}}, section.Topics...)
+			section.Questions = nil
+		}
+		if section.ReadyVariant {
+			section.Quota = int32(len(SectionQuestions(section)))
+		}
+	}
+
+}
+
+func SectionQuestions(section *pb.BankSection) []*svc.TestQuestionInput {
+	if section == nil {
+		return nil
+	}
+	pool := append([]*svc.TestQuestionInput{}, section.Questions...)
+	for _, topic := range section.Topics {
+		if topic != nil {
+			pool = append(pool, topic.Questions...)
+		}
+	}
+	return pool
+}
+
+// Every question in a section's combined pool is equally eligible. A quota is
+// per section, not per topic. Sampling is without replacement within a variant.
+// Ready-made sections instead keep every question in its source order.
+func VariantSections(b *pb.Bank) ([]*pb.BankSection, error) {
+	if err := Validate(b); err != nil {
+		return nil, err
+	}
+	out := make([]*pb.BankSection, 0, len(b.Sections))
+	for _, section := range b.Sections {
+		pool := SectionQuestions(section)
+		selected := &pb.BankSection{Name: section.Name, Quota: section.Quota, ReadyVariant: section.ReadyVariant}
+		if section.ReadyVariant {
+			selected.Questions = append(selected.Questions, pool...)
+			out = append(out, selected)
+			continue
+		}
+		order := rand.Perm(len(pool))
+		for _, index := range order[:int(section.Quota)] {
+			selected.Questions = append(selected.Questions, pool[index])
+		}
+		out = append(out, selected)
+	}
+	return out, nil
+}
+
+func validateTopics(b *pb.Bank, section *pb.BankSection) error {
+	names := map[string]bool{}
+	for _, topic := range section.Topics {
+		if topic == nil {
+			return bad("в разделе есть пустая тема")
+		}
+		topic.Name = strings.TrimSpace(topic.Name)
+		key := strings.ToLower(topic.Name)
+		if key == "" || names[key] {
+			return bad("раздел «" + section.Name + "»: задайте непустые и уникальные названия тем")
+		}
+		names[key] = true
+		for _, q := range topic.Questions {
+			if q == nil {
+				return bad("тема «" + topic.Name + "»: пустой вопрос")
+			}
+			for _, answer := range q.Answers {
+				if answer == nil {
+					return bad("тема «" + topic.Name + "»: пустой ответ")
+				}
+			}
+
+		}
+		p := params(b, []*pb.BankSection{{Questions: topic.Questions}})
+		if len(p.Questions) > 0 {
+			// The normal test validator checks each topic's contents; the variant's
+			// combined size is checked separately against its section quotas.
+			if err := models.ValidateExamParams(p); err != nil {
+				return bad(err.Error())
+			}
+			if err := validateTopicQuestions(p); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
+func validateTopicQuestions(p models.TestParams) error {
+	if _, err := models.NewTest(p, time.Now()); err != nil {
+		return bad(err.Error())
+	}
+	return nil
+}
+
+// A fully prepared exam has one fixed set; generating copies adds no value.
+func IsReadyExam(b *pb.Bank) bool {
+	if b == nil || len(b.Sections) == 0 {
+		return false
+	}
+	for _, section := range b.Sections {
+		if section == nil || !section.ReadyVariant {
+			return false
+		}
+	}
+	return true
+}
+
+func generatedTitle(b *pb.Bank, index int) string {
+	if IsReadyExam(b) {
+		if len(b.Sections) == 1 {
+			return b.Sections[0].Name
+		}
+		return b.Discipline
+	}
+	return fmt.Sprintf("%s %s · %s · %02d", b.AcademicYear, b.Discipline, map[string]string{"winter": "зима", "summer": "лето"}[b.Season], index+1)
+}
+
+// Ready uploads are independent tests. Only ordinary sections are assembled
+// together using their random quotas.
+type examPublication struct {
+	Title    string
+	Sections []*pb.BankSection
+}
+
+func publicationPlans(b *pb.Bank) ([]examPublication, error) {
+	if err := Validate(b); err != nil {
+		return nil, err
+	}
+	var plans []examPublication
+	ordinary := proto.Clone(b).(*pb.Bank)
+	ordinary.Sections = nil
+	for _, section := range b.Sections {
+		if section.ReadyVariant {
+			plans = append(plans, examPublication{Title: section.Name, Sections: []*pb.BankSection{section}})
+		} else {
+			ordinary.Sections = append(ordinary.Sections, section)
+		}
+	}
+	if len(ordinary.Sections) > 0 {
+		for i := 0; i < int(b.VariantCount); i++ {
+			selected, err := VariantSections(ordinary)
+			if err != nil {
+				return nil, err
+			}
+			plans = append(plans, examPublication{Title: generatedTitle(ordinary, i), Sections: selected})
+		}
+	}
+	return plans, nil
+}

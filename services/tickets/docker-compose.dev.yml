@@ -1,39 +1,11 @@
 services:
   dvgmu_apps_ticket_db:
+    container_name: "dvgmu_apps_ticket_db"
     image: postgres:17
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-root}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
-      POSTGRES_DB: ${POSTGRES_DB:-dvgmu_tickets_db}
-    ports:
-      - "${POSTGRES_PORT:-5446}:5432"
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     volumes:
-      - tickets_pgdata:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
-      interval: 5s
-      timeout: 3s
-      retries: 10
-
-  dvgmu_apps_ticket_api:
-    build:
-      context: ../..
-      dockerfile: services/tickets/Dockerfile
-    command: ["./tickets", "--config=config/local.yaml"]
-    depends_on:
-      dvgmu_apps_ticket_db:
-        condition: service_healthy
-    ports:
-      - "${TICKETS_GRPC_PORT:-4050}:4050"
-    environment:
-      DB_HOST: dvgmu_apps_ticket_db
-      DB_PORT: "5432"
-      DB_USER: ${POSTGRES_USER:-root}
-      DB_PASSWORD: ${POSTGRES_PASSWORD:-password}
-      DB_NAME: ${POSTGRES_DB:-dvgmu_tickets_db}
-      DB_SSLMODE: disable
-      GRPC_PORT: "4050"
+      - ./api/db/postgres:/var/lib/postgresql/data
     restart: unless-stopped
-
-volumes:
-  tickets_pgdata:

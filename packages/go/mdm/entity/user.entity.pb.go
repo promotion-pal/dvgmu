@@ -37,6 +37,8 @@ type User struct {
 	Birthday      *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=birthday,proto3,oneof" json:"birthday,omitempty"`
 	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	PermissionIds []int64                `protobuf:"varint,13,rep,packed,name=permission_ids,json=permissionIds,proto3" json:"permission_ids,omitempty"`
+	Roles         []enum.UserRole        `protobuf:"varint,14,rep,packed,name=roles,proto3,enum=contract.enum.UserRole" json:"roles,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -155,16 +157,103 @@ func (x *User) GetUpdatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
+func (x *User) GetPermissionIds() []int64 {
+	if x != nil {
+		return x.PermissionIds
+	}
+	return nil
+}
+
+func (x *User) GetRoles() []enum.UserRole {
+	if x != nil {
+		return x.Roles
+	}
+	return nil
+}
+
+type UserPermissionGroup struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	Permissions   []string               `protobuf:"bytes,4,rep,name=permissions,proto3" json:"permissions,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserPermissionGroup) Reset() {
+	*x = UserPermissionGroup{}
+	mi := &file_mdm_entity_user_entity_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserPermissionGroup) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserPermissionGroup) ProtoMessage() {}
+
+func (x *UserPermissionGroup) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_entity_user_entity_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserPermissionGroup.ProtoReflect.Descriptor instead.
+func (*UserPermissionGroup) Descriptor() ([]byte, []int) {
+	return file_mdm_entity_user_entity_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *UserPermissionGroup) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *UserPermissionGroup) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *UserPermissionGroup) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *UserPermissionGroup) GetPermissions() []string {
+	if x != nil {
+		return x.Permissions
+	}
+	return nil
+}
+
 type UserFull struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	User          *User                  `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	Student       *Student               `protobuf:"bytes,2,opt,name=student,proto3" json:"student,omitempty"`
+	Passport      *Passport              `protobuf:"bytes,3,opt,name=passport,proto3" json:"passport,omitempty"`
+	Military      *Military              `protobuf:"bytes,4,opt,name=military,proto3" json:"military,omitempty"`
+	Employee      *Employee              `protobuf:"bytes,5,opt,name=employee,proto3" json:"employee,omitempty"`
+	Educations    []*Education           `protobuf:"bytes,6,rep,name=educations,proto3" json:"educations,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *UserFull) Reset() {
 	*x = UserFull{}
-	mi := &file_mdm_entity_user_entity_proto_msgTypes[1]
+	mi := &file_mdm_entity_user_entity_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -176,7 +265,7 @@ func (x *UserFull) String() string {
 func (*UserFull) ProtoMessage() {}
 
 func (x *UserFull) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_entity_user_entity_proto_msgTypes[1]
+	mi := &file_mdm_entity_user_entity_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -189,7 +278,7 @@ func (x *UserFull) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserFull.ProtoReflect.Descriptor instead.
 func (*UserFull) Descriptor() ([]byte, []int) {
-	return file_mdm_entity_user_entity_proto_rawDescGZIP(), []int{1}
+	return file_mdm_entity_user_entity_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *UserFull) GetUser() *User {
@@ -199,11 +288,46 @@ func (x *UserFull) GetUser() *User {
 	return nil
 }
 
+func (x *UserFull) GetStudent() *Student {
+	if x != nil {
+		return x.Student
+	}
+	return nil
+}
+
+func (x *UserFull) GetPassport() *Passport {
+	if x != nil {
+		return x.Passport
+	}
+	return nil
+}
+
+func (x *UserFull) GetMilitary() *Military {
+	if x != nil {
+		return x.Military
+	}
+	return nil
+}
+
+func (x *UserFull) GetEmployee() *Employee {
+	if x != nil {
+		return x.Employee
+	}
+	return nil
+}
+
+func (x *UserFull) GetEducations() []*Education {
+	if x != nil {
+		return x.Educations
+	}
+	return nil
+}
+
 var File_mdm_entity_user_entity_proto protoreflect.FileDescriptor
 
 const file_mdm_entity_user_entity_proto_rawDesc = "" +
 	"\n" +
-	"\x1cmdm/entity/user.entity.proto\x12\x0fcontract.entity\x1a\x18mdm/enum/user.enum.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x80\x04\n" +
+	"\x1cmdm/entity/user.entity.proto\x12\x0fcontract.entity\x1a\x18mdm/enum/user.enum.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a mdm/entity/passport.entity.proto\x1a!mdm/entity/education.entity.proto\x1a mdm/entity/military.entity.proto\x1a\x1fmdm/entity/student.entity.proto\x1a mdm/entity/employee.entity.proto\"\xd6\x04\n" +
 	"\x04User\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04uuid\x18\x02 \x01(\tR\x04uuid\x12%\n" +
@@ -223,13 +347,27 @@ const file_mdm_entity_user_entity_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
-	"updated_at\x18\f \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAtB\x0f\n" +
+	"updated_at\x18\f \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12%\n" +
+	"\x0epermission_ids\x18\r \x03(\x03R\rpermissionIds\x12-\n" +
+	"\x05roles\x18\x0e \x03(\x0e2\x17.contract.enum.UserRoleR\x05rolesB\x0f\n" +
 	"\r_ad_object_idB\r\n" +
 	"\v_patronymicB\b\n" +
 	"\x06_phoneB\v\n" +
-	"\t_birthday\"5\n" +
+	"\t_birthday\"}\n" +
+	"\x13UserPermissionGroup\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
+	"\vdescription\x18\x03 \x01(\tR\vdescription\x12 \n" +
+	"\vpermissions\x18\x04 \x03(\tR\vpermissions\"\xca\x02\n" +
 	"\bUserFull\x12)\n" +
-	"\x04user\x18\x01 \x01(\v2\x15.contract.entity.UserR\x04userB\x9e\x01\n" +
+	"\x04user\x18\x01 \x01(\v2\x15.contract.entity.UserR\x04user\x122\n" +
+	"\astudent\x18\x02 \x01(\v2\x18.contract.entity.StudentR\astudent\x125\n" +
+	"\bpassport\x18\x03 \x01(\v2\x19.contract.entity.PassportR\bpassport\x125\n" +
+	"\bmilitary\x18\x04 \x01(\v2\x19.contract.entity.MilitaryR\bmilitary\x125\n" +
+	"\bemployee\x18\x05 \x01(\v2\x19.contract.entity.EmployeeR\bemployee\x12:\n" +
+	"\n" +
+	"educations\x18\x06 \x03(\v2\x1a.contract.entity.EducationR\n" +
+	"educationsB\x9e\x01\n" +
 	"\x13com.contract.entityB\x0fUserEntityProtoP\x01Z\x19fesmu/contract/mdm/entity\xa2\x02\x03CEX\xaa\x02\x0fContract.Entity\xca\x02\x0fContract\\Entity\xe2\x02\x1bContract\\Entity\\GPBMetadata\xea\x02\x10Contract::Entityb\x06proto3"
 
 var (
@@ -244,24 +382,37 @@ func file_mdm_entity_user_entity_proto_rawDescGZIP() []byte {
 	return file_mdm_entity_user_entity_proto_rawDescData
 }
 
-var file_mdm_entity_user_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_mdm_entity_user_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_mdm_entity_user_entity_proto_goTypes = []any{
 	(*User)(nil),                  // 0: contract.entity.User
-	(*UserFull)(nil),              // 1: contract.entity.UserFull
-	(enum.UserStatus)(0),          // 2: contract.enum.UserStatus
-	(*timestamppb.Timestamp)(nil), // 3: google.protobuf.Timestamp
+	(*UserPermissionGroup)(nil),   // 1: contract.entity.UserPermissionGroup
+	(*UserFull)(nil),              // 2: contract.entity.UserFull
+	(enum.UserStatus)(0),          // 3: contract.enum.UserStatus
+	(*timestamppb.Timestamp)(nil), // 4: google.protobuf.Timestamp
+	(enum.UserRole)(0),            // 5: contract.enum.UserRole
+	(*Student)(nil),               // 6: contract.entity.Student
+	(*Passport)(nil),              // 7: contract.entity.Passport
+	(*Military)(nil),              // 8: contract.entity.Military
+	(*Employee)(nil),              // 9: contract.entity.Employee
+	(*Education)(nil),             // 10: contract.entity.Education
 }
 var file_mdm_entity_user_entity_proto_depIdxs = []int32{
-	2, // 0: contract.entity.User.status:type_name -> contract.enum.UserStatus
-	3, // 1: contract.entity.User.birthday:type_name -> google.protobuf.Timestamp
-	3, // 2: contract.entity.User.created_at:type_name -> google.protobuf.Timestamp
-	3, // 3: contract.entity.User.updated_at:type_name -> google.protobuf.Timestamp
-	0, // 4: contract.entity.UserFull.user:type_name -> contract.entity.User
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	3,  // 0: contract.entity.User.status:type_name -> contract.enum.UserStatus
+	4,  // 1: contract.entity.User.birthday:type_name -> google.protobuf.Timestamp
+	4,  // 2: contract.entity.User.created_at:type_name -> google.protobuf.Timestamp
+	4,  // 3: contract.entity.User.updated_at:type_name -> google.protobuf.Timestamp
+	5,  // 4: contract.entity.User.roles:type_name -> contract.enum.UserRole
+	0,  // 5: contract.entity.UserFull.user:type_name -> contract.entity.User
+	6,  // 6: contract.entity.UserFull.student:type_name -> contract.entity.Student
+	7,  // 7: contract.entity.UserFull.passport:type_name -> contract.entity.Passport
+	8,  // 8: contract.entity.UserFull.military:type_name -> contract.entity.Military
+	9,  // 9: contract.entity.UserFull.employee:type_name -> contract.entity.Employee
+	10, // 10: contract.entity.UserFull.educations:type_name -> contract.entity.Education
+	11, // [11:11] is the sub-list for method output_type
+	11, // [11:11] is the sub-list for method input_type
+	11, // [11:11] is the sub-list for extension type_name
+	11, // [11:11] is the sub-list for extension extendee
+	0,  // [0:11] is the sub-list for field type_name
 }
 
 func init() { file_mdm_entity_user_entity_proto_init() }
@@ -269,6 +420,11 @@ func file_mdm_entity_user_entity_proto_init() {
 	if File_mdm_entity_user_entity_proto != nil {
 		return
 	}
+	file_mdm_entity_passport_entity_proto_init()
+	file_mdm_entity_education_entity_proto_init()
+	file_mdm_entity_military_entity_proto_init()
+	file_mdm_entity_student_entity_proto_init()
+	file_mdm_entity_employee_entity_proto_init()
 	file_mdm_entity_user_entity_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -276,7 +432,7 @@ func file_mdm_entity_user_entity_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_mdm_entity_user_entity_proto_rawDesc), len(file_mdm_entity_user_entity_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

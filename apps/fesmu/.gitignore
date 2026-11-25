@@ -1,0 +1,13 @@
+node_modules/
+dist/
+build/
+venv/
+__pycache__/
+.DS_Store
+.env
+.env.*
+!.env.example
+api/db/
+old/api/storage/
+old/api/ai/logs/
+old/api/ai/outputs/

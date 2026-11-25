@@ -1,0 +1,7 @@
+# Локальный портал с adfs-mock, своими БД и портами на localhost.
+# Тот же стенд, что запускает make dev-up; продовые .env и api/db не использует.
+# docker compose -f docker-compose.dev.yml up -d --build
+name: fesmu_local
+
+include:
+  - ../../dev/docker-compose.yml

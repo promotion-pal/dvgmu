@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package contract.mentor.entity;
+
+option go_package = "entity;entity_pb";
+
+import "google/protobuf/timestamp.proto";
+
+message Appointment {
+    
+}

@@ -1,30 +1,14 @@
 {
   "name": "@fesmu/contract",
-  "version": "0.0.0",
   "private": true,
+  "version": "0.0.0",
   "type": "module",
+  "description": "Сгенерированный TS всех схем (make proto) по владельцам: @fesmu/contract/mdm/entity/…, @fesmu/contract/fesmu/entity/v1/…, @fesmu/contract/auth/v2/…",
   "exports": {
-    "./tickets/entity/ticket.entity_pb": "./tickets/entity/ticket.entity_pb.ts",
-    "./tickets/service/ticket.service_pb": "./tickets/service/ticket.service_pb.ts",
-    "./tasks/entity/direction_pb": "./tasks/entity/direction_pb.ts",
-    "./tasks/entity/service_pb": "./tasks/entity/service_pb.ts",
-    "./tasks/service/catalog_service_pb": "./tasks/service/catalog_service_pb.ts",
-    "./tasks/entity/status_pb": "./tasks/entity/status_pb.ts",
-    "./tasks/service/status_service_pb": "./tasks/service/status_service_pb.ts",
-    "./tasks/entity/priority_pb": "./tasks/entity/priority_pb.ts",
-    "./tasks/service/priority_service_pb": "./tasks/service/priority_service_pb.ts",
-    "./tasks/entity/service_form_pb": "./tasks/entity/service_form_pb.ts",
-    "./tasks/service/service_form_service_pb": "./tasks/service/service_form_service_pb.ts",
-    "./tasks/service/service_settings_service_pb": "./tasks/service/service_settings_service_pb.ts",
-    "./tasks/service/service_routes_service_pb": "./tasks/service/service_routes_service_pb.ts",
-    "./tasks/entity/task_pb": "./tasks/entity/task_pb.ts",
-    "./tasks/service/task_service_pb": "./tasks/service/task_service_pb.ts",
-    "./tasks/service/direction_service_pb": "./tasks/service/direction_service_pb.ts",
-    "./mdm/entity/user.entity_pb": "./mdm/entity/user.entity_pb.ts",
-    "./mdm/enum/user.enum_pb": "./mdm/enum/user.enum_pb.ts",
-    "./mdm/service/user.service_pb": "./mdm/service/user.service_pb.ts"
+    "./*.js": "./*.ts",
+    "./*": "./*.ts"
   },
   "dependencies": {
-    "@bufbuild/protobuf": "2.12.1"
+    "@bufbuild/protobuf": "^2.12.1"
   }
 }

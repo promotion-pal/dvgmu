@@ -21,8 +21,10 @@ import (
 const _ = connect.IsAtLeastVersion1_13_0
 
 const (
-	// TaskServiceName is the fully-qualified name of the TaskService service.
-	TaskServiceName = "contract.tickets.service.TaskService"
+	// TicketDormitoryServiceName is the fully-qualified name of the TicketDormitoryService service.
+	TicketDormitoryServiceName = "contract.tickets.service.TicketDormitoryService"
+	// TicketBuildServiceName is the fully-qualified name of the TicketBuildService service.
+	TicketBuildServiceName = "contract.tickets.service.TicketBuildService"
 )
 
 // These constants are the fully-qualified names of the RPCs defined in this package. They're
@@ -33,104 +35,332 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
-	// TaskServiceCreateTaskProcedure is the fully-qualified name of the TaskService's CreateTask RPC.
-	TaskServiceCreateTaskProcedure = "/contract.tickets.service.TaskService/CreateTask"
-	// TaskServiceListTasksProcedure is the fully-qualified name of the TaskService's ListTasks RPC.
-	TaskServiceListTasksProcedure = "/contract.tickets.service.TaskService/ListTasks"
+	// TicketDormitoryServiceTicketDormitoryByIDProcedure is the fully-qualified name of the
+	// TicketDormitoryService's TicketDormitoryByID RPC.
+	TicketDormitoryServiceTicketDormitoryByIDProcedure = "/contract.tickets.service.TicketDormitoryService/TicketDormitoryByID"
+	// TicketDormitoryServiceTicketDormitoryFetchProcedure is the fully-qualified name of the
+	// TicketDormitoryService's TicketDormitoryFetch RPC.
+	TicketDormitoryServiceTicketDormitoryFetchProcedure = "/contract.tickets.service.TicketDormitoryService/TicketDormitoryFetch"
+	// TicketDormitoryServiceTicketDormitoryCreateProcedure is the fully-qualified name of the
+	// TicketDormitoryService's TicketDormitoryCreate RPC.
+	TicketDormitoryServiceTicketDormitoryCreateProcedure = "/contract.tickets.service.TicketDormitoryService/TicketDormitoryCreate"
+	// TicketDormitoryServiceTicketDormitoryChangeStatusProcedure is the fully-qualified name of the
+	// TicketDormitoryService's TicketDormitoryChangeStatus RPC.
+	TicketDormitoryServiceTicketDormitoryChangeStatusProcedure = "/contract.tickets.service.TicketDormitoryService/TicketDormitoryChangeStatus"
+	// TicketBuildServiceTicketBuildByIDProcedure is the fully-qualified name of the
+	// TicketBuildService's TicketBuildByID RPC.
+	TicketBuildServiceTicketBuildByIDProcedure = "/contract.tickets.service.TicketBuildService/TicketBuildByID"
+	// TicketBuildServiceTicketBuildFetchProcedure is the fully-qualified name of the
+	// TicketBuildService's TicketBuildFetch RPC.
+	TicketBuildServiceTicketBuildFetchProcedure = "/contract.tickets.service.TicketBuildService/TicketBuildFetch"
+	// TicketBuildServiceTicketBuildCreateProcedure is the fully-qualified name of the
+	// TicketBuildService's TicketBuildCreate RPC.
+	TicketBuildServiceTicketBuildCreateProcedure = "/contract.tickets.service.TicketBuildService/TicketBuildCreate"
+	// TicketBuildServiceTicketBuildChangeStatusProcedure is the fully-qualified name of the
+	// TicketBuildService's TicketBuildChangeStatus RPC.
+	TicketBuildServiceTicketBuildChangeStatusProcedure = "/contract.tickets.service.TicketBuildService/TicketBuildChangeStatus"
 )
 
-// TaskServiceClient is a client for the contract.tickets.service.TaskService service.
-type TaskServiceClient interface {
-	CreateTask(context.Context, *connect.Request[service.CreateTaskRequest]) (*connect.Response[service.CreateTaskResponse], error)
-	ListTasks(context.Context, *connect.Request[service.ListTasksRequest]) (*connect.Response[service.ListTasksResponse], error)
+// TicketDormitoryServiceClient is a client for the contract.tickets.service.TicketDormitoryService
+// service.
+type TicketDormitoryServiceClient interface {
+	TicketDormitoryByID(context.Context, *connect.Request[service.TicketDormitoryByIDRequest]) (*connect.Response[service.TicketDormitoryByIDResponse], error)
+	TicketDormitoryFetch(context.Context, *connect.Request[service.TicketDormitoryFetchRequest]) (*connect.Response[service.TicketDormitoryFetchResponse], error)
+	TicketDormitoryCreate(context.Context, *connect.Request[service.TicketDormitoryCreateRequest]) (*connect.Response[service.TicketDormitoryCreateResponse], error)
+	TicketDormitoryChangeStatus(context.Context, *connect.Request[service.TicketDormitoryChangeStatusRequest]) (*connect.Response[service.TicketDormitoryChangeStatusResponse], error)
 }
 
-// NewTaskServiceClient constructs a client for the contract.tickets.service.TaskService service. By
-// default, it uses the Connect protocol with the binary Protobuf Codec, asks for gzipped responses,
-// and sends uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the
-// connect.WithGRPC() or connect.WithGRPCWeb() options.
+// NewTicketDormitoryServiceClient constructs a client for the
+// contract.tickets.service.TicketDormitoryService service. By default, it uses the Connect protocol
+// with the binary Protobuf Codec, asks for gzipped responses, and sends uncompressed requests. To
+// use the gRPC or gRPC-Web protocols, supply the connect.WithGRPC() or connect.WithGRPCWeb()
+// options.
 //
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
-func NewTaskServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) TaskServiceClient {
+func NewTicketDormitoryServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) TicketDormitoryServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
-	taskServiceMethods := service.File_tickets_service_ticket_service_proto.Services().ByName("TaskService").Methods()
-	return &taskServiceClient{
-		createTask: connect.NewClient[service.CreateTaskRequest, service.CreateTaskResponse](
+	ticketDormitoryServiceMethods := service.File_tickets_service_ticket_service_proto.Services().ByName("TicketDormitoryService").Methods()
+	return &ticketDormitoryServiceClient{
+		ticketDormitoryByID: connect.NewClient[service.TicketDormitoryByIDRequest, service.TicketDormitoryByIDResponse](
 			httpClient,
-			baseURL+TaskServiceCreateTaskProcedure,
-			connect.WithSchema(taskServiceMethods.ByName("CreateTask")),
+			baseURL+TicketDormitoryServiceTicketDormitoryByIDProcedure,
+			connect.WithSchema(ticketDormitoryServiceMethods.ByName("TicketDormitoryByID")),
 			connect.WithClientOptions(opts...),
 		),
-		listTasks: connect.NewClient[service.ListTasksRequest, service.ListTasksResponse](
+		ticketDormitoryFetch: connect.NewClient[service.TicketDormitoryFetchRequest, service.TicketDormitoryFetchResponse](
 			httpClient,
-			baseURL+TaskServiceListTasksProcedure,
-			connect.WithSchema(taskServiceMethods.ByName("ListTasks")),
+			baseURL+TicketDormitoryServiceTicketDormitoryFetchProcedure,
+			connect.WithSchema(ticketDormitoryServiceMethods.ByName("TicketDormitoryFetch")),
+			connect.WithClientOptions(opts...),
+		),
+		ticketDormitoryCreate: connect.NewClient[service.TicketDormitoryCreateRequest, service.TicketDormitoryCreateResponse](
+			httpClient,
+			baseURL+TicketDormitoryServiceTicketDormitoryCreateProcedure,
+			connect.WithSchema(ticketDormitoryServiceMethods.ByName("TicketDormitoryCreate")),
+			connect.WithClientOptions(opts...),
+		),
+		ticketDormitoryChangeStatus: connect.NewClient[service.TicketDormitoryChangeStatusRequest, service.TicketDormitoryChangeStatusResponse](
+			httpClient,
+			baseURL+TicketDormitoryServiceTicketDormitoryChangeStatusProcedure,
+			connect.WithSchema(ticketDormitoryServiceMethods.ByName("TicketDormitoryChangeStatus")),
 			connect.WithClientOptions(opts...),
 		),
 	}
 }
 
-// taskServiceClient implements TaskServiceClient.
-type taskServiceClient struct {
-	createTask *connect.Client[service.CreateTaskRequest, service.CreateTaskResponse]
-	listTasks  *connect.Client[service.ListTasksRequest, service.ListTasksResponse]
+// ticketDormitoryServiceClient implements TicketDormitoryServiceClient.
+type ticketDormitoryServiceClient struct {
+	ticketDormitoryByID         *connect.Client[service.TicketDormitoryByIDRequest, service.TicketDormitoryByIDResponse]
+	ticketDormitoryFetch        *connect.Client[service.TicketDormitoryFetchRequest, service.TicketDormitoryFetchResponse]
+	ticketDormitoryCreate       *connect.Client[service.TicketDormitoryCreateRequest, service.TicketDormitoryCreateResponse]
+	ticketDormitoryChangeStatus *connect.Client[service.TicketDormitoryChangeStatusRequest, service.TicketDormitoryChangeStatusResponse]
 }
 
-// CreateTask calls contract.tickets.service.TaskService.CreateTask.
-func (c *taskServiceClient) CreateTask(ctx context.Context, req *connect.Request[service.CreateTaskRequest]) (*connect.Response[service.CreateTaskResponse], error) {
-	return c.createTask.CallUnary(ctx, req)
+// TicketDormitoryByID calls contract.tickets.service.TicketDormitoryService.TicketDormitoryByID.
+func (c *ticketDormitoryServiceClient) TicketDormitoryByID(ctx context.Context, req *connect.Request[service.TicketDormitoryByIDRequest]) (*connect.Response[service.TicketDormitoryByIDResponse], error) {
+	return c.ticketDormitoryByID.CallUnary(ctx, req)
 }
 
-// ListTasks calls contract.tickets.service.TaskService.ListTasks.
-func (c *taskServiceClient) ListTasks(ctx context.Context, req *connect.Request[service.ListTasksRequest]) (*connect.Response[service.ListTasksResponse], error) {
-	return c.listTasks.CallUnary(ctx, req)
+// TicketDormitoryFetch calls contract.tickets.service.TicketDormitoryService.TicketDormitoryFetch.
+func (c *ticketDormitoryServiceClient) TicketDormitoryFetch(ctx context.Context, req *connect.Request[service.TicketDormitoryFetchRequest]) (*connect.Response[service.TicketDormitoryFetchResponse], error) {
+	return c.ticketDormitoryFetch.CallUnary(ctx, req)
 }
 
-// TaskServiceHandler is an implementation of the contract.tickets.service.TaskService service.
-type TaskServiceHandler interface {
-	CreateTask(context.Context, *connect.Request[service.CreateTaskRequest]) (*connect.Response[service.CreateTaskResponse], error)
-	ListTasks(context.Context, *connect.Request[service.ListTasksRequest]) (*connect.Response[service.ListTasksResponse], error)
+// TicketDormitoryCreate calls
+// contract.tickets.service.TicketDormitoryService.TicketDormitoryCreate.
+func (c *ticketDormitoryServiceClient) TicketDormitoryCreate(ctx context.Context, req *connect.Request[service.TicketDormitoryCreateRequest]) (*connect.Response[service.TicketDormitoryCreateResponse], error) {
+	return c.ticketDormitoryCreate.CallUnary(ctx, req)
 }
 
-// NewTaskServiceHandler builds an HTTP handler from the service implementation. It returns the path
-// on which to mount the handler and the handler itself.
+// TicketDormitoryChangeStatus calls
+// contract.tickets.service.TicketDormitoryService.TicketDormitoryChangeStatus.
+func (c *ticketDormitoryServiceClient) TicketDormitoryChangeStatus(ctx context.Context, req *connect.Request[service.TicketDormitoryChangeStatusRequest]) (*connect.Response[service.TicketDormitoryChangeStatusResponse], error) {
+	return c.ticketDormitoryChangeStatus.CallUnary(ctx, req)
+}
+
+// TicketDormitoryServiceHandler is an implementation of the
+// contract.tickets.service.TicketDormitoryService service.
+type TicketDormitoryServiceHandler interface {
+	TicketDormitoryByID(context.Context, *connect.Request[service.TicketDormitoryByIDRequest]) (*connect.Response[service.TicketDormitoryByIDResponse], error)
+	TicketDormitoryFetch(context.Context, *connect.Request[service.TicketDormitoryFetchRequest]) (*connect.Response[service.TicketDormitoryFetchResponse], error)
+	TicketDormitoryCreate(context.Context, *connect.Request[service.TicketDormitoryCreateRequest]) (*connect.Response[service.TicketDormitoryCreateResponse], error)
+	TicketDormitoryChangeStatus(context.Context, *connect.Request[service.TicketDormitoryChangeStatusRequest]) (*connect.Response[service.TicketDormitoryChangeStatusResponse], error)
+}
+
+// NewTicketDormitoryServiceHandler builds an HTTP handler from the service implementation. It
+// returns the path on which to mount the handler and the handler itself.
 //
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
-func NewTaskServiceHandler(svc TaskServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
-	taskServiceMethods := service.File_tickets_service_ticket_service_proto.Services().ByName("TaskService").Methods()
-	taskServiceCreateTaskHandler := connect.NewUnaryHandler(
-		TaskServiceCreateTaskProcedure,
-		svc.CreateTask,
-		connect.WithSchema(taskServiceMethods.ByName("CreateTask")),
+func NewTicketDormitoryServiceHandler(svc TicketDormitoryServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	ticketDormitoryServiceMethods := service.File_tickets_service_ticket_service_proto.Services().ByName("TicketDormitoryService").Methods()
+	ticketDormitoryServiceTicketDormitoryByIDHandler := connect.NewUnaryHandler(
+		TicketDormitoryServiceTicketDormitoryByIDProcedure,
+		svc.TicketDormitoryByID,
+		connect.WithSchema(ticketDormitoryServiceMethods.ByName("TicketDormitoryByID")),
 		connect.WithHandlerOptions(opts...),
 	)
-	taskServiceListTasksHandler := connect.NewUnaryHandler(
-		TaskServiceListTasksProcedure,
-		svc.ListTasks,
-		connect.WithSchema(taskServiceMethods.ByName("ListTasks")),
+	ticketDormitoryServiceTicketDormitoryFetchHandler := connect.NewUnaryHandler(
+		TicketDormitoryServiceTicketDormitoryFetchProcedure,
+		svc.TicketDormitoryFetch,
+		connect.WithSchema(ticketDormitoryServiceMethods.ByName("TicketDormitoryFetch")),
 		connect.WithHandlerOptions(opts...),
 	)
-	return "/contract.tickets.service.TaskService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	ticketDormitoryServiceTicketDormitoryCreateHandler := connect.NewUnaryHandler(
+		TicketDormitoryServiceTicketDormitoryCreateProcedure,
+		svc.TicketDormitoryCreate,
+		connect.WithSchema(ticketDormitoryServiceMethods.ByName("TicketDormitoryCreate")),
+		connect.WithHandlerOptions(opts...),
+	)
+	ticketDormitoryServiceTicketDormitoryChangeStatusHandler := connect.NewUnaryHandler(
+		TicketDormitoryServiceTicketDormitoryChangeStatusProcedure,
+		svc.TicketDormitoryChangeStatus,
+		connect.WithSchema(ticketDormitoryServiceMethods.ByName("TicketDormitoryChangeStatus")),
+		connect.WithHandlerOptions(opts...),
+	)
+	return "/contract.tickets.service.TicketDormitoryService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case TaskServiceCreateTaskProcedure:
-			taskServiceCreateTaskHandler.ServeHTTP(w, r)
-		case TaskServiceListTasksProcedure:
-			taskServiceListTasksHandler.ServeHTTP(w, r)
+		case TicketDormitoryServiceTicketDormitoryByIDProcedure:
+			ticketDormitoryServiceTicketDormitoryByIDHandler.ServeHTTP(w, r)
+		case TicketDormitoryServiceTicketDormitoryFetchProcedure:
+			ticketDormitoryServiceTicketDormitoryFetchHandler.ServeHTTP(w, r)
+		case TicketDormitoryServiceTicketDormitoryCreateProcedure:
+			ticketDormitoryServiceTicketDormitoryCreateHandler.ServeHTTP(w, r)
+		case TicketDormitoryServiceTicketDormitoryChangeStatusProcedure:
+			ticketDormitoryServiceTicketDormitoryChangeStatusHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
 	})
 }
 
-// UnimplementedTaskServiceHandler returns CodeUnimplemented from all methods.
-type UnimplementedTaskServiceHandler struct{}
+// UnimplementedTicketDormitoryServiceHandler returns CodeUnimplemented from all methods.
+type UnimplementedTicketDormitoryServiceHandler struct{}
 
-func (UnimplementedTaskServiceHandler) CreateTask(context.Context, *connect.Request[service.CreateTaskRequest]) (*connect.Response[service.CreateTaskResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.tickets.service.TaskService.CreateTask is not implemented"))
+func (UnimplementedTicketDormitoryServiceHandler) TicketDormitoryByID(context.Context, *connect.Request[service.TicketDormitoryByIDRequest]) (*connect.Response[service.TicketDormitoryByIDResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.tickets.service.TicketDormitoryService.TicketDormitoryByID is not implemented"))
 }
 
-func (UnimplementedTaskServiceHandler) ListTasks(context.Context, *connect.Request[service.ListTasksRequest]) (*connect.Response[service.ListTasksResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.tickets.service.TaskService.ListTasks is not implemented"))
+func (UnimplementedTicketDormitoryServiceHandler) TicketDormitoryFetch(context.Context, *connect.Request[service.TicketDormitoryFetchRequest]) (*connect.Response[service.TicketDormitoryFetchResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.tickets.service.TicketDormitoryService.TicketDormitoryFetch is not implemented"))
+}
+
+func (UnimplementedTicketDormitoryServiceHandler) TicketDormitoryCreate(context.Context, *connect.Request[service.TicketDormitoryCreateRequest]) (*connect.Response[service.TicketDormitoryCreateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.tickets.service.TicketDormitoryService.TicketDormitoryCreate is not implemented"))
+}
+
+func (UnimplementedTicketDormitoryServiceHandler) TicketDormitoryChangeStatus(context.Context, *connect.Request[service.TicketDormitoryChangeStatusRequest]) (*connect.Response[service.TicketDormitoryChangeStatusResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.tickets.service.TicketDormitoryService.TicketDormitoryChangeStatus is not implemented"))
+}
+
+// TicketBuildServiceClient is a client for the contract.tickets.service.TicketBuildService service.
+type TicketBuildServiceClient interface {
+	TicketBuildByID(context.Context, *connect.Request[service.TicketBuildByIDRequest]) (*connect.Response[service.TicketBuildByIDResponse], error)
+	TicketBuildFetch(context.Context, *connect.Request[service.TicketBuildFetchRequest]) (*connect.Response[service.TicketBuildFetchResponse], error)
+	TicketBuildCreate(context.Context, *connect.Request[service.TicketBuildCreateRequest]) (*connect.Response[service.TicketBuildCreateResponse], error)
+	TicketBuildChangeStatus(context.Context, *connect.Request[service.TicketBuildChangeStatusRequest]) (*connect.Response[service.TicketBuildChangeStatusResponse], error)
+}
+
+// NewTicketBuildServiceClient constructs a client for the
+// contract.tickets.service.TicketBuildService service. By default, it uses the Connect protocol
+// with the binary Protobuf Codec, asks for gzipped responses, and sends uncompressed requests. To
+// use the gRPC or gRPC-Web protocols, supply the connect.WithGRPC() or connect.WithGRPCWeb()
+// options.
+//
+// The URL supplied here should be the base URL for the Connect or gRPC server (for example,
+// http://api.acme.com or https://acme.com/grpc).
+func NewTicketBuildServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) TicketBuildServiceClient {
+	baseURL = strings.TrimRight(baseURL, "/")
+	ticketBuildServiceMethods := service.File_tickets_service_ticket_service_proto.Services().ByName("TicketBuildService").Methods()
+	return &ticketBuildServiceClient{
+		ticketBuildByID: connect.NewClient[service.TicketBuildByIDRequest, service.TicketBuildByIDResponse](
+			httpClient,
+			baseURL+TicketBuildServiceTicketBuildByIDProcedure,
+			connect.WithSchema(ticketBuildServiceMethods.ByName("TicketBuildByID")),
+			connect.WithClientOptions(opts...),
+		),
+		ticketBuildFetch: connect.NewClient[service.TicketBuildFetchRequest, service.TicketBuildFetchResponse](
+			httpClient,
+			baseURL+TicketBuildServiceTicketBuildFetchProcedure,
+			connect.WithSchema(ticketBuildServiceMethods.ByName("TicketBuildFetch")),
+			connect.WithClientOptions(opts...),
+		),
+		ticketBuildCreate: connect.NewClient[service.TicketBuildCreateRequest, service.TicketBuildCreateResponse](
+			httpClient,
+			baseURL+TicketBuildServiceTicketBuildCreateProcedure,
+			connect.WithSchema(ticketBuildServiceMethods.ByName("TicketBuildCreate")),
+			connect.WithClientOptions(opts...),
+		),
+		ticketBuildChangeStatus: connect.NewClient[service.TicketBuildChangeStatusRequest, service.TicketBuildChangeStatusResponse](
+			httpClient,
+			baseURL+TicketBuildServiceTicketBuildChangeStatusProcedure,
+			connect.WithSchema(ticketBuildServiceMethods.ByName("TicketBuildChangeStatus")),
+			connect.WithClientOptions(opts...),
+		),
+	}
+}
+
+// ticketBuildServiceClient implements TicketBuildServiceClient.
+type ticketBuildServiceClient struct {
+	ticketBuildByID         *connect.Client[service.TicketBuildByIDRequest, service.TicketBuildByIDResponse]
+	ticketBuildFetch        *connect.Client[service.TicketBuildFetchRequest, service.TicketBuildFetchResponse]
+	ticketBuildCreate       *connect.Client[service.TicketBuildCreateRequest, service.TicketBuildCreateResponse]
+	ticketBuildChangeStatus *connect.Client[service.TicketBuildChangeStatusRequest, service.TicketBuildChangeStatusResponse]
+}
+
+// TicketBuildByID calls contract.tickets.service.TicketBuildService.TicketBuildByID.
+func (c *ticketBuildServiceClient) TicketBuildByID(ctx context.Context, req *connect.Request[service.TicketBuildByIDRequest]) (*connect.Response[service.TicketBuildByIDResponse], error) {
+	return c.ticketBuildByID.CallUnary(ctx, req)
+}
+
+// TicketBuildFetch calls contract.tickets.service.TicketBuildService.TicketBuildFetch.
+func (c *ticketBuildServiceClient) TicketBuildFetch(ctx context.Context, req *connect.Request[service.TicketBuildFetchRequest]) (*connect.Response[service.TicketBuildFetchResponse], error) {
+	return c.ticketBuildFetch.CallUnary(ctx, req)
+}
+
+// TicketBuildCreate calls contract.tickets.service.TicketBuildService.TicketBuildCreate.
+func (c *ticketBuildServiceClient) TicketBuildCreate(ctx context.Context, req *connect.Request[service.TicketBuildCreateRequest]) (*connect.Response[service.TicketBuildCreateResponse], error) {
+	return c.ticketBuildCreate.CallUnary(ctx, req)
+}
+
+// TicketBuildChangeStatus calls
+// contract.tickets.service.TicketBuildService.TicketBuildChangeStatus.
+func (c *ticketBuildServiceClient) TicketBuildChangeStatus(ctx context.Context, req *connect.Request[service.TicketBuildChangeStatusRequest]) (*connect.Response[service.TicketBuildChangeStatusResponse], error) {
+	return c.ticketBuildChangeStatus.CallUnary(ctx, req)
+}
+
+// TicketBuildServiceHandler is an implementation of the contract.tickets.service.TicketBuildService
+// service.
+type TicketBuildServiceHandler interface {
+	TicketBuildByID(context.Context, *connect.Request[service.TicketBuildByIDRequest]) (*connect.Response[service.TicketBuildByIDResponse], error)
+	TicketBuildFetch(context.Context, *connect.Request[service.TicketBuildFetchRequest]) (*connect.Response[service.TicketBuildFetchResponse], error)
+	TicketBuildCreate(context.Context, *connect.Request[service.TicketBuildCreateRequest]) (*connect.Response[service.TicketBuildCreateResponse], error)
+	TicketBuildChangeStatus(context.Context, *connect.Request[service.TicketBuildChangeStatusRequest]) (*connect.Response[service.TicketBuildChangeStatusResponse], error)
+}
+
+// NewTicketBuildServiceHandler builds an HTTP handler from the service implementation. It returns
+// the path on which to mount the handler and the handler itself.
+//
+// By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
+// and JSON codecs. They also support gzip compression.
+func NewTicketBuildServiceHandler(svc TicketBuildServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	ticketBuildServiceMethods := service.File_tickets_service_ticket_service_proto.Services().ByName("TicketBuildService").Methods()
+	ticketBuildServiceTicketBuildByIDHandler := connect.NewUnaryHandler(
+		TicketBuildServiceTicketBuildByIDProcedure,
+		svc.TicketBuildByID,
+		connect.WithSchema(ticketBuildServiceMethods.ByName("TicketBuildByID")),
+		connect.WithHandlerOptions(opts...),
+	)
+	ticketBuildServiceTicketBuildFetchHandler := connect.NewUnaryHandler(
+		TicketBuildServiceTicketBuildFetchProcedure,
+		svc.TicketBuildFetch,
+		connect.WithSchema(ticketBuildServiceMethods.ByName("TicketBuildFetch")),
+		connect.WithHandlerOptions(opts...),
+	)
+	ticketBuildServiceTicketBuildCreateHandler := connect.NewUnaryHandler(
+		TicketBuildServiceTicketBuildCreateProcedure,
+		svc.TicketBuildCreate,
+		connect.WithSchema(ticketBuildServiceMethods.ByName("TicketBuildCreate")),
+		connect.WithHandlerOptions(opts...),
+	)
+	ticketBuildServiceTicketBuildChangeStatusHandler := connect.NewUnaryHandler(
+		TicketBuildServiceTicketBuildChangeStatusProcedure,
+		svc.TicketBuildChangeStatus,
+		connect.WithSchema(ticketBuildServiceMethods.ByName("TicketBuildChangeStatus")),
+		connect.WithHandlerOptions(opts...),
+	)
+	return "/contract.tickets.service.TicketBuildService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case TicketBuildServiceTicketBuildByIDProcedure:
+			ticketBuildServiceTicketBuildByIDHandler.ServeHTTP(w, r)
+		case TicketBuildServiceTicketBuildFetchProcedure:
+			ticketBuildServiceTicketBuildFetchHandler.ServeHTTP(w, r)
+		case TicketBuildServiceTicketBuildCreateProcedure:
+			ticketBuildServiceTicketBuildCreateHandler.ServeHTTP(w, r)
+		case TicketBuildServiceTicketBuildChangeStatusProcedure:
+			ticketBuildServiceTicketBuildChangeStatusHandler.ServeHTTP(w, r)
+		default:
+			http.NotFound(w, r)
+		}
+	})
+}
+
+// UnimplementedTicketBuildServiceHandler returns CodeUnimplemented from all methods.
+type UnimplementedTicketBuildServiceHandler struct{}
+
+func (UnimplementedTicketBuildServiceHandler) TicketBuildByID(context.Context, *connect.Request[service.TicketBuildByIDRequest]) (*connect.Response[service.TicketBuildByIDResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.tickets.service.TicketBuildService.TicketBuildByID is not implemented"))
+}
+
+func (UnimplementedTicketBuildServiceHandler) TicketBuildFetch(context.Context, *connect.Request[service.TicketBuildFetchRequest]) (*connect.Response[service.TicketBuildFetchResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.tickets.service.TicketBuildService.TicketBuildFetch is not implemented"))
+}
+
+func (UnimplementedTicketBuildServiceHandler) TicketBuildCreate(context.Context, *connect.Request[service.TicketBuildCreateRequest]) (*connect.Response[service.TicketBuildCreateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.tickets.service.TicketBuildService.TicketBuildCreate is not implemented"))
+}
+
+func (UnimplementedTicketBuildServiceHandler) TicketBuildChangeStatus(context.Context, *connect.Request[service.TicketBuildChangeStatusRequest]) (*connect.Response[service.TicketBuildChangeStatusResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.tickets.service.TicketBuildService.TicketBuildChangeStatus is not implemented"))
 }

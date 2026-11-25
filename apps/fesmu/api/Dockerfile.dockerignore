@@ -1,0 +1,18 @@
+# Сборка идёт из корня монорепо — пускаем в контекст только этот api и packages/go.
+*
+!packages/
+!packages/go/
+!packages/go/**
+!apps/
+!apps/fesmu/
+!apps/fesmu/api/
+!apps/fesmu/api/**
+apps/fesmu/api/storage
+apps/fesmu/api/db*
+apps/fesmu/api/dvgmu
+apps/fesmu/api/*.test
+apps/fesmu/api/coverage.out
+apps/fesmu/api/coverage.html
+**/.git
+**/.env
+**/.env.*

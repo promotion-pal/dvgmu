@@ -1,0 +1,164 @@
+# Один файл и для прода, и для тестового стенда рядом с ним.
+# STAND пустой (прод) → проект fesmu, контейнеры fesmu_core_*, core.fesmu.ru / api.core.fesmu.ru.
+# STAND=3_0 (стенд)   → проект fesmu_3_0, контейнеры fesmu_core_3_0_*, домены из
+#                       APP_DOMAIN / API_DOMAIN. См. docs/stand.md.
+name: fesmu${STAND:+_${STAND}}
+
+# Все продовые БД входят в этот проект. PGDATA сохраняется в api/db/.
+x-postgres: &postgres
+  image: postgres:17
+  restart: unless-stopped
+  healthcheck:
+    test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+    interval: 2s
+    timeout: 3s
+    retries: 30
+    start_period: 10s
+
+services:
+  fesmu_core_purchase_db:
+    container_name: "fesmu_core_purchase_db"
+    <<: *postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER_PURCHASE}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_PURCHASE}
+      POSTGRES_DB: ${POSTGRES_DB_PURCHASE}
+    networks:
+      - traefik-network
+    volumes:
+      - ./api/db/purchase:/var/lib/postgresql/data
+
+  fesmu_core_infrastructure_db:
+    container_name: "fesmu_core_infrastructure_db"
+    <<: *postgres
+    environment:
+      POSTGRES_USER: ${INFRASTRUCTURE_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${INFRASTRUCTURE_POSTGRES_PASSWORD}
+      POSTGRES_DB: ${INFRASTRUCTURE_POSTGRES_DB}
+    networks:
+      - traefik-network
+    volumes:
+      - ./api/db/infrastructure:/var/lib/postgresql/data
+
+  fesmu_core_test_db:
+    container_name: "fesmu_core_test_db"
+    <<: *postgres
+    environment:
+      POSTGRES_USER: ${TEST_POSTGRES_USER:-root}
+      POSTGRES_PASSWORD: ${TEST_POSTGRES_PASSWORD:-pass}
+      POSTGRES_DB: ${TEST_POSTGRES_DB:-fesmu_core_test_db}
+    networks:
+      - traefik-network
+    volumes:
+      - ./api/db/test:/var/lib/postgresql/data
+
+  fesmu_core_exam_test_db:
+    container_name: "fesmu_core_exam_test_db"
+    <<: *postgres
+    environment:
+      POSTGRES_USER: ${EXAM_TEST_POSTGRES_USER:-root}
+      POSTGRES_PASSWORD: ${EXAM_TEST_POSTGRES_PASSWORD:-pass}
+      POSTGRES_DB: ${EXAM_TEST_POSTGRES_DB:-fesmu_core_exam_test_db}
+    networks:
+      - traefik-network
+    volumes:
+      - ./api/db/exam-test:/var/lib/postgresql/data
+
+  # Порт наружу не пробрасывается: api ходит в базу по traefik-network —
+  # POSTGRES_HOST_LIBRARY=fesmu_core_library_db, порт по умолчанию 5432.
+  fesmu_core_library_db:
+    container_name: "fesmu_core_library_db"
+    <<: *postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER_LIBRARY:-root}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_LIBRARY:-pass}
+      POSTGRES_DB: ${POSTGRES_DB_LIBRARY:-fesmu_core_library_db}
+    networks:
+      - traefik-network
+    volumes:
+      - ./api/db/library:/var/lib/postgresql/data
+
+  fesmu_core_user_db:
+    container_name: "fesmu_core_user_db"
+    <<: *postgres
+    environment:
+      POSTGRES_USER: ${USER_POSTGRES_USER:-root}
+      POSTGRES_PASSWORD: ${USER_POSTGRES_PASSWORD:-pass}
+      POSTGRES_DB: ${USER_POSTGRES_DB:-fesmu_core_user_db}
+    networks:
+      - traefik-network
+    volumes:
+      - ./api/db/user:/var/lib/postgresql/data
+
+
+  # Ключи сервисов (core_app/core_api) намеренно НЕ совпадают с именами
+  # контейнеров: имя сервиса — DNS-алиас в traefik-network, и у стенда оно
+  # не должно перехватывать прод-имя fesmu_core_api.
+  core_app:
+    container_name: "fesmu_core${STAND:+_${STAND}}_app"
+    build:
+      # Корень монорепо: веб собирается в общем pnpm workspace (packages/).
+      context: "../.."
+      dockerfile: "apps/fesmu/web/Dockerfile"
+      args:
+        VERSION: ${VERSION:-dev}
+        API_URL: ${VITE_API_URL:-https://api.core.fesmu.ru}
+        AUTH_URL: ${VITE_AUTH_URL:-https://auth.fesmu.ru}
+    restart: unless-stopped
+    ports:
+      - "3000"
+    networks:
+      - traefik-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-network"
+      - "traefik.http.routers.fesmu-core-app${STAND:+-${STAND}}-secure.rule=Host(`${APP_DOMAIN:-core.fesmu.ru}`)"
+      - "traefik.http.routers.fesmu-core-app${STAND:+-${STAND}}-secure.entrypoints=websecure"
+      - "traefik.http.routers.fesmu-core-app${STAND:+-${STAND}}-secure.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.fesmu-core-app${STAND:+-${STAND}}-secure.service=fesmu-core-app${STAND:+-${STAND}}"
+      - "traefik.http.services.fesmu-core-app${STAND:+-${STAND}}.loadbalancer.server.port=3000"
+
+
+  core_api:
+    container_name: "fesmu_core${STAND:+_${STAND}}_api"
+    build:
+      context: "../.."  # корень монорепо: нужен packages/go
+      dockerfile: "apps/fesmu/api/Dockerfile"
+      args:
+        VERSION: ${VERSION:-dev}
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      EXAM_TEST_POSTGRES_HOST: ${EXAM_TEST_POSTGRES_HOST:-fesmu_core_exam_test_db}
+      EXAM_TEST_POSTGRES_PORT: ${EXAM_TEST_POSTGRES_PORT:-5432}
+      EXAM_TEST_POSTGRES_USER: ${EXAM_TEST_POSTGRES_USER:-root}
+      EXAM_TEST_POSTGRES_PASSWORD: ${EXAM_TEST_POSTGRES_PASSWORD:-pass}
+      EXAM_TEST_POSTGRES_DB: ${EXAM_TEST_POSTGRES_DB:-fesmu_core_exam_test_db}
+    depends_on:
+      fesmu_core_infrastructure_db:
+        condition: service_healthy
+      fesmu_core_purchase_db:
+        condition: service_healthy
+      fesmu_core_test_db:
+        condition: service_healthy
+      fesmu_core_library_db:
+        condition: service_healthy
+      fesmu_core_exam_test_db:
+        condition: service_healthy
+    ports:
+      - "4000"
+    networks:
+      - traefik-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-network"
+      - "traefik.http.routers.fesmu-core-api${STAND:+-${STAND}}-secure.rule=Host(`${API_DOMAIN:-api.core.fesmu.ru}`)"
+      - "traefik.http.routers.fesmu-core-api${STAND:+-${STAND}}-secure.entrypoints=websecure"
+      - "traefik.http.routers.fesmu-core-api${STAND:+-${STAND}}-secure.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.fesmu-core-api${STAND:+-${STAND}}-secure.service=fesmu-core-api${STAND:+-${STAND}}"
+      - "traefik.http.services.fesmu-core-api${STAND:+-${STAND}}.loadbalancer.server.port=4000"
+
+networks:
+  traefik-network:
+    external: true

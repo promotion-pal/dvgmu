@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+package contract.enum;
+
+option go_package = "enum;enum_pb";
+
+enum EducationType {
+    EDUCATION_TYPE_UNSPECIFIED = 0;
+    EDUCATION_TYPE_MASTER = 1;            // Диплом магистра
+    EDUCATION_TYPE_COLLEGE = 2;           // Диплом о среднем профессиональном образовании (колледж/техникум)
+    EDUCATION_TYPE_BACHELOR = 3;          // Диплом бакалавра
+    EDUCATION_TYPE_SPECIALIST = 4;        // Диплом специалиста
+    EDUCATION_TYPE_POSTGRADUATE = 5;      // Диплом аспиранта / ординатуры
+    EDUCATION_TYPE_SCHOOL_BASIC = 6;      // Аттестат об основном общем образовании (9 классов)
+    EDUCATION_TYPE_SCHOOL_SECONDARY = 7;  // Аттестат о среднем общем образовании (11 классов)
+}
+
+enum EducationStatus {
+    DOCUMENT_STATUS_UNSPECIFIED = 0;
+    ORIGINAL = 1;
+    DUPLICATE = 2;
+    CERTIFIED_COPY = 3;
+}
+
+enum EducationForm {
+    EDUCATION_FORM_UNSPECIFIED = 0;
+    EDUCATION_FORM_BUDGET = 1;
+    EDUCATION_FORM_TARGET = 2;
+    EDUCATION_FORM_CONTRACT = 3;
+    EDUCATION_FORM_SPECIAL_QUOTA = 4;
+}
+
+enum MilitaryValidity {
+    MILITARY_VALIDITY_UNSPECIFIED = 0;
+    MILITARY_VALIDITY_A = 1;           // А — годен без ограничений
+    MILITARY_VALIDITY_B = 2;           // Б — годен с незначительными ограничениями
+    MILITARY_VALIDITY_V = 3;           // В — ограниченно годен (освобожден в мирное время)
+    MILITARY_VALIDITY_G = 4;           // Г — временно негоден (отсрочка по здоровью)
+    MILITARY_VALIDITY_D = 5;           // Д — совершенно негоден (снят с учета)
+}
+
+enum MilitaryDocument {
+    MILITARY_DOCUMENT_UNSPECIFIED = 0;
+    MILITARY_DOCUMENT_MILITARY_TICKET = 1; // Военный билет
+    MILITARY_DOCUMENT_REGISTRATION_CERTIFICATE = 2; // Удостоверение призывника (приписное)
+    MILITARY_DOCUMENT_CERTIFICATE_INSTEAD = 3; // Справка взамен военного билета
+    MILITARY_DOCUMENT_NOT_IN_RESERVE = 4; // Персональная карта (для тех, кто не в запасе)
+}
+
+enum MilitaryRank {
+    MILITARY_RANK_UNSPECIFIED = 0;
+    
+    // Солдаты, матросы, сержанты, старшины
+    MILITARY_RANK_RYADOVOY = 1;        // Рядовой
+    MILITARY_RANK_EFREYTOR = 2;        // Ефрейтор
+    MILITARY_RANK_MLADSHIY_SERZHANT = 3; // Младший сержант
+    MILITARY_RANK_SERZHANT = 4;         // Сержант
+    MILITARY_RANK_STARSHIY_SERZHANT = 5; // Старший сержант
+    MILITARY_RANK_STARSHINA = 6;        // Старшина
+    
+    // Прапорщики и мичманы
+    MILITARY_RANK_PRAPORSHCHIK = 7;     // Прапорщик
+    MILITARY_RANK_STARSHIY_PRAPORSHCHIK = 8; // Старший прапорщик
+    
+    // Младшие офицеры
+    MILITARY_RANK_MLADSHIY_LEYTENANT = 9;   // Младший лейтенант
+    MILITARY_RANK_LEYTENANT = 10;           // Лейтенант
+    MILITARY_RANK_STARSHIY_LEYTENANT = 11;  // Старший лейтенант
+    MILITARY_RANK_KAPITAN = 12;             // Капитан
+    
+    // Старшие офицеры
+    MILITARY_RANK_MAYOR = 13;               // Майор
+    MILITARY_RANK_PODPOLKOVNIK = 14;        // Подполковник
+    MILITARY_RANK_POLKOVNIK = 15;           // Полковник
+    
+    // Высшие офицеры
+    MILITARY_RANK_GENERAL_MAYOR = 16;       // Генерал-майор
+    MILITARY_RANK_GENERAL_LEYTENANT = 17;    // Генерал-лейтенант
+    MILITARY_RANK_GENERAL_POLKOVNIK = 18;   // Генерал-полковник
+    MILITARY_RANK_GENERAL_ARMII = 19;       // Генерал армии
+    MILITARY_RANK_MARSHAL = 20;             // Маршал Российской Федерации
+}

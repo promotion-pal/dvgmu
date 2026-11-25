@@ -1,0 +1,31 @@
+package library
+
+// Временный тест из .claude/skills/fesmu-library/scripts/check.sh: содержимое
+// методичек сида должно проходить те же проверки, что и сохранение в редакторе.
+
+import (
+	"os"
+	"regexp"
+	"testing"
+)
+
+func TestSeedManualsFromSkill(t *testing.T) {
+	path := os.Getenv("SEED_SQL")
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for n, m := range regexp.MustCompile(`\$json\$(.*?)\$json\$`).FindAllSubmatch(raw, -1) {
+		if len(m[1]) > maxContentBytes {
+			t.Fatalf("методичка %d: содержимое %d байт, не больше %d", n+1, len(m[1]), maxContentBytes)
+		}
+		secs, err := decodeSections(m[1])
+		if err != nil {
+			t.Fatalf("методичка %d: %v", n+1, err)
+		}
+		if _, err := checkSections(secs); err != nil {
+			t.Fatalf("методичка %d: %v", n+1, err)
+		}
+		t.Logf("методичка %d: тем %d — ok", n+1, len(secs))
+	}
+}

@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package contract.enum.v2;
+
+option go_package = "enum_v2;enum_pb";
+
+// What a catalog entry holds: an uploaded edition or a link elsewhere.
+enum LibraryItemKind {
+  LIBRARY_ITEM_KIND_UNSPECIFIED = 0;
+  LIBRARY_ITEM_KIND_FILE = 1; // PDF, EPUB, DOCX in the files service
+  LIBRARY_ITEM_KIND_LINK = 2; // внешний ресурс по ссылке
+}
+
+// Where a manual is. Students see only the published version; the editors'
+// draft is the next one and replaces it on publishing.
+enum ManualStatus {
+  MANUAL_STATUS_UNSPECIFIED = 0;
+  MANUAL_STATUS_DRAFT = 1;     // ни разу не опубликована
+  MANUAL_STATUS_PUBLISHED = 2; // студенты видят опубликованную версию
+  MANUAL_STATUS_ARCHIVED = 3;  // снята с публикации
+}
+
+// How a callout block looks and what it marks.
+enum ManualCalloutTone {
+  MANUAL_CALLOUT_TONE_UNSPECIFIED = 0;
+  MANUAL_CALLOUT_TONE_INFO = 1;      // Справка
+  MANUAL_CALLOUT_TONE_IMPORTANT = 2; // Важно
+  MANUAL_CALLOUT_TONE_WARNING = 3;   // Осторожно, техника безопасности
+  MANUAL_CALLOUT_TONE_CLINICAL = 4;  // Клиническая заметка
+}
+
+// What the reader has open: a catalog edition or a manual.
+enum ReaderSourceKind {
+  READER_SOURCE_KIND_UNSPECIFIED = 0;
+  READER_SOURCE_KIND_ITEM = 1;
+  READER_SOURCE_KIND_MANUAL = 2;
+}
