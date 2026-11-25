@@ -1,0 +1,51 @@
+name: dvgmu_apps${STAND:+_${STAND:-}}_schedula
+
+services:
+  schedula_db:
+    container_name: dvgmu_apps${STAND:+_${STAND:-}}_schedula_db
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-schedula}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-schedula}
+    volumes:
+      - schedula_pgdata:/var/lib/postgresql/data
+    networks: [schedula-db]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  schedula_api:
+    container_name: dvgmu_apps${STAND:+_${STAND:-}}_schedula_api
+    build:
+      context: "../.."
+      dockerfile: "services/schedula/api/Dockerfile"
+    environment:
+      DB_HOST: schedula_db
+      DB_USER: ${POSTGRES_USER:-schedula}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}
+      DB_NAME: ${POSTGRES_DB:-schedula}
+      PACKAGE_MDM: ${PACKAGE_MDM:?set PACKAGE_MDM}
+      SCHEDULA_INTERNAL_TOKEN: ${SCHEDULA_INTERNAL_TOKEN:?set SCHEDULA_INTERNAL_TOKEN}
+    networks: [schedula-db, traefik-network]
+    depends_on:
+      schedula_db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:4000/healthz"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+networks:
+  schedula-db:
+    internal: true
+  traefik-network:
+    external: true
+
+volumes:
+  schedula_pgdata:

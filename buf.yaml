@@ -16,4 +16,5 @@ modules:
   - path: services/mdm/api/contract
   - path: services/mentor/api/contract
   - path: services/notification/api/contract
+  - path: services/schedula/api/contract
   - path: services/tickets/api/contract

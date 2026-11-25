@@ -1,0 +1,152 @@
+syntax = "proto3";
+
+package contract.schedula.service;
+
+import "schedula/entity/schedule.entity.proto";
+import "schedula/enum/schedule.enum.proto";
+
+service SchedulaService {
+  rpc ScheduleFetch(ScheduleFetchRequest) returns (ScheduleFetchResponse);
+  rpc PublicScheduleFetch(PublicScheduleFetchRequest) returns (PublicScheduleFetchResponse);
+  rpc CatalogFetch(CatalogFetchRequest) returns (CatalogFetchResponse);
+  rpc CatalogSave(CatalogSaveRequest) returns (CatalogSaveResponse);
+  rpc EventSave(EventSaveRequest) returns (EventSaveResponse);
+  rpc CompletenessFetch(CompletenessFetchRequest) returns (CompletenessFetchResponse);
+  rpc EventCheckFetch(EventCheckFetchRequest) returns (EventCheckFetchResponse);
+  rpc EventPublish(EventPublishRequest) returns (EventPublishResponse);
+  rpc SlotsFetch(SlotsFetchRequest) returns (SlotsFetchResponse);
+  rpc ChangeCreate(ChangeCreateRequest) returns (ChangeCreateResponse);
+  rpc ChangeDecide(ChangeDecideRequest) returns (ChangeDecideResponse);
+  rpc ChangeHistoryFetch(ChangeHistoryFetchRequest) returns (ChangeHistoryFetchResponse);
+}
+
+message ScheduleFetchRequest {
+  contract.schedula.entity.ScheduleFilter filter = 1;
+  bool personal = 2;
+  bool include_drafts = 3;
+}
+
+message ScheduleFetchResponse {
+  repeated contract.schedula.entity.Event events = 1;
+  repeated contract.schedula.entity.AcademicPeriod periods = 2;
+  string date_from = 3;
+  string date_to = 4;
+  int32 academic_week = 5;
+  bool can_edit = 6;
+  bool can_search_slots = 7;
+  repeated contract.schedula.entity.Event transfers = 8;
+  bool can_request_change = 9;
+}
+
+message PublicScheduleFetchRequest {
+  contract.schedula.entity.ScheduleFilter filter = 1;
+}
+
+message PublicScheduleFetchResponse {
+  repeated contract.schedula.entity.PublicEvent events = 1;
+  string date_from = 2;
+  string date_to = 3;
+  int32 academic_week = 4;
+  repeated contract.schedula.entity.Subject subjects = 5;
+  repeated contract.schedula.entity.PublicOption sites = 6;
+  repeated contract.schedula.entity.PublicOption rooms = 7;
+}
+
+message CatalogFetchRequest {}
+
+message CatalogFetchResponse {
+  contract.schedula.entity.Catalog catalog = 1;
+  repeated contract.schedula.entity.Instructor instructors = 2;
+}
+
+message CatalogSaveRequest {
+  contract.schedula.entity.Catalog catalog = 1;
+}
+
+message CatalogSaveResponse {}
+
+message EventSaveRequest {
+  string id = 1;
+  int32 revision = 2;
+  contract.schedula.entity.EventInput details = 3;
+  contract.schedula.entity.Series series = 4;
+}
+
+message EventSaveResponse {
+  repeated contract.schedula.entity.Event events = 1;
+}
+
+message CompletenessFetchRequest {
+  string term_id = 1;
+}
+
+message CompletenessFetchResponse {
+  repeated contract.schedula.entity.CompletenessGap gaps = 1;
+}
+
+message EventCheckFetchRequest {
+  string id = 1;
+}
+
+message EventCheckFetchResponse {
+  repeated contract.schedula.entity.Issue issues = 1;
+}
+
+message EventPublishRequest {
+  string id = 1;
+  int32 revision = 2;
+  bool series = 3;
+}
+
+message EventPublishResponse {
+  repeated contract.schedula.entity.Event events = 1;
+  repeated contract.schedula.entity.Issue issues = 2;
+}
+
+message SlotsFetchRequest {
+  contract.schedula.entity.EventInput details = 1;
+  string date_from = 2;
+  string date_to = 3;
+  string exclude_event_id = 4;
+}
+
+message SlotsFetchResponse {
+  repeated contract.schedula.entity.Slot slots = 1;
+  repeated contract.schedula.entity.Issue issues = 2;
+}
+
+message ChangeCreateRequest {
+  string event_id = 1;
+  int32 revision = 2;
+  contract.schedula.enum.ChangeType type = 3;
+  string reason = 4;
+  string date = 5;
+  optional int32 start_minute = 6;
+  string instructor_id = 7;
+  string room_id = 8;
+  string meeting_point = 9;
+}
+
+message ChangeCreateResponse {
+  contract.schedula.entity.Change change = 1;
+  repeated contract.schedula.entity.Issue issues = 2;
+}
+
+message ChangeDecideRequest {
+  string id = 1;
+  bool approve = 2;
+  string decision = 3;
+}
+
+message ChangeDecideResponse {
+  contract.schedula.entity.Change change = 1;
+  repeated contract.schedula.entity.Issue issues = 2;
+}
+
+message ChangeHistoryFetchRequest {
+  string event_id = 1;
+}
+
+message ChangeHistoryFetchResponse {
+  repeated contract.schedula.entity.Change changes = 1;
+}
