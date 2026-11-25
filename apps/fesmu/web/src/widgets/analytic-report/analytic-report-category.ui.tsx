@@ -181,7 +181,7 @@ export const AnalyticCategoryReport: FC = () => {
           )}
         </section>
 
-        {type === AnalyticType.TOILET && (
+        {type === AnalyticType.TOILET && objectsWithMissingSoap > 0 && (
           <section className="mb-6 rounded-xl border border-destructive/30 bg-destructive/5 p-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="flex items-start gap-3">
@@ -190,7 +190,7 @@ export const AnalyticCategoryReport: FC = () => {
                   <h2 className="font-heading font-semibold text-destructive">Проблемы с мылом</h2>
                   <p className="text-sm text-muted-foreground">
                     В {objectsWithMissingSoap} из {dateFilteredObjects.length} санузлов получены ответы об отсутствии мыла.
-                    {" "}{missingSoapRatings.length} {plural(missingSoapRatings.length, "ответ всего", "ответа всего", "ответов всего")}.
+                    {" "}{missingSoapRatings.length} {plural(missingSoapRatings.length, "ответ", "ответа", "ответов")}.
                   </p>
                 </div>
               </div>
