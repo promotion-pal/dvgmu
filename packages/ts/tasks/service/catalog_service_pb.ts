@@ -6,13 +6,19 @@ import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegen
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import type { Service } from "../entity/service_pb";
 import { file_tasks_entity_service } from "../entity/service_pb";
+import type { ServiceFormSchema } from "../entity/service_form_pb";
+import { file_tasks_entity_service_form } from "../entity/service_form_pb";
+import type { ServiceRouteRule } from "./service_routes_service_pb";
+import { file_tasks_service_service_routes_service } from "./service_routes_service_pb";
+import type { ServiceSettings } from "./service_settings_service_pb";
+import { file_tasks_service_service_settings_service } from "./service_settings_service_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file tasks/service/catalog_service.proto.
  */
 export const file_tasks_service_catalog_service: GenFile = /*@__PURE__*/
-  fileDesc("CiN0YXNrcy9zZXJ2aWNlL2NhdGFsb2dfc2VydmljZS5wcm90bxINdGFza3Muc2VydmljZSJxChRDcmVhdGVTZXJ2aWNlUmVxdWVzdBIUCgxkaXJlY3Rpb25faWQYASABKAMSDAoEY29kZRgCIAEoCRIMCgRuYW1lGAMgASgJEhMKC2Rlc2NyaXB0aW9uGAQgASgJEhIKCnNvcnRfb3JkZXIYBSABKAUiPwoVQ3JlYXRlU2VydmljZVJlc3BvbnNlEiYKB3NlcnZpY2UYASABKAsyFS50YXNrcy5lbnRpdHkuU2VydmljZSIfChFHZXRTZXJ2aWNlUmVxdWVzdBIKCgJpZBgBIAEoAyI8ChJHZXRTZXJ2aWNlUmVzcG9uc2USJgoHc2VydmljZRgBIAEoCzIVLnRhc2tzLmVudGl0eS5TZXJ2aWNlImYKE0xpc3RTZXJ2aWNlc1JlcXVlc3QSEQoJcGFnZV9zaXplGAEgASgFEhAKCGFmdGVyX2lkGAIgASgDEhkKDGRpcmVjdGlvbl9pZBgDIAEoA0gAiAEBQg8KDV9kaXJlY3Rpb25faWQiVgoUTGlzdFNlcnZpY2VzUmVzcG9uc2USJwoIc2VydmljZXMYASADKAsyFS50YXNrcy5lbnRpdHkuU2VydmljZRIVCg1uZXh0X2FmdGVyX2lkGAIgASgDIvgBChRVcGRhdGVTZXJ2aWNlUmVxdWVzdBIKCgJpZBgBIAEoAxIZCgxkaXJlY3Rpb25faWQYAiABKANIAIgBARIRCgRjb2RlGAMgASgJSAGIAQESEQoEbmFtZRgEIAEoCUgCiAEBEhgKC2Rlc2NyaXB0aW9uGAUgASgJSAOIAQESFwoKc29ydF9vcmRlchgGIAEoBUgEiAEBEhMKBmFjdGl2ZRgHIAEoCEgFiAEBQg8KDV9kaXJlY3Rpb25faWRCBwoFX2NvZGVCBwoFX25hbWVCDgoMX2Rlc2NyaXB0aW9uQg0KC19zb3J0X29yZGVyQgkKB19hY3RpdmUiPwoVVXBkYXRlU2VydmljZVJlc3BvbnNlEiYKB3NlcnZpY2UYASABKAsyFS50YXNrcy5lbnRpdHkuU2VydmljZSIiChREZWxldGVTZXJ2aWNlUmVxdWVzdBIKCgJpZBgBIAEoAyI/ChVEZWxldGVTZXJ2aWNlUmVzcG9uc2USJgoHc2VydmljZRgBIAEoCzIVLnRhc2tzLmVudGl0eS5TZXJ2aWNlMtADCg5DYXRhbG9nU2VydmljZRJaCg1DcmVhdGVTZXJ2aWNlEiMudGFza3Muc2VydmljZS5DcmVhdGVTZXJ2aWNlUmVxdWVzdBokLnRhc2tzLnNlcnZpY2UuQ3JlYXRlU2VydmljZVJlc3BvbnNlElEKCkdldFNlcnZpY2USIC50YXNrcy5zZXJ2aWNlLkdldFNlcnZpY2VSZXF1ZXN0GiEudGFza3Muc2VydmljZS5HZXRTZXJ2aWNlUmVzcG9uc2USVwoMTGlzdFNlcnZpY2VzEiIudGFza3Muc2VydmljZS5MaXN0U2VydmljZXNSZXF1ZXN0GiMudGFza3Muc2VydmljZS5MaXN0U2VydmljZXNSZXNwb25zZRJaCg1VcGRhdGVTZXJ2aWNlEiMudGFza3Muc2VydmljZS5VcGRhdGVTZXJ2aWNlUmVxdWVzdBokLnRhc2tzLnNlcnZpY2UuVXBkYXRlU2VydmljZVJlc3BvbnNlEloKDURlbGV0ZVNlcnZpY2USIy50YXNrcy5zZXJ2aWNlLkRlbGV0ZVNlcnZpY2VSZXF1ZXN0GiQudGFza3Muc2VydmljZS5EZWxldGVTZXJ2aWNlUmVzcG9uc2VCmwEKEWNvbS50YXNrcy5zZXJ2aWNlQhNDYXRhbG9nU2VydmljZVByb3RvUAFaHGZlc211L2NvbnRyYWN0L3Rhc2tzL3NlcnZpY2WiAgNUU1iqAg1UYXNrcy5TZXJ2aWNlygINVGFza3NcU2VydmljZeICGVRhc2tzXFNlcnZpY2VcR1BCTWV0YWRhdGHqAg5UYXNrczo6U2VydmljZWIGcHJvdG8z", [file_tasks_entity_service]);
+  fileDesc("CiN0YXNrcy9zZXJ2aWNlL2NhdGFsb2dfc2VydmljZS5wcm90bxINdGFza3Muc2VydmljZSJxChRDcmVhdGVTZXJ2aWNlUmVxdWVzdBIUCgxkaXJlY3Rpb25faWQYASABKAMSDAoEY29kZRgCIAEoCRIMCgRuYW1lGAMgASgJEhMKC2Rlc2NyaXB0aW9uGAQgASgJEhIKCnNvcnRfb3JkZXIYBSABKAUiPwoVQ3JlYXRlU2VydmljZVJlc3BvbnNlEiYKB3NlcnZpY2UYASABKAsyFS50YXNrcy5lbnRpdHkuU2VydmljZSIfChFHZXRTZXJ2aWNlUmVxdWVzdBIKCgJpZBgBIAEoAyI8ChJHZXRTZXJ2aWNlUmVzcG9uc2USJgoHc2VydmljZRgBIAEoCzIVLnRhc2tzLmVudGl0eS5TZXJ2aWNlImYKE0xpc3RTZXJ2aWNlc1JlcXVlc3QSEQoJcGFnZV9zaXplGAEgASgFEhAKCGFmdGVyX2lkGAIgASgDEhkKDGRpcmVjdGlvbl9pZBgDIAEoA0gAiAEBQg8KDV9kaXJlY3Rpb25faWQiVgoUTGlzdFNlcnZpY2VzUmVzcG9uc2USJwoIc2VydmljZXMYASADKAsyFS50YXNrcy5lbnRpdHkuU2VydmljZRIVCg1uZXh0X2FmdGVyX2lkGAIgASgDIvgBChRVcGRhdGVTZXJ2aWNlUmVxdWVzdBIKCgJpZBgBIAEoAxIZCgxkaXJlY3Rpb25faWQYAiABKANIAIgBARIRCgRjb2RlGAMgASgJSAGIAQESEQoEbmFtZRgEIAEoCUgCiAEBEhgKC2Rlc2NyaXB0aW9uGAUgASgJSAOIAQESFwoKc29ydF9vcmRlchgGIAEoBUgEiAEBEhMKBmFjdGl2ZRgHIAEoCEgFiAEBQg8KDV9kaXJlY3Rpb25faWRCBwoFX2NvZGVCBwoFX25hbWVCDgoMX2Rlc2NyaXB0aW9uQg0KC19zb3J0X29yZGVyQgkKB19hY3RpdmUiPwoVVXBkYXRlU2VydmljZVJlc3BvbnNlEiYKB3NlcnZpY2UYASABKAsyFS50YXNrcy5lbnRpdHkuU2VydmljZSIiChREZWxldGVTZXJ2aWNlUmVxdWVzdBIKCgJpZBgBIAEoAyI/ChVEZWxldGVTZXJ2aWNlUmVzcG9uc2USJgoHc2VydmljZRgBIAEoCzIVLnRhc2tzLmVudGl0eS5TZXJ2aWNlIjQKHkdldFNlcnZpY2VDb25maWd1cmF0aW9uUmVxdWVzdBISCgpzZXJ2aWNlX2lkGAEgASgDIuwBCh9HZXRTZXJ2aWNlQ29uZmlndXJhdGlvblJlc3BvbnNlEiYKB3NlcnZpY2UYASABKAsyFS50YXNrcy5lbnRpdHkuU2VydmljZRItCgRmb3JtGAIgASgLMh8udGFza3MuZW50aXR5LlNlcnZpY2VGb3JtU2NoZW1hEjAKCHNldHRpbmdzGAMgASgLMh4udGFza3Muc2VydmljZS5TZXJ2aWNlU2V0dGluZ3MSLwoGcm91dGVzGAQgAygLMh8udGFza3Muc2VydmljZS5TZXJ2aWNlUm91dGVSdWxlEg8KB3ZlcnNpb24YBSABKAki9QEKH1NhdmVTZXJ2aWNlQ29uZmlndXJhdGlvblJlcXVlc3QSJgoHc2VydmljZRgBIAEoCzIVLnRhc2tzLmVudGl0eS5TZXJ2aWNlEi0KBGZvcm0YAiABKAsyHy50YXNrcy5lbnRpdHkuU2VydmljZUZvcm1TY2hlbWESMAoIc2V0dGluZ3MYAyABKAsyHi50YXNrcy5zZXJ2aWNlLlNlcnZpY2VTZXR0aW5ncxIvCgZyb3V0ZXMYBCADKAsyHy50YXNrcy5zZXJ2aWNlLlNlcnZpY2VSb3V0ZVJ1bGUSGAoQZXhwZWN0ZWRfdmVyc2lvbhgFIAEoCSI2CiBTYXZlU2VydmljZUNvbmZpZ3VyYXRpb25SZXNwb25zZRISCgpzZXJ2aWNlX2lkGAEgASgDMscFCg5DYXRhbG9nU2VydmljZRJaCg1DcmVhdGVTZXJ2aWNlEiMudGFza3Muc2VydmljZS5DcmVhdGVTZXJ2aWNlUmVxdWVzdBokLnRhc2tzLnNlcnZpY2UuQ3JlYXRlU2VydmljZVJlc3BvbnNlElEKCkdldFNlcnZpY2USIC50YXNrcy5zZXJ2aWNlLkdldFNlcnZpY2VSZXF1ZXN0GiEudGFza3Muc2VydmljZS5HZXRTZXJ2aWNlUmVzcG9uc2USVwoMTGlzdFNlcnZpY2VzEiIudGFza3Muc2VydmljZS5MaXN0U2VydmljZXNSZXF1ZXN0GiMudGFza3Muc2VydmljZS5MaXN0U2VydmljZXNSZXNwb25zZRJaCg1VcGRhdGVTZXJ2aWNlEiMudGFza3Muc2VydmljZS5VcGRhdGVTZXJ2aWNlUmVxdWVzdBokLnRhc2tzLnNlcnZpY2UuVXBkYXRlU2VydmljZVJlc3BvbnNlEloKDURlbGV0ZVNlcnZpY2USIy50YXNrcy5zZXJ2aWNlLkRlbGV0ZVNlcnZpY2VSZXF1ZXN0GiQudGFza3Muc2VydmljZS5EZWxldGVTZXJ2aWNlUmVzcG9uc2USeAoXR2V0U2VydmljZUNvbmZpZ3VyYXRpb24SLS50YXNrcy5zZXJ2aWNlLkdldFNlcnZpY2VDb25maWd1cmF0aW9uUmVxdWVzdBouLnRhc2tzLnNlcnZpY2UuR2V0U2VydmljZUNvbmZpZ3VyYXRpb25SZXNwb25zZRJ7ChhTYXZlU2VydmljZUNvbmZpZ3VyYXRpb24SLi50YXNrcy5zZXJ2aWNlLlNhdmVTZXJ2aWNlQ29uZmlndXJhdGlvblJlcXVlc3QaLy50YXNrcy5zZXJ2aWNlLlNhdmVTZXJ2aWNlQ29uZmlndXJhdGlvblJlc3BvbnNlQpsBChFjb20udGFza3Muc2VydmljZUITQ2F0YWxvZ1NlcnZpY2VQcm90b1ABWhxmZXNtdS9jb250cmFjdC90YXNrcy9zZXJ2aWNlogIDVFNYqgINVGFza3MuU2VydmljZcoCDVRhc2tzXFNlcnZpY2XiAhlUYXNrc1xTZXJ2aWNlXEdQQk1ldGFkYXRh6gIOVGFza3M6OlNlcnZpY2ViBnByb3RvMw", [file_tasks_entity_service, file_tasks_entity_service_form, file_tasks_service_service_routes_service, file_tasks_service_service_settings_service]);
 
 /**
  * @generated from message tasks.service.CreateServiceRequest
@@ -250,6 +256,118 @@ export const DeleteServiceResponseSchema: GenMessage<DeleteServiceResponse> = /*
   messageDesc(file_tasks_service_catalog_service, 9);
 
 /**
+ * @generated from message tasks.service.GetServiceConfigurationRequest
+ */
+export type GetServiceConfigurationRequest = Message<"tasks.service.GetServiceConfigurationRequest"> & {
+  /**
+   * @generated from field: int64 service_id = 1;
+   */
+  serviceId: bigint;
+};
+
+/**
+ * Describes the message tasks.service.GetServiceConfigurationRequest.
+ * Use `create(GetServiceConfigurationRequestSchema)` to create a new message.
+ */
+export const GetServiceConfigurationRequestSchema: GenMessage<GetServiceConfigurationRequest> = /*@__PURE__*/
+  messageDesc(file_tasks_service_catalog_service, 10);
+
+/**
+ * @generated from message tasks.service.GetServiceConfigurationResponse
+ */
+export type GetServiceConfigurationResponse = Message<"tasks.service.GetServiceConfigurationResponse"> & {
+  /**
+   * @generated from field: tasks.entity.Service service = 1;
+   */
+  service?: Service | undefined;
+
+  /**
+   * @generated from field: tasks.entity.ServiceFormSchema form = 2;
+   */
+  form?: ServiceFormSchema | undefined;
+
+  /**
+   * @generated from field: tasks.service.ServiceSettings settings = 3;
+   */
+  settings?: ServiceSettings | undefined;
+
+  /**
+   * @generated from field: repeated tasks.service.ServiceRouteRule routes = 4;
+   */
+  routes: ServiceRouteRule[];
+
+  /**
+   * @generated from field: string version = 5;
+   */
+  version: string;
+};
+
+/**
+ * Describes the message tasks.service.GetServiceConfigurationResponse.
+ * Use `create(GetServiceConfigurationResponseSchema)` to create a new message.
+ */
+export const GetServiceConfigurationResponseSchema: GenMessage<GetServiceConfigurationResponse> = /*@__PURE__*/
+  messageDesc(file_tasks_service_catalog_service, 11);
+
+/**
+ * @generated from message tasks.service.SaveServiceConfigurationRequest
+ */
+export type SaveServiceConfigurationRequest = Message<"tasks.service.SaveServiceConfigurationRequest"> & {
+  /**
+   * Use id 0 and an empty expected_version to create a service.
+   *
+   * @generated from field: tasks.entity.Service service = 1;
+   */
+  service?: Service | undefined;
+
+  /**
+   * @generated from field: tasks.entity.ServiceFormSchema form = 2;
+   */
+  form?: ServiceFormSchema | undefined;
+
+  /**
+   * Omit to keep the current defaults, or to create a service without defaults.
+   *
+   * @generated from field: tasks.service.ServiceSettings settings = 3;
+   */
+  settings?: ServiceSettings | undefined;
+
+  /**
+   * @generated from field: repeated tasks.service.ServiceRouteRule routes = 4;
+   */
+  routes: ServiceRouteRule[];
+
+  /**
+   * @generated from field: string expected_version = 5;
+   */
+  expectedVersion: string;
+};
+
+/**
+ * Describes the message tasks.service.SaveServiceConfigurationRequest.
+ * Use `create(SaveServiceConfigurationRequestSchema)` to create a new message.
+ */
+export const SaveServiceConfigurationRequestSchema: GenMessage<SaveServiceConfigurationRequest> = /*@__PURE__*/
+  messageDesc(file_tasks_service_catalog_service, 12);
+
+/**
+ * @generated from message tasks.service.SaveServiceConfigurationResponse
+ */
+export type SaveServiceConfigurationResponse = Message<"tasks.service.SaveServiceConfigurationResponse"> & {
+  /**
+   * @generated from field: int64 service_id = 1;
+   */
+  serviceId: bigint;
+};
+
+/**
+ * Describes the message tasks.service.SaveServiceConfigurationResponse.
+ * Use `create(SaveServiceConfigurationResponseSchema)` to create a new message.
+ */
+export const SaveServiceConfigurationResponseSchema: GenMessage<SaveServiceConfigurationResponse> = /*@__PURE__*/
+  messageDesc(file_tasks_service_catalog_service, 13);
+
+/**
  * @generated from service tasks.service.CatalogService
  */
 export const CatalogService: GenService<{
@@ -292,6 +410,22 @@ export const CatalogService: GenService<{
     methodKind: "unary";
     input: typeof DeleteServiceRequestSchema;
     output: typeof DeleteServiceResponseSchema;
+  },
+  /**
+   * @generated from rpc tasks.service.CatalogService.GetServiceConfiguration
+   */
+  getServiceConfiguration: {
+    methodKind: "unary";
+    input: typeof GetServiceConfigurationRequestSchema;
+    output: typeof GetServiceConfigurationResponseSchema;
+  },
+  /**
+   * @generated from rpc tasks.service.CatalogService.SaveServiceConfiguration
+   */
+  saveServiceConfiguration: {
+    methodKind: "unary";
+    input: typeof SaveServiceConfigurationRequestSchema;
+    output: typeof SaveServiceConfigurationResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_tasks_service_catalog_service, 0);

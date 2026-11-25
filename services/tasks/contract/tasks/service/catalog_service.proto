@@ -3,6 +3,9 @@ syntax = "proto3";
 package tasks.service;
 
 import "tasks/entity/service.proto";
+import "tasks/entity/service_form.proto";
+import "tasks/service/service_routes_service.proto";
+import "tasks/service/service_settings_service.proto";
 
 service CatalogService {
   rpc CreateService(CreateServiceRequest) returns (CreateServiceResponse);
@@ -10,6 +13,8 @@ service CatalogService {
   rpc ListServices(ListServicesRequest) returns (ListServicesResponse);
   rpc UpdateService(UpdateServiceRequest) returns (UpdateServiceResponse);
   rpc DeleteService(DeleteServiceRequest) returns (DeleteServiceResponse);
+  rpc GetServiceConfiguration(GetServiceConfigurationRequest) returns (GetServiceConfigurationResponse);
+  rpc SaveServiceConfiguration(SaveServiceConfigurationRequest) returns (SaveServiceConfigurationResponse);
 }
 
 message CreateServiceRequest {
@@ -63,4 +68,30 @@ message DeleteServiceRequest {
 
 message DeleteServiceResponse {
   tasks.entity.Service service = 1;
+}
+
+message GetServiceConfigurationRequest {
+  int64 service_id = 1;
+}
+
+message GetServiceConfigurationResponse {
+  tasks.entity.Service service = 1;
+  tasks.entity.ServiceFormSchema form = 2;
+  ServiceSettings settings = 3;
+  repeated ServiceRouteRule routes = 4;
+  string version = 5;
+}
+
+message SaveServiceConfigurationRequest {
+  // Use id 0 and an empty expected_version to create a service.
+  tasks.entity.Service service = 1;
+  tasks.entity.ServiceFormSchema form = 2;
+  // Omit to keep the current defaults, or to create a service without defaults.
+  ServiceSettings settings = 3;
+  repeated ServiceRouteRule routes = 4;
+  string expected_version = 5;
+}
+
+message SaveServiceConfigurationResponse {
+  int64 service_id = 1;
 }

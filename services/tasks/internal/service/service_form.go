@@ -46,9 +46,18 @@ func (s *ServiceFormService) Update(ctx context.Context, serviceID, expectedVers
 	if serviceID <= 0 || expectedVersion < 0 || expectedVersion == math.MaxInt64 || input == nil {
 		return nil, 0, fmt.Errorf("%w: provide service_id, a valid version and a schema", ErrInvalidServiceForm)
 	}
+	schema, encoded, err := normalizeServiceForm(input)
+	if err != nil {
+		return nil, 0, err
+	}
+	version, err := s.storage.Replace(ctx, serviceID, expectedVersion, encoded)
+	return schema, version, err
+}
+
+func normalizeServiceForm(input *entity.ServiceFormSchema) (*entity.ServiceFormSchema, string, error) {
 	schema := proto.CloneOf(input)
 	if err := validateFormFields(schema.Fields); err != nil {
-		return nil, 0, fmt.Errorf("%w: %v", ErrInvalidServiceForm, err)
+		return nil, "", fmt.Errorf("%w: %v", ErrInvalidServiceForm, err)
 	}
 	slices.SortFunc(schema.Fields, func(a, b *entity.FormField) int {
 		if a.SortOrder != b.SortOrder {
@@ -60,11 +69,7 @@ func (s *ServiceFormService) Update(ctx context.Context, serviceID, expectedVers
 		return strings.Compare(a.Code, b.Code)
 	})
 	encoded, err := protojson.Marshal(schema)
-	if err != nil {
-		return nil, 0, err
-	}
-	version, err := s.storage.Replace(ctx, serviceID, expectedVersion, string(encoded))
-	return schema, version, err
+	return schema, string(encoded), err
 }
 
 func validateFormFields(fields []*entity.FormField) error {

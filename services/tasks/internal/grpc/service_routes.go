@@ -33,21 +33,25 @@ func (c *ServiceRoutesController) GetServiceRoutes(ctx context.Context, req *con
 }
 
 func (c *ServiceRoutesController) UpdateServiceRoutes(ctx context.Context, req *connect.Request[api.UpdateServiceRoutesRequest]) (*connect.Response[api.UpdateServiceRoutesResponse], error) {
-	rules := make([]models.ServiceRouteRule, 0, len(req.Msg.Rules))
-	for _, rule := range req.Msg.Rules {
-		rules = append(rules, models.ServiceRouteRule{
-			ApplicantDepartmentID: rule.GetApplicantDepartmentId(),
-			QueueID:               rule.GetQueueId(),
-			Active:                rule != nil && (rule.Active == nil || rule.GetActive()),
-		})
-	}
-	routes, err := c.service.Update(ctx, req.Msg.ServiceId, req.Msg.ExpectedVersion, rules)
+	routes, err := c.service.Update(ctx, req.Msg.ServiceId, req.Msg.ExpectedVersion, routeModels(req.Msg.Rules))
 	if err != nil {
 		return nil, c.rpcError(err)
 	}
 	return connect.NewResponse(&api.UpdateServiceRoutesResponse{
 		ServiceId: routes.ServiceID, Version: routes.Version, Rules: routeMessages(routes.Rules),
 	}), nil
+}
+
+func routeModels(messages []*api.ServiceRouteRule) []models.ServiceRouteRule {
+	rules := make([]models.ServiceRouteRule, 0, len(messages))
+	for _, rule := range messages {
+		rules = append(rules, models.ServiceRouteRule{
+			ApplicantDepartmentID: rule.GetApplicantDepartmentId(),
+			QueueID:               rule.GetQueueId(),
+			Active:                rule != nil && (rule.Active == nil || rule.GetActive()),
+		})
+	}
+	return rules
 }
 
 func routeMessages(rules []models.ServiceRouteRule) []*api.ServiceRouteRule {

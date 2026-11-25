@@ -37,11 +37,16 @@ func (s *CatalogService) Create(ctx context.Context, directionID int64, code, na
 		SortOrder:   sortOrder,
 		Active:      true,
 	}
-	if directionID <= 0 || !catalogCodePattern.MatchString(entry.Code) || !validCatalogName(entry.Name) || strings.ContainsRune(entry.Description, 0) {
+	if !validService(entry) {
 		return models.Service{}, ErrInvalidService
 	}
 	err := s.storage.Create(ctx, &entry)
 	return entry, err
+}
+
+func validService(entry models.Service) bool {
+	return entry.DirectionID > 0 && catalogCodePattern.MatchString(entry.Code) &&
+		validCatalogName(entry.Name) && !strings.ContainsRune(entry.Description, 0)
 }
 
 func (s *CatalogService) Get(ctx context.Context, id int64) (models.Service, error) {

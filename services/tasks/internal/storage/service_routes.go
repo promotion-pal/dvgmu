@@ -45,9 +45,13 @@ func (s *ServiceRoutesStorage) Replace(ctx context.Context, routes models.Servic
 		if current.Version != expectedVersion {
 			return ErrServiceRoutesVersionConflict
 		}
-		return tx.Clauses(clause.OnConflict{
-			Columns:   []clause.Column{{Name: "service_id"}},
-			DoUpdates: clause.AssignmentColumns([]string{"version", "rules"}),
-		}).Create(&routes).Error
+		return writeServiceRoutes(tx, routes)
 	})
+}
+
+func writeServiceRoutes(tx *gorm.DB, routes models.ServiceRoutes) error {
+	return tx.Clauses(clause.OnConflict{
+		Columns:   []clause.Column{{Name: "service_id"}},
+		DoUpdates: clause.AssignmentColumns([]string{"version", "rules"}),
+	}).Create(&routes).Error
 }

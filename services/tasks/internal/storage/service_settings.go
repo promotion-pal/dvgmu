@@ -23,8 +23,12 @@ func NewServiceSettingsStorage(db *gorm.DB) *ServiceSettingsStorage {
 }
 
 func (s *ServiceSettingsStorage) Get(ctx context.Context, serviceID int64) (models.ServiceSettings, error) {
+	return readServiceSettings(s.db.WithContext(ctx), serviceID)
+}
+
+func readServiceSettings(db *gorm.DB, serviceID int64) (models.ServiceSettings, error) {
 	var settings models.ServiceSettings
-	err := s.db.WithContext(ctx).Table("services").
+	err := db.Table("services").
 		Select("services.id AS service_id, COALESCE(settings.initial_status_id, 0) AS initial_status_id, COALESCE(settings.default_priority_id, 0) AS default_priority_id").
 		Joins("LEFT JOIN service_settings AS settings ON settings.service_id = services.id").
 		Where("services.id = ?", serviceID).Take(&settings).Error
@@ -38,15 +42,18 @@ func (s *ServiceSettingsStorage) Update(ctx context.Context, settings models.Ser
 			return err
 		}
 
-		if err := lockActiveTaskDefaults(tx, settings); err != nil {
-			return err
-		}
-
-		return tx.Clauses(clause.OnConflict{
-			Columns:   []clause.Column{{Name: "service_id"}},
-			DoUpdates: clause.AssignmentColumns([]string{"initial_status_id", "default_priority_id"}),
-		}).Create(&settings).Error
+		return writeServiceSettings(tx, settings)
 	})
+}
+
+func writeServiceSettings(tx *gorm.DB, settings models.ServiceSettings) error {
+	if err := lockActiveTaskDefaults(tx, settings); err != nil {
+		return err
+	}
+	return tx.Clauses(clause.OnConflict{
+		Columns:   []clause.Column{{Name: "service_id"}},
+		DoUpdates: clause.AssignmentColumns([]string{"initial_status_id", "default_priority_id"}),
+	}).Create(&settings).Error
 }
 
 // Hold the locks through the write so a selection cannot be deactivated concurrently.

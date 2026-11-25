@@ -204,6 +204,18 @@ export function DictionaryForm({
   );
 }
 
-export function SaveButton({ saving, label = "Сохранить" }: { saving: boolean; label?: string }) {
-  return <Button type="submit">{saving ? "Сохраняем…" : label}</Button>;
+export function SaveButton({
+  saving,
+  label = "Сохранить",
+  disabled,
+}: {
+  saving: boolean;
+  label?: string;
+  disabled?: boolean;
+}) {
+  return (
+    <Button type="submit" disabled={disabled}>
+      {saving ? "Сохраняем…" : label}
+    </Button>
+  );
 }

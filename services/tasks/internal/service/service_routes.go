@@ -32,11 +32,20 @@ func (s *ServiceRoutesService) Update(ctx context.Context, serviceID, expectedVe
 	if serviceID <= 0 || expectedVersion < 0 || expectedVersion == math.MaxInt64 {
 		return models.ServiceRoutes{}, fmt.Errorf("%w: provide a positive service_id and valid expected_version", ErrInvalidServiceRoutes)
 	}
+	normalized, err := normalizeServiceRoutes(rules)
+	if err != nil {
+		return models.ServiceRoutes{}, err
+	}
 	routes := models.ServiceRoutes{
 		ServiceID: serviceID,
 		Version:   expectedVersion + 1,
-		Rules:     make([]models.ServiceRouteRule, 0, len(rules)),
+		Rules:     normalized,
 	}
+	return routes, s.storage.Replace(ctx, routes, expectedVersion)
+}
+
+func normalizeServiceRoutes(rules []models.ServiceRouteRule) ([]models.ServiceRouteRule, error) {
+	normalized := make([]models.ServiceRouteRule, 0, len(rules))
 	type routeKey struct {
 		departmentID string
 		queueID      string
@@ -46,14 +55,14 @@ func (s *ServiceRoutesService) Update(ctx context.Context, serviceID, expectedVe
 		rule.ApplicantDepartmentID = strings.TrimSpace(rule.ApplicantDepartmentID)
 		rule.QueueID = strings.TrimSpace(rule.QueueID)
 		if rule.QueueID == "" || strings.ContainsRune(rule.QueueID, 0) || strings.ContainsRune(rule.ApplicantDepartmentID, 0) {
-			return models.ServiceRoutes{}, fmt.Errorf("%w: rule %d needs a valid queue ID", ErrInvalidServiceRoutes, i+1)
+			return nil, fmt.Errorf("%w: rule %d needs a valid queue ID", ErrInvalidServiceRoutes, i+1)
 		}
 		key := routeKey{departmentID: rule.ApplicantDepartmentID, queueID: rule.QueueID}
 		if _, duplicate := seen[key]; duplicate {
-			return models.ServiceRoutes{}, fmt.Errorf("%w: duplicate rule at position %d", ErrInvalidServiceRoutes, i+1)
+			return nil, fmt.Errorf("%w: duplicate rule at position %d", ErrInvalidServiceRoutes, i+1)
 		}
 		seen[key] = struct{}{}
-		routes.Rules = append(routes.Rules, rule)
+		normalized = append(normalized, rule)
 	}
-	return routes, s.storage.Replace(ctx, routes, expectedVersion)
+	return normalized, nil
 }

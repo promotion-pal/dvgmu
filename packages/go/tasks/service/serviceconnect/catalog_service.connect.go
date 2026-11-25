@@ -48,6 +48,12 @@ const (
 	// CatalogServiceDeleteServiceProcedure is the fully-qualified name of the CatalogService's
 	// DeleteService RPC.
 	CatalogServiceDeleteServiceProcedure = "/tasks.service.CatalogService/DeleteService"
+	// CatalogServiceGetServiceConfigurationProcedure is the fully-qualified name of the
+	// CatalogService's GetServiceConfiguration RPC.
+	CatalogServiceGetServiceConfigurationProcedure = "/tasks.service.CatalogService/GetServiceConfiguration"
+	// CatalogServiceSaveServiceConfigurationProcedure is the fully-qualified name of the
+	// CatalogService's SaveServiceConfiguration RPC.
+	CatalogServiceSaveServiceConfigurationProcedure = "/tasks.service.CatalogService/SaveServiceConfiguration"
 )
 
 // CatalogServiceClient is a client for the tasks.service.CatalogService service.
@@ -57,6 +63,8 @@ type CatalogServiceClient interface {
 	ListServices(context.Context, *connect.Request[service.ListServicesRequest]) (*connect.Response[service.ListServicesResponse], error)
 	UpdateService(context.Context, *connect.Request[service.UpdateServiceRequest]) (*connect.Response[service.UpdateServiceResponse], error)
 	DeleteService(context.Context, *connect.Request[service.DeleteServiceRequest]) (*connect.Response[service.DeleteServiceResponse], error)
+	GetServiceConfiguration(context.Context, *connect.Request[service.GetServiceConfigurationRequest]) (*connect.Response[service.GetServiceConfigurationResponse], error)
+	SaveServiceConfiguration(context.Context, *connect.Request[service.SaveServiceConfigurationRequest]) (*connect.Response[service.SaveServiceConfigurationResponse], error)
 }
 
 // NewCatalogServiceClient constructs a client for the tasks.service.CatalogService service. By
@@ -100,16 +108,30 @@ func NewCatalogServiceClient(httpClient connect.HTTPClient, baseURL string, opts
 			connect.WithSchema(catalogServiceMethods.ByName("DeleteService")),
 			connect.WithClientOptions(opts...),
 		),
+		getServiceConfiguration: connect.NewClient[service.GetServiceConfigurationRequest, service.GetServiceConfigurationResponse](
+			httpClient,
+			baseURL+CatalogServiceGetServiceConfigurationProcedure,
+			connect.WithSchema(catalogServiceMethods.ByName("GetServiceConfiguration")),
+			connect.WithClientOptions(opts...),
+		),
+		saveServiceConfiguration: connect.NewClient[service.SaveServiceConfigurationRequest, service.SaveServiceConfigurationResponse](
+			httpClient,
+			baseURL+CatalogServiceSaveServiceConfigurationProcedure,
+			connect.WithSchema(catalogServiceMethods.ByName("SaveServiceConfiguration")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // catalogServiceClient implements CatalogServiceClient.
 type catalogServiceClient struct {
-	createService *connect.Client[service.CreateServiceRequest, service.CreateServiceResponse]
-	getService    *connect.Client[service.GetServiceRequest, service.GetServiceResponse]
-	listServices  *connect.Client[service.ListServicesRequest, service.ListServicesResponse]
-	updateService *connect.Client[service.UpdateServiceRequest, service.UpdateServiceResponse]
-	deleteService *connect.Client[service.DeleteServiceRequest, service.DeleteServiceResponse]
+	createService            *connect.Client[service.CreateServiceRequest, service.CreateServiceResponse]
+	getService               *connect.Client[service.GetServiceRequest, service.GetServiceResponse]
+	listServices             *connect.Client[service.ListServicesRequest, service.ListServicesResponse]
+	updateService            *connect.Client[service.UpdateServiceRequest, service.UpdateServiceResponse]
+	deleteService            *connect.Client[service.DeleteServiceRequest, service.DeleteServiceResponse]
+	getServiceConfiguration  *connect.Client[service.GetServiceConfigurationRequest, service.GetServiceConfigurationResponse]
+	saveServiceConfiguration *connect.Client[service.SaveServiceConfigurationRequest, service.SaveServiceConfigurationResponse]
 }
 
 // CreateService calls tasks.service.CatalogService.CreateService.
@@ -137,6 +159,16 @@ func (c *catalogServiceClient) DeleteService(ctx context.Context, req *connect.R
 	return c.deleteService.CallUnary(ctx, req)
 }
 
+// GetServiceConfiguration calls tasks.service.CatalogService.GetServiceConfiguration.
+func (c *catalogServiceClient) GetServiceConfiguration(ctx context.Context, req *connect.Request[service.GetServiceConfigurationRequest]) (*connect.Response[service.GetServiceConfigurationResponse], error) {
+	return c.getServiceConfiguration.CallUnary(ctx, req)
+}
+
+// SaveServiceConfiguration calls tasks.service.CatalogService.SaveServiceConfiguration.
+func (c *catalogServiceClient) SaveServiceConfiguration(ctx context.Context, req *connect.Request[service.SaveServiceConfigurationRequest]) (*connect.Response[service.SaveServiceConfigurationResponse], error) {
+	return c.saveServiceConfiguration.CallUnary(ctx, req)
+}
+
 // CatalogServiceHandler is an implementation of the tasks.service.CatalogService service.
 type CatalogServiceHandler interface {
 	CreateService(context.Context, *connect.Request[service.CreateServiceRequest]) (*connect.Response[service.CreateServiceResponse], error)
@@ -144,6 +176,8 @@ type CatalogServiceHandler interface {
 	ListServices(context.Context, *connect.Request[service.ListServicesRequest]) (*connect.Response[service.ListServicesResponse], error)
 	UpdateService(context.Context, *connect.Request[service.UpdateServiceRequest]) (*connect.Response[service.UpdateServiceResponse], error)
 	DeleteService(context.Context, *connect.Request[service.DeleteServiceRequest]) (*connect.Response[service.DeleteServiceResponse], error)
+	GetServiceConfiguration(context.Context, *connect.Request[service.GetServiceConfigurationRequest]) (*connect.Response[service.GetServiceConfigurationResponse], error)
+	SaveServiceConfiguration(context.Context, *connect.Request[service.SaveServiceConfigurationRequest]) (*connect.Response[service.SaveServiceConfigurationResponse], error)
 }
 
 // NewCatalogServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -183,6 +217,18 @@ func NewCatalogServiceHandler(svc CatalogServiceHandler, opts ...connect.Handler
 		connect.WithSchema(catalogServiceMethods.ByName("DeleteService")),
 		connect.WithHandlerOptions(opts...),
 	)
+	catalogServiceGetServiceConfigurationHandler := connect.NewUnaryHandler(
+		CatalogServiceGetServiceConfigurationProcedure,
+		svc.GetServiceConfiguration,
+		connect.WithSchema(catalogServiceMethods.ByName("GetServiceConfiguration")),
+		connect.WithHandlerOptions(opts...),
+	)
+	catalogServiceSaveServiceConfigurationHandler := connect.NewUnaryHandler(
+		CatalogServiceSaveServiceConfigurationProcedure,
+		svc.SaveServiceConfiguration,
+		connect.WithSchema(catalogServiceMethods.ByName("SaveServiceConfiguration")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/tasks.service.CatalogService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case CatalogServiceCreateServiceProcedure:
@@ -195,6 +241,10 @@ func NewCatalogServiceHandler(svc CatalogServiceHandler, opts ...connect.Handler
 			catalogServiceUpdateServiceHandler.ServeHTTP(w, r)
 		case CatalogServiceDeleteServiceProcedure:
 			catalogServiceDeleteServiceHandler.ServeHTTP(w, r)
+		case CatalogServiceGetServiceConfigurationProcedure:
+			catalogServiceGetServiceConfigurationHandler.ServeHTTP(w, r)
+		case CatalogServiceSaveServiceConfigurationProcedure:
+			catalogServiceSaveServiceConfigurationHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -222,4 +272,12 @@ func (UnimplementedCatalogServiceHandler) UpdateService(context.Context, *connec
 
 func (UnimplementedCatalogServiceHandler) DeleteService(context.Context, *connect.Request[service.DeleteServiceRequest]) (*connect.Response[service.DeleteServiceResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("tasks.service.CatalogService.DeleteService is not implemented"))
+}
+
+func (UnimplementedCatalogServiceHandler) GetServiceConfiguration(context.Context, *connect.Request[service.GetServiceConfigurationRequest]) (*connect.Response[service.GetServiceConfigurationResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("tasks.service.CatalogService.GetServiceConfiguration is not implemented"))
+}
+
+func (UnimplementedCatalogServiceHandler) SaveServiceConfiguration(context.Context, *connect.Request[service.SaveServiceConfigurationRequest]) (*connect.Response[service.SaveServiceConfigurationResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("tasks.service.CatalogService.SaveServiceConfiguration is not implemented"))
 }

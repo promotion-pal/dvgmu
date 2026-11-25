@@ -566,11 +566,253 @@ func (x *DeleteServiceResponse) GetService() *entity.Service {
 	return nil
 }
 
+type GetServiceConfigurationRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ServiceId     int64                  `protobuf:"varint,1,opt,name=service_id,json=serviceId,proto3" json:"service_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetServiceConfigurationRequest) Reset() {
+	*x = GetServiceConfigurationRequest{}
+	mi := &file_tasks_service_catalog_service_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetServiceConfigurationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetServiceConfigurationRequest) ProtoMessage() {}
+
+func (x *GetServiceConfigurationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_tasks_service_catalog_service_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetServiceConfigurationRequest.ProtoReflect.Descriptor instead.
+func (*GetServiceConfigurationRequest) Descriptor() ([]byte, []int) {
+	return file_tasks_service_catalog_service_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *GetServiceConfigurationRequest) GetServiceId() int64 {
+	if x != nil {
+		return x.ServiceId
+	}
+	return 0
+}
+
+type GetServiceConfigurationResponse struct {
+	state         protoimpl.MessageState    `protogen:"open.v1"`
+	Service       *entity.Service           `protobuf:"bytes,1,opt,name=service,proto3" json:"service,omitempty"`
+	Form          *entity.ServiceFormSchema `protobuf:"bytes,2,opt,name=form,proto3" json:"form,omitempty"`
+	Settings      *ServiceSettings          `protobuf:"bytes,3,opt,name=settings,proto3" json:"settings,omitempty"`
+	Routes        []*ServiceRouteRule       `protobuf:"bytes,4,rep,name=routes,proto3" json:"routes,omitempty"`
+	Version       string                    `protobuf:"bytes,5,opt,name=version,proto3" json:"version,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetServiceConfigurationResponse) Reset() {
+	*x = GetServiceConfigurationResponse{}
+	mi := &file_tasks_service_catalog_service_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetServiceConfigurationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetServiceConfigurationResponse) ProtoMessage() {}
+
+func (x *GetServiceConfigurationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_tasks_service_catalog_service_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetServiceConfigurationResponse.ProtoReflect.Descriptor instead.
+func (*GetServiceConfigurationResponse) Descriptor() ([]byte, []int) {
+	return file_tasks_service_catalog_service_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *GetServiceConfigurationResponse) GetService() *entity.Service {
+	if x != nil {
+		return x.Service
+	}
+	return nil
+}
+
+func (x *GetServiceConfigurationResponse) GetForm() *entity.ServiceFormSchema {
+	if x != nil {
+		return x.Form
+	}
+	return nil
+}
+
+func (x *GetServiceConfigurationResponse) GetSettings() *ServiceSettings {
+	if x != nil {
+		return x.Settings
+	}
+	return nil
+}
+
+func (x *GetServiceConfigurationResponse) GetRoutes() []*ServiceRouteRule {
+	if x != nil {
+		return x.Routes
+	}
+	return nil
+}
+
+func (x *GetServiceConfigurationResponse) GetVersion() string {
+	if x != nil {
+		return x.Version
+	}
+	return ""
+}
+
+type SaveServiceConfigurationRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Use id 0 and an empty expected_version to create a service.
+	Service *entity.Service           `protobuf:"bytes,1,opt,name=service,proto3" json:"service,omitempty"`
+	Form    *entity.ServiceFormSchema `protobuf:"bytes,2,opt,name=form,proto3" json:"form,omitempty"`
+	// Omit to keep the current defaults, or to create a service without defaults.
+	Settings        *ServiceSettings    `protobuf:"bytes,3,opt,name=settings,proto3" json:"settings,omitempty"`
+	Routes          []*ServiceRouteRule `protobuf:"bytes,4,rep,name=routes,proto3" json:"routes,omitempty"`
+	ExpectedVersion string              `protobuf:"bytes,5,opt,name=expected_version,json=expectedVersion,proto3" json:"expected_version,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *SaveServiceConfigurationRequest) Reset() {
+	*x = SaveServiceConfigurationRequest{}
+	mi := &file_tasks_service_catalog_service_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SaveServiceConfigurationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SaveServiceConfigurationRequest) ProtoMessage() {}
+
+func (x *SaveServiceConfigurationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_tasks_service_catalog_service_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SaveServiceConfigurationRequest.ProtoReflect.Descriptor instead.
+func (*SaveServiceConfigurationRequest) Descriptor() ([]byte, []int) {
+	return file_tasks_service_catalog_service_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *SaveServiceConfigurationRequest) GetService() *entity.Service {
+	if x != nil {
+		return x.Service
+	}
+	return nil
+}
+
+func (x *SaveServiceConfigurationRequest) GetForm() *entity.ServiceFormSchema {
+	if x != nil {
+		return x.Form
+	}
+	return nil
+}
+
+func (x *SaveServiceConfigurationRequest) GetSettings() *ServiceSettings {
+	if x != nil {
+		return x.Settings
+	}
+	return nil
+}
+
+func (x *SaveServiceConfigurationRequest) GetRoutes() []*ServiceRouteRule {
+	if x != nil {
+		return x.Routes
+	}
+	return nil
+}
+
+func (x *SaveServiceConfigurationRequest) GetExpectedVersion() string {
+	if x != nil {
+		return x.ExpectedVersion
+	}
+	return ""
+}
+
+type SaveServiceConfigurationResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ServiceId     int64                  `protobuf:"varint,1,opt,name=service_id,json=serviceId,proto3" json:"service_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SaveServiceConfigurationResponse) Reset() {
+	*x = SaveServiceConfigurationResponse{}
+	mi := &file_tasks_service_catalog_service_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SaveServiceConfigurationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SaveServiceConfigurationResponse) ProtoMessage() {}
+
+func (x *SaveServiceConfigurationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_tasks_service_catalog_service_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SaveServiceConfigurationResponse.ProtoReflect.Descriptor instead.
+func (*SaveServiceConfigurationResponse) Descriptor() ([]byte, []int) {
+	return file_tasks_service_catalog_service_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *SaveServiceConfigurationResponse) GetServiceId() int64 {
+	if x != nil {
+		return x.ServiceId
+	}
+	return 0
+}
+
 var File_tasks_service_catalog_service_proto protoreflect.FileDescriptor
 
 const file_tasks_service_catalog_service_proto_rawDesc = "" +
 	"\n" +
-	"#tasks/service/catalog_service.proto\x12\rtasks.service\x1a\x1atasks/entity/service.proto\"\xa2\x01\n" +
+	"#tasks/service/catalog_service.proto\x12\rtasks.service\x1a\x1atasks/entity/service.proto\x1a\x1ftasks/entity/service_form.proto\x1a*tasks/service/service_routes_service.proto\x1a,tasks/service/service_settings_service.proto\"\xa2\x01\n" +
 	"\x14CreateServiceRequest\x12!\n" +
 	"\fdirection_id\x18\x01 \x01(\x03R\vdirectionId\x12\x12\n" +
 	"\x04code\x18\x02 \x01(\tR\x04code\x12\x12\n" +
@@ -612,14 +854,34 @@ const file_tasks_service_catalog_service_proto_rawDesc = "" +
 	"\x14DeleteServiceRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\"H\n" +
 	"\x15DeleteServiceResponse\x12/\n" +
-	"\aservice\x18\x01 \x01(\v2\x15.tasks.entity.ServiceR\aservice2\xd0\x03\n" +
+	"\aservice\x18\x01 \x01(\v2\x15.tasks.entity.ServiceR\aservice\"?\n" +
+	"\x1eGetServiceConfigurationRequest\x12\x1d\n" +
+	"\n" +
+	"service_id\x18\x01 \x01(\x03R\tserviceId\"\x96\x02\n" +
+	"\x1fGetServiceConfigurationResponse\x12/\n" +
+	"\aservice\x18\x01 \x01(\v2\x15.tasks.entity.ServiceR\aservice\x123\n" +
+	"\x04form\x18\x02 \x01(\v2\x1f.tasks.entity.ServiceFormSchemaR\x04form\x12:\n" +
+	"\bsettings\x18\x03 \x01(\v2\x1e.tasks.service.ServiceSettingsR\bsettings\x127\n" +
+	"\x06routes\x18\x04 \x03(\v2\x1f.tasks.service.ServiceRouteRuleR\x06routes\x12\x18\n" +
+	"\aversion\x18\x05 \x01(\tR\aversion\"\xa7\x02\n" +
+	"\x1fSaveServiceConfigurationRequest\x12/\n" +
+	"\aservice\x18\x01 \x01(\v2\x15.tasks.entity.ServiceR\aservice\x123\n" +
+	"\x04form\x18\x02 \x01(\v2\x1f.tasks.entity.ServiceFormSchemaR\x04form\x12:\n" +
+	"\bsettings\x18\x03 \x01(\v2\x1e.tasks.service.ServiceSettingsR\bsettings\x127\n" +
+	"\x06routes\x18\x04 \x03(\v2\x1f.tasks.service.ServiceRouteRuleR\x06routes\x12)\n" +
+	"\x10expected_version\x18\x05 \x01(\tR\x0fexpectedVersion\"A\n" +
+	" SaveServiceConfigurationResponse\x12\x1d\n" +
+	"\n" +
+	"service_id\x18\x01 \x01(\x03R\tserviceId2\xc7\x05\n" +
 	"\x0eCatalogService\x12Z\n" +
 	"\rCreateService\x12#.tasks.service.CreateServiceRequest\x1a$.tasks.service.CreateServiceResponse\x12Q\n" +
 	"\n" +
 	"GetService\x12 .tasks.service.GetServiceRequest\x1a!.tasks.service.GetServiceResponse\x12W\n" +
 	"\fListServices\x12\".tasks.service.ListServicesRequest\x1a#.tasks.service.ListServicesResponse\x12Z\n" +
 	"\rUpdateService\x12#.tasks.service.UpdateServiceRequest\x1a$.tasks.service.UpdateServiceResponse\x12Z\n" +
-	"\rDeleteService\x12#.tasks.service.DeleteServiceRequest\x1a$.tasks.service.DeleteServiceResponseB\x9b\x01\n" +
+	"\rDeleteService\x12#.tasks.service.DeleteServiceRequest\x1a$.tasks.service.DeleteServiceResponse\x12x\n" +
+	"\x17GetServiceConfiguration\x12-.tasks.service.GetServiceConfigurationRequest\x1a..tasks.service.GetServiceConfigurationResponse\x12{\n" +
+	"\x18SaveServiceConfiguration\x12..tasks.service.SaveServiceConfigurationRequest\x1a/.tasks.service.SaveServiceConfigurationResponseB\x9b\x01\n" +
 	"\x11com.tasks.serviceB\x13CatalogServiceProtoP\x01Z\x1cfesmu/contract/tasks/service\xa2\x02\x03TSX\xaa\x02\rTasks.Service\xca\x02\rTasks\\Service\xe2\x02\x19Tasks\\Service\\GPBMetadata\xea\x02\x0eTasks::Serviceb\x06proto3"
 
 var (
@@ -634,41 +896,60 @@ func file_tasks_service_catalog_service_proto_rawDescGZIP() []byte {
 	return file_tasks_service_catalog_service_proto_rawDescData
 }
 
-var file_tasks_service_catalog_service_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_tasks_service_catalog_service_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_tasks_service_catalog_service_proto_goTypes = []any{
-	(*CreateServiceRequest)(nil),  // 0: tasks.service.CreateServiceRequest
-	(*CreateServiceResponse)(nil), // 1: tasks.service.CreateServiceResponse
-	(*GetServiceRequest)(nil),     // 2: tasks.service.GetServiceRequest
-	(*GetServiceResponse)(nil),    // 3: tasks.service.GetServiceResponse
-	(*ListServicesRequest)(nil),   // 4: tasks.service.ListServicesRequest
-	(*ListServicesResponse)(nil),  // 5: tasks.service.ListServicesResponse
-	(*UpdateServiceRequest)(nil),  // 6: tasks.service.UpdateServiceRequest
-	(*UpdateServiceResponse)(nil), // 7: tasks.service.UpdateServiceResponse
-	(*DeleteServiceRequest)(nil),  // 8: tasks.service.DeleteServiceRequest
-	(*DeleteServiceResponse)(nil), // 9: tasks.service.DeleteServiceResponse
-	(*entity.Service)(nil),        // 10: tasks.entity.Service
+	(*CreateServiceRequest)(nil),             // 0: tasks.service.CreateServiceRequest
+	(*CreateServiceResponse)(nil),            // 1: tasks.service.CreateServiceResponse
+	(*GetServiceRequest)(nil),                // 2: tasks.service.GetServiceRequest
+	(*GetServiceResponse)(nil),               // 3: tasks.service.GetServiceResponse
+	(*ListServicesRequest)(nil),              // 4: tasks.service.ListServicesRequest
+	(*ListServicesResponse)(nil),             // 5: tasks.service.ListServicesResponse
+	(*UpdateServiceRequest)(nil),             // 6: tasks.service.UpdateServiceRequest
+	(*UpdateServiceResponse)(nil),            // 7: tasks.service.UpdateServiceResponse
+	(*DeleteServiceRequest)(nil),             // 8: tasks.service.DeleteServiceRequest
+	(*DeleteServiceResponse)(nil),            // 9: tasks.service.DeleteServiceResponse
+	(*GetServiceConfigurationRequest)(nil),   // 10: tasks.service.GetServiceConfigurationRequest
+	(*GetServiceConfigurationResponse)(nil),  // 11: tasks.service.GetServiceConfigurationResponse
+	(*SaveServiceConfigurationRequest)(nil),  // 12: tasks.service.SaveServiceConfigurationRequest
+	(*SaveServiceConfigurationResponse)(nil), // 13: tasks.service.SaveServiceConfigurationResponse
+	(*entity.Service)(nil),                   // 14: tasks.entity.Service
+	(*entity.ServiceFormSchema)(nil),         // 15: tasks.entity.ServiceFormSchema
+	(*ServiceSettings)(nil),                  // 16: tasks.service.ServiceSettings
+	(*ServiceRouteRule)(nil),                 // 17: tasks.service.ServiceRouteRule
 }
 var file_tasks_service_catalog_service_proto_depIdxs = []int32{
-	10, // 0: tasks.service.CreateServiceResponse.service:type_name -> tasks.entity.Service
-	10, // 1: tasks.service.GetServiceResponse.service:type_name -> tasks.entity.Service
-	10, // 2: tasks.service.ListServicesResponse.services:type_name -> tasks.entity.Service
-	10, // 3: tasks.service.UpdateServiceResponse.service:type_name -> tasks.entity.Service
-	10, // 4: tasks.service.DeleteServiceResponse.service:type_name -> tasks.entity.Service
-	0,  // 5: tasks.service.CatalogService.CreateService:input_type -> tasks.service.CreateServiceRequest
-	2,  // 6: tasks.service.CatalogService.GetService:input_type -> tasks.service.GetServiceRequest
-	4,  // 7: tasks.service.CatalogService.ListServices:input_type -> tasks.service.ListServicesRequest
-	6,  // 8: tasks.service.CatalogService.UpdateService:input_type -> tasks.service.UpdateServiceRequest
-	8,  // 9: tasks.service.CatalogService.DeleteService:input_type -> tasks.service.DeleteServiceRequest
-	1,  // 10: tasks.service.CatalogService.CreateService:output_type -> tasks.service.CreateServiceResponse
-	3,  // 11: tasks.service.CatalogService.GetService:output_type -> tasks.service.GetServiceResponse
-	5,  // 12: tasks.service.CatalogService.ListServices:output_type -> tasks.service.ListServicesResponse
-	7,  // 13: tasks.service.CatalogService.UpdateService:output_type -> tasks.service.UpdateServiceResponse
-	9,  // 14: tasks.service.CatalogService.DeleteService:output_type -> tasks.service.DeleteServiceResponse
-	10, // [10:15] is the sub-list for method output_type
-	5,  // [5:10] is the sub-list for method input_type
-	5,  // [5:5] is the sub-list for extension type_name
-	5,  // [5:5] is the sub-list for extension extendee
-	0,  // [0:5] is the sub-list for field type_name
+	14, // 0: tasks.service.CreateServiceResponse.service:type_name -> tasks.entity.Service
+	14, // 1: tasks.service.GetServiceResponse.service:type_name -> tasks.entity.Service
+	14, // 2: tasks.service.ListServicesResponse.services:type_name -> tasks.entity.Service
+	14, // 3: tasks.service.UpdateServiceResponse.service:type_name -> tasks.entity.Service
+	14, // 4: tasks.service.DeleteServiceResponse.service:type_name -> tasks.entity.Service
+	14, // 5: tasks.service.GetServiceConfigurationResponse.service:type_name -> tasks.entity.Service
+	15, // 6: tasks.service.GetServiceConfigurationResponse.form:type_name -> tasks.entity.ServiceFormSchema
+	16, // 7: tasks.service.GetServiceConfigurationResponse.settings:type_name -> tasks.service.ServiceSettings
+	17, // 8: tasks.service.GetServiceConfigurationResponse.routes:type_name -> tasks.service.ServiceRouteRule
+	14, // 9: tasks.service.SaveServiceConfigurationRequest.service:type_name -> tasks.entity.Service
+	15, // 10: tasks.service.SaveServiceConfigurationRequest.form:type_name -> tasks.entity.ServiceFormSchema
+	16, // 11: tasks.service.SaveServiceConfigurationRequest.settings:type_name -> tasks.service.ServiceSettings
+	17, // 12: tasks.service.SaveServiceConfigurationRequest.routes:type_name -> tasks.service.ServiceRouteRule
+	0,  // 13: tasks.service.CatalogService.CreateService:input_type -> tasks.service.CreateServiceRequest
+	2,  // 14: tasks.service.CatalogService.GetService:input_type -> tasks.service.GetServiceRequest
+	4,  // 15: tasks.service.CatalogService.ListServices:input_type -> tasks.service.ListServicesRequest
+	6,  // 16: tasks.service.CatalogService.UpdateService:input_type -> tasks.service.UpdateServiceRequest
+	8,  // 17: tasks.service.CatalogService.DeleteService:input_type -> tasks.service.DeleteServiceRequest
+	10, // 18: tasks.service.CatalogService.GetServiceConfiguration:input_type -> tasks.service.GetServiceConfigurationRequest
+	12, // 19: tasks.service.CatalogService.SaveServiceConfiguration:input_type -> tasks.service.SaveServiceConfigurationRequest
+	1,  // 20: tasks.service.CatalogService.CreateService:output_type -> tasks.service.CreateServiceResponse
+	3,  // 21: tasks.service.CatalogService.GetService:output_type -> tasks.service.GetServiceResponse
+	5,  // 22: tasks.service.CatalogService.ListServices:output_type -> tasks.service.ListServicesResponse
+	7,  // 23: tasks.service.CatalogService.UpdateService:output_type -> tasks.service.UpdateServiceResponse
+	9,  // 24: tasks.service.CatalogService.DeleteService:output_type -> tasks.service.DeleteServiceResponse
+	11, // 25: tasks.service.CatalogService.GetServiceConfiguration:output_type -> tasks.service.GetServiceConfigurationResponse
+	13, // 26: tasks.service.CatalogService.SaveServiceConfiguration:output_type -> tasks.service.SaveServiceConfigurationResponse
+	20, // [20:27] is the sub-list for method output_type
+	13, // [13:20] is the sub-list for method input_type
+	13, // [13:13] is the sub-list for extension type_name
+	13, // [13:13] is the sub-list for extension extendee
+	0,  // [0:13] is the sub-list for field type_name
 }
 
 func init() { file_tasks_service_catalog_service_proto_init() }
@@ -676,6 +957,8 @@ func file_tasks_service_catalog_service_proto_init() {
 	if File_tasks_service_catalog_service_proto != nil {
 		return
 	}
+	file_tasks_service_service_routes_service_proto_init()
+	file_tasks_service_service_settings_service_proto_init()
 	file_tasks_service_catalog_service_proto_msgTypes[4].OneofWrappers = []any{}
 	file_tasks_service_catalog_service_proto_msgTypes[6].OneofWrappers = []any{}
 	type x struct{}
@@ -684,7 +967,7 @@ func file_tasks_service_catalog_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_tasks_service_catalog_service_proto_rawDesc), len(file_tasks_service_catalog_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   10,
+			NumMessages:   14,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
