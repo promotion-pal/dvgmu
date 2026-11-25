@@ -9,6 +9,7 @@ import { ROUTE } from "@/shared/config/path";
 interface NavItem {
     title: string;
     url: string;
+    exact?: boolean;
     icon: ComponentType<{ className?: string }>;
     /** Only for these roles (ADMIN sees everything); none — for every signed-in user. */
     roles?: UserRole[];
@@ -103,7 +104,13 @@ const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
         ],
     },
     ...(ENV.LOCAL_TASKS
-        ? [{ label: "Сервис заявок", items: [{ title: "Заявки", url: ROUTE.TASKS, icon: ListChecksIcon }] }]
+        ? [{
+            label: "Сервис заявок",
+            items: [
+                { title: "Заявки", url: ROUTE.TASKS, icon: ListChecksIcon, exact: true },
+                { title: "Справочники", url: ROUTE.TASK_DICTIONARIES, icon: ClipboardListIcon, roles: [...ACCESS.ADMIN] },
+            ],
+        }]
         : []),
 ];
 

@@ -56,7 +56,7 @@ export function AppSidebar(props: ComponentProps<typeof Sidebar>) {
                         <SidebarMenu>
                             {group.items.map((item) => (
                                 <SidebarMenuItem key={item.url}>
-                                    <SidebarMenuButton asChild isActive={location.pathname === item.url || location.pathname.startsWith(`${item.url}/`)} tooltip={item.title}>
+                                    <SidebarMenuButton asChild isActive={location.pathname === item.url || (!item.exact && location.pathname.startsWith(`${item.url}/`))} tooltip={item.title}>
                                         <Link to={item.url}>
                                             <item.icon className="size-4" />
                                             <span>{item.title}</span>

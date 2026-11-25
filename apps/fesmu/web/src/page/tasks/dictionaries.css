@@ -1,0 +1,59 @@
+.tasks-dictionary-table th {
+  height: auto;
+  padding: 10px 12px;
+  background: var(--sidebar);
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  font-weight: 620;
+}
+
+.tasks-dictionary-table td {
+  padding: 11px 12px;
+  font-size: 0.82rem;
+  vertical-align: top;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 850px) {
+  .tasks-dictionary-table,
+  .tasks-dictionary-table tbody,
+  .tasks-dictionary-table tr {
+    display: block;
+    width: 100%;
+  }
+
+  .tasks-dictionary-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .tasks-dictionary-table tr {
+    padding: 8px 11px;
+  }
+
+  .tasks-dictionary-table td {
+    display: grid;
+    grid-template-columns: minmax(70px, 0.7fr) minmax(0, 1.4fr);
+    gap: 6px;
+    padding: 2px 0;
+  }
+
+  .tasks-dictionary-table td::before {
+    color: var(--muted-foreground);
+    font-size: 0.74rem;
+    content: attr(data-label);
+  }
+
+  .tasks-dictionary-table td:first-child {
+    display: block;
+  }
+
+  .tasks-dictionary-table td:first-child::before {
+    display: none;
+  }
+}

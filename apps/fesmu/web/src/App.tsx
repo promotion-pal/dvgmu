@@ -17,6 +17,8 @@ import StudentPage from "./page/Student";
 import EmployeePage from "./page/Employee";
 import TicketsPage from "./page/Tickets";
 import TasksPage from "./page/Tasks";
+import TaskDictionaries from "./page/tasks/Dictionaries";
+import TaskServiceEditor from "./page/tasks/ServiceEditor";
 import { ENV } from "./shared/config/env";
 import SchedulePage from "./page/Schedule";
 import ScheduleEditorPage from "./page/ScheduleEditor";
@@ -84,6 +86,13 @@ function App() {
           <Route path={ROUTE.HOME} element={<HomeRedirect />} />
           <Route path={ROUTE.USER.PROFILE} element={<ProfilePage />} />
           {ENV.LOCAL_TASKS && <Route path={ROUTE.TASKS} element={<TasksPage />} />}
+          {ENV.LOCAL_TASKS && (
+            <Route element={<Allow roles={ACCESS.ADMIN} />}>
+              <Route path={ROUTE.TASK_DICTIONARIES} element={<TaskDictionaries />} />
+              <Route path={ROUTE.TASK_SERVICE_NEW} element={<TaskServiceEditor />} />
+              <Route path={ROUTE.TASK_SERVICE_EDIT} element={<TaskServiceEditor />} />
+            </Route>
+          )}
 
           {/* Библиотека и методички в кабинете — всем, кто вошёл (опубликованные открыты и на /manuals). */}
           <Route path={ROUTE.LIBRARY.CATALOG} element={<LibraryPage />} />
