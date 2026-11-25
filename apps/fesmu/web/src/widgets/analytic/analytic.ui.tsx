@@ -26,8 +26,8 @@ export const AnalyticComponent: FC = () => {
 
   return (
     <CommonWrapper
-      title="Опросы"
-      description="Объекты опросов с QR-кодами: по коду сотрудник открывает анкету. Сейчас — рабочее место, информационная безопасность, туалеты и лекционные залы."
+      title="Опросники"
+      description="Анкеты инфраструктуры с QR-кодами: по коду сотрудник открывает форму и оценивает объект."
       action={
         <div className="flex flex-wrap gap-2">
         <AnalyticQrScanButton onFound={openScanned} />

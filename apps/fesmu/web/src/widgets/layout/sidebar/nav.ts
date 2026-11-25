@@ -27,7 +27,6 @@ const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
         label: "Навигация",
         items: [
             // Разделы сотрудников открывают права из наборов доступа.
-            { title: "Инфраструктура", url: ROUTE.USER.INFRASTRUCTURE, icon: Building2Icon, permissions: permsFor(PermissionSection.INFRASTRUCTURE) },
             { title: "Инвентарь", url: ROUTE.USER.INVENTORY, icon: ClipboardListIcon, permissions: permsFor(PermissionSection.INVENTORY) },
             // Люди — персональные данные: только администратор.
             { title: "Пользователи", url: ROUTE.USER.USERS, icon: UsersIcon, roles: [...ACCESS.ADMIN] },
@@ -66,10 +65,11 @@ const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
         ],
     },
     {
-        label: "Аналитика",
+        label: "Инфраструктура",
         items: [
-            { title: "Опросы", url: ROUTE.ANALYTICS.SURVEYS, icon: QrCodeIcon, permissions: permsFor(PermissionSection.ANALYTICS) },
-            { title: "Отчёт по полям", url: ROUTE.ANALYTICS.REPORT, icon: ChartColumnIcon, permissions: permsFor(PermissionSection.ANALYTICS) },
+            { title: "Инфраструктура", url: ROUTE.USER.INFRASTRUCTURE, icon: Building2Icon, permissions: permsFor(PermissionSection.INFRASTRUCTURE) },
+            { title: "Опросники", url: ROUTE.ANALYTICS.SURVEYS, icon: QrCodeIcon, permissions: permsFor(PermissionSection.ANALYTICS) },
+            { title: "Дашборд аналитики", url: ROUTE.ANALYTICS.REPORT, icon: ChartColumnIcon, permissions: permsFor(PermissionSection.ANALYTICS) },
         ],
     },
     {

@@ -488,7 +488,7 @@ export const AnalyticReportComponent: FC = () => {
   const invalidDateRange = Boolean(report.dateFrom && report.dateTo && report.dateFrom > report.dateTo);
 
   return (
-    <CommonWrapper title="Аналитика и контроль">
+    <CommonWrapper title="Дашборд аналитики">
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
         <Input
           placeholder="Поиск по названию"
