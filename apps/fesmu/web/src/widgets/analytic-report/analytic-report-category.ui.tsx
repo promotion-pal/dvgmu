@@ -17,7 +17,7 @@ import { AnalyticType } from "@fesmu/contract/analytics/enum/analytic.enum_pb";
 
 import { analyticClient, currentWeekDateRange } from "./analytic-report.fn";
 import { resolveDate } from "@/widgets/analytic/analytic.lib";
-import { mergeCategory, plural } from "./analytic-report.stats";
+import { mergeCategory, plural, summarizeAnalytic } from "./analytic-report.stats";
 import { AnalyticDetail, AnalyticSummaryCard } from "./analytic-report.ui";
 
 /** Категория опросов: сначала общая сводка по всем объектам типа, ниже — каждый объект. */
@@ -109,6 +109,15 @@ export const AnalyticCategoryReport: FC = () => {
       .sort((a, b) => b.reports - a.reports || analyticShortName(a.object).localeCompare(analyticShortName(b.object), "ru"))
     : [], [type, dateFilteredObjects]);
   const group = useMemo(() => mergeCategory(type, dateFilteredObjects), [type, dateFilteredObjects]);
+  const rankedObjects = useMemo(() => dateFilteredObjects.flatMap((object) => {
+    const summary = summarizeAnalytic(object);
+    const match = summary.headline.match(/^(\d+(?:\.\d+)?)\s*\/\s*5$/);
+    return summary.responses > 0 && match
+      ? [{ object, score: Number(match[1]), responses: summary.responses }]
+      : [];
+  }).sort((a, b) => b.score - a.score || b.responses - a.responses || analyticShortName(a.object).localeCompare(analyticShortName(b.object), "ru")), [dateFilteredObjects]);
+  const topBestObjects = rankedObjects.slice(0, 5);
+  const topWorstObjects = [...rankedObjects].reverse().slice(0, 5);
 
   return (
     <CommonWrapper
@@ -178,6 +187,48 @@ export const AnalyticCategoryReport: FC = () => {
           {dateFrom && dateTo && dateFrom > dateTo && (
             <p className="mt-2 text-sm text-destructive">Начало периода должно быть раньше окончания.</p>
           )}
+        </section>
+
+        <section className="mb-5 grid gap-3 lg:grid-cols-2" aria-label="Лучшие и худшие объекты">
+          <div className="rounded-xl border border-emerald-200 bg-emerald-50/60 p-3 dark:border-emerald-900 dark:bg-emerald-950/20">
+            <h2 className="mb-2 text-sm font-semibold text-emerald-800 dark:text-emerald-300">Топ лучших</h2>
+            {topBestObjects.length ? (
+              <div className="flex flex-wrap gap-2">
+                {topBestObjects.map(({ object, score, responses }, index) => (
+                  <Link
+                    key={object.id.toString()}
+                    to={`${ROUTE.ANALYTICS.REPORT}/${object.id}`}
+                    title={`${analyticShortName(object)} · ${responses} ${plural(responses, "ответ", "ответа", "ответов")}`}
+                    className="inline-flex max-w-full items-center gap-2 rounded-full border border-emerald-300 bg-white px-3 py-1.5 text-sm text-emerald-950 transition-colors hover:bg-emerald-100 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-100 dark:hover:bg-emerald-900/60"
+                  >
+                    <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-300">{index + 1}</span>
+                    <span className="max-w-48 truncate">{analyticShortName(object)}</span>
+                    <span className="shrink-0 font-semibold">{score.toFixed(1)} / 5</span>
+                  </Link>
+                ))}
+              </div>
+            ) : <p className="text-xs text-muted-foreground">За период пока нет оценок.</p>}
+          </div>
+
+          <div className="rounded-xl border border-rose-200 bg-rose-50/60 p-3 dark:border-rose-900 dark:bg-rose-950/20">
+            <h2 className="mb-2 text-sm font-semibold text-rose-800 dark:text-rose-300">Топ худших</h2>
+            {topWorstObjects.length ? (
+              <div className="flex flex-wrap gap-2">
+                {topWorstObjects.map(({ object, score, responses }, index) => (
+                  <Link
+                    key={object.id.toString()}
+                    to={`${ROUTE.ANALYTICS.REPORT}/${object.id}`}
+                    title={`${analyticShortName(object)} · ${responses} ${plural(responses, "ответ", "ответа", "ответов")}`}
+                    className="inline-flex max-w-full items-center gap-2 rounded-full border border-rose-300 bg-white px-3 py-1.5 text-sm text-rose-950 transition-colors hover:bg-rose-100 dark:border-rose-800 dark:bg-rose-950/40 dark:text-rose-100 dark:hover:bg-rose-900/60"
+                  >
+                    <span className="text-xs font-semibold text-rose-700 dark:text-rose-300">{index + 1}</span>
+                    <span className="max-w-48 truncate">{analyticShortName(object)}</span>
+                    <span className="shrink-0 font-semibold">{score.toFixed(1)} / 5</span>
+                  </Link>
+                ))}
+              </div>
+            ) : <p className="text-xs text-muted-foreground">За период пока нет оценок.</p>}
+          </div>
         </section>
 
         {type === AnalyticType.TOILET && soapIssueObjects.length > 0 && (
