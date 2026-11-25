@@ -129,7 +129,7 @@ const RespondentsTable: FC<{
       const objectOf = new Map(ratings.map((r) => [r.id.toString(), objectNames.get(r.analyticId.toString())]));
       result = result.map((row) => {
         const object = objectOf.get(row.ratingId);
-        return object ? { ...row, subtitle: [object, row.subtitle].filter(Boolean).join(" · ") } : row;
+        return object ? { ...row, objectName: object } : row;
       });
     }
 
@@ -212,7 +212,7 @@ const RespondentsTable: FC<{
           </p>
         </div>
       ) : (
-        <div className="max-h-80 divide-y overflow-y-auto rounded-lg border">
+        <div className="grid max-h-80 gap-2 overflow-y-auto pr-1">
           {rows.map((row) => (
             <button
               key={row.ratingId}
@@ -220,13 +220,18 @@ const RespondentsTable: FC<{
               disabled={!onRowClick}
               onClick={() => onRowClick?.(row.ratingId)}
               className={cn(
-                "flex w-full flex-col gap-1 p-3 text-left text-sm sm:flex-row sm:items-start sm:justify-between sm:gap-4",
-                onRowClick && "hover:bg-muted",
+                "flex w-full flex-col gap-3 rounded-lg border bg-card p-4 text-left text-sm shadow-xs sm:flex-row sm:items-start sm:justify-between sm:gap-4",
+                onRowClick && "hover:bg-muted/70",
                 !row.answered && "text-muted-foreground",
               )}
             >
               <div className="min-w-0">
                 <p className="font-medium">{row.name}</p>
+                {row.objectName && (
+                  <Badge variant="outline" className="mt-1 h-auto whitespace-normal">
+                    Объект: {row.objectName}
+                  </Badge>
+                )}
                 {row.subtitle && (
                   <p className="text-xs text-muted-foreground">{row.subtitle}</p>
                 )}

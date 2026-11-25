@@ -37,6 +37,8 @@ export interface RespondentAnswer {
   ratingId: string;
   /** Кто ответил: ФИО из опроса ИБ либо «Ответ #id». */
   name: string;
+  /** Объект, по которому оставлен ответ (для сводного отчёта категории). */
+  objectName?: string;
   subtitle?: string;
   createdAt?: Date;
   /** Ответ на выбранное поле, приведённый к строке. */
