@@ -2,7 +2,7 @@
 import type { FC} from "react";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BriefcaseIcon, ChartColumnIcon, GraduationCapIcon, ShieldCheckIcon, ToiletIcon, WrenchIcon } from "lucide-react";
+import { BriefcaseIcon, ChartColumnIcon, GraduationCapIcon, ShieldCheckIcon, ToiletIcon, TrophyIcon, WrenchIcon } from "lucide-react";
 import { cn } from "@/shared/lib/utils";
 import { analyticShortName } from "@/widgets/analytic/analytic.utils";
 import { ROUTE } from "@/shared/config/path";
@@ -296,8 +296,20 @@ export const AnalyticReportComponent: FC = () => {
   const report = useAnalyticReport();
   const navigate = useNavigate();
   const categories = useMemo(() => groupByCategory(report.list), [report.list]);
+  const topObjects = useMemo(() => report.list.flatMap((entity) => {
+    const summary = summarizeAnalytic(entity);
+    const score = summary.headline.match(/^(\d+(?:\.\d+)?)\s*\/\s*5$/);
+    return summary.responses > 0 && score
+      ? [{ entity, score: Number(score[1]), responses: summary.responses }]
+      : [];
+  }).sort((a, b) => b.score - a.score || b.responses - a.responses || analyticShortName(a.entity).localeCompare(analyticShortName(b.entity), "ru")).slice(0, 5), [report.list]);
   const invalidDateRange = Boolean(report.dateFrom && report.dateTo && report.dateFrom > report.dateTo);
-  const hasFilters = Boolean(report.search || report.type !== "all" || report.dateFrom || report.dateTo);
+  const hasFilters = Boolean(
+    report.search ||
+    report.type !== "all" ||
+    report.dateFrom !== report.defaultDateFrom ||
+    report.dateTo !== report.defaultDateTo,
+  );
 
   return (
     <CommonWrapper title="Дашборд аналитики">
@@ -331,8 +343,8 @@ export const AnalyticReportComponent: FC = () => {
             onClick={() => {
               report.setSearch("");
               report.setType("all");
-              report.setDateFrom("");
-              report.setDateTo("");
+              report.setDateFrom(report.defaultDateFrom);
+              report.setDateTo(report.defaultDateTo);
             }}
             className="h-9 rounded-lg px-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
           >
@@ -352,6 +364,42 @@ export const AnalyticReportComponent: FC = () => {
           <CommonServiceError service="аналитики" onRetry={report.retry} />
         }
       >
+        <section className="mb-4 rounded-xl border bg-card p-4">
+          <header className="mb-3 flex items-center gap-2">
+            <TrophyIcon className="size-5 text-primary" aria-hidden="true" />
+            <div>
+              <h2 className="font-heading text-base font-semibold">Топ объектов</h2>
+              <p className="text-xs text-muted-foreground">Лучшие средние оценки за выбранный период</p>
+            </div>
+          </header>
+          {topObjects.length ? (
+            <ol className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
+              {topObjects.map(({ entity, score, responses }, index) => {
+                const TypeIcon = iconForAnalyticType(entity.type);
+                return (
+                  <li key={entity.id.toString()}>
+                    <button
+                      type="button"
+                      onClick={() => navigate(`${ROUTE.ANALYTICS.REPORT}/${entity.id}`)}
+                      className="flex w-full min-w-0 items-center gap-3 rounded-lg border p-3 text-left transition-colors hover:bg-muted/60"
+                    >
+                      <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">{index + 1}</span>
+                      <TypeIcon className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+                      <span className="min-w-0 flex-1">
+                        <span className="block truncate text-sm font-medium" title={entity.name}>{analyticShortName(entity)}</span>
+                        <span className="block truncate text-xs text-muted-foreground">{analyticTypeLabel(entity.type)} · {responses} {plural(responses, "ответ", "ответа", "ответов")}</span>
+                      </span>
+                      <span className="shrink-0 text-lg font-semibold">{score.toFixed(1)} / 5</span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ol>
+          ) : (
+            <p className="text-sm text-muted-foreground">За выбранный период оценок пока нет.</p>
+          )}
+        </section>
+
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {categories.map((group) => (
             <AnalyticSummaryCard
