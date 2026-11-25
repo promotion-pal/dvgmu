@@ -4,5 +4,5 @@ export const ENV = {
   GATEWAY: gateway,
   API: `${gateway}/api/tickets`,
   MDM: `${gateway}/api/mdm`,
-  AUTH: `${gateway}/auth`,
+  AUTH: `${gateway}/api/auth`,
 };

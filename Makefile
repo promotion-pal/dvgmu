@@ -7,8 +7,9 @@ TICKETS_COMPOSE := docker compose -f services/tickets/docker-compose.dev.yml
 MDM_COMPOSE := docker compose -f services/mdm/docker-compose.dev.yml
 AUTH_COMPOSE := docker compose -f services/auth/docker-compose.dev.yml
 GATEWAY_COMPOSE := docker compose -f services/api-gateway/docker-compose.dev.yml
+LK_PROD_COMPOSE := docker compose -f apps/lk/docker-compose.yml
 
-.PHONY: proto dev dev-stop prod-up prod-down auth-test-user tickets-migrate-diff tickets-migrate-lint tickets-migrate-status mdm-migrate-diff mdm-migrate-lint mdm-migrate-status
+.PHONY: proto dev dev-stop prod-up prod-down lk-prod-up lk-prod-down auth-test-user tickets-migrate-diff tickets-migrate-lint tickets-migrate-status mdm-migrate-diff mdm-migrate-lint mdm-migrate-status
 
 dev:
 	@$(TICKETS_COMPOSE) up -d --build
@@ -24,17 +25,27 @@ dev-stop:
 	@$(GATEWAY_COMPOSE) down
 
 prod-up:
+	@docker network inspect traefik-network >/dev/null 2>&1 || (echo "External Docker network traefik-network is missing. Start Traefik or create its network first." >&2; exit 1)
 	@docker network inspect dvgmu-backend >/dev/null 2>&1 || docker network create dvgmu-backend
 	@docker compose -f services/mdm/docker-compose.yml up -d --build
 	@docker compose -f services/tickets/docker-compose.yml up -d --build
 	@docker compose -f services/auth/docker-compose.yml up -d --build
 	@docker compose -f services/api-gateway/docker-compose.yml up -d --build
+	@$(LK_PROD_COMPOSE) up -d --build
 
 prod-down:
+	@$(LK_PROD_COMPOSE) down
 	@docker compose -f services/api-gateway/docker-compose.yml down
 	@docker compose -f services/auth/docker-compose.yml down
 	@docker compose -f services/tickets/docker-compose.yml down
 	@docker compose -f services/mdm/docker-compose.yml down
+
+lk-prod-up:
+	@docker network inspect traefik-network >/dev/null 2>&1 || (echo "External Docker network traefik-network is missing. Start Traefik or create its network first." >&2; exit 1)
+	@$(LK_PROD_COMPOSE) up -d --build
+
+lk-prod-down:
+	@$(LK_PROD_COMPOSE) down
 
 auth-test-user:
 	@$(AUTH_COMPOSE) run --rm dvgmu_auth ./auth-test-user

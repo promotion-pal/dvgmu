@@ -12,13 +12,15 @@ services:
       JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET}
       GATEWAY_SHARED_SECRET: ${GATEWAY_SHARED_SECRET:?Set GATEWAY_SHARED_SECRET}
       JWT_ISSUER: dvgmu-auth
-      GATEWAY_ALLOWED_ORIGINS: ${GATEWAY_PROD_ALLOWED_ORIGINS:-https://lk.dvgmu.promotion-pal.ru}
+      GATEWAY_ALLOWED_ORIGINS: ${GATEWAY_PROD_ALLOWED_ORIGINS:-https://api.core.fesmu.ru}
     networks:
       - traefik-network
       - dvgmu-backend
     labels:
       - traefik.enable=true
-      - traefik.http.routers.dvgmu-api.rule=Host(`${GATEWAY_DOMAIN:-lk.dvgmu.promotion-pal.ru}`) && (PathPrefix(`/api`) || PathPrefix(`/auth`))
+      - traefik.docker.network=traefik-network
+      - traefik.http.routers.dvgmu-api.rule=Host(`${GATEWAY_DOMAIN:-api.core.fesmu.ru}`) && PathPrefix(`/api`)
+      - traefik.http.routers.dvgmu-api.priority=100
       - traefik.http.routers.dvgmu-api.entrypoints=${TRAEFIK_ENTRYPOINTS:-websecure}
       - traefik.http.routers.dvgmu-api.tls=true
       - traefik.http.routers.dvgmu-api.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}

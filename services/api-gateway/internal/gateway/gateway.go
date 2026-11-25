@@ -44,7 +44,7 @@ func New(config Config, log *slog.Logger) (*Gateway, error) {
 	}
 	proxies := map[string]http.Handler{}
 	for prefix, target := range map[string]string{
-		"/auth/":        config.AuthURL,
+		"/api/auth/":    config.AuthURL,
 		"/api/mdm/":     config.MDMURL,
 		"/api/tickets/": config.TicketsURL,
 	} {
@@ -93,7 +93,7 @@ func (g *Gateway) cors(next http.Handler) http.Handler {
 
 func (g *Gateway) authenticate(prefix string, next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if prefix == "/auth/" && isPublicAuthRoute(r) {
+		if prefix == "/api/auth/" && isPublicAuthRoute(r) {
 			next.ServeHTTP(w, r)
 			return
 		}
@@ -116,7 +116,7 @@ func (g *Gateway) authenticate(prefix string, next http.Handler) http.Handler {
 		r.Header.Set("X-Authenticated-Permissions", strings.Join(claims.Permissions, ","))
 		r.Header.Set("X-Gateway-Secret", g.config.SharedSecret)
 		r.Header.Del("Authorization")
-		if prefix != "/auth/" {
+		if prefix != "/api/auth/" {
 			r.Header.Del("Cookie")
 		}
 		next.ServeHTTP(w, r)
@@ -125,11 +125,11 @@ func (g *Gateway) authenticate(prefix string, next http.Handler) http.Handler {
 
 func isPublicAuthRoute(r *http.Request) bool {
 	switch {
-	case r.Method == http.MethodPost && r.URL.Path == "/auth/v1/auth/token":
+	case r.Method == http.MethodPost && r.URL.Path == "/api/auth/v1/auth/token":
 		return true
-	case r.Method == http.MethodGet && r.URL.Path == "/auth/v1/auth/session":
+	case r.Method == http.MethodGet && r.URL.Path == "/api/auth/v1/auth/session":
 		return true
-	case r.Method == http.MethodPost && r.URL.Path == "/auth/v1/auth/logout":
+	case r.Method == http.MethodPost && r.URL.Path == "/api/auth/v1/auth/logout":
 		return true
 	default:
 		return false

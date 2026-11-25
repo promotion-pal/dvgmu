@@ -1,0 +1,12 @@
+.git
+**/.git
+**/node_modules
+**/dist
+**/.DS_Store
+**/.env
+**/.env.*
+docs/
+apps/panel/plane-app/plane.env
+apps/panel/plane-app/plane.prod.env
+apps/panel/plane-app/plane.env.bak
+apps/panel/plane-app/plane.prod.env.bak
