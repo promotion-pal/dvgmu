@@ -116,8 +116,11 @@ export const AnalyticCategoryReport: FC = () => {
       ? [{ object, score: Number(match[1]), responses: summary.responses }]
       : [];
   }).sort((a, b) => b.score - a.score || b.responses - a.responses || analyticShortName(a.object).localeCompare(analyticShortName(b.object), "ru")), [dateFilteredObjects]);
-  const topBestObjects = rankedObjects.slice(0, 5);
-  const topWorstObjects = [...rankedObjects].reverse().slice(0, 5);
+  const topBestObjects = rankedObjects.filter(({ score }) => score >= 4).slice(0, 5);
+  const topWorstObjects = rankedObjects
+    .filter(({ score }) => score < 3)
+    .sort((a, b) => a.score - b.score || b.responses - a.responses)
+    .slice(0, 5);
 
   return (
     <CommonWrapper
@@ -191,43 +194,47 @@ export const AnalyticCategoryReport: FC = () => {
 
         <section className="mb-5 grid gap-3 lg:grid-cols-2" aria-label="Лучшие и худшие объекты">
           <div className="rounded-xl border border-emerald-200 bg-emerald-50/60 p-3 dark:border-emerald-900 dark:bg-emerald-950/20">
-            <h2 className="mb-2 text-sm font-semibold text-emerald-800 dark:text-emerald-300">Топ лучших</h2>
+            <h2 className="mb-2 text-sm font-semibold text-emerald-800 dark:text-emerald-300">Топ лучших · от 4,0</h2>
             {topBestObjects.length ? (
-              <div className="flex flex-wrap gap-2">
+              <ol className="divide-y divide-emerald-200/70 dark:divide-emerald-900/70">
                 {topBestObjects.map(({ object, score, responses }, index) => (
-                  <Link
-                    key={object.id.toString()}
-                    to={`${ROUTE.ANALYTICS.REPORT}/${object.id}`}
-                    title={`${analyticShortName(object)} · ${responses} ${plural(responses, "ответ", "ответа", "ответов")}`}
-                    className="inline-flex max-w-full items-center gap-2 rounded-full border border-emerald-300 bg-white px-3 py-1.5 text-sm text-emerald-950 transition-colors hover:bg-emerald-100 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-100 dark:hover:bg-emerald-900/60"
-                  >
-                    <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-300">{index + 1}</span>
-                    <span className="max-w-48 truncate">{analyticShortName(object)}</span>
-                    <span className="shrink-0 font-semibold">{score.toFixed(1)} / 5</span>
-                  </Link>
+                  <li key={object.id.toString()}>
+                    <Link
+                      to={`${ROUTE.ANALYTICS.REPORT}/${object.id}`}
+                      title={`${analyticShortName(object)} · ${responses} ${plural(responses, "ответ", "ответа", "ответов")}`}
+                      className="flex min-w-0 items-center gap-3 py-2 text-sm text-emerald-950 transition-colors hover:text-emerald-700 dark:text-emerald-100 dark:hover:text-emerald-300"
+                    >
+                      <span className="w-5 shrink-0 text-xs font-semibold text-emerald-700 dark:text-emerald-300">{index + 1}.</span>
+                      <span className="min-w-0 flex-1 truncate" title={object.name}>{analyticShortName(object)}</span>
+                      <span className="shrink-0 text-xs text-muted-foreground">{responses} {plural(responses, "ответ", "ответа", "ответов")}</span>
+                      <span className="shrink-0 rounded-md bg-emerald-100 px-2 py-1 font-semibold text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-200">{score.toFixed(1)} / 5</span>
+                    </Link>
+                  </li>
                 ))}
-              </div>
-            ) : <p className="text-xs text-muted-foreground">За период пока нет оценок.</p>}
+              </ol>
+            ) : <p className="text-xs text-muted-foreground">Нет объектов с оценкой 4,0 и выше за выбранный период.</p>}
           </div>
 
           <div className="rounded-xl border border-rose-200 bg-rose-50/60 p-3 dark:border-rose-900 dark:bg-rose-950/20">
-            <h2 className="mb-2 text-sm font-semibold text-rose-800 dark:text-rose-300">Топ худших</h2>
+            <h2 className="mb-2 text-sm font-semibold text-rose-800 dark:text-rose-300">Топ худших · ниже 3,0</h2>
             {topWorstObjects.length ? (
-              <div className="flex flex-wrap gap-2">
+              <ol className="divide-y divide-rose-200/70 dark:divide-rose-900/70">
                 {topWorstObjects.map(({ object, score, responses }, index) => (
-                  <Link
-                    key={object.id.toString()}
-                    to={`${ROUTE.ANALYTICS.REPORT}/${object.id}`}
-                    title={`${analyticShortName(object)} · ${responses} ${plural(responses, "ответ", "ответа", "ответов")}`}
-                    className="inline-flex max-w-full items-center gap-2 rounded-full border border-rose-300 bg-white px-3 py-1.5 text-sm text-rose-950 transition-colors hover:bg-rose-100 dark:border-rose-800 dark:bg-rose-950/40 dark:text-rose-100 dark:hover:bg-rose-900/60"
-                  >
-                    <span className="text-xs font-semibold text-rose-700 dark:text-rose-300">{index + 1}</span>
-                    <span className="max-w-48 truncate">{analyticShortName(object)}</span>
-                    <span className="shrink-0 font-semibold">{score.toFixed(1)} / 5</span>
-                  </Link>
+                  <li key={object.id.toString()}>
+                    <Link
+                      to={`${ROUTE.ANALYTICS.REPORT}/${object.id}`}
+                      title={`${analyticShortName(object)} · ${responses} ${plural(responses, "ответ", "ответа", "ответов")}`}
+                      className="flex min-w-0 items-center gap-3 py-2 text-sm text-rose-950 transition-colors hover:text-rose-700 dark:text-rose-100 dark:hover:text-rose-300"
+                    >
+                      <span className="w-5 shrink-0 text-xs font-semibold text-rose-700 dark:text-rose-300">{index + 1}.</span>
+                      <span className="min-w-0 flex-1 truncate" title={object.name}>{analyticShortName(object)}</span>
+                      <span className="shrink-0 text-xs text-muted-foreground">{responses} {plural(responses, "ответ", "ответа", "ответов")}</span>
+                      <span className="shrink-0 rounded-md bg-rose-100 px-2 py-1 font-semibold text-rose-800 dark:bg-rose-900/60 dark:text-rose-200">{score.toFixed(1)} / 5</span>
+                    </Link>
+                  </li>
                 ))}
-              </div>
-            ) : <p className="text-xs text-muted-foreground">За период пока нет оценок.</p>}
+              </ol>
+            ) : <p className="text-xs text-muted-foreground">Нет объектов с оценкой ниже 3,0 за выбранный период.</p>}
           </div>
         </section>
 
