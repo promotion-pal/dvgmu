@@ -4,6 +4,7 @@ const LK = "/lk";
 
 const ROUTE = {
   HOME: LK,
+  SCHEDULA: `${LK}/schedula`,
   USER: {
     PROFILE: `${LK}/profile`,
     INFRASTRUCTURE: `${LK}/infrastructure`,
@@ -77,6 +78,7 @@ const ROUTE = {
    * Read-only, except the forms anyone may fill in (collector, hall booking). */
   PUBLIC: {
     SCHEDULE: "/schedule",
+    SCHEDULA: "/schedula",
     SCHEDULE_HALL: "/schedule/halls",
     HALL_BOOKING: "/schedule/halls/booking",
     COMPUTER_CLASS: "/schedule/computer-classes",
