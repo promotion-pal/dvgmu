@@ -17,7 +17,7 @@ import { AnalyticType } from "@fesmu/contract/analytics/enum/analytic.enum_pb";
 import { analyticClient } from "./analytic-report.fn";
 import { resolveDate } from "@/widgets/analytic/analytic.lib";
 import { resolveActiveFields } from "./field-registry";
-import { mergeCategory, plural } from "./analytic-report.stats";
+import { mergeCategory } from "./analytic-report.stats";
 import { AnalyticDetail, AnalyticSummaryCard } from "./analytic-report.ui";
 import { RatingDetailModal } from "./rating-detail.ui";
 
@@ -100,9 +100,6 @@ export const AnalyticCategoryReport: FC = () => {
     }));
   }, [objects, dateFrom, dateTo]);
 
-  const missingSoapRatings = type === AnalyticType.TOILET
-    ? dateFilteredObjects.flatMap((object) => object.ratings).filter((rating) => !rating.hasSoap)
-    : [];
   const objectsWithMissingSoap = type === AnalyticType.TOILET
     ? dateFilteredObjects.filter((object) => object.ratings.some((rating) => !rating.hasSoap)).length
     : 0;
@@ -190,7 +187,6 @@ export const AnalyticCategoryReport: FC = () => {
                   <h2 className="font-heading font-semibold text-destructive">Проблемы с мылом</h2>
                   <p className="text-sm text-muted-foreground">
                     В {objectsWithMissingSoap} из {dateFilteredObjects.length} санузлов получены ответы об отсутствии мыла.
-                    {" "}{missingSoapRatings.length} {plural(missingSoapRatings.length, "ответ", "ответа", "ответов")}.
                   </p>
                 </div>
               </div>
