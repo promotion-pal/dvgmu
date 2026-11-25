@@ -15,7 +15,7 @@ import { AnalyticSchema } from "@fesmu/contract/analytics/entity/analytic.entity
 import type { Analytic } from "@fesmu/contract/analytics/entity/analytic.entity_pb";
 import { AnalyticType } from "@fesmu/contract/analytics/enum/analytic.enum_pb";
 
-import { analyticClient } from "./analytic-report.fn";
+import { analyticClient, currentWeekDateRange } from "./analytic-report.fn";
 import { resolveDate } from "@/widgets/analytic/analytic.lib";
 import { mergeCategory, plural } from "./analytic-report.stats";
 import { AnalyticDetail, AnalyticSummaryCard } from "./analytic-report.ui";
@@ -29,9 +29,10 @@ export const AnalyticCategoryReport: FC = () => {
   const [objects, setObjects] = useState<Analytic[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [dateFrom, setDateFrom] = useState("");
-  const [dateTo, setDateTo] = useState("");
-  const [datePreset, setDatePreset] = useState<"all" | "today" | "week" | "month" | "custom">("all");
+  const [initialWeek] = useState(currentWeekDateRange);
+  const [dateFrom, setDateFrom] = useState(initialWeek.from);
+  const [dateTo, setDateTo] = useState(initialWeek.to);
+  const [datePreset, setDatePreset] = useState<"all" | "today" | "week" | "month" | "custom">("week");
 
   const selectDatePreset = (preset: typeof datePreset) => {
     setDatePreset(preset);
