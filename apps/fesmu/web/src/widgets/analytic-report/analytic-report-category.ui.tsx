@@ -1,11 +1,12 @@
 import type { FC } from "react";
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { create } from "@bufbuild/protobuf";
-import { AlertTriangleIcon, ArrowLeftIcon } from "lucide-react";
+import { AlertTriangleIcon, ArrowLeftIcon, ChevronRightIcon } from "lucide-react";
 
 import { ROUTE } from "@/shared/config/path";
 import { AnalyticQrBatchButton } from "@/widgets/analytic";
+import { analyticShortName } from "@/widgets/analytic/analytic.utils";
 import { CommonWrapper } from "@/shared/components/wrapper";
 import { CommonControlState, CommonServiceError } from "@/shared/components/state";
 import { Button } from "@/shared/ui/button";
@@ -17,7 +18,7 @@ import { AnalyticType } from "@fesmu/contract/analytics/enum/analytic.enum_pb";
 import { analyticClient } from "./analytic-report.fn";
 import { resolveDate } from "@/widgets/analytic/analytic.lib";
 import { resolveActiveFields } from "./field-registry";
-import { mergeCategory } from "./analytic-report.stats";
+import { mergeCategory, plural } from "./analytic-report.stats";
 import { AnalyticDetail, AnalyticSummaryCard } from "./analytic-report.ui";
 import { RatingDetailModal } from "./rating-detail.ui";
 
@@ -100,9 +101,15 @@ export const AnalyticCategoryReport: FC = () => {
     }));
   }, [objects, dateFrom, dateTo]);
 
-  const objectsWithMissingSoap = type === AnalyticType.TOILET
-    ? dateFilteredObjects.filter((object) => object.ratings.some((rating) => !rating.hasSoap)).length
-    : 0;
+  const soapIssueObjects = useMemo(() => type === AnalyticType.TOILET
+    ? dateFilteredObjects
+      .map((object) => ({
+        object,
+        reports: object.ratings.filter((rating) => !rating.hasSoap).length,
+      }))
+      .filter((item) => item.reports > 0)
+      .sort((a, b) => b.reports - a.reports || analyticShortName(a.object).localeCompare(analyticShortName(b.object), "ru"))
+    : [], [type, dateFilteredObjects]);
   const group = useMemo(() => mergeCategory(type, dateFilteredObjects), [type, dateFilteredObjects]);
 
   const activeFields = resolveActiveFields(type, group.merged.ratings);
@@ -178,18 +185,38 @@ export const AnalyticCategoryReport: FC = () => {
           )}
         </section>
 
-        {type === AnalyticType.TOILET && objectsWithMissingSoap > 0 && (
+        {type === AnalyticType.TOILET && soapIssueObjects.length > 0 && (
           <section className="mb-6 rounded-xl border border-destructive/30 bg-destructive/5 p-4">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div className="flex items-start gap-3">
-                <AlertTriangleIcon className="mt-0.5 size-5 shrink-0 text-destructive" />
+            <header className="flex flex-wrap items-center justify-between gap-2">
+              <div className="flex items-center gap-3">
+                <AlertTriangleIcon className="size-5 shrink-0 text-destructive" />
                 <div>
                   <h2 className="font-heading font-semibold text-destructive">Проблемы с мылом</h2>
                   <p className="text-sm text-muted-foreground">
-                    В {objectsWithMissingSoap} из {dateFilteredObjects.length} санузлов получены ответы об отсутствии мыла.
+                    {soapIssueObjects.length} {plural(soapIssueObjects.length, "санузел отмечен", "санузла отмечены", "санузлов отмечено")} из {dateFilteredObjects.length}.
+                    {" "}Выберите объект, чтобы открыть его карточку.
                   </p>
                 </div>
               </div>
+            </header>
+            <div className="mt-4 flex flex-col gap-2">
+              {soapIssueObjects.map(({ object }) => {
+                const title = analyticShortName(object);
+                return (
+                  <Link
+                    key={object.id.toString()}
+                    to={`${ROUTE.ANALYTICS.REPORT}/${object.id}`}
+                    className="group flex min-w-0 items-center gap-3 rounded-lg border bg-background p-3 transition-colors hover:border-destructive/40 hover:bg-destructive/5"
+                  >
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate font-medium" title={title}>{title}</span>
+                      {object.name !== title && <span className="block truncate text-xs text-muted-foreground" title={object.name}>{object.name}</span>}
+                      <span className="mt-1 block text-xs text-destructive">Отмечено отсутствие мыла</span>
+                    </span>
+                    <ChevronRightIcon className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+                  </Link>
+                );
+              })}
             </div>
           </section>
         )}
