@@ -33,7 +33,35 @@ export const AnalyticCategoryReport: FC = () => {
   const [selectedRatingId, setSelectedRatingId] = useState<string>();
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
-  const [soapProblemsOnly, setSoapProblemsOnly] = useState(false);
+  const [datePreset, setDatePreset] = useState<"all" | "today" | "week" | "month" | "custom">("all");
+
+  const selectDatePreset = (preset: typeof datePreset) => {
+    setDatePreset(preset);
+    if (preset === "all" || preset === "custom") {
+      if (preset === "all") {
+        setDateFrom("");
+        setDateTo("");
+      }
+      return;
+    }
+
+    const today = new Date();
+    const start = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    if (preset === "week") {
+      const weekday = (start.getDay() + 6) % 7;
+      start.setDate(start.getDate() - weekday);
+    } else if (preset === "month") {
+      start.setDate(1);
+    }
+    const toInputValue = (date: Date) => {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    };
+    setDateFrom(toInputValue(start));
+    setDateTo(toInputValue(today));
+  };
 
   useEffect(() => {
     let cancelled = false;
@@ -78,14 +106,7 @@ export const AnalyticCategoryReport: FC = () => {
   const objectsWithMissingSoap = type === AnalyticType.TOILET
     ? dateFilteredObjects.filter((object) => object.ratings.some((rating) => !rating.hasSoap)).length
     : 0;
-  const visibleObjects = useMemo(() => {
-    if (!soapProblemsOnly) return dateFilteredObjects;
-    return dateFilteredObjects.map((object) => create(AnalyticSchema, {
-      ...object,
-      ratings: object.ratings.filter((rating) => !rating.hasSoap),
-    }));
-  }, [dateFilteredObjects, soapProblemsOnly]);
-  const group = useMemo(() => mergeCategory(type, visibleObjects), [type, visibleObjects]);
+  const group = useMemo(() => mergeCategory(type, dateFilteredObjects), [type, dateFilteredObjects]);
 
   const activeFields = resolveActiveFields(type, group.merged.ratings);
   const selectedRating = group.merged.ratings.find((r) => r.id.toString() === selectedRatingId);
@@ -93,7 +114,6 @@ export const AnalyticCategoryReport: FC = () => {
   return (
     <CommonWrapper
       title={group.label}
-      description="Общая оценка по всем объектам категории, ниже — каждый объект отдельно."
       action={
         <div className="flex flex-wrap gap-2">
           <AnalyticQrBatchButton list={objects} fileName={`qr-${group.label}`} />
@@ -114,34 +134,48 @@ export const AnalyticCategoryReport: FC = () => {
           <div className="mb-3 flex flex-wrap items-start justify-between gap-2">
             <div>
               <h2 className="font-heading text-base font-semibold">Фильтры отчёта</h2>
-              <p className="text-sm text-muted-foreground">Период применяется к датам ответов и обновляет сводку и список объектов.</p>
+              <p className="text-sm text-muted-foreground">Период применяется к датам ответов. Неделя считается с понедельника, месяц — с первого числа.</p>
             </div>
-            {(dateFrom || dateTo || soapProblemsOnly) && (
-              <Button variant="ghost" size="sm" onClick={() => {
-                setDateFrom("");
-                setDateTo("");
-                setSoapProblemsOnly(false);
-              }}>
-                Сбросить фильтры
-              </Button>
+            {datePreset !== "all" && <Button variant="ghost" size="sm" onClick={() => selectDatePreset("all")}>Сбросить период</Button>}
+          </div>
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-wrap gap-2" aria-label="Быстрый выбор периода">
+              {([
+                ["all", "За всё время"],
+                ["today", "Сегодня"],
+                ["week", "Неделя"],
+                ["month", "Месяц"],
+                ["custom", "Свой период"],
+              ] as const).map(([preset, label]) => (
+                <Button
+                  key={preset}
+                  type="button"
+                  size="sm"
+                  variant={datePreset === preset ? "default" : "outline"}
+                  onClick={() => selectDatePreset(preset)}
+                >
+                  {label}
+                </Button>
+              ))}
+            </div>
+            {datePreset === "custom" && (
+              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
+                <label className="flex flex-col gap-1 text-xs text-muted-foreground">
+                  С даты
+                  <input type="date" value={dateFrom} onChange={(event) => { setDatePreset("custom"); setDateFrom(event.target.value); }} aria-label="Начало периода" className="h-9 rounded-lg border bg-background px-3 text-sm text-foreground" />
+                </label>
+                <label className="flex flex-col gap-1 text-xs text-muted-foreground">
+                  По дату
+                  <input type="date" value={dateTo} onChange={(event) => { setDatePreset("custom"); setDateTo(event.target.value); }} aria-label="Конец периода" className="h-9 rounded-lg border bg-background px-3 text-sm text-foreground" />
+                </label>
+              </div>
             )}
           </div>
-          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
-            <label className="flex flex-col gap-1 text-xs text-muted-foreground">
-              С даты
-              <input type="date" value={dateFrom} onChange={(event) => setDateFrom(event.target.value)} aria-label="Начало периода" className="h-9 rounded-lg border bg-background px-3 text-sm text-foreground" />
-            </label>
-            <label className="flex flex-col gap-1 text-xs text-muted-foreground">
-              По дату
-              <input type="date" value={dateTo} onChange={(event) => setDateTo(event.target.value)} aria-label="Конец периода" className="h-9 rounded-lg border bg-background px-3 text-sm text-foreground" />
-            </label>
-            {type === AnalyticType.TOILET && (
-              <label className="inline-flex min-h-9 cursor-pointer items-center gap-2 rounded-lg border px-3 text-sm hover:bg-muted">
-                <input type="checkbox" checked={soapProblemsOnly} onChange={(event) => setSoapProblemsOnly(event.target.checked)} />
-                Показывать только ответы «мыла нет»
-              </label>
-            )}
-          </div>
+          {datePreset !== "all" && (
+            <p className="mt-2 text-xs text-muted-foreground">
+              Выбранный период: {dateFrom ? new Date(`${dateFrom}T00:00:00`).toLocaleDateString("ru-RU") : "без начала"} — {dateTo ? new Date(`${dateTo}T00:00:00`).toLocaleDateString("ru-RU") : "без окончания"}
+            </p>
+          )}
           {dateFrom && dateTo && dateFrom > dateTo && (
             <p className="mt-2 text-sm text-destructive">Начало периода должно быть раньше окончания.</p>
           )}
@@ -160,13 +194,6 @@ export const AnalyticCategoryReport: FC = () => {
                   </p>
                 </div>
               </div>
-              <Button
-                variant={soapProblemsOnly ? "default" : "outline"}
-                size="sm"
-                onClick={() => setSoapProblemsOnly((value) => !value)}
-              >
-                {soapProblemsOnly ? "Показаны только проблемы" : "Показать санузлы с проблемой"}
-              </Button>
             </div>
           </section>
         )}
