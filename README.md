@@ -29,7 +29,7 @@ pnpm install
 | `make prod-down` | Останавливает production сервисы без удаления данных Postgres. |
 | `make lk-prod-up` / `make lk-prod-down` | Отдельно запускает или останавливает LK за Traefik, если backend уже поднят. |
 | `make panel-up` | Запускает Plane локально с публикацией портов 80/443; настройки и секреты — в `apps/panel/plane-app/plane.env`. |
-| `make panel-prod-up` | Запускает Plane за существующим Traefik на `test.fesmu.ru`; требует `plane.env`, `plane.prod.env` и внешнюю Docker-сеть `traefik-network`. |
+| `make panel-prod-up` | Запускает Plane за существующим Traefik на `mentor.fesmu.ru`; требует `plane.env`, `plane.prod.env` и внешнюю Docker-сеть `traefik-network`. |
 | `make panel-down` / `make panel-prod-down` | Останавливает локальный или Traefik-вариант Plane, сохраняя Docker volumes. |
 | `make panel-ps` / `make panel-logs` | Показывает состояние контейнеров или следит за логами Plane. |
 | `make auth-test-user` | Создаёт или обновляет тестовую учетную запись Auth по `AUTH_TEST_USER_ID`, `AUTH_TEST_EMAIL` и `AUTH_TEST_PASSWORD` из `.env`. |
@@ -70,6 +70,6 @@ Auth сейчас использует отдельную тестовую та�
 
 Traefik маршрутизирует `https://api.core.fesmu.ru/api/*` в API Gateway; запросы к корню и остальным путям хоста получает LK. Под `/api` находятся `/api/auth/*`, `/api/mdm/*` и `/api/tickets/*`. Gateway router имеет больший приоритет, чем SPA-router LK. Production-сборка LK получает адрес Gateway из `VITE_PROD_GATEWAY_URL` (по умолчанию `https://api.core.fesmu.ru`). В `.env` задаются `GATEWAY_DOMAIN=api.core.fesmu.ru`, `APP_DOMAIN=api.core.fesmu.ru`, `GATEWAY_PROD_ALLOWED_ORIGINS=https://api.core.fesmu.ru` и `MDM_ALLOWED_ORIGINS=https://api.core.fesmu.ru`.
 
-Plane запускается отдельно от сервисов портала. Описание локального запуска и Traefik-варианта на `test.fesmu.ru` находится в `apps/panel/README.md`.
+Plane запускается отдельно от сервисов портала. Описание локального запуска и Traefik-варианта на `mentor.fesmu.ru` находится в `apps/panel/README.md`.
 
 В локальной разработке LK использует Gateway на `localhost:4052`; production-контейнер собирается из pnpm workspace через `apps/lk/Dockerfile`, затем Nginx отдаёт SPA через Traefik. Для полного запуска на сервере используйте `make prod-up`; для одной LK при работающем backend — `make lk-prod-up`.

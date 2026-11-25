@@ -24,12 +24,12 @@ PostgreSQL, Valkey, RabbitMQ, MinIO и собственный proxy. Локал�
 и uploads. `make panel-down` сохраняет Docker volumes; не используйте `down -v`,
 если нужно сохранить данные.
 
-## Запуск через Traefik на test.fesmu.ru
+## Запуск через Traefik на mentor.fesmu.ru
 
 Для тестового домена используется override
 `apps/panel/plane-app/docker-compose.traefik.yaml`. Он подключает внутренний proxy
 Plane к внешней сети `traefik-network`, убирает публикацию портов 80/443 на хост
-и добавляет HTTPS router `plane-test` для `test.fesmu.ru`.
+и добавляет HTTPS router `plane-mentor` для `mentor.fesmu.ru`.
 
 На сервере, где работает Traefik:
 
@@ -42,7 +42,7 @@ make panel-ps
 ```
 
 Нужны существующая Docker-сеть `traefik-network`, Traefik с entrypoint `websecure`
-и resolver `letsencrypt`, а DNS-запись `test.fesmu.ru` должна указывать на сервер
+и resolver `letsencrypt`, а DNS-запись `mentor.fesmu.ru` должна указывать на сервер
 с Traefik. Порты 80/443 должны быть доступны извне для маршрутизации и выпуска
 сертификата. `plane.prod.env` задаёт `APP_DOMAIN`, `WEB_URL` и CORS для HTTPS;
 его локальную копию не добавляйте в Git. Остановить панель можно через
