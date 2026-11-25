@@ -15,9 +15,7 @@ import { analyticCategoryEmoji, analyticShortName, buildAnalyticQrUrl } from "@/
 import type { Analytic } from "@fesmu/contract/analytics/entity/analytic.entity_pb";
 
 import { analyticClient, analyticTypeLabel } from "./analytic-report.fn";
-import { resolveActiveFields } from "./field-registry";
 import { AnalyticDetail } from "./analytic-report.ui";
-import { RatingDetailModal } from "./rating-detail.ui";
 
 export const AnalyticReportDetail: FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -26,9 +24,6 @@ export const AnalyticReportDetail: FC = () => {
   const [entity, setEntity] = useState<Analytic | undefined>(undefined);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [selectedRatingId, setSelectedRatingId] = useState<string | undefined>(
-    undefined,
-  );
 
   useEffect(() => {
     if (!id) return;
@@ -53,14 +48,6 @@ export const AnalyticReportDetail: FC = () => {
       cancelled = true;
     };
   }, [id]);
-
-  const activeFields = entity ? resolveActiveFields(entity.type, entity.ratings) : [];
-  const metricFields = activeFields.filter((f) => f.role !== "identity");
-  const identityFields = activeFields.filter((f) => f.role === "identity");
-
-  const selectedRating = entity?.ratings.find(
-    (r) => r.id.toString() === selectedRatingId,
-  );
 
   return (
     <CommonWrapper
@@ -92,10 +79,7 @@ export const AnalyticReportDetail: FC = () => {
         error={<CommonServiceError service="аналитики" />}
       >
         {entity && (
-          <AnalyticDetail
-            entity={entity}
-            onRatingClick={(ratingId) => setSelectedRatingId(ratingId)}
-          />
+          <AnalyticDetail entity={entity} />
         )}
       </CommonControlState>
 
@@ -115,12 +99,6 @@ export const AnalyticReportDetail: FC = () => {
         </Card>
       )}
 
-      <RatingDetailModal
-        rating={selectedRating}
-        metricFields={metricFields}
-        identityFields={identityFields}
-        onClose={() => setSelectedRatingId(undefined)}
-      />
     </CommonWrapper>
   );
 };

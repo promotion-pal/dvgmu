@@ -2,17 +2,20 @@
 import type { FC} from "react";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { MessageSquare } from "lucide-react";
-
 import { cn } from "@/shared/lib/utils";
 import { analyticShortName } from "@/widgets/analytic/analytic.utils";
 import { ROUTE } from "@/shared/config/path";
 import { CommonWrapper } from "@/shared/components/wrapper";
 import { CommonControlState, CommonServiceError } from "@/shared/components/state";
+import {
+  CommonFilter,
+  CommonFilterDateRange,
+  CommonFilterSelect,
+  CommonSearchInput,
+} from "@/shared/components/filter";
 import { FieldDistributionChart } from "@/shared/components/chart";
 import { Badge } from "@/shared/ui/badge";
 import { Card } from "@/shared/ui/card";
-import { Input } from "@/shared/ui/input";
 import { AnalyticType } from "@fesmu/contract/analytics/enum/analytic.enum_pb";
 import type { Analytic } from "@fesmu/contract/analytics/entity/analytic.entity_pb";
 
@@ -21,10 +24,7 @@ import {
   analyticTypeLabel,
   useAnalyticReport,
 } from "./analytic-report.fn";
-import type { AnalyticFieldDef } from "./field-registry";
 import {
-  collectRespondents,
-  fieldValueMatchesAny,
   groupByCategory,
   plural,
   summarizeAnalytic,
@@ -70,192 +70,11 @@ const FieldStatCard: FC<{ summary: FieldSummary }> = ({ summary }) => (
   </div>
 );
 
-type RespondentSortMode = "date_desc" | "date_asc" | "name_asc" | "name_desc";
-
-const SORT_OPTIONS: { value: RespondentSortMode; label: string }[] = [
-  { value: "date_desc", label: "Сначала новые" },
-  { value: "date_asc", label: "Сначала старые" },
-  { value: "name_asc", label: "ФИО А→Я" },
-  { value: "name_desc", label: "ФИО Я→А" },
-];
-
-/** Поля, по которым имеет смысл фильтровать список опрошенных — дискретные
- * значения (enum/enumList/bool/rating) с непустым распределением. Текстовые
- * поля сюда не идут — по ним и так ищем через ФИО/просмотр карточки. */
-const filterableFieldSummaries = (summaries: FieldSummary[]): FieldSummary[] =>
-  summaries.filter(
-    (s) =>
-      s.def.role !== "identity" &&
-      s.def.kind !== "text" &&
-      s.buckets.length > 0,
-  );
-
-const RespondentsTable: FC<{
-  entity: Analytic;
-  def: AnalyticFieldDef;
-  filterFields: FieldSummary[];
-  onRowClick?: (ratingId: string) => void;
-  /** В сводке категории — подписать, к какому объекту относится ответ. */
-  objectNames?: Map<string, string>;
-}> = ({ entity, def, filterFields, onRowClick, objectNames }) => {
-  const [search, setSearch] = useState("");
-  const [sort, setSort] = useState<RespondentSortMode>("date_desc");
-  const [fieldFilters, setFieldFilters] = useState<Record<string, string>>({});
-
-  useEffect(() => {
-    setSearch("");
-    setSort("date_desc");
-    setFieldFilters({});
-  }, [entity.id]);
-
-  const activeFilterEntries = useMemo(
-    () => Object.entries(fieldFilters).filter(([, value]) => value),
-    [fieldFilters],
-  );
-
-  const rows = useMemo(() => {
-    let ratings = entity.ratings;
-    if (activeFilterEntries.length) {
-      ratings = ratings.filter((r) =>
-        activeFilterEntries.every(([key, value]) => {
-          const fieldDef = filterFields.find((f) => f.def.key === key)?.def;
-          return !fieldDef || fieldValueMatchesAny(r, fieldDef, new Set([value]));
-        }),
-      );
-    }
-
-    let result = collectRespondents(ratings, def);
-    if (objectNames) {
-      const objectOf = new Map(ratings.map((r) => [r.id.toString(), objectNames.get(r.analyticId.toString())]));
-      result = result.map((row) => {
-        const object = objectOf.get(row.ratingId);
-        return object ? { ...row, objectName: object } : row;
-      });
-    }
-
-    const q = search.trim().toLowerCase();
-    if (q) result = result.filter((row) => row.name.toLowerCase().includes(q));
-
-    return [...result].sort((a, b) => {
-      switch (sort) {
-        case "name_asc":
-          return a.name.localeCompare(b.name, "ru");
-        case "name_desc":
-          return b.name.localeCompare(a.name, "ru");
-        case "date_asc":
-          return (a.createdAt?.getTime() ?? 0) - (b.createdAt?.getTime() ?? 0);
-        default:
-          return (b.createdAt?.getTime() ?? 0) - (a.createdAt?.getTime() ?? 0);
-      }
-    });
-  }, [entity.ratings, def, search, sort, activeFilterEntries, filterFields, objectNames]);
-
-  const hasAnyRespondents = entity.ratings.length > 0;
-  const hasActiveNarrowing = Boolean(search.trim()) || activeFilterEntries.length > 0;
-
-  return (
-    <div className="flex flex-col gap-3">
-      {hasAnyRespondents && (
-        <section className="rounded-lg border bg-muted/20 p-3">
-          <div className="mb-2">
-            <p className="text-sm font-semibold">Фильтры ответов</p>
-            <p className="text-xs text-muted-foreground">Поиск по ФИО, сортировка и отбор по значению поля.</p>
-          </div>
-          <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
-            <Input
-              placeholder="Поиск по ФИО"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full sm:max-w-[220px]"
-            />
-            <select
-              value={sort}
-              onChange={(e) => setSort(e.target.value as RespondentSortMode)}
-              aria-label="Сортировка ответов"
-              className="rounded-md border bg-background px-2 py-1.5 text-xs sm:w-auto"
-            >
-              {SORT_OPTIONS.map((o) => (
-                <option key={o.value} value={o.value}>
-                  {o.label}
-                </option>
-              ))}
-            </select>
-            {filterFields.map((f) => (
-              <select
-                key={f.def.key}
-                value={fieldFilters[f.def.key] ?? ""}
-                onChange={(e) =>
-                  setFieldFilters((prev) => ({ ...prev, [f.def.key]: e.target.value }))
-                }
-                aria-label={`Фильтр: ${f.def.label}`}
-                className="max-w-full rounded-md border bg-background px-2 py-1.5 text-xs sm:max-w-[200px]"
-              >
-                <option value="">{f.def.label}: все</option>
-                {f.buckets.map((b) => (
-                  <option key={b.label} value={b.label}>
-                    {b.label} ({b.count})
-                  </option>
-                ))}
-              </select>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {rows.length === 0 ? (
-        <div className="flex flex-col items-center gap-2 rounded-lg border border-dashed py-8 text-center">
-          <MessageSquare className="size-6 text-muted-foreground/50" />
-          <p className="text-sm text-muted-foreground">
-            {hasActiveNarrowing
-              ? "Никто не подошёл под поиск/фильтр"
-              : "Опрошенных пока нет"}
-          </p>
-        </div>
-      ) : (
-        <div className="grid max-h-80 gap-2 overflow-y-auto pr-1">
-          {rows.map((row) => (
-            <button
-              key={row.ratingId}
-              type="button"
-              disabled={!onRowClick}
-              onClick={() => onRowClick?.(row.ratingId)}
-              className={cn(
-                "flex w-full flex-col gap-3 rounded-lg border bg-card p-4 text-left text-sm shadow-xs sm:flex-row sm:items-start sm:justify-between sm:gap-4",
-                onRowClick && "hover:bg-muted/70",
-                !row.answered && "text-muted-foreground",
-              )}
-            >
-              <div className="min-w-0">
-                <p className="font-medium">{row.name}</p>
-                {row.objectName && (
-                  <Badge variant="outline" className="mt-1 h-auto whitespace-normal">
-                    Объект: {row.objectName}
-                  </Badge>
-                )}
-                {row.subtitle && (
-                  <p className="text-xs text-muted-foreground">{row.subtitle}</p>
-                )}
-              </div>
-              <div className="flex items-baseline justify-between gap-3 sm:shrink-0 sm:flex-col sm:items-end sm:text-right">
-                <span className="font-medium text-foreground">{row.value}</span>
-                <span className="text-xs text-muted-foreground">
-                  {formatDay(row.createdAt)}
-                </span>
-              </div>
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
-
 export const AnalyticDetail: FC<{
   entity: Analytic;
-  onRatingClick?: (ratingId: string) => void;
   /** Сводка категории: entity — слитые ответы всех объектов этого типа. */
   objectNames?: Map<string, string>;
-}> = ({ entity, onRatingClick, objectNames }) => {
+}> = ({ entity, objectNames }) => {
   const summary = useMemo(() => summarizeAnalytic(entity), [entity]);
 
   const metricFields = useMemo(
@@ -279,11 +98,6 @@ export const AnalyticDetail: FC<{
   const activeSummary = activeField
     ? fieldSummaries.find((s) => s.def.key === activeField.key)
     : undefined;
-
-  const respondentFilterFields = useMemo(
-    () => filterableFieldSummaries(fieldSummaries),
-    [fieldSummaries],
-  );
 
   return (
     <div className="flex flex-col gap-4">
@@ -376,17 +190,6 @@ export const AnalyticDetail: FC<{
               </p>
 
               <FieldDistributionChart buckets={activeSummary.buckets} />
-
-              <p className="mb-2 mt-4 font-heading text-sm font-semibold">
-                Опрошенные
-              </p>
-              <RespondentsTable
-                entity={entity}
-                def={activeField}
-                filterFields={respondentFilterFields}
-                onRowClick={onRatingClick}
-                objectNames={objectNames}
-              />
             </Card>
           )}
         </>
@@ -486,67 +289,49 @@ export const AnalyticReportComponent: FC = () => {
   const navigate = useNavigate();
   const categories = useMemo(() => groupByCategory(report.list), [report.list]);
   const invalidDateRange = Boolean(report.dateFrom && report.dateTo && report.dateFrom > report.dateTo);
+  const hasFilters = Boolean(report.search || report.type !== "all" || report.dateFrom || report.dateTo);
 
   return (
     <CommonWrapper title="Дашборд аналитики">
-      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
-        <Input
+      <CommonFilter className="mb-4 w-full p-2.5">
+        <CommonSearchInput
+          value={report.search}
+          onChange={report.setSearch}
           placeholder="Поиск по названию"
-          defaultValue={report.search}
-          onChange={(e) => report.setSearch(e.target.value)}
-          className="w-full sm:max-w-xs"
+          className="w-full sm:w-56 [&_input]:h-9 [&_input]:w-full [&_input]:py-1.5"
         />
-        <select
+        <CommonFilterSelect
+          label="Тип"
           value={String(report.type)}
-          onChange={(e) =>
-            report.setType(
-              e.target.value === "all"
-                ? "all"
-                : (Number(e.target.value) as AnalyticType),
-            )
-          }
-          className="w-full rounded-lg border bg-background px-3 py-2 text-sm sm:w-auto"
-        >
-          <option value="all">Все типы</option>
-          {ANALYTIC_TYPE_OPTIONS.map((o) => (
-            <option key={o.value} value={o.value}>
-              {o.label}
-            </option>
-          ))}
-        </select>
-        <label className="flex w-full flex-col gap-1 text-xs text-muted-foreground sm:w-auto">
-          С даты
-          <Input
-            type="date"
-            value={report.dateFrom}
-            onChange={(e) => report.setDateFrom(e.target.value)}
-            aria-label="Начало периода"
-            className="w-full sm:w-[160px]"
-          />
-        </label>
-        <label className="flex w-full flex-col gap-1 text-xs text-muted-foreground sm:w-auto">
-          По дату
-          <Input
-            type="date"
-            value={report.dateTo}
-            onChange={(e) => report.setDateTo(e.target.value)}
-            aria-label="Конец периода"
-            className="w-full sm:w-[160px]"
-          />
-        </label>
-        {(report.dateFrom || report.dateTo) && (
+          onChange={(value) => report.setType(value === undefined || value === "all" ? "all" : Number(value) as AnalyticType)}
+          allLabel="Все типы"
+          options={ANALYTIC_TYPE_OPTIONS.map((option) => ({ value: String(option.value), label: option.label }))}
+          className="[&_button]:h-9 [&_button]:min-w-36"
+        />
+        <CommonFilterDateRange
+          label="Период"
+          from={report.dateFrom || undefined}
+          to={report.dateTo || undefined}
+          onChange={({ from, to }) => {
+            report.setDateFrom(from ?? "");
+            report.setDateTo(to ?? "");
+          }}
+        />
+        {hasFilters && (
           <button
             type="button"
             onClick={() => {
+              report.setSearch("");
+              report.setType("all");
               report.setDateFrom("");
               report.setDateTo("");
             }}
-            className="inline-flex h-9 items-center justify-center rounded-lg border px-3 text-sm hover:bg-muted"
+            className="h-9 rounded-lg px-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
           >
-            Сбросить даты
+            Сбросить
           </button>
         )}
-      </div>
+      </CommonFilter>
       {invalidDateRange && (
         <p className="mb-4 text-xs text-destructive">Начало периода должно быть раньше окончания.</p>
       )}

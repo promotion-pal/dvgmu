@@ -17,10 +17,8 @@ import { AnalyticType } from "@fesmu/contract/analytics/enum/analytic.enum_pb";
 
 import { analyticClient } from "./analytic-report.fn";
 import { resolveDate } from "@/widgets/analytic/analytic.lib";
-import { resolveActiveFields } from "./field-registry";
 import { mergeCategory, plural } from "./analytic-report.stats";
 import { AnalyticDetail, AnalyticSummaryCard } from "./analytic-report.ui";
-import { RatingDetailModal } from "./rating-detail.ui";
 
 /** Категория опросов: сначала общая сводка по всем объектам типа, ниже — каждый объект. */
 export const AnalyticCategoryReport: FC = () => {
@@ -31,7 +29,6 @@ export const AnalyticCategoryReport: FC = () => {
   const [objects, setObjects] = useState<Analytic[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [selectedRatingId, setSelectedRatingId] = useState<string>();
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
   const [datePreset, setDatePreset] = useState<"all" | "today" | "week" | "month" | "custom">("all");
@@ -112,9 +109,6 @@ export const AnalyticCategoryReport: FC = () => {
     : [], [type, dateFilteredObjects]);
   const group = useMemo(() => mergeCategory(type, dateFilteredObjects), [type, dateFilteredObjects]);
 
-  const activeFields = resolveActiveFields(type, group.merged.ratings);
-  const selectedRating = group.merged.ratings.find((r) => r.id.toString() === selectedRatingId);
-
   return (
     <CommonWrapper
       title={group.label}
@@ -186,32 +180,32 @@ export const AnalyticCategoryReport: FC = () => {
         </section>
 
         {type === AnalyticType.TOILET && soapIssueObjects.length > 0 && (
-          <section className="mb-6 rounded-xl border border-destructive/30 bg-destructive/5 p-4">
+          <section className="mb-5 rounded-xl border border-destructive/30 bg-destructive/5 p-3">
             <header className="flex flex-wrap items-center justify-between gap-2">
-              <div className="flex items-center gap-3">
-                <AlertTriangleIcon className="size-5 shrink-0 text-destructive" />
+              <div className="flex items-center gap-2">
+                <AlertTriangleIcon className="size-4 shrink-0 text-destructive" />
                 <div>
-                  <h2 className="font-heading font-semibold text-destructive">Проблемы с мылом</h2>
-                  <p className="text-sm text-muted-foreground">
+                  <h2 className="font-heading text-sm font-semibold text-destructive">Проблемы с мылом</h2>
+                  <p className="text-xs text-muted-foreground">
                     {soapIssueObjects.length} {plural(soapIssueObjects.length, "санузел отмечен", "санузла отмечены", "санузлов отмечено")} из {dateFilteredObjects.length}.
                     {" "}Выберите объект, чтобы открыть его карточку.
                   </p>
                 </div>
               </div>
             </header>
-            <div className="mt-4 flex flex-col gap-2">
+            <div className="mt-2 flex flex-col gap-1.5">
               {soapIssueObjects.map(({ object }) => {
                 const title = analyticShortName(object);
                 return (
                   <Link
                     key={object.id.toString()}
                     to={`${ROUTE.ANALYTICS.REPORT}/${object.id}`}
-                    className="group flex min-w-0 items-center gap-3 rounded-lg border bg-background p-3 transition-colors hover:border-destructive/40 hover:bg-destructive/5"
+                    className="group flex min-w-0 items-center gap-2.5 rounded-lg border bg-background px-3 py-2 transition-colors hover:border-destructive/40 hover:bg-destructive/5"
                   >
                     <span className="min-w-0 flex-1">
-                      <span className="block truncate font-medium" title={title}>{title}</span>
+                      <span className="block truncate text-sm font-medium" title={title}>{title}</span>
                       {object.name !== title && <span className="block truncate text-xs text-muted-foreground" title={object.name}>{object.name}</span>}
-                      <span className="mt-1 block text-xs text-destructive">Отмечено отсутствие мыла</span>
+                      <span className="block text-xs text-destructive">Отмечено отсутствие мыла</span>
                     </span>
                     <ChevronRightIcon className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
                   </Link>
@@ -227,7 +221,6 @@ export const AnalyticCategoryReport: FC = () => {
             <AnalyticDetail
               entity={group.merged}
               objectNames={group.objectNames}
-              onRatingClick={setSelectedRatingId}
             />
           </section>
 
@@ -247,12 +240,6 @@ export const AnalyticCategoryReport: FC = () => {
         </div>
       </CommonControlState>
 
-      <RatingDetailModal
-        rating={selectedRating}
-        metricFields={activeFields.filter((f) => f.role !== "identity")}
-        identityFields={activeFields.filter((f) => f.role === "identity")}
-        onClose={() => setSelectedRatingId(undefined)}
-      />
     </CommonWrapper>
   );
 };
