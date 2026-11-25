@@ -5,9 +5,7 @@ import { PermissionGate, RoleGate, UserGate } from "./widgets/user-gate";
 import { PermissionAction, PermissionSection, PURCHASE_SECTIONS, permsFor, permsForAny } from "./shared/config/permissions";
 import CertificatesPage from "./page/admin/certificates/Certificates";
 import DeaneryStudentsPage from "./page/deanery/DeaneryStudents";
-import { firstAllowedUrl } from "./widgets/layout/sidebar";
 import { ACCESS } from "./shared/config/access";
-import { useUserProvider } from "./features/provider/user.provider";
 import { LEGACY_LK_PREFIXES, LK, ROUTE } from "./shared/config/path";
 import { DocsPage } from "./page/Docs";
 import InfrastructurePage from "./page/Infrastructure";
@@ -45,6 +43,7 @@ import ProfilePage from "./page/Profile";
 import AuthAdminPage from "./page/admin/auth";
 import DebtorAdminPage from "./page/admin/debtors";
 import VaccinationAdminPage from "./page/admin/vaccination";
+import HomePage from "./page/Home";
 
 /** Группа маршрутов только для ролей (ADMIN — везде). */
 function Allow({ roles }: { roles: readonly UserRole[] }) {
@@ -54,13 +53,6 @@ function Allow({ roles }: { roles: readonly UserRole[] }) {
 /** Группа маршрутов по праву на раздел (по умолчанию — просмотр; ADMIN — везде). */
 function AllowSection({ section, action = PermissionAction.FETCH }: { section: PermissionSection; action?: PermissionAction }) {
   return <PermissionGate permissions={permsFor(section, action)}><Outlet /></PermissionGate>;
-}
-
-/** Главная — первый доступный раздел; без ролей — профиль. */
-function HomeRedirect() {
-  const hasRole = useUserProvider((s) => s.hasRole);
-  const hasPermission = useUserProvider((s) => s.hasPermission);
-  return <Navigate to={firstAllowedUrl(hasRole, hasPermission)} replace />;
 }
 
 /** Старый адрес раздела кабинета (до /lk) — в кабинет по тому же пути; иначе «не найдено». */
@@ -73,13 +65,13 @@ function LegacyRedirect() {
 function App() {
   return (
     <Routes>
-      {/* Корень сайта ведёт в кабинет: там вход и первый доступный раздел. */}
+      {/* Корень сайта ведёт в личный кабинет и его стартовую страницу. */}
       <Route path="/" element={<Navigate to={ROUTE.HOME} replace />} />
 
       {/* Личный кабинет (/lk): всё после входа. */}
       <Route element={<UserGate><Outlet /></UserGate>}>
         <Route element={<Layout />}>
-          <Route path={ROUTE.HOME} element={<HomeRedirect />} />
+          <Route path={ROUTE.HOME} element={<HomePage />} />
           <Route path={ROUTE.USER.PROFILE} element={<ProfilePage />} />
 
           {/* Библиотека и методички в кабинете — всем, кто вошёл (опубликованные открыты и на /manuals). */}

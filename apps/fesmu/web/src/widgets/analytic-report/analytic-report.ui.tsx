@@ -442,13 +442,76 @@ export const AnalyticReportComponent: FC = () => {
   const report = useAnalyticReport();
   const navigate = useNavigate();
   const categories = useMemo(() => groupByCategory(report.list), [report.list]);
+  const dashboard = useMemo(() => {
+    const summaries = categories.map((group) => ({
+      group,
+      summary: summarizeAnalytic(group.merged),
+    }));
+    const responses = summaries.reduce((sum, item) => sum + item.summary.responses, 0);
+    const objects = categories.reduce((sum, group) => sum + group.objects.length, 0);
+    const lastAt = summaries
+      .map(({ summary }) => summary.lastAt)
+      .filter((date): date is Date => Boolean(date))
+      .sort((a, b) => b.getTime() - a.getTime())[0];
+    return { summaries, responses, objects, lastAt };
+  }, [categories]);
+  const maxResponses = Math.max(1, ...dashboard.summaries.map(({ summary }) => summary.responses));
+  const invalidDateRange = Boolean(report.dateFrom && report.dateTo && report.dateFrom > report.dateTo);
 
   return (
     <CommonWrapper
-      title="Аналитика v3 — выгрузка по полям"
-      description="Общая оценка по каждой категории опросов — все объекты одного типа вместе. В подробностях сначала сводка по категории, ниже — каждый объект отдельно."
+      title="Аналитика и контроль"
+      description="Сводные показатели по опросам и объектам. Данные обновляются при загрузке; подробности доступны по каждой категории."
     >
-      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+        <div className="mb-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {[
+            { label: "Объектов опроса", value: dashboard.objects, hint: "В текущей выборке" },
+            { label: "Получено ответов", value: dashboard.responses, hint: "По всем категориям" },
+            { label: "Категорий", value: categories.length, hint: "С данными опросов" },
+            { label: "Последний ответ", value: formatDay(dashboard.lastAt), hint: "По всем категориям" },
+          ].map((item) => (
+            <Card key={item.label} className="gap-2 p-4">
+              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{item.label}</p>
+              <p className="text-2xl font-semibold tabular-nums">{item.value}</p>
+              <p className="text-xs text-muted-foreground">{item.hint}</p>
+            </Card>
+          ))}
+        </div>
+
+        <div className="mb-4 grid gap-4 xl:grid-cols-[1.2fr_0.8fr]">
+          <Card className="gap-3 p-4">
+            <div>
+              <h2 className="font-heading text-base font-semibold">Ответы по категориям</h2>
+              <p className="text-xs text-muted-foreground">Количество полученных ответов в каждой категории</p>
+            </div>
+            {dashboard.summaries.length ? (
+              <div className="flex flex-col gap-3">
+                {dashboard.summaries.map(({ group, summary }) => (
+                  <div key={group.type} className="grid grid-cols-[minmax(110px,180px)_1fr_42px] items-center gap-3">
+                    <span className="truncate text-sm" title={group.label}>{group.label}</span>
+                    <span className="h-2 overflow-hidden rounded-full bg-muted">
+                      <span className="block h-full rounded-full bg-primary" style={{ width: `${(summary.responses / maxResponses) * 100}%` }} />
+                    </span>
+                    <span className="text-right text-sm font-semibold tabular-nums">{summary.responses}</span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="py-5 text-center text-sm text-muted-foreground">Пока нет данных для сводки</p>
+            )}
+          </Card>
+
+          <Card className="gap-3 p-4">
+            <h2 className="font-heading text-base font-semibold">Сводка</h2>
+            <div className="divide-y">
+              <div className="flex items-center justify-between gap-3 py-3 text-sm"><span className="text-muted-foreground">Категорий с ответами</span><b>{dashboard.summaries.filter(({ summary }) => summary.responses > 0).length}</b></div>
+              <div className="flex items-center justify-between gap-3 py-3 text-sm"><span className="text-muted-foreground">Объектов без ответов за период</span><b>{categories.reduce((sum, group) => sum + group.objects.filter((object) => object.ratings.length === 0).length, 0)}</b></div>
+              <div className="flex items-center justify-between gap-3 py-3 text-sm"><span className="text-muted-foreground">Последнее обновление ответов</span><b className="text-right">{formatDay(dashboard.lastAt)}</b></div>
+            </div>
+          </Card>
+        </div>
+
+        <div className="mb-2 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
         <Input
           placeholder="Поиск по названию"
           defaultValue={report.search}
@@ -473,7 +536,44 @@ export const AnalyticReportComponent: FC = () => {
             </option>
           ))}
         </select>
+          <label className="flex w-full flex-col gap-1 text-xs text-muted-foreground sm:w-auto">
+            С даты
+            <Input
+              type="date"
+              value={report.dateFrom}
+              onChange={(e) => report.setDateFrom(e.target.value)}
+              aria-label="Начало периода"
+              className="w-full sm:w-[160px]"
+            />
+          </label>
+          <label className="flex w-full flex-col gap-1 text-xs text-muted-foreground sm:w-auto">
+            По дату
+            <Input
+              type="date"
+              value={report.dateTo}
+              onChange={(e) => report.setDateTo(e.target.value)}
+              aria-label="Конец периода"
+              className="w-full sm:w-[160px]"
+            />
+          </label>
+          {(report.dateFrom || report.dateTo) && (
+            <button
+              type="button"
+              onClick={() => {
+                report.setDateFrom("");
+                report.setDateTo("");
+              }}
+              className="inline-flex h-9 items-center justify-center rounded-lg border px-3 text-sm hover:bg-muted"
+            >
+              Сбросить даты
+            </button>
+          )}
       </div>
+        <p className={cn("mb-4 text-xs", invalidDateRange ? "text-destructive" : "text-muted-foreground")}>
+          {invalidDateRange
+            ? "Начало периода должно быть раньше окончания."
+            : "Все показатели ниже учитывают поиск, тип и период. Даты ответов включают обе границы."}
+        </p>
 
       <CommonControlState
         isLoading={report.loading}

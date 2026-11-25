@@ -1,2 +1,2 @@
 export { AppSidebar } from "./app-sidebar";
-export { firstAllowedUrl } from "./nav";
+export { firstAllowedUrl, visibleGroups } from "./nav";
