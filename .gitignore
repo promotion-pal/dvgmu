@@ -34,6 +34,14 @@ services/mdm/db/postgres/
 *.local
 .DS_Store
 
+# Plane local secrets and generated backups
+/apps/panel/plane-app/plane.env
+/apps/panel/plane-app/plane.env.bak
+/apps/panel/plane-app/plane.prod.env
+/apps/panel/plane-app/variables-upgrade.env
+/apps/panel/plane-app/archive/
+/apps/panel/plane-app/backup/
+
 # TypeScript and Go build artifacts
 *.tsbuildinfo
 *.test

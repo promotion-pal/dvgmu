@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package contract.entity;
+
+option go_package = "entity;entity_pb";
+
+import "mdm/enum/user.enum.proto";
+import "google/protobuf/timestamp.proto";
+
+message Employee {
+    int64 id = 1;
+    
+    google.protobuf.Timestamp created_at = 13;
+    google.protobuf.Timestamp updated_at = 14;
+}
+
