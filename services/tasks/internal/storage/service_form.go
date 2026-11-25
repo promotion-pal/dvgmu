@@ -20,8 +20,12 @@ func NewServiceFormStorage(db *gorm.DB) *ServiceFormStorage {
 }
 
 func (s *ServiceFormStorage) Get(ctx context.Context, serviceID int64) (models.ServiceFormVersion, error) {
+	return readServiceForm(s.db.WithContext(ctx), serviceID)
+}
+
+func readServiceForm(db *gorm.DB, serviceID int64) (models.ServiceFormVersion, error) {
 	var form models.ServiceFormVersion
-	err := s.db.WithContext(ctx).Table("services").
+	err := db.Table("services").
 		Select("services.id AS service_id, COALESCE(forms.version, 0) AS version, COALESCE(forms.schema, '{}'::jsonb) AS schema").
 		Joins("LEFT JOIN LATERAL (SELECT version, schema FROM service_form_versions WHERE service_id = services.id ORDER BY version DESC LIMIT 1) AS forms ON true").
 		Where("services.id = ?", serviceID).Take(&form).Error

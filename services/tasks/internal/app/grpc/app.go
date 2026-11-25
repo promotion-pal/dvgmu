@@ -31,6 +31,7 @@ func New(
 	forms serviceconnect.ServiceFormServiceHandler,
 	settings serviceconnect.ServiceSettingsServiceHandler,
 	routes serviceconnect.ServiceRoutesServiceHandler,
+	tasks serviceconnect.TaskServiceHandler,
 ) *App {
 	mux := http.NewServeMux()
 	if cfg.Env == "local" {
@@ -41,6 +42,7 @@ func New(
 		mux.Handle(serviceconnect.NewServiceFormServiceHandler(forms))
 		mux.Handle(serviceconnect.NewServiceSettingsServiceHandler(settings))
 		mux.Handle(serviceconnect.NewServiceRoutesServiceHandler(routes))
+		mux.Handle(serviceconnect.NewTaskServiceHandler(tasks))
 	}
 	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, r *http.Request) {
 		ctx, cancel := context.WithTimeout(r.Context(), cfg.GRPC.Timeout)

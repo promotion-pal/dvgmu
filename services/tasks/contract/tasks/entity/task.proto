@@ -3,6 +3,7 @@ syntax = "proto3";
 package tasks.entity;
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
 
 message Task {
   string uuid = 1;
@@ -11,4 +12,11 @@ message Task {
   google.protobuf.Timestamp created_at = 4;
   google.protobuf.Timestamp updated_at = 5;
   int64 version = 6;
+  int64 service_id = 7;
+  int64 direction_id = 8;
+  string description = 9;
+  int64 status_id = 10;
+  int64 priority_id = 11;
+  int64 form_version = 12;
+  google.protobuf.Struct extra_fields = 13;
 }

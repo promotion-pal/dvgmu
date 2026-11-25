@@ -2,6 +2,8 @@ package app
 
 import (
 	"log/slog"
+	"time"
+	_ "time/tzdata"
 
 	"dvgmu/tasks"
 	grpcapp "dvgmu/tasks/internal/app/grpc"
@@ -42,5 +44,10 @@ func New(log *slog.Logger, cfg *config.Config) *App {
 	forms := taskgrpc.NewServiceFormController(service.NewServiceFormService(storage.NewServiceFormStorage(db)), log)
 	settings := taskgrpc.NewServiceSettingsController(service.NewServiceSettingsService(storage.NewServiceSettingsStorage(db)), log)
 	routes := taskgrpc.NewServiceRoutesController(service.NewServiceRoutesService(storage.NewServiceRoutesStorage(db)), log)
-	return &App{GRPCServer: grpcapp.New(log, sqlDB.PingContext, cfg, directions, catalog, statuses, priorities, forms, settings, routes)}
+	numberLocation, err := time.LoadLocation("Asia/Vladivostok")
+	if err != nil {
+		panic(err)
+	}
+	tasks := taskgrpc.NewTaskController(service.NewTaskService(storage.NewTaskStorage(db), numberLocation), cfg.LocalApplicant, log)
+	return &App{GRPCServer: grpcapp.New(log, sqlDB.PingContext, cfg, directions, catalog, statuses, priorities, forms, settings, routes, tasks)}
 }

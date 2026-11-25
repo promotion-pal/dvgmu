@@ -9,9 +9,15 @@ import (
 )
 
 type Config struct {
-	Env      string         `yaml:"env" env:"ENV" env-default:"local"`
-	GRPC     GRPCConfig     `yaml:"grpc"`
-	Database DatabaseConfig `yaml:"database"`
+	Env            string               `yaml:"env" env:"ENV" env-default:"local"`
+	GRPC           GRPCConfig           `yaml:"grpc"`
+	Database       DatabaseConfig       `yaml:"database"`
+	LocalApplicant LocalApplicantConfig `yaml:"local_applicant"`
+}
+
+type LocalApplicantConfig struct {
+	ID           string `yaml:"id" env:"TASKS_LOCAL_APPLICANT_ID"`
+	DepartmentID string `yaml:"department_id" env:"TASKS_LOCAL_APPLICANT_DEPARTMENT_ID"`
 }
 
 type GRPCConfig struct {

@@ -34,28 +34,11 @@ func (s *ServiceSettingsStorage) Get(ctx context.Context, serviceID int64) (mode
 func (s *ServiceSettingsStorage) Update(ctx context.Context, settings models.ServiceSettings) error {
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var service models.Service
-		if err := tx.Select("id").Clauses(clause.Locking{Strength: "KEY SHARE"}).Take(&service, settings.ServiceID).Error; err != nil {
+		if err := tx.Select("id").Clauses(clause.Locking{Strength: "NO KEY UPDATE"}).Take(&service, settings.ServiceID).Error; err != nil {
 			return err
 		}
 
-		// Hold the row locks through the write so a selection cannot be deactivated concurrently.
-		var status models.Status
-		err := tx.Select("id").Clauses(clause.Locking{Strength: "SHARE"}).
-			Where("active = ?", true).Take(&status, settings.InitialStatusID).Error
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return ErrInitialStatusUnavailable
-		}
-		if err != nil {
-			return err
-		}
-
-		var priority models.Priority
-		err = tx.Select("id").Clauses(clause.Locking{Strength: "SHARE"}).
-			Where("active = ?", true).Take(&priority, settings.DefaultPriorityID).Error
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return ErrDefaultPriorityUnavailable
-		}
-		if err != nil {
+		if err := lockActiveTaskDefaults(tx, settings); err != nil {
 			return err
 		}
 
@@ -64,4 +47,25 @@ func (s *ServiceSettingsStorage) Update(ctx context.Context, settings models.Ser
 			DoUpdates: clause.AssignmentColumns([]string{"initial_status_id", "default_priority_id"}),
 		}).Create(&settings).Error
 	})
+}
+
+// Hold the locks through the write so a selection cannot be deactivated concurrently.
+func lockActiveTaskDefaults(tx *gorm.DB, settings models.ServiceSettings) error {
+	var status models.Status
+	err := tx.Select("id").Clauses(clause.Locking{Strength: "SHARE"}).
+		Where("active = ?", true).Take(&status, settings.InitialStatusID).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return ErrInitialStatusUnavailable
+	}
+	if err != nil {
+		return err
+	}
+
+	var priority models.Priority
+	err = tx.Select("id").Clauses(clause.Locking{Strength: "SHARE"}).
+		Where("active = ?", true).Take(&priority, settings.DefaultPriorityID).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return ErrDefaultPriorityUnavailable
+	}
+	return err
 }

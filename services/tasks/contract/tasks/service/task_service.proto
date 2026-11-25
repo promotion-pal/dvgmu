@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package tasks.service;
+
+import "google/protobuf/struct.proto";
+import "tasks/entity/task.proto";
+
+service TaskService {
+  rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse);
+}
+
+message CreateTaskRequest {
+  int64 service_id = 1;
+  string title = 2;
+  string description = 3;
+  // Use 0 when the service has no saved form.
+  int64 form_version = 4;
+  google.protobuf.Struct extra_fields = 5;
+  // Required. Reuse for retries of the same submission, scoped to the applicant.
+  string idempotency_key = 6;
+}
+
+message CreateTaskResponse {
+  tasks.entity.Task task = 1;
+}
