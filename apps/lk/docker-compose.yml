@@ -6,7 +6,6 @@ services:
       dockerfile: apps/lk/Dockerfile
       args:
         VERSION: ${VERSION:-dev}
-        VITE_GATEWAY_URL: ${VITE_PROD_GATEWAY_URL:-https://api.core.fesmu.ru}
     restart: unless-stopped
     expose:
       - "80"

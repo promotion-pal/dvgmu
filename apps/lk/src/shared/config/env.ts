@@ -1,4 +1,6 @@
-const gateway = import.meta.env.VITE_GATEWAY_URL || (import.meta.env.DEV ? "http://localhost:4052" : window.location.origin);
+declare const __APP_VERSION__: string;
+
+const gateway = __APP_VERSION__ === "prod" ? window.location.origin : "http://localhost:4052";
 
 export const ENV = {
   GATEWAY: gateway,

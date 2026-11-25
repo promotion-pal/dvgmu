@@ -59,7 +59,7 @@ Auth сейчас использует отдельную тестовую та�
                     Tickets → MDM
 ```
 
-- Браузер обращается к единому адресу `VITE_GATEWAY_URL`. `/api/auth/*` направляется в Auth, `/api/mdm/*` — в MDM, `/api/tickets/*` — в Tickets.
+- Браузер обращается к единому Gateway. При `VERSION=dev` используется `http://localhost:4052`, при `VERSION=prod` — текущий домен сайта; маршруты `/api/auth/*`, `/api/mdm/*` и `/api/tickets/*` направляются в соответствующие сервисы.
 - Вход выполняет Auth. Текущий тестовый провайдер проверяет учетную запись в своей БД, связывает её с ID пользователя MDM, загружает из MDM профиль, роли и permissions и подписывает JWT.
 - Gateway проверяет подпись, issuer и срок JWT. Он удаляет входящие identity-заголовки клиента и сам добавляет проверенные ID, роли, permissions и межсервисный секрет.
 - Tickets получает ID из доверенного заголовка Gateway, проверяет `TASK_READ` или `TASK_CREATE` через MDM и сохраняет задачу с владельцем. ID пользователя в protobuf-запросе больше не передаётся.
@@ -68,7 +68,7 @@ Auth сейчас использует отдельную тестовую та�
 
 Для production запуска используется `make prod-up`. Убедитесь, что DNS `api.core.fesmu.ru` указывает на сервер Traefik, доступны его entrypoint `websecure` и certificate resolver `letsencrypt`, а внешняя сеть `traefik-network` уже создана. Make создаёт сеть `dvgmu-backend`; Gateway подключён к обеим сетям, Auth, MDM и Tickets доступны только внутри backend-сети, а LK — через Traefik.
 
-Traefik маршрутизирует `https://api.core.fesmu.ru/api/*` в API Gateway; запросы к корню и остальным путям хоста получает LK. Под `/api` находятся `/api/auth/*`, `/api/mdm/*` и `/api/tickets/*`. Gateway router имеет больший приоритет, чем SPA-router LK. Production-сборка LK получает адрес Gateway из `VITE_PROD_GATEWAY_URL` (по умолчанию `https://api.core.fesmu.ru`). В `.env` задаются `GATEWAY_DOMAIN=api.core.fesmu.ru`, `APP_DOMAIN=api.core.fesmu.ru`, `GATEWAY_PROD_ALLOWED_ORIGINS=https://api.core.fesmu.ru` и `MDM_ALLOWED_ORIGINS=https://api.core.fesmu.ru`.
+Traefik маршрутизирует `https://api.core.fesmu.ru/api/*` в API Gateway; запросы к корню и остальным путям хоста получает LK. Под `/api` находятся `/api/auth/*`, `/api/mdm/*` и `/api/tickets/*`. Gateway router имеет больший приоритет, чем SPA-router LK. Для production в корневом `.env` задайте `VERSION=prod`; LK использует текущий домен как базовый адрес API и добавляет `/api/...`. Для локальной разработки используйте `VERSION=dev`, тогда LK обращается к Gateway на `http://localhost:4052`. В `.env` также задаются `GATEWAY_DOMAIN=api.core.fesmu.ru`, `APP_DOMAIN=api.core.fesmu.ru`, `GATEWAY_PROD_ALLOWED_ORIGINS=https://api.core.fesmu.ru` и `MDM_ALLOWED_ORIGINS=https://api.core.fesmu.ru`.
 
 Plane запускается отдельно от сервисов портала. Описание локального запуска и Traefik-варианта на `mentor.fesmu.ru` находится в `apps/panel/README.md`.
 

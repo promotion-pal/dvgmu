@@ -13,9 +13,8 @@ RUN pnpm install --frozen-lockfile --filter lk...
 COPY apps/lk/ apps/lk/
 COPY packages/ts/ packages/ts/
 
-ARG VITE_GATEWAY_URL=https://api.core.fesmu.ru
 ARG VERSION=dev
-ENV VITE_GATEWAY_URL=${VITE_GATEWAY_URL}
+ENV VERSION=${VERSION}
 
 RUN pnpm --filter lk build
 
