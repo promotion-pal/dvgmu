@@ -35,6 +35,7 @@
 | **tickets** | `services/tickets` | Заявки (общежитие, здания) | да | fesmu api |
 | **file** | `services/file` | Генерация документов (справки), разбор Excel | да | fesmu api |
 | **notification** | `services/notification` | Отправка писем (SMTP) | — | сейчас в репозитории никто не вызывает |
+| **schedula** | [`services/schedula`](services/schedula/README.md) | Academic events, venues, conflict checks, and changes to the published timetable | PostgreSQL | fesmu api |
 | **sync** | `services/sync` | Сверка MDM ↔ AD: читает обе стороны и пишет расхождения в лог | — | запускается по таймеру |
 
 Продовый `apps/fesmu/docker-compose.yml` содержит API, веб и все шесть БД
@@ -77,6 +78,8 @@
 | fesmu api | mdm | прокси `contract.service.UserService` | люди, роли, доступы (только ADMIN) |
 | fesmu api | analytics | прокси (только чтение) + модуль `survey` (запись) | опросы и отчёты |
 | fesmu api | tickets | прокси (право раздела «Заявки») | заявки |
+| fesmu api | schedula | Connect RPC with a service token and the verified session UUID | Personal timetable, editing, and public timetable |
+| schedula | mdm | `UserService`, `UserDirectoryService` | Effective permissions, student groups and counts, and instructor directory |
 | fesmu api | file | клиент `FilesService` | справки |
 | auth | AD FS | WS-Trust | проверка пароля → objectGUID |
 | auth | mdm | `UserFetchByADObjectID` (служебный токен) | человек и роли по objectGUID |
@@ -102,6 +105,7 @@
 ```
 services/mdm/api/contract/mdm/{entity,enum,service}/…
 services/analytics/api/contract/analytics/…
+services/schedula/api/contract/schedula/…
 apps/fesmu/api/contract/fesmu/{entity,enum,service}/vN/…
 services/auth/api/contract/auth/{v1,v2}/…
 ```
@@ -141,6 +145,8 @@ make dev-seed    # тестовые люди в MDM
 # веб http://localhost:18300 · fesmu api :18200 · auth :18201 · mdm :18205
 make dev-down
 ```
+
+The local stack starts Schedula with its own PostgreSQL database. Open `/lk/schedula` for the signed-in timetable or `/schedula` for the public timetable. See the [Schedula developer guide](services/schedula/README.md) for gateway configuration.
 
 **Данные.** Локальные базы новые и пустые: боевые опросы, заявки и люди лежат в базах на сервере. Чтобы работать с реальными данными, загрузите копию базы:
 
