@@ -136,16 +136,7 @@ export const AnalyticDetail: FC<{
       </Card>
 
       {summary.responses === 0 ? (
-        <Card className="p-6 text-center text-sm text-muted-foreground">
-          Ответов на этот опрос ещё нет. Ниже — поля, которые появятся в выгрузке.
-          <div className="mt-3 flex flex-wrap justify-center gap-1.5">
-            {metricFields.map((f) => (
-              <Badge key={f.key} variant="secondary">
-                {f.label}
-              </Badge>
-            ))}
-          </div>
-        </Card>
+        <Card className="p-6 text-center text-sm text-muted-foreground">Отзывов нет</Card>
       ) : (
         <>
           <Card className="p-4">
