@@ -46,8 +46,8 @@ const fieldHeadline = (summary: FieldSummary): string => {
     case "rating":
       return summary.average ? `${summary.average} / 5` : "Н/Д";
     case "bool":
-      if (summary.def.key === "hasSoap") return `Нет мыла: ${100 - summary.truePercent}%`;
-      return `${summary.truePercent}%`;
+      if (summary.def.key === "hasSoap") return `Нет мыла: ${Number((100 - summary.truePercent).toFixed(1))}%`;
+      return `${Number(summary.truePercent.toFixed(1))}%`;
     case "enum":
     case "enumList":
       return summary.buckets[0]?.label ?? "Н/Д";
@@ -217,7 +217,7 @@ export const AnalyticSummaryCard: FC<{
     : 0;
 
   return (
-    <div className="flex h-full min-w-0 flex-col gap-3 rounded-xl border p-4">
+    <div className="relative flex h-full min-h-[28rem] min-w-0 flex-col gap-3 rounded-xl border p-4 pb-28">
       <div className="flex items-start justify-between gap-2">
         <p className="min-w-0 break-words font-semibold leading-tight" title={entity.name}>
           {analyticShortName(entity)}
@@ -257,29 +257,18 @@ export const AnalyticSummaryCard: FC<{
         </Badge>
       )}
 
-      <div className="flex flex-wrap gap-1 text-xs text-muted-foreground">
+      <div className="absolute inset-x-4 bottom-4 flex flex-col gap-2">
         {objectsCount === undefined && (
-          <>
-            <span>QR {entity.qr.toString()}</span>
-            <span>·</span>
-          </>
+          <p className="text-xs text-muted-foreground">QR {entity.qr.toString()}</p>
         )}
-        <span>полей в выгрузке: {metrics.length}</span>
-        {brief.lastAt && (
-          <>
-            <span>·</span>
-            <span>обновлён {formatDay(brief.lastAt)}</span>
-          </>
-        )}
+        <button
+          type="button"
+          onClick={onOpen}
+          className="inline-flex h-11 w-full items-center justify-center rounded-lg border px-3 text-sm hover:bg-muted"
+        >
+          Подробнее
+        </button>
       </div>
-
-      <button
-        type="button"
-        onClick={onOpen}
-        className="mt-auto inline-flex h-11 w-full items-center justify-center rounded-lg border px-3 text-sm hover:bg-muted"
-      >
-        Подробнее
-      </button>
     </div>
   );
 };
@@ -344,7 +333,7 @@ export const AnalyticReportComponent: FC = () => {
           <CommonServiceError service="аналитики" onRetry={report.retry} />
         }
       >
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="grid auto-rows-fr gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {categories.map((group) => (
             <AnalyticSummaryCard
               key={group.type}

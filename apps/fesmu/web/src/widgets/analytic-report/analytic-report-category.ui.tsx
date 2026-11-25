@@ -226,7 +226,7 @@ export const AnalyticCategoryReport: FC = () => {
 
           <section className="flex flex-col gap-3">
             <p className="font-heading text-base font-semibold">По объектам</p>
-            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            <div className="grid auto-rows-fr gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {group.objects.map((item) => (
                 <AnalyticSummaryCard
                   key={item.id.toString()}
