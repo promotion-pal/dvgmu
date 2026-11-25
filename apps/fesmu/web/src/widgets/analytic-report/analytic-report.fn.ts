@@ -120,5 +120,7 @@ export const useAnalyticReport = () => {
     setDateFrom,
     dateTo,
     setDateTo,
+    defaultDateFrom: initialWeek.from,
+    defaultDateTo: initialWeek.to,
   };
 };
