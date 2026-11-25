@@ -9,6 +9,9 @@ ENV VITE_API_URL=${API_URL}
 ARG AUTH_URL=https://auth.fesmu.ru
 ENV VITE_AUTH_URL=${AUTH_URL}
 
+ARG ENABLE_LOCAL_TASKS=false
+ENV VITE_ENABLE_LOCAL_TASKS=${ENABLE_LOCAL_TASKS}
+
 ENV NODE_OPTIONS=--no-network-family-autoselection
 
 WORKDIR /workspace

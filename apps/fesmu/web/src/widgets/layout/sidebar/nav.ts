@@ -2,6 +2,7 @@ import type { ComponentType } from "react";
 import type { UserRole } from "@fesmu/contract/fesmu/enum/v1/user.enum_pb";
 import { BookOpenTextIcon, ChartColumnIcon, QrCodeIcon, BriefcaseIcon, LibraryIcon, Building2Icon, FileCheckIcon, CalendarDaysIcon, CalendarRangeIcon, ClipboardListIcon, FileTextIcon, GraduationCapIcon, HourglassIcon, ListChecksIcon, ListTodoIcon, MonitorIcon, ReceiptTextIcon, ShieldCheckIcon, ShoppingBagIcon, ShoppingCartIcon, TicketIcon, UsersIcon } from "lucide-react";
 import { ACCESS } from "@/shared/config/access";
+import { ENV } from "@/shared/config/env";
 import { PermissionSection, PURCHASE_SECTIONS, permsFor, permsForAny } from "@/shared/config/permissions";
 import { ROUTE } from "@/shared/config/path";
 
@@ -101,6 +102,9 @@ const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
             { title: "Задолженность студентов", url: ROUTE.ADMIN.DEBTORS, icon: ReceiptTextIcon, roles: [...ACCESS.ADMIN] },
         ],
     },
+    ...(ENV.LOCAL_TASKS
+        ? [{ label: "Сервис заявок", items: [{ title: "Заявки", url: ROUTE.TASKS, icon: ListChecksIcon }] }]
+        : []),
 ];
 
 type HasRole = (...roles: UserRole[]) => boolean;

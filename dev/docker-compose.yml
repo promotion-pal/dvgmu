@@ -96,6 +96,30 @@ services:
     environment: { <<: *db, DB_NAME: tickets, GRPC_PORT: "4000" }
     depends_on: { postgres: { condition: service_healthy } }
 
+  tasks-db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: tasks
+    volumes:
+      - tasks-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d tasks"]
+      interval: 2s
+      retries: 30
+
+  tasks:
+    build: { context: .., dockerfile: services/tasks/Dockerfile }
+    command: ["./tasks", "--config=config/local.yaml"]
+    environment:
+      <<: *db
+      DB_HOST: tasks-db
+      DB_NAME: tasks
+      GRPC_HOST: 0.0.0.0
+      GRPC_PORT: "4052"
+    ports: ["127.0.0.1:${TASKS_GRPC_PORT:-4052}:4052"]
+    depends_on: { tasks-db: { condition: service_healthy } }
+
   notification:
     build: { context: .., dockerfile: services/notification/api/Dockerfile }
     environment:
@@ -165,8 +189,12 @@ services:
         API_URL: http://localhost:18200
         AUTH_URL: http://localhost:18201
         VERSION: local
+        ENABLE_LOCAL_TASKS: "true"
+    environment:
+      TASKS_PROXY_TARGET: http://tasks:4052
     ports: ["127.0.0.1:18300:3000"]
-    depends_on: [api]
+    depends_on: [api, tasks]
 
 volumes:
   pgdata:
+  tasks-pgdata:

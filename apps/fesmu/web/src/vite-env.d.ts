@@ -4,6 +4,7 @@ interface ImportMetaEnv {
   readonly VITE_API_URL?: string;
   readonly VITE_APP_VERSION?: string;
   readonly VITE_AUTH_URL?: string;
+  readonly VITE_ENABLE_LOCAL_TASKS?: string;
 }
 
 interface ImportMeta {

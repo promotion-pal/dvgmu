@@ -142,6 +142,26 @@ make dev-seed    # тестовые люди в MDM
 make dev-down
 ```
 
+**Новый сервис заявок `tasks`.** После входа в локальный портал откройте `/lk/tasks`
+через «Сервис заявок» → «Заявки». Веб проксирует ConnectRPC с `/tasks-api` в контейнер
+`tasks`. Сервис хранит данные в отдельной локальной базе. На пустой базе каталог
+показывает «Услуги не найдены». Раздел `/lk/tickets` использует прежний сервис `tickets`.
+
+Для работы над вебом с горячей перезагрузкой из корня репозитория запустите API без контейнера `web`:
+
+```bash
+docker compose -f dev/docker-compose.yml stop web
+docker compose -f dev/docker-compose.yml up -d --build api tasks
+make dev-seed
+VITE_API_URL=http://localhost:18200 VITE_AUTH_URL=http://localhost:18201 \
+  pnpm --dir apps/fesmu/web dev --port 18300 --strictPort
+```
+
+Vite по умолчанию обращается к `tasks` на `127.0.0.1:4052`. Если локальный порт
+изменён через `TASKS_GRPC_PORT`, задайте `TASKS_PROXY_TARGET` при запуске Vite.
+Если запущен отдельный стек `make tasks-dev`, остановите его через `make tasks-dev-stop`
+или назначьте одному из стеков другой порт.
+
 **Данные.** Локальные базы новые и пустые: боевые опросы, заявки и люди лежат в базах на сервере. Чтобы работать с реальными данными, загрузите копию базы:
 
 ```bash

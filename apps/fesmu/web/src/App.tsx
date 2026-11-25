@@ -16,6 +16,8 @@ import UserPage from "./page/User";
 import StudentPage from "./page/Student";
 import EmployeePage from "./page/Employee";
 import TicketsPage from "./page/Tickets";
+import TasksPage from "./page/Tasks";
+import { ENV } from "./shared/config/env";
 import SchedulePage from "./page/Schedule";
 import ScheduleEditorPage from "./page/ScheduleEditor";
 import ScheduleHallPage from "./page/ScheduleHall";
@@ -81,6 +83,7 @@ function App() {
         <Route element={<Layout />}>
           <Route path={ROUTE.HOME} element={<HomeRedirect />} />
           <Route path={ROUTE.USER.PROFILE} element={<ProfilePage />} />
+          {ENV.LOCAL_TASKS && <Route path={ROUTE.TASKS} element={<TasksPage />} />}
 
           {/* Библиотека и методички в кабинете — всем, кто вошёл (опубликованные открыты и на /manuals). */}
           <Route path={ROUTE.LIBRARY.CATALOG} element={<LibraryPage />} />
