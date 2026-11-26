@@ -25,7 +25,7 @@ export function savePendingTask(key: string | undefined, request: CreateTaskRequ
   try {
     sessionStorage.setItem(key, toJsonString(CreateTaskRequestSchema, request));
   } catch {
-    // The dialog can still retry from its current state if storage is unavailable.
+    // The catalog retains the request if storage is unavailable.
   }
 }
 

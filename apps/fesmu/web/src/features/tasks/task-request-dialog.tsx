@@ -7,7 +7,6 @@ import {
   type CreateTaskRequest,
 } from "@fesmu/contract/tasks/service/task_service_pb";
 import { useEffect, useId, useRef, useState, type FormEvent } from "react";
-import { useUserProvider } from "@/features/provider/user.provider";
 import { signIn } from "@/shared/config/session";
 import { Button } from "@/shared/ui/button";
 import {
@@ -23,29 +22,29 @@ import {
 import { Input } from "@/shared/ui/input";
 import { Textarea } from "@/shared/ui/textarea";
 import { getTaskServiceForm, taskClient } from "./api";
-import {
-  clearPendingTask,
-  pendingTaskKey,
-  readPendingTask,
-  savePendingTask,
-} from "./pending-task-submission";
 import { TaskRequestField } from "./task-request-fields";
 
 type FieldError = { fieldName: string; message: string };
 type SubmissionState =
   | { status: "idle" | "sending" | "stale" | "signedOut" }
   | { status: "error"; message: string; fieldName?: string }
-  | { status: "retry"; message: string; input: CreateTaskRequest }
+  | { status: "retry"; message: string }
   | { status: "success"; number: string };
 type ServiceForm = Awaited<ReturnType<typeof getTaskServiceForm>>;
 type FormState =
   | { status: "loading" | "error"; current?: ServiceForm }
   | { status: "ready"; current: ServiceForm };
 
-export function TaskRequestDialog({ service }: { service: Service }) {
+type TaskRequestDialogProps = {
+  service: Service;
+  getPendingRequest: (serviceId: bigint) => CreateTaskRequest | undefined;
+  rememberRequest: (request: CreateTaskRequest) => void;
+  forgetRequest: (request: CreateTaskRequest) => void;
+};
+
+export function TaskRequestDialog(props: TaskRequestDialogProps) {
+  const { service } = props;
   const [open, setOpen] = useState(false);
-  const applicantId = useUserProvider((state) => state.user?.uuid);
-  const storageKey = pendingTaskKey(applicantId, service.id);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -54,27 +53,20 @@ export function TaskRequestDialog({ service }: { service: Service }) {
           Подать заявку
         </Button>
       </DialogTrigger>
-      {open && (
-        <TaskRequestPanel
-          key={storageKey ?? String(service.id)}
-          service={service}
-          storageKey={storageKey}
-        />
-      )}
+      {open && <TaskRequestPanel {...props} />}
     </Dialog>
   );
 }
 
-function TaskRequestPanel({ service, storageKey }: { service: Service; storageKey?: string }) {
+function TaskRequestPanel({ service, getPendingRequest, rememberRequest, forgetRequest }: TaskRequestDialogProps) {
   const serviceId = service.id;
   const [form, setForm] = useState<FormState>({ status: "loading" });
   const [loadAttempt, setLoadAttempt] = useState(0);
-  const [restored] = useState(() => readPendingTask(storageKey, serviceId));
+  const [restored] = useState(() => getPendingRequest(serviceId));
   const [submission, setSubmission] = useState<SubmissionState>(() =>
     restored
       ? {
           status: "retry",
-          input: restored,
           message: "Результат предыдущей отправки неизвестен. Повторите её, чтобы получить номер заявки.",
         }
       : { status: "idle" },
@@ -130,25 +122,30 @@ function TaskRequestPanel({ service, storageKey }: { service: Service; storageKe
     if (inFlight.current) return;
     inFlight.current = true;
     // A reload can interrupt the response after the server has already created the request.
-    savePendingTask(storageKey, input);
+    rememberRequest(input);
     setSubmission({ status: "sending" });
     // Apply the timeout locally so the portal call needs no Connect-Timeout-Ms header.
     const signal = AbortSignal.timeout(5000);
     try {
       const { task } = await taskClient.createTask(input, { signal });
-      if (task?.number) clearPendingTask(storageKey, input);
+      if (task?.number) forgetRequest(input);
       setSubmission(task?.number
         ? { status: "success", number: task.number }
-        : { status: "retry", input, message: "Не удалось получить номер заявки. Повторите отправку." });
+        : { status: "retry", message: "Не удалось получить номер заявки. Повторите отправку." });
     } catch (error) {
-      const result = rejectedSubmission(error, input, fields, signal.aborted);
+      const result = rejectedSubmission(error, fields, signal.aborted);
       if (result.status === "stale" || result.status === "error") {
-        clearPendingTask(storageKey, input);
+        forgetRequest(input);
       }
       setSubmission(result);
     } finally {
       inFlight.current = false;
     }
+  }
+
+  function retrySubmission() {
+    const request = getPendingRequest(serviceId) ?? restored;
+    if (request) void send(request);
   }
 
   function submit(event: FormEvent<HTMLFormElement>) {
@@ -292,7 +289,7 @@ function TaskRequestPanel({ service, storageKey }: { service: Service; storageKe
               <Button type="button" onClick={reloadForm}>Обновить форму</Button>
             )}
             {submission.status === "retry" && (
-              <Button type="button" onClick={() => void send(submission.input)}>
+              <Button type="button" onClick={retrySubmission}>
                 Повторить отправку
               </Button>
             )}
@@ -380,7 +377,6 @@ function readExtraFields(form: HTMLFormElement, data: FormData, fields: FormFiel
 
 function rejectedSubmission(
   error: unknown,
-  input: CreateTaskRequest,
   fields: FormField[],
   timedOut: boolean,
 ): SubmissionState {
@@ -391,7 +387,6 @@ function rejectedSubmission(
     case Code.PermissionDenied:
       return {
         status: "retry",
-        input,
         message: "Для подачи заявки нужен активный профиль в MDM. Повторите отправку после восстановления доступа.",
       };
     case Code.InvalidArgument: {
@@ -419,19 +414,16 @@ function rejectedSubmission(
     case Code.Unavailable:
       return {
         status: "retry",
-        input,
         message: "Сервис временно недоступен. Попробуйте повторить отправку.",
       };
     case Code.DeadlineExceeded:
       return {
         status: "retry",
-        input,
         message: "Ответ не пришёл вовремя. Повторите отправку, чтобы получить номер заявки.",
       };
     default:
       return {
         status: "retry",
-        input,
         message: "Не удалось подтвердить создание заявки. Попробуйте повторить отправку.",
       };
   }

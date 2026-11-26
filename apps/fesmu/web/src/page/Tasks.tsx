@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
 import type { Direction } from "@fesmu/contract/tasks/entity/direction_pb";
 import type { Service } from "@fesmu/contract/tasks/entity/service_pb";
+import type { CreateTaskRequest } from "@fesmu/contract/tasks/service/task_service_pb";
+import { useUserProvider } from "@/features/provider/user.provider";
 import { listTaskDirections, listTaskServices } from "@/features/tasks/api";
+import {
+  clearPendingTask,
+  pendingTaskKey,
+  readPendingTask,
+  savePendingTask,
+} from "@/features/tasks/pending-task-submission";
 import { TaskRequestDialog } from "@/features/tasks/task-request-dialog";
 import { CommonControlState, CommonError } from "@/shared/components/state";
 import { Input } from "@/shared/ui/input";
@@ -34,6 +42,8 @@ export default function TasksPage() {
   const [attempt, setAttempt] = useState(0);
   const [search, setSearch] = useState("");
   const [directionId, setDirectionId] = useState("");
+  const [pendingRequests, setPendingRequests] = useState(() => new Map<string, CreateTaskRequest>());
+  const applicantId = useUserProvider((state) => state.user?.uuid);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -65,6 +75,30 @@ export default function TasksPage() {
   function retry() {
     setState({ status: "loading" });
     setAttempt((previous) => previous + 1);
+  }
+
+  function getPendingRequest(serviceId: bigint) {
+    const storageKey = pendingTaskKey(applicantId, serviceId);
+    return pendingRequests.get(storageKey ?? String(serviceId)) ?? readPendingTask(storageKey, serviceId);
+  }
+
+  function rememberRequest(request: CreateTaskRequest) {
+    const storageKey = pendingTaskKey(applicantId, request.serviceId);
+    const key = storageKey ?? String(request.serviceId);
+    setPendingRequests((previous) => new Map(previous).set(key, request));
+    savePendingTask(storageKey, request);
+  }
+
+  function forgetRequest(request: CreateTaskRequest) {
+    const storageKey = pendingTaskKey(applicantId, request.serviceId);
+    const key = storageKey ?? String(request.serviceId);
+    setPendingRequests((previous) => {
+      if (previous.get(key)?.idempotencyKey !== request.idempotencyKey) return previous;
+      const next = new Map(previous);
+      next.delete(key);
+      return next;
+    });
+    clearPendingTask(storageKey, request);
   }
 
   return (
@@ -139,7 +173,13 @@ export default function TasksPage() {
                         className="flex min-w-0 flex-wrap items-center justify-between gap-2 border-b px-0.5 py-2.5 text-sm"
                       >
                         <span className="min-w-0 wrap-anywhere font-medium">{service.name}</span>
-                        <TaskRequestDialog service={service} />
+                        <TaskRequestDialog
+                          key={applicantId}
+                          service={service}
+                          getPendingRequest={getPendingRequest}
+                          rememberRequest={rememberRequest}
+                          forgetRequest={forgetRequest}
+                        />
                       </li>
                     ))}
                   </ul>
