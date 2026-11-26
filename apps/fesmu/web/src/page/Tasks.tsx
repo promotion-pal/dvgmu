@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import type { Direction } from "@fesmu/contract/tasks/entity/direction_pb";
 import type { Service } from "@fesmu/contract/tasks/entity/service_pb";
 import type { CreateTaskRequest } from "@fesmu/contract/tasks/service/task_service_pb";
+import { Link } from "react-router-dom";
 import { useUserProvider } from "@/features/provider/user.provider";
 import { listTaskDirections, listTaskServices } from "@/features/tasks/api";
 import {
@@ -12,6 +13,8 @@ import {
 } from "@/features/tasks/pending-task-submission";
 import { TaskRequestDialog } from "@/features/tasks/task-request-dialog";
 import { CommonControlState, CommonError } from "@/shared/components/state";
+import { ROUTE } from "@/shared/config/path";
+import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
 
 type CatalogGroup = { direction: Direction; services: Service[] };
@@ -103,13 +106,18 @@ export default function TasksPage() {
 
   return (
     <div className="w-full max-w-[1400px] min-w-0 px-3.5 pt-[17px] pb-8 min-[851px]:px-6 min-[851px]:pt-[23px] min-[851px]:pb-11">
-      <div className="mb-[26px]">
-        <h1 className="text-[clamp(1.6rem,3vw,1.875rem)] leading-tight font-semibold tracking-[-0.035em]">
-          Заявки
-        </h1>
-        <p className="mt-1.5 text-sm text-muted-foreground">
-          Выберите университетскую услугу, чтобы подать заявку
-        </p>
+      <div className="mb-[26px] flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h1 className="text-[clamp(1.6rem,3vw,1.875rem)] leading-tight font-semibold tracking-[-0.035em]">
+            Заявки
+          </h1>
+          <p className="mt-1.5 text-sm text-muted-foreground">
+            Выберите университетскую услугу, чтобы подать заявку
+          </p>
+        </div>
+        <Button asChild variant="outline">
+          <Link to={ROUTE.MY_TASKS}>Мои заявки</Link>
+        </Button>
       </div>
 
       <section

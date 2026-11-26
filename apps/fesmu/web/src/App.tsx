@@ -17,6 +17,8 @@ import StudentPage from "./page/Student";
 import EmployeePage from "./page/Employee";
 import TicketsPage from "./page/Tickets";
 import TasksPage from "./page/Tasks";
+import MyTaskPage from "./page/tasks/MyTask";
+import MyTasksPage from "./page/tasks/MyTasks";
 import TaskDictionaries from "./page/tasks/Dictionaries";
 import TaskServiceEditor from "./page/tasks/ServiceEditor";
 import { ENV } from "./shared/config/env";
@@ -85,7 +87,13 @@ function App() {
         <Route element={<Layout />}>
           <Route path={ROUTE.HOME} element={<HomeRedirect />} />
           <Route path={ROUTE.USER.PROFILE} element={<ProfilePage />} />
-          {ENV.LOCAL_TASKS && <Route path={ROUTE.TASKS} element={<TasksPage />} />}
+          {ENV.LOCAL_TASKS && (
+            <>
+              <Route path={ROUTE.TASKS} element={<TasksPage />} />
+              <Route path={ROUTE.MY_TASKS} element={<MyTasksPage />} />
+              <Route path={ROUTE.MY_TASK} element={<MyTaskPage />} />
+            </>
+          )}
           {ENV.LOCAL_TASKS && (
             <Route element={<Allow roles={ACCESS.ADMIN} />}>
               <Route path={ROUTE.TASK_DICTIONARIES} element={<TaskDictionaries />} />

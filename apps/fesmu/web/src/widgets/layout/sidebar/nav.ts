@@ -108,6 +108,7 @@ const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
             label: "Сервис заявок",
             items: [
                 { title: "Заявки", url: ROUTE.TASKS, icon: ListChecksIcon, exact: true },
+                { title: "Мои заявки", url: ROUTE.MY_TASKS, icon: ClipboardListIcon },
                 { title: "Справочники", url: ROUTE.TASK_DICTIONARIES, icon: ClipboardListIcon, roles: [...ACCESS.ADMIN] },
             ],
         }]

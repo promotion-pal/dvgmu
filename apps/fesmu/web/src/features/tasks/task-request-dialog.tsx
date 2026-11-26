@@ -7,6 +7,8 @@ import {
   type CreateTaskRequest,
 } from "@fesmu/contract/tasks/service/task_service_pb";
 import { useEffect, useId, useRef, useState, type FormEvent } from "react";
+import { generatePath, Link } from "react-router-dom";
+import { ROUTE } from "@/shared/config/path";
 import { signIn } from "@/shared/config/session";
 import { Button } from "@/shared/ui/button";
 import {
@@ -29,7 +31,7 @@ type SubmissionState =
   | { status: "idle" | "sending" | "stale" | "signedOut" }
   | { status: "error"; message: string; fieldName?: string }
   | { status: "retry"; message: string }
-  | { status: "success"; number: string };
+  | { status: "success"; number: string; uuid: string };
 type ServiceForm = Awaited<ReturnType<typeof getTaskServiceForm>>;
 type FormState =
   | { status: "loading" | "error"; current?: ServiceForm }
@@ -130,7 +132,7 @@ function TaskRequestPanel({ service, getPendingRequest, rememberRequest, forgetR
       const { task } = await taskClient.createTask(input, { signal });
       if (task?.number) forgetRequest(input);
       setSubmission(task?.number
-        ? { status: "success", number: task.number }
+        ? { status: "success", number: task.number, uuid: task.uuid }
         : { status: "retry", message: "Не удалось получить номер заявки. Повторите отправку." });
     } catch (error) {
       const result = rejectedSubmission(error, fields, signal.aborted);
@@ -201,6 +203,11 @@ function TaskRequestPanel({ service, getPendingRequest, rememberRequest, forgetR
         <>
           <p role="status">Номер заявки <strong>{submission.number}</strong></p>
           <DialogFooter>
+            {submission.uuid && (
+              <Button variant="outline" asChild>
+                <Link to={generatePath(ROUTE.MY_TASK, { uuid: submission.uuid })}>Открыть заявку</Link>
+              </Button>
+            )}
             <DialogClose asChild><Button>Готово</Button></DialogClose>
           </DialogFooter>
         </>

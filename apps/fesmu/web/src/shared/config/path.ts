@@ -5,6 +5,8 @@ const LK = "/lk";
 const ROUTE = {
   HOME: LK,
   TASKS: `${LK}/tasks`,
+  MY_TASKS: `${LK}/tasks/my`,
+  MY_TASK: `${LK}/tasks/my/:uuid`,
   TASK_DICTIONARIES: `${LK}/tasks/admin`,
   TASK_SERVICE_NEW: `${LK}/tasks/admin/services/new`,
   TASK_SERVICE_EDIT: `${LK}/tasks/admin/services/:serviceId`,
