@@ -7,8 +7,11 @@ import {
   PriorityService,
   type PriorityCursor,
 } from "@fesmu/contract/tasks/service/priority_service_pb";
+import { ServiceFormService } from "@fesmu/contract/tasks/service/service_form_service_pb";
 import { ServiceRoutesService } from "@fesmu/contract/tasks/service/service_routes_service_pb";
 import { StatusService, type StatusCursor } from "@fesmu/contract/tasks/service/status_service_pb";
+import { TaskService } from "@fesmu/contract/tasks/service/task_service_pb";
+import { connectTransport } from "@/shared/config/api";
 
 export const tasksTransport = createConnectTransport({
   baseUrl: new URL("/tasks-api", window.location.origin).href,
@@ -21,6 +24,13 @@ export const taskPriorities = createClient(PriorityService, tasksTransport);
 export const taskStatuses = createClient(StatusService, tasksTransport);
 export const taskServiceRoutes = createClient(ServiceRoutesService, tasksTransport);
 export const taskCallOptions = { timeoutMs: 5000 };
+
+const taskForms = createClient(ServiceFormService, tasksTransport);
+export const taskClient = createClient(TaskService, connectTransport);
+
+export function getTaskServiceForm(serviceId: bigint, signal: AbortSignal) {
+  return taskForms.getServiceForm({ serviceId }, { ...taskCallOptions, signal });
+}
 
 async function collectPages<Item, Cursor>(
   read: (cursor?: Cursor) => Promise<{ items: Item[]; next?: Cursor }>,

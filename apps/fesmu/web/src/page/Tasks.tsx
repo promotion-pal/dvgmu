@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import type { Service } from "@fesmu/contract/tasks/entity/service_pb";
 import { listTaskServices } from "@/features/tasks/api";
+import { TaskRequestDialog } from "@/features/tasks/task-request-dialog";
 import { CommonControlState, CommonError } from "@/shared/components/state";
 
 type CatalogState = { status: "loading" | "error" } | { status: "ready"; services: Service[] };
@@ -41,7 +42,7 @@ export default function TasksPage() {
           Заявки
         </h1>
         <p className="mt-1.5 text-sm text-muted-foreground">
-          Университетские службы и ваши обращения
+          Выберите университетскую услугу, чтобы подать заявку
         </p>
       </div>
 
@@ -80,9 +81,10 @@ export default function TasksPage() {
             {services.map((service) => (
               <li
                 key={String(service.id)}
-                className="min-w-0 wrap-anywhere border-b px-0.5 py-2.5 text-sm"
+                className="flex min-w-0 flex-wrap items-center justify-between gap-2 border-b px-0.5 py-2.5 text-sm"
               >
-                {service.name}
+                <span className="min-w-0 wrap-anywhere font-medium">{service.name}</span>
+                <TaskRequestDialog service={service} />
               </li>
             ))}
           </ul>

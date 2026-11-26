@@ -196,7 +196,7 @@ function Services() {
             id: service.id,
             cells: [
               <Link
-                className={rowLink}
+                className={`${rowLink} task-service-link`}
                 to={ROUTE.TASK_SERVICE_EDIT.replace(":serviceId", String(service.id))}
               >
                 {service.name}
