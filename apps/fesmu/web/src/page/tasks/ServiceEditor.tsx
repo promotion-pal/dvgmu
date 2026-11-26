@@ -22,6 +22,8 @@ import {
 } from "./dictionary-shared";
 import { ServiceFormFields, ServiceRouteFields, selectClass } from "./service-configuration-fields";
 
+const attachmentMimeType = /^[a-z0-9][a-z0-9!#$&^_.+-]*\/([a-z0-9][a-z0-9!#$&^_.+-]*|\*)$/;
+
 async function loadConfiguration(id: bigint | undefined, signal: AbortSignal) {
   const [directions, statuses, priorities, configuration] = await Promise.all([
     listTaskDirections(signal),
@@ -149,6 +151,27 @@ function EditorForm({ data, reload }: { data: EditorData; reload: () => Promise<
     ) {
       return setError("Добавьте и заполните варианты для каждого списка значений.");
     }
+    for (const { name, settings } of fields) {
+      if (settings.case === "number") {
+        const { min, max } = settings.value;
+        if (min !== undefined && max !== undefined && min > max) {
+          return setError(`В поле «${name}» минимум должен быть не больше максимума.`);
+        }
+      }
+      if (settings.case === "attachment") {
+        const { allowedMimeTypes, maxFileSizeBytes } = settings.value;
+        if (
+          allowedMimeTypes.length === 0 ||
+          new Set(allowedMimeTypes).size !== allowedMimeTypes.length ||
+          allowedMimeTypes.some((type) => !attachmentMimeType.test(type))
+        ) {
+          return setError(`Укажите допустимые MIME-типы без повторов для поля «${name}».`);
+        }
+        if (maxFileSizeBytes <= 0n || maxFileSizeBytes > 9223372036854775807n) {
+          return setError(`Укажите допустимый положительный размер файла в поле «${name}».`);
+        }
+      }
+    }
     if (routes.some(({ queueId }) => !queueId.trim()))
       return setError("Укажите ID каждой очереди.");
     const routeKeys = routes.map(({ queueId, applicantDepartmentId }) =>
@@ -223,6 +246,7 @@ function EditorForm({ data, reload }: { data: EditorData; reload: () => Promise<
                 {directions.map((direction) => (
                   <option key={String(direction.id)} value={String(direction.id)}>
                     {direction.name}
+                    {direction.active ? "" : " (отключено)"}
                   </option>
                 ))}
               </select>

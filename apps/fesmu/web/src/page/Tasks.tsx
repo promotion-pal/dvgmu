@@ -1,24 +1,47 @@
 import { useEffect, useState } from "react";
+import type { Direction } from "@fesmu/contract/tasks/entity/direction_pb";
 import type { Service } from "@fesmu/contract/tasks/entity/service_pb";
-import { listTaskServices } from "@/features/tasks/api";
+import { listTaskDirections, listTaskServices } from "@/features/tasks/api";
 import { TaskRequestDialog } from "@/features/tasks/task-request-dialog";
 import { CommonControlState, CommonError } from "@/shared/components/state";
+import { Input } from "@/shared/ui/input";
 
-type CatalogState = { status: "loading" | "error" } | { status: "ready"; services: Service[] };
+type CatalogGroup = { direction: Direction; services: Service[] };
+type CatalogState = { status: "loading" | "error" } | { status: "ready"; groups: CatalogGroup[] };
+
+function byCatalogOrder(a: Direction | Service, b: Direction | Service) {
+  return a.sortOrder - b.sortOrder || a.name.localeCompare(b.name, "ru");
+}
+
+async function loadCatalog(signal: AbortSignal) {
+  const [directions, services] = await Promise.all([
+    listTaskDirections(signal),
+    listTaskServices(signal),
+  ]);
+  const groups = directions
+    .filter(({ active }) => active)
+    .sort(byCatalogOrder)
+    .map((direction): CatalogGroup => ({ direction, services: [] }));
+  const byDirection = new Map(groups.map((group) => [group.direction.id, group.services]));
+  for (const service of services.filter(({ active }) => active).sort(byCatalogOrder)) {
+    byDirection.get(service.directionId)?.push(service);
+  }
+  return groups;
+}
 
 export default function TasksPage() {
   const [state, setState] = useState<CatalogState>({ status: "loading" });
   const [attempt, setAttempt] = useState(0);
+  const [search, setSearch] = useState("");
+  const [directionId, setDirectionId] = useState("");
 
   useEffect(() => {
     const controller = new AbortController();
     const { signal } = controller;
 
-    listTaskServices(signal).then(
-      (services) => {
-        if (!signal.aborted) {
-          setState({ status: "ready", services: services.filter((service) => service.active) });
-        }
+    loadCatalog(signal).then(
+      (groups) => {
+        if (!signal.aborted) setState({ status: "ready", groups });
       },
       () => {
         if (!signal.aborted) setState({ status: "error" });
@@ -28,7 +51,16 @@ export default function TasksPage() {
     return () => controller.abort();
   }, [attempt]);
 
-  const services = state.status === "ready" ? state.services : [];
+  const groups = state.status === "ready" ? state.groups : [];
+  const query = search.trim().toLocaleLowerCase("ru");
+  const results = groups
+    .filter(({ direction }) => !directionId || String(direction.id) === directionId)
+    .map(({ direction, services }) => ({
+      direction,
+      services: services.filter(({ name }) => name.toLocaleLowerCase("ru").includes(query)),
+    }))
+    .filter(({ services }) => services.length > 0);
+  const count = results.reduce((total, { services }) => total + services.length, 0);
 
   function retry() {
     setState({ status: "loading" });
@@ -56,13 +88,10 @@ export default function TasksPage() {
         <CommonControlState
           isLoading={state.status === "loading"}
           isError={state.status === "error"}
-          isEmpty={state.status === "ready" && services.length === 0}
+          isEmpty={false}
           styleWrapper="min-h-0"
           loading={
             <p role="status" className="text-xs text-muted-foreground">Загружаем услуги…</p>
-          }
-          empty={
-            <p role="status" className="text-xs text-muted-foreground">Услуги не найдены.</p>
           }
           error={
             <div role="alert">
@@ -74,20 +103,50 @@ export default function TasksPage() {
             </div>
           }
         >
-          <p role="status" className="text-xs text-muted-foreground">
-            Найдено услуг · {services.length}
-          </p>
-          <ul className="mt-2 grid gap-x-4 min-[851px]:grid-cols-2">
-            {services.map((service) => (
-              <li
-                key={String(service.id)}
-                className="flex min-w-0 flex-wrap items-center justify-between gap-2 border-b px-0.5 py-2.5 text-sm"
-              >
-                <span className="min-w-0 wrap-anywhere font-medium">{service.name}</span>
-                <TaskRequestDialog service={service} />
-              </li>
-            ))}
-          </ul>
+          {state.status === "ready" && (
+            <div className="grid gap-4">
+              <div className="grid max-w-2xl gap-3 sm:grid-cols-2">
+                <label className="grid min-w-0 gap-1.5 text-sm font-medium">
+                  Поиск по названию услуги
+                  <Input type="search" value={search} onChange={(event) => setSearch(event.target.value)} />
+                </label>
+                <label className="grid min-w-0 gap-1.5 text-sm font-medium">
+                  Направление
+                  <select
+                    className="h-9 w-full min-w-0 rounded-md border border-input bg-background px-3 focus-visible:ring-2 focus-visible:ring-ring"
+                    value={directionId}
+                    onChange={(event) => setDirectionId(event.target.value)}
+                  >
+                    <option value="">Все направления</option>
+                    {groups.map(({ direction }) => (
+                      <option key={String(direction.id)} value={String(direction.id)}>
+                        {direction.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+              <p role="status" className="text-xs text-muted-foreground">
+                {count > 0 ? `Найдено услуг · ${count}` : "Услуги не найдены."}
+              </p>
+              {results.map(({ direction, services }) => (
+                <div key={String(direction.id)}>
+                  <h3 className="wrap-anywhere text-sm font-semibold">{direction.name}</h3>
+                  <ul className="mt-1 grid gap-x-4 min-[851px]:grid-cols-2">
+                    {services.map((service) => (
+                      <li
+                        key={String(service.id)}
+                        className="flex min-w-0 flex-wrap items-center justify-between gap-2 border-b px-0.5 py-2.5 text-sm"
+                      >
+                        <span className="min-w-0 wrap-anywhere font-medium">{service.name}</span>
+                        <TaskRequestDialog service={service} />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          )}
         </CommonControlState>
       </section>
     </div>

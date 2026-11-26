@@ -221,7 +221,7 @@ function Services() {
   );
 }
 
-type NamedEntry = DictionaryValues & { id: bigint; terminal?: boolean };
+type NamedEntry = DictionaryValues & { id: bigint; terminal?: boolean; active?: boolean };
 type NamedEditor = (
   entry: NamedEntry | undefined,
   values: DictionaryValues,
@@ -233,6 +233,7 @@ function EditDialog({
   label,
   title,
   showTerminal,
+  showDirectionActive,
   save,
   onClose,
   onSaved,
@@ -241,6 +242,7 @@ function EditDialog({
   label: string;
   title: string;
   showTerminal?: boolean;
+  showDirectionActive?: boolean;
   save: NamedEditor;
   onClose: () => void;
   onSaved: () => void;
@@ -265,6 +267,17 @@ function EditDialog({
                   <input type="checkbox" name="terminal" defaultChecked={entry?.terminal} />
                   Конечный статус
                 </label>
+              )}
+              {showDirectionActive && (
+                <div className="grid gap-1">
+                  <label className="flex w-fit items-center gap-2 text-sm">
+                    <input type="checkbox" name="active" defaultChecked={entry?.active} />
+                    Направление активно
+                  </label>
+                  <p className="text-sm text-muted-foreground">
+                    Услуги отключённого направления скрыты из каталога.
+                  </p>
+                </div>
               )}
               <DialogFooter>
                 <Button type="button" variant="outline" onClick={onClose}>
@@ -316,7 +329,7 @@ function Directions() {
       <DictionaryData key={version} load={readDirections}>
         {(directions) => (
           <DictionaryTable
-            headings={["Направление", "Услуг"]}
+            headings={["Направление", "Услуг", "Состояние"]}
             empty="Направлений пока нет."
             rows={directions.map((direction) => ({
               id: direction.id,
@@ -325,6 +338,9 @@ function Directions() {
                   {direction.name}
                 </button>,
                 direction.count,
+                <Badge variant="secondary">
+                  {direction.active ? "Активно" : "Отключено"}
+                </Badge>,
               ],
             }))}
           />
@@ -336,8 +352,12 @@ function Directions() {
           entry={editing}
           label="Название направления"
           title="Редактировать направление"
-          save={(_, values) =>
-            taskDirections.updateDirection({ ...values, id: editing.id }, taskCallOptions)
+          showDirectionActive
+          save={(_, values, data) =>
+            taskDirections.updateDirection(
+              { ...values, id: editing.id, active: data.has("active") },
+              taskCallOptions,
+            )
           }
           onClose={() => setEditing(undefined)}
           onSaved={() => {

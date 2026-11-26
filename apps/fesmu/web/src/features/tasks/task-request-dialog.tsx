@@ -3,7 +3,7 @@ import { Code, ConnectError } from "@connectrpc/connect";
 import type { Service } from "@fesmu/contract/tasks/entity/service_pb";
 import { FormFieldType, type FormField } from "@fesmu/contract/tasks/entity/service_form_pb";
 import type { CreateTaskRequestSchema } from "@fesmu/contract/tasks/service/task_service_pb";
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { signIn } from "@/shared/config/session";
 import { Button } from "@/shared/ui/button";
 import {
@@ -22,9 +22,10 @@ import { getTaskServiceForm, taskClient } from "./api";
 import { TaskRequestField } from "./task-request-fields";
 
 type Submission = MessageInitShape<typeof CreateTaskRequestSchema>;
+type FieldError = { fieldName: string; message: string };
 type SubmissionState =
   | { status: "idle" | "sending" | "stale" | "signedOut" }
-  | { status: "error"; message: string }
+  | { status: "error"; message: string; fieldName?: string }
   | { status: "retry"; message: string; input: Submission }
   | { status: "success"; number: string };
 type ServiceForm = Awaited<ReturnType<typeof getTaskServiceForm>>;
@@ -53,6 +54,9 @@ function TaskRequestPanel({ service }: { service: Service }) {
   const [loadAttempt, setLoadAttempt] = useState(0);
   const [submission, setSubmission] = useState<SubmissionState>({ status: "idle" });
   const inFlight = useRef(false);
+  const formRef = useRef<HTMLFormElement>(null);
+  const titleErrorId = useId();
+  const fieldError = submission.status === "error" && submission.fieldName ? submission : undefined;
 
   useEffect(() => {
     const controller = new AbortController();
@@ -70,6 +74,12 @@ function TaskRequestPanel({ service }: { service: Service }) {
     );
     return () => controller.abort();
   }, [serviceId, loadAttempt]);
+
+  useEffect(() => {
+    if (fieldError?.fieldName) {
+      formRef.current?.querySelector<HTMLElement>(`[name="${CSS.escape(fieldError.fieldName)}"]`)?.focus();
+    }
+  }, [fieldError]);
 
   const fields = form.current?.schema?.fields ?? [];
   const sending = submission.status === "sending";
@@ -108,16 +118,21 @@ function TaskRequestPanel({ service }: { service: Service }) {
     event.preventDefault();
     if (!canSubmit || form.status !== "ready" || inFlight.current) return;
 
-    const data = new FormData(event.currentTarget);
+    const element = event.currentTarget;
+    const data = new FormData(element);
     const title = String(data.get("title") ?? "").trim();
     if (!title || title.includes("\0") || Array.from(title).length > 150) {
-      setSubmission({ status: "error", message: "Укажите заголовок от 1 до 150 символов." });
+      setSubmission({
+        status: "error",
+        fieldName: "title",
+        message: "Укажите заголовок от 1 до 150 символов.",
+      });
       return;
     }
 
-    const extra = readExtraFields(data, fields);
-    if (typeof extra === "string") {
-      setSubmission({ status: "error", message: extra });
+    const extra = readExtraFields(element, data, fields);
+    if ("fieldName" in extra) {
+      setSubmission({ status: "error", ...extra });
       return;
     }
 
@@ -126,7 +141,7 @@ function TaskRequestPanel({ service }: { service: Service }) {
       title,
       description: String(data.get("description") ?? "").trim(),
       formVersion: form.current.version,
-      extraFields: extra,
+      extraFields: extra.values,
       idempotencyKey: crypto.randomUUID(),
     });
   }
@@ -154,21 +169,50 @@ function TaskRequestPanel({ service }: { service: Service }) {
           </DialogFooter>
         </>
       ) : (
-        <form className="grid gap-4" onSubmit={submit}>
+        <form
+          ref={formRef}
+          className="grid gap-4"
+          noValidate
+          onSubmit={submit}
+          onChange={(event) => {
+            const target = event.target;
+            if (target instanceof HTMLElement && fieldError && target.getAttribute("name") === fieldError.fieldName) {
+              setSubmission({ status: "idle" });
+            }
+          }}
+        >
           {form.current && (
             <fieldset disabled={!canSubmit} className="grid min-w-0 gap-4">
-              <label className="grid gap-1.5 font-medium">
-                Заголовок *
-                <Input name="title" required />
-              </label>
+              <div className="grid gap-1.5">
+                <label className="grid gap-1.5 font-medium">
+                  Заголовок *
+                  <Input
+                    name="title"
+                    required
+                    aria-invalid={fieldError?.fieldName === "title" || undefined}
+                    aria-describedby={fieldError?.fieldName === "title" ? titleErrorId : undefined}
+                  />
+                </label>
+                {fieldError?.fieldName === "title" && (
+                  <p id={titleErrorId} role="alert" className="text-sm text-destructive">{fieldError.message}</p>
+                )}
+              </div>
               <label className="grid gap-1.5 font-medium">
                 Описание
                 <Textarea name="description" rows={3} />
               </label>
               <div key={String(form.current.version)} className="contents">
-                {fields.map((field) => (
-                  <TaskRequestField key={field.code} field={field} name={fieldName(field)} />
-                ))}
+                {fields.map((field) => {
+                  const name = fieldName(field);
+                  return (
+                    <TaskRequestField
+                      key={field.code}
+                      field={field}
+                      name={name}
+                      error={fieldError?.fieldName === name ? fieldError.message : undefined}
+                    />
+                  );
+                })}
               </div>
             </fieldset>
           )}
@@ -191,7 +235,7 @@ function TaskRequestPanel({ service }: { service: Service }) {
           {submission.status === "signedOut" && (
             <p role="alert" className="text-destructive">Сессия истекла. Войдите в портал снова.</p>
           )}
-          {(submission.status === "error" || submission.status === "retry") && (
+          {((submission.status === "error" && !fieldError) || submission.status === "retry") && (
             <p role="alert" className="text-destructive">{submission.message}</p>
           )}
 
@@ -227,14 +271,24 @@ function fieldName(field: FormField) {
   return `field-${field.code}`;
 }
 
-function readExtraFields(data: FormData, fields: FormField[]): JsonObject | string {
+function readExtraFields(form: HTMLFormElement, data: FormData, fields: FormField[]): { values: JsonObject } | FieldError {
   const extra: JsonObject = {};
   for (const field of fields) {
     if (field.type === FormFieldType.ATTACHMENT) continue;
 
-    const values = data.getAll(fieldName(field)).map(String).filter(Boolean);
+    const name = fieldName(field);
+    const error = (message: string): FieldError => ({ fieldName: name, message });
+    const control = form.elements.namedItem(name);
+    if (control instanceof HTMLInputElement && control.validity.badInput) {
+      return error(field.type === FormFieldType.NUMBER ? "Введите число." : "Укажите корректную дату.");
+    }
+    const values = data.getAll(name).map(String).filter(Boolean);
     if (values.length === 0) {
-      if (field.required) return `Заполните поле «${field.name}».`;
+      if (field.required) {
+        return error(field.type === FormFieldType.MULTIPLE_CHOICE
+          ? "Выберите хотя бы один вариант."
+          : "Заполните это поле.");
+      }
       continue;
     }
 
@@ -248,21 +302,26 @@ function readExtraFields(data: FormData, fields: FormField[]): JsonObject | stri
         break;
       case FormFieldType.NUMBER: {
         const number = Number(value);
-        if (!Number.isFinite(number)) return `Укажите число в поле «${field.name}».`;
+        if (!Number.isFinite(number)) return error("Введите число.");
+        if (field.settings.case === "number") {
+          const { min, max } = field.settings.value;
+          if (min !== undefined && number < min) return error(`Введите число не меньше ${min}.`);
+          if (max !== undefined && number > max) return error(`Введите число не больше ${max}.`);
+        }
         extra[field.code] = number;
         break;
       }
       case FormFieldType.DATE:
         if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
-          return `Укажите дату в поле «${field.name}» в формате ГГГГ-ММ-ДД.`;
+          return error("Укажите дату в формате ГГГГ-ММ-ДД.");
         }
         extra[field.code] = value;
         break;
       case FormFieldType.SHORT_TEXT:
       case FormFieldType.LONG_TEXT:
-        if (field.required && !value.trim()) return `Заполните поле «${field.name}».`;
+        if (field.required && !value.trim()) return error("Заполните это поле.");
         if (field.settings.case === "text" && Array.from(value).length > field.settings.value.maxLength) {
-          return `Сократите текст в поле «${field.name}» до ${field.settings.value.maxLength} симв.`;
+          return error(`Сократите текст до ${field.settings.value.maxLength} симв.`);
         }
         extra[field.code] = value;
         break;
@@ -271,7 +330,7 @@ function readExtraFields(data: FormData, fields: FormField[]): JsonObject | stri
         break;
     }
   }
-  return extra;
+  return { values: extra };
 }
 
 function rejectedSubmission(
@@ -289,10 +348,10 @@ function rejectedSubmission(
     case Code.InvalidArgument: {
       const fieldCode = /\bfield "([a-z0-9_-]+)"/.exec(rawMessage)?.[1];
       const field = fields.find(({ code }) => code === fieldCode);
-      const message = field
-        ? `Проверьте значение поля «${field.name}».`
-        : "Проверьте заголовок, описание и поля заявки.";
-      return { status: "error", message };
+      if (field && field.type !== FormFieldType.ATTACHMENT) {
+        return { status: "error", fieldName: fieldName(field), message: "Проверьте значение поля." };
+      }
+      return { status: "error", message: "Проверьте заголовок, описание и поля заявки." };
     }
     case Code.Aborted:
       return { status: "stale" };

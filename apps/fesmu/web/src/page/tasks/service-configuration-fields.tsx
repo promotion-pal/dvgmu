@@ -1,13 +1,17 @@
 import { create } from "@bufbuild/protobuf";
 import {
+  FormAttachmentSettingsSchema,
   FormChoiceOptionSchema,
   FormChoiceSettingsSchema,
   FormFieldSchema,
   FormFieldType,
+  FormNumberSettingsSchema,
+  type FormAttachmentSettings,
   type FormChoiceOption,
   type FormField,
 } from "@fesmu/contract/tasks/entity/service_form_pb";
 import { PlusIcon } from "lucide-react";
+import { useState } from "react";
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
 import { dictionaryCard } from "./dictionary-shared";
@@ -24,6 +28,7 @@ const fieldTypes = [
   [FormFieldType.BOOLEAN, "Да / нет"],
   [FormFieldType.SINGLE_CHOICE, "Список значений"],
   [FormFieldType.MULTIPLE_CHOICE, "Список с множественным выбором"],
+  [FormFieldType.ATTACHMENT, "Вложение"],
 ] as const;
 
 function newCode(prefix: string) {
@@ -103,6 +108,11 @@ function FieldEditor({
             };
     } else if (isText && settings.case === "text") {
       nextSettings = settings;
+    } else if (type === FormFieldType.ATTACHMENT) {
+      nextSettings = {
+        case: "attachment",
+        value: create(FormAttachmentSettingsSchema, { maxFiles: 1 }),
+      };
     }
     onChange({ ...field, type, settings: nextSettings });
   }
@@ -126,9 +136,6 @@ function FieldEditor({
             value={field.type}
             onChange={(event) => changeType(Number(event.target.value))}
           >
-            {field.type === FormFieldType.ATTACHMENT && (
-              <option value={FormFieldType.ATTACHMENT}>Вложение</option>
-            )}
             {fieldTypes.map(([type, label]) => (
               <option key={type} value={type}>
                 {label}
@@ -148,6 +155,36 @@ function FieldEditor({
           }
         />
       )}
+      {field.type === FormFieldType.NUMBER && (
+        <div className="grid gap-3 sm:grid-cols-2">
+          {([['min', 'Минимум'], ['max', 'Максимум']] as const).map(([bound, label]) => (
+            <label key={bound} className={labelClass}>
+              {label}
+              <Input
+                type="number"
+                step="any"
+                placeholder="Без ограничения"
+                value={(settings.case === "number" ? settings.value[bound] : undefined) ?? ""}
+                onChange={({ target }) => {
+                  const bounds = settings.case === "number" ? settings.value : undefined;
+                  const value = create(FormNumberSettingsSchema, {
+                    ...bounds,
+                    [bound]: target.value === "" ? undefined : target.valueAsNumber,
+                  });
+                  onChange({ ...field, settings: { case: "number", value } });
+                }}
+              />
+            </label>
+          ))}
+        </div>
+      )}
+      {settings.case === "attachment" && (
+        <AttachmentEditor
+          settings={settings.value}
+          required={field.required ?? false}
+          onChange={(value) => onChange({ ...field, settings: { case: "attachment", value } })}
+        />
+      )}
       <div className="flex flex-wrap items-center justify-between gap-2">
         <label className="flex w-fit items-center gap-2 text-sm">
           <input
@@ -161,6 +198,73 @@ function FieldEditor({
           Удалить поле
         </Button>
       </div>
+    </div>
+  );
+}
+
+function AttachmentEditor({
+  settings,
+  required,
+  onChange,
+}: {
+  settings: FormAttachmentSettings;
+  required: boolean;
+  onChange: (settings: FormAttachmentSettings) => void;
+}) {
+  const [mimeTypes, setMimeTypes] = useState(() => settings.allowedMimeTypes.join(", "));
+  const [fileSize, setFileSize] = useState(() => settings.maxFileSizeBytes.toString().replace(/^0$/, ""));
+
+  return (
+    <div className="grid gap-3">
+      <label className={labelClass}>
+        Допустимые MIME-типы через запятую
+        <Input
+          value={mimeTypes}
+          placeholder="application/pdf, image/*"
+          required
+          onChange={({ target }) => {
+            setMimeTypes(target.value);
+            onChange({
+              ...settings,
+              allowedMimeTypes: target.value.toLowerCase().split(",").map((type) => type.trim()).filter(Boolean),
+            });
+          }}
+        />
+      </label>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <label className={labelClass}>
+          Максимум файлов
+          <Input
+            type="number"
+            min={1}
+            max={2147483647}
+            step={1}
+            required
+            value={settings.maxFiles || ""}
+            onChange={({ target }) => onChange({ ...settings, maxFiles: target.valueAsNumber || 0 })}
+          />
+        </label>
+        <label className={labelClass}>
+          Максимальный размер файла, байт
+          <Input
+            inputMode="numeric"
+            pattern="[0-9]+"
+            maxLength={19}
+            required
+            value={fileSize}
+            onChange={({ target }) => {
+              setFileSize(target.value);
+              const maxFileSizeBytes = /^\d{1,19}$/.test(target.value) ? BigInt(target.value) : 0n;
+              onChange({ ...settings, maxFileSizeBytes });
+            }}
+          />
+        </label>
+      </div>
+      <p className="text-sm text-muted-foreground">
+        {required
+          ? "Подача заявки по этой услуге будет недоступна до подключения загрузки файлов."
+          : "Прикрепление файлов к заявке пока недоступно."}
+      </p>
     </div>
   );
 }
