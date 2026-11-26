@@ -21,7 +21,7 @@ const BUCKETS: { key: Bucket; label: string; color: string }[] = [
 ];
 
 const bucketOf = (l: PurchaseLot): Bucket | undefined => {
-    if (l.status === PurchaseLotStatus.REJECTED) return undefined;
+    if (l.status === PurchaseLotStatus.REJECTED || l.status === PurchaseLotStatus.RESERVED) return undefined;
     if (l.status === PurchaseLotStatus.COMPLETED) return "completed";
     if (l.status === PurchaseLotStatus.BUDGET_COMMISSION) return "commission";
     const phase = LOT_STAGES[lotStage(l.status)]?.phase;

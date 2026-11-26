@@ -118,12 +118,12 @@ export default function PurchaseV3Page() {
 
                     {(listView || view === "summary") && <PurchaseFilterBar state={state} />}
                     {listView && (
-                        <div className="grid gap-4 lg:grid-cols-[360px_1fr]">
+                        <div className={cn("grid gap-4", view === "lots" && state.lotLayout === "cards" ? "grid-cols-1" : "lg:grid-cols-[360px_1fr]")}>
                             <PurchaseList
                                 state={state}
                                 onNewRequest={() => setForm({ open: true })}
                                 onMerge={(mode, ids) => setMerge({ mode, ids })}
-                                lotsContent={state.lotLayout !== "list" ? <CodeTree state={state} lots={state.filteredLots} mode={state.lotLayout} /> : undefined}
+                                lotsContent={state.lotLayout === "okpd2" || state.lotLayout === "ktru" ? <CodeTree state={state} lots={state.filteredLots} mode={state.lotLayout} /> : undefined}
                             />
                             <div className="flex min-w-0 flex-col gap-4">{detail}</div>
                         </div>

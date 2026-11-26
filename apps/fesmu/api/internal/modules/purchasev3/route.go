@@ -106,6 +106,7 @@ const (
 	lotAcceptance      = enum.PurchaseLotStatus_PURCHASE_LOT_STATUS_ACCEPTANCE
 	lotInventory       = enum.PurchaseLotStatus_PURCHASE_LOT_STATUS_INVENTORY
 	lotCompleted       = enum.PurchaseLotStatus_PURCHASE_LOT_STATUS_COMPLETED
+	lotReserved        = enum.PurchaseLotStatus_PURCHASE_LOT_STATUS_RESERVED
 )
 
 var lotStatusLabel = map[enum.PurchaseLotStatus]string{
@@ -129,6 +130,7 @@ var lotStatusLabel = map[enum.PurchaseLotStatus]string{
 	lotAcceptance:      "на приёмке",
 	lotInventory:       "ставится на учёт",
 	lotCompleted:       "завершена",
+	lotReserved:        "резервная закупка",
 }
 
 const (

@@ -17,7 +17,7 @@ import type { MessageInitShape } from "@bufbuild/protobuf";
 import type { PurchaseLotUpdateRequestSchema, PurchaseProtocolDecisionInputSchema } from "@fesmu/contract/fesmu/service/v3/purchase.service_pb";
 import { connectTransport } from "@/shared/config/api";
 import { DEPARTMENT_LABEL } from "@/shared/config/departments";
-import { isOverdue, isTask, LOT_STAGES, lotKey, lotStage, PurchaseItemType, PurchaseLotStatus, PurchaseMove, PurchasePlanType, PurchaseRequestStatus, requestKey } from "./purchase-v3.schema";
+import { isOverdue, isTask, LOT_STAGES, lotKey, lotStage, parseRub, PurchaseItemType, PurchaseLotStatus, PurchaseMove, PurchasePlanType, PurchaseRequestStatus, requestKey } from "./purchase-v3.schema";
 import type { PurchaseDocumentKind, PurchasePermission } from "./purchase-v3.schema";
 
 const client = createClient(PurchaseService, connectTransport);
@@ -48,9 +48,11 @@ export interface PurchaseFilters {
     overdueOnly: boolean;
     /** Only purchases with remarks left by a transfer from a plan or registry. */
     reviewOnly: boolean;
+    minAmount: string;
+    maxAmount: string;
 }
 
-export const NO_FILTERS: PurchaseFilters = { curatorId: "", department: 0, itemType: 0, phase: 0, status: "", overdueOnly: false, reviewOnly: false };
+export const NO_FILTERS: PurchaseFilters = { curatorId: "", department: 0, itemType: 0, phase: 0, status: "", overdueOnly: false, reviewOnly: false, minAmount: "", maxAmount: "" };
 
 export type PurchaseView = "tasks" | "requests" | "lots" | "summary" | "activity" | "commission" | "directories";
 
@@ -85,8 +87,8 @@ export const usePurchaseV3 = () => {
     const [selected, setSelected] = useState<string>();
     const [search, setSearch] = useState("");
     const [filters, setFilters] = useState<PurchaseFilters>(NO_FILTERS);
-    /** How the purchases tab lays them out: a list, or by classifier code. */
-    const [lotLayout, setLotLayout] = useState<"list" | "okpd2" | "ktru">("list");
+    /** How the purchases tab lays them out. */
+    const [lotLayout, setLotLayout] = useState<"cards" | "list" | "okpd2" | "ktru">("cards");
     const [employees, setEmployees] = useState<Partial<Record<number, PurchaseEmployee[]>>>({});
 
     const me = overview?.me;
@@ -135,6 +137,13 @@ export const usePurchaseV3 = () => {
     const matches = (...fields: string[]) => !query || fields.some((f) => f.toLocaleLowerCase("ru").includes(query));
     const curatorOfDepartment = (d: number) => overview?.departments.find((x) => x.department === d)?.curatorId;
     const f = filters;
+    const amountLimit = (value: string) => {
+        if (!value.trim()) return undefined;
+        const parsed = parseRub(value);
+        return Number.isFinite(parsed) ? BigInt(parsed) : undefined;
+    };
+    const minAmount = amountLimit(f.minAmount);
+    const maxAmount = amountLimit(f.maxAmount);
     /** A request that went into a purchase or was merged lives on inside it:
      *  the requests list shows it only when that status is picked. */
     const isOpen = (r: PurchaseRequest) => r.status !== PurchaseRequestStatus.IN_PURCHASE && r.status !== PurchaseRequestStatus.MERGED;
@@ -157,8 +166,10 @@ export const usePurchaseV3 = () => {
             l.requestIds.some((id) => requests.find((r) => r.id === id)?.department === f.department)) &&
         (!f.itemType || l.itemType === f.itemType) &&
         (!f.status || f.status === `l${l.status}`) &&
-        (!f.overdueOnly || isOverdue(l)) &&
+        (!f.overdueOnly || l.status === PurchaseLotStatus.RESERVED || isOverdue(l)) &&
         (!f.reviewOnly || l.reviewNote !== "") &&
+        (minAmount === undefined || l.totalAmount >= minAmount) &&
+        (maxAmount === undefined || l.totalAmount <= maxAmount) &&
         (f.phase === 0 || LOT_STAGES[lotStage(l.status)]?.phase === f.phase || (f.phase === 3 && l.status === PurchaseLotStatus.COMPLETED));
     const activeFilters = Object.entries(f).filter(([k, v]) => v !== NO_FILTERS[k as keyof PurchaseFilters]).length + (query ? 1 : 0);
 

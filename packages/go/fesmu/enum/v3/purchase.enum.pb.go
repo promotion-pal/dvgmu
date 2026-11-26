@@ -400,6 +400,7 @@ const (
 	PurchaseLotStatus_PURCHASE_LOT_STATUS_ACCEPTANCE  PurchaseLotStatus = 23 // Приёмка
 	PurchaseLotStatus_PURCHASE_LOT_STATUS_INVENTORY   PurchaseLotStatus = 24 // Постановка на учёт в инвентаре портала
 	PurchaseLotStatus_PURCHASE_LOT_STATUS_COMPLETED   PurchaseLotStatus = 25 // Закупка завершена
+	PurchaseLotStatus_PURCHASE_LOT_STATUS_RESERVED    PurchaseLotStatus = 26 // Резервная закупка, вне основного маршрута
 )
 
 // Enum value maps for PurchaseLotStatus.
@@ -426,6 +427,7 @@ var (
 		23: "PURCHASE_LOT_STATUS_ACCEPTANCE",
 		24: "PURCHASE_LOT_STATUS_INVENTORY",
 		25: "PURCHASE_LOT_STATUS_COMPLETED",
+		26: "PURCHASE_LOT_STATUS_RESERVED",
 	}
 	PurchaseLotStatus_value = map[string]int32{
 		"PURCHASE_LOT_STATUS_UNSPECIFIED":         0,
@@ -449,6 +451,7 @@ var (
 		"PURCHASE_LOT_STATUS_ACCEPTANCE":          23,
 		"PURCHASE_LOT_STATUS_INVENTORY":           24,
 		"PURCHASE_LOT_STATUS_COMPLETED":           25,
+		"PURCHASE_LOT_STATUS_RESERVED":            26,
 	}
 )
 
@@ -970,7 +973,7 @@ const file_fesmu_enum_v3_purchase_enum_proto_rawDesc = "" +
 	"*PURCHASE_REQUEST_STATUS_IMPLEMENTER_REVIEW\x10\x04\x12'\n" +
 	"#PURCHASE_REQUEST_STATUS_IN_PURCHASE\x10\x05\x12\"\n" +
 	"\x1ePURCHASE_REQUEST_STATUS_MERGED\x10\x06\x12$\n" +
-	" PURCHASE_REQUEST_STATUS_REJECTED\x10\a*\xac\x06\n" +
+	" PURCHASE_REQUEST_STATUS_REJECTED\x10\a*\xce\x06\n" +
 	"\x11PurchaseLotStatus\x12#\n" +
 	"\x1fPURCHASE_LOT_STATUS_UNSPECIFIED\x10\x00\x12\x1f\n" +
 	"\x1bPURCHASE_LOT_STATUS_FORMING\x10\x01\x12%\n" +
@@ -993,7 +996,8 @@ const file_fesmu_enum_v3_purchase_enum_proto_rawDesc = "" +
 	"\x1cPURCHASE_LOT_STATUS_DELIVERY\x10\x16\x12\"\n" +
 	"\x1ePURCHASE_LOT_STATUS_ACCEPTANCE\x10\x17\x12!\n" +
 	"\x1dPURCHASE_LOT_STATUS_INVENTORY\x10\x18\x12!\n" +
-	"\x1dPURCHASE_LOT_STATUS_COMPLETED\x10\x19*v\n" +
+	"\x1dPURCHASE_LOT_STATUS_COMPLETED\x10\x19\x12 \n" +
+	"\x1cPURCHASE_LOT_STATUS_RESERVED\x10\x1a*v\n" +
 	"\x10PurchaseItemType\x12\"\n" +
 	"\x1ePURCHASE_ITEM_TYPE_UNSPECIFIED\x10\x00\x12\x1e\n" +
 	"\x1aPURCHASE_ITEM_TYPE_PRODUCT\x10\x01\x12\x1e\n" +

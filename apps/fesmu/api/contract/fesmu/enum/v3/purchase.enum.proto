@@ -166,6 +166,7 @@ enum PurchaseLotStatus {
   PURCHASE_LOT_STATUS_ACCEPTANCE = 23;          // Приёмка
   PURCHASE_LOT_STATUS_INVENTORY = 24;           // Постановка на учёт в инвентаре портала
   PURCHASE_LOT_STATUS_COMPLETED = 25;           // Закупка завершена
+  PURCHASE_LOT_STATUS_RESERVED = 26;            // Резервная закупка, вне основного маршрута
 }
 
 // What is bought. A purchase holds requests of one type only.

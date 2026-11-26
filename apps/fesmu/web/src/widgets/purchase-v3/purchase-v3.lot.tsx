@@ -3,6 +3,7 @@ import type { FC, ReactNode } from "react";
 import { ArrowRightIcon, CalendarIcon, TriangleAlertIcon, CheckCircle2Icon, CircleIcon, DownloadIcon, HourglassIcon, PaperclipIcon, PlusIcon, TrashIcon, Undo2Icon, UploadIcon, XIcon } from "lucide-react";
 import { cn } from "@/shared/lib/utils";
 import { Card } from "@/shared/ui/card";
+import { Checkbox } from "@/shared/ui/checkbox";
 import { timestampFromDate } from "@bufbuild/protobuf/wkt";
 import type { PurchaseLot } from "@fesmu/contract/fesmu/entity/v3/purchase.entity_pb";
 import { Button } from "@/shared/ui/button";
@@ -457,8 +458,9 @@ const StageForm: FC<{ state: PurchaseV3State; l: PurchaseLot }> = ({ state, l })
 };
 
 const FullEditPanel: FC<{ state: PurchaseV3State; l: PurchaseLot }> = ({ state, l }) => {
-    const statuses = [...LOT_STAGES.map((s) => s.status), PurchaseLotStatus.REJECTED, PurchaseLotStatus.COMPLETED];
+    const statuses = [...LOT_STAGES.map((s) => s.status), PurchaseLotStatus.REJECTED, PurchaseLotStatus.COMPLETED, PurchaseLotStatus.RESERVED];
     const [status, setStatus] = useState(l.status);
+    const [statusBeforeReserve, setStatusBeforeReserve] = useState(l.status === PurchaseLotStatus.RESERVED ? PurchaseLotStatus.FORMING : l.status);
     const [comment, setComment] = useState("");
     const [planType, setPlanType] = useState(l.planType);
     const [planYear, setPlanYear] = useState(String(l.planYear || ""));
@@ -474,7 +476,11 @@ const FullEditPanel: FC<{ state: PurchaseV3State; l: PurchaseLot }> = ({ state, 
             <p className="text-xs text-muted-foreground">Сохраняйте каждый блок отдельно. Поля доступны независимо от текущего этапа.</p>
             <Section title="Статус закупки">
                 <div className="grid gap-2 sm:grid-cols-[1fr_1fr_auto]">
-                    <select className={FIELD_CLASS} value={status} onChange={(e) => setStatus(Number(e.target.value) as PurchaseLotStatus)}>
+                    <select className={FIELD_CLASS} value={status} onChange={(e) => {
+                        const next = Number(e.target.value) as PurchaseLotStatus;
+                        setStatus(next);
+                        if (next !== PurchaseLotStatus.RESERVED) setStatusBeforeReserve(next);
+                    }}>
                         {statuses.map((s) => <option key={s} value={s}>{LOT_STATUS(s).label}</option>)}
                     </select>
                     <input className={FIELD_CLASS} value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Комментарий к ручному переходу" maxLength={2048} />
@@ -482,6 +488,17 @@ const FullEditPanel: FC<{ state: PurchaseV3State; l: PurchaseLot }> = ({ state, 
                         if (await state.setLotStatus(l, status, comment.trim(), { planType, planYear: Number(planYear) || 0, assigneeUuid, implementingDepartment, curatorId: BigInt(curatorId || "0"), commissionComment, itemType })) setComment("");
                     }}>Установить статус</Button>
                 </div>
+                <label className="flex cursor-pointer items-center gap-2 text-sm">
+                    <Checkbox checked={status === PurchaseLotStatus.RESERVED} onCheckedChange={(checked) => {
+                        if (checked) {
+                            if (status !== PurchaseLotStatus.RESERVED) setStatusBeforeReserve(status);
+                            setStatus(PurchaseLotStatus.RESERVED);
+                        } else if (status === PurchaseLotStatus.RESERVED) {
+                            setStatus(statusBeforeReserve);
+                        }
+                    }} />
+                    Отметить как резервную закупку
+                </label>
             </Section>
             <Section title="Наименование, описание, характеристики и коды">
                 <ContentForm state={state} l={{ ...l, status: PurchaseLotStatus.SPECIFICATION_CHECK }} />
@@ -993,12 +1010,12 @@ export const LotDetail: FC<{ state: PurchaseV3State; l: PurchaseLot }> = ({ stat
                     ]}
                 />
                 {l.lastComment && <p className="rounded-md bg-amber-50 px-3 py-2 text-sm text-amber-800 dark:bg-amber-950 dark:text-amber-200">💬 {l.lastComment}</p>}
-                <details className="text-sm">
+                {l.status !== PurchaseLotStatus.RESERVED && <details className="text-sm">
                     <summary className="cursor-pointer text-xs text-muted-foreground">Весь маршрут закупки</summary>
                     <div className="mt-3">
                         <LotRoute status={l.status} />
                     </div>
-                </details>
+                </details>}
             </Section>
 
             <ReviewNote key={`${l.id}-${l.reviewNote.length}`} state={state} l={l} mayEdit={mayEditDeadline} />

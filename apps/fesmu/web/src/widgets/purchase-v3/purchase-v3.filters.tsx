@@ -56,6 +56,7 @@ export const PurchaseFilterBar: FC<{ state: PurchaseV3State }> = ({ state }) => 
                     <div className="flex rounded-lg border p-0.5 text-xs" role="group" aria-label="Вид закупок">
                         {(
                             [
+                                ["cards", "Карточками"],
                                 ["list", "Списком"],
                                 ["okpd2", "По кодам ОКПД2"],
                                 ["ktru", "По кодам КТРУ"],
@@ -67,11 +68,11 @@ export const PurchaseFilterBar: FC<{ state: PurchaseV3State }> = ({ state }) => 
                                 onClick={() => {
                                     state.setLotLayout(key);
                                     // The code layout lists purchases: it opens their tab.
-                                    if (key !== "list") state.setView("lots");
+                                    if (key === "okpd2" || key === "ktru") state.setView("lots");
                                 }}
                                 className={cn(
                                     "rounded-md px-3 py-1",
-                                    (key === "list" ? state.view !== "lots" || state.lotLayout === "list" : state.view === "lots" && state.lotLayout === key)
+                                    (state.view === "lots" ? state.lotLayout === key : key === "cards")
                                         ? "bg-primary text-primary-foreground"
                                         : "text-muted-foreground hover:bg-muted",
                                 )}
@@ -116,7 +117,17 @@ export const PurchaseFilterBar: FC<{ state: PurchaseV3State }> = ({ state }) => 
                         </option>
                     ))}
                 </select>
-                <select className={SELECT} value={f.status} onChange={(e) => set({ status: e.target.value })} aria-label="Этап">
+                {state.view === "lots" && (
+                    <>
+                        <label className="flex items-center gap-1.5 text-sm text-muted-foreground">Сумма от, ₽
+                            <input className={cn(FIELD_CLASS, "w-32")} type="text" inputMode="decimal" placeholder="0,00" value={f.minAmount} onChange={(e) => set({ minAmount: e.target.value })} aria-label="Сумма от" />
+                        </label>
+                        <label className="flex items-center gap-1.5 text-sm text-muted-foreground">до, ₽
+                            <input className={cn(FIELD_CLASS, "w-32")} type="text" inputMode="decimal" placeholder="0,00" value={f.maxAmount} onChange={(e) => set({ maxAmount: e.target.value })} aria-label="Сумма до" />
+                        </label>
+                    </>
+                )}
+                <select className={SELECT} value={f.status} onChange={(e) => set({ status: e.target.value, ...(e.target.value === `l${PurchaseLotStatus.RESERVED}` ? { phase: 0 } : {}) })} aria-label="Этап">
                     <option value="">Все этапы</option>
                     <optgroup label="Заявки">
                         {REQUEST_STATUSES.map((s) => (
@@ -133,6 +144,7 @@ export const PurchaseFilterBar: FC<{ state: PurchaseV3State }> = ({ state }) => 
                         ))}
                         <option value={`l${PurchaseLotStatus.REJECTED}`}>Отклонена комиссией</option>
                         <option value={`l${PurchaseLotStatus.COMPLETED}`}>Завершена</option>
+                        <option value={`l${PurchaseLotStatus.RESERVED}`}>Резервная закупка</option>
                     </optgroup>
                 </select>
                 <label className="flex cursor-pointer items-center gap-1.5 text-sm">

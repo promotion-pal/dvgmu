@@ -106,6 +106,7 @@ export const PurchaseMeCard: FC<{ state: PurchaseV3State }> = ({ state }) => {
 
 /** The purchase's place on the route, phase by phase. */
 export const LotRoute: FC<{ status: PurchaseLotStatus }> = ({ status }) => {
+    if (status === PurchaseLotStatus.RESERVED) return <p className="text-sm font-medium text-violet-700 dark:text-violet-300">Резервная закупка — временно вне основного маршрута</p>;
     const current = status === PurchaseLotStatus.COMPLETED ? LOT_STAGES.length : lotStage(status);
     return (
         <div className="grid gap-3 sm:grid-cols-3">
@@ -282,10 +283,10 @@ const LotRow: FC<{ state: PurchaseV3State; l: PurchaseLot }> = ({ state, l }) =>
                 </span>
                 {l.totalAmount > 0n && <span className="shrink-0 tabular-nums">{rub(l.totalAmount)}</span>}
             </span>
-            {((l.stageDue || l.dueAt) && l.status !== PurchaseLotStatus.COMPLETED) || l.reviewNote ? (
+            {((l.stageDue || l.dueAt) && l.status !== PurchaseLotStatus.COMPLETED && l.status !== PurchaseLotStatus.RESERVED) || l.reviewNote ? (
                 <span className="flex flex-wrap gap-1">
-                    {l.status !== PurchaseLotStatus.COMPLETED && <TermChip label="Этап" due={l.stageDue} />}
-                    {l.status !== PurchaseLotStatus.COMPLETED && <TermChip label="Срок закупки" due={l.dueAt} />}
+                    {l.status !== PurchaseLotStatus.COMPLETED && l.status !== PurchaseLotStatus.RESERVED && <TermChip label="Этап" due={l.stageDue} />}
+                    {l.status !== PurchaseLotStatus.COMPLETED && l.status !== PurchaseLotStatus.RESERVED && <TermChip label="Срок закупки" due={l.dueAt} />}
                     {l.reviewNote && (
                         <span className={cn("inline-flex items-center gap-1 rounded-md border px-1.5 py-0.5 text-[11px]", TONE_CLASS.amber)}>
                             <TriangleAlertIcon className="size-3" /> проверить: {l.reviewNote.split("\n").length}
@@ -293,6 +294,31 @@ const LotRow: FC<{ state: PurchaseV3State; l: PurchaseLot }> = ({ state, l }) =>
                     )}
                 </span>
             ) : null}
+        </div>
+    </button>
+);
+
+const LotCard: FC<{ state: PurchaseV3State; l: PurchaseLot }> = ({ state, l }) => (
+    <button
+        type="button"
+        onClick={() => state.select(lotKey(l))}
+        className={cn("flex min-h-40 w-full flex-col gap-3 rounded-xl border bg-card p-4 text-left shadow-sm transition hover:border-primary/50 hover:shadow-md", state.selected === lotKey(l) && "border-primary ring-1 ring-primary")}
+    >
+        <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
+            <span className="flex items-center gap-1"><LayersIcon className="size-3.5" /> Закупка №{l.id.toString()}</span>
+            <LotBadge l={l} />
+        </div>
+        <span className="line-clamp-2 text-sm font-semibold">{l.title}</span>
+        <div className="flex flex-wrap gap-x-2 gap-y-1 text-xs text-muted-foreground">
+            <span>{state.departmentName(l.implementingDepartment)}</span><span>·</span><span>{state.curatorName(l.curatorId)}</span>
+        </div>
+        <div className="mt-auto flex items-end justify-between gap-2">
+            <div className="flex flex-col gap-1 text-xs text-muted-foreground">
+                {l.assigneeName && <span>Исполнитель: {l.assigneeName}</span>}
+                {l.status !== PurchaseLotStatus.COMPLETED && l.status !== PurchaseLotStatus.RESERVED && l.stageDue && <TermChip label="Этап" due={l.stageDue} />}
+                {l.reviewNote && <span className="text-amber-700 dark:text-amber-300">Требует проверки</span>}
+            </div>
+            <span className="shrink-0 text-sm font-semibold tabular-nums">{l.totalAmount > 0n ? rub(l.totalAmount) : "Сумма не указана"}</span>
         </div>
     </button>
 );
@@ -383,7 +409,12 @@ export const PurchaseList: FC<{
             )}
 
             {view === "lots" && lotsContent}
-            {view === "lots" && !lotsContent && (lots.length === 0 ? empty(state.activeFilters ? "Под фильтр ничего не подходит" : "Закупок нет") : lots.map((l) => <LotRow key={lotKey(l)} state={state} l={l} />))}
+            {view === "lots" && !lotsContent && (
+                lots.length === 0 ? empty(state.activeFilters ? "Под фильтр ничего не подходит" : "Закупок нет") :
+                state.lotLayout === "cards" ? (
+                    <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{lots.map((l) => <LotCard key={lotKey(l)} state={state} l={l} />)}</div>
+                ) : lots.map((l) => <LotRow key={lotKey(l)} state={state} l={l} />)
+            )}
         </Card>
     );
 };

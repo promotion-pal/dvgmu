@@ -100,6 +100,7 @@ export const PHASE_LABEL: Record<1 | 2 | 3, string> = {
 export const lotStage = (status: PurchaseLotStatus) => LOT_STAGES.findIndex((s) => s.status === status);
 
 export const LOT_STATUS = (status: PurchaseLotStatus): { label: string; tone: Tone } => {
+    if (status === PurchaseLotStatus.RESERVED) return { label: "Резервная закупка", tone: "violet" };
     if (status === PurchaseLotStatus.COMPLETED) return { label: "Завершена", tone: "green" };
     if (status === PurchaseLotStatus.REJECTED) return { label: "Отклонена комиссией", tone: "red" };
     const stage = LOT_STAGES[lotStage(status)];
