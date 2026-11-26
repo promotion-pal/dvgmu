@@ -4,11 +4,13 @@ package tasks.service;
 
 import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
+import "tasks/entity/service_form.proto";
 import "tasks/entity/task.proto";
 
 service TaskService {
   rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse);
   rpc ListMyTasks(ListMyTasksRequest) returns (ListMyTasksResponse);
+  rpc GetMyTask(GetMyTaskRequest) returns (GetMyTaskResponse);
 }
 
 message CreateTaskRequest {
@@ -61,4 +63,17 @@ message ListMyTasksResponse {
   // Ordered by creation time and UUID, newest first.
   repeated MyTaskListItem tasks = 1;
   MyTasksCursor next_cursor = 2;
+}
+
+message GetMyTaskRequest {
+  string uuid = 1;
+}
+
+message GetMyTaskResponse {
+  tasks.entity.Task task = 1;
+  string service_name = 2;
+  string status_name = 3;
+  string priority_name = 4;
+  // The form version recorded on the task. Absent if submitted without a saved form.
+  tasks.entity.ServiceFormSchema form_schema = 5;
 }

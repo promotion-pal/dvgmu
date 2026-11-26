@@ -26,17 +26,34 @@ func NewTaskStorage(db *gorm.DB) *TaskStorage {
 	return &TaskStorage{db: db}
 }
 
-func (s *TaskStorage) ListMine(ctx context.Context, authorID string, filter models.MyTasksFilter, after *models.MyTasksCursor, limit int) ([]models.MyTaskListItem, error) {
-	var tasks []models.MyTaskListItem
-	query := s.db.WithContext(ctx).Model(&models.Task{}).
-		Select(`tasks.uuid, tasks.number, tasks.title, tasks.created_at,
-			COALESCE(tasks.service_id, 0) AS service_id, COALESCE(services.name, '') AS service_name,
-			COALESCE(tasks.status_id, 0) AS status_id, COALESCE(statuses.name, '') AS status_name,
-			COALESCE(tasks.priority_id, 0) AS priority_id, COALESCE(priorities.name, '') AS priority_name`).
+const myTaskSummaryColumns = `tasks.uuid, tasks.number, tasks.title, tasks.created_at,
+	COALESCE(tasks.service_id, 0) AS service_id, COALESCE(services.name, '') AS service_name,
+	COALESCE(tasks.status_id, 0) AS status_id, COALESCE(statuses.name, '') AS status_name,
+	COALESCE(tasks.priority_id, 0) AS priority_id, COALESCE(priorities.name, '') AS priority_name`
+
+func (s *TaskStorage) myTasksQuery(ctx context.Context, authorID string) *gorm.DB {
+	return s.db.WithContext(ctx).Model(&models.Task{}).
 		Joins("LEFT JOIN services ON services.id = tasks.service_id").
 		Joins("LEFT JOIN statuses ON statuses.id = tasks.status_id").
 		Joins("LEFT JOIN priorities ON priorities.id = tasks.priority_id").
 		Where("tasks.author_id = ?", authorID)
+}
+
+func (s *TaskStorage) GetMine(ctx context.Context, authorID, taskUUID string) (models.MyTaskDetails, error) {
+	var task models.MyTaskDetails
+	err := s.myTasksQuery(ctx, authorID).
+		Select(myTaskSummaryColumns+`, tasks.description, COALESCE(tasks.direction_id, 0) AS direction_id,
+			tasks.updated_at, tasks.version, COALESCE(tasks.form_version, 0) AS form_version,
+			tasks.extra_fields, forms.schema AS form_schema`).
+		Joins("LEFT JOIN service_form_versions AS forms ON forms.service_id = tasks.service_id AND forms.version = tasks.form_version").
+		Where("tasks.uuid = CAST(? AS uuid)", taskUUID).
+		Take(&task).Error
+	return task, err
+}
+
+func (s *TaskStorage) ListMine(ctx context.Context, authorID string, filter models.MyTasksFilter, after *models.MyTasksCursor, limit int) ([]models.MyTaskListItem, error) {
+	var tasks []models.MyTaskListItem
+	query := s.myTasksQuery(ctx, authorID).Select(myTaskSummaryColumns)
 	if filter.ServiceID != nil {
 		query = query.Where("tasks.service_id = ?", *filter.ServiceID)
 	}

@@ -37,12 +37,15 @@ const (
 	TaskServiceCreateTaskProcedure = "/tasks.service.TaskService/CreateTask"
 	// TaskServiceListMyTasksProcedure is the fully-qualified name of the TaskService's ListMyTasks RPC.
 	TaskServiceListMyTasksProcedure = "/tasks.service.TaskService/ListMyTasks"
+	// TaskServiceGetMyTaskProcedure is the fully-qualified name of the TaskService's GetMyTask RPC.
+	TaskServiceGetMyTaskProcedure = "/tasks.service.TaskService/GetMyTask"
 )
 
 // TaskServiceClient is a client for the tasks.service.TaskService service.
 type TaskServiceClient interface {
 	CreateTask(context.Context, *connect.Request[service.CreateTaskRequest]) (*connect.Response[service.CreateTaskResponse], error)
 	ListMyTasks(context.Context, *connect.Request[service.ListMyTasksRequest]) (*connect.Response[service.ListMyTasksResponse], error)
+	GetMyTask(context.Context, *connect.Request[service.GetMyTaskRequest]) (*connect.Response[service.GetMyTaskResponse], error)
 }
 
 // NewTaskServiceClient constructs a client for the tasks.service.TaskService service. By default,
@@ -68,6 +71,12 @@ func NewTaskServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(taskServiceMethods.ByName("ListMyTasks")),
 			connect.WithClientOptions(opts...),
 		),
+		getMyTask: connect.NewClient[service.GetMyTaskRequest, service.GetMyTaskResponse](
+			httpClient,
+			baseURL+TaskServiceGetMyTaskProcedure,
+			connect.WithSchema(taskServiceMethods.ByName("GetMyTask")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -75,6 +84,7 @@ func NewTaskServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 type taskServiceClient struct {
 	createTask  *connect.Client[service.CreateTaskRequest, service.CreateTaskResponse]
 	listMyTasks *connect.Client[service.ListMyTasksRequest, service.ListMyTasksResponse]
+	getMyTask   *connect.Client[service.GetMyTaskRequest, service.GetMyTaskResponse]
 }
 
 // CreateTask calls tasks.service.TaskService.CreateTask.
@@ -87,10 +97,16 @@ func (c *taskServiceClient) ListMyTasks(ctx context.Context, req *connect.Reques
 	return c.listMyTasks.CallUnary(ctx, req)
 }
 
+// GetMyTask calls tasks.service.TaskService.GetMyTask.
+func (c *taskServiceClient) GetMyTask(ctx context.Context, req *connect.Request[service.GetMyTaskRequest]) (*connect.Response[service.GetMyTaskResponse], error) {
+	return c.getMyTask.CallUnary(ctx, req)
+}
+
 // TaskServiceHandler is an implementation of the tasks.service.TaskService service.
 type TaskServiceHandler interface {
 	CreateTask(context.Context, *connect.Request[service.CreateTaskRequest]) (*connect.Response[service.CreateTaskResponse], error)
 	ListMyTasks(context.Context, *connect.Request[service.ListMyTasksRequest]) (*connect.Response[service.ListMyTasksResponse], error)
+	GetMyTask(context.Context, *connect.Request[service.GetMyTaskRequest]) (*connect.Response[service.GetMyTaskResponse], error)
 }
 
 // NewTaskServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -112,12 +128,20 @@ func NewTaskServiceHandler(svc TaskServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(taskServiceMethods.ByName("ListMyTasks")),
 		connect.WithHandlerOptions(opts...),
 	)
+	taskServiceGetMyTaskHandler := connect.NewUnaryHandler(
+		TaskServiceGetMyTaskProcedure,
+		svc.GetMyTask,
+		connect.WithSchema(taskServiceMethods.ByName("GetMyTask")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/tasks.service.TaskService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case TaskServiceCreateTaskProcedure:
 			taskServiceCreateTaskHandler.ServeHTTP(w, r)
 		case TaskServiceListMyTasksProcedure:
 			taskServiceListMyTasksHandler.ServeHTTP(w, r)
+		case TaskServiceGetMyTaskProcedure:
+			taskServiceGetMyTaskHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -133,4 +157,8 @@ func (UnimplementedTaskServiceHandler) CreateTask(context.Context, *connect.Requ
 
 func (UnimplementedTaskServiceHandler) ListMyTasks(context.Context, *connect.Request[service.ListMyTasksRequest]) (*connect.Response[service.ListMyTasksResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("tasks.service.TaskService.ListMyTasks is not implemented"))
+}
+
+func (UnimplementedTaskServiceHandler) GetMyTask(context.Context, *connect.Request[service.GetMyTaskRequest]) (*connect.Response[service.GetMyTaskResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("tasks.service.TaskService.GetMyTask is not implemented"))
 }

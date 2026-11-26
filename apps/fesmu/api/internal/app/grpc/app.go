@@ -182,6 +182,7 @@ func New(
 		requestsProxy := proxy.NewServicePassthrough(requestsURL)
 		mux.Handle(requestserviceconnect.TaskServiceCreateTaskProcedure, requestsProxy)
 		mux.Handle(requestserviceconnect.TaskServiceListMyTasksProcedure, requestsProxy)
+		mux.Handle(requestserviceconnect.TaskServiceGetMyTaskProcedure, requestsProxy)
 	}
 	mux.Handle("/"+analyticsserviceconnect.AnalyticServiceName+"/", analyticsProxy)
 	mux.Handle("/"+authv2connect.IdentityServiceName+"/", authProxy)

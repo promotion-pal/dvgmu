@@ -6,6 +6,8 @@ import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegen
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_struct, file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
+import type { ServiceFormSchema } from "../entity/service_form_pb";
+import { file_tasks_entity_service_form } from "../entity/service_form_pb";
 import type { Task } from "../entity/task_pb";
 import { file_tasks_entity_task } from "../entity/task_pb";
 import type { JsonObject, Message } from "@bufbuild/protobuf";
@@ -14,7 +16,7 @@ import type { JsonObject, Message } from "@bufbuild/protobuf";
  * Describes the file tasks/service/task_service.proto.
  */
 export const file_tasks_service_task_service: GenFile = /*@__PURE__*/
-  fileDesc("CiB0YXNrcy9zZXJ2aWNlL3Rhc2tfc2VydmljZS5wcm90bxINdGFza3Muc2VydmljZSKpAQoRQ3JlYXRlVGFza1JlcXVlc3QSEgoKc2VydmljZV9pZBgBIAEoAxINCgV0aXRsZRgCIAEoCRITCgtkZXNjcmlwdGlvbhgDIAEoCRIUCgxmb3JtX3ZlcnNpb24YBCABKAMSLQoMZXh0cmFfZmllbGRzGAUgASgLMhcuZ29vZ2xlLnByb3RvYnVmLlN0cnVjdBIXCg9pZGVtcG90ZW5jeV9rZXkYBiABKAkiNgoSQ3JlYXRlVGFza1Jlc3BvbnNlEiAKBHRhc2sYASABKAsyEi50YXNrcy5lbnRpdHkuVGFzayJNCg1NeVRhc2tzQ3Vyc29yEi4KCmNyZWF0ZWRfYXQYASABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEgwKBHV1aWQYAiABKAkisgIKEkxpc3RNeVRhc2tzUmVxdWVzdBIRCglwYWdlX3NpemUYASABKAUSKwoFYWZ0ZXIYAiABKAsyHC50YXNrcy5zZXJ2aWNlLk15VGFza3NDdXJzb3ISFwoKc2VydmljZV9pZBgDIAEoA0gAiAEBEhYKCXN0YXR1c19pZBgEIAEoA0gBiAEBEhgKC3ByaW9yaXR5X2lkGAUgASgDSAKIAQESMAoMY3JlYXRlZF9mcm9tGAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIyCg5jcmVhdGVkX2JlZm9yZRgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCDQoLX3NlcnZpY2VfaWRCDAoKX3N0YXR1c19pZEIOCgxfcHJpb3JpdHlfaWQi6wEKDk15VGFza0xpc3RJdGVtEgwKBHV1aWQYASABKAkSDgoGbnVtYmVyGAIgASgJEg0KBXRpdGxlGAMgASgJEi4KCmNyZWF0ZWRfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhIKCnNlcnZpY2VfaWQYBSABKAMSFAoMc2VydmljZV9uYW1lGAYgASgJEhEKCXN0YXR1c19pZBgHIAEoAxITCgtzdGF0dXNfbmFtZRgIIAEoCRITCgtwcmlvcml0eV9pZBgJIAEoAxIVCg1wcmlvcml0eV9uYW1lGAogASgJInYKE0xpc3RNeVRhc2tzUmVzcG9uc2USLAoFdGFza3MYASADKAsyHS50YXNrcy5zZXJ2aWNlLk15VGFza0xpc3RJdGVtEjEKC25leHRfY3Vyc29yGAIgASgLMhwudGFza3Muc2VydmljZS5NeVRhc2tzQ3Vyc29yMrYBCgtUYXNrU2VydmljZRJRCgpDcmVhdGVUYXNrEiAudGFza3Muc2VydmljZS5DcmVhdGVUYXNrUmVxdWVzdBohLnRhc2tzLnNlcnZpY2UuQ3JlYXRlVGFza1Jlc3BvbnNlElQKC0xpc3RNeVRhc2tzEiEudGFza3Muc2VydmljZS5MaXN0TXlUYXNrc1JlcXVlc3QaIi50YXNrcy5zZXJ2aWNlLkxpc3RNeVRhc2tzUmVzcG9uc2VCmAEKEWNvbS50YXNrcy5zZXJ2aWNlQhBUYXNrU2VydmljZVByb3RvUAFaHGZlc211L2NvbnRyYWN0L3Rhc2tzL3NlcnZpY2WiAgNUU1iqAg1UYXNrcy5TZXJ2aWNlygINVGFza3NcU2VydmljZeICGVRhc2tzXFNlcnZpY2VcR1BCTWV0YWRhdGHqAg5UYXNrczo6U2VydmljZWIGcHJvdG8z", [file_google_protobuf_struct, file_google_protobuf_timestamp, file_tasks_entity_task]);
+  fileDesc("CiB0YXNrcy9zZXJ2aWNlL3Rhc2tfc2VydmljZS5wcm90bxINdGFza3Muc2VydmljZSKpAQoRQ3JlYXRlVGFza1JlcXVlc3QSEgoKc2VydmljZV9pZBgBIAEoAxINCgV0aXRsZRgCIAEoCRITCgtkZXNjcmlwdGlvbhgDIAEoCRIUCgxmb3JtX3ZlcnNpb24YBCABKAMSLQoMZXh0cmFfZmllbGRzGAUgASgLMhcuZ29vZ2xlLnByb3RvYnVmLlN0cnVjdBIXCg9pZGVtcG90ZW5jeV9rZXkYBiABKAkiNgoSQ3JlYXRlVGFza1Jlc3BvbnNlEiAKBHRhc2sYASABKAsyEi50YXNrcy5lbnRpdHkuVGFzayJNCg1NeVRhc2tzQ3Vyc29yEi4KCmNyZWF0ZWRfYXQYASABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEgwKBHV1aWQYAiABKAkisgIKEkxpc3RNeVRhc2tzUmVxdWVzdBIRCglwYWdlX3NpemUYASABKAUSKwoFYWZ0ZXIYAiABKAsyHC50YXNrcy5zZXJ2aWNlLk15VGFza3NDdXJzb3ISFwoKc2VydmljZV9pZBgDIAEoA0gAiAEBEhYKCXN0YXR1c19pZBgEIAEoA0gBiAEBEhgKC3ByaW9yaXR5X2lkGAUgASgDSAKIAQESMAoMY3JlYXRlZF9mcm9tGAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIyCg5jcmVhdGVkX2JlZm9yZRgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCDQoLX3NlcnZpY2VfaWRCDAoKX3N0YXR1c19pZEIOCgxfcHJpb3JpdHlfaWQi6wEKDk15VGFza0xpc3RJdGVtEgwKBHV1aWQYASABKAkSDgoGbnVtYmVyGAIgASgJEg0KBXRpdGxlGAMgASgJEi4KCmNyZWF0ZWRfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhIKCnNlcnZpY2VfaWQYBSABKAMSFAoMc2VydmljZV9uYW1lGAYgASgJEhEKCXN0YXR1c19pZBgHIAEoAxITCgtzdGF0dXNfbmFtZRgIIAEoCRITCgtwcmlvcml0eV9pZBgJIAEoAxIVCg1wcmlvcml0eV9uYW1lGAogASgJInYKE0xpc3RNeVRhc2tzUmVzcG9uc2USLAoFdGFza3MYASADKAsyHS50YXNrcy5zZXJ2aWNlLk15VGFza0xpc3RJdGVtEjEKC25leHRfY3Vyc29yGAIgASgLMhwudGFza3Muc2VydmljZS5NeVRhc2tzQ3Vyc29yIiAKEEdldE15VGFza1JlcXVlc3QSDAoEdXVpZBgBIAEoCSKtAQoRR2V0TXlUYXNrUmVzcG9uc2USIAoEdGFzaxgBIAEoCzISLnRhc2tzLmVudGl0eS5UYXNrEhQKDHNlcnZpY2VfbmFtZRgCIAEoCRITCgtzdGF0dXNfbmFtZRgDIAEoCRIVCg1wcmlvcml0eV9uYW1lGAQgASgJEjQKC2Zvcm1fc2NoZW1hGAUgASgLMh8udGFza3MuZW50aXR5LlNlcnZpY2VGb3JtU2NoZW1hMoYCCgtUYXNrU2VydmljZRJRCgpDcmVhdGVUYXNrEiAudGFza3Muc2VydmljZS5DcmVhdGVUYXNrUmVxdWVzdBohLnRhc2tzLnNlcnZpY2UuQ3JlYXRlVGFza1Jlc3BvbnNlElQKC0xpc3RNeVRhc2tzEiEudGFza3Muc2VydmljZS5MaXN0TXlUYXNrc1JlcXVlc3QaIi50YXNrcy5zZXJ2aWNlLkxpc3RNeVRhc2tzUmVzcG9uc2USTgoJR2V0TXlUYXNrEh8udGFza3Muc2VydmljZS5HZXRNeVRhc2tSZXF1ZXN0GiAudGFza3Muc2VydmljZS5HZXRNeVRhc2tSZXNwb25zZUKYAQoRY29tLnRhc2tzLnNlcnZpY2VCEFRhc2tTZXJ2aWNlUHJvdG9QAVocZmVzbXUvY29udHJhY3QvdGFza3Mvc2VydmljZaICA1RTWKoCDVRhc2tzLlNlcnZpY2XKAg1UYXNrc1xTZXJ2aWNl4gIZVGFza3NcU2VydmljZVxHUEJNZXRhZGF0YeoCDlRhc2tzOjpTZXJ2aWNlYgZwcm90bzM", [file_google_protobuf_struct, file_google_protobuf_timestamp, file_tasks_entity_service_form, file_tasks_entity_task]);
 
 /**
  * @generated from message tasks.service.CreateTaskRequest
@@ -241,6 +243,62 @@ export const ListMyTasksResponseSchema: GenMessage<ListMyTasksResponse> = /*@__P
   messageDesc(file_tasks_service_task_service, 5);
 
 /**
+ * @generated from message tasks.service.GetMyTaskRequest
+ */
+export type GetMyTaskRequest = Message<"tasks.service.GetMyTaskRequest"> & {
+  /**
+   * @generated from field: string uuid = 1;
+   */
+  uuid: string;
+};
+
+/**
+ * Describes the message tasks.service.GetMyTaskRequest.
+ * Use `create(GetMyTaskRequestSchema)` to create a new message.
+ */
+export const GetMyTaskRequestSchema: GenMessage<GetMyTaskRequest> = /*@__PURE__*/
+  messageDesc(file_tasks_service_task_service, 6);
+
+/**
+ * @generated from message tasks.service.GetMyTaskResponse
+ */
+export type GetMyTaskResponse = Message<"tasks.service.GetMyTaskResponse"> & {
+  /**
+   * @generated from field: tasks.entity.Task task = 1;
+   */
+  task?: Task | undefined;
+
+  /**
+   * @generated from field: string service_name = 2;
+   */
+  serviceName: string;
+
+  /**
+   * @generated from field: string status_name = 3;
+   */
+  statusName: string;
+
+  /**
+   * @generated from field: string priority_name = 4;
+   */
+  priorityName: string;
+
+  /**
+   * The form version recorded on the task. Absent if submitted without a saved form.
+   *
+   * @generated from field: tasks.entity.ServiceFormSchema form_schema = 5;
+   */
+  formSchema?: ServiceFormSchema | undefined;
+};
+
+/**
+ * Describes the message tasks.service.GetMyTaskResponse.
+ * Use `create(GetMyTaskResponseSchema)` to create a new message.
+ */
+export const GetMyTaskResponseSchema: GenMessage<GetMyTaskResponse> = /*@__PURE__*/
+  messageDesc(file_tasks_service_task_service, 7);
+
+/**
  * @generated from service tasks.service.TaskService
  */
 export const TaskService: GenService<{
@@ -259,6 +317,14 @@ export const TaskService: GenService<{
     methodKind: "unary";
     input: typeof ListMyTasksRequestSchema;
     output: typeof ListMyTasksResponseSchema;
+  },
+  /**
+   * @generated from rpc tasks.service.TaskService.GetMyTask
+   */
+  getMyTask: {
+    methodKind: "unary";
+    input: typeof GetMyTaskRequestSchema;
+    output: typeof GetMyTaskResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_tasks_service_task_service, 0);

@@ -15,6 +15,17 @@ type MyTaskListItem struct {
 	PriorityName string
 }
 
+type MyTaskDetails struct {
+	MyTaskListItem `gorm:"embedded"`
+	Description    string
+	DirectionID    int64
+	UpdatedAt      time.Time
+	Version        int64
+	FormVersion    int64
+	ExtraFields    string
+	FormSchema     *string
+}
+
 type MyTasksCursor struct {
 	CreatedAt time.Time
 	UUID      string

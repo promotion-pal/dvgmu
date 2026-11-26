@@ -12,6 +12,7 @@ import (
 
 	"dvgmu/tasks/internal/domain/models"
 	"dvgmu/tasks/internal/storage"
+	"github.com/google/uuid"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/structpb"
@@ -38,6 +39,17 @@ type TaskService struct {
 
 func NewTaskService(storage *storage.TaskStorage, numberLocation *time.Location) *TaskService {
 	return &TaskService{storage: storage, numberLocation: numberLocation}
+}
+
+func (s *TaskService) GetMine(ctx context.Context, applicantID, taskUUID string) (models.MyTaskDetails, error) {
+	if strings.TrimSpace(applicantID) == "" {
+		return models.MyTaskDetails{}, ErrTaskApplicantRequired
+	}
+	id, err := uuid.Parse(taskUUID)
+	if err != nil || id == uuid.Nil {
+		return models.MyTaskDetails{}, fmt.Errorf("%w: uuid must be a valid task UUID", ErrInvalidTask)
+	}
+	return s.storage.GetMine(ctx, applicantID, id.String())
 }
 
 func (s *TaskService) ListMine(ctx context.Context, applicantID string, filter models.MyTasksFilter, after *models.MyTasksCursor, pageSize int32) ([]models.MyTaskListItem, *models.MyTasksCursor, error) {

@@ -3,6 +3,7 @@ package grpc
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log/slog"
 
 	"connectrpc.com/connect"
@@ -11,6 +12,8 @@ import (
 	"dvgmu/tasks/internal/storage"
 	entity "fesmu/contract/tasks/entity"
 	api "fesmu/contract/tasks/service"
+	"google.golang.org/protobuf/encoding/protojson"
+	"google.golang.org/protobuf/types/known/structpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 )
@@ -45,6 +48,44 @@ func (c *TaskController) CreateTask(ctx context.Context, req *connect.Request[ap
 		ServiceId: *task.ServiceID, DirectionId: *task.DirectionID, StatusId: *task.StatusID, PriorityId: *task.PriorityID,
 		FormVersion: input.FormVersion, ExtraFields: input.ExtraFields,
 	}}), nil
+}
+
+func (c *TaskController) GetMyTask(ctx context.Context, req *connect.Request[api.GetMyTaskRequest]) (*connect.Response[api.GetMyTaskResponse], error) {
+	const failureMessage = "loading task failed"
+	applicant, err := c.applicant.Resolve(ctx, req.Header())
+	if err != nil {
+		return nil, err
+	}
+	details, err := c.service.GetMine(ctx, applicant.ID, req.Msg.Uuid)
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, connect.NewError(connect.CodeNotFound, errors.New("task not found"))
+	}
+	if err != nil {
+		return nil, c.rpcError(err, failureMessage)
+	}
+
+	extraFields := &structpb.Struct{}
+	if err := protojson.Unmarshal([]byte(details.ExtraFields), extraFields); err != nil {
+		return nil, c.rpcError(fmt.Errorf("decode stored task fields: %w", err), failureMessage)
+	}
+	var formSchema *entity.ServiceFormSchema
+	if details.FormSchema != nil {
+		formSchema = &entity.ServiceFormSchema{}
+		if err := protojson.Unmarshal([]byte(*details.FormSchema), formSchema); err != nil {
+			return nil, c.rpcError(fmt.Errorf("decode stored task form: %w", err), failureMessage)
+		}
+	}
+
+	return connect.NewResponse(&api.GetMyTaskResponse{
+		Task: &entity.Task{
+			Uuid: details.UUID, Number: details.Number, Title: details.Title, Description: details.Description,
+			CreatedAt: timestamppb.New(details.CreatedAt), UpdatedAt: timestamppb.New(details.UpdatedAt), Version: details.Version,
+			ServiceId: details.ServiceID, DirectionId: details.DirectionID, StatusId: details.StatusID, PriorityId: details.PriorityID,
+			FormVersion: details.FormVersion, ExtraFields: extraFields,
+		},
+		ServiceName: details.ServiceName, StatusName: details.StatusName, PriorityName: details.PriorityName,
+		FormSchema: formSchema,
+	}), nil
 }
 
 func (c *TaskController) rpcError(err error, failureMessage string) error {
