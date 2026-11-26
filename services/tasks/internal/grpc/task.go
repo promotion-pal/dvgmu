@@ -57,11 +57,8 @@ func (c *TaskController) GetMyTask(ctx context.Context, req *connect.Request[api
 		return nil, err
 	}
 	details, err := c.service.GetMine(ctx, applicant.ID, req.Msg.Uuid)
-	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return nil, connect.NewError(connect.CodeNotFound, errors.New("task not found"))
-	}
 	if err != nil {
-		return nil, c.rpcError(err, failureMessage)
+		return nil, c.taskReadError(err, failureMessage)
 	}
 
 	extraFields := &structpb.Struct{}
@@ -86,6 +83,31 @@ func (c *TaskController) GetMyTask(ctx context.Context, req *connect.Request[api
 		ServiceName: details.ServiceName, StatusName: details.StatusName, PriorityName: details.PriorityName,
 		FormSchema: formSchema,
 	}), nil
+}
+
+func (c *TaskController) GetMyTaskHistory(ctx context.Context, req *connect.Request[api.GetMyTaskHistoryRequest]) (*connect.Response[api.GetMyTaskHistoryResponse], error) {
+	applicant, err := c.applicant.Resolve(ctx, req.Header())
+	if err != nil {
+		return nil, err
+	}
+	events, err := c.service.GetHistoryMine(ctx, applicant.ID, req.Msg.Uuid)
+	if err != nil {
+		return nil, c.taskReadError(err, "loading task history failed")
+	}
+	response := &api.GetMyTaskHistoryResponse{Events: make([]*api.MyTaskHistoryEvent, 0, len(events))}
+	for _, event := range events {
+		response.Events = append(response.Events, &api.MyTaskHistoryEvent{
+			Kind: event.Kind, CreatedAt: timestamppb.New(event.CreatedAt),
+		})
+	}
+	return connect.NewResponse(response), nil
+}
+
+func (c *TaskController) taskReadError(err error, failureMessage string) error {
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return connect.NewError(connect.CodeNotFound, errors.New("task not found"))
+	}
+	return c.rpcError(err, failureMessage)
 }
 
 func (c *TaskController) rpcError(err error, failureMessage string) error {

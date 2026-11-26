@@ -16,7 +16,7 @@ import type { JsonObject, Message } from "@bufbuild/protobuf";
  * Describes the file tasks/service/task_service.proto.
  */
 export const file_tasks_service_task_service: GenFile = /*@__PURE__*/
-  fileDesc("CiB0YXNrcy9zZXJ2aWNlL3Rhc2tfc2VydmljZS5wcm90bxINdGFza3Muc2VydmljZSKpAQoRQ3JlYXRlVGFza1JlcXVlc3QSEgoKc2VydmljZV9pZBgBIAEoAxINCgV0aXRsZRgCIAEoCRITCgtkZXNjcmlwdGlvbhgDIAEoCRIUCgxmb3JtX3ZlcnNpb24YBCABKAMSLQoMZXh0cmFfZmllbGRzGAUgASgLMhcuZ29vZ2xlLnByb3RvYnVmLlN0cnVjdBIXCg9pZGVtcG90ZW5jeV9rZXkYBiABKAkiNgoSQ3JlYXRlVGFza1Jlc3BvbnNlEiAKBHRhc2sYASABKAsyEi50YXNrcy5lbnRpdHkuVGFzayJNCg1NeVRhc2tzQ3Vyc29yEi4KCmNyZWF0ZWRfYXQYASABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEgwKBHV1aWQYAiABKAkisgIKEkxpc3RNeVRhc2tzUmVxdWVzdBIRCglwYWdlX3NpemUYASABKAUSKwoFYWZ0ZXIYAiABKAsyHC50YXNrcy5zZXJ2aWNlLk15VGFza3NDdXJzb3ISFwoKc2VydmljZV9pZBgDIAEoA0gAiAEBEhYKCXN0YXR1c19pZBgEIAEoA0gBiAEBEhgKC3ByaW9yaXR5X2lkGAUgASgDSAKIAQESMAoMY3JlYXRlZF9mcm9tGAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIyCg5jcmVhdGVkX2JlZm9yZRgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCDQoLX3NlcnZpY2VfaWRCDAoKX3N0YXR1c19pZEIOCgxfcHJpb3JpdHlfaWQi6wEKDk15VGFza0xpc3RJdGVtEgwKBHV1aWQYASABKAkSDgoGbnVtYmVyGAIgASgJEg0KBXRpdGxlGAMgASgJEi4KCmNyZWF0ZWRfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhIKCnNlcnZpY2VfaWQYBSABKAMSFAoMc2VydmljZV9uYW1lGAYgASgJEhEKCXN0YXR1c19pZBgHIAEoAxITCgtzdGF0dXNfbmFtZRgIIAEoCRITCgtwcmlvcml0eV9pZBgJIAEoAxIVCg1wcmlvcml0eV9uYW1lGAogASgJInYKE0xpc3RNeVRhc2tzUmVzcG9uc2USLAoFdGFza3MYASADKAsyHS50YXNrcy5zZXJ2aWNlLk15VGFza0xpc3RJdGVtEjEKC25leHRfY3Vyc29yGAIgASgLMhwudGFza3Muc2VydmljZS5NeVRhc2tzQ3Vyc29yIiAKEEdldE15VGFza1JlcXVlc3QSDAoEdXVpZBgBIAEoCSKtAQoRR2V0TXlUYXNrUmVzcG9uc2USIAoEdGFzaxgBIAEoCzISLnRhc2tzLmVudGl0eS5UYXNrEhQKDHNlcnZpY2VfbmFtZRgCIAEoCRITCgtzdGF0dXNfbmFtZRgDIAEoCRIVCg1wcmlvcml0eV9uYW1lGAQgASgJEjQKC2Zvcm1fc2NoZW1hGAUgASgLMh8udGFza3MuZW50aXR5LlNlcnZpY2VGb3JtU2NoZW1hMoYCCgtUYXNrU2VydmljZRJRCgpDcmVhdGVUYXNrEiAudGFza3Muc2VydmljZS5DcmVhdGVUYXNrUmVxdWVzdBohLnRhc2tzLnNlcnZpY2UuQ3JlYXRlVGFza1Jlc3BvbnNlElQKC0xpc3RNeVRhc2tzEiEudGFza3Muc2VydmljZS5MaXN0TXlUYXNrc1JlcXVlc3QaIi50YXNrcy5zZXJ2aWNlLkxpc3RNeVRhc2tzUmVzcG9uc2USTgoJR2V0TXlUYXNrEh8udGFza3Muc2VydmljZS5HZXRNeVRhc2tSZXF1ZXN0GiAudGFza3Muc2VydmljZS5HZXRNeVRhc2tSZXNwb25zZUKYAQoRY29tLnRhc2tzLnNlcnZpY2VCEFRhc2tTZXJ2aWNlUHJvdG9QAVocZmVzbXUvY29udHJhY3QvdGFza3Mvc2VydmljZaICA1RTWKoCDVRhc2tzLlNlcnZpY2XKAg1UYXNrc1xTZXJ2aWNl4gIZVGFza3NcU2VydmljZVxHUEJNZXRhZGF0YeoCDlRhc2tzOjpTZXJ2aWNlYgZwcm90bzM", [file_google_protobuf_struct, file_google_protobuf_timestamp, file_tasks_entity_service_form, file_tasks_entity_task]);
+  fileDesc("CiB0YXNrcy9zZXJ2aWNlL3Rhc2tfc2VydmljZS5wcm90bxINdGFza3Muc2VydmljZSKpAQoRQ3JlYXRlVGFza1JlcXVlc3QSEgoKc2VydmljZV9pZBgBIAEoAxINCgV0aXRsZRgCIAEoCRITCgtkZXNjcmlwdGlvbhgDIAEoCRIUCgxmb3JtX3ZlcnNpb24YBCABKAMSLQoMZXh0cmFfZmllbGRzGAUgASgLMhcuZ29vZ2xlLnByb3RvYnVmLlN0cnVjdBIXCg9pZGVtcG90ZW5jeV9rZXkYBiABKAkiNgoSQ3JlYXRlVGFza1Jlc3BvbnNlEiAKBHRhc2sYASABKAsyEi50YXNrcy5lbnRpdHkuVGFzayJNCg1NeVRhc2tzQ3Vyc29yEi4KCmNyZWF0ZWRfYXQYASABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEgwKBHV1aWQYAiABKAkisgIKEkxpc3RNeVRhc2tzUmVxdWVzdBIRCglwYWdlX3NpemUYASABKAUSKwoFYWZ0ZXIYAiABKAsyHC50YXNrcy5zZXJ2aWNlLk15VGFza3NDdXJzb3ISFwoKc2VydmljZV9pZBgDIAEoA0gAiAEBEhYKCXN0YXR1c19pZBgEIAEoA0gBiAEBEhgKC3ByaW9yaXR5X2lkGAUgASgDSAKIAQESMAoMY3JlYXRlZF9mcm9tGAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIyCg5jcmVhdGVkX2JlZm9yZRgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCDQoLX3NlcnZpY2VfaWRCDAoKX3N0YXR1c19pZEIOCgxfcHJpb3JpdHlfaWQi6wEKDk15VGFza0xpc3RJdGVtEgwKBHV1aWQYASABKAkSDgoGbnVtYmVyGAIgASgJEg0KBXRpdGxlGAMgASgJEi4KCmNyZWF0ZWRfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhIKCnNlcnZpY2VfaWQYBSABKAMSFAoMc2VydmljZV9uYW1lGAYgASgJEhEKCXN0YXR1c19pZBgHIAEoAxITCgtzdGF0dXNfbmFtZRgIIAEoCRITCgtwcmlvcml0eV9pZBgJIAEoAxIVCg1wcmlvcml0eV9uYW1lGAogASgJInYKE0xpc3RNeVRhc2tzUmVzcG9uc2USLAoFdGFza3MYASADKAsyHS50YXNrcy5zZXJ2aWNlLk15VGFza0xpc3RJdGVtEjEKC25leHRfY3Vyc29yGAIgASgLMhwudGFza3Muc2VydmljZS5NeVRhc2tzQ3Vyc29yIiAKEEdldE15VGFza1JlcXVlc3QSDAoEdXVpZBgBIAEoCSKtAQoRR2V0TXlUYXNrUmVzcG9uc2USIAoEdGFzaxgBIAEoCzISLnRhc2tzLmVudGl0eS5UYXNrEhQKDHNlcnZpY2VfbmFtZRgCIAEoCRITCgtzdGF0dXNfbmFtZRgDIAEoCRIVCg1wcmlvcml0eV9uYW1lGAQgASgJEjQKC2Zvcm1fc2NoZW1hGAUgASgLMh8udGFza3MuZW50aXR5LlNlcnZpY2VGb3JtU2NoZW1hIicKF0dldE15VGFza0hpc3RvcnlSZXF1ZXN0EgwKBHV1aWQYASABKAkiUgoSTXlUYXNrSGlzdG9yeUV2ZW50EgwKBGtpbmQYASABKAkSLgoKY3JlYXRlZF9hdBgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAiTQoYR2V0TXlUYXNrSGlzdG9yeVJlc3BvbnNlEjEKBmV2ZW50cxgBIAMoCzIhLnRhc2tzLnNlcnZpY2UuTXlUYXNrSGlzdG9yeUV2ZW50MusCCgtUYXNrU2VydmljZRJRCgpDcmVhdGVUYXNrEiAudGFza3Muc2VydmljZS5DcmVhdGVUYXNrUmVxdWVzdBohLnRhc2tzLnNlcnZpY2UuQ3JlYXRlVGFza1Jlc3BvbnNlElQKC0xpc3RNeVRhc2tzEiEudGFza3Muc2VydmljZS5MaXN0TXlUYXNrc1JlcXVlc3QaIi50YXNrcy5zZXJ2aWNlLkxpc3RNeVRhc2tzUmVzcG9uc2USTgoJR2V0TXlUYXNrEh8udGFza3Muc2VydmljZS5HZXRNeVRhc2tSZXF1ZXN0GiAudGFza3Muc2VydmljZS5HZXRNeVRhc2tSZXNwb25zZRJjChBHZXRNeVRhc2tIaXN0b3J5EiYudGFza3Muc2VydmljZS5HZXRNeVRhc2tIaXN0b3J5UmVxdWVzdBonLnRhc2tzLnNlcnZpY2UuR2V0TXlUYXNrSGlzdG9yeVJlc3BvbnNlQpgBChFjb20udGFza3Muc2VydmljZUIQVGFza1NlcnZpY2VQcm90b1ABWhxmZXNtdS9jb250cmFjdC90YXNrcy9zZXJ2aWNlogIDVFNYqgINVGFza3MuU2VydmljZcoCDVRhc2tzXFNlcnZpY2XiAhlUYXNrc1xTZXJ2aWNlXEdQQk1ldGFkYXRh6gIOVGFza3M6OlNlcnZpY2ViBnByb3RvMw", [file_google_protobuf_struct, file_google_protobuf_timestamp, file_tasks_entity_service_form, file_tasks_entity_task]);
 
 /**
  * @generated from message tasks.service.CreateTaskRequest
@@ -299,6 +299,66 @@ export const GetMyTaskResponseSchema: GenMessage<GetMyTaskResponse> = /*@__PURE_
   messageDesc(file_tasks_service_task_service, 7);
 
 /**
+ * @generated from message tasks.service.GetMyTaskHistoryRequest
+ */
+export type GetMyTaskHistoryRequest = Message<"tasks.service.GetMyTaskHistoryRequest"> & {
+  /**
+   * @generated from field: string uuid = 1;
+   */
+  uuid: string;
+};
+
+/**
+ * Describes the message tasks.service.GetMyTaskHistoryRequest.
+ * Use `create(GetMyTaskHistoryRequestSchema)` to create a new message.
+ */
+export const GetMyTaskHistoryRequestSchema: GenMessage<GetMyTaskHistoryRequest> = /*@__PURE__*/
+  messageDesc(file_tasks_service_task_service, 8);
+
+/**
+ * @generated from message tasks.service.MyTaskHistoryEvent
+ */
+export type MyTaskHistoryEvent = Message<"tasks.service.MyTaskHistoryEvent"> & {
+  /**
+   * Event type, currently "registered" for registration.
+   *
+   * @generated from field: string kind = 1;
+   */
+  kind: string;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp created_at = 2;
+   */
+  createdAt?: Timestamp | undefined;
+};
+
+/**
+ * Describes the message tasks.service.MyTaskHistoryEvent.
+ * Use `create(MyTaskHistoryEventSchema)` to create a new message.
+ */
+export const MyTaskHistoryEventSchema: GenMessage<MyTaskHistoryEvent> = /*@__PURE__*/
+  messageDesc(file_tasks_service_task_service, 9);
+
+/**
+ * @generated from message tasks.service.GetMyTaskHistoryResponse
+ */
+export type GetMyTaskHistoryResponse = Message<"tasks.service.GetMyTaskHistoryResponse"> & {
+  /**
+   * Events visible to the applicant, oldest first.
+   *
+   * @generated from field: repeated tasks.service.MyTaskHistoryEvent events = 1;
+   */
+  events: MyTaskHistoryEvent[];
+};
+
+/**
+ * Describes the message tasks.service.GetMyTaskHistoryResponse.
+ * Use `create(GetMyTaskHistoryResponseSchema)` to create a new message.
+ */
+export const GetMyTaskHistoryResponseSchema: GenMessage<GetMyTaskHistoryResponse> = /*@__PURE__*/
+  messageDesc(file_tasks_service_task_service, 10);
+
+/**
  * @generated from service tasks.service.TaskService
  */
 export const TaskService: GenService<{
@@ -325,6 +385,14 @@ export const TaskService: GenService<{
     methodKind: "unary";
     input: typeof GetMyTaskRequestSchema;
     output: typeof GetMyTaskResponseSchema;
+  },
+  /**
+   * @generated from rpc tasks.service.TaskService.GetMyTaskHistory
+   */
+  getMyTaskHistory: {
+    methodKind: "unary";
+    input: typeof GetMyTaskHistoryRequestSchema;
+    output: typeof GetMyTaskHistoryResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_tasks_service_task_service, 0);

@@ -39,6 +39,9 @@ const (
 	TaskServiceListMyTasksProcedure = "/tasks.service.TaskService/ListMyTasks"
 	// TaskServiceGetMyTaskProcedure is the fully-qualified name of the TaskService's GetMyTask RPC.
 	TaskServiceGetMyTaskProcedure = "/tasks.service.TaskService/GetMyTask"
+	// TaskServiceGetMyTaskHistoryProcedure is the fully-qualified name of the TaskService's
+	// GetMyTaskHistory RPC.
+	TaskServiceGetMyTaskHistoryProcedure = "/tasks.service.TaskService/GetMyTaskHistory"
 )
 
 // TaskServiceClient is a client for the tasks.service.TaskService service.
@@ -46,6 +49,7 @@ type TaskServiceClient interface {
 	CreateTask(context.Context, *connect.Request[service.CreateTaskRequest]) (*connect.Response[service.CreateTaskResponse], error)
 	ListMyTasks(context.Context, *connect.Request[service.ListMyTasksRequest]) (*connect.Response[service.ListMyTasksResponse], error)
 	GetMyTask(context.Context, *connect.Request[service.GetMyTaskRequest]) (*connect.Response[service.GetMyTaskResponse], error)
+	GetMyTaskHistory(context.Context, *connect.Request[service.GetMyTaskHistoryRequest]) (*connect.Response[service.GetMyTaskHistoryResponse], error)
 }
 
 // NewTaskServiceClient constructs a client for the tasks.service.TaskService service. By default,
@@ -77,14 +81,21 @@ func NewTaskServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(taskServiceMethods.ByName("GetMyTask")),
 			connect.WithClientOptions(opts...),
 		),
+		getMyTaskHistory: connect.NewClient[service.GetMyTaskHistoryRequest, service.GetMyTaskHistoryResponse](
+			httpClient,
+			baseURL+TaskServiceGetMyTaskHistoryProcedure,
+			connect.WithSchema(taskServiceMethods.ByName("GetMyTaskHistory")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // taskServiceClient implements TaskServiceClient.
 type taskServiceClient struct {
-	createTask  *connect.Client[service.CreateTaskRequest, service.CreateTaskResponse]
-	listMyTasks *connect.Client[service.ListMyTasksRequest, service.ListMyTasksResponse]
-	getMyTask   *connect.Client[service.GetMyTaskRequest, service.GetMyTaskResponse]
+	createTask       *connect.Client[service.CreateTaskRequest, service.CreateTaskResponse]
+	listMyTasks      *connect.Client[service.ListMyTasksRequest, service.ListMyTasksResponse]
+	getMyTask        *connect.Client[service.GetMyTaskRequest, service.GetMyTaskResponse]
+	getMyTaskHistory *connect.Client[service.GetMyTaskHistoryRequest, service.GetMyTaskHistoryResponse]
 }
 
 // CreateTask calls tasks.service.TaskService.CreateTask.
@@ -102,11 +113,17 @@ func (c *taskServiceClient) GetMyTask(ctx context.Context, req *connect.Request[
 	return c.getMyTask.CallUnary(ctx, req)
 }
 
+// GetMyTaskHistory calls tasks.service.TaskService.GetMyTaskHistory.
+func (c *taskServiceClient) GetMyTaskHistory(ctx context.Context, req *connect.Request[service.GetMyTaskHistoryRequest]) (*connect.Response[service.GetMyTaskHistoryResponse], error) {
+	return c.getMyTaskHistory.CallUnary(ctx, req)
+}
+
 // TaskServiceHandler is an implementation of the tasks.service.TaskService service.
 type TaskServiceHandler interface {
 	CreateTask(context.Context, *connect.Request[service.CreateTaskRequest]) (*connect.Response[service.CreateTaskResponse], error)
 	ListMyTasks(context.Context, *connect.Request[service.ListMyTasksRequest]) (*connect.Response[service.ListMyTasksResponse], error)
 	GetMyTask(context.Context, *connect.Request[service.GetMyTaskRequest]) (*connect.Response[service.GetMyTaskResponse], error)
+	GetMyTaskHistory(context.Context, *connect.Request[service.GetMyTaskHistoryRequest]) (*connect.Response[service.GetMyTaskHistoryResponse], error)
 }
 
 // NewTaskServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -134,6 +151,12 @@ func NewTaskServiceHandler(svc TaskServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(taskServiceMethods.ByName("GetMyTask")),
 		connect.WithHandlerOptions(opts...),
 	)
+	taskServiceGetMyTaskHistoryHandler := connect.NewUnaryHandler(
+		TaskServiceGetMyTaskHistoryProcedure,
+		svc.GetMyTaskHistory,
+		connect.WithSchema(taskServiceMethods.ByName("GetMyTaskHistory")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/tasks.service.TaskService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case TaskServiceCreateTaskProcedure:
@@ -142,6 +165,8 @@ func NewTaskServiceHandler(svc TaskServiceHandler, opts ...connect.HandlerOption
 			taskServiceListMyTasksHandler.ServeHTTP(w, r)
 		case TaskServiceGetMyTaskProcedure:
 			taskServiceGetMyTaskHandler.ServeHTTP(w, r)
+		case TaskServiceGetMyTaskHistoryProcedure:
+			taskServiceGetMyTaskHistoryHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -161,4 +186,8 @@ func (UnimplementedTaskServiceHandler) ListMyTasks(context.Context, *connect.Req
 
 func (UnimplementedTaskServiceHandler) GetMyTask(context.Context, *connect.Request[service.GetMyTaskRequest]) (*connect.Response[service.GetMyTaskResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("tasks.service.TaskService.GetMyTask is not implemented"))
+}
+
+func (UnimplementedTaskServiceHandler) GetMyTaskHistory(context.Context, *connect.Request[service.GetMyTaskHistoryRequest]) (*connect.Response[service.GetMyTaskHistoryResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("tasks.service.TaskService.GetMyTaskHistory is not implemented"))
 }

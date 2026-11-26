@@ -52,3 +52,8 @@ type TaskEvent struct {
 	Data      string    `gorm:"type:jsonb;not null;default:'{}'"`
 	CreatedAt time.Time `gorm:"not null"`
 }
+
+type MyTaskHistoryEvent struct {
+	Kind      string
+	CreatedAt time.Time
+}

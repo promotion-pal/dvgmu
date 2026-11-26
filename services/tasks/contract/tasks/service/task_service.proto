@@ -11,6 +11,7 @@ service TaskService {
   rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse);
   rpc ListMyTasks(ListMyTasksRequest) returns (ListMyTasksResponse);
   rpc GetMyTask(GetMyTaskRequest) returns (GetMyTaskResponse);
+  rpc GetMyTaskHistory(GetMyTaskHistoryRequest) returns (GetMyTaskHistoryResponse);
 }
 
 message CreateTaskRequest {
@@ -76,4 +77,19 @@ message GetMyTaskResponse {
   string priority_name = 4;
   // The form version recorded on the task. Absent if submitted without a saved form.
   tasks.entity.ServiceFormSchema form_schema = 5;
+}
+
+message GetMyTaskHistoryRequest {
+  string uuid = 1;
+}
+
+message MyTaskHistoryEvent {
+  // Event type, currently "registered" for registration.
+  string kind = 1;
+  google.protobuf.Timestamp created_at = 2;
+}
+
+message GetMyTaskHistoryResponse {
+  // Events visible to the applicant, oldest first.
+  repeated MyTaskHistoryEvent events = 1;
 }

@@ -42,14 +42,30 @@ func NewTaskService(storage *storage.TaskStorage, numberLocation *time.Location)
 }
 
 func (s *TaskService) GetMine(ctx context.Context, applicantID, taskUUID string) (models.MyTaskDetails, error) {
+	id, err := validateMyTaskLookup(applicantID, taskUUID)
+	if err != nil {
+		return models.MyTaskDetails{}, err
+	}
+	return s.storage.GetMine(ctx, applicantID, id)
+}
+
+func (s *TaskService) GetHistoryMine(ctx context.Context, applicantID, taskUUID string) ([]models.MyTaskHistoryEvent, error) {
+	id, err := validateMyTaskLookup(applicantID, taskUUID)
+	if err != nil {
+		return nil, err
+	}
+	return s.storage.GetHistoryMine(ctx, applicantID, id)
+}
+
+func validateMyTaskLookup(applicantID, taskUUID string) (string, error) {
 	if strings.TrimSpace(applicantID) == "" {
-		return models.MyTaskDetails{}, ErrTaskApplicantRequired
+		return "", ErrTaskApplicantRequired
 	}
 	id, err := uuid.Parse(taskUUID)
 	if err != nil || id == uuid.Nil {
-		return models.MyTaskDetails{}, fmt.Errorf("%w: uuid must be a valid task UUID", ErrInvalidTask)
+		return "", fmt.Errorf("%w: uuid must be a valid task UUID", ErrInvalidTask)
 	}
-	return s.storage.GetMine(ctx, applicantID, id.String())
+	return id.String(), nil
 }
 
 func (s *TaskService) ListMine(ctx context.Context, applicantID string, filter models.MyTasksFilter, after *models.MyTasksCursor, pageSize int32) ([]models.MyTaskListItem, *models.MyTasksCursor, error) {

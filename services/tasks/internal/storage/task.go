@@ -33,15 +33,19 @@ const myTaskSummaryColumns = `tasks.uuid, tasks.number, tasks.title, tasks.creat
 
 func (s *TaskStorage) myTasksQuery(ctx context.Context, authorID string) *gorm.DB {
 	return s.db.WithContext(ctx).Model(&models.Task{}).
+		Where("tasks.author_id = ?", authorID)
+}
+
+func (s *TaskStorage) myTasksWithCatalog(ctx context.Context, authorID string) *gorm.DB {
+	return s.myTasksQuery(ctx, authorID).
 		Joins("LEFT JOIN services ON services.id = tasks.service_id").
 		Joins("LEFT JOIN statuses ON statuses.id = tasks.status_id").
-		Joins("LEFT JOIN priorities ON priorities.id = tasks.priority_id").
-		Where("tasks.author_id = ?", authorID)
+		Joins("LEFT JOIN priorities ON priorities.id = tasks.priority_id")
 }
 
 func (s *TaskStorage) GetMine(ctx context.Context, authorID, taskUUID string) (models.MyTaskDetails, error) {
 	var task models.MyTaskDetails
-	err := s.myTasksQuery(ctx, authorID).
+	err := s.myTasksWithCatalog(ctx, authorID).
 		Select(myTaskSummaryColumns+`, tasks.description, COALESCE(tasks.direction_id, 0) AS direction_id,
 			tasks.updated_at, tasks.version, COALESCE(tasks.form_version, 0) AS form_version,
 			tasks.extra_fields, forms.schema AS form_schema`).
@@ -51,9 +55,37 @@ func (s *TaskStorage) GetMine(ctx context.Context, authorID, taskUUID string) (m
 	return task, err
 }
 
+func (s *TaskStorage) GetHistoryMine(ctx context.Context, authorID, taskUUID string) ([]models.MyTaskHistoryEvent, error) {
+	var rows []struct {
+		models.MyTaskHistoryEvent `gorm:"embedded"`
+		EventID                   *int64
+	}
+	// The left join keeps the owned task visible even when it has no public events.
+	err := s.myTasksQuery(ctx, authorID).
+		Select("events.id AS event_id, events.kind, events.created_at").
+		Joins("LEFT JOIN task_events AS events ON events.task_id = tasks.id AND events.internal = FALSE").
+		Where("tasks.uuid = CAST(? AS uuid)", taskUUID).
+		Order("events.created_at ASC, events.id ASC").
+		Find(&rows).Error
+	if err != nil {
+		return nil, err
+	}
+	if len(rows) == 0 {
+		return nil, gorm.ErrRecordNotFound
+	}
+	if rows[0].EventID == nil {
+		return nil, nil
+	}
+	events := make([]models.MyTaskHistoryEvent, 0, len(rows))
+	for _, row := range rows {
+		events = append(events, row.MyTaskHistoryEvent)
+	}
+	return events, nil
+}
+
 func (s *TaskStorage) ListMine(ctx context.Context, authorID string, filter models.MyTasksFilter, after *models.MyTasksCursor, limit int) ([]models.MyTaskListItem, error) {
 	var tasks []models.MyTaskListItem
-	query := s.myTasksQuery(ctx, authorID).Select(myTaskSummaryColumns)
+	query := s.myTasksWithCatalog(ctx, authorID).Select(myTaskSummaryColumns)
 	if filter.ServiceID != nil {
 		query = query.Where("tasks.service_id = ?", *filter.ServiceID)
 	}

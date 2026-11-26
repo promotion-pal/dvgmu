@@ -591,6 +591,148 @@ func (x *GetMyTaskResponse) GetFormSchema() *entity.ServiceFormSchema {
 	return nil
 }
 
+type GetMyTaskHistoryRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetMyTaskHistoryRequest) Reset() {
+	*x = GetMyTaskHistoryRequest{}
+	mi := &file_tasks_service_task_service_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetMyTaskHistoryRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetMyTaskHistoryRequest) ProtoMessage() {}
+
+func (x *GetMyTaskHistoryRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_tasks_service_task_service_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetMyTaskHistoryRequest.ProtoReflect.Descriptor instead.
+func (*GetMyTaskHistoryRequest) Descriptor() ([]byte, []int) {
+	return file_tasks_service_task_service_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *GetMyTaskHistoryRequest) GetUuid() string {
+	if x != nil {
+		return x.Uuid
+	}
+	return ""
+}
+
+type MyTaskHistoryEvent struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Event type, currently "registered" for registration.
+	Kind          string                 `protobuf:"bytes,1,opt,name=kind,proto3" json:"kind,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MyTaskHistoryEvent) Reset() {
+	*x = MyTaskHistoryEvent{}
+	mi := &file_tasks_service_task_service_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MyTaskHistoryEvent) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MyTaskHistoryEvent) ProtoMessage() {}
+
+func (x *MyTaskHistoryEvent) ProtoReflect() protoreflect.Message {
+	mi := &file_tasks_service_task_service_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MyTaskHistoryEvent.ProtoReflect.Descriptor instead.
+func (*MyTaskHistoryEvent) Descriptor() ([]byte, []int) {
+	return file_tasks_service_task_service_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *MyTaskHistoryEvent) GetKind() string {
+	if x != nil {
+		return x.Kind
+	}
+	return ""
+}
+
+func (x *MyTaskHistoryEvent) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+type GetMyTaskHistoryResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Events visible to the applicant, oldest first.
+	Events        []*MyTaskHistoryEvent `protobuf:"bytes,1,rep,name=events,proto3" json:"events,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetMyTaskHistoryResponse) Reset() {
+	*x = GetMyTaskHistoryResponse{}
+	mi := &file_tasks_service_task_service_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetMyTaskHistoryResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetMyTaskHistoryResponse) ProtoMessage() {}
+
+func (x *GetMyTaskHistoryResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_tasks_service_task_service_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetMyTaskHistoryResponse.ProtoReflect.Descriptor instead.
+func (*GetMyTaskHistoryResponse) Descriptor() ([]byte, []int) {
+	return file_tasks_service_task_service_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *GetMyTaskHistoryResponse) GetEvents() []*MyTaskHistoryEvent {
+	if x != nil {
+		return x.Events
+	}
+	return nil
+}
+
 var File_tasks_service_task_service_proto protoreflect.FileDescriptor
 
 const file_tasks_service_task_service_proto_rawDesc = "" +
@@ -653,12 +795,21 @@ const file_tasks_service_task_service_proto_rawDesc = "" +
 	"statusName\x12#\n" +
 	"\rpriority_name\x18\x04 \x01(\tR\fpriorityName\x12@\n" +
 	"\vform_schema\x18\x05 \x01(\v2\x1f.tasks.entity.ServiceFormSchemaR\n" +
-	"formSchema2\x86\x02\n" +
+	"formSchema\"-\n" +
+	"\x17GetMyTaskHistoryRequest\x12\x12\n" +
+	"\x04uuid\x18\x01 \x01(\tR\x04uuid\"c\n" +
+	"\x12MyTaskHistoryEvent\x12\x12\n" +
+	"\x04kind\x18\x01 \x01(\tR\x04kind\x129\n" +
+	"\n" +
+	"created_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"U\n" +
+	"\x18GetMyTaskHistoryResponse\x129\n" +
+	"\x06events\x18\x01 \x03(\v2!.tasks.service.MyTaskHistoryEventR\x06events2\xeb\x02\n" +
 	"\vTaskService\x12Q\n" +
 	"\n" +
 	"CreateTask\x12 .tasks.service.CreateTaskRequest\x1a!.tasks.service.CreateTaskResponse\x12T\n" +
 	"\vListMyTasks\x12!.tasks.service.ListMyTasksRequest\x1a\".tasks.service.ListMyTasksResponse\x12N\n" +
-	"\tGetMyTask\x12\x1f.tasks.service.GetMyTaskRequest\x1a .tasks.service.GetMyTaskResponseB\x98\x01\n" +
+	"\tGetMyTask\x12\x1f.tasks.service.GetMyTaskRequest\x1a .tasks.service.GetMyTaskResponse\x12c\n" +
+	"\x10GetMyTaskHistory\x12&.tasks.service.GetMyTaskHistoryRequest\x1a'.tasks.service.GetMyTaskHistoryResponseB\x98\x01\n" +
 	"\x11com.tasks.serviceB\x10TaskServiceProtoP\x01Z\x1cfesmu/contract/tasks/service\xa2\x02\x03TSX\xaa\x02\rTasks.Service\xca\x02\rTasks\\Service\xe2\x02\x19Tasks\\Service\\GPBMetadata\xea\x02\x0eTasks::Serviceb\x06proto3"
 
 var (
@@ -673,7 +824,7 @@ func file_tasks_service_task_service_proto_rawDescGZIP() []byte {
 	return file_tasks_service_task_service_proto_rawDescData
 }
 
-var file_tasks_service_task_service_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_tasks_service_task_service_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_tasks_service_task_service_proto_goTypes = []any{
 	(*CreateTaskRequest)(nil),        // 0: tasks.service.CreateTaskRequest
 	(*CreateTaskResponse)(nil),       // 1: tasks.service.CreateTaskResponse
@@ -683,34 +834,41 @@ var file_tasks_service_task_service_proto_goTypes = []any{
 	(*ListMyTasksResponse)(nil),      // 5: tasks.service.ListMyTasksResponse
 	(*GetMyTaskRequest)(nil),         // 6: tasks.service.GetMyTaskRequest
 	(*GetMyTaskResponse)(nil),        // 7: tasks.service.GetMyTaskResponse
-	(*structpb.Struct)(nil),          // 8: google.protobuf.Struct
-	(*entity.Task)(nil),              // 9: tasks.entity.Task
-	(*timestamppb.Timestamp)(nil),    // 10: google.protobuf.Timestamp
-	(*entity.ServiceFormSchema)(nil), // 11: tasks.entity.ServiceFormSchema
+	(*GetMyTaskHistoryRequest)(nil),  // 8: tasks.service.GetMyTaskHistoryRequest
+	(*MyTaskHistoryEvent)(nil),       // 9: tasks.service.MyTaskHistoryEvent
+	(*GetMyTaskHistoryResponse)(nil), // 10: tasks.service.GetMyTaskHistoryResponse
+	(*structpb.Struct)(nil),          // 11: google.protobuf.Struct
+	(*entity.Task)(nil),              // 12: tasks.entity.Task
+	(*timestamppb.Timestamp)(nil),    // 13: google.protobuf.Timestamp
+	(*entity.ServiceFormSchema)(nil), // 14: tasks.entity.ServiceFormSchema
 }
 var file_tasks_service_task_service_proto_depIdxs = []int32{
-	8,  // 0: tasks.service.CreateTaskRequest.extra_fields:type_name -> google.protobuf.Struct
-	9,  // 1: tasks.service.CreateTaskResponse.task:type_name -> tasks.entity.Task
-	10, // 2: tasks.service.MyTasksCursor.created_at:type_name -> google.protobuf.Timestamp
+	11, // 0: tasks.service.CreateTaskRequest.extra_fields:type_name -> google.protobuf.Struct
+	12, // 1: tasks.service.CreateTaskResponse.task:type_name -> tasks.entity.Task
+	13, // 2: tasks.service.MyTasksCursor.created_at:type_name -> google.protobuf.Timestamp
 	2,  // 3: tasks.service.ListMyTasksRequest.after:type_name -> tasks.service.MyTasksCursor
-	10, // 4: tasks.service.ListMyTasksRequest.created_from:type_name -> google.protobuf.Timestamp
-	10, // 5: tasks.service.ListMyTasksRequest.created_before:type_name -> google.protobuf.Timestamp
-	10, // 6: tasks.service.MyTaskListItem.created_at:type_name -> google.protobuf.Timestamp
+	13, // 4: tasks.service.ListMyTasksRequest.created_from:type_name -> google.protobuf.Timestamp
+	13, // 5: tasks.service.ListMyTasksRequest.created_before:type_name -> google.protobuf.Timestamp
+	13, // 6: tasks.service.MyTaskListItem.created_at:type_name -> google.protobuf.Timestamp
 	4,  // 7: tasks.service.ListMyTasksResponse.tasks:type_name -> tasks.service.MyTaskListItem
 	2,  // 8: tasks.service.ListMyTasksResponse.next_cursor:type_name -> tasks.service.MyTasksCursor
-	9,  // 9: tasks.service.GetMyTaskResponse.task:type_name -> tasks.entity.Task
-	11, // 10: tasks.service.GetMyTaskResponse.form_schema:type_name -> tasks.entity.ServiceFormSchema
-	0,  // 11: tasks.service.TaskService.CreateTask:input_type -> tasks.service.CreateTaskRequest
-	3,  // 12: tasks.service.TaskService.ListMyTasks:input_type -> tasks.service.ListMyTasksRequest
-	6,  // 13: tasks.service.TaskService.GetMyTask:input_type -> tasks.service.GetMyTaskRequest
-	1,  // 14: tasks.service.TaskService.CreateTask:output_type -> tasks.service.CreateTaskResponse
-	5,  // 15: tasks.service.TaskService.ListMyTasks:output_type -> tasks.service.ListMyTasksResponse
-	7,  // 16: tasks.service.TaskService.GetMyTask:output_type -> tasks.service.GetMyTaskResponse
-	14, // [14:17] is the sub-list for method output_type
-	11, // [11:14] is the sub-list for method input_type
-	11, // [11:11] is the sub-list for extension type_name
-	11, // [11:11] is the sub-list for extension extendee
-	0,  // [0:11] is the sub-list for field type_name
+	12, // 9: tasks.service.GetMyTaskResponse.task:type_name -> tasks.entity.Task
+	14, // 10: tasks.service.GetMyTaskResponse.form_schema:type_name -> tasks.entity.ServiceFormSchema
+	13, // 11: tasks.service.MyTaskHistoryEvent.created_at:type_name -> google.protobuf.Timestamp
+	9,  // 12: tasks.service.GetMyTaskHistoryResponse.events:type_name -> tasks.service.MyTaskHistoryEvent
+	0,  // 13: tasks.service.TaskService.CreateTask:input_type -> tasks.service.CreateTaskRequest
+	3,  // 14: tasks.service.TaskService.ListMyTasks:input_type -> tasks.service.ListMyTasksRequest
+	6,  // 15: tasks.service.TaskService.GetMyTask:input_type -> tasks.service.GetMyTaskRequest
+	8,  // 16: tasks.service.TaskService.GetMyTaskHistory:input_type -> tasks.service.GetMyTaskHistoryRequest
+	1,  // 17: tasks.service.TaskService.CreateTask:output_type -> tasks.service.CreateTaskResponse
+	5,  // 18: tasks.service.TaskService.ListMyTasks:output_type -> tasks.service.ListMyTasksResponse
+	7,  // 19: tasks.service.TaskService.GetMyTask:output_type -> tasks.service.GetMyTaskResponse
+	10, // 20: tasks.service.TaskService.GetMyTaskHistory:output_type -> tasks.service.GetMyTaskHistoryResponse
+	17, // [17:21] is the sub-list for method output_type
+	13, // [13:17] is the sub-list for method input_type
+	13, // [13:13] is the sub-list for extension type_name
+	13, // [13:13] is the sub-list for extension extendee
+	0,  // [0:13] is the sub-list for field type_name
 }
 
 func init() { file_tasks_service_task_service_proto_init() }
@@ -725,7 +883,7 @@ func file_tasks_service_task_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_tasks_service_task_service_proto_rawDesc), len(file_tasks_service_task_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
