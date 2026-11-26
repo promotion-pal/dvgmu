@@ -102,7 +102,7 @@ func variant(r VariantRecord) *pb.GeneratedVariant {
 	}
 	return &pb.GeneratedVariant{Id: r.ID, BankId: r.BankID, TestId: id, Title: r.Title, DurationMinutes: r.DurationMinutes, ShowResult: r.ShowResult}
 }
-func (m *Module) BankFetch(ctx context.Context, _ *connect.Request[pb.BankFetchRequest]) (*connect.Response[pb.BankFetchResponse], error) {
+func (m *Module) BankFetch(ctx context.Context, req *connect.Request[pb.BankFetchRequest]) (*connect.Response[pb.BankFetchResponse], error) {
 	if err := m.guard(ctx, false); err != nil {
 		return nil, err
 	}
@@ -115,15 +115,22 @@ func (m *Module) BankFetch(ctx context.Context, _ *connect.Request[pb.BankFetchR
 		return nil, dbError(err)
 	}
 	out := &pb.BankFetchResponse{}
+	allowed := map[int64]bool{}
 	for _, r := range records {
 		b, err := Decode(r)
 		if err != nil {
 			return nil, dbError(err)
 		}
+		if b.AssessmentKind != req.Msg.AssessmentKind {
+			continue
+		}
+		allowed[b.Id] = true
 		out.Banks = append(out.Banks, b)
 	}
 	for _, v := range variants {
-		out.Variants = append(out.Variants, variant(v))
+		if allowed[v.BankID] {
+			out.Variants = append(out.Variants, variant(v))
+		}
 	}
 	return connect.NewResponse(out), nil
 }
@@ -145,6 +152,9 @@ func Validate(b *pb.Bank) error {
 		return bad("заполните банк")
 	}
 	NormalizeStructure(b)
+	if b.AssessmentKind != "" && b.AssessmentKind != "intermediate" {
+		return bad("неверный вид тестирования")
+	}
 	if IsReadyExam(b) {
 		b.VariantCount = 1
 	}
@@ -256,7 +266,7 @@ func (m *Module) BankDelete(ctx context.Context, req *connect.Request[pb.BankDel
 	return connect.NewResponse(&pb.BankDeleteResponse{}), nil
 }
 func Settings(b *pb.Bank) models.ExamV2Settings {
-	return models.ExamV2Settings{Enabled: true, Specialty: b.Specialty, Faculty: b.Faculty, Semester: int(b.Semester), Discipline: b.Discipline, AcademicYear: b.AcademicYear, Season: b.Season, Excellent: b.Excellent, Good: b.Good, Satisfactory: b.Satisfactory}
+	return models.ExamV2Settings{AssessmentKind: b.AssessmentKind, Enabled: true, Specialty: b.Specialty, Faculty: b.Faculty, Semester: int(b.Semester), Discipline: b.Discipline, AcademicYear: b.AcademicYear, Season: b.Season, Excellent: b.Excellent, Good: b.Good, Satisfactory: b.Satisfactory}
 }
 func (m *Module) VariantsGenerate(ctx context.Context, req *connect.Request[pb.VariantsGenerateRequest]) (*connect.Response[pb.VariantsGenerateResponse], error) {
 	if err := m.guard(ctx, true); err != nil {

@@ -233,14 +233,14 @@ func (m *Module) ReportFetch(ctx context.Context, req *connect.Request[pb.Report
 		if err != nil {
 			return nil, dbError(err)
 		}
-		if !s.ExamSettings.Enabled {
+		if !s.ExamSettings.Enabled || s.ExamSettings.AssessmentKind != req.Msg.AssessmentKind {
 			return nil, bad("выберите сессию V2")
 		}
 		out = Analyze(s, views)
 	} else {
 		out = Report{Title: "Сводный отчёт V2", Method: Method, Students: []StudentRow{}}
 		var sessions []models.TestSession
-		q := m.db.WithContext(ctx).Where("exam_settings->>'enabled'='true'")
+		q := m.db.WithContext(ctx).Where("exam_settings->>'enabled'='true'").Where("COALESCE(exam_settings->>'assessment_kind','')=?", req.Msg.AssessmentKind)
 		if req.Msg.TestId > 0 {
 			q = q.Where("test_id=?", req.Msg.TestId)
 		}

@@ -328,10 +328,11 @@ type TestSession struct {
 	// student (questions with fewer options show them all); 0 = all.
 	OptionCount int32 `protobuf:"varint,18,opt,name=option_count,json=optionCount,proto3" json:"option_count,omitempty"`
 	// The test's version when the session was made; option_count is V2 only.
-	Version       v1.TestVersion `protobuf:"varint,19,opt,name=version,proto3,enum=contract.enum.v1.TestVersion" json:"version,omitempty"`
-	Audience      *ExamAudience  `protobuf:"bytes,20,opt,name=audience,proto3" json:"audience,omitempty"`
-	AssignedCount int32          `protobuf:"varint,21,opt,name=assigned_count,json=assignedCount,proto3" json:"assigned_count,omitempty"`
-	ExamV2        bool           `protobuf:"varint,23,opt,name=exam_v2,json=examV2,proto3" json:"exam_v2,omitempty"`
+	Version        v1.TestVersion `protobuf:"varint,19,opt,name=version,proto3,enum=contract.enum.v1.TestVersion" json:"version,omitempty"`
+	Audience       *ExamAudience  `protobuf:"bytes,20,opt,name=audience,proto3" json:"audience,omitempty"`
+	AssignedCount  int32          `protobuf:"varint,21,opt,name=assigned_count,json=assignedCount,proto3" json:"assigned_count,omitempty"`
+	ExamV2         bool           `protobuf:"varint,23,opt,name=exam_v2,json=examV2,proto3" json:"exam_v2,omitempty"`
+	AssessmentKind string         `protobuf:"bytes,24,opt,name=assessment_kind,json=assessmentKind,proto3" json:"assessment_kind,omitempty"`
 	// Full recipient list is returned on the staff session results page.
 	Recipients    []*ExamRecipient `protobuf:"bytes,22,rep,name=recipients,proto3" json:"recipients,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -520,6 +521,13 @@ func (x *TestSession) GetExamV2() bool {
 		return x.ExamV2
 	}
 	return false
+}
+
+func (x *TestSession) GetAssessmentKind() string {
+	if x != nil {
+		return x.AssessmentKind
+	}
+	return ""
 }
 
 func (x *TestSession) GetRecipients() []*ExamRecipient {
@@ -1063,7 +1071,7 @@ const file_fesmu_entity_v1_test_entity_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04text\x18\x02 \x01(\tR\x04text\x12\x1d\n" +
 	"\n" +
-	"is_correct\x18\x03 \x01(\bR\tisCorrect\"\xf4\x06\n" +
+	"is_correct\x18\x03 \x01(\bR\tisCorrect\"\x9d\a\n" +
 	"\vTestSession\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x17\n" +
 	"\atest_id\x18\x02 \x01(\x03R\x06testId\x12\x14\n" +
@@ -1091,7 +1099,8 @@ const file_fesmu_entity_v1_test_entity_proto_rawDesc = "" +
 	"\aversion\x18\x13 \x01(\x0e2\x1d.contract.enum.v1.TestVersionR\aversion\x12<\n" +
 	"\baudience\x18\x14 \x01(\v2 .contract.entity.v1.ExamAudienceR\baudience\x12%\n" +
 	"\x0eassigned_count\x18\x15 \x01(\x05R\rassignedCount\x12\x17\n" +
-	"\aexam_v2\x18\x17 \x01(\bR\x06examV2\x12A\n" +
+	"\aexam_v2\x18\x17 \x01(\bR\x06examV2\x12'\n" +
+	"\x0fassessment_kind\x18\x18 \x01(\tR\x0eassessmentKind\x12A\n" +
 	"\n" +
 	"recipients\x18\x16 \x03(\v2!.contract.entity.v1.ExamRecipientR\n" +
 	"recipients\"\xce\x01\n" +

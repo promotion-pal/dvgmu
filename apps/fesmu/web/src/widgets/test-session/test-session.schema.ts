@@ -11,6 +11,7 @@ export interface TestSession {
     id: string;
     assignedCount?: number;
  examV2?:boolean;
+ assessmentKind?:string;
     recipients?: {mdmUserUuid:string;fullName:string;studentGroup:string;issuedAt?:Date}[];
     audience?: {kind:string;facultyCode:number;course:number;studentGroup:string;studentGroups?:string[];studentUuids:string[]};
     /** Undefined once the test itself was deleted; the session keeps its copy. */

@@ -16,6 +16,7 @@ const fromSession = (message: SessionMessage): TestSession => ({
     id: message.id.toString(),
  assignedCount:message.assignedCount,
  examV2:message.examV2,
+ assessmentKind:message.assessmentKind,
  recipients:message.recipients.map(person=>({mdmUserUuid:person.mdmUserUuid,fullName:person.fullName,studentGroup:person.studentGroup,issuedAt:toDate(person.issuedAt)})),
  audience:message.audience,
     testId: message.testId ? message.testId.toString() : undefined,

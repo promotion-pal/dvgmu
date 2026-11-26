@@ -105,7 +105,8 @@ function App() {
           </Route>
           <Route path={ROUTE.EXAM_TESTS.MY_RESULTS} element={<MyExamResultsPage />} />
  <Route element={<AllowSection section={PermissionSection.EXAM_TESTS} />}>
-            <Route path={ROUTE.EXAM_TESTS.V2} element={<ExamV2Page />} />
+            <Route path={ROUTE.EXAM_TESTS.V2} element={<ExamV2Page key="exam" />} />
+ <Route path={ROUTE.INTERMEDIATE_TESTS} element={<ExamV2Page key="intermediate" assessmentKind="intermediate" />} />
  <Route path={ROUTE.EXAM_TESTS.BUILDER} element={<TestBuilderPage version={TestVersion.V1} exam />} />
             <Route path={ROUTE.EXAM_TESTS.SESSIONS} element={<TestSessionsPage exam />} />
             <Route path={ROUTE.EXAM_TESTS.SESSION_RESULTS} element={<TestSessionResultsPage exam />} />

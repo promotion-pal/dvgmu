@@ -72,6 +72,9 @@ func (s *TestSessionService) TestSessionCreate(ctx context.Context, testID int64
 		return nil, err
 	}
 	if s.exam {
+		if test.ExamSettings.AssessmentKind == "intermediate" {
+			session.IsOpen = false
+		}
 		if err := models.ValidateExamQuestions(session.Questions); err != nil {
 			return nil, err
 		}

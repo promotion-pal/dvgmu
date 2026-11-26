@@ -616,6 +616,7 @@ func (s *TestSession) ToProto() *entity.TestSession {
 		Audience:        s.Audience.ToProto(),
 		AssignedCount:   int32(s.AssignedCount),
 		ExamV2:          s.ExamSettings.Enabled,
+		AssessmentKind:  s.ExamSettings.AssessmentKind,
 		Id:              s.ID,
 		Token:           s.Token,
 		Topic:           s.Topic,

@@ -79,6 +79,7 @@ message TestSession {
   ExamAudience audience = 20;
   int32 assigned_count = 21;
  bool exam_v2=23;
+ string assessment_kind=24;
   // Full recipient list is returned on the staff session results page.
   repeated ExamRecipient recipients = 22;
 }

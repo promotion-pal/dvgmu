@@ -4,16 +4,17 @@ import "time"
 
 // Frozen in each generated test and session; changes to a bank never regrade history.
 type ExamV2Settings struct {
-	Faculty      string  `json:"faculty"`
-	Enabled      bool    `json:"enabled"`
-	Specialty    string  `json:"specialty"`
-	Semester     int     `json:"semester"`
-	Discipline   string  `json:"discipline"`
-	AcademicYear string  `json:"academic_year"`
-	Season       string  `json:"season"`
-	Excellent    float64 `json:"excellent"`
-	Good         float64 `json:"good"`
-	Satisfactory float64 `json:"satisfactory"`
+	AssessmentKind string  `json:"assessment_kind,omitempty"`
+	Faculty        string  `json:"faculty"`
+	Enabled        bool    `json:"enabled"`
+	Specialty      string  `json:"specialty"`
+	Semester       int     `json:"semester"`
+	Discipline     string  `json:"discipline"`
+	AcademicYear   string  `json:"academic_year"`
+	Season         string  `json:"season"`
+	Excellent      float64 `json:"excellent"`
+	Good           float64 `json:"good"`
+	Satisfactory   float64 `json:"satisfactory"`
 }
 
 func (s ExamV2Settings) Grade(percent float64) int {

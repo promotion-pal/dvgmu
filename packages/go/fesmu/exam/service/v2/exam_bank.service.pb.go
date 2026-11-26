@@ -42,6 +42,7 @@ type Bank struct {
 	Satisfactory    float64                `protobuf:"fixed64,16,opt,name=satisfactory,proto3" json:"satisfactory,omitempty"`
 	AiReviewNotes   string                 `protobuf:"bytes,17,opt,name=ai_review_notes,json=aiReviewNotes,proto3" json:"ai_review_notes,omitempty"`
 	Faculty         string                 `protobuf:"bytes,18,opt,name=faculty,proto3" json:"faculty,omitempty"`
+	AssessmentKind  string                 `protobuf:"bytes,19,opt,name=assessment_kind,json=assessmentKind,proto3" json:"assessment_kind,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -202,6 +203,13 @@ func (x *Bank) GetFaculty() string {
 	return ""
 }
 
+func (x *Bank) GetAssessmentKind() string {
+	if x != nil {
+		return x.AssessmentKind
+	}
+	return ""
+}
+
 // A section contributes quota random questions pooled across all its topics.
 type BankSection struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -338,9 +346,10 @@ func (x *BankTopic) GetQuestions() []*v1.TestQuestionInput {
 }
 
 type BankFetchRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	AssessmentKind string                 `protobuf:"bytes,1,opt,name=assessment_kind,json=assessmentKind,proto3" json:"assessment_kind,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *BankFetchRequest) Reset() {
@@ -371,6 +380,13 @@ func (x *BankFetchRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use BankFetchRequest.ProtoReflect.Descriptor instead.
 func (*BankFetchRequest) Descriptor() ([]byte, []int) {
 	return file_fesmu_exam_service_v2_exam_bank_service_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *BankFetchRequest) GetAssessmentKind() string {
+	if x != nil {
+		return x.AssessmentKind
+	}
+	return ""
 }
 
 type BankFetchResponse struct {
@@ -782,13 +798,14 @@ func (x *GeneratedVariant) GetShowResult() bool {
 }
 
 type ReportFetchRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	SessionId     int64                  `protobuf:"varint,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
-	AcademicYear  string                 `protobuf:"bytes,2,opt,name=academic_year,json=academicYear,proto3" json:"academic_year,omitempty"`
-	Season        string                 `protobuf:"bytes,3,opt,name=season,proto3" json:"season,omitempty"`
-	TestId        int64                  `protobuf:"varint,4,opt,name=test_id,json=testId,proto3" json:"test_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	SessionId      int64                  `protobuf:"varint,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	AcademicYear   string                 `protobuf:"bytes,2,opt,name=academic_year,json=academicYear,proto3" json:"academic_year,omitempty"`
+	Season         string                 `protobuf:"bytes,3,opt,name=season,proto3" json:"season,omitempty"`
+	TestId         int64                  `protobuf:"varint,4,opt,name=test_id,json=testId,proto3" json:"test_id,omitempty"`
+	AssessmentKind string                 `protobuf:"bytes,5,opt,name=assessment_kind,json=assessmentKind,proto3" json:"assessment_kind,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *ReportFetchRequest) Reset() {
@@ -847,6 +864,13 @@ func (x *ReportFetchRequest) GetTestId() int64 {
 		return x.TestId
 	}
 	return 0
+}
+
+func (x *ReportFetchRequest) GetAssessmentKind() string {
+	if x != nil {
+		return x.AssessmentKind
+	}
+	return ""
 }
 
 type ReportFetchResponse struct {
@@ -1125,7 +1149,7 @@ var File_fesmu_exam_service_v2_exam_bank_service_proto protoreflect.FileDescript
 
 const file_fesmu_exam_service_v2_exam_bank_service_proto_rawDesc = "" +
 	"\n" +
-	"-fesmu/exam/service/v2/exam_bank.service.proto\x12\x18contract.exam.service.v2\x1a#fesmu/service/v1/test.service.proto\"\xd9\x04\n" +
+	"-fesmu/exam/service/v2/exam_bank.service.proto\x12\x18contract.exam.service.v2\x1a#fesmu/service/v1/test.service.proto\"\x82\x05\n" +
 	"\x04Bank\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1a\n" +
 	"\brevision\x18\x02 \x01(\x03R\brevision\x12\x1c\n" +
@@ -1149,7 +1173,8 @@ const file_fesmu_exam_service_v2_exam_bank_service_proto_rawDesc = "" +
 	"\x04good\x18\x0f \x01(\x01R\x04good\x12\"\n" +
 	"\fsatisfactory\x18\x10 \x01(\x01R\fsatisfactory\x12&\n" +
 	"\x0fai_review_notes\x18\x11 \x01(\tR\raiReviewNotes\x12\x18\n" +
-	"\afaculty\x18\x12 \x01(\tR\afaculty\"\xe3\x01\n" +
+	"\afaculty\x18\x12 \x01(\tR\afaculty\x12'\n" +
+	"\x0fassessment_kind\x18\x13 \x01(\tR\x0eassessmentKind\"\xe3\x01\n" +
 	"\vBankSection\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x14\n" +
 	"\x05quota\x18\x02 \x01(\x05R\x05quota\x12H\n" +
@@ -1158,8 +1183,9 @@ const file_fesmu_exam_service_v2_exam_bank_service_proto_rawDesc = "" +
 	"\rready_variant\x18\x05 \x01(\bR\freadyVariant\"e\n" +
 	"\tBankTopic\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12D\n" +
-	"\tquestions\x18\x02 \x03(\v2&.contract.service.v1.TestQuestionInputR\tquestions\"\x12\n" +
-	"\x10BankFetchRequest\"\x91\x01\n" +
+	"\tquestions\x18\x02 \x03(\v2&.contract.service.v1.TestQuestionInputR\tquestions\";\n" +
+	"\x10BankFetchRequest\x12'\n" +
+	"\x0fassessment_kind\x18\x01 \x01(\tR\x0eassessmentKind\"\x91\x01\n" +
 	"\x11BankFetchResponse\x124\n" +
 	"\x05banks\x18\x01 \x03(\v2\x1e.contract.exam.service.v2.BankR\x05banks\x12F\n" +
 	"\bvariants\x18\x02 \x03(\v2*.contract.exam.service.v2.GeneratedVariantR\bvariants\"E\n" +
@@ -1183,13 +1209,14 @@ const file_fesmu_exam_service_v2_exam_bank_service_proto_rawDesc = "" +
 	"\x05title\x18\x04 \x01(\tR\x05title\x12)\n" +
 	"\x10duration_minutes\x18\x05 \x01(\x05R\x0fdurationMinutes\x12\x1f\n" +
 	"\vshow_result\x18\x06 \x01(\bR\n" +
-	"showResult\"\x89\x01\n" +
+	"showResult\"\xb2\x01\n" +
 	"\x12ReportFetchRequest\x12\x1d\n" +
 	"\n" +
 	"session_id\x18\x01 \x01(\x03R\tsessionId\x12#\n" +
 	"\racademic_year\x18\x02 \x01(\tR\facademicYear\x12\x16\n" +
 	"\x06season\x18\x03 \x01(\tR\x06season\x12\x17\n" +
-	"\atest_id\x18\x04 \x01(\x03R\x06testId\"6\n" +
+	"\atest_id\x18\x04 \x01(\x03R\x06testId\x12'\n" +
+	"\x0fassessment_kind\x18\x05 \x01(\tR\x0eassessmentKind\"6\n" +
 	"\x13ReportFetchResponse\x12\x1f\n" +
 	"\vreport_json\x18\x01 \x01(\tR\n" +
 	"reportJson\".\n" +

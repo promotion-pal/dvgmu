@@ -436,11 +436,12 @@ function ReportView({ report }: { report: Report }) {
     </div>
   );
 }
-export default function ExamV2Page() {
+export default function ExamV2Page({assessmentKind = ""}: {assessmentKind?: string}) {
+  const newBank = () => ({...fresh(), assessmentKind});
   const [banks, setBanks] = useState<Bank[]>([]),
     [variants, setVariants] = useState<GeneratedVariant[]>([]),
     [sessions, setSessions] = useState<TestSession[]>([]);
-  const [bank, setBank] = useState<Bank | undefined>(() => fresh()),
+  const [bank, setBank] = useState<Bank | undefined>(() => newBank()),
     [dirty, setDirty] = useState(true),
     [busy, setBusy] = useState(false),
     [error, setError] = useState("");
@@ -469,10 +470,10 @@ export default function ExamV2Page() {
     }
   };
   const load = async () => {
-    const [r, s] = await Promise.all([client.bankFetch({}), examTestSessionApi.fetch()]);
+    const [r, s] = await Promise.all([client.bankFetch({assessmentKind}), examTestSessionApi.fetch()]);
     setBanks(r.banks);
     setVariants(r.variants);
-    setSessions(s.filter((item) => item.examV2));
+    setSessions(s.filter((item) => item.examV2 && (item.assessmentKind || "") === assessmentKind));
   };
   useEffect(() => {
     void run(load);
@@ -689,7 +690,7 @@ export default function ExamV2Page() {
     });
   const showReport = () =>
     run(async () => {
-      const r = await client.reportFetch({
+      const r = await client.reportFetch({assessmentKind,
         sessionId: BigInt(sessionID || 0),
         testId: BigInt(reportTestID || 0),
         academicYear: reportTestID ? "" : year,
@@ -699,7 +700,7 @@ export default function ExamV2Page() {
     });
   return (
     <CommonWrapper
-      title="Экзаменационное тестирование V2"
+      title={assessmentKind ? "Промежуточное тестирование" : "Экзаменационное тестирование V2"}
       description="Создавайте банки вопросов, загружайте тесты и назначайте экзамены."
     >
       <div className="mb-5 flex flex-wrap gap-2">
@@ -718,7 +719,7 @@ export default function ExamV2Page() {
             onClick={() => {
               if (key === "create" && bank?.id) {
                 if (dirty && !confirm("Отменить несохранённые изменения?")) return;
-                setBank(fresh());
+                setBank(newBank());
                 setDirty(true);
               }
               setTab(key);
@@ -800,7 +801,7 @@ export default function ExamV2Page() {
               onClick={() => {
                 if (dirty && bank?.sections.length && !confirm("Отменить несохранённые изменения?"))
                   return;
-                setBank(fresh());
+                setBank(newBank());
                 setDirty(true);
                 setTab("create");
               }}
@@ -1134,7 +1135,7 @@ export default function ExamV2Page() {
       {tab === "variants" && (
         <div className="flex flex-col gap-5">
           <Card className="p-4 text-sm">
-            Выберите тест и назначьте его курсу, группе или студентам.
+            {assessmentKind ? "Назначьте тест группе, затем нажмите «Разрешить прохождение»." : "Выберите тест и назначьте его курсу, группе или студентам."}
           </Card>
           {!visibleVariants.length && (
             <Card className="gap-3 border-dashed p-5">
@@ -1235,7 +1236,7 @@ export default function ExamV2Page() {
               </Can>
             </Card>
           ))}
-          <h2 className="text-xl font-semibold">Выданные сессии V2</h2>
+          <h2 className="text-xl font-semibold">Выданные сессии</h2>
           {!visibleSessions.length && (
             <p className="text-sm text-muted-foreground">
               Сессий ещё нет. После формирования варианта нажмите «Назначить / расписание» и
@@ -1265,7 +1266,7 @@ export default function ExamV2Page() {
                   setReportTestID("");
                   setTab("reports");
                   void run(async () => {
-                    const r = await client.reportFetch({ sessionId: BigInt(s.id) });
+                    const r = await client.reportFetch({assessmentKind, sessionId: BigInt(s.id) });
                     setReport(JSON.parse(r.reportJson) as Report);
                   });
                 }}
@@ -1273,6 +1274,7 @@ export default function ExamV2Page() {
                 Ведомость / анализ
               </Button>
               <Can section={PermissionSection.EXAM_TESTS}>
+                <Button disabled={busy} variant="outline" onClick={() => void run(async () => { await examTestSessionApi.setOpen(s.id, !s.isOpen); await load(); })}>{s.isOpen ? "Закрыть доступ" : "Разрешить прохождение"}</Button>
                 <Button
                   variant="destructive"
                   disabled={busy}
