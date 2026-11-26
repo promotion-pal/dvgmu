@@ -35,11 +35,14 @@ const (
 const (
 	// TaskServiceCreateTaskProcedure is the fully-qualified name of the TaskService's CreateTask RPC.
 	TaskServiceCreateTaskProcedure = "/tasks.service.TaskService/CreateTask"
+	// TaskServiceListMyTasksProcedure is the fully-qualified name of the TaskService's ListMyTasks RPC.
+	TaskServiceListMyTasksProcedure = "/tasks.service.TaskService/ListMyTasks"
 )
 
 // TaskServiceClient is a client for the tasks.service.TaskService service.
 type TaskServiceClient interface {
 	CreateTask(context.Context, *connect.Request[service.CreateTaskRequest]) (*connect.Response[service.CreateTaskResponse], error)
+	ListMyTasks(context.Context, *connect.Request[service.ListMyTasksRequest]) (*connect.Response[service.ListMyTasksResponse], error)
 }
 
 // NewTaskServiceClient constructs a client for the tasks.service.TaskService service. By default,
@@ -59,12 +62,19 @@ func NewTaskServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(taskServiceMethods.ByName("CreateTask")),
 			connect.WithClientOptions(opts...),
 		),
+		listMyTasks: connect.NewClient[service.ListMyTasksRequest, service.ListMyTasksResponse](
+			httpClient,
+			baseURL+TaskServiceListMyTasksProcedure,
+			connect.WithSchema(taskServiceMethods.ByName("ListMyTasks")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // taskServiceClient implements TaskServiceClient.
 type taskServiceClient struct {
-	createTask *connect.Client[service.CreateTaskRequest, service.CreateTaskResponse]
+	createTask  *connect.Client[service.CreateTaskRequest, service.CreateTaskResponse]
+	listMyTasks *connect.Client[service.ListMyTasksRequest, service.ListMyTasksResponse]
 }
 
 // CreateTask calls tasks.service.TaskService.CreateTask.
@@ -72,9 +82,15 @@ func (c *taskServiceClient) CreateTask(ctx context.Context, req *connect.Request
 	return c.createTask.CallUnary(ctx, req)
 }
 
+// ListMyTasks calls tasks.service.TaskService.ListMyTasks.
+func (c *taskServiceClient) ListMyTasks(ctx context.Context, req *connect.Request[service.ListMyTasksRequest]) (*connect.Response[service.ListMyTasksResponse], error) {
+	return c.listMyTasks.CallUnary(ctx, req)
+}
+
 // TaskServiceHandler is an implementation of the tasks.service.TaskService service.
 type TaskServiceHandler interface {
 	CreateTask(context.Context, *connect.Request[service.CreateTaskRequest]) (*connect.Response[service.CreateTaskResponse], error)
+	ListMyTasks(context.Context, *connect.Request[service.ListMyTasksRequest]) (*connect.Response[service.ListMyTasksResponse], error)
 }
 
 // NewTaskServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -90,10 +106,18 @@ func NewTaskServiceHandler(svc TaskServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(taskServiceMethods.ByName("CreateTask")),
 		connect.WithHandlerOptions(opts...),
 	)
+	taskServiceListMyTasksHandler := connect.NewUnaryHandler(
+		TaskServiceListMyTasksProcedure,
+		svc.ListMyTasks,
+		connect.WithSchema(taskServiceMethods.ByName("ListMyTasks")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/tasks.service.TaskService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case TaskServiceCreateTaskProcedure:
 			taskServiceCreateTaskHandler.ServeHTTP(w, r)
+		case TaskServiceListMyTasksProcedure:
+			taskServiceListMyTasksHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -105,4 +129,8 @@ type UnimplementedTaskServiceHandler struct{}
 
 func (UnimplementedTaskServiceHandler) CreateTask(context.Context, *connect.Request[service.CreateTaskRequest]) (*connect.Response[service.CreateTaskResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("tasks.service.TaskService.CreateTask is not implemented"))
+}
+
+func (UnimplementedTaskServiceHandler) ListMyTasks(context.Context, *connect.Request[service.ListMyTasksRequest]) (*connect.Response[service.ListMyTasksResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("tasks.service.TaskService.ListMyTasks is not implemented"))
 }

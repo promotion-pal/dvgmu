@@ -78,7 +78,7 @@
 | fesmu api | mdm | прокси `contract.service.UserService` | люди, роли, доступы (только ADMIN) |
 | fesmu api | analytics | прокси (только чтение) + модуль `survey` (запись) | опросы и отчёты |
 | fesmu api | tickets | прокси (право раздела «Заявки») | заявки общежитий и зданий |
-| fesmu api | tasks | прокси `CreateTask`, `PACKAGE_REQUESTS` | регистрация заявки на услугу |
+| fesmu api | tasks | прокси `CreateTask` и `ListMyTasks`, `PACKAGE_REQUESTS` | регистрация и список заявок автора |
 | tasks | auth | `/.well-known/jwks.json` | проверка сессии FESMU через общий пакет `packages/authsession` |
 | tasks | mdm | `UserFetchByUUID` | проверка профиля и получение подразделения заявителя |
 | fesmu api | file | клиент `FilesService` | справки |

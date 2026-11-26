@@ -26,6 +26,39 @@ func NewTaskStorage(db *gorm.DB) *TaskStorage {
 	return &TaskStorage{db: db}
 }
 
+func (s *TaskStorage) ListMine(ctx context.Context, authorID string, filter models.MyTasksFilter, after *models.MyTasksCursor, limit int) ([]models.MyTaskListItem, error) {
+	var tasks []models.MyTaskListItem
+	query := s.db.WithContext(ctx).Model(&models.Task{}).
+		Select(`tasks.uuid, tasks.number, tasks.title, tasks.created_at,
+			COALESCE(tasks.service_id, 0) AS service_id, COALESCE(services.name, '') AS service_name,
+			COALESCE(tasks.status_id, 0) AS status_id, COALESCE(statuses.name, '') AS status_name,
+			COALESCE(tasks.priority_id, 0) AS priority_id, COALESCE(priorities.name, '') AS priority_name`).
+		Joins("LEFT JOIN services ON services.id = tasks.service_id").
+		Joins("LEFT JOIN statuses ON statuses.id = tasks.status_id").
+		Joins("LEFT JOIN priorities ON priorities.id = tasks.priority_id").
+		Where("tasks.author_id = ?", authorID)
+	if filter.ServiceID != nil {
+		query = query.Where("tasks.service_id = ?", *filter.ServiceID)
+	}
+	if filter.StatusID != nil {
+		query = query.Where("tasks.status_id = ?", *filter.StatusID)
+	}
+	if filter.PriorityID != nil {
+		query = query.Where("tasks.priority_id = ?", *filter.PriorityID)
+	}
+	if filter.CreatedFrom != nil {
+		query = query.Where("tasks.created_at >= ?", *filter.CreatedFrom)
+	}
+	if filter.CreatedBefore != nil {
+		query = query.Where("tasks.created_at < ?", *filter.CreatedBefore)
+	}
+	if after != nil {
+		query = query.Where("(tasks.created_at, tasks.uuid) < (?, CAST(? AS uuid))", after.CreatedAt, after.UUID)
+	}
+	err := query.Order("tasks.created_at DESC, tasks.uuid DESC").Limit(limit).Find(&tasks).Error
+	return tasks, err
+}
+
 func (s *TaskStorage) Create(ctx context.Context, task models.Task, key models.TaskRegistrationKey, serviceID, formVersion int64, year int, validateForm func(string) error) (models.Task, error) {
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		existing, err := claimTaskRegistrationKey(tx, key)

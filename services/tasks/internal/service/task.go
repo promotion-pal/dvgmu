@@ -40,6 +40,35 @@ func NewTaskService(storage *storage.TaskStorage, numberLocation *time.Location)
 	return &TaskService{storage: storage, numberLocation: numberLocation}
 }
 
+func (s *TaskService) ListMine(ctx context.Context, applicantID string, filter models.MyTasksFilter, after *models.MyTasksCursor, pageSize int32) ([]models.MyTaskListItem, *models.MyTasksCursor, error) {
+	if strings.TrimSpace(applicantID) == "" {
+		return nil, nil, ErrTaskApplicantRequired
+	}
+	if pageSize < 0 || pageSize > 100 {
+		return nil, nil, fmt.Errorf("%w: page_size must be between 0 and 100", ErrInvalidTask)
+	}
+	if (filter.ServiceID != nil && *filter.ServiceID <= 0) ||
+		(filter.StatusID != nil && *filter.StatusID <= 0) ||
+		(filter.PriorityID != nil && *filter.PriorityID <= 0) {
+		return nil, nil, fmt.Errorf("%w: filter IDs must be positive", ErrInvalidTask)
+	}
+	if filter.CreatedFrom != nil && filter.CreatedBefore != nil && !filter.CreatedFrom.Before(*filter.CreatedBefore) {
+		return nil, nil, fmt.Errorf("%w: created_from must be before created_before", ErrInvalidTask)
+	}
+	if pageSize == 0 {
+		pageSize = 50
+	}
+	tasks, err := s.storage.ListMine(ctx, applicantID, filter, after, int(pageSize)+1)
+	if err != nil {
+		return nil, nil, fmt.Errorf("list tasks by author: %w", err)
+	}
+	if len(tasks) <= int(pageSize) {
+		return tasks, nil, nil
+	}
+	last := tasks[pageSize-1]
+	return tasks[:pageSize], &models.MyTasksCursor{CreatedAt: last.CreatedAt, UUID: last.UUID}, nil
+}
+
 func (s *TaskService) Create(ctx context.Context, input TaskRegistration, applicantID, departmentID string) (models.Task, error) {
 	if strings.TrimSpace(applicantID) == "" {
 		return models.Task{}, ErrTaskApplicantRequired

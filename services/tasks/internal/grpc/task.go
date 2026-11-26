@@ -37,7 +37,7 @@ func (c *TaskController) CreateTask(ctx context.Context, req *connect.Request[ap
 	}
 	task, err := c.service.Create(ctx, input, applicant.ID, applicant.DepartmentID)
 	if err != nil {
-		return nil, c.rpcError(err)
+		return nil, c.rpcError(err, "task registration failed")
 	}
 	return connect.NewResponse(&api.CreateTaskResponse{Task: &entity.Task{
 		Uuid: task.UUID, Number: task.Number, Title: task.Title, Description: task.Description,
@@ -47,7 +47,7 @@ func (c *TaskController) CreateTask(ctx context.Context, req *connect.Request[ap
 	}}), nil
 }
 
-func (c *TaskController) rpcError(err error) error {
+func (c *TaskController) rpcError(err error, failureMessage string) error {
 	switch {
 	case errors.Is(err, service.ErrInvalidTask):
 		return connect.NewError(connect.CodeInvalidArgument, err)
@@ -65,7 +65,7 @@ func (c *TaskController) rpcError(err error) error {
 	case errors.Is(err, context.Canceled), errors.Is(err, context.DeadlineExceeded):
 		return err
 	default:
-		c.log.Error("task registration failed", "error", err)
-		return connect.NewError(connect.CodeInternal, errors.New("task registration failed"))
+		c.log.Error(failureMessage, "error", err)
+		return connect.NewError(connect.CodeInternal, errors.New(failureMessage))
 	}
 }

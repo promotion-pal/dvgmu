@@ -4,7 +4,8 @@
 
 import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
-import { file_google_protobuf_struct } from "@bufbuild/protobuf/wkt";
+import type { Timestamp } from "@bufbuild/protobuf/wkt";
+import { file_google_protobuf_struct, file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import type { Task } from "../entity/task_pb";
 import { file_tasks_entity_task } from "../entity/task_pb";
 import type { JsonObject, Message } from "@bufbuild/protobuf";
@@ -13,7 +14,7 @@ import type { JsonObject, Message } from "@bufbuild/protobuf";
  * Describes the file tasks/service/task_service.proto.
  */
 export const file_tasks_service_task_service: GenFile = /*@__PURE__*/
-  fileDesc("CiB0YXNrcy9zZXJ2aWNlL3Rhc2tfc2VydmljZS5wcm90bxINdGFza3Muc2VydmljZSKpAQoRQ3JlYXRlVGFza1JlcXVlc3QSEgoKc2VydmljZV9pZBgBIAEoAxINCgV0aXRsZRgCIAEoCRITCgtkZXNjcmlwdGlvbhgDIAEoCRIUCgxmb3JtX3ZlcnNpb24YBCABKAMSLQoMZXh0cmFfZmllbGRzGAUgASgLMhcuZ29vZ2xlLnByb3RvYnVmLlN0cnVjdBIXCg9pZGVtcG90ZW5jeV9rZXkYBiABKAkiNgoSQ3JlYXRlVGFza1Jlc3BvbnNlEiAKBHRhc2sYASABKAsyEi50YXNrcy5lbnRpdHkuVGFzazJgCgtUYXNrU2VydmljZRJRCgpDcmVhdGVUYXNrEiAudGFza3Muc2VydmljZS5DcmVhdGVUYXNrUmVxdWVzdBohLnRhc2tzLnNlcnZpY2UuQ3JlYXRlVGFza1Jlc3BvbnNlQpgBChFjb20udGFza3Muc2VydmljZUIQVGFza1NlcnZpY2VQcm90b1ABWhxmZXNtdS9jb250cmFjdC90YXNrcy9zZXJ2aWNlogIDVFNYqgINVGFza3MuU2VydmljZcoCDVRhc2tzXFNlcnZpY2XiAhlUYXNrc1xTZXJ2aWNlXEdQQk1ldGFkYXRh6gIOVGFza3M6OlNlcnZpY2ViBnByb3RvMw", [file_google_protobuf_struct, file_tasks_entity_task]);
+  fileDesc("CiB0YXNrcy9zZXJ2aWNlL3Rhc2tfc2VydmljZS5wcm90bxINdGFza3Muc2VydmljZSKpAQoRQ3JlYXRlVGFza1JlcXVlc3QSEgoKc2VydmljZV9pZBgBIAEoAxINCgV0aXRsZRgCIAEoCRITCgtkZXNjcmlwdGlvbhgDIAEoCRIUCgxmb3JtX3ZlcnNpb24YBCABKAMSLQoMZXh0cmFfZmllbGRzGAUgASgLMhcuZ29vZ2xlLnByb3RvYnVmLlN0cnVjdBIXCg9pZGVtcG90ZW5jeV9rZXkYBiABKAkiNgoSQ3JlYXRlVGFza1Jlc3BvbnNlEiAKBHRhc2sYASABKAsyEi50YXNrcy5lbnRpdHkuVGFzayJNCg1NeVRhc2tzQ3Vyc29yEi4KCmNyZWF0ZWRfYXQYASABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEgwKBHV1aWQYAiABKAkisgIKEkxpc3RNeVRhc2tzUmVxdWVzdBIRCglwYWdlX3NpemUYASABKAUSKwoFYWZ0ZXIYAiABKAsyHC50YXNrcy5zZXJ2aWNlLk15VGFza3NDdXJzb3ISFwoKc2VydmljZV9pZBgDIAEoA0gAiAEBEhYKCXN0YXR1c19pZBgEIAEoA0gBiAEBEhgKC3ByaW9yaXR5X2lkGAUgASgDSAKIAQESMAoMY3JlYXRlZF9mcm9tGAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIyCg5jcmVhdGVkX2JlZm9yZRgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCDQoLX3NlcnZpY2VfaWRCDAoKX3N0YXR1c19pZEIOCgxfcHJpb3JpdHlfaWQi6wEKDk15VGFza0xpc3RJdGVtEgwKBHV1aWQYASABKAkSDgoGbnVtYmVyGAIgASgJEg0KBXRpdGxlGAMgASgJEi4KCmNyZWF0ZWRfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhIKCnNlcnZpY2VfaWQYBSABKAMSFAoMc2VydmljZV9uYW1lGAYgASgJEhEKCXN0YXR1c19pZBgHIAEoAxITCgtzdGF0dXNfbmFtZRgIIAEoCRITCgtwcmlvcml0eV9pZBgJIAEoAxIVCg1wcmlvcml0eV9uYW1lGAogASgJInYKE0xpc3RNeVRhc2tzUmVzcG9uc2USLAoFdGFza3MYASADKAsyHS50YXNrcy5zZXJ2aWNlLk15VGFza0xpc3RJdGVtEjEKC25leHRfY3Vyc29yGAIgASgLMhwudGFza3Muc2VydmljZS5NeVRhc2tzQ3Vyc29yMrYBCgtUYXNrU2VydmljZRJRCgpDcmVhdGVUYXNrEiAudGFza3Muc2VydmljZS5DcmVhdGVUYXNrUmVxdWVzdBohLnRhc2tzLnNlcnZpY2UuQ3JlYXRlVGFza1Jlc3BvbnNlElQKC0xpc3RNeVRhc2tzEiEudGFza3Muc2VydmljZS5MaXN0TXlUYXNrc1JlcXVlc3QaIi50YXNrcy5zZXJ2aWNlLkxpc3RNeVRhc2tzUmVzcG9uc2VCmAEKEWNvbS50YXNrcy5zZXJ2aWNlQhBUYXNrU2VydmljZVByb3RvUAFaHGZlc211L2NvbnRyYWN0L3Rhc2tzL3NlcnZpY2WiAgNUU1iqAg1UYXNrcy5TZXJ2aWNlygINVGFza3NcU2VydmljZeICGVRhc2tzXFNlcnZpY2VcR1BCTWV0YWRhdGHqAg5UYXNrczo6U2VydmljZWIGcHJvdG8z", [file_google_protobuf_struct, file_google_protobuf_timestamp, file_tasks_entity_task]);
 
 /**
  * @generated from message tasks.service.CreateTaskRequest
@@ -79,6 +80,167 @@ export const CreateTaskResponseSchema: GenMessage<CreateTaskResponse> = /*@__PUR
   messageDesc(file_tasks_service_task_service, 1);
 
 /**
+ * @generated from message tasks.service.MyTasksCursor
+ */
+export type MyTasksCursor = Message<"tasks.service.MyTasksCursor"> & {
+  /**
+   * @generated from field: google.protobuf.Timestamp created_at = 1;
+   */
+  createdAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: string uuid = 2;
+   */
+  uuid: string;
+};
+
+/**
+ * Describes the message tasks.service.MyTasksCursor.
+ * Use `create(MyTasksCursorSchema)` to create a new message.
+ */
+export const MyTasksCursorSchema: GenMessage<MyTasksCursor> = /*@__PURE__*/
+  messageDesc(file_tasks_service_task_service, 2);
+
+/**
+ * @generated from message tasks.service.ListMyTasksRequest
+ */
+export type ListMyTasksRequest = Message<"tasks.service.ListMyTasksRequest"> & {
+  /**
+   * Defaults to 50 and accepts up to 100 tasks per page.
+   *
+   * @generated from field: int32 page_size = 1;
+   */
+  pageSize: number;
+
+  /**
+   * Use the previous page's next_cursor with the same filters.
+   *
+   * @generated from field: tasks.service.MyTasksCursor after = 2;
+   */
+  after?: MyTasksCursor | undefined;
+
+  /**
+   * @generated from field: optional int64 service_id = 3;
+   */
+  serviceId?: bigint | undefined;
+
+  /**
+   * @generated from field: optional int64 status_id = 4;
+   */
+  statusId?: bigint | undefined;
+
+  /**
+   * @generated from field: optional int64 priority_id = 5;
+   */
+  priorityId?: bigint | undefined;
+
+  /**
+   * Inclusive start and exclusive end of the creation period.
+   *
+   * @generated from field: google.protobuf.Timestamp created_from = 6;
+   */
+  createdFrom?: Timestamp | undefined;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp created_before = 7;
+   */
+  createdBefore?: Timestamp | undefined;
+};
+
+/**
+ * Describes the message tasks.service.ListMyTasksRequest.
+ * Use `create(ListMyTasksRequestSchema)` to create a new message.
+ */
+export const ListMyTasksRequestSchema: GenMessage<ListMyTasksRequest> = /*@__PURE__*/
+  messageDesc(file_tasks_service_task_service, 3);
+
+/**
+ * @generated from message tasks.service.MyTaskListItem
+ */
+export type MyTaskListItem = Message<"tasks.service.MyTaskListItem"> & {
+  /**
+   * @generated from field: string uuid = 1;
+   */
+  uuid: string;
+
+  /**
+   * @generated from field: string number = 2;
+   */
+  number: string;
+
+  /**
+   * @generated from field: string title = 3;
+   */
+  title: string;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp created_at = 4;
+   */
+  createdAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: int64 service_id = 5;
+   */
+  serviceId: bigint;
+
+  /**
+   * @generated from field: string service_name = 6;
+   */
+  serviceName: string;
+
+  /**
+   * @generated from field: int64 status_id = 7;
+   */
+  statusId: bigint;
+
+  /**
+   * @generated from field: string status_name = 8;
+   */
+  statusName: string;
+
+  /**
+   * @generated from field: int64 priority_id = 9;
+   */
+  priorityId: bigint;
+
+  /**
+   * @generated from field: string priority_name = 10;
+   */
+  priorityName: string;
+};
+
+/**
+ * Describes the message tasks.service.MyTaskListItem.
+ * Use `create(MyTaskListItemSchema)` to create a new message.
+ */
+export const MyTaskListItemSchema: GenMessage<MyTaskListItem> = /*@__PURE__*/
+  messageDesc(file_tasks_service_task_service, 4);
+
+/**
+ * @generated from message tasks.service.ListMyTasksResponse
+ */
+export type ListMyTasksResponse = Message<"tasks.service.ListMyTasksResponse"> & {
+  /**
+   * Ordered by creation time and UUID, newest first.
+   *
+   * @generated from field: repeated tasks.service.MyTaskListItem tasks = 1;
+   */
+  tasks: MyTaskListItem[];
+
+  /**
+   * @generated from field: tasks.service.MyTasksCursor next_cursor = 2;
+   */
+  nextCursor?: MyTasksCursor | undefined;
+};
+
+/**
+ * Describes the message tasks.service.ListMyTasksResponse.
+ * Use `create(ListMyTasksResponseSchema)` to create a new message.
+ */
+export const ListMyTasksResponseSchema: GenMessage<ListMyTasksResponse> = /*@__PURE__*/
+  messageDesc(file_tasks_service_task_service, 5);
+
+/**
  * @generated from service tasks.service.TaskService
  */
 export const TaskService: GenService<{
@@ -89,6 +251,14 @@ export const TaskService: GenService<{
     methodKind: "unary";
     input: typeof CreateTaskRequestSchema;
     output: typeof CreateTaskResponseSchema;
+  },
+  /**
+   * @generated from rpc tasks.service.TaskService.ListMyTasks
+   */
+  listMyTasks: {
+    methodKind: "unary";
+    input: typeof ListMyTasksRequestSchema;
+    output: typeof ListMyTasksResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_tasks_service_task_service, 0);

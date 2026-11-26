@@ -3,10 +3,12 @@ syntax = "proto3";
 package tasks.service;
 
 import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
 import "tasks/entity/task.proto";
 
 service TaskService {
   rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse);
+  rpc ListMyTasks(ListMyTasksRequest) returns (ListMyTasksResponse);
 }
 
 message CreateTaskRequest {
@@ -22,4 +24,41 @@ message CreateTaskRequest {
 
 message CreateTaskResponse {
   tasks.entity.Task task = 1;
+}
+
+message MyTasksCursor {
+  google.protobuf.Timestamp created_at = 1;
+  string uuid = 2;
+}
+
+message ListMyTasksRequest {
+  // Defaults to 50 and accepts up to 100 tasks per page.
+  int32 page_size = 1;
+  // Use the previous page's next_cursor with the same filters.
+  MyTasksCursor after = 2;
+  optional int64 service_id = 3;
+  optional int64 status_id = 4;
+  optional int64 priority_id = 5;
+  // Inclusive start and exclusive end of the creation period.
+  google.protobuf.Timestamp created_from = 6;
+  google.protobuf.Timestamp created_before = 7;
+}
+
+message MyTaskListItem {
+  string uuid = 1;
+  string number = 2;
+  string title = 3;
+  google.protobuf.Timestamp created_at = 4;
+  int64 service_id = 5;
+  string service_name = 6;
+  int64 status_id = 7;
+  string status_name = 8;
+  int64 priority_id = 9;
+  string priority_name = 10;
+}
+
+message ListMyTasksResponse {
+  // Ordered by creation time and UUID, newest first.
+  repeated MyTaskListItem tasks = 1;
+  MyTasksCursor next_cursor = 2;
 }

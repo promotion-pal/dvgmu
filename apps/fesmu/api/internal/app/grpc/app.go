@@ -179,7 +179,9 @@ func New(
 	mux.Handle("/"+tasksserviceconnect.TicketDormitoryServiceName+"/", tasksProxy)
 	mux.Handle("/"+tasksserviceconnect.TicketBuildServiceName+"/", tasksProxy)
 	if requestsURL != "" {
-		mux.Handle(requestserviceconnect.TaskServiceCreateTaskProcedure, proxy.NewServicePassthrough(requestsURL))
+		requestsProxy := proxy.NewServicePassthrough(requestsURL)
+		mux.Handle(requestserviceconnect.TaskServiceCreateTaskProcedure, requestsProxy)
+		mux.Handle(requestserviceconnect.TaskServiceListMyTasksProcedure, requestsProxy)
 	}
 	mux.Handle("/"+analyticsserviceconnect.AnalyticServiceName+"/", analyticsProxy)
 	mux.Handle("/"+authv2connect.IdentityServiceName+"/", authProxy)
