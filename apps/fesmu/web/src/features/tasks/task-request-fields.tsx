@@ -1,9 +1,20 @@
+import type { JsonValue } from "@bufbuild/protobuf";
 import { FormFieldType, type FormField } from "@fesmu/contract/tasks/entity/service_form_pb";
 import { useId } from "react";
 import { Input } from "@/shared/ui/input";
 import { Textarea } from "@/shared/ui/textarea";
 
-export function TaskRequestField({ field, name, error }: { field: FormField; name: string; error?: string }) {
+export function TaskRequestField({
+  field,
+  name,
+  error,
+  defaultValue,
+}: {
+  field: FormField;
+  name: string;
+  error?: string;
+  defaultValue?: JsonValue;
+}) {
   const { type, required, settings } = field;
   const label = field.name + (required ? " *" : "");
   const options = settings.case === "choice" ? settings.value.options : [];
@@ -23,6 +34,7 @@ export function TaskRequestField({ field, name, error }: { field: FormField; nam
               type="checkbox"
               name={name}
               value={option.code}
+              defaultChecked={Array.isArray(defaultValue) && defaultValue.includes(option.code)}
               aria-invalid={error && index === 0 ? true : undefined}
               aria-describedby={index === 0 ? errorId : undefined}
             />
@@ -52,6 +64,10 @@ export function TaskRequestField({ field, name, error }: { field: FormField; nam
   const controlProps = {
     name,
     required,
+    defaultValue:
+      typeof defaultValue === "string" || typeof defaultValue === "number" || typeof defaultValue === "boolean"
+        ? String(defaultValue)
+        : "",
     "aria-invalid": error ? true : undefined,
     "aria-describedby": [hintId, errorId].filter(Boolean).join(" ") || undefined,
   };
@@ -61,7 +77,6 @@ export function TaskRequestField({ field, name, error }: { field: FormField; nam
     control = (
       <select
         {...controlProps}
-        defaultValue=""
         className="h-9 w-full rounded-md border border-input bg-background px-2.5 focus-visible:ring-2 focus-visible:ring-ring"
       >
         <option value="">Выберите значение</option>

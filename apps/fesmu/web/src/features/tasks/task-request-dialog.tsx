@@ -1,9 +1,13 @@
-import type { JsonObject, MessageInitShape } from "@bufbuild/protobuf";
+import { create, type JsonObject } from "@bufbuild/protobuf";
 import { Code, ConnectError } from "@connectrpc/connect";
 import type { Service } from "@fesmu/contract/tasks/entity/service_pb";
 import { FormFieldType, type FormField } from "@fesmu/contract/tasks/entity/service_form_pb";
-import type { CreateTaskRequestSchema } from "@fesmu/contract/tasks/service/task_service_pb";
+import {
+  CreateTaskRequestSchema,
+  type CreateTaskRequest,
+} from "@fesmu/contract/tasks/service/task_service_pb";
 import { useEffect, useId, useRef, useState, type FormEvent } from "react";
+import { useUserProvider } from "@/features/provider/user.provider";
 import { signIn } from "@/shared/config/session";
 import { Button } from "@/shared/ui/button";
 import {
@@ -19,14 +23,19 @@ import {
 import { Input } from "@/shared/ui/input";
 import { Textarea } from "@/shared/ui/textarea";
 import { getTaskServiceForm, taskClient } from "./api";
+import {
+  clearPendingTask,
+  pendingTaskKey,
+  readPendingTask,
+  savePendingTask,
+} from "./pending-task-submission";
 import { TaskRequestField } from "./task-request-fields";
 
-type Submission = MessageInitShape<typeof CreateTaskRequestSchema>;
 type FieldError = { fieldName: string; message: string };
 type SubmissionState =
   | { status: "idle" | "sending" | "stale" | "signedOut" }
   | { status: "error"; message: string; fieldName?: string }
-  | { status: "retry"; message: string; input: Submission }
+  | { status: "retry"; message: string; input: CreateTaskRequest }
   | { status: "success"; number: string };
 type ServiceForm = Awaited<ReturnType<typeof getTaskServiceForm>>;
 type FormState =
@@ -35,6 +44,8 @@ type FormState =
 
 export function TaskRequestDialog({ service }: { service: Service }) {
   const [open, setOpen] = useState(false);
+  const applicantId = useUserProvider((state) => state.user?.uuid);
+  const storageKey = pendingTaskKey(applicantId, service.id);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -43,16 +54,31 @@ export function TaskRequestDialog({ service }: { service: Service }) {
           Подать заявку
         </Button>
       </DialogTrigger>
-      {open && <TaskRequestPanel service={service} />}
+      {open && (
+        <TaskRequestPanel
+          key={storageKey ?? String(service.id)}
+          service={service}
+          storageKey={storageKey}
+        />
+      )}
     </Dialog>
   );
 }
 
-function TaskRequestPanel({ service }: { service: Service }) {
+function TaskRequestPanel({ service, storageKey }: { service: Service; storageKey?: string }) {
   const serviceId = service.id;
   const [form, setForm] = useState<FormState>({ status: "loading" });
   const [loadAttempt, setLoadAttempt] = useState(0);
-  const [submission, setSubmission] = useState<SubmissionState>({ status: "idle" });
+  const [restored] = useState(() => readPendingTask(storageKey, serviceId));
+  const [submission, setSubmission] = useState<SubmissionState>(() =>
+    restored
+      ? {
+          status: "retry",
+          input: restored,
+          message: "Результат предыдущей отправки неизвестен. Повторите её, чтобы получить номер заявки.",
+        }
+      : { status: "idle" },
+  );
   const inFlight = useRef(false);
   const formRef = useRef<HTMLFormElement>(null);
   const titleErrorId = useId();
@@ -64,7 +90,9 @@ function TaskRequestPanel({ service }: { service: Service }) {
       (current) => {
         if (controller.signal.aborted) return;
         setForm({ status: "ready", current });
-        setSubmission({ status: "idle" });
+        if (loadAttempt > 0) {
+          setSubmission((previous) => previous.status === "stale" ? { status: "idle" } : previous);
+        }
       },
       () => {
         if (!controller.signal.aborted) {
@@ -82,6 +110,8 @@ function TaskRequestPanel({ service }: { service: Service }) {
   }, [fieldError]);
 
   const fields = form.current?.schema?.fields ?? [];
+  const restoredFields =
+    restored && restored.formVersion === form.current?.version ? restored.extraFields : undefined;
   const sending = submission.status === "sending";
   const requiredAttachment = fields.some(
     (field) => field.required && field.type === FormFieldType.ATTACHMENT,
@@ -96,19 +126,26 @@ function TaskRequestPanel({ service }: { service: Service }) {
     setLoadAttempt((previous) => previous + 1);
   }
 
-  async function send(input: Submission) {
+  async function send(input: CreateTaskRequest) {
     if (inFlight.current) return;
     inFlight.current = true;
+    // A reload can interrupt the response after the server has already created the request.
+    savePendingTask(storageKey, input);
     setSubmission({ status: "sending" });
     // Apply the timeout locally so the portal call needs no Connect-Timeout-Ms header.
     const signal = AbortSignal.timeout(5000);
     try {
       const { task } = await taskClient.createTask(input, { signal });
+      if (task?.number) clearPendingTask(storageKey, input);
       setSubmission(task?.number
         ? { status: "success", number: task.number }
         : { status: "retry", input, message: "Не удалось получить номер заявки. Повторите отправку." });
     } catch (error) {
-      setSubmission(rejectedSubmission(error, input, fields, signal.aborted));
+      const result = rejectedSubmission(error, input, fields, signal.aborted);
+      if (result.status === "stale" || result.status === "error") {
+        clearPendingTask(storageKey, input);
+      }
+      setSubmission(result);
     } finally {
       inFlight.current = false;
     }
@@ -136,14 +173,16 @@ function TaskRequestPanel({ service }: { service: Service }) {
       return;
     }
 
-    void send({
-      serviceId,
-      title,
-      description: String(data.get("description") ?? "").trim(),
-      formVersion: form.current.version,
-      extraFields: extra.values,
-      idempotencyKey: crypto.randomUUID(),
-    });
+    void send(
+      create(CreateTaskRequestSchema, {
+        serviceId,
+        title,
+        description: String(data.get("description") ?? "").trim(),
+        formVersion: form.current.version,
+        extraFields: extra.values,
+        idempotencyKey: crypto.randomUUID(),
+      }),
+    );
   }
 
   return (
@@ -188,6 +227,7 @@ function TaskRequestPanel({ service }: { service: Service }) {
                   Заголовок *
                   <Input
                     name="title"
+                    defaultValue={restored?.title}
                     required
                     aria-invalid={fieldError?.fieldName === "title" || undefined}
                     aria-describedby={fieldError?.fieldName === "title" ? titleErrorId : undefined}
@@ -199,7 +239,7 @@ function TaskRequestPanel({ service }: { service: Service }) {
               </div>
               <label className="grid gap-1.5 font-medium">
                 Описание
-                <Textarea name="description" rows={3} />
+                <Textarea name="description" rows={3} defaultValue={restored?.description} />
               </label>
               <div key={String(form.current.version)} className="contents">
                 {fields.map((field) => {
@@ -209,6 +249,11 @@ function TaskRequestPanel({ service }: { service: Service }) {
                       key={field.code}
                       field={field}
                       name={name}
+                      defaultValue={
+                        restoredFields && Object.hasOwn(restoredFields, field.code)
+                          ? restoredFields[field.code]
+                          : undefined
+                      }
                       error={fieldError?.fieldName === name ? fieldError.message : undefined}
                     />
                   );
@@ -335,7 +380,7 @@ function readExtraFields(form: HTMLFormElement, data: FormData, fields: FormFiel
 
 function rejectedSubmission(
   error: unknown,
-  input: Submission,
+  input: CreateTaskRequest,
   fields: FormField[],
   timedOut: boolean,
 ): SubmissionState {
@@ -344,7 +389,11 @@ function rejectedSubmission(
     case Code.Unauthenticated:
       return { status: "signedOut" };
     case Code.PermissionDenied:
-      return { status: "error", message: "Для подачи заявки нужен активный профиль в MDM." };
+      return {
+        status: "retry",
+        input,
+        message: "Для подачи заявки нужен активный профиль в MDM. Повторите отправку после восстановления доступа.",
+      };
     case Code.InvalidArgument: {
       const fieldCode = /\bfield "([a-z0-9_-]+)"/.exec(rawMessage)?.[1];
       const field = fields.find(({ code }) => code === fieldCode);
