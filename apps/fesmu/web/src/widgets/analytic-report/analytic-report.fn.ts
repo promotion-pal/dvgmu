@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createClient } from "@connectrpc/connect";
 import { create } from "@bufbuild/protobuf";
+import { useSearchParams } from "react-router-dom";
 
 import { connectTransport } from "@/shared/config/api";
 import {
@@ -37,6 +38,7 @@ export const currentWeekDateRange = () => {
 };
 
 export const useAnalyticReport = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [sourceList, setSourceList] = useState<Analytic[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -45,8 +47,32 @@ export const useAnalyticReport = () => {
   const [search, setSearch] = useState("");
   const [type, setType] = useState<AnalyticReportCategory>("all");
   const [initialWeek] = useState(currentWeekDateRange);
-  const [dateFrom, setDateFrom] = useState(initialWeek.from);
-  const [dateTo, setDateTo] = useState(initialWeek.to);
+  const hasPeriodInUrl = searchParams.has("from") || searchParams.has("to") || searchParams.has("period");
+  const [dateFrom, setDateFromState] = useState(() => hasPeriodInUrl ? searchParams.get("from") ?? "" : initialWeek.from);
+  const [dateTo, setDateToState] = useState(() => hasPeriodInUrl ? searchParams.get("to") ?? "" : initialWeek.to);
+
+  const setDateRange = (from: string, to: string) => {
+    setDateFromState(from);
+    setDateToState(to);
+    setSearchParams((current) => {
+      const next = new URLSearchParams(current);
+      if (from) next.set("from", from); else next.delete("from");
+      if (to) next.set("to", to); else next.delete("to");
+      next.set("period", from === initialWeek.from && to === initialWeek.to ? "week" : from || to ? "custom" : "all");
+      return next;
+    }, { replace: true });
+  };
+
+  useEffect(() => {
+    if (searchParams.has("from") || searchParams.has("to") || searchParams.has("period")) return;
+    setSearchParams((current) => {
+      const next = new URLSearchParams(current);
+      next.set("from", initialWeek.from);
+      next.set("to", initialWeek.to);
+      next.set("period", "week");
+      return next;
+    }, { replace: true });
+  }, [initialWeek.from, initialWeek.to, searchParams, setSearchParams]);
 
   const requestId = useRef(0);
 
@@ -117,9 +143,11 @@ export const useAnalyticReport = () => {
     type,
     setType,
     dateFrom,
-    setDateFrom,
+    setDateFrom: (value: string) => setDateRange(value, dateTo),
     dateTo,
-    setDateTo,
+    setDateTo: (value: string) => setDateRange(dateFrom, value),
+    setDateRange,
+    periodSearch: searchParams.toString(),
     defaultDateFrom: initialWeek.from,
     defaultDateTo: initialWeek.to,
   };

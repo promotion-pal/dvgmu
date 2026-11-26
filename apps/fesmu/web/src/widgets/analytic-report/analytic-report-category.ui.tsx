@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import { useEffect, useMemo, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { create } from "@bufbuild/protobuf";
 import { AlertTriangleIcon, ArrowLeftIcon, ChevronRightIcon } from "lucide-react";
 
@@ -25,21 +25,61 @@ export const AnalyticCategoryReport: FC = () => {
   const { type: typeParam } = useParams<{ type: string }>();
   const type = Number(typeParam) as AnalyticType;
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [objects, setObjects] = useState<Analytic[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [initialWeek] = useState(currentWeekDateRange);
-  const [dateFrom, setDateFrom] = useState(initialWeek.from);
-  const [dateTo, setDateTo] = useState(initialWeek.to);
-  const [datePreset, setDatePreset] = useState<"all" | "today" | "week" | "month" | "custom">("week");
+  const hasPeriodInUrl = searchParams.has("from") || searchParams.has("to") || searchParams.has("period");
+  const [dateFrom, setDateFromState] = useState(() => hasPeriodInUrl ? searchParams.get("from") ?? "" : initialWeek.from);
+  const [dateTo, setDateToState] = useState(() => hasPeriodInUrl ? searchParams.get("to") ?? "" : initialWeek.to);
+  const [datePreset, setDatePreset] = useState<"all" | "today" | "week" | "month" | "custom">(() => {
+    const preset = searchParams.get("period");
+    return preset === "all" || preset === "today" || preset === "week" || preset === "month" || preset === "custom"
+      ? preset
+      : searchParams.has("from") || searchParams.has("to") ? "custom" : "week";
+  });
+
+  const setPeriod = (from: string, to: string, preset: typeof datePreset) => {
+    setDateFromState(from);
+    setDateToState(to);
+    setDatePreset(preset);
+    setSearchParams((current) => {
+      const next = new URLSearchParams(current);
+      if (from) next.set("from", from); else next.delete("from");
+      if (to) next.set("to", to); else next.delete("to");
+      next.set("period", preset);
+      return next;
+    }, { replace: true });
+  };
+
+  useEffect(() => {
+    if (searchParams.has("from") || searchParams.has("to") || searchParams.has("period")) return;
+    setSearchParams((current) => {
+      const next = new URLSearchParams(current);
+      next.set("from", initialWeek.from);
+      next.set("to", initialWeek.to);
+      next.set("period", "week");
+      return next;
+    }, { replace: true });
+  }, [initialWeek.from, initialWeek.to, searchParams, setSearchParams]);
+
+  const withPeriod = (path: string) => {
+    const params = new URLSearchParams(searchParams);
+    if (dateFrom) params.set("from", dateFrom); else params.delete("from");
+    if (dateTo) params.set("to", dateTo); else params.delete("to");
+    params.set("period", datePreset);
+    const query = params.toString();
+    return query ? `${path}?${query}` : path;
+  };
 
   const selectDatePreset = (preset: typeof datePreset) => {
-    setDatePreset(preset);
     if (preset === "all" || preset === "custom") {
       if (preset === "all") {
-        setDateFrom("");
-        setDateTo("");
+        setPeriod("", "", "all");
+      } else {
+        setPeriod(dateFrom, dateTo, "custom");
       }
       return;
     }
@@ -58,8 +98,7 @@ export const AnalyticCategoryReport: FC = () => {
       const day = String(date.getDate()).padStart(2, "0");
       return `${year}-${month}-${day}`;
     };
-    setDateFrom(toInputValue(start));
-    setDateTo(toInputValue(today));
+    setPeriod(toInputValue(start), toInputValue(today), preset);
   };
 
   useEffect(() => {
@@ -128,7 +167,7 @@ export const AnalyticCategoryReport: FC = () => {
       action={
         <div className="flex flex-wrap gap-2">
           <AnalyticQrBatchButton list={objects} fileName={`qr-${group.label}`} />
-          <Button variant="outline" size="sm" onClick={() => navigate(ROUTE.ANALYTICS.REPORT)}>
+          <Button variant="outline" size="sm" onClick={() => navigate(withPeriod(ROUTE.ANALYTICS.REPORT))}>
             <ArrowLeftIcon className="size-3.5" />
             К категориям
           </Button>
@@ -173,11 +212,11 @@ export const AnalyticCategoryReport: FC = () => {
               <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
                 <label className="flex flex-col gap-1 text-xs text-muted-foreground">
                   С даты
-                  <input type="date" value={dateFrom} onChange={(event) => { setDatePreset("custom"); setDateFrom(event.target.value); }} aria-label="Начало периода" className="h-9 rounded-lg border bg-background px-3 text-sm text-foreground" />
+                  <input type="date" value={dateFrom} onChange={(event) => setPeriod(event.target.value, dateTo, "custom")} aria-label="Начало периода" className="h-9 rounded-lg border bg-background px-3 text-sm text-foreground" />
                 </label>
                 <label className="flex flex-col gap-1 text-xs text-muted-foreground">
                   По дату
-                  <input type="date" value={dateTo} onChange={(event) => { setDatePreset("custom"); setDateTo(event.target.value); }} aria-label="Конец периода" className="h-9 rounded-lg border bg-background px-3 text-sm text-foreground" />
+                  <input type="date" value={dateTo} onChange={(event) => setPeriod(dateFrom, event.target.value, "custom")} aria-label="Конец периода" className="h-9 rounded-lg border bg-background px-3 text-sm text-foreground" />
                 </label>
               </div>
             )}
@@ -200,7 +239,7 @@ export const AnalyticCategoryReport: FC = () => {
                 {topBestObjects.map(({ object, score, responses }, index) => (
                   <li key={object.id.toString()}>
                     <Link
-                      to={`${ROUTE.ANALYTICS.REPORT}/${object.id}`}
+                      to={withPeriod(`${ROUTE.ANALYTICS.REPORT}/${object.id}`)}
                       title={`${analyticShortName(object)} · ${responses} ${plural(responses, "ответ", "ответа", "ответов")}`}
                       className="flex min-w-0 items-center gap-3 py-2 text-sm text-emerald-950 transition-colors hover:text-emerald-700 dark:text-emerald-100 dark:hover:text-emerald-300"
                     >
@@ -222,7 +261,7 @@ export const AnalyticCategoryReport: FC = () => {
                 {topWorstObjects.map(({ object, score, responses }, index) => (
                   <li key={object.id.toString()}>
                     <Link
-                      to={`${ROUTE.ANALYTICS.REPORT}/${object.id}`}
+                      to={withPeriod(`${ROUTE.ANALYTICS.REPORT}/${object.id}`)}
                       title={`${analyticShortName(object)} · ${responses} ${plural(responses, "ответ", "ответа", "ответов")}`}
                       className="flex min-w-0 items-center gap-3 py-2 text-sm text-rose-950 transition-colors hover:text-rose-700 dark:text-rose-100 dark:hover:text-rose-300"
                     >
@@ -258,7 +297,7 @@ export const AnalyticCategoryReport: FC = () => {
                 return (
                   <Link
                     key={object.id.toString()}
-                    to={`${ROUTE.ANALYTICS.REPORT}/${object.id}`}
+                    to={withPeriod(`${ROUTE.ANALYTICS.REPORT}/${object.id}`)}
                     className="group flex min-w-0 items-center gap-2.5 rounded-lg border bg-background px-3 py-2 transition-colors hover:border-destructive/40 hover:bg-destructive/5"
                   >
                     <span className="min-w-0 flex-1">
@@ -291,7 +330,7 @@ export const AnalyticCategoryReport: FC = () => {
                   key={item.id.toString()}
                   entity={item}
                   showAllFields
-                  onOpen={() => navigate(`${ROUTE.ANALYTICS.REPORT}/${item.id}`)}
+                  onOpen={() => navigate(withPeriod(`${ROUTE.ANALYTICS.REPORT}/${item.id}`))}
                 />
               ))}
             </div>

@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/set-state-in-effect -- перенесено из старого dvgmu (shared/models_v2) как есть, в проде работает */
 import type { FC} from "react";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { create } from "@bufbuild/protobuf";
 import { ArrowLeftIcon, QrCodeIcon } from "lucide-react";
 
 import { ROUTE } from "@/shared/config/path";
@@ -16,15 +17,36 @@ import type { Analytic } from "@fesmu/contract/analytics/entity/analytic.entity_
 
 import { analyticClient, analyticTypeLabel } from "./analytic-report.fn";
 import { AnalyticDetail } from "./analytic-report.ui";
+import { AnalyticSchema } from "@fesmu/contract/analytics/entity/analytic.entity_pb";
+import { resolveDate } from "@/widgets/analytic/analytic.lib";
 
 export const AnalyticReportDetail: FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const [entity, setEntity] = useState<Analytic | undefined>(undefined);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [qrModalOpen, setQrModalOpen] = useState(false);
+  const dateFrom = searchParams.get("from") ?? "";
+  const dateTo = searchParams.get("to") ?? "";
+  const withPeriod = (path: string) => {
+    const query = searchParams.toString();
+    return query ? `${path}?${query}` : path;
+  };
+  const filteredEntity = useMemo(() => {
+    if (!entity || (!dateFrom && !dateTo)) return entity;
+    const from = dateFrom ? new Date(`${dateFrom}T00:00:00`).getTime() : Number.NEGATIVE_INFINITY;
+    const to = dateTo ? new Date(`${dateTo}T23:59:59.999`).getTime() : Number.POSITIVE_INFINITY;
+    return create(AnalyticSchema, {
+      ...entity,
+      ratings: entity.ratings.filter((rating) => {
+        const createdAt = resolveDate(rating.createdAt)?.getTime();
+        return createdAt !== undefined && createdAt >= from && createdAt <= to;
+      }),
+    });
+  }, [entity, dateFrom, dateTo]);
 
   useEffect(() => {
     if (!id) return;
@@ -70,8 +92,8 @@ export const AnalyticReportDetail: FC = () => {
             onClick={() =>
               navigate(
                 entity
-                  ? ROUTE.ANALYTICS.REPORT_CATEGORY.replace(":type", String(entity.type))
-                  : ROUTE.ANALYTICS.REPORT,
+                  ? withPeriod(ROUTE.ANALYTICS.REPORT_CATEGORY.replace(":type", String(entity.type)))
+                  : withPeriod(ROUTE.ANALYTICS.REPORT),
               )
             }
           >
@@ -87,8 +109,8 @@ export const AnalyticReportDetail: FC = () => {
         isEmpty={!loading && !error && !entity}
         error={<CommonServiceError service="аналитики" />}
       >
-        {entity && (
-          <AnalyticDetail entity={entity} />
+        {filteredEntity && (
+          <AnalyticDetail entity={filteredEntity} />
         )}
       </CommonControlState>
 
