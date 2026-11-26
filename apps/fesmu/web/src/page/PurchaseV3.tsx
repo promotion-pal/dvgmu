@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ROUTE } from "@/shared/config/path";
-import { BookMarkedIcon, BookOpenIcon, ClipboardListIcon, InboxIcon, LandmarkIcon, LayersIcon, PieChartIcon, PlayCircleIcon, RefreshCwIcon, UsersIcon } from "lucide-react";
+import { ArrowLeftIcon, BookMarkedIcon, BookOpenIcon, ClipboardListIcon, InboxIcon, LandmarkIcon, LayersIcon, PieChartIcon, PlayCircleIcon, RefreshCwIcon, UsersIcon } from "lucide-react";
 import type { ComponentType } from "react";
 import { CommonControlState } from "@/shared/components/state/control-state";
 import { CommonWrapper } from "@/shared/components/wrapper";
@@ -118,15 +118,32 @@ export default function PurchaseV3Page() {
 
                     {(listView || view === "summary") && <PurchaseFilterBar state={state} />}
                     {listView && (
-                        <div className={cn("grid gap-4", view === "lots" && state.lotLayout === "cards" ? "grid-cols-1" : "lg:grid-cols-[360px_1fr]")}>
-                            <PurchaseList
-                                state={state}
-                                onNewRequest={() => setForm({ open: true })}
-                                onMerge={(mode, ids) => setMerge({ mode, ids })}
-                                lotsContent={state.lotLayout === "okpd2" || state.lotLayout === "ktru" ? <CodeTree state={state} lots={state.filteredLots} mode={state.lotLayout} /> : undefined}
-                            />
-                            <div className="flex min-w-0 flex-col gap-4">{detail}</div>
-                        </div>
+                        view === "lots" && state.lotLayout === "cards" ? (
+                            state.activeLot ? (
+                                <div className="flex min-w-0 flex-col gap-3">
+                                    <Button size="sm" variant="outline" className="self-start" onClick={() => state.select(undefined)}>
+                                        <ArrowLeftIcon className="size-4" /> К карточкам закупок
+                                    </Button>
+                                    <LotDetail state={state} l={state.activeLot} />
+                                </div>
+                            ) : (
+                                <PurchaseList
+                                    state={state}
+                                    onNewRequest={() => setForm({ open: true })}
+                                    onMerge={(mode, ids) => setMerge({ mode, ids })}
+                                />
+                            )
+                        ) : (
+                            <div className="grid gap-4 lg:grid-cols-[360px_1fr]">
+                                <PurchaseList
+                                    state={state}
+                                    onNewRequest={() => setForm({ open: true })}
+                                    onMerge={(mode, ids) => setMerge({ mode, ids })}
+                                    lotsContent={state.lotLayout === "okpd2" || state.lotLayout === "ktru" ? <CodeTree state={state} lots={state.filteredLots} mode={state.lotLayout} /> : undefined}
+                                />
+                                <div className="flex min-w-0 flex-col gap-4">{detail}</div>
+                            </div>
+                        )
                     )}
                     {view === "summary" && <SummaryView state={state} />}
                     {view === "activity" && <ActivityView state={state} />}
