@@ -319,6 +319,7 @@ export const AnalyticCategoryReport: FC = () => {
             <AnalyticDetail
               entity={group.merged}
               objectNames={group.objectNames}
+              dateRange={{ from: dateFrom, to: dateTo }}
             />
           </section>
 

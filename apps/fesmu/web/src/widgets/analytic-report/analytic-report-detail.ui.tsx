@@ -110,7 +110,7 @@ export const AnalyticReportDetail: FC = () => {
         error={<CommonServiceError service="аналитики" />}
       >
         {filteredEntity && (
-          <AnalyticDetail entity={filteredEntity} />
+          <AnalyticDetail entity={filteredEntity} dateRange={{ from: dateFrom, to: dateTo }} />
         )}
       </CommonControlState>
 

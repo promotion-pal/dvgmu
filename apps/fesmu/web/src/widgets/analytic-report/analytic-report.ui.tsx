@@ -42,6 +42,12 @@ const formatDay = (date?: Date): string =>
       })
     : "—";
 
+const formatIsoDay = (value: string): string => {
+  if (!value) return "без границы";
+  const date = new Date(`${value}T00:00:00`);
+  return Number.isNaN(date.getTime()) ? "без границы" : formatDay(date);
+};
+
 const fieldHeadline = (summary: FieldSummary): string => {
   switch (summary.def.kind) {
     case "rating":
@@ -92,7 +98,9 @@ export const AnalyticDetail: FC<{
   entity: Analytic;
   /** Сводка категории: entity — слитые ответы всех объектов этого типа. */
   objectNames?: Map<string, string>;
-}> = ({ entity, objectNames }) => {
+  /** Текущий период фильтра, чтобы показывать выбранные даты, а не даты ответов. */
+  dateRange?: { from: string; to: string };
+}> = ({ entity, objectNames, dateRange }) => {
   const summary = useMemo(() => summarizeAnalytic(entity), [entity]);
 
   const metricFields = useMemo(
@@ -147,8 +155,11 @@ export const AnalyticDetail: FC<{
 
           <span>
             Период:{" "}
-            {formatDay(summary.firstAt)} —{" "}
-            {formatDay(summary.lastAt)}
+            {dateRange
+              ? dateRange.from || dateRange.to
+                ? `${formatIsoDay(dateRange.from)} — ${formatIsoDay(dateRange.to)}`
+                : "за всё время"
+              : `${formatDay(summary.firstAt)} — ${formatDay(summary.lastAt)}`}
           </span>
         </div>
       </Card>
