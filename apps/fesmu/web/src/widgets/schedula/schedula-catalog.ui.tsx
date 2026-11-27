@@ -34,9 +34,10 @@ export function SchedulaCatalog({ catalog, onClose, onSaved }: { catalog?: Catal
         const name = text("name");
         const dateFrom = text("from");
         const dateTo = text("to");
-        if (hasStartDate && !dateFrom) {
-            setError(`Заполните поле «${startDateLabel}».`);
-            event.currentTarget.querySelector<HTMLButtonElement>('button[data-date-field="from"]')?.focus();
+        if ((hasStartDate && !dateFrom) || (hasEndDate && !dateTo)) {
+            const missing = !dateFrom ? "from" : "to";
+            setError(`Заполните поле «${missing === "from" ? startDateLabel : "Дата окончания"}».`);
+            event.currentTarget.querySelector<HTMLButtonElement>(`button[data-date-field="${missing}"]`)?.focus();
             return;
         }
         const roomId = text("room");
@@ -85,7 +86,7 @@ export function SchedulaCatalog({ catalog, onClose, onSaved }: { catalog?: Catal
                     {kind !== "holiday" && kind !== "travel" && <Field label="Код записи"><Input name="id" required maxLength={128} /></Field>}
                     {kind !== "period" && kind !== "travel" && <Field label="Название"><Input name="name" required /></Field>}
                     {hasStartDate && <CatalogDateField label={startDateLabel} name="from" />}
-                    {hasEndDate && <Field label="Дата окончания"><Input name="to" type="date" required /></Field>}
+                    {hasEndDate && <CatalogDateField label="Дата окончания" name="to" />}
                     {kind === "site" && <>
                         <Field label="Адрес"><Input name="address" required /></Field>
                         <Field label="Точка сбора"><Input name="point" /></Field>
