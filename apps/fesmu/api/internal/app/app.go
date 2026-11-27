@@ -159,7 +159,6 @@ func New(
 			jwksURL = strings.TrimRight(cfg.Auth.ServiceURL, "/") + "/.well-known/jwks.json"
 		}
 		authInterceptor = auth.NewInterceptor(auth.NewJWKS(jwksURL), cfg.Auth.Issuer, cfg.Auth.Audience, cfg.Auth.CookieName)
-		authInterceptor.Skip[serviceconnect.ScheduleCollectServiceScheduleCollectCreateProcedure] = true
 		// The group timetable is public information shown on the students' page
 		// (/schedule): reading it needs no login, editing it does.
 		authInterceptor.Skip[serviceconnect.ScheduleServiceScheduleFetchProcedure] = true
@@ -207,9 +206,10 @@ func New(
 		// Роли — студенту и преподавателю; разделы сотрудников открывают
 		// права на раздел из доступов (Sections), роль STAFF их не открывает.
 		authInterceptor.Access = map[string][]string{
-			examv2connect.ExamStudentServiceName:  nil,
-			serviceconnect.UserServiceName:        nil, // UserMe — любой, кто вошёл
-			serviceconnect.CertificateServiceName: {auth.RoleStudent},
+			serviceconnect.ScheduleCollectServiceName: nil,
+			examv2connect.ExamStudentServiceName:      nil,
+			serviceconnect.UserServiceName:            nil, // UserMe — любой, кто вошёл
+			serviceconnect.CertificateServiceName:     {auth.RoleStudent},
 			// Каталог читает любой, кто вошёл (методички открыты и без входа —
 			// Optional выше); изменения модуль проверяет сам (library.post, manuals.post).
 			servicev2connect.LibraryServiceName: nil,
@@ -225,7 +225,6 @@ func New(
 			serviceconnect.InfrastructureServiceName:      {auth.SectionInfrastructure},
 			serviceconnect.InventoryServiceName:           {auth.SectionInventory},
 			serviceconnect.ScheduleServiceName:            {auth.SectionSchedule},
-			serviceconnect.ScheduleCollectServiceName:     {auth.SectionSchedule},
 			serviceconnect.HallServiceName:                {auth.SectionHalls},
 			serviceconnect.ComputerClassServiceName:       {auth.SectionComputerClasses},
 			serviceconnect.VaccinationServiceName:         {auth.SectionVaccination},

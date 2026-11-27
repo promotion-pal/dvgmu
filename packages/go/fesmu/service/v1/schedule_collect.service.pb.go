@@ -129,6 +129,102 @@ func (x *ScheduleCollectCreateResponse) GetItem() *v1.ScheduleCollectEntry {
 	return nil
 }
 
+type ScheduleCollectFetchRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Offset        uint32                 `protobuf:"varint,1,opt,name=offset,proto3" json:"offset,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ScheduleCollectFetchRequest) Reset() {
+	*x = ScheduleCollectFetchRequest{}
+	mi := &file_fesmu_service_v1_schedule_collect_service_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ScheduleCollectFetchRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ScheduleCollectFetchRequest) ProtoMessage() {}
+
+func (x *ScheduleCollectFetchRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_fesmu_service_v1_schedule_collect_service_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ScheduleCollectFetchRequest.ProtoReflect.Descriptor instead.
+func (*ScheduleCollectFetchRequest) Descriptor() ([]byte, []int) {
+	return file_fesmu_service_v1_schedule_collect_service_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *ScheduleCollectFetchRequest) GetOffset() uint32 {
+	if x != nil {
+		return x.Offset
+	}
+	return 0
+}
+
+type ScheduleCollectFetchResponse struct {
+	state         protoimpl.MessageState     `protogen:"open.v1"`
+	Items         []*v1.ScheduleCollectEntry `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	HasMore       bool                       `protobuf:"varint,2,opt,name=has_more,json=hasMore,proto3" json:"has_more,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ScheduleCollectFetchResponse) Reset() {
+	*x = ScheduleCollectFetchResponse{}
+	mi := &file_fesmu_service_v1_schedule_collect_service_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ScheduleCollectFetchResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ScheduleCollectFetchResponse) ProtoMessage() {}
+
+func (x *ScheduleCollectFetchResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_fesmu_service_v1_schedule_collect_service_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ScheduleCollectFetchResponse.ProtoReflect.Descriptor instead.
+func (*ScheduleCollectFetchResponse) Descriptor() ([]byte, []int) {
+	return file_fesmu_service_v1_schedule_collect_service_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *ScheduleCollectFetchResponse) GetItems() []*v1.ScheduleCollectEntry {
+	if x != nil {
+		return x.Items
+	}
+	return nil
+}
+
+func (x *ScheduleCollectFetchResponse) GetHasMore() bool {
+	if x != nil {
+		return x.HasMore
+	}
+	return false
+}
+
 var File_fesmu_service_v1_schedule_collect_service_proto protoreflect.FileDescriptor
 
 const file_fesmu_service_v1_schedule_collect_service_proto_rawDesc = "" +
@@ -139,9 +235,15 @@ const file_fesmu_service_v1_schedule_collect_service_proto_rawDesc = "" +
 	"\x1dScheduleCollectCreateResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x12<\n" +
-	"\x04item\x18\x03 \x01(\v2(.contract.entity.v1.ScheduleCollectEntryR\x04item2\x98\x01\n" +
+	"\x04item\x18\x03 \x01(\v2(.contract.entity.v1.ScheduleCollectEntryR\x04item\"5\n" +
+	"\x1bScheduleCollectFetchRequest\x12\x16\n" +
+	"\x06offset\x18\x01 \x01(\rR\x06offset\"y\n" +
+	"\x1cScheduleCollectFetchResponse\x12>\n" +
+	"\x05items\x18\x01 \x03(\v2(.contract.entity.v1.ScheduleCollectEntryR\x05items\x12\x19\n" +
+	"\bhas_more\x18\x02 \x01(\bR\ahasMore2\x95\x02\n" +
 	"\x16ScheduleCollectService\x12~\n" +
-	"\x15ScheduleCollectCreate\x121.contract.service.v1.ScheduleCollectCreateRequest\x1a2.contract.service.v1.ScheduleCollectCreateResponseB\xcf\x01\n" +
+	"\x15ScheduleCollectCreate\x121.contract.service.v1.ScheduleCollectCreateRequest\x1a2.contract.service.v1.ScheduleCollectCreateResponse\x12{\n" +
+	"\x14ScheduleCollectFetch\x120.contract.service.v1.ScheduleCollectFetchRequest\x1a1.contract.service.v1.ScheduleCollectFetchResponseB\xcf\x01\n" +
 	"\x17com.contract.service.v1B\x1bScheduleCollectServiceProtoP\x01Z)fesmu/contract/fesmu/service/v1;servicev1\xa2\x02\x03CSX\xaa\x02\x13Contract.Service.V1\xca\x02\x13Contract\\Service\\V1\xe2\x02\x1fContract\\Service\\V1\\GPBMetadata\xea\x02\x15Contract::Service::V1b\x06proto3"
 
 var (
@@ -156,22 +258,27 @@ func file_fesmu_service_v1_schedule_collect_service_proto_rawDescGZIP() []byte {
 	return file_fesmu_service_v1_schedule_collect_service_proto_rawDescData
 }
 
-var file_fesmu_service_v1_schedule_collect_service_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_fesmu_service_v1_schedule_collect_service_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_fesmu_service_v1_schedule_collect_service_proto_goTypes = []any{
 	(*ScheduleCollectCreateRequest)(nil),  // 0: contract.service.v1.ScheduleCollectCreateRequest
 	(*ScheduleCollectCreateResponse)(nil), // 1: contract.service.v1.ScheduleCollectCreateResponse
-	(*v1.ScheduleCollectEntry)(nil),       // 2: contract.entity.v1.ScheduleCollectEntry
+	(*ScheduleCollectFetchRequest)(nil),   // 2: contract.service.v1.ScheduleCollectFetchRequest
+	(*ScheduleCollectFetchResponse)(nil),  // 3: contract.service.v1.ScheduleCollectFetchResponse
+	(*v1.ScheduleCollectEntry)(nil),       // 4: contract.entity.v1.ScheduleCollectEntry
 }
 var file_fesmu_service_v1_schedule_collect_service_proto_depIdxs = []int32{
-	2, // 0: contract.service.v1.ScheduleCollectCreateRequest.item:type_name -> contract.entity.v1.ScheduleCollectEntry
-	2, // 1: contract.service.v1.ScheduleCollectCreateResponse.item:type_name -> contract.entity.v1.ScheduleCollectEntry
-	0, // 2: contract.service.v1.ScheduleCollectService.ScheduleCollectCreate:input_type -> contract.service.v1.ScheduleCollectCreateRequest
-	1, // 3: contract.service.v1.ScheduleCollectService.ScheduleCollectCreate:output_type -> contract.service.v1.ScheduleCollectCreateResponse
-	3, // [3:4] is the sub-list for method output_type
-	2, // [2:3] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	4, // 0: contract.service.v1.ScheduleCollectCreateRequest.item:type_name -> contract.entity.v1.ScheduleCollectEntry
+	4, // 1: contract.service.v1.ScheduleCollectCreateResponse.item:type_name -> contract.entity.v1.ScheduleCollectEntry
+	4, // 2: contract.service.v1.ScheduleCollectFetchResponse.items:type_name -> contract.entity.v1.ScheduleCollectEntry
+	0, // 3: contract.service.v1.ScheduleCollectService.ScheduleCollectCreate:input_type -> contract.service.v1.ScheduleCollectCreateRequest
+	2, // 4: contract.service.v1.ScheduleCollectService.ScheduleCollectFetch:input_type -> contract.service.v1.ScheduleCollectFetchRequest
+	1, // 5: contract.service.v1.ScheduleCollectService.ScheduleCollectCreate:output_type -> contract.service.v1.ScheduleCollectCreateResponse
+	3, // 6: contract.service.v1.ScheduleCollectService.ScheduleCollectFetch:output_type -> contract.service.v1.ScheduleCollectFetchResponse
+	5, // [5:7] is the sub-list for method output_type
+	3, // [3:5] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_fesmu_service_v1_schedule_collect_service_proto_init() }
@@ -185,7 +292,7 @@ func file_fesmu_service_v1_schedule_collect_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_fesmu_service_v1_schedule_collect_service_proto_rawDesc), len(file_fesmu_service_v1_schedule_collect_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

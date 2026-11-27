@@ -23,6 +23,7 @@ const ROUTE = {
     SCHEDULE: `${LK}/study/schedule`,
     SCHEDULE_NEW: `${LK}/study/schedule/new`,
     SCHEDULE_EDIT: `${LK}/study/schedule/:id/edit`,
+    SCHEDULE_INBOX: `${LK}/study/schedule/inbox`,
     SCHEDULE_HALL: `${LK}/study/schedule-hall`,
     COMPUTER_CLASS: `${LK}/study/computer-classes`,
   },

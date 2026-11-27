@@ -2,7 +2,7 @@ import type { ComponentType } from "react";
 import type { UserRole } from "@fesmu/contract/fesmu/enum/v1/user.enum_pb";
 import { BookOpenTextIcon, ChartColumnIcon, QrCodeIcon, BriefcaseIcon, LibraryIcon, Building2Icon, FileCheckIcon, CalendarDaysIcon, CalendarRangeIcon, ClipboardListIcon, FileTextIcon, GraduationCapIcon, HourglassIcon, ListChecksIcon, ListTodoIcon, MonitorIcon, ReceiptTextIcon, ShieldCheckIcon, ShoppingBagIcon, ShoppingCartIcon, TicketIcon, UsersIcon } from "lucide-react";
 import { ACCESS } from "@/shared/config/access";
-import { PermissionSection, PURCHASE_SECTIONS, permsFor, permsForAny } from "@/shared/config/permissions";
+import { PermissionAction, PermissionSection, PURCHASE_SECTIONS, permsFor, permsForAny } from "@/shared/config/permissions";
 import { ROUTE } from "@/shared/config/path";
 
 interface NavItem {
@@ -39,8 +39,10 @@ const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
     {
         label: "Учёба",
         items: [
-            { title: "schedula", url: ROUTE.SCHEDULA, icon: CalendarDaysIcon },
-            { title: "Расписание", url: ROUTE.STUDY.SCHEDULE, icon: CalendarDaysIcon, permissions: permsFor(PermissionSection.SCHEDULE) },
+            { title: "Календарь занятий", url: ROUTE.SCHEDULA, icon: CalendarDaysIcon },
+            { title: "Расписание групп", url: ROUTE.STUDY.SCHEDULE, icon: CalendarDaysIcon, permissions: permsFor(PermissionSection.SCHEDULE) },
+            { title: "Передать сведения о занятии", url: ROUTE.PUBLIC.SCHEDULE_COLLECT, icon: FileTextIcon, roles: [...ACCESS.TEACHER] },
+            { title: "Поступившие сведения", url: ROUTE.STUDY.SCHEDULE_INBOX, icon: ClipboardListIcon, permissions: permsFor(PermissionSection.SCHEDULE, PermissionAction.POST) },
             // Страница доступна всем вошедшим: halls.post открывает общее
             // расписание и модерацию, остальные видят форму личной заявки.
             { title: "Заявка / расписание лекционных залов", url: ROUTE.STUDY.SCHEDULE_HALL, icon: CalendarRangeIcon },

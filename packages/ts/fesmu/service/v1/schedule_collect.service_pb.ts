@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file fesmu/service/v1/schedule_collect.service.proto.
  */
 export const file_fesmu_service_v1_schedule_collect_service: GenFile = /*@__PURE__*/
-  fileDesc("Ci9mZXNtdS9zZXJ2aWNlL3YxL3NjaGVkdWxlX2NvbGxlY3Quc2VydmljZS5wcm90bxITY29udHJhY3Quc2VydmljZS52MSJWChxTY2hlZHVsZUNvbGxlY3RDcmVhdGVSZXF1ZXN0EjYKBGl0ZW0YASABKAsyKC5jb250cmFjdC5lbnRpdHkudjEuU2NoZWR1bGVDb2xsZWN0RW50cnkieQodU2NoZWR1bGVDb2xsZWN0Q3JlYXRlUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEjYKBGl0ZW0YAyABKAsyKC5jb250cmFjdC5lbnRpdHkudjEuU2NoZWR1bGVDb2xsZWN0RW50cnkymAEKFlNjaGVkdWxlQ29sbGVjdFNlcnZpY2USfgoVU2NoZWR1bGVDb2xsZWN0Q3JlYXRlEjEuY29udHJhY3Quc2VydmljZS52MS5TY2hlZHVsZUNvbGxlY3RDcmVhdGVSZXF1ZXN0GjIuY29udHJhY3Quc2VydmljZS52MS5TY2hlZHVsZUNvbGxlY3RDcmVhdGVSZXNwb25zZULPAQoXY29tLmNvbnRyYWN0LnNlcnZpY2UudjFCG1NjaGVkdWxlQ29sbGVjdFNlcnZpY2VQcm90b1ABWilmZXNtdS9jb250cmFjdC9mZXNtdS9zZXJ2aWNlL3YxO3NlcnZpY2V2MaICA0NTWKoCE0NvbnRyYWN0LlNlcnZpY2UuVjHKAhNDb250cmFjdFxTZXJ2aWNlXFYx4gIfQ29udHJhY3RcU2VydmljZVxWMVxHUEJNZXRhZGF0YeoCFUNvbnRyYWN0OjpTZXJ2aWNlOjpWMWIGcHJvdG8z", [file_fesmu_entity_v1_schedule_collect_entity]);
+  fileDesc("Ci9mZXNtdS9zZXJ2aWNlL3YxL3NjaGVkdWxlX2NvbGxlY3Quc2VydmljZS5wcm90bxITY29udHJhY3Quc2VydmljZS52MSJWChxTY2hlZHVsZUNvbGxlY3RDcmVhdGVSZXF1ZXN0EjYKBGl0ZW0YASABKAsyKC5jb250cmFjdC5lbnRpdHkudjEuU2NoZWR1bGVDb2xsZWN0RW50cnkieQodU2NoZWR1bGVDb2xsZWN0Q3JlYXRlUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEjYKBGl0ZW0YAyABKAsyKC5jb250cmFjdC5lbnRpdHkudjEuU2NoZWR1bGVDb2xsZWN0RW50cnkiLQobU2NoZWR1bGVDb2xsZWN0RmV0Y2hSZXF1ZXN0Eg4KBm9mZnNldBgBIAEoDSJpChxTY2hlZHVsZUNvbGxlY3RGZXRjaFJlc3BvbnNlEjcKBWl0ZW1zGAEgAygLMiguY29udHJhY3QuZW50aXR5LnYxLlNjaGVkdWxlQ29sbGVjdEVudHJ5EhAKCGhhc19tb3JlGAIgASgIMpUCChZTY2hlZHVsZUNvbGxlY3RTZXJ2aWNlEn4KFVNjaGVkdWxlQ29sbGVjdENyZWF0ZRIxLmNvbnRyYWN0LnNlcnZpY2UudjEuU2NoZWR1bGVDb2xsZWN0Q3JlYXRlUmVxdWVzdBoyLmNvbnRyYWN0LnNlcnZpY2UudjEuU2NoZWR1bGVDb2xsZWN0Q3JlYXRlUmVzcG9uc2USewoUU2NoZWR1bGVDb2xsZWN0RmV0Y2gSMC5jb250cmFjdC5zZXJ2aWNlLnYxLlNjaGVkdWxlQ29sbGVjdEZldGNoUmVxdWVzdBoxLmNvbnRyYWN0LnNlcnZpY2UudjEuU2NoZWR1bGVDb2xsZWN0RmV0Y2hSZXNwb25zZULPAQoXY29tLmNvbnRyYWN0LnNlcnZpY2UudjFCG1NjaGVkdWxlQ29sbGVjdFNlcnZpY2VQcm90b1ABWilmZXNtdS9jb250cmFjdC9mZXNtdS9zZXJ2aWNlL3YxO3NlcnZpY2V2MaICA0NTWKoCE0NvbnRyYWN0LlNlcnZpY2UuVjHKAhNDb250cmFjdFxTZXJ2aWNlXFYx4gIfQ29udHJhY3RcU2VydmljZVxWMVxHUEJNZXRhZGF0YeoCFUNvbnRyYWN0OjpTZXJ2aWNlOjpWMWIGcHJvdG8z", [file_fesmu_entity_v1_schedule_collect_entity]);
 
 /**
  * @generated from message contract.service.v1.ScheduleCollectCreateRequest
@@ -64,10 +64,46 @@ export const ScheduleCollectCreateResponseSchema: GenMessage<ScheduleCollectCrea
   messageDesc(file_fesmu_service_v1_schedule_collect_service, 1);
 
 /**
- * ScheduleCollectService collects raw schedule rows from teachers, one
- * lesson at a time, in the university's schedule exchange format. It is
- * served without authentication (see internal/modules/schedulecollect): a
- * teacher has no account in this system, only the collector page's link.
+ * @generated from message contract.service.v1.ScheduleCollectFetchRequest
+ */
+export type ScheduleCollectFetchRequest = Message<"contract.service.v1.ScheduleCollectFetchRequest"> & {
+  /**
+   * @generated from field: uint32 offset = 1;
+   */
+  offset: number;
+};
+
+/**
+ * Describes the message contract.service.v1.ScheduleCollectFetchRequest.
+ * Use `create(ScheduleCollectFetchRequestSchema)` to create a new message.
+ */
+export const ScheduleCollectFetchRequestSchema: GenMessage<ScheduleCollectFetchRequest> = /*@__PURE__*/
+  messageDesc(file_fesmu_service_v1_schedule_collect_service, 2);
+
+/**
+ * @generated from message contract.service.v1.ScheduleCollectFetchResponse
+ */
+export type ScheduleCollectFetchResponse = Message<"contract.service.v1.ScheduleCollectFetchResponse"> & {
+  /**
+   * @generated from field: repeated contract.entity.v1.ScheduleCollectEntry items = 1;
+   */
+  items: ScheduleCollectEntry[];
+
+  /**
+   * @generated from field: bool has_more = 2;
+   */
+  hasMore: boolean;
+};
+
+/**
+ * Describes the message contract.service.v1.ScheduleCollectFetchResponse.
+ * Use `create(ScheduleCollectFetchResponseSchema)` to create a new message.
+ */
+export const ScheduleCollectFetchResponseSchema: GenMessage<ScheduleCollectFetchResponse> = /*@__PURE__*/
+  messageDesc(file_fesmu_service_v1_schedule_collect_service, 3);
+
+/**
+ * ScheduleCollectService collects schedule rows from signed-in teachers.
  *
  * @generated from service contract.service.v1.ScheduleCollectService
  */
@@ -79,6 +115,14 @@ export const ScheduleCollectService: GenService<{
     methodKind: "unary";
     input: typeof ScheduleCollectCreateRequestSchema;
     output: typeof ScheduleCollectCreateResponseSchema;
+  },
+  /**
+   * @generated from rpc contract.service.v1.ScheduleCollectService.ScheduleCollectFetch
+   */
+  scheduleCollectFetch: {
+    methodKind: "unary";
+    input: typeof ScheduleCollectFetchRequestSchema;
+    output: typeof ScheduleCollectFetchResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_fesmu_service_v1_schedule_collect_service, 0);

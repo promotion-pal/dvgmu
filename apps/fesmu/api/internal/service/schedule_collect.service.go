@@ -11,20 +11,21 @@ import (
 	"dvgmu/api/internal/utils"
 )
 
-type ScheduleCollectSaver interface {
+type ScheduleCollectStore interface {
 	ScheduleCollectCreate(ctx context.Context, entry *models.ScheduleCollect) (string, error)
+	ScheduleCollectFetch(ctx context.Context, offset, limit int) ([]models.ScheduleCollect, error)
 }
 
 type ScheduleCollectService struct {
 	log   *slog.Logger
-	saver ScheduleCollectSaver
+	store ScheduleCollectStore
 }
 
-func NewScheduleCollectService(log *slog.Logger, saver ScheduleCollectSaver) *ScheduleCollectService {
-	return &ScheduleCollectService{log: log, saver: saver}
+func NewScheduleCollectService(log *slog.Logger, store ScheduleCollectStore) *ScheduleCollectService {
+	return &ScheduleCollectService{log: log, store: store}
 }
 
-func (s *ScheduleCollectService) ScheduleCollectCreate(ctx context.Context, e *entity.ScheduleCollectEntry) (*entity.ScheduleCollectEntry, error) {
+func (s *ScheduleCollectService) ScheduleCollectCreate(ctx context.Context, authorUUID string, e *entity.ScheduleCollectEntry) (*entity.ScheduleCollectEntry, error) {
 	const op = "ScheduleCollect.ScheduleCollectCreate"
 	log := s.log.With(slog.String("op", op))
 
@@ -34,8 +35,9 @@ func (s *ScheduleCollectService) ScheduleCollectCreate(ctx context.Context, e *e
 		return nil, err
 	}
 	entry.ID = uuid.NewString()
+	entry.AuthorUUID = &authorUUID
 
-	if _, err := s.saver.ScheduleCollectCreate(ctx, entry); err != nil {
+	if _, err := s.store.ScheduleCollectCreate(ctx, entry); err != nil {
 		log.Error(utils.MSGCreateError("schedule collect entry", err))
 		return nil, err
 	}
@@ -46,4 +48,22 @@ func (s *ScheduleCollectService) ScheduleCollectCreate(ctx context.Context, e *e
 		slog.String("date", entry.Date),
 	)
 	return entry.ToProto(), nil
+}
+
+func (s *ScheduleCollectService) ScheduleCollectFetch(ctx context.Context, offset uint32) ([]*entity.ScheduleCollectEntry, bool, error) {
+	const pageSize = 50
+	entries, err := s.store.ScheduleCollectFetch(ctx, int(offset), pageSize+1)
+	if err != nil {
+		s.log.Error("schedule collect fetch failed", "error", err)
+		return nil, false, err
+	}
+	hasMore := len(entries) > pageSize
+	if hasMore {
+		entries = entries[:pageSize]
+	}
+	items := make([]*entity.ScheduleCollectEntry, 0, len(entries))
+	for _, entry := range entries {
+		items = append(items, entry.ToProto())
+	}
+	return items, hasMore, nil
 }

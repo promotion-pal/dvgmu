@@ -10,18 +10,18 @@ const SESSION_KEY = "schedule-collect:submitted";
 
 const errorMessage = (error: unknown, fallback: string) => (error instanceof Error && error.message ? error.message : fallback);
 
-const readSession = (): ScheduleCollectEntry[] => {
+const readSession = (key: string): ScheduleCollectEntry[] => {
     try {
-        const raw = sessionStorage.getItem(SESSION_KEY);
+        const raw = sessionStorage.getItem(key);
         return raw ? (JSON.parse(raw) as ScheduleCollectEntry[]) : [];
     } catch {
         return [];
     }
 };
 
-const writeSession = (list: ScheduleCollectEntry[]) => {
+const writeSession = (key: string, list: ScheduleCollectEntry[]) => {
     try {
-        sessionStorage.setItem(SESSION_KEY, JSON.stringify(list));
+        sessionStorage.setItem(key, JSON.stringify(list));
     } catch {
         // Best-effort only: a full or blocked storage must not break submitting.
     }
@@ -40,8 +40,9 @@ const carryOver = (values: ScheduleCollectEntryInput): ScheduleCollectEntryInput
 
 /** State of the collector page: one form for the row being entered, and the
  * list of rows already sent this session, so it's visible what was filled in. */
-const useScheduleCollect = () => {
-    const [submitted, setSubmitted] = useState<ScheduleCollectEntry[]>(() => readSession());
+const useScheduleCollect = (userId: string) => {
+    const key = `${SESSION_KEY}:${userId}`;
+    const [submitted, setSubmitted] = useState<ScheduleCollectEntry[]>(() => readSession(key));
     const [submitting, setSubmitting] = useState(false);
 
     const form = useForm({
@@ -55,11 +56,11 @@ const useScheduleCollect = () => {
             const entry = await scheduleCollectApi.create(values);
             setSubmitted((current) => {
                 const next = [entry, ...current];
-                writeSession(next);
+                writeSession(key, next);
                 return next;
             });
             form.reset(carryOver(values));
-            toast.success("Запись добавлена в расписание");
+            toast.success("Сведения отправлены");
         } catch (error) {
             console.error("Ошибка при добавлении записи расписания:", error);
             toast.error(errorMessage(error, "Не удалось сохранить запись"));
@@ -71,13 +72,13 @@ const useScheduleCollect = () => {
     const removeSubmitted = (id: string) =>
         setSubmitted((current) => {
             const next = current.filter((entry) => entry.id !== id);
-            writeSession(next);
+            writeSession(key, next);
             return next;
         });
 
     const clearSubmitted = () => {
         setSubmitted([]);
-        writeSession([]);
+        writeSession(key, []);
     };
 
     return { form, handleSubmit, submitting, submitted, removeSubmitted, clearSubmitted };

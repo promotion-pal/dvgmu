@@ -44,4 +44,5 @@ message ScheduleCollectEntry {
   string substitution_themas = 22;
 
   google.protobuf.Timestamp created_at = 23;
+  string author_uuid = 24;
 }

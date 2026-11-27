@@ -22,3 +22,9 @@ func (s *ScheduleCollectStorage) ScheduleCollectCreate(ctx context.Context, entr
 	}
 	return entry.ID, nil
 }
+
+func (s *ScheduleCollectStorage) ScheduleCollectFetch(ctx context.Context, offset, limit int) ([]models.ScheduleCollect, error) {
+	var entries []models.ScheduleCollect
+	err := s.db.WithContext(ctx).Order("created_at DESC, id DESC").Offset(offset).Limit(limit).Find(&entries).Error
+	return entries, err
+}

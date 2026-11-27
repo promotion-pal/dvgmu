@@ -14,7 +14,7 @@ import (
 // ErrScheduleCollectInvalid wraps every validation failure; the message says which rule broke.
 var ErrScheduleCollectInvalid = errors.New("invalid schedule collect entry")
 
-// ScheduleCollect is one lesson row submitted by a teacher through the public
+// ScheduleCollect is one lesson row submitted by a teacher through the
 // collector page, in the university's schedule exchange format. Every column
 // of the format is its own DB column (not a JSON blob): the row has no nested
 // structure and a plain table doubles as an easy export.
@@ -44,7 +44,8 @@ type ScheduleCollect struct {
 	SubstitutionSubjCafID string `gorm:"column:substitution_subj_caf_id;size:64;not null;default:''"`
 	SubstitutionThemas    string `gorm:"type:text;not null;default:''"`
 
-	CreatedAt time.Time `gorm:"not null"`
+	AuthorUUID *string   `gorm:"type:uuid"`
+	CreatedAt  time.Time `gorm:"not null;index:idx_schedulecollect_created_id,priority:1,sort:desc"`
 }
 
 func (ScheduleCollect) TableName() string { return "schedule_collect_entries" }
@@ -85,7 +86,7 @@ func NewScheduleCollect(e *entity.ScheduleCollectEntry) (*ScheduleCollect, error
 }
 
 func (s *ScheduleCollect) ToProto() *entity.ScheduleCollectEntry {
-	return &entity.ScheduleCollectEntry{
+	entry := &entity.ScheduleCollectEntry{
 		Id: s.ID,
 
 		Group:        s.GroupName,
@@ -113,13 +114,18 @@ func (s *ScheduleCollect) ToProto() *entity.ScheduleCollectEntry {
 
 		CreatedAt: timestamppb.New(s.CreatedAt),
 	}
+	if s.AuthorUUID != nil {
+		entry.AuthorUuid = *s.AuthorUUID
+	}
+	return entry
 }
 
 // ScheduleCollectValidate checks one row against the exchange format's
 // required columns. It returns the first problem found, worded for the person
 // filling the form in.
 //
-// Group, StudInLesson, Week, Subg, PrepID, CafID, Subj_CafID and the matching
+// Group is collected by the current form and may be absent in older submissions.
+// StudInLesson, Week, Subg, PrepID, CafID, Subj_CafID and the matching
 // Substitution_PrepID/Substitution_Subj_CafID columns exist in the exchange
 // format but aren't asked of the teacher on the collector page — they're
 // filled in later, downstream — so they're accepted whatever they are

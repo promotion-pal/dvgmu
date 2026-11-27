@@ -58,6 +58,7 @@ type ScheduleCollectEntry struct {
 	SubstitutionSubjCafId string                 `protobuf:"bytes,21,opt,name=substitution_subj_caf_id,json=substitutionSubjCafId,proto3" json:"substitution_subj_caf_id,omitempty"`
 	SubstitutionThemas    string                 `protobuf:"bytes,22,opt,name=substitution_themas,json=substitutionThemas,proto3" json:"substitution_themas,omitempty"`
 	CreatedAt             *timestamppb.Timestamp `protobuf:"bytes,23,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	AuthorUuid            string                 `protobuf:"bytes,24,opt,name=author_uuid,json=authorUuid,proto3" json:"author_uuid,omitempty"`
 	unknownFields         protoimpl.UnknownFields
 	sizeCache             protoimpl.SizeCache
 }
@@ -253,11 +254,18 @@ func (x *ScheduleCollectEntry) GetCreatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
+func (x *ScheduleCollectEntry) GetAuthorUuid() string {
+	if x != nil {
+		return x.AuthorUuid
+	}
+	return ""
+}
+
 var File_fesmu_entity_v1_schedule_collect_entity_proto protoreflect.FileDescriptor
 
 const file_fesmu_entity_v1_schedule_collect_entity_proto_rawDesc = "" +
 	"\n" +
-	"-fesmu/entity/v1/schedule_collect.entity.proto\x12\x12contract.entity.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xf4\x05\n" +
+	"-fesmu/entity/v1/schedule_collect.entity.proto\x12\x12contract.entity.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\x95\x06\n" +
 	"\x14ScheduleCollectEntry\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
 	"\x05group\x18\x02 \x01(\tR\x05group\x12$\n" +
@@ -283,7 +291,9 @@ const file_fesmu_entity_v1_schedule_collect_entity_proto_rawDesc = "" +
 	"\x18substitution_subj_caf_id\x18\x15 \x01(\tR\x15substitutionSubjCafId\x12/\n" +
 	"\x13substitution_themas\x18\x16 \x01(\tR\x12substitutionThemas\x129\n" +
 	"\n" +
-	"created_at\x18\x17 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAtB\xc7\x01\n" +
+	"created_at\x18\x17 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12\x1f\n" +
+	"\vauthor_uuid\x18\x18 \x01(\tR\n" +
+	"authorUuidB\xc7\x01\n" +
 	"\x16com.contract.entity.v1B\x1aScheduleCollectEntityProtoP\x01Z'fesmu/contract/fesmu/entity/v1;entityv1\xa2\x02\x03CEX\xaa\x02\x12Contract.Entity.V1\xca\x02\x12Contract\\Entity\\V1\xe2\x02\x1eContract\\Entity\\V1\\GPBMetadata\xea\x02\x14Contract::Entity::V1b\x06proto3"
 
 var (

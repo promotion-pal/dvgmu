@@ -37,6 +37,7 @@ const ScheduleCollectForm: FC<{ collect: Collect }> = ({ collect }) => {
                     <PromFieldInput name="les" label="Номер занятия (пары)" placeholder="1" allowedPattern={/^\d*$/} className={FIELD_CLASS} />
                     <PromFieldInput name="aud" label="Аудитория" placeholder="312" className={FIELD_CLASS} />
                     <PromDateField name="date" label="Дата занятия" />
+                    <PromFieldInput name="group" label="Группа" className={FIELD_CLASS} />
                 </Section>
 
                 <Section title="Преподаватель и дисциплина" description="Кто ведёт занятие и по какому предмету.">
@@ -67,7 +68,7 @@ const ScheduleCollectForm: FC<{ collect: Collect }> = ({ collect }) => {
 
                 <div className="flex justify-end">
                     <Button type="submit" disabled={submitting}>
-                        {submitting ? "Сохранение…" : "Добавить запись"}
+                        {submitting ? "Отправка…" : "Отправить сведения"}
                     </Button>
                 </div>
             </form>
@@ -81,6 +82,7 @@ const SubmittedRow: FC<{ entry: ScheduleCollectEntry; onRemove: () => void }> = 
     <TableRow>
         <TableCell className="font-medium">{entry.date}</TableCell>
         <TableCell>{dayLabel(entry.day)}</TableCell>
+        <TableCell>{entry.group}</TableCell>
         <TableCell>{entry.les}</TableCell>
         <TableCell>{entry.aud}</TableCell>
         <TableCell>{entry.subject}</TableCell>
@@ -92,7 +94,8 @@ const SubmittedRow: FC<{ entry: ScheduleCollectEntry; onRemove: () => void }> = 
         <TableCell>
             <button
                 type="button"
-                title="Убрать из списка (запись в расписании останется)"
+                aria-label="Скрыть из списка этого сеанса"
+                title="Скрыть из списка этого сеанса"
                 onClick={onRemove}
                 className="icon-inline size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
             >
@@ -116,7 +119,7 @@ const ScheduleCollectSubmissions: FC<{ collect: Collect }> = ({ collect }) => {
                     <Badge variant="secondary">{submitted.length}</Badge>
                     {submitted.length > 0 && (
                         <Button type="button" variant="outline" size="sm" onClick={clearSubmitted}>
-                            Очистить список
+                            Скрыть все
                         </Button>
                     )}
                 </div>
@@ -129,7 +132,7 @@ const ScheduleCollectSubmissions: FC<{ collect: Collect }> = ({ collect }) => {
                                 <ClipboardListIcon />
                             </EmptyMedia>
                             <EmptyTitle>Пока ничего не отправлено</EmptyTitle>
-                            <EmptyDescription>Заполните форму выше и нажмите «Добавить запись» — она появится здесь.</EmptyDescription>
+                            <EmptyDescription>Заполните форму и нажмите «Отправить сведения».</EmptyDescription>
                         </EmptyHeader>
                     </Empty>
                 ) : (
@@ -138,6 +141,7 @@ const ScheduleCollectSubmissions: FC<{ collect: Collect }> = ({ collect }) => {
                             <TableRow>
                                 <TableHead>Дата</TableHead>
                                 <TableHead>День</TableHead>
+                                <TableHead>Группа</TableHead>
                                 <TableHead>Пара</TableHead>
                                 <TableHead>Аудитория</TableHead>
                                 <TableHead>Дисциплина</TableHead>
@@ -159,8 +163,8 @@ const ScheduleCollectSubmissions: FC<{ collect: Collect }> = ({ collect }) => {
     );
 };
 
-const ScheduleCollectPanel: FC = () => {
-    const collect = useScheduleCollect();
+const ScheduleCollectPanel: FC<{ userId: string }> = ({ userId }) => {
+    const collect = useScheduleCollect(userId);
 
     return (
         <div className="flex flex-col gap-6">

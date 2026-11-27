@@ -29,7 +29,7 @@ const requiredText = (message: string) => z.string().trim().min(1, message);
 /** One row of the exchange format the teacher fills in, plus the
  * Substitution_* columns used when a substitute covers the lesson.
  *
- * The format also has Group, StudInLesson, Week, Subg, PrepID, CafID and
+ * The format also has StudInLesson, Week, Subg, PrepID, CafID and
  * Subj_CafID (and the matching Substitution_PrepID/Substitution_Subj_CafID)
  * — technical/administrative codes a teacher won't have on hand — which
  * aren't collected here; see schedule-collect.api.ts for how they're filled
@@ -40,6 +40,7 @@ const requiredText = (message: string) => z.string().trim().min(1, message);
  * submit. */
 export const scheduleCollectEntrySchema = z
     .object({
+        group: requiredText("Укажите группу").max(255),
         les: z.coerce.number({ message: "Укажите номер занятия" }).int().min(1, "Номер занятия должен быть не меньше 1"),
         aud: requiredText("Укажите аудиторию"),
         date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Укажите дату занятия"),
@@ -118,6 +119,7 @@ export interface ScheduleCollectEntry {
 }
 
 export const EMPTY_SCHEDULE_COLLECT_ENTRY: ScheduleCollectEntryInput = {
+    group: "",
     les: 1,
     aud: "",
     date: "",

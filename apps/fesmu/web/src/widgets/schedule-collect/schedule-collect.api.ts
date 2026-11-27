@@ -25,12 +25,12 @@ const dayFromDate = (date: string): number => {
     return utcDay === 0 ? 7 : utcDay;
 };
 
-/** Group, StudInLesson, Week, Subg, PrepID, CafID and Subj_CafID (and the
+/** StudInLesson, Week, Subg, PrepID, CafID and Subj_CafID (and the
  * matching Substitution_* pair) are part of the exchange format but not
  * collected on this page — they go out empty/zero and are filled in
  * downstream. */
 const toMessage = (input: ScheduleCollectEntryInput) => ({
-    group: "",
+    group: input.group,
     studInLesson: 0,
     day: dayFromDate(input.date),
     les: input.les,
@@ -89,6 +89,10 @@ const fromMessage = (message: ScheduleCollectEntryMessage): ScheduleCollectEntry
  * problem — it answers success=false with a reason — so that case is
  * turned into a thrown error here, same as a transport failure would be. */
 export const scheduleCollectApi = {
+    async fetch(offset: number, signal: AbortSignal) {
+        const response = await client.scheduleCollectFetch({ offset }, { signal });
+        return { items: response.items.map(fromMessage), hasMore: response.hasMore };
+    },
     async create(input: ScheduleCollectEntryInput): Promise<ScheduleCollectEntry> {
         const response = await client.scheduleCollectCreate({ item: toMessage(input) });
         if (!response.success || !response.item) {

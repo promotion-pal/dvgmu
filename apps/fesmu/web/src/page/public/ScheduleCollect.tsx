@@ -1,17 +1,16 @@
 import { CommonWrapper } from "@/shared/components/wrapper";
+import { useUserProvider } from "@/features/provider/user.provider";
 import { ScheduleCollectPanel } from "@/widgets/schedule-collect";
 
-/** Standalone page for teachers to submit their own schedule rows in the
- * university's exchange format — no app-sidebar, no login: only this page's
- * link and a form. Submitted rows are echoed back below it, so it's visible
- * what has already been filled in. */
 export default function ScheduleCollectPage() {
+    const userId = useUserProvider((state) => state.user?.uuid);
+
     return (
         <CommonWrapper
-            title="Сбор данных расписания"
-            description="Заполните одно занятие и нажмите «Добавить запись» — можно добавить сколько угодно занятий подряд."
+            title="Передача сведений о занятии"
+            description="Отправьте сведения в отдел расписания. Каждое занятие отправляется отдельно."
         >
-            <ScheduleCollectPanel />
+            {userId && <ScheduleCollectPanel key={userId} userId={userId} />}
         </CommonWrapper>
     );
 }

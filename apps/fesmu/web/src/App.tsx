@@ -18,6 +18,7 @@ import SchedulePage from "./page/Schedule";
 import SchedulaPage from "./page/Schedula";
 import PublicSchedulaPage from "./page/public/Schedula";
 import ScheduleEditorPage from "./page/ScheduleEditor";
+import ScheduleInboxPage from "./page/ScheduleInbox";
 import ScheduleHallPage from "./page/ScheduleHall";
 import ComputerClassPage from "./page/ComputerClass";
 import TestBuilderPage from "./page/TestBuilder";
@@ -131,6 +132,10 @@ function App() {
           <Route element={<AllowSection section={PermissionSection.SCHEDULE} action={PermissionAction.POST} />}>
             <Route path={ROUTE.STUDY.SCHEDULE_NEW} element={<ScheduleEditorPage />} />
             <Route path={ROUTE.STUDY.SCHEDULE_EDIT} element={<ScheduleEditorPage />} />
+            <Route path={ROUTE.STUDY.SCHEDULE_INBOX} element={<ScheduleInboxPage />} />
+          </Route>
+          <Route element={<Allow roles={ACCESS.TEACHER} />}>
+            <Route path={ROUTE.PUBLIC.SCHEDULE_COLLECT} element={<ScheduleCollectPage />} />
           </Route>
           <Route path={ROUTE.STUDY.SCHEDULE_HALL} element={<ScheduleHallPage />} />
           <Route element={<AllowSection section={PermissionSection.COMPUTER_CLASSES} />}>
@@ -190,7 +195,6 @@ function App() {
         <Route path={ROUTE.PUBLIC.VACCINATION} element={<PublicVaccinationPage />} />
         {/* The cabinet is a student's own page: no sidebar, but a sign-in. */}
         <Route path={ROUTE.PUBLIC.CABINET} element={<UserGate><StudentCabinetPage /></UserGate>} />
-        <Route path={ROUTE.PUBLIC.SCHEDULE_COLLECT} element={<ScheduleCollectPage />} />
         {/* Students take a test by its session link, without a sign-in. */}
         <Route path={ROUTE.PUBLIC.TEST_TAKE} element={<TestTakePage />} />
         {/* Анкета по QR — без входа. */}

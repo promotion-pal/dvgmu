@@ -6,12 +6,10 @@ import "fesmu/entity/v1/schedule_collect.entity.proto";
 
 option go_package = "service_v1;service_pb";
 
-// ScheduleCollectService collects raw schedule rows from teachers, one
-// lesson at a time, in the university's schedule exchange format. It is
-// served without authentication (see internal/modules/schedulecollect): a
-// teacher has no account in this system, only the collector page's link.
+// ScheduleCollectService collects schedule rows from signed-in teachers.
 service ScheduleCollectService {
     rpc ScheduleCollectCreate (ScheduleCollectCreateRequest) returns (ScheduleCollectCreateResponse);
+    rpc ScheduleCollectFetch (ScheduleCollectFetchRequest) returns (ScheduleCollectFetchResponse);
 }
 
 message ScheduleCollectCreateRequest {
@@ -25,4 +23,13 @@ message ScheduleCollectCreateResponse {
     // Echoed back with its assigned id and created_at, so the page can show
     // what was just submitted.
     contract.entity.v1.ScheduleCollectEntry item = 3;
+}
+
+message ScheduleCollectFetchRequest {
+    uint32 offset = 1;
+}
+
+message ScheduleCollectFetchResponse {
+    repeated contract.entity.v1.ScheduleCollectEntry items = 1;
+    bool has_more = 2;
 }
