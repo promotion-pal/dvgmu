@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => {
   return {
     envDir,
     preview: {
-      allowedHosts: ['api.core.fesmu.ru'],
+      allowedHosts: ['api.mentor.fesmu.ru'],
     },
     define: {
       __APP_VERSION__: JSON.stringify(env.VERSION || 'dev'),

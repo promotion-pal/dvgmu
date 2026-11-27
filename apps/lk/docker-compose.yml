@@ -17,7 +17,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-network
-      - traefik.http.routers.dvgmu-secure.rule=Host(`${APP_DOMAIN:-api.core.fesmu.ru}`) && !PathPrefix(`/api`)
+      - traefik.http.routers.dvgmu-secure.rule=Host(`${APP_DOMAIN:-api.mentor.fesmu.ru}`) && !PathPrefix(`/api`)
       - traefik.http.routers.dvgmu-secure.priority=50
       - traefik.http.routers.dvgmu-secure.entrypoints=${TRAEFIK_ENTRYPOINTS:-websecure}
       - traefik.http.routers.dvgmu-secure.tls=true

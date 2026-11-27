@@ -25,7 +25,7 @@ pnpm install
 | --- | --- |
 | `make dev` | Собирает и запускает Postgres, Tickets, MDM, Auth и API Gateway в Docker, затем запускает Vite. Фронтенд доступен на `http://localhost:5173`, Gateway — `4052`, Auth — `4053`, API задач — `4050`, MDM — `4051`. |
 | `make dev-stop` | Останавливает локальные контейнеры. Данные Postgres сохраняются в Docker volumes. |
-| `make prod-up` | Собирает и запускает MDM, Tickets, Auth, Gateway и LK через production Compose. Traefik делит `api.core.fesmu.ru`: `/api/*` идёт в Gateway, остальные маршруты — в LK. |
+| `make prod-up` | Собирает и запускает MDM, Tickets, Auth, Gateway и LK через production Compose. Traefik делит `api.mentor.fesmu.ru`: `/api/*` идёт в Gateway, остальные маршруты — в LK. |
 | `make prod-down` | Останавливает production сервисы без удаления данных Postgres. |
 | `make lk-prod-up` / `make lk-prod-down` | Отдельно запускает или останавливает LK за Traefik, если backend уже поднят. |
 | `make panel-up` | Запускает Plane локально с публикацией портов 80/443; настройки и секреты — в `apps/panel/plane-app/plane.env`. |
@@ -66,9 +66,9 @@ Auth сейчас использует отдельную тестовую та�
 - MDM разрешает пользователю читать только собственный профиль; список пользователей и изменения доступны админу. Auth использует отдельный внутренний токен для чтения профиля перед выдачей JWT.
 - Базы разделены по сервисам: `dvgmu_tickets_db`, `dvgmu_mdm_db` и `dvgmu_auth_db`. В production Compose только Gateway публикуется во внешнюю сеть Traefik; Auth, MDM и Tickets принимают соединения из внутренней сети сервисов.
 
-Для production запуска используется `make prod-up`. Убедитесь, что DNS `api.core.fesmu.ru` указывает на сервер Traefik, доступны его entrypoint `websecure` и certificate resolver `letsencrypt`, а внешняя сеть `traefik-network` уже создана. Make создаёт сеть `dvgmu-backend`; Gateway подключён к обеим сетям, Auth, MDM и Tickets доступны только внутри backend-сети, а LK — через Traefik.
+Для production запуска используется `make prod-up`. Убедитесь, что DNS `api.mentor.fesmu.ru` указывает на сервер Traefik, доступны его entrypoint `websecure` и certificate resolver `letsencrypt`, а внешняя сеть `traefik-network` уже создана. Make создаёт сеть `dvgmu-backend`; Gateway подключён к обеим сетям, Auth, MDM и Tickets доступны только внутри backend-сети, а LK — через Traefik.
 
-Traefik маршрутизирует `https://api.core.fesmu.ru/api/*` в API Gateway; запросы к корню и остальным путям хоста получает LK. Под `/api` находятся `/api/auth/*`, `/api/mdm/*` и `/api/tickets/*`. Gateway router имеет больший приоритет, чем SPA-router LK. Для production в корневом `.env` задайте `VERSION=prod`; LK использует текущий домен как базовый адрес API и добавляет `/api/...`. Для локальной разработки используйте `VERSION=dev`, тогда LK обращается к Gateway на `http://localhost:4052`. В `.env` также задаются `GATEWAY_DOMAIN=api.core.fesmu.ru`, `APP_DOMAIN=api.core.fesmu.ru`, `GATEWAY_PROD_ALLOWED_ORIGINS=https://api.core.fesmu.ru` и `MDM_ALLOWED_ORIGINS=https://api.core.fesmu.ru`.
+Traefik маршрутизирует `https://api.mentor.fesmu.ru/api/*` в API Gateway; запросы к корню и остальным путям хоста получает LK. Под `/api` находятся `/api/auth/*`, `/api/mdm/*` и `/api/tickets/*`. Gateway router имеет больший приоритет, чем SPA-router LK. Для production в корневом `.env` задайте `VERSION=prod`; LK использует текущий домен как базовый адрес API и добавляет `/api/...`. Для локальной разработки используйте `VERSION=dev`, тогда LK обращается к Gateway на `http://localhost:4052`. В `.env` задайте `GATEWAY_DOMAIN=api.mentor.fesmu.ru`, `APP_DOMAIN=api.mentor.fesmu.ru`, `GATEWAY_PROD_ALLOWED_ORIGINS=https://api.mentor.fesmu.ru` и `MDM_ALLOWED_ORIGINS=https://api.mentor.fesmu.ru`.
 
 Plane запускается отдельно от сервисов портала. Описание локального запуска и Traefik-варианта на `mentor.fesmu.ru` находится в `apps/panel/README.md`.
 

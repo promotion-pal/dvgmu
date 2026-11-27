@@ -34,7 +34,7 @@ services:
       DB_NAME: ${MDM_DB_NAME:-dvgmu_mdm_db}
       DB_SSLMODE: disable
       GRPC_PORT: "4000"
-      GRPC_ALLOWED_ORIGINS: ${MDM_ALLOWED_ORIGINS:-https://api.core.fesmu.ru}
+      GRPC_ALLOWED_ORIGINS: ${MDM_ALLOWED_ORIGINS:-https://api.mentor.fesmu.ru}
       GATEWAY_SHARED_SECRET: ${GATEWAY_SHARED_SECRET:?Set GATEWAY_SHARED_SECRET in .env}
       INTERNAL_SERVICE_TOKEN: ${INTERNAL_SERVICE_TOKEN:?Set INTERNAL_SERVICE_TOKEN in .env}
     networks:
