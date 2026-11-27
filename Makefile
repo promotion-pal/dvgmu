@@ -12,7 +12,7 @@ LK_PROD_COMPOSE := $(PROD_COMPOSE) -f apps/lk/docker-compose.yml
 PANEL_COMPOSE := docker compose -f apps/panel/plane-app/docker-compose.yaml --env-file apps/panel/plane-app/plane.env
 PANEL_TRAEFIK_COMPOSE := docker compose -f apps/panel/plane-app/docker-compose.yaml -f apps/panel/plane-app/docker-compose.traefik.yaml --env-file apps/panel/plane-app/plane.env --env-file apps/panel/plane-app/plane.prod.env
 
-.PHONY: proto dev dev-stop prod-up prod-down lk-prod-up lk-prod-down set-admin panel-up panel-prod-up panel-down panel-prod-down panel-logs panel-ps auth-test-user tickets-migrate-diff tickets-migrate-lint tickets-migrate-status mdm-migrate-diff mdm-migrate-lint mdm-migrate-status
+.PHONY: proto dev dev-stop prod-up prod-down lk-prod-up lk-prod-down set-admin panel-up panel-prod-up panel-down panel-prod-down panel-logs panel-ps tickets-migrate-diff tickets-migrate-lint tickets-migrate-status mdm-migrate-diff mdm-migrate-lint mdm-migrate-status
 
 dev:
 	@$(TICKETS_COMPOSE) up -d --build
@@ -79,9 +79,6 @@ panel-logs:
 panel-ps:
 	@test -f apps/panel/plane-app/plane.env || (echo "Missing apps/panel/plane-app/plane.env." >&2; exit 1)
 	@$(PANEL_COMPOSE) ps
-
-auth-test-user:
-	@$(AUTH_COMPOSE) run --rm dvgmu_auth ./auth-test-user
 
 tickets-migrate-diff:
 	@cd services/tickets && atlas migrate diff --env gorm

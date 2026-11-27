@@ -33,7 +33,6 @@ pnpm install
 | `make panel-prod-up` | Запускает Plane за существующим Traefik на `mentor.fesmu.ru`; требует `plane.env`, `plane.prod.env` и внешнюю Docker-сеть `traefik-network`. |
 | `make panel-down` / `make panel-prod-down` | Останавливает локальный или Traefik-вариант Plane, сохраняя Docker volumes. |
 | `make panel-ps` / `make panel-logs` | Показывает состояние контейнеров или следит за логами Plane. |
-| `make auth-test-user` | Создаёт или обновляет тестовую учетную запись Auth по `AUTH_TEST_USER_ID`, `AUTH_TEST_EMAIL` и `AUTH_TEST_PASSWORD` из `.env`. |
 | `make proto` | Генерирует Go и TypeScript код из protobuf-контрактов в `services/tickets/contract`. |
 | `make tickets-migrate-status` | Показывает состояние миграций Atlas. |
 | `make tickets-migrate-diff` | Создаёт миграцию на основе Go-моделей. |

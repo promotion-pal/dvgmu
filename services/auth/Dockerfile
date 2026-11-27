@@ -6,13 +6,11 @@ COPY services/auth/go.mod services/auth/
 WORKDIR /src/services/auth
 RUN go mod download
 COPY services/auth .
-RUN CGO_ENABLED=0 GOOS=linux go build -o /out/auth ./cmd && \
-    CGO_ENABLED=0 GOOS=linux go build -o /out/auth-test-user ./cmd/provision-test-user
+RUN CGO_ENABLED=0 GOOS=linux go build -o /out/auth ./cmd
 
 FROM alpine:3.20
 RUN apk add --no-cache ca-certificates
 WORKDIR /app
 COPY --from=build /out/auth ./auth
-COPY --from=build /out/auth-test-user ./auth-test-user
 EXPOSE 4053
 CMD ["./auth"]
