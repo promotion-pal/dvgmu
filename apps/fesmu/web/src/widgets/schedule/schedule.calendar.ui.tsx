@@ -171,16 +171,20 @@ export function ScheduleCalendar({ schedule, staff = false, showAudience = staff
             <Card className="gap-4 p-4">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                     <div className="flex flex-wrap items-center gap-2">
-                        {paged && (
-                            <Button type="button" size="icon-sm" variant="outline" aria-label="Предыдущий период" disabled={range.from <= semester.start} onClick={() => selectPeriod(mode, offsetDate(date, -step))}>
-                                <ChevronLeftIcon />
-                            </Button>
-                        )}
-                        <strong className="text-sm">{mode === "day" ? dateLabel(date) : mode === "term" ? semester.label : formatRange(range.from, range.to)}</strong>
-                        {paged && (
-                            <Button type="button" size="icon-sm" variant="outline" aria-label="Следующий период" disabled={range.to >= semester.end} onClick={() => selectPeriod(mode, offsetDate(date, step))}>
-                                <ChevronRightIcon />
-                            </Button>
+                        {paged ? (
+                            <div className="inline-flex items-center gap-2">
+                                <Button type="button" size="icon-sm" variant="outline" aria-label="Предыдущий период" disabled={range.from <= semester.start} onClick={() => selectPeriod(mode, offsetDate(date, -step))}>
+                                    <ChevronLeftIcon />
+                                </Button>
+                                <strong className="whitespace-nowrap text-sm tabular-nums">
+                                    {mode === "day" ? dateLabel(date) : formatRange(range.from, range.to)}
+                                </strong>
+                                <Button type="button" size="icon-sm" variant="outline" aria-label="Следующий период" disabled={range.to >= semester.end} onClick={() => selectPeriod(mode, offsetDate(date, step))}>
+                                    <ChevronRightIcon />
+                                </Button>
+                            </div>
+                        ) : (
+                            <strong className="text-sm tabular-nums">{mode === "term" ? semester.label : formatRange(range.from, range.to)}</strong>
                         )}
                         <Button type="button" size="sm" variant="ghost" onClick={() => selectPeriod(mode === "range" ? "day" : mode, today)}>Сегодня</Button>
                         {mode === "week" && <Badge variant="outline">Неделя {week} из {weekOptions.length}</Badge>}
