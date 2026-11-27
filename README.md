@@ -29,6 +29,7 @@ pnpm install
 | `make prod-down` | Останавливает production сервисы без удаления данных Postgres. |
 | `make lk-prod-up` / `make lk-prod-down` | Отдельно запускает или останавливает LK за Traefik, если backend уже поднят. |
 | `make set-admin` | Интерактивно создаёт первого администратора в новой production-базе MDM; старую базу не использует. |
+| `make set-login` | Привязывает email и пароль к существующему активному MDM ID в Auth; пароль вводится скрыто и хранится только в виде bcrypt-хэша. |
 | `make panel-up` | Запускает Plane локально с публикацией портов 80/443; настройки и секреты — в `apps/panel/plane-app/plane.env`. |
 | `make panel-prod-up` | Запускает Plane за существующим Traefik на `mentor.fesmu.ru`; требует `plane.env`, `plane.prod.env` и внешнюю Docker-сеть `traefik-network`. |
 | `make panel-down` / `make panel-prod-down` | Останавливает локальный или Traefik-вариант Plane, сохраняя Docker volumes. |
@@ -49,7 +50,7 @@ pnpm install
 docker compose -f services/tickets/docker-compose.yml config
 ```
 
-Auth сейчас использует отдельную тестовую таблицу `auth_test_identities` для имитации внешнего провайдера, получает профиль, роли и permissions из MDM и выдает JWT. Позже тестовый адаптер заменяется на OIDC-подключение к AD FS; данные пользователей остаются в MDM. Отдельный sync-сервис для обмена изменениями профиля с AD добавим позже. Настройки БД и upstream-адреса Gateway находятся в `.env.example`.
+Auth сейчас использует провайдер `auth-test-db`: проверяет пароль по bcrypt-хэшу в таблице `auth_identities`, получает профиль, роли и permissions из MDM и выдаёт JWT. Позже этот адаптер можно заменить на OIDC-подключение к AD FS; данные профиля и роли остаются в MDM. Для начального доступа создай MDM-профиль командой `make set-admin`, затем привяжи пароль через `make set-login`. Настройки БД и upstream-адреса Gateway находятся в `.env.example`.
 
 ## Архитектура API
 

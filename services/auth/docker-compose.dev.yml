@@ -28,7 +28,7 @@ services:
       AUTH_PORT: "4053"
       AUTH_COOKIE_SECURE: "false"
       AUTH_COOKIE_DOMAIN: ${AUTH_COOKIE_DOMAIN:-}
-      AUTH_PROVIDER: ${AUTH_PROVIDER:-test-db}
+      AUTH_PROVIDER: ${AUTH_PROVIDER:-auth-test-db}
       AUTH_MDM_URL: ${AUTH_MDM_URL:-http://host.docker.internal:4051}
       DB_HOST: dvgmu_auth_db
       DB_PORT: "5432"

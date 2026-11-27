@@ -1,4 +1,4 @@
-package testdb
+package authdb
 
 import (
 	"context"
@@ -42,11 +42,11 @@ func (p *Provider) RegisterRoutes(mux *http.ServeMux, complete auth.CompleteLogi
 			return
 		}
 		if err != nil {
-			slog.Error("test identity lookup failed", slog.String("error", err.Error()))
+			slog.Error("Auth identity lookup failed", slog.String("error", err.Error()))
 			http.Error(w, "identity provider unavailable", http.StatusServiceUnavailable)
 			return
 		}
-		complete(w, r, auth.ExternalIdentity{Issuer: "test-db", Subject: identity.Subject})
+		complete(w, r, auth.ExternalIdentity{Issuer: "auth-test-db", Subject: identity.Subject})
 	})
 }
 
@@ -59,8 +59,8 @@ func NewMapper(identities *storage.IdentityStore) *Mapper {
 }
 
 func (m *Mapper) ResolveUserID(ctx context.Context, identity auth.ExternalIdentity) (int64, error) {
-	if identity.Issuer != "test-db" {
-		return 0, errors.New("identity issuer is not supported by test mapper")
+	if identity.Issuer != "auth-test-db" {
+		return 0, errors.New("identity issuer is not supported by Auth DB mapper")
 	}
 	linked, err := m.identities.BySubject(ctx, identity.Subject)
 	if err != nil {

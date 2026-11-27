@@ -11,7 +11,7 @@ import (
 	authservice "dvgmu/auth"
 	"dvgmu/auth/internal/auth"
 	"dvgmu/auth/internal/config"
-	"dvgmu/auth/internal/provider/testdb"
+	"dvgmu/auth/internal/provider/authdb"
 	"dvgmu/auth/internal/storage"
 	"fesmu/contract/mdm/entity"
 	mdmenum "fesmu/contract/mdm/enum"
@@ -26,7 +26,7 @@ type App struct {
 }
 
 func New(cfg config.Config, log *slog.Logger) (*App, error) {
-	if cfg.Provider != "test-db" {
+	if cfg.Provider != "auth-test-db" && cfg.Provider != "test-db" {
 		return nil, fmt.Errorf("unsupported AUTH_PROVIDER %q", cfg.Provider)
 	}
 	db, err := storage.Open(cfg.Database)
@@ -47,8 +47,8 @@ func New(cfg config.Config, log *slog.Logger) (*App, error) {
 	}
 
 	identities := storage.NewIdentityStore(db)
-	provider := testdb.New(identities)
-	mapper := testdb.NewMapper(identities)
+	provider := authdb.New(identities)
+	mapper := authdb.NewMapper(identities)
 	mdm := serviceconnect.NewUserServiceClient(&http.Client{Timeout: 5 * time.Second}, cfg.MDMURL)
 	core, err := auth.New(auth.Config{
 		Port:         cfg.Port,

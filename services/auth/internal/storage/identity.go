@@ -9,9 +9,9 @@ import (
 	"gorm.io/gorm"
 )
 
-var ErrIdentityNotFound = errors.New("test identity not found")
+var ErrIdentityNotFound = errors.New("auth identity not found")
 
-type TestIdentity struct {
+type AuthIdentity struct {
 	ID           int64     `gorm:"primaryKey;autoIncrement"`
 	MDMUserID    int64     `gorm:"not null;uniqueIndex"`
 	Subject      string    `gorm:"size:128;not null;uniqueIndex"`
@@ -21,7 +21,7 @@ type TestIdentity struct {
 	UpdatedAt    time.Time `gorm:"not null"`
 }
 
-func (TestIdentity) TableName() string { return "auth_test_identities" }
+func (AuthIdentity) TableName() string { return "auth_identities" }
 
 type IdentityStore struct {
 	db *gorm.DB
@@ -29,8 +29,8 @@ type IdentityStore struct {
 
 func NewIdentityStore(db *gorm.DB) *IdentityStore { return &IdentityStore{db: db} }
 
-func (s *IdentityStore) ByEmail(ctx context.Context, email string) (*TestIdentity, error) {
-	var identity TestIdentity
+func (s *IdentityStore) ByEmail(ctx context.Context, email string) (*AuthIdentity, error) {
+	var identity AuthIdentity
 	err := s.db.WithContext(ctx).Where("email = ?", strings.ToLower(strings.TrimSpace(email))).First(&identity).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, ErrIdentityNotFound
@@ -38,8 +38,8 @@ func (s *IdentityStore) ByEmail(ctx context.Context, email string) (*TestIdentit
 	return &identity, err
 }
 
-func (s *IdentityStore) BySubject(ctx context.Context, subject string) (*TestIdentity, error) {
-	var identity TestIdentity
+func (s *IdentityStore) BySubject(ctx context.Context, subject string) (*AuthIdentity, error) {
+	var identity AuthIdentity
 	err := s.db.WithContext(ctx).Where("subject = ?", subject).First(&identity).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, ErrIdentityNotFound
@@ -47,8 +47,8 @@ func (s *IdentityStore) BySubject(ctx context.Context, subject string) (*TestIde
 	return &identity, err
 }
 
-func (s *IdentityStore) Upsert(ctx context.Context, identity *TestIdentity) error {
-	var current TestIdentity
+func (s *IdentityStore) Upsert(ctx context.Context, identity *AuthIdentity) error {
+	var current AuthIdentity
 	err := s.db.WithContext(ctx).Where("mdm_user_id = ?", identity.MDMUserID).First(&current).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return s.db.WithContext(ctx).Create(identity).Error

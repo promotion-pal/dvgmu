@@ -26,7 +26,7 @@ type Database struct {
 func Load() Config {
 	return Config{
 		Port:             env("AUTH_PORT", "4053"),
-		Provider:         env("AUTH_PROVIDER", "test-db"),
+		Provider:         env("AUTH_PROVIDER", "auth-test-db"),
 		JWTSecret:        os.Getenv("JWT_SECRET"),
 		JWTIssuer:        env("JWT_ISSUER", "dvgmu-auth"),
 		MDMURL:           env("AUTH_MDM_URL", "http://localhost:4051"),

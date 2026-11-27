@@ -12,7 +12,7 @@ LK_PROD_COMPOSE := $(PROD_COMPOSE) -f apps/lk/docker-compose.yml
 PANEL_COMPOSE := docker compose -f apps/panel/plane-app/docker-compose.yaml --env-file apps/panel/plane-app/plane.env
 PANEL_TRAEFIK_COMPOSE := docker compose -f apps/panel/plane-app/docker-compose.yaml -f apps/panel/plane-app/docker-compose.traefik.yaml --env-file apps/panel/plane-app/plane.env --env-file apps/panel/plane-app/plane.prod.env
 
-.PHONY: proto dev dev-stop prod-up prod-down lk-prod-up lk-prod-down set-admin panel-up panel-prod-up panel-down panel-prod-down panel-logs panel-ps tickets-migrate-diff tickets-migrate-lint tickets-migrate-status mdm-migrate-diff mdm-migrate-lint mdm-migrate-status
+.PHONY: proto dev dev-stop prod-up prod-down lk-prod-up lk-prod-down set-admin set-login panel-up panel-prod-up panel-down panel-prod-down panel-logs panel-ps tickets-migrate-diff tickets-migrate-lint tickets-migrate-status mdm-migrate-diff mdm-migrate-lint mdm-migrate-status
 
 dev:
 	@$(TICKETS_COMPOSE) up -d --build
@@ -52,6 +52,17 @@ lk-prod-down:
 
 set-admin:
 	@docker exec -it dvgmu_mdm_api ./mdm-set-admin --config=config/prod.yaml
+
+set-login:
+	@bash -c '\
+		set -euo pipefail; \
+		read -r -p "ID пользователя MDM: " mdm_user_id; \
+		read -r -p "Email для входа: " email; \
+		read -r -s -p "Пароль: " password; printf "\\n"; \
+		read -r -s -p "Повторите пароль: " password_confirmation; printf "\\n"; \
+		if [[ "$$password" != "$$password_confirmation" ]]; then echo "Пароли не совпадают." >&2; exit 1; fi; \
+		printf "%s\\n%s\\n%s\\n" "$$mdm_user_id" "$$email" "$$password" | docker exec -i dvgmu_auth ./auth-set-login; \
+		unset password password_confirmation'
 
 panel-up:
 	@test -f apps/panel/plane-app/plane.env || (echo "Missing apps/panel/plane-app/plane.env. Copy plane.env.example and configure it first." >&2; exit 1)
