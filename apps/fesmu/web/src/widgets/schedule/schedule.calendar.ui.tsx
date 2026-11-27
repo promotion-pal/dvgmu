@@ -187,7 +187,11 @@ export function ScheduleCalendar({ schedule, staff = false, showAudience = staff
                             <strong className="text-sm tabular-nums">{mode === "term" ? semester.label : formatRange(range.from, range.to)}</strong>
                         )}
                         <Button type="button" size="sm" variant="ghost" onClick={() => selectPeriod(mode === "range" ? "day" : mode, today)}>Сегодня</Button>
-                        {mode === "week" && <Badge variant="outline">Неделя {week} из {weekOptions.length}</Badge>}
+                        {mode === "week" && (
+                            <Badge variant="outline" className="tabular-nums">
+                                <span>Неделя <span className="inline-block min-w-[2ch] text-center">{week}</span> из {weekOptions.length}</span>
+                            </Badge>
+                        )}
                     </div>
                     <div className="flex flex-wrap items-center gap-2">
                         <div className="inline-flex gap-0.5 rounded-lg bg-muted p-0.5" role="group" aria-label="Период">
