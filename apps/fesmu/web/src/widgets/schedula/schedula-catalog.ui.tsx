@@ -77,12 +77,12 @@ export function SchedulaCatalog({ catalog, onClose, onSaved }: { catalog?: Catal
     return <Dialog open onOpenChange={(open) => { if (!open && !busy) onClose(); }}>
         <DialogContent>
             <DialogHeader><DialogTitle>Справочники</DialogTitle></DialogHeader>
-            <Field label="Раздел"><CatalogSelect value={kind} disabled={busy}
-                onChange={(event) => { setKind(event.target.value as Kind); setError(""); }}>
-                {Object.entries(kinds).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
-            </CatalogSelect></Field>
-            <form key={kind} onSubmit={submit}>
-                <fieldset disabled={busy} className="space-y-3">
+            <form className="grid gap-3" onSubmit={submit}>
+                <Field label="Раздел"><CatalogSelect value={kind} disabled={busy}
+                    onChange={(event) => { setKind(event.target.value as Kind); setError(""); }}>
+                    {Object.entries(kinds).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
+                </CatalogSelect></Field>
+                <fieldset key={kind} disabled={busy} className="grid gap-3">
                     {kind !== "holiday" && kind !== "travel" && <Field label="Код записи"><Input name="id" required maxLength={128} /></Field>}
                     {kind !== "period" && kind !== "travel" && <Field label="Название"><Input name="name" required /></Field>}
                     {hasStartDate && <CatalogDateField label={startDateLabel} name="from" />}
@@ -121,7 +121,7 @@ export function SchedulaCatalog({ catalog, onClose, onSaved }: { catalog?: Catal
                         <label className="flex items-center gap-2"><input name="cancelled" type="checkbox" />Бронь отменена</label>
                     </>}
                     {error && <p role="alert" className="text-destructive">{error}</p>}
-                    <Button type="submit" disabled={busy}>Сохранить запись</Button>
+                    <Button type="submit" className="justify-self-start" disabled={busy}>Сохранить запись</Button>
                 </fieldset>
             </form>
         </DialogContent>
