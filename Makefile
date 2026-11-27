@@ -12,7 +12,7 @@ LK_PROD_COMPOSE := $(PROD_COMPOSE) -f apps/lk/docker-compose.yml
 PANEL_COMPOSE := docker compose -f apps/panel/plane-app/docker-compose.yaml --env-file apps/panel/plane-app/plane.env
 PANEL_TRAEFIK_COMPOSE := docker compose -f apps/panel/plane-app/docker-compose.yaml -f apps/panel/plane-app/docker-compose.traefik.yaml --env-file apps/panel/plane-app/plane.env --env-file apps/panel/plane-app/plane.prod.env
 
-.PHONY: proto dev dev-stop prod-up prod-down lk-prod-up lk-prod-down panel-up panel-prod-up panel-down panel-prod-down panel-logs panel-ps auth-test-user tickets-migrate-diff tickets-migrate-lint tickets-migrate-status mdm-migrate-diff mdm-migrate-lint mdm-migrate-status
+.PHONY: proto dev dev-stop prod-up prod-down lk-prod-up lk-prod-down set-admin panel-up panel-prod-up panel-down panel-prod-down panel-logs panel-ps auth-test-user tickets-migrate-diff tickets-migrate-lint tickets-migrate-status mdm-migrate-diff mdm-migrate-lint mdm-migrate-status
 
 dev:
 	@$(TICKETS_COMPOSE) up -d --build
@@ -49,6 +49,9 @@ lk-prod-up:
 
 lk-prod-down:
 	@$(LK_PROD_COMPOSE) down
+
+set-admin:
+	@docker exec -it dvgmu_mdm_api ./mdm-set-admin --config=config/prod.yaml
 
 panel-up:
 	@test -f apps/panel/plane-app/plane.env || (echo "Missing apps/panel/plane-app/plane.env. Copy plane.env.example and configure it first." >&2; exit 1)
