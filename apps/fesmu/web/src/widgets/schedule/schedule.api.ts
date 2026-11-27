@@ -1,4 +1,5 @@
 import { createClient } from "@connectrpc/connect";
+import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { ScheduleEntryKind, ScheduleFormat, SchedulePeriodKind, ScheduleWeeks } from "@fesmu/contract/fesmu/enum/v1/schedule.enum_pb";
 import type { ScheduleTimetable as ScheduleTimetableMessage } from "@fesmu/contract/fesmu/entity/v1/schedule.entity_pb";
 import { ScheduleService } from "@fesmu/contract/fesmu/service/v1/schedule.service_pb";
@@ -163,9 +164,9 @@ export const scheduleApi = {
         return response.list.map(fromMessage);
     },
 
-    async byId(id: string): Promise<ScheduleTimetable | undefined> {
+    async byId(id: string) {
         const response = await client.scheduleByID({ id });
-        return response.item ? fromMessage(response.item) : undefined;
+        return response.item ? { timetable: fromMessage(response.item), updatedAt: response.item.updatedAt } : undefined;
     },
 
     async create(timetable: ScheduleTimetable): Promise<string> {
@@ -173,8 +174,8 @@ export const scheduleApi = {
         return response.scheduleId;
     },
 
-    async update(timetable: ScheduleTimetable): Promise<void> {
-        await client.scheduleUpdate({ item: toMessage(timetable) });
+    async update(timetable: ScheduleTimetable, updatedAt: Timestamp | undefined): Promise<void> {
+        await client.scheduleUpdate({ item: { ...toMessage(timetable), updatedAt } });
     },
 
     async remove(id: string): Promise<void> {

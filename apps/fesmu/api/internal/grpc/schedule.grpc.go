@@ -104,6 +104,8 @@ func scheduleConnectError(err error) error {
 		return connect.NewError(connect.CodeInvalidArgument, err)
 	case errors.Is(err, models.ErrScheduleNotFound):
 		return connect.NewError(connect.CodeNotFound, err)
+	case errors.Is(err, models.ErrScheduleStale):
+		return connect.NewError(connect.CodeFailedPrecondition, err)
 	default:
 		return connect.NewError(connect.CodeInternal, err)
 	}

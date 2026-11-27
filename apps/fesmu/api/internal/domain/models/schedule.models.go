@@ -16,6 +16,7 @@ var (
 	ErrScheduleNotFound = errors.New("schedule not found")
 	// ErrScheduleInvalid wraps every validation failure; the message says which rule broke.
 	ErrScheduleInvalid = errors.New("invalid schedule")
+	ErrScheduleStale   = errors.New("расписание уже изменилось, откройте его заново перед сохранением")
 )
 
 // Schedule is the stored form of a faculty timetable. A timetable is always

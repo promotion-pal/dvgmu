@@ -3,6 +3,7 @@ package storage
 import (
 	"context"
 	"errors"
+	"time"
 
 	"dvgmu/api/internal/domain/models"
 
@@ -55,16 +56,26 @@ func (s *ScheduleStorage) ScheduleCreate(ctx context.Context, schedule *models.S
 	return schedule.ID, nil
 }
 
-// ScheduleUpdate replaces everything but the creation time.
-func (s *ScheduleStorage) ScheduleUpdate(ctx context.Context, schedule *models.Schedule) error {
-	res := s.db.WithContext(ctx).Model(&models.Schedule{}).Where("id = ?", schedule.ID).
-		Select("program_id", "course", "title", "semester_start", "body", "updated_at").
-		Updates(schedule)
+func (s *ScheduleStorage) ScheduleUpdate(ctx context.Context, schedule *models.Schedule, expectedUpdatedAt time.Time) error {
+	query := s.db.WithContext(ctx).Model(&models.Schedule{}).Where("id = ?", schedule.ID)
+	res := query.Session(&gorm.Session{}).Where("updated_at = ?", expectedUpdatedAt).
+		Updates(map[string]any{
+			"program_id": schedule.ProgramID, "course": schedule.Course, "title": schedule.Title,
+			"semester_start": schedule.SemesterStart, "body": schedule.Body,
+			"updated_at": gorm.Expr("GREATEST(?, updated_at + INTERVAL '1 microsecond')", schedule.UpdatedAt),
+		})
 	if res.Error != nil {
 		return res.Error
 	}
 	if res.RowsAffected == 0 {
-		return models.ErrScheduleNotFound
+		var count int64
+		if err := query.Count(&count).Error; err != nil {
+			return err
+		}
+		if count == 0 {
+			return models.ErrScheduleNotFound
+		}
+		return models.ErrScheduleStale
 	}
 	return nil
 }

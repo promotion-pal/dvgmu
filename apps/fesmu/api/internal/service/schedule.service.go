@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
+	"time"
 
 	"github.com/google/uuid"
 
@@ -15,7 +16,7 @@ import (
 
 type ScheduleSaver interface {
 	ScheduleCreate(ctx context.Context, schedule *models.Schedule) (string, error)
-	ScheduleUpdate(ctx context.Context, schedule *models.Schedule) error
+	ScheduleUpdate(ctx context.Context, schedule *models.Schedule, expectedUpdatedAt time.Time) error
 	ScheduleDelete(ctx context.Context, id string) error
 }
 
@@ -104,6 +105,10 @@ func (s *ScheduleService) ScheduleUpdate(ctx context.Context, timetable *entity.
 	if timetable.GetId() == "" {
 		return fmt.Errorf("%w: не указан идентификатор расписания", models.ErrScheduleInvalid)
 	}
+	expectedUpdatedAt := timetable.GetUpdatedAt()
+	if err := expectedUpdatedAt.CheckValid(); err != nil {
+		return fmt.Errorf("%w: откройте расписание заново перед сохранением", models.ErrScheduleInvalid)
+	}
 
 	schedule, err := models.NewSchedule(timetable)
 	if err != nil {
@@ -111,7 +116,10 @@ func (s *ScheduleService) ScheduleUpdate(ctx context.Context, timetable *entity.
 		return err
 	}
 
-	if err := s.saver.ScheduleUpdate(ctx, schedule); err != nil {
+	if err := s.saver.ScheduleUpdate(ctx, schedule, expectedUpdatedAt.AsTime()); err != nil {
+		if errors.Is(err, models.ErrScheduleStale) {
+			return err
+		}
 		if errors.Is(err, models.ErrScheduleNotFound) {
 			log.Warn("schedule not found")
 			return err

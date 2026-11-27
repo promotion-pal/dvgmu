@@ -18,7 +18,7 @@ export default function ScheduleEditorPage() {
                     <Button asChild variant="outline">
                         <Link to={ROUTE.STUDY.SCHEDULE}>Отмена</Link>
                     </Button>
-                    <Button disabled={editor.saving || editor.loading} onClick={editor.save}>
+                    <Button disabled={editor.saving || editor.loading || editor.error} onClick={editor.save}>
                         {editor.saving ? "Сохранение…" : "Сохранить"}
                     </Button>
                 </div>

@@ -5,8 +5,10 @@ import (
 	"io"
 	"log/slog"
 	"testing"
+	"time"
 
 	"connectrpc.com/connect"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	entity "fesmu/contract/fesmu/entity/v1"
 	enum "fesmu/contract/fesmu/enum/v1"
@@ -59,10 +61,13 @@ func (m *memoryScheduleStorage) ScheduleCreate(_ context.Context, r *models.Sche
 	return r.ID, nil
 }
 
-func (m *memoryScheduleStorage) ScheduleUpdate(_ context.Context, r *models.Schedule) error {
+func (m *memoryScheduleStorage) ScheduleUpdate(_ context.Context, r *models.Schedule, expectedUpdatedAt time.Time) error {
 	old, ok := m.records[r.ID]
 	if !ok {
 		return models.ErrScheduleNotFound
+	}
+	if !old.UpdatedAt.Equal(expectedUpdatedAt) {
+		return models.ErrScheduleStale
 	}
 	r.CreatedAt = old.CreatedAt
 	m.records[r.ID] = r
@@ -105,11 +110,14 @@ func TestScheduleCreateFetchUpdateDelete(t *testing.T) {
 		t.Fatal("course filter must exclude it")
 	}
 
-	edited := validTimetable()
-	edited.Id = id
+	edited := list.Msg.GetList()[0]
 	edited.Title = "Новое название"
 	if _, err := h.ScheduleUpdate(ctx, connect.NewRequest(&pb.ScheduleUpdateRequest{Item: edited})); err != nil {
 		t.Fatal(err)
+	}
+	edited.Title = "Устаревшее изменение"
+	if _, err := h.ScheduleUpdate(ctx, connect.NewRequest(&pb.ScheduleUpdateRequest{Item: edited})); connect.CodeOf(err) != connect.CodeFailedPrecondition {
+		t.Fatalf("expected FailedPrecondition for stale edit, got %v", err)
 	}
 	got, _ := h.ScheduleByID(ctx, connect.NewRequest(&pb.ScheduleByIDRequest{Id: id}))
 	if got.Msg.GetItem().GetTitle() != "Новое название" {
@@ -138,6 +146,7 @@ func TestScheduleHandlerMapsErrorsToStatusCodes(t *testing.T) {
 
 	missing := validTimetable()
 	missing.Id = "nope"
+	missing.UpdatedAt = timestamppb.Now()
 	_, err = h.ScheduleUpdate(ctx, connect.NewRequest(&pb.ScheduleUpdateRequest{Item: missing}))
 	if connect.CodeOf(err) != connect.CodeNotFound {
 		t.Fatalf("updating a missing timetable must be NotFound, got %v", err)
@@ -146,5 +155,11 @@ func TestScheduleHandlerMapsErrorsToStatusCodes(t *testing.T) {
 	_, err = h.ScheduleUpdate(ctx, connect.NewRequest(&pb.ScheduleUpdateRequest{Item: validTimetable()}))
 	if connect.CodeOf(err) != connect.CodeInvalidArgument {
 		t.Fatalf("update without id must be InvalidArgument, got %v", err)
+	}
+
+	missing.UpdatedAt = nil
+	_, err = h.ScheduleUpdate(ctx, connect.NewRequest(&pb.ScheduleUpdateRequest{Item: missing}))
+	if connect.CodeOf(err) != connect.CodeInvalidArgument {
+		t.Fatalf("update without a known version must be InvalidArgument, got %v", err)
 	}
 }

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { ROUTE } from "@/shared/config/path";
@@ -32,6 +33,7 @@ const errorMessage = (error: unknown, fallback: string) => (error instanceof Err
 const useScheduleEditor = (id?: string) => {
     const navigate = useNavigate();
     const [draft, setDraft] = useState<ScheduleTimetable>(emptyTimetable);
+    const [updatedAt, setUpdatedAt] = useState<Timestamp>();
     const [loading, setLoading] = useState(Boolean(id));
     const [error, setError] = useState(false);
     const [saving, setSaving] = useState(false);
@@ -44,10 +46,12 @@ const useScheduleEditor = (id?: string) => {
 
         scheduleApi
             .byId(id)
-            .then((timetable) => {
+            .then((result) => {
                 if (cancelled) return;
-                if (timetable) setDraft(timetable);
-                else setError(true);
+                if (result) {
+                    setDraft(result.timetable);
+                    setUpdatedAt(result.updatedAt);
+                } else setError(true);
             })
             .catch((cause) => {
                 console.error("Ошибка при загрузке расписания:", cause);
@@ -142,7 +146,7 @@ const useScheduleEditor = (id?: string) => {
 
         setSaving(true);
         try {
-            if (timetable.id) await scheduleApi.update(timetable);
+            if (timetable.id) await scheduleApi.update(timetable, updatedAt);
             else await scheduleApi.create(timetable);
             toast.success(timetable.id ? "Расписание сохранено" : "Расписание создано");
             navigate(ROUTE.STUDY.SCHEDULE);
