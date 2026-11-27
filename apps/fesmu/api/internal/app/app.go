@@ -23,6 +23,7 @@ import (
 	"dvgmu/api/internal/modules/purchase"
 	"dvgmu/api/internal/modules/purchasev3"
 	"dvgmu/api/internal/modules/questionnaire"
+	"dvgmu/api/internal/modules/schedula"
 	"dvgmu/api/internal/modules/survey"
 	"dvgmu/api/internal/service"
 	"dvgmu/api/internal/service/packages/certificate"
@@ -331,6 +332,7 @@ func New(
 		questionnaire.New(log, cfg.Packages.Analytics),
 		survey.New(log, cfg.Packages.Analytics),
 		deanery.New(log, cfg.Packages.MDM, cfg.Deanery.Demo),
+		schedula.New(cfg.Packages.Schedula, cfg.Packages.SchedulaToken, authInterceptor),
 	)
 
 	return &App{

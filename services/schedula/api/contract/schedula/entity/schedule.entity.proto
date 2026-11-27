@@ -1,0 +1,204 @@
+syntax = "proto3";
+
+package contract.schedula.entity;
+
+import "schedula/enum/schedule.enum.proto";
+
+message Term {
+  string id = 1;
+  string name = 2;
+  string date_from = 3;
+  string date_to = 4;
+}
+
+message Subject {
+  string id = 1;
+  string name = 2;
+}
+
+message Site {
+  string id = 1;
+  string name = 2;
+  string address = 3;
+  string meeting_point = 4;
+  bool clinical = 5;
+}
+
+message Room {
+  string id = 1;
+  string name = 2;
+  Site site = 3;
+  int32 capacity = 4;
+  repeated string equipment = 5;
+  int32 opens_at = 6;
+  int32 closes_at = 7;
+}
+
+message Audience {
+  string group = 1;
+  string subgroup = 2;
+  int32 course = 3;
+}
+
+message AcademicPeriod {
+  string id = 1;
+  string term_id = 2;
+  Audience audience = 3;
+  contract.schedula.enum.PeriodType type = 4;
+  string date_from = 5;
+  string date_to = 6;
+}
+
+message Instructor {
+  string id = 1;
+  string name = 2;
+}
+
+message ScheduleFilter {
+  string date_from = 1;
+  string date_to = 2;
+  string group = 3;
+  string subgroup = 4;
+  int32 course = 5;
+  string instructor_id = 6;
+  string subject_id = 7;
+  string site_id = 8;
+  string room_id = 9;
+  contract.schedula.enum.EventType type = 10;
+  repeated contract.schedula.enum.EventType types = 11;
+}
+
+message EventInput {
+  string term_id = 1;
+  string subject_id = 2;
+  contract.schedula.enum.EventType type = 3;
+  repeated Audience audiences = 4;
+  string instructor_id = 5;
+  string department = 6;
+  string date = 7;
+  optional int32 start_minute = 8;
+  int32 duration_minutes = 9;
+  string room_id = 10;
+  string meeting_point = 11;
+  int32 expected_attendance = 12;
+  repeated string equipment = 13;
+}
+
+message WeeklySlot {
+  int32 weekday = 1;
+  int32 start_minute = 2;
+  int32 duration_minutes = 3;
+}
+
+message Series {
+  contract.schedula.enum.Recurrence recurrence = 1;
+  string date_to = 2;
+  repeated WeeklySlot slots = 3;
+}
+
+message Event {
+  string id = 1;
+  int32 revision = 2;
+  contract.schedula.enum.EventStatus status = 3;
+  EventInput details = 4;
+  Subject subject = 5;
+  Room room = 6;
+  string series_id = 7;
+  contract.schedula.enum.ChangeType change = 8;
+  string instructor_name = 9;
+}
+
+message PublicOption {
+  string id = 1;
+  string name = 2;
+  string site_id = 3;
+}
+
+message PublicEvent {
+  string id = 1;
+  contract.schedula.enum.EventType type = 2;
+  contract.schedula.enum.EventStatus status = 3;
+  Subject subject = 4;
+  repeated string groups = 5;
+  string date = 6;
+  int32 start_minute = 7;
+  int32 duration_minutes = 8;
+  string room = 9;
+  string site = 10;
+  string address = 11;
+  contract.schedula.enum.ChangeType change = 12;
+}
+
+message EventReference {
+  string id = 1;
+  string title = 2;
+  string date = 3;
+  optional int32 start_minute = 4;
+  int32 duration_minutes = 5;
+}
+
+message Issue {
+  contract.schedula.enum.IssueType type = 1;
+  string message = 2;
+  EventReference event = 3;
+  EventReference conflicting_event = 4;
+}
+
+message Slot {
+  string date = 1;
+  int32 start_minute = 2;
+  int32 duration_minutes = 3;
+  Room room = 4;
+}
+
+message Change {
+  string id = 1;
+  contract.schedula.enum.ChangeType type = 2;
+  contract.schedula.enum.ChangeStatus status = 3;
+  Event before = 4;
+  Event after = 5;
+  string reason = 6;
+  string author_id = 7;
+  string submitted_at = 8;
+  string reviewer_id = 9;
+  string decided_at = 10;
+  string decision = 11;
+}
+
+message Holiday {
+  string date = 1;
+  string name = 2;
+}
+
+message TravelTime {
+  string from_site_id = 1;
+  string to_site_id = 2;
+  int32 minutes = 3;
+}
+
+message Booking {
+  string id = 1;
+  string room_id = 2;
+  string date = 3;
+  int32 start_minute = 4;
+  int32 duration_minutes = 5;
+  string title = 6;
+  bool cancelled = 7;
+}
+
+message CompletenessGap {
+  contract.schedula.enum.CompletenessGapType type = 1;
+  Audience audience = 2;
+  Event event = 3;
+}
+
+message Catalog {
+  repeated Term terms = 1;
+  repeated Subject subjects = 2;
+  repeated Site sites = 3;
+  repeated Room rooms = 4;
+  repeated AcademicPeriod periods = 5;
+  repeated Holiday holidays = 6;
+  repeated TravelTime travel_times = 7;
+  repeated Booking bookings = 8;
+}

@@ -63,11 +63,13 @@ type GRPCConfig struct {
 }
 
 type PackagesConfig struct {
-	MDM       string `yaml:"package_mdm" env:"PACKAGE_MDM"`
-	Auth      string `yaml:"package_auth" env:"PACKAGE_AUTH"`
-	Files     string `yaml:"package_files" env:"PACKAGE_FILES"`
-	Tasks     string `yaml:"package_tasks" env:"PACKAGE_TASKS"`
-	Analytics string `yaml:"package_analytics" env:"PACKAGE_ANALYTICS"`
+	MDM           string `yaml:"package_mdm" env:"PACKAGE_MDM"`
+	Auth          string `yaml:"package_auth" env:"PACKAGE_AUTH"`
+	Files         string `yaml:"package_files" env:"PACKAGE_FILES"`
+	Tasks         string `yaml:"package_tasks" env:"PACKAGE_TASKS"`
+	Analytics     string `yaml:"package_analytics" env:"PACKAGE_ANALYTICS"`
+	Schedula      string `yaml:"package_schedula" env:"PACKAGE_SCHEDULA"`
+	SchedulaToken string `yaml:"-" env:"SCHEDULA_INTERNAL_TOKEN"`
 }
 
 type DatabasesConfig struct {

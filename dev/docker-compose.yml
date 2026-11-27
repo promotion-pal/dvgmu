@@ -86,6 +86,30 @@ services:
     environment: { <<: *db, DB_NAME: analytics, GRPC_PORT: "4000" }
     depends_on: { postgres: { condition: service_healthy } }
 
+  schedula-db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: schedula
+      POSTGRES_PASSWORD: schedula
+      POSTGRES_DB: schedula
+    volumes:
+      - schedula-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U schedula -d schedula"]
+      interval: 2s
+      retries: 30
+
+  schedula:
+    build: { context: .., dockerfile: services/schedula/api/Dockerfile }
+    environment:
+      DB_HOST: schedula-db
+      DB_USER: schedula
+      DB_PASSWORD: schedula
+      DB_NAME: schedula
+      PACKAGE_MDM: http://mdm:4000
+      SCHEDULA_INTERNAL_TOKEN: dev-schedula-token
+    depends_on: { schedula-db: { condition: service_healthy } }
+
   file:
     build: { context: .., dockerfile: services/file/api/Dockerfile }
     environment: { <<: *db, DB_NAME: file, GRPC_PORT: "4000", STORAGE_BASE_PATH: /tmp/storage }
@@ -132,6 +156,8 @@ services:
       POSTGRES_PASSWORD_LIBRARY: postgres
       POSTGRES_DB_LIBRARY: fesmu_library
       PACKAGE_MDM: http://mdm:4000
+      PACKAGE_SCHEDULA: http://schedula:4000
+      SCHEDULA_INTERNAL_TOKEN: dev-schedula-token
       PACKAGE_AUTH: http://auth:4000
       PACKAGE_ANALYTICS: http://analytics:4000
       PACKAGE_FILES: http://file:4000
@@ -143,7 +169,7 @@ services:
       AUTH_JWT_ISSUER: auth-service
       AUTH_JWT_AUDIENCE: fesmu
     ports: ["127.0.0.1:18200:4000"]
-    depends_on: [postgres, mdm, auth, analytics, file, tickets]
+    depends_on: [postgres, mdm, auth, analytics, file, tickets, schedula]
 
   seed-students:
     profiles: [tools]
@@ -170,3 +196,4 @@ services:
 
 volumes:
   pgdata:
+  schedula-pgdata:

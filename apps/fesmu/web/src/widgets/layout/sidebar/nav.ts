@@ -39,6 +39,7 @@ const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
     {
         label: "Учёба",
         items: [
+            { title: "schedula", url: ROUTE.SCHEDULA, icon: CalendarDaysIcon },
             { title: "Расписание", url: ROUTE.STUDY.SCHEDULE, icon: CalendarDaysIcon, permissions: permsFor(PermissionSection.SCHEDULE) },
             // Страница доступна всем вошедшим: halls.post открывает общее
             // расписание и модерацию, остальные видят форму личной заявки.

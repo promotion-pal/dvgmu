@@ -15,6 +15,8 @@ import StudentPage from "./page/Student";
 import EmployeePage from "./page/Employee";
 import TicketsPage from "./page/Tickets";
 import SchedulePage from "./page/Schedule";
+import SchedulaPage from "./page/Schedula";
+import PublicSchedulaPage from "./page/public/Schedula";
 import ScheduleEditorPage from "./page/ScheduleEditor";
 import ScheduleHallPage from "./page/ScheduleHall";
 import ComputerClassPage from "./page/ComputerClass";
@@ -72,6 +74,7 @@ function App() {
       <Route element={<UserGate><Outlet /></UserGate>}>
         <Route element={<Layout />}>
           <Route path={ROUTE.HOME} element={<HomePage />} />
+          <Route path={ROUTE.SCHEDULA} element={<SchedulaPage />} />
           <Route path={ROUTE.USER.PROFILE} element={<ProfilePage />} />
 
           {/* Библиотека и методички в кабинете — всем, кто вошёл (опубликованные открыты и на /manuals). */}
@@ -180,6 +183,7 @@ function App() {
       <Route element={<Layout notViewHeader notViewSidebar />}>
         <Route path={ROUTE.DOCS.COMMON} element={<DocsPage />} />
         <Route path={ROUTE.PUBLIC.SCHEDULE} element={<PublicSchedulePage />} />
+        <Route path={ROUTE.PUBLIC.SCHEDULA} element={<PublicSchedulaPage />} />
         <Route path={ROUTE.PUBLIC.SCHEDULE_HALL} element={<PublicScheduleHallPage />} />
         <Route path={ROUTE.PUBLIC.HALL_BOOKING} element={<HallBookingPage />} />
         <Route path={ROUTE.PUBLIC.COMPUTER_CLASS} element={<PublicComputerClassPage />} />
