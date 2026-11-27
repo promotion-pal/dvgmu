@@ -3,7 +3,7 @@ import type { ScheduleEntry, ScheduleSlot, ScheduleSubject, ScheduleTimetable } 
 
 /* Pure helpers of the timetable editor: creating drafts, keeping references
  * between parts intact, and checking the draft. The rules mirror the server's
- * (api/internal/modules/schedule/validate.go) so mistakes surface while typing. */
+ * (api/internal/domain/models/schedule.validate.go) so mistakes surface while typing. */
 
 const CLOCK = /^([01]?\d|2[0-3]):[0-5]\d$/;
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
@@ -80,11 +80,10 @@ export const slotLabel = (slot: ScheduleSlot, index: number) => `${index + 1} п
 /* ───────────── references ───────────── */
 
 export const entriesUsing = (timetable: ScheduleTimetable, by: { slotId?: string; subjectId?: string; group?: string }) =>
-    timetable.entries.filter(
-        (entry) =>
-            (by.slotId !== undefined && entry.slotId === by.slotId) ||
-            (by.subjectId !== undefined && entry.subjectId === by.subjectId) ||
-            (by.group !== undefined && entry.groupIds.includes(by.group)),
+    [...timetable.entries, ...timetable.lectures, ...timetable.cycles].filter((entry) =>
+        (by.slotId !== undefined && "slotId" in entry && entry.slotId === by.slotId) ||
+        (by.subjectId !== undefined && entry.subjectId === by.subjectId) ||
+        (by.group !== undefined && entry.groupIds.includes(by.group)),
     );
 
 /** Removing a group takes it out of every lesson; lessons left with no group are dropped. */
@@ -94,6 +93,14 @@ export const withoutGroup = (timetable: ScheduleTimetable, group: string): Sched
     entries: timetable.entries
         .map((entry) => ({ ...entry, groupIds: entry.groupIds.filter((item) => item !== group) }))
         .filter((entry) => entry.groupIds.length > 0),
+    lectures: timetable.lectures.flatMap((lecture) => {
+        if (!lecture.groupIds.includes(group)) return [lecture];
+        const groupIds = lecture.groupIds.filter((item) => item !== group);
+        return groupIds.length ? [{ ...lecture, groupIds }] : [];
+    }),
+    cycles: timetable.cycles
+        .map((cycle) => ({ ...cycle, groupIds: cycle.groupIds.filter((item) => item !== group) }))
+        .filter((cycle) => cycle.groupIds.length > 0),
 });
 
 /* ───────────── validation ───────────── */
@@ -125,8 +132,9 @@ export const validateTimetable = (t: ScheduleTimetable): ScheduleIssue[] => {
     }
     if (t.groups.length === 0) add("general", "Добавьте хотя бы одну группу");
 
-    if (t.slots.length === 0) add("slots", "Добавьте хотя бы одну пару");
-    t.slots.forEach((slot, index) => {
+    const weeklySlots = t.format === "weekly" ? t.slots : [];
+    if (t.format === "weekly" && weeklySlots.length === 0) add("slots", "Добавьте хотя бы одну пару");
+    weeklySlots.forEach((slot, index) => {
         if (!CLOCK.test(slot.start) || !CLOCK.test(slot.end)) add("slots", `Пара ${index + 1}: укажите время начала и конца`);
         else if (minutes(slot.end) <= minutes(slot.start)) add("slots", `Пара ${index + 1} заканчивается раньше, чем начинается`);
     });
@@ -149,6 +157,23 @@ export const validateTimetable = (t: ScheduleTimetable): ScheduleIssue[] => {
         if (entry.groupIds.length === 0) add("entries", `${label}: выберите хотя бы одну группу`);
         else if (entry.groupIds.some((group) => !groups.has(group))) add("entries", `${label}: указана группа, которой нет в расписании`);
         if (entry.startsAt && !CLOCK.test(entry.startsAt)) add("entries", `${label}: время начала в формате ЧЧ:ММ`);
+    });
+
+    t.lectures.forEach((lecture, index) => {
+        const label = `Лекция ${index + 1}`;
+        if (!subjectIds.has(lecture.subjectId)) add("entries", `${label}: выберите предмет`);
+        if (!CLOCK.test(lecture.start) || !CLOCK.test(lecture.end) || minutes(lecture.end) <= minutes(lecture.start)) {
+            add("entries", `${label}: проверьте время начала и окончания`);
+        }
+        if (!lecture.dates.length || !lecture.dates.every((day) => ISO_DATE.test(day))) add("entries", `${label}: укажите даты`);
+        if (!lecture.remote && !lecture.room?.trim()) add("entries", `${label}: укажите аудиторию или выберите ДОТ`);
+        if (lecture.groupIds.some((group) => !groups.has(group))) add("entries", `${label}: проверьте группы`);
+    });
+    t.cycles.forEach((cycle, index) => {
+        const label = `Цикл ${index + 1}`;
+        if (!subjectIds.has(cycle.subjectId)) add("entries", `${label}: выберите предмет`);
+        if (!ISO_DATE.test(cycle.from) || !ISO_DATE.test(cycle.to) || cycle.to < cycle.from) add("entries", `${label}: проверьте даты`);
+        if (!cycle.groupIds.length || cycle.groupIds.some((group) => !groups.has(group))) add("entries", `${label}: выберите группы`);
     });
 
     const ranges = t.periods.flatMap((period, index) => {

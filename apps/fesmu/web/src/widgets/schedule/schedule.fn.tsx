@@ -5,12 +5,10 @@ import { scheduleApi } from "./schedule.api";
 import type { ScheduleFilters, ScheduleTimetable } from "./schedule.schema";
 import { resolveLinkedFilters, useScheduleUrlFilters } from "./schedule.url";
 import { describeExportScope, exportSchedule } from "./schedule.export";
-import { buildCycleScheduleView } from "./schedule.cycles.utils";
+import { buildTimetableView } from "./schedule.cycles.utils";
 import {
     applyFilterChange,
     buildOptions,
-    buildPeriods,
-    buildScheduleView,
     resolveTimetable,
     todayIso,
 } from "./schedule.utils";
@@ -54,21 +52,8 @@ const useSchedule = () => {
 
     const timetable = resolveTimetable(listState.list, filters);
 
-    const view = useMemo((): ScheduleView | undefined => {
-        if (!timetable) return undefined;
-        if (timetable.format !== "cycles") return buildScheduleView(timetable, filters, today);
-
-        const cycles = buildCycleScheduleView(timetable, filters, today);
-        return {
-            count: cycles.count,
-            columns: [],
-            gridSections: [],
-            agendaSections: [],
-            periods: buildPeriods(timetable, today),
-            emptyReason: cycles.emptyReason,
-            cycles,
-        };
-    }, [timetable, filters, today]);
+    const view = useMemo((): ScheduleView | undefined =>
+        timetable && buildTimetableView(timetable, filters, today), [timetable, filters, today]);
     const options = useMemo(
         () => buildOptions(listState.list, filters, timetable),
         [listState.list, filters, timetable],

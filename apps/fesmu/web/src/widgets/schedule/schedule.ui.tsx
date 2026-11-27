@@ -1,95 +1,53 @@
 import type { FC } from "react";
-import { CalendarSearchIcon, ChevronDownIcon, DownloadIcon, FilterXIcon } from "lucide-react";
+import { CalendarSearchIcon, ChevronDownIcon, DownloadIcon } from "lucide-react";
 import { Button } from "@/shared/ui/button";
 import { Card } from "@/shared/ui/card";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/shared/ui/empty";
-import { CommonFilterChips, CommonFilterDateRange, CommonFilterSelect } from "@/shared/components/filter";
+import { CommonFilterSelect } from "@/shared/components/filter";
 import { CommonWrapperViewMode } from "@/shared/components/wrapper";
 import type { useCommonWrapperViewMode } from "@/shared/components/wrapper";
 import { ScheduleAgenda, ScheduleGrid, SchedulePeriods } from "@/shared/components/schedule";
 import { Badge } from "@/shared/ui/badge";
-import { WEEKDAY_SHORT_LABEL } from "./schedule.schema";
-import type { ScheduleFormat } from "./schedule.schema";
 import type { useSchedule } from "./schedule.fn";
 import { CycleBoard } from "./schedule.cycles.ui";
 
 type Schedule = ReturnType<typeof useSchedule>;
 
-interface ScheduleFiltersProps {
-    /** A cycle-based timetable has no weekly grid, so the weekday filter is hidden for it. */
-    format?: ScheduleFormat;
-    filters: Schedule["filters"];
-    options: Schedule["options"];
-    semester?: { start: string; end: string };
-    onChange: Schedule["changeFilters"];
-    onReset: Schedule["resetFilters"];
-    hasActiveFilters: boolean;
-}
-
-const ScheduleFilters: FC<ScheduleFiltersProps> = ({ format, filters, options, semester, onChange, onReset, hasActiveFilters }) => {
-    const weekdayOptions = options.weekdays.map((option) => ({ ...option, label: WEEKDAY_SHORT_LABEL[option.value] }));
+const ScheduleFilters: FC<{ schedule: Schedule }> = ({ schedule }) => {
+    const { filters, options, changeFilters } = schedule;
 
     return (
-        <div className="flex w-full flex-wrap items-end gap-x-5 gap-y-3">
+        <>
             <CommonFilterSelect
-                label="Специальность"
+                label="Программа"
                 value={filters.programId}
-                onChange={(programId) => onChange({ programId })}
+                onChange={(programId) => changeFilters({ programId })}
                 options={options.programs}
             />
             <CommonFilterSelect
                 label="Курс"
                 value={filters.course === undefined ? undefined : String(filters.course)}
-                onChange={(course) => onChange({ course: course === undefined ? undefined : Number(course) })}
+                onChange={(course) => changeFilters({ course: course === undefined ? undefined : Number(course) })}
                 options={options.courses}
                 className="[&_button]:min-w-28"
+            />
+            <CommonFilterSelect
+                label="Группа"
+                value={filters.groupId}
+                onChange={(groupId) => changeFilters({ groupId })}
+                options={options.groups}
+                allLabel="Все группы"
             />
             {options.variants.length > 0 && (
                 <CommonFilterSelect
                     label="Поток / семестр"
                     value={filters.timetableId}
-                    onChange={(timetableId) => onChange({ timetableId })}
+                    onChange={(timetableId) => changeFilters({ timetableId })}
                     options={options.variants}
                     className="[&_button]:min-w-56"
                 />
             )}
-            <CommonFilterSelect
-                label="Группа"
-                value={filters.groupId}
-                onChange={(groupId) => onChange({ groupId })}
-                options={options.groups}
-                allLabel="Все группы"
-            />
-            <CommonFilterDateRange
-                label="Даты"
-                from={filters.dateFrom}
-                to={filters.dateTo}
-                min={semester?.start}
-                max={semester?.end}
-                onChange={({ from, to }) => onChange({ dateFrom: from, dateTo: to })}
-            />
-            {format !== "cycles" && (
-                <CommonFilterChips
-                    label="Дни недели"
-                    options={weekdayOptions}
-                    value={filters.weekdays}
-                    onChange={(weekdays) => onChange({ weekdays })}
-                />
-            )}
-            <CommonFilterChips
-                label="Предметы"
-                options={options.subjects}
-                value={filters.subjectIds}
-                onChange={(subjectIds) => onChange({ subjectIds })}
-                className="basis-full"
-            />
-            {hasActiveFilters && (
-                <Button type="button" variant="ghost" size="sm" onClick={onReset} className="text-muted-foreground">
-                    <FilterXIcon className="size-4" />
-                    Сбросить фильтры
-                </Button>
-            )}
-        </div>
+        </>
     );
 };
 

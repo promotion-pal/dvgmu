@@ -119,6 +119,7 @@ const ChipInput: FC<{ placeholder: string; type?: string; onAdd: (value: string)
                 type={type}
                 value={value}
                 placeholder={placeholder}
+                aria-label={placeholder}
                 className="max-w-64"
                 onChange={(event) => setValue(event.target.value)}
                 onKeyDown={(event) => {
@@ -454,6 +455,66 @@ const PERIOD_KIND_OPTIONS: { value: SchedulePeriod["kind"]; label: string }[] = 
     { value: "holiday", label: "Каникулы" },
 ];
 
+const CycleEntriesSection: FC<EditorProps> = ({ editor }) => {
+    const { draft, addLecture, addCycle, updateItem, removeItem } = editor;
+    const [openId, setOpenId] = useState<string>();
+    const subjects = draft.subjects.map((subject) => ({ value: subject.id, label: subject.name }));
+    const groups = draft.groups.map((group) => ({ value: group, label: group }));
+    return (
+        <div className="space-y-6">
+            <Section title="Лекции по датам" action={<AddButton onClick={() => setOpenId(addLecture())}>Добавить лекцию</AddButton>}>
+                {draft.lectures.map((lecture, index) => {
+                    const update = (change: Partial<typeof lecture>) => updateItem("lectures", lecture.id, change);
+                    return (
+                        <details key={lecture.id} open={lecture.id === openId || undefined} className="rounded-xl border bg-card p-3">
+                            <summary className="cursor-pointer text-sm font-medium">Лекция {index + 1} · {subjects.find(({ value }) => value === lecture.subjectId)?.label}</summary>
+                            <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                                <Field label="Предмет"><NativeSelect value={lecture.subjectId} options={subjects} placeholder="Выберите предмет" onChange={(subjectId) => update({ subjectId })} /></Field>
+                                <Field label="Начало"><Input type="time" value={lecture.start} onChange={(event) => update({ start: event.target.value })} /></Field>
+                                <Field label="Окончание"><Input type="time" value={lecture.end} onChange={(event) => update({ end: event.target.value })} /></Field>
+                                <Field label="Аудитория"><Input value={lecture.room ?? ""} onChange={(event) => update({ room: event.target.value })} /></Field>
+                            </div>
+                            <div className="mt-3 grid gap-3">
+                                <label className="flex items-center gap-2 text-sm">
+                                    <input type="checkbox" checked={lecture.remote} onChange={(event) => update({ remote: event.target.checked })} />
+                                    С применением ДОТ
+                                </label>
+                                <CommonFilterChips label="Группы (пусто — весь поток)" options={groups} value={lecture.groupIds} onChange={(groupIds) => update({ groupIds })} />
+                                <div className="flex flex-wrap gap-1.5" aria-label="Даты лекции">
+                                    {lecture.dates.map((day) => <Chip key={day} onRemove={() => update({ dates: lecture.dates.filter((date) => date !== day) })}>{formatDate(day)}</Chip>)}
+                                </div>
+                                <ChipInput type="date" placeholder="Дата лекции" onAdd={(day) => update({ dates: [...new Set([...lecture.dates, day])].sort() })} />
+                                <Field label="Примечание"><Input value={lecture.note ?? ""} onChange={(event) => update({ note: event.target.value })} /></Field>
+                                <div className="justify-self-end"><RemoveButton title="Удалить лекцию" onClick={() => removeItem("lectures", lecture.id)} /></div>
+                            </div>
+                        </details>
+                    );
+                })}
+            </Section>
+            <Section title="Циклы занятий" action={<AddButton onClick={() => setOpenId(addCycle())}>Добавить цикл</AddButton>}>
+                {draft.cycles.map((cycle, index) => {
+                    const update = (change: Partial<typeof cycle>) => updateItem("cycles", cycle.id, change);
+                    return (
+                        <details key={cycle.id} open={cycle.id === openId || undefined} className="rounded-xl border bg-card p-3">
+                            <summary className="cursor-pointer text-sm font-medium">Цикл {index + 1} · {subjects.find(({ value }) => value === cycle.subjectId)?.label}</summary>
+                            <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                                <Field label="Предмет"><NativeSelect value={cycle.subjectId} options={subjects} placeholder="Выберите предмет" onChange={(subjectId) => update({ subjectId })} /></Field>
+                                <Field label="Начало"><Input type="date" value={cycle.from} onChange={(event) => update({ from: event.target.value })} /></Field>
+                                <Field label="Окончание"><Input type="date" min={cycle.from} value={cycle.to} onChange={(event) => update({ to: event.target.value })} /></Field>
+                                <Field label="Примечание"><Input value={cycle.note ?? ""} onChange={(event) => update({ note: event.target.value })} /></Field>
+                            </div>
+                            <div className="mt-3 flex items-start justify-between gap-3">
+                                <CommonFilterChips label="Группы" options={groups} value={cycle.groupIds} onChange={(groupIds) => update({ groupIds })} />
+                                <RemoveButton title="Удалить цикл" onClick={() => removeItem("cycles", cycle.id)} />
+                            </div>
+                        </details>
+                    );
+                })}
+            </Section>
+        </div>
+    );
+};
+
 const PeriodsSection: FC<EditorProps> = ({ editor }) => {
     const { draft, addPeriod, updateItem, removeItem } = editor;
 
@@ -566,15 +627,19 @@ const SECTIONS: Record<ScheduleEditorSection | "preview", FC<EditorProps>> = {
 
 const ScheduleEditorPanel: FC<EditorProps> = ({ editor }) => {
     const { tab, setTab, issues, draft } = editor;
-    const ActiveSection = SECTIONS[tab];
+    const cyclic = draft.format === "cycles";
+    const ActiveSection = cyclic && tab === "entries" ? CycleEntriesSection : SECTIONS[tab];
 
     const issuesIn = (key: EditorTab) => issues.filter((issue) => issue.section === key).length;
-    const counts: Partial<Record<EditorTab, number>> = { entries: draft.entries.length, subjects: draft.subjects.length };
+    const counts: Partial<Record<EditorTab, number>> = {
+        entries: cyclic ? draft.cycles.length + draft.lectures.length : draft.entries.length,
+        subjects: draft.subjects.length,
+    };
 
     return (
         <div className="flex flex-col gap-5">
             <nav className="flex flex-wrap gap-1 border-b" aria-label="Разделы расписания">
-                {TABS.map(({ key, label }) => {
+                {TABS.filter(({ key }) => !cyclic || key !== "slots").map(({ key, label }) => {
                     const errors = issuesIn(key);
                     return (
                         <button
@@ -587,7 +652,7 @@ const ScheduleEditorPanel: FC<EditorProps> = ({ editor }) => {
                                 tab === key ? "border-primary font-medium text-foreground" : "border-transparent text-muted-foreground hover:text-foreground",
                             )}
                         >
-                            {label}
+                            {cyclic && key === "entries" ? "Лекции и циклы" : label}
                             {counts[key] ? <span className="text-xs text-muted-foreground">{counts[key]}</span> : null}
                             {errors > 0 && <span className="rounded-full bg-destructive px-1.5 text-[10px] font-semibold text-white">{errors}</span>}
                         </button>

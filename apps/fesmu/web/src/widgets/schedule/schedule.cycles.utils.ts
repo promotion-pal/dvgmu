@@ -1,6 +1,6 @@
 import type { ScheduleTone } from "@/shared/components/schedule";
 import type { ScheduleCycle, ScheduleFilters, ScheduleLecture, ScheduleTimetable } from "./schedule.schema";
-import { formatDayMonth, formatGroups, isoWeekday, resolveDateRange } from "./schedule.utils";
+import { buildPeriods, buildScheduleView, formatDayMonth, formatGroups, isoWeekday, resolveDateRange, type ScheduleView } from "./schedule.utils";
 
 /* View model of a cycle-based timetable (4th course on): stream lectures on
  * set dates plus per-group cycles of practical classes, merged into one
@@ -286,5 +286,20 @@ export const buildCycleScheduleView = (timetable: ScheduleTimetable, filters: Sc
         lectureRows: buildLectureRows(timetable, filters),
         count: days.length + cycles.length,
         emptyReason: timeline.length === 0 && !filters.groupId && days.length === 0 ? "По выбранным фильтрам лекций нет" : undefined,
+    };
+};
+
+export const buildTimetableView = (timetable: ScheduleTimetable, filters: ScheduleFilters, today: string): ScheduleView => {
+    if (timetable.format === "weekly") return buildScheduleView(timetable, filters, today);
+
+    const cycles = buildCycleScheduleView(timetable, filters, today);
+    return {
+        count: cycles.count,
+        columns: [],
+        gridSections: [],
+        agendaSections: [],
+        periods: buildPeriods(timetable, today),
+        emptyReason: cycles.emptyReason,
+        cycles,
     };
 };

@@ -2,27 +2,24 @@ import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { CalendarPlusIcon, PencilIcon, PlusIcon, Trash2Icon } from "lucide-react";
 import { CommonWrapper } from "@/shared/components/wrapper";
-import { CommonShareLink } from "@/shared/components/share";
-import { useUrlViewMode } from "@/features/lib/url-state";
 import { CommonControlState } from "@/shared/components/state/control-state";
 import { ROUTE } from "@/shared/config/path";
 import { PermissionSection } from "@/shared/config/permissions";
 import { Can } from "@/features/access";
 import { Button } from "@/shared/ui/button";
+import { ScheduleCalendar, ScheduleExportButton, SchedulePublicLink, useSchedule } from "@/widgets/schedule";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/shared/ui/empty";
-import { ScheduleBoard, ScheduleExportButton, ScheduleFilters, ScheduleOverview, useSchedule } from "@/widgets/schedule";
 
 export default function SchedulePage() {
     const navigate = useNavigate();
     const schedule = useSchedule();
-    const viewModeState = useUrlViewMode("table");
 
     useEffect(() => {
         schedule.fetch();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const { timetable, view } = schedule;
+    const { timetable } = schedule;
 
     const handleRemove = () => {
         if (!timetable || !confirm(`Удалить расписание «${timetable.title}»?`)) return;
@@ -31,64 +28,34 @@ export default function SchedulePage() {
 
     return (
         <CommonWrapper
-            title="Расписание"
-            description="Учебное расписание по специальностям, курсам и группам"
+            title="Расписание групп"
+            styleChildren="mx-auto max-w-[1400px]"
             action={
-                <div className="flex items-center gap-4">
+                <div className="flex flex-wrap items-center gap-2">
+                    <SchedulePublicLink schedule={schedule} />
                     <ScheduleExportButton
                         label={schedule.exportLabel}
                         exporting={schedule.exporting}
                         disabled={!timetable}
                         onExport={schedule.download}
                     />
-                    <CommonShareLink label="Ссылка" />
-                    {/* Изменять — только с правом schedule.post */}
                     <Can section={PermissionSection.SCHEDULE}>
                         {timetable && (
                             <>
-                                <span
-                                    className="icon-inline cursor-pointer text-destructive"
-                                    onClick={handleRemove}
-                                    title="Удалить это расписание"
-                                >
-                                    <Trash2Icon className="size-4" />
-                                </span>
-                                {/* The editor builds weekly grids; senior-course lectures and cycles come from the seed for now. */}
-                                {timetable.format !== "cycles" && (
-                                    <span
-                                        className="icon-inline cursor-pointer"
-                                        onClick={() => navigate(ROUTE.STUDY.SCHEDULE_EDIT.replace(":id", timetable.id))}
-                                        title="Редактировать это расписание"
-                                    >
-                                        <PencilIcon className="size-4" />
-                                    </span>
-                                )}
+                                <Button type="button" size="icon-sm" variant="outline" onClick={() => navigate(ROUTE.STUDY.SCHEDULE_EDIT.replace(":id", timetable.id))} aria-label="Редактировать расписание">
+                                    <PencilIcon />
+                                </Button>
+                                <Button type="button" size="icon-sm" variant="outline" onClick={handleRemove} aria-label="Удалить расписание">
+                                    <Trash2Icon />
+                                </Button>
                             </>
                         )}
-                        <PlusIcon
-                            className="size-4 cursor-pointer"
-                            onClick={() => navigate(ROUTE.STUDY.SCHEDULE_NEW)}
-                        />
+                        <Button size="sm" asChild>
+                            <Link to={ROUTE.STUDY.SCHEDULE_NEW}><PlusIcon /> Новое расписание</Link>
+                        </Button>
                     </Can>
                 </div>
             }
-            filter={{
-                render: {
-                    count: view?.count,
-                    className: "w-full",
-                    children: (
-                        <ScheduleFilters
-                            format={timetable?.format}
-                            filters={schedule.filters}
-                            options={schedule.options}
-                            semester={timetable?.semester}
-                            onChange={schedule.changeFilters}
-                            onReset={schedule.resetFilters}
-                            hasActiveFilters={schedule.hasActiveFilters}
-                        />
-                    ),
-                },
-            }}
         >
             <CommonControlState
                 isLoading={schedule.loading}
@@ -113,17 +80,7 @@ export default function SchedulePage() {
                     </Empty>
                 }
             >
-                {timetable && view ? (
-                    <div className="flex flex-col gap-6">
-                        <ScheduleOverview timetable={timetable} view={view} />
-                        <ScheduleBoard
-                            view={view}
-                            viewModeState={viewModeState}
-                            groups={schedule.options.groups}
-                            onPickGroup={(groupId) => schedule.changeFilters({ groupId })}
-                        />
-                    </div>
-                ) : null}
+                <ScheduleCalendar schedule={schedule} staff />
             </CommonControlState>
         </CommonWrapper>
     );

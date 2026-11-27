@@ -36,9 +36,11 @@ const weekNumber = (iso: string) => Math.floor((parseIso(iso).getTime() / MS_PER
 export const weekParity = (iso: string, semesterStart: string): "numerator" | "denominator" =>
     Math.abs(weekNumber(iso) - weekNumber(semesterStart)) % 2 === 0 ? "numerator" : "denominator";
 
-export const todayIso = () => toIso(new Date());
+export const todayIso = () => new Intl.DateTimeFormat("sv-SE", { timeZone: "Asia/Vladivostok" }).format();
 
-const datesBetween = (from: string, to: string) => {
+export const offsetDate = (iso: string, days: number) => toIso(new Date(parseIso(iso).getTime() + days * MS_PER_DAY));
+
+export const datesBetween = (from: string, to: string) => {
     const days: string[] = [];
     const end = parseIso(to).getTime();
     for (let time = parseIso(from).getTime(), i = 0; time <= end && i < MAX_RANGE_DAYS; time += MS_PER_DAY, i++) {
@@ -63,7 +65,7 @@ const isStudyDay = (timetable: ScheduleTimetable, iso: string) =>
 
 /* ───────────── text ───────────── */
 
-const toMinutes = (clock: string) => {
+export const toMinutes = (clock: string) => {
     const [hours, minutes] = clock.split(":").map(Number);
     return hours * 60 + minutes;
 };
@@ -241,7 +243,7 @@ export const buildOptions = (timetables: ScheduleTimetable[], filters: ScheduleF
 
 /* ───────────── view models for the shared schedule components ───────────── */
 
-const slotRangeOf = (timetable: ScheduleTimetable, entry: ScheduleEntry) => {
+export const slotRangeOf = (timetable: ScheduleTimetable, entry: ScheduleEntry) => {
     const start = timetable.slots.findIndex((slot) => slot.id === entry.slotId);
     const first = timetable.slots[start];
     const last = timetable.slots[Math.min(start + entry.span - 1, timetable.slots.length - 1)];
@@ -259,7 +261,7 @@ const timeLabel = (timetable: ScheduleTimetable, entry: ScheduleEntry) => {
     return `${first.start}–${last.end}`;
 };
 
-const toLessonView = (timetable: ScheduleTimetable, { entry, dates }: FilteredEntry): ScheduleLessonView => {
+export const toLessonView = (timetable: ScheduleTimetable, { entry, dates }: FilteredEntry): ScheduleLessonView => {
     const subject = timetable.subjects.find((item) => item.id === entry.subjectId);
 
     const badges: string[] = [];

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { ROUTE } from "@/shared/config/path";
 import { scheduleApi } from "./schedule.api";
+import { buildTimetableView } from "./schedule.cycles.utils";
 import {
     emptyEntry,
     emptySubject,
@@ -18,13 +19,13 @@ import {
 } from "./schedule.editor.utils";
 import type { ScheduleEditorSection } from "./schedule.editor.utils";
 import { EMPTY_SCHEDULE_FILTERS } from "./schedule.schema";
-import type { ScheduleEntry, SchedulePeriod, ScheduleSlot, ScheduleSubject, ScheduleTimetable } from "./schedule.schema";
-import { buildScheduleView, todayIso } from "./schedule.utils";
+import type { ScheduleEntry, ScheduleTimetable } from "./schedule.schema";
+import { todayIso } from "./schedule.utils";
 
 type EditorTab = ScheduleEditorSection | "preview";
 type ListKey = "exams" | "credits" | "agreedBy";
-type ItemKey = "slots" | "subjects" | "entries" | "periods";
-type ItemOf<K extends ItemKey> = K extends "slots" ? ScheduleSlot : K extends "subjects" ? ScheduleSubject : K extends "entries" ? ScheduleEntry : SchedulePeriod;
+type ItemKey = "slots" | "subjects" | "entries" | "periods" | "lectures" | "cycles";
+type ItemOf<K extends ItemKey> = ScheduleTimetable[K][number];
 
 const errorMessage = (error: unknown, fallback: string) => (error instanceof Error && error.message ? error.message : fallback);
 
@@ -69,7 +70,7 @@ const useScheduleEditor = (id?: string) => {
     const issues = useMemo(() => validateTimetable(draft), [draft]);
     const conflicts = useMemo(() => findConflicts(draft), [draft]);
     const previewView = useMemo(
-        () => (issues.length === 0 ? buildScheduleView(draft, EMPTY_SCHEDULE_FILTERS, today) : undefined),
+        () => (issues.length === 0 ? buildTimetableView(draft, EMPTY_SCHEDULE_FILTERS, today) : undefined),
         [draft, issues, today],
     );
 
@@ -130,6 +131,18 @@ const useScheduleEditor = (id?: string) => {
     };
     const duplicateEntry = (entry: ScheduleEntry) => addItem("entries", { ...entry, id: newId("e") });
     const addPeriod = () => addItem("periods", { id: newId("p"), kind: "study", label: "", from: "", to: "" });
+    const addLecture = () => {
+        const id = newId("l");
+        addItem("lectures", {
+            id, subjectId: draft.subjects[0]?.id ?? "", start: "", end: "", dates: [], groupIds: [], remote: false,
+        });
+        return id;
+    };
+    const addCycle = () => {
+        const id = newId("c");
+        addItem("cycles", { id, subjectId: draft.subjects[0]?.id ?? "", from: "", to: "", groupIds: [] });
+        return id;
+    };
 
     const save = async () => {
         if (issues.length > 0) {
@@ -179,6 +192,8 @@ const useScheduleEditor = (id?: string) => {
         addSubject,
         addEntry,
         addPeriod,
+        addLecture,
+        addCycle,
         duplicateEntry,
         updateItem,
         removeItem,

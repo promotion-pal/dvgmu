@@ -12,7 +12,7 @@ export default function ScheduleEditorPage() {
     return (
         <CommonWrapper
             title={editor.isEditing ? "Редактирование расписания" : "Новое расписание"}
-            description="Заполните разделы по порядку: данные, сетка времени, предметы, занятия. Во вкладке «Предпросмотр» видно, как расписание будет выглядеть."
+            description="Заполните разделы расписания и проверьте результат во вкладке «Предпросмотр»."
             action={
                 <div className="flex items-center gap-2">
                     <Button asChild variant="outline">
