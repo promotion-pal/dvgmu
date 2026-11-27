@@ -176,7 +176,7 @@ export function ScheduleCalendar({ schedule, staff = false, showAudience = staff
                                 <Button type="button" size="icon-sm" variant="outline" aria-label="Предыдущий период" disabled={range.from <= semester.start} onClick={() => selectPeriod(mode, offsetDate(date, -step))}>
                                     <ChevronLeftIcon />
                                 </Button>
-                                <strong className="whitespace-nowrap text-sm tabular-nums">
+                                <strong className={cn("whitespace-nowrap text-sm tabular-nums", mode === "day" && "min-w-[24ch]")}>
                                     {mode === "day" ? dateLabel(date) : formatRange(range.from, range.to)}
                                 </strong>
                                 <Button type="button" size="icon-sm" variant="outline" aria-label="Следующий период" disabled={range.to >= semester.end} onClick={() => selectPeriod(mode, offsetDate(date, step))}>
