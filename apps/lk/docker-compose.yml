@@ -1,6 +1,9 @@
+name: dvgmu
+
 services:
-  dvgmu_lk:
-    container_name: dvgmu_lk
+  dvgmu:
+    image: dvgmu:latest
+    container_name: dvgmu
     build:
       context: ../..
       dockerfile: apps/lk/Dockerfile
