@@ -55,8 +55,11 @@ export const resolveDateRange = (filters: ScheduleFilters) => {
     return from <= to ? { from, to } : { from: to, to: from };
 };
 
-const periodOn = (timetable: ScheduleTimetable, iso: string) =>
-    timetable.periods.find((period) => iso >= period.from && iso <= period.to);
+const isOutsideStudy = (timetable: ScheduleTimetable, iso: string) =>
+    timetable.periods.some((period) => period.kind !== "study" && iso >= period.from && iso <= period.to);
+
+const isStudyDay = (timetable: ScheduleTimetable, iso: string) =>
+    iso >= timetable.semester.start && iso <= timetable.semester.end && !isOutsideStudy(timetable, iso);
 
 /* ───────────── text ───────────── */
 
@@ -93,33 +96,35 @@ export const formatGroups = (groupIds: string[]) => {
 
 /* ───────────── filtering ───────────── */
 
-/** Does a lesson actually take place on this calendar day? */
-const occursOn = (entry: ScheduleEntry, iso: string, timetable: ScheduleTimetable) => {
-    if (entry.dates) return entry.dates.includes(iso);
-    if (isoWeekday(iso) !== entry.weekday) return false;
-    if (periodOn(timetable, iso)?.kind !== "study") return false;
-    return entry.weeks === "every" || weekParity(iso, timetable.semester.start) === entry.weeks;
-};
-
 interface FilteredEntry {
     entry: ScheduleEntry;
-    /** The dates to show for a by-date lesson — narrowed to the chosen range. */
     dates?: string[];
 }
 
 export const filterEntries = (timetable: ScheduleTimetable, filters: ScheduleFilters): FilteredEntry[] => {
     const range = resolveDateRange(filters);
-    const days = range ? datesBetween(range.from, range.to) : null;
+    const days = range ? datesBetween(range.from, range.to) : [];
+    const selectedDays = new Set(days);
+    const studyDays = new Map<number, Record<ScheduleEntry["weeks"], string[]>>();
+    for (const day of days) {
+        if (!isStudyDay(timetable, day)) continue;
+        const weekday = isoWeekday(day);
+        const byWeek = studyDays.get(weekday) ?? { every: [], numerator: [], denominator: [] };
+        byWeek.every.push(day);
+        byWeek[weekParity(day, timetable.semester.start)].push(day);
+        studyDays.set(weekday, byWeek);
+    }
 
     return timetable.entries.flatMap((entry): FilteredEntry[] => {
         if (filters.weekdays.length > 0 && !filters.weekdays.includes(entry.weekday)) return [];
         if (filters.subjectIds.length > 0 && !filters.subjectIds.includes(entry.subjectId)) return [];
         if (filters.groupId && !entry.groupIds.includes(filters.groupId)) return [];
-        if (!days) return [{ entry, dates: entry.dates }];
+        if (!range) return [{ entry, dates: entry.dates }];
 
-        const matching = days.filter((day) => occursOn(entry, day, timetable));
-        if (matching.length === 0) return [];
-        return [{ entry, dates: entry.dates ? matching : undefined }];
+        const dates = entry.dates?.length
+            ? [...new Set(entry.dates.filter((day) => selectedDays.has(day)))].sort()
+            : studyDays.get(entry.weekday)?.[entry.weeks];
+        return dates?.length ? [{ entry, dates }] : [];
     });
 };
 
@@ -127,9 +132,8 @@ export const filterEntries = (timetable: ScheduleTimetable, filters: ScheduleFil
 export const describeEmpty = (timetable: ScheduleTimetable, filters: ScheduleFilters) => {
     const range = resolveDateRange(filters);
     if (range) {
-        const period = periodOn(timetable, range.from);
-        if (range.from === range.to && period && period.kind !== "study") {
-            return `${formatDate(range.from)} — ${period.label.toLowerCase()}, занятий нет`;
+        if (range.from === range.to && isOutsideStudy(timetable, range.from)) {
+            return `${formatDate(range.from)} — регулярных занятий нет`;
         }
         const { start, end } = timetable.semester;
         if (range.to < start || range.from > end) {
@@ -281,7 +285,7 @@ const toLessonView = (timetable: ScheduleTimetable, { entry, dates }: FilteredEn
         meta,
         badges,
         location: entry.room,
-        dates: dates?.map(formatDayMonth).join(" · "),
+        dates: entry.dates?.length ? dates?.map(formatDayMonth).join(" · ") : undefined,
     };
 };
 
@@ -298,16 +302,15 @@ const contiguousRuns = (indexes: number[]) => {
 
 const weekdaysOf = (items: FilteredEntry[]) => [...new Set(items.map(({ entry }) => entry.weekday))].sort((a, b) => a - b);
 
-/** When the range is short enough to list, the actual calendar dates of a weekday inside it. */
-const sectionSubtitle = (timetable: ScheduleTimetable, filters: ScheduleFilters, weekday: number) => {
-    const range = resolveDateRange(filters);
-    if (!range) return undefined;
-
-    const dates = datesBetween(range.from, range.to).filter(
-        (day) => isoWeekday(day) === weekday && periodOn(timetable, day)?.kind === "study",
-    );
-    if (dates.length === 0 || dates.length > 6) return undefined;
-    return dates.map(formatDayMonth).join(" · ");
+const sectionSubtitle = (items: FilteredEntry[]) => {
+    const dates = new Set<string>();
+    for (const item of items) {
+        for (const day of item.dates ?? []) {
+            dates.add(day);
+            if (dates.size > 6) return undefined;
+        }
+    }
+    return dates.size ? [...dates].sort().map(formatDayMonth).join(" · ") : undefined;
 };
 
 export const buildGridSections = (
@@ -321,8 +324,9 @@ export const buildGridSections = (
 
     return weekdaysOf(items).map((weekday) => {
         const cells = new Map<string, ScheduleGridPlacement>();
+        const dayItems = items.filter(({ entry }) => entry.weekday === weekday);
 
-        for (const item of items.filter(({ entry }) => entry.weekday === weekday)) {
+        for (const item of dayItems) {
             const { entry } = item;
             const indexes = entry.groupIds.map((group) => columnIds.indexOf(group)).filter((index) => index >= 0);
 
@@ -355,7 +359,7 @@ export const buildGridSections = (
         return {
             id: `day-${weekday}`,
             title: WEEKDAY_LABEL[weekday],
-            subtitle: sectionSubtitle(timetable, filters, weekday),
+            subtitle: resolveDateRange(filters) ? sectionSubtitle(dayItems) : undefined,
             slots,
             placements,
         };
@@ -389,7 +393,7 @@ export const buildAgendaSections = (
         return {
             id: `day-${weekday}`,
             title: WEEKDAY_LABEL[weekday],
-            subtitle: sectionSubtitle(timetable, filters, weekday),
+            subtitle: resolveDateRange(filters) ? sectionSubtitle(sorted) : undefined,
             items: groups,
         };
     });

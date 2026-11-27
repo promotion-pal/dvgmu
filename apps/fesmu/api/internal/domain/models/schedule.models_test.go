@@ -65,6 +65,12 @@ func TestScheduleValidateRejects(t *testing.T) {
 		"bad starts at":        {func(t *entity.ScheduleTimetable) { t.Entries[0].StartsAt = "25:00" }, "начала"},
 		"period reversed":      {func(t *entity.ScheduleTimetable) { t.Periods[0].To = "2026-08-01" }, "раньше"},
 		"period without kind":  {func(t *entity.ScheduleTimetable) { t.Periods[0].Kind = 0 }, "тип"},
+		"periods share a date": {func(t *entity.ScheduleTimetable) {
+			t.Periods = append([]*entity.SchedulePeriod{{
+				Id: "p2", Kind: enum.SchedulePeriodKind_SCHEDULE_PERIOD_KIND_SESSION,
+				Label: "Сессия", From: "2026-12-20", To: "2026-12-31",
+			}}, t.Periods...)
+		}, "пересекаются"},
 	}
 
 	for name, tc := range cases {

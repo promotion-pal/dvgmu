@@ -151,11 +151,26 @@ export const validateTimetable = (t: ScheduleTimetable): ScheduleIssue[] => {
         if (entry.startsAt && !CLOCK.test(entry.startsAt)) add("entries", `${label}: время начала в формате ЧЧ:ММ`);
     });
 
-    t.periods.forEach((period, index) => {
+    const ranges = t.periods.flatMap((period, index) => {
         if (!period.label.trim()) add("periods", `Период ${index + 1}: укажите название`);
-        if (!ISO_DATE.test(period.from) || !ISO_DATE.test(period.to)) add("periods", `Период ${index + 1}: укажите даты`);
-        else if (period.to < period.from) add("periods", `Период ${index + 1} заканчивается раньше, чем начинается`);
+        if (!ISO_DATE.test(period.from) || !ISO_DATE.test(period.to)) {
+            add("periods", `Период ${index + 1}: укажите даты`);
+        } else if (period.to < period.from) {
+            add("periods", `Период ${index + 1} заканчивается раньше, чем начинается`);
+        } else {
+            return [{ ...period, number: index + 1 }];
+        }
+        return [];
     });
+    ranges.sort((a, b) => a.from.localeCompare(b.from));
+    for (let index = 1; index < ranges.length; index++) {
+        const previous = ranges[index - 1];
+        const period = ranges[index];
+        if (period.from <= previous.to) {
+            add("periods", `Периоды ${previous.number} и ${period.number} пересекаются`);
+            break;
+        }
+    }
 
     return issues;
 };

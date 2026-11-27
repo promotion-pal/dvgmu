@@ -3,6 +3,7 @@ package models
 import (
 	"fmt"
 	"regexp"
+	"sort"
 	"strings"
 	"time"
 
@@ -273,6 +274,11 @@ func scheduleValidateEntries(
 }
 
 func scheduleValidatePeriods(list []*entity.SchedulePeriod) error {
+	type periodRange struct {
+		number   int
+		from, to time.Time
+	}
+	periods := make([]periodRange, 0, len(list))
 	for i, p := range list {
 		n := i + 1
 		if strings.TrimSpace(p.GetLabel()) == "" {
@@ -291,6 +297,13 @@ func scheduleValidatePeriods(list []*entity.SchedulePeriod) error {
 		}
 		if to.Before(from) {
 			return scheduleInvalid("период №%d заканчивается раньше, чем начинается", n)
+		}
+		periods = append(periods, periodRange{n, from, to})
+	}
+	sort.SliceStable(periods, func(i, j int) bool { return periods[i].from.Before(periods[j].from) })
+	for i := 1; i < len(periods); i++ {
+		if !periods[i].from.After(periods[i-1].to) {
+			return scheduleInvalid("периоды №%d и №%d пересекаются", periods[i-1].number, periods[i].number)
 		}
 	}
 	return nil
