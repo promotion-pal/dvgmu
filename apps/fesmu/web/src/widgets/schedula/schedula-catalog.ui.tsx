@@ -1,7 +1,8 @@
-import { useState, type FormEvent, type ReactNode } from "react";
+import { useState, type ComponentProps, type FormEvent, type ReactNode } from "react";
 import { ConnectError } from "@connectrpc/connect";
 import type { Catalog } from "@fesmu/contract/schedula/entity/schedule.entity_pb";
 import type { PeriodType } from "@fesmu/contract/schedula/enum/schedule.enum_pb";
+import { ChevronDownIcon } from "lucide-react";
 import { Button } from "@/shared/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/shared/ui/dialog";
 import { Input } from "@/shared/ui/input";
@@ -64,10 +65,10 @@ export function SchedulaCatalog({ catalog, onClose, onSaved }: { catalog?: Catal
     return <Dialog open onOpenChange={(open) => { if (!open && !busy) onClose(); }}>
         <DialogContent>
             <DialogHeader><DialogTitle>Справочники</DialogTitle></DialogHeader>
-            <Field label="Раздел"><select className={selectStyle} value={kind} disabled={busy}
+            <Field label="Раздел"><CatalogSelect value={kind} disabled={busy}
                 onChange={(event) => { setKind(event.target.value as Kind); setError(""); }}>
                 {Object.entries(kinds).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
-            </select></Field>
+            </CatalogSelect></Field>
             <form key={kind} onSubmit={submit}>
                 <fieldset disabled={busy} className="space-y-3">
                     {kind !== "holiday" && kind !== "travel" && <Field label="Код записи"><Input name="id" required maxLength={128} /></Field>}
@@ -91,9 +92,9 @@ export function SchedulaCatalog({ catalog, onClose, onSaved }: { catalog?: Catal
                     </>}
                     {kind === "period" && <>
                         <Field label="Семестр"><ResourceSelect name="term" rows={catalog?.terms} /></Field>
-                        <Field label="Тип периода"><select name="periodType" className={selectStyle} required>
+                        <Field label="Тип периода"><CatalogSelect name="periodType" required>
                             {Object.entries(periodTypes).slice(1).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
-                        </select></Field>
+                        </CatalogSelect></Field>
                         <Field label="Группа"><Input name="group" required /></Field>
                         <Field label="Подгруппа"><Input name="subgroup" /></Field>
                         <Field label="Курс"><Input name="course" type="number" min={1} max={6} required /></Field>
@@ -121,10 +122,15 @@ function Field({ label, children }: { label: string; children: ReactNode }) {
 }
 
 function ResourceSelect({ name, rows }: { name: string; rows?: { id: string; name: string }[] }) {
-    return <select name={name} className={selectStyle} required>
+    return <CatalogSelect name={name} required>
         <option value="">Выберите запись</option>
         {rows?.map((item) => <option value={item.id} key={item.id}>{item.name}</option>)}
-    </select>;
+    </CatalogSelect>;
 }
 
-const selectStyle = "h-9 w-full rounded-md border bg-background px-2 text-sm";
+function CatalogSelect(props: ComponentProps<"select">) {
+    return <span className="relative block">
+        <select className="h-9 w-full appearance-none rounded-md border border-input bg-background pr-8 pl-2.5 text-sm shadow-xs focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none disabled:opacity-50" {...props} />
+        <ChevronDownIcon aria-hidden="true" className="pointer-events-none absolute right-2 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+    </span>;
+}
