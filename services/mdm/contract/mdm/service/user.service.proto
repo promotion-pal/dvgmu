@@ -11,6 +11,7 @@ import "google/protobuf/timestamp.proto";
 service UserService {
   rpc UserFetch(UserFetchRequest) returns (UserFetchResponse);
   rpc UserFetchByID(UserFetchByIDRequest) returns (UserFetchByIDResponse);
+  rpc UserFetchByEmail(UserFetchByEmailRequest) returns (UserFetchByEmailResponse);
   rpc UserCreate(UserCreateRequest) returns (UserCreateResponse);
   rpc UserUpdate(UserUpdateRequest) returns (UserUpdateResponse);
   rpc UserRolesSet(UserRolesSetRequest) returns (UserRolesSetResponse);
@@ -21,6 +22,9 @@ message UserFetchResponse { repeated contract.entity.User users = 1; }
 
 message UserFetchByIDRequest { int64 id = 1; }
 message UserFetchByIDResponse { contract.entity.User user = 1; }
+
+message UserFetchByEmailRequest { string email = 1; }
+message UserFetchByEmailResponse { contract.entity.User user = 1; }
 
 message UserCreateRequest {
   string first_name = 1;

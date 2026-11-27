@@ -10,6 +10,7 @@ import (
 type UserRepository interface {
 	UserFetch(context.Context) ([]models.User, error)
 	UserByID(context.Context, int64) (*models.User, error)
+	UserByEmail(context.Context, string) (*models.User, error)
 	UserCreate(context.Context, *models.User) error
 	UserUpdate(context.Context, *models.User) error
 	UserRolesSet(context.Context, int64, []models.UserRole) (*models.User, error)
@@ -47,6 +48,13 @@ func (s *UserService) FetchByID(ctx context.Context, id int64) (*models.User, er
 		return nil, models.ErrUserNotFound
 	}
 	return s.repository.UserByID(ctx, id)
+}
+
+func (s *UserService) FetchByEmail(ctx context.Context, email string) (*models.User, error) {
+	if email == "" {
+		return nil, models.ErrUserNotFound
+	}
+	return s.repository.UserByEmail(ctx, email)
 }
 
 func (s *UserService) Create(ctx context.Context, params models.UserCreateParams) (*models.User, error) {

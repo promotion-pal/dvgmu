@@ -54,6 +54,17 @@ func (c *UserController) UserFetchByID(ctx context.Context, req *connect.Request
 	return connect.NewResponse(&servicepb.UserFetchByIDResponse{User: user.ToProto()}), nil
 }
 
+func (c *UserController) UserFetchByEmail(ctx context.Context, req *connect.Request[servicepb.UserFetchByEmailRequest]) (*connect.Response[servicepb.UserFetchByEmailResponse], error) {
+	if err := c.authorizeInternal(req.Header()); err != nil {
+		return nil, err
+	}
+	user, err := c.service.FetchByEmail(ctx, req.Msg.GetEmail())
+	if err != nil {
+		return nil, userError(err)
+	}
+	return connect.NewResponse(&servicepb.UserFetchByEmailResponse{User: user.ToProto()}), nil
+}
+
 func (c *UserController) UserCreate(ctx context.Context, req *connect.Request[servicepb.UserCreateRequest]) (*connect.Response[servicepb.UserCreateResponse], error) {
 	if err := c.authorize(req.Header(), 0, true, false); err != nil {
 		return nil, err
@@ -109,6 +120,14 @@ func (c *UserController) authorize(header http.Header, targetUserID int64, admin
 	}
 	if adminOnly && !admin || targetUserID > 0 && targetUserID != userID && !admin {
 		return connect.NewError(connect.CodePermissionDenied, errors.New("not allowed to access this user"))
+	}
+	return nil
+}
+
+func (c *UserController) authorizeInternal(header http.Header) error {
+	internal := header.Get("X-Internal-Service-Token")
+	if c.internalServiceToken == "" || subtle.ConstantTimeCompare([]byte(internal), []byte(c.internalServiceToken)) != 1 {
+		return connect.NewError(connect.CodeUnauthenticated, errors.New("internal service identity required"))
 	}
 	return nil
 }

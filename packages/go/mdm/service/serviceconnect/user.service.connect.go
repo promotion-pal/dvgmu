@@ -38,6 +38,9 @@ const (
 	// UserServiceUserFetchByIDProcedure is the fully-qualified name of the UserService's UserFetchByID
 	// RPC.
 	UserServiceUserFetchByIDProcedure = "/contract.service.UserService/UserFetchByID"
+	// UserServiceUserFetchByEmailProcedure is the fully-qualified name of the UserService's
+	// UserFetchByEmail RPC.
+	UserServiceUserFetchByEmailProcedure = "/contract.service.UserService/UserFetchByEmail"
 	// UserServiceUserCreateProcedure is the fully-qualified name of the UserService's UserCreate RPC.
 	UserServiceUserCreateProcedure = "/contract.service.UserService/UserCreate"
 	// UserServiceUserUpdateProcedure is the fully-qualified name of the UserService's UserUpdate RPC.
@@ -51,6 +54,7 @@ const (
 type UserServiceClient interface {
 	UserFetch(context.Context, *connect.Request[service.UserFetchRequest]) (*connect.Response[service.UserFetchResponse], error)
 	UserFetchByID(context.Context, *connect.Request[service.UserFetchByIDRequest]) (*connect.Response[service.UserFetchByIDResponse], error)
+	UserFetchByEmail(context.Context, *connect.Request[service.UserFetchByEmailRequest]) (*connect.Response[service.UserFetchByEmailResponse], error)
 	UserCreate(context.Context, *connect.Request[service.UserCreateRequest]) (*connect.Response[service.UserCreateResponse], error)
 	UserUpdate(context.Context, *connect.Request[service.UserUpdateRequest]) (*connect.Response[service.UserUpdateResponse], error)
 	UserRolesSet(context.Context, *connect.Request[service.UserRolesSetRequest]) (*connect.Response[service.UserRolesSetResponse], error)
@@ -79,6 +83,12 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(userServiceMethods.ByName("UserFetchByID")),
 			connect.WithClientOptions(opts...),
 		),
+		userFetchByEmail: connect.NewClient[service.UserFetchByEmailRequest, service.UserFetchByEmailResponse](
+			httpClient,
+			baseURL+UserServiceUserFetchByEmailProcedure,
+			connect.WithSchema(userServiceMethods.ByName("UserFetchByEmail")),
+			connect.WithClientOptions(opts...),
+		),
 		userCreate: connect.NewClient[service.UserCreateRequest, service.UserCreateResponse](
 			httpClient,
 			baseURL+UserServiceUserCreateProcedure,
@@ -102,11 +112,12 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 
 // userServiceClient implements UserServiceClient.
 type userServiceClient struct {
-	userFetch     *connect.Client[service.UserFetchRequest, service.UserFetchResponse]
-	userFetchByID *connect.Client[service.UserFetchByIDRequest, service.UserFetchByIDResponse]
-	userCreate    *connect.Client[service.UserCreateRequest, service.UserCreateResponse]
-	userUpdate    *connect.Client[service.UserUpdateRequest, service.UserUpdateResponse]
-	userRolesSet  *connect.Client[service.UserRolesSetRequest, service.UserRolesSetResponse]
+	userFetch        *connect.Client[service.UserFetchRequest, service.UserFetchResponse]
+	userFetchByID    *connect.Client[service.UserFetchByIDRequest, service.UserFetchByIDResponse]
+	userFetchByEmail *connect.Client[service.UserFetchByEmailRequest, service.UserFetchByEmailResponse]
+	userCreate       *connect.Client[service.UserCreateRequest, service.UserCreateResponse]
+	userUpdate       *connect.Client[service.UserUpdateRequest, service.UserUpdateResponse]
+	userRolesSet     *connect.Client[service.UserRolesSetRequest, service.UserRolesSetResponse]
 }
 
 // UserFetch calls contract.service.UserService.UserFetch.
@@ -117,6 +128,11 @@ func (c *userServiceClient) UserFetch(ctx context.Context, req *connect.Request[
 // UserFetchByID calls contract.service.UserService.UserFetchByID.
 func (c *userServiceClient) UserFetchByID(ctx context.Context, req *connect.Request[service.UserFetchByIDRequest]) (*connect.Response[service.UserFetchByIDResponse], error) {
 	return c.userFetchByID.CallUnary(ctx, req)
+}
+
+// UserFetchByEmail calls contract.service.UserService.UserFetchByEmail.
+func (c *userServiceClient) UserFetchByEmail(ctx context.Context, req *connect.Request[service.UserFetchByEmailRequest]) (*connect.Response[service.UserFetchByEmailResponse], error) {
+	return c.userFetchByEmail.CallUnary(ctx, req)
 }
 
 // UserCreate calls contract.service.UserService.UserCreate.
@@ -138,6 +154,7 @@ func (c *userServiceClient) UserRolesSet(ctx context.Context, req *connect.Reque
 type UserServiceHandler interface {
 	UserFetch(context.Context, *connect.Request[service.UserFetchRequest]) (*connect.Response[service.UserFetchResponse], error)
 	UserFetchByID(context.Context, *connect.Request[service.UserFetchByIDRequest]) (*connect.Response[service.UserFetchByIDResponse], error)
+	UserFetchByEmail(context.Context, *connect.Request[service.UserFetchByEmailRequest]) (*connect.Response[service.UserFetchByEmailResponse], error)
 	UserCreate(context.Context, *connect.Request[service.UserCreateRequest]) (*connect.Response[service.UserCreateResponse], error)
 	UserUpdate(context.Context, *connect.Request[service.UserUpdateRequest]) (*connect.Response[service.UserUpdateResponse], error)
 	UserRolesSet(context.Context, *connect.Request[service.UserRolesSetRequest]) (*connect.Response[service.UserRolesSetResponse], error)
@@ -160,6 +177,12 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 		UserServiceUserFetchByIDProcedure,
 		svc.UserFetchByID,
 		connect.WithSchema(userServiceMethods.ByName("UserFetchByID")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceUserFetchByEmailHandler := connect.NewUnaryHandler(
+		UserServiceUserFetchByEmailProcedure,
+		svc.UserFetchByEmail,
+		connect.WithSchema(userServiceMethods.ByName("UserFetchByEmail")),
 		connect.WithHandlerOptions(opts...),
 	)
 	userServiceUserCreateHandler := connect.NewUnaryHandler(
@@ -186,6 +209,8 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 			userServiceUserFetchHandler.ServeHTTP(w, r)
 		case UserServiceUserFetchByIDProcedure:
 			userServiceUserFetchByIDHandler.ServeHTTP(w, r)
+		case UserServiceUserFetchByEmailProcedure:
+			userServiceUserFetchByEmailHandler.ServeHTTP(w, r)
 		case UserServiceUserCreateProcedure:
 			userServiceUserCreateHandler.ServeHTTP(w, r)
 		case UserServiceUserUpdateProcedure:
@@ -207,6 +232,10 @@ func (UnimplementedUserServiceHandler) UserFetch(context.Context, *connect.Reque
 
 func (UnimplementedUserServiceHandler) UserFetchByID(context.Context, *connect.Request[service.UserFetchByIDRequest]) (*connect.Response[service.UserFetchByIDResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.UserFetchByID is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) UserFetchByEmail(context.Context, *connect.Request[service.UserFetchByEmailRequest]) (*connect.Response[service.UserFetchByEmailResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.UserService.UserFetchByEmail is not implemented"))
 }
 
 func (UnimplementedUserServiceHandler) UserCreate(context.Context, *connect.Request[service.UserCreateRequest]) (*connect.Response[service.UserCreateResponse], error) {

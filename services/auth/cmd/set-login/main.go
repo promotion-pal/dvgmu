@@ -5,7 +5,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"net/mail"
 	"os"
 	"strconv"
 	"strings"
@@ -53,10 +52,8 @@ func main() {
 	if user == nil || user.GetStatus() != mdmenum.UserStatus_USER_STATUS_ACTIVE {
 		fatal(fmt.Errorf("пользователь MDM с ID %d отсутствует или неактивен", userID))
 	}
-	email := strings.ToLower(strings.TrimSpace(user.GetEmail()))
-	address, err := mail.ParseAddress(email)
-	if err != nil || address.Address != email {
-		fatal(fmt.Errorf("у пользователя MDM с ID %d не задан корректный email", userID))
+	if strings.TrimSpace(user.GetEmail()) == "" {
+		fatal(fmt.Errorf("у пользователя MDM с ID %d не задан email для входа", userID))
 	}
 
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
@@ -84,13 +81,12 @@ func main() {
 	identity := &storage.AuthIdentity{
 		MDMUserID:    userID,
 		Subject:      fmt.Sprintf("auth-user-%d", userID),
-		Email:        email,
 		PasswordHash: string(passwordHash),
 	}
 	if err := storage.NewIdentityStore(db).Upsert(context.Background(), identity); err != nil {
 		fatal(fmt.Errorf("сохранить учетные данные: %w", err))
 	}
-	fmt.Printf("Данные для входа сохранены: MDM ID=%d, email=%s\n", userID, email)
+	fmt.Printf("Данные для входа сохранены: MDM ID=%d\n", userID)
 }
 
 func readInput(reader *bufio.Reader) ([2]string, error) {

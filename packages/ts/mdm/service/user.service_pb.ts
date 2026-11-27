@@ -16,7 +16,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file mdm/service/user.service.proto.
  */
 export const file_mdm_service_user_service: GenFile = /*@__PURE__*/
-  fileDesc("Ch5tZG0vc2VydmljZS91c2VyLnNlcnZpY2UucHJvdG8SEGNvbnRyYWN0LnNlcnZpY2UiEgoQVXNlckZldGNoUmVxdWVzdCI5ChFVc2VyRmV0Y2hSZXNwb25zZRIkCgV1c2VycxgBIAMoCzIVLmNvbnRyYWN0LmVudGl0eS5Vc2VyIiIKFFVzZXJGZXRjaEJ5SURSZXF1ZXN0EgoKAmlkGAEgASgDIjwKFVVzZXJGZXRjaEJ5SURSZXNwb25zZRIjCgR1c2VyGAEgASgLMhUuY29udHJhY3QuZW50aXR5LlVzZXIizwEKEVVzZXJDcmVhdGVSZXF1ZXN0EhIKCmZpcnN0X25hbWUYASABKAkSEQoJbGFzdF9uYW1lGAIgASgJEhcKCnBhdHJvbnltaWMYAyABKAlIAIgBARINCgVlbWFpbBgEIAEoCRISCgVwaG9uZRgFIAEoCUgBiAEBEjEKCGJpcnRoZGF5GAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgCiAEBQg0KC19wYXRyb255bWljQggKBl9waG9uZUILCglfYmlydGhkYXkiOQoSVXNlckNyZWF0ZVJlc3BvbnNlEiMKBHVzZXIYASABKAsyFS5jb250cmFjdC5lbnRpdHkuVXNlciKGAgoRVXNlclVwZGF0ZVJlcXVlc3QSCgoCaWQYASABKAMSEgoKZmlyc3RfbmFtZRgCIAEoCRIRCglsYXN0X25hbWUYAyABKAkSFwoKcGF0cm9ueW1pYxgEIAEoCUgAiAEBEg0KBWVtYWlsGAUgASgJEhIKBXBob25lGAYgASgJSAGIAQESMQoIYmlydGhkYXkYByABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSAKIAQESKQoGc3RhdHVzGAggASgOMhkuY29udHJhY3QuZW51bS5Vc2VyU3RhdHVzQg0KC19wYXRyb255bWljQggKBl9waG9uZUILCglfYmlydGhkYXkiOQoSVXNlclVwZGF0ZVJlc3BvbnNlEiMKBHVzZXIYASABKAsyFS5jb250cmFjdC5lbnRpdHkuVXNlciJJChNVc2VyUm9sZXNTZXRSZXF1ZXN0EgoKAmlkGAEgASgDEiYKBXJvbGVzGAIgAygOMhcuY29udHJhY3QuZW51bS5Vc2VyUm9sZSI7ChRVc2VyUm9sZXNTZXRSZXNwb25zZRIjCgR1c2VyGAEgASgLMhUuY29udHJhY3QuZW50aXR5LlVzZXIy1gMKC1VzZXJTZXJ2aWNlElQKCVVzZXJGZXRjaBIiLmNvbnRyYWN0LnNlcnZpY2UuVXNlckZldGNoUmVxdWVzdBojLmNvbnRyYWN0LnNlcnZpY2UuVXNlckZldGNoUmVzcG9uc2USYAoNVXNlckZldGNoQnlJRBImLmNvbnRyYWN0LnNlcnZpY2UuVXNlckZldGNoQnlJRFJlcXVlc3QaJy5jb250cmFjdC5zZXJ2aWNlLlVzZXJGZXRjaEJ5SURSZXNwb25zZRJXCgpVc2VyQ3JlYXRlEiMuY29udHJhY3Quc2VydmljZS5Vc2VyQ3JlYXRlUmVxdWVzdBokLmNvbnRyYWN0LnNlcnZpY2UuVXNlckNyZWF0ZVJlc3BvbnNlElcKClVzZXJVcGRhdGUSIy5jb250cmFjdC5zZXJ2aWNlLlVzZXJVcGRhdGVSZXF1ZXN0GiQuY29udHJhY3Quc2VydmljZS5Vc2VyVXBkYXRlUmVzcG9uc2USXQoMVXNlclJvbGVzU2V0EiUuY29udHJhY3Quc2VydmljZS5Vc2VyUm9sZXNTZXRSZXF1ZXN0GiYuY29udHJhY3Quc2VydmljZS5Vc2VyUm9sZXNTZXRSZXNwb25zZUKlAQoUY29tLmNvbnRyYWN0LnNlcnZpY2VCEFVzZXJTZXJ2aWNlUHJvdG9QAVoaZmVzbXUvY29udHJhY3QvbWRtL3NlcnZpY2WiAgNDU1iqAhBDb250cmFjdC5TZXJ2aWNlygIQQ29udHJhY3RcU2VydmljZeICHENvbnRyYWN0XFNlcnZpY2VcR1BCTWV0YWRhdGHqAhFDb250cmFjdDo6U2VydmljZWIGcHJvdG8z", [file_mdm_entity_user_entity, file_mdm_enum_user_enum, file_google_protobuf_timestamp]);
+  fileDesc("Ch5tZG0vc2VydmljZS91c2VyLnNlcnZpY2UucHJvdG8SEGNvbnRyYWN0LnNlcnZpY2UiEgoQVXNlckZldGNoUmVxdWVzdCI5ChFVc2VyRmV0Y2hSZXNwb25zZRIkCgV1c2VycxgBIAMoCzIVLmNvbnRyYWN0LmVudGl0eS5Vc2VyIiIKFFVzZXJGZXRjaEJ5SURSZXF1ZXN0EgoKAmlkGAEgASgDIjwKFVVzZXJGZXRjaEJ5SURSZXNwb25zZRIjCgR1c2VyGAEgASgLMhUuY29udHJhY3QuZW50aXR5LlVzZXIiKAoXVXNlckZldGNoQnlFbWFpbFJlcXVlc3QSDQoFZW1haWwYASABKAkiPwoYVXNlckZldGNoQnlFbWFpbFJlc3BvbnNlEiMKBHVzZXIYASABKAsyFS5jb250cmFjdC5lbnRpdHkuVXNlciLPAQoRVXNlckNyZWF0ZVJlcXVlc3QSEgoKZmlyc3RfbmFtZRgBIAEoCRIRCglsYXN0X25hbWUYAiABKAkSFwoKcGF0cm9ueW1pYxgDIAEoCUgAiAEBEg0KBWVtYWlsGAQgASgJEhIKBXBob25lGAUgASgJSAGIAQESMQoIYmlydGhkYXkYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSAKIAQFCDQoLX3BhdHJvbnltaWNCCAoGX3Bob25lQgsKCV9iaXJ0aGRheSI5ChJVc2VyQ3JlYXRlUmVzcG9uc2USIwoEdXNlchgBIAEoCzIVLmNvbnRyYWN0LmVudGl0eS5Vc2VyIoYCChFVc2VyVXBkYXRlUmVxdWVzdBIKCgJpZBgBIAEoAxISCgpmaXJzdF9uYW1lGAIgASgJEhEKCWxhc3RfbmFtZRgDIAEoCRIXCgpwYXRyb255bWljGAQgASgJSACIAQESDQoFZW1haWwYBSABKAkSEgoFcGhvbmUYBiABKAlIAYgBARIxCghiaXJ0aGRheRgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBIAogBARIpCgZzdGF0dXMYCCABKA4yGS5jb250cmFjdC5lbnVtLlVzZXJTdGF0dXNCDQoLX3BhdHJvbnltaWNCCAoGX3Bob25lQgsKCV9iaXJ0aGRheSI5ChJVc2VyVXBkYXRlUmVzcG9uc2USIwoEdXNlchgBIAEoCzIVLmNvbnRyYWN0LmVudGl0eS5Vc2VyIkkKE1VzZXJSb2xlc1NldFJlcXVlc3QSCgoCaWQYASABKAMSJgoFcm9sZXMYAiADKA4yFy5jb250cmFjdC5lbnVtLlVzZXJSb2xlIjsKFFVzZXJSb2xlc1NldFJlc3BvbnNlEiMKBHVzZXIYASABKAsyFS5jb250cmFjdC5lbnRpdHkuVXNlcjLBBAoLVXNlclNlcnZpY2USVAoJVXNlckZldGNoEiIuY29udHJhY3Quc2VydmljZS5Vc2VyRmV0Y2hSZXF1ZXN0GiMuY29udHJhY3Quc2VydmljZS5Vc2VyRmV0Y2hSZXNwb25zZRJgCg1Vc2VyRmV0Y2hCeUlEEiYuY29udHJhY3Quc2VydmljZS5Vc2VyRmV0Y2hCeUlEUmVxdWVzdBonLmNvbnRyYWN0LnNlcnZpY2UuVXNlckZldGNoQnlJRFJlc3BvbnNlEmkKEFVzZXJGZXRjaEJ5RW1haWwSKS5jb250cmFjdC5zZXJ2aWNlLlVzZXJGZXRjaEJ5RW1haWxSZXF1ZXN0GiouY29udHJhY3Quc2VydmljZS5Vc2VyRmV0Y2hCeUVtYWlsUmVzcG9uc2USVwoKVXNlckNyZWF0ZRIjLmNvbnRyYWN0LnNlcnZpY2UuVXNlckNyZWF0ZVJlcXVlc3QaJC5jb250cmFjdC5zZXJ2aWNlLlVzZXJDcmVhdGVSZXNwb25zZRJXCgpVc2VyVXBkYXRlEiMuY29udHJhY3Quc2VydmljZS5Vc2VyVXBkYXRlUmVxdWVzdBokLmNvbnRyYWN0LnNlcnZpY2UuVXNlclVwZGF0ZVJlc3BvbnNlEl0KDFVzZXJSb2xlc1NldBIlLmNvbnRyYWN0LnNlcnZpY2UuVXNlclJvbGVzU2V0UmVxdWVzdBomLmNvbnRyYWN0LnNlcnZpY2UuVXNlclJvbGVzU2V0UmVzcG9uc2VCpQEKFGNvbS5jb250cmFjdC5zZXJ2aWNlQhBVc2VyU2VydmljZVByb3RvUAFaGmZlc211L2NvbnRyYWN0L21kbS9zZXJ2aWNlogIDQ1NYqgIQQ29udHJhY3QuU2VydmljZcoCEENvbnRyYWN0XFNlcnZpY2XiAhxDb250cmFjdFxTZXJ2aWNlXEdQQk1ldGFkYXRh6gIRQ29udHJhY3Q6OlNlcnZpY2ViBnByb3RvMw", [file_mdm_entity_user_entity, file_mdm_enum_user_enum, file_google_protobuf_timestamp]);
 
 /**
  * @generated from message contract.service.UserFetchRequest
@@ -83,6 +83,40 @@ export const UserFetchByIDResponseSchema: GenMessage<UserFetchByIDResponse> = /*
   messageDesc(file_mdm_service_user_service, 3);
 
 /**
+ * @generated from message contract.service.UserFetchByEmailRequest
+ */
+export type UserFetchByEmailRequest = Message<"contract.service.UserFetchByEmailRequest"> & {
+  /**
+   * @generated from field: string email = 1;
+   */
+  email: string;
+};
+
+/**
+ * Describes the message contract.service.UserFetchByEmailRequest.
+ * Use `create(UserFetchByEmailRequestSchema)` to create a new message.
+ */
+export const UserFetchByEmailRequestSchema: GenMessage<UserFetchByEmailRequest> = /*@__PURE__*/
+  messageDesc(file_mdm_service_user_service, 4);
+
+/**
+ * @generated from message contract.service.UserFetchByEmailResponse
+ */
+export type UserFetchByEmailResponse = Message<"contract.service.UserFetchByEmailResponse"> & {
+  /**
+   * @generated from field: contract.entity.User user = 1;
+   */
+  user?: User | undefined;
+};
+
+/**
+ * Describes the message contract.service.UserFetchByEmailResponse.
+ * Use `create(UserFetchByEmailResponseSchema)` to create a new message.
+ */
+export const UserFetchByEmailResponseSchema: GenMessage<UserFetchByEmailResponse> = /*@__PURE__*/
+  messageDesc(file_mdm_service_user_service, 5);
+
+/**
  * @generated from message contract.service.UserCreateRequest
  */
 export type UserCreateRequest = Message<"contract.service.UserCreateRequest"> & {
@@ -122,7 +156,7 @@ export type UserCreateRequest = Message<"contract.service.UserCreateRequest"> & 
  * Use `create(UserCreateRequestSchema)` to create a new message.
  */
 export const UserCreateRequestSchema: GenMessage<UserCreateRequest> = /*@__PURE__*/
-  messageDesc(file_mdm_service_user_service, 4);
+  messageDesc(file_mdm_service_user_service, 6);
 
 /**
  * @generated from message contract.service.UserCreateResponse
@@ -139,7 +173,7 @@ export type UserCreateResponse = Message<"contract.service.UserCreateResponse"> 
  * Use `create(UserCreateResponseSchema)` to create a new message.
  */
 export const UserCreateResponseSchema: GenMessage<UserCreateResponse> = /*@__PURE__*/
-  messageDesc(file_mdm_service_user_service, 5);
+  messageDesc(file_mdm_service_user_service, 7);
 
 /**
  * @generated from message contract.service.UserUpdateRequest
@@ -191,7 +225,7 @@ export type UserUpdateRequest = Message<"contract.service.UserUpdateRequest"> & 
  * Use `create(UserUpdateRequestSchema)` to create a new message.
  */
 export const UserUpdateRequestSchema: GenMessage<UserUpdateRequest> = /*@__PURE__*/
-  messageDesc(file_mdm_service_user_service, 6);
+  messageDesc(file_mdm_service_user_service, 8);
 
 /**
  * @generated from message contract.service.UserUpdateResponse
@@ -208,7 +242,7 @@ export type UserUpdateResponse = Message<"contract.service.UserUpdateResponse"> 
  * Use `create(UserUpdateResponseSchema)` to create a new message.
  */
 export const UserUpdateResponseSchema: GenMessage<UserUpdateResponse> = /*@__PURE__*/
-  messageDesc(file_mdm_service_user_service, 7);
+  messageDesc(file_mdm_service_user_service, 9);
 
 /**
  * @generated from message contract.service.UserRolesSetRequest
@@ -230,7 +264,7 @@ export type UserRolesSetRequest = Message<"contract.service.UserRolesSetRequest"
  * Use `create(UserRolesSetRequestSchema)` to create a new message.
  */
 export const UserRolesSetRequestSchema: GenMessage<UserRolesSetRequest> = /*@__PURE__*/
-  messageDesc(file_mdm_service_user_service, 8);
+  messageDesc(file_mdm_service_user_service, 10);
 
 /**
  * @generated from message contract.service.UserRolesSetResponse
@@ -247,7 +281,7 @@ export type UserRolesSetResponse = Message<"contract.service.UserRolesSetRespons
  * Use `create(UserRolesSetResponseSchema)` to create a new message.
  */
 export const UserRolesSetResponseSchema: GenMessage<UserRolesSetResponse> = /*@__PURE__*/
-  messageDesc(file_mdm_service_user_service, 9);
+  messageDesc(file_mdm_service_user_service, 11);
 
 /**
  * @generated from service contract.service.UserService
@@ -268,6 +302,14 @@ export const UserService: GenService<{
     methodKind: "unary";
     input: typeof UserFetchByIDRequestSchema;
     output: typeof UserFetchByIDResponseSchema;
+  },
+  /**
+   * @generated from rpc contract.service.UserService.UserFetchByEmail
+   */
+  userFetchByEmail: {
+    methodKind: "unary";
+    input: typeof UserFetchByEmailRequestSchema;
+    output: typeof UserFetchByEmailResponseSchema;
   },
   /**
    * @generated from rpc contract.service.UserService.UserCreate

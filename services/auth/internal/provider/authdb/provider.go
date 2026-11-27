@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"strings"
 
+	"connectrpc.com/connect"
+
 	"dvgmu/auth/internal/auth"
 	"dvgmu/auth/internal/storage"
 	"golang.org/x/crypto/bcrypt"
@@ -15,6 +17,11 @@ import (
 
 type Provider struct {
 	identities *storage.IdentityStore
+	users      UserResolver
+}
+
+type UserResolver interface {
+	ResolveEmail(context.Context, string) (int64, bool, error)
 }
 
 type loginRequest struct {
@@ -22,8 +29,8 @@ type loginRequest struct {
 	Password string `json:"password"`
 }
 
-func New(identities *storage.IdentityStore) *Provider {
-	return &Provider{identities: identities}
+func New(identities *storage.IdentityStore, users UserResolver) *Provider {
+	return &Provider{identities: identities, users: users}
 }
 
 func (p *Provider) RegisterRoutes(mux *http.ServeMux, complete auth.CompleteLogin) {
@@ -36,13 +43,23 @@ func (p *Provider) RegisterRoutes(mux *http.ServeMux, complete auth.CompleteLogi
 			http.Error(w, "email and password are required", http.StatusBadRequest)
 			return
 		}
-		identity, err := p.identities.ByEmail(r.Context(), input.Email)
+		userID, active, err := p.users.ResolveEmail(r.Context(), input.Email)
+		if (err != nil && connect.CodeOf(err) == connect.CodeNotFound) || (err == nil && !active) {
+			http.Error(w, "invalid credentials", http.StatusUnauthorized)
+			return
+		}
+		if err != nil {
+			slog.Error("MDM email lookup failed", slog.String("error", err.Error()))
+			http.Error(w, "identity provider unavailable", http.StatusServiceUnavailable)
+			return
+		}
+		identity, err := p.identities.ByMDMUserID(r.Context(), userID)
 		if errors.Is(err, storage.ErrIdentityNotFound) || err == nil && bcrypt.CompareHashAndPassword([]byte(identity.PasswordHash), []byte(input.Password)) != nil {
 			http.Error(w, "invalid credentials", http.StatusUnauthorized)
 			return
 		}
 		if err != nil {
-			slog.Error("Auth identity lookup failed", slog.String("error", err.Error()))
+			slog.Error("Auth credential lookup failed", slog.String("error", err.Error()))
 			http.Error(w, "identity provider unavailable", http.StatusServiceUnavailable)
 			return
 		}

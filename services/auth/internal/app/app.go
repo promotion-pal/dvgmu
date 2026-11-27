@@ -47,9 +47,10 @@ func New(cfg config.Config, log *slog.Logger) (*App, error) {
 	}
 
 	identities := storage.NewIdentityStore(db)
-	provider := authdb.New(identities)
-	mapper := authdb.NewMapper(identities)
 	mdm := serviceconnect.NewUserServiceClient(&http.Client{Timeout: 5 * time.Second}, cfg.MDMURL)
+	userClient := mdmUserClient{client: mdm, internalToken: cfg.MDMInternalToken}
+	provider := authdb.New(identities, userClient)
+	mapper := authdb.NewMapper(identities)
 	core, err := auth.New(auth.Config{
 		Port:         cfg.Port,
 		JWTSecret:    cfg.JWTSecret,
@@ -84,6 +85,20 @@ func (a *App) Stop() {
 type mdmUserClient struct {
 	client        serviceconnect.UserServiceClient
 	internalToken string
+}
+
+func (c mdmUserClient) ResolveEmail(ctx context.Context, email string) (int64, bool, error) {
+	request := connect.NewRequest(&mdmservice.UserFetchByEmailRequest{Email: email})
+	request.Header().Set("X-Internal-Service-Token", c.internalToken)
+	response, err := c.client.UserFetchByEmail(ctx, request)
+	if err != nil {
+		return 0, false, err
+	}
+	user := response.Msg.GetUser()
+	if user == nil {
+		return 0, false, fmt.Errorf("MDM returned no user")
+	}
+	return user.GetId(), user.GetStatus() == mdmenum.UserStatus_USER_STATUS_ACTIVE, nil
 }
 
 func (c mdmUserClient) UserFetchByID(ctx context.Context, id int64) (*auth.User, error) {

@@ -192,6 +192,94 @@ func (x *UserFetchByIDResponse) GetUser() *entity.User {
 	return nil
 }
 
+type UserFetchByEmailRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserFetchByEmailRequest) Reset() {
+	*x = UserFetchByEmailRequest{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserFetchByEmailRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserFetchByEmailRequest) ProtoMessage() {}
+
+func (x *UserFetchByEmailRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserFetchByEmailRequest.ProtoReflect.Descriptor instead.
+func (*UserFetchByEmailRequest) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *UserFetchByEmailRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+type UserFetchByEmailResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	User          *entity.User           `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserFetchByEmailResponse) Reset() {
+	*x = UserFetchByEmailResponse{}
+	mi := &file_mdm_service_user_service_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserFetchByEmailResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserFetchByEmailResponse) ProtoMessage() {}
+
+func (x *UserFetchByEmailResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_mdm_service_user_service_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserFetchByEmailResponse.ProtoReflect.Descriptor instead.
+func (*UserFetchByEmailResponse) Descriptor() ([]byte, []int) {
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *UserFetchByEmailResponse) GetUser() *entity.User {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
 type UserCreateRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	FirstName     string                 `protobuf:"bytes,1,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"`
@@ -206,7 +294,7 @@ type UserCreateRequest struct {
 
 func (x *UserCreateRequest) Reset() {
 	*x = UserCreateRequest{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[4]
+	mi := &file_mdm_service_user_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -218,7 +306,7 @@ func (x *UserCreateRequest) String() string {
 func (*UserCreateRequest) ProtoMessage() {}
 
 func (x *UserCreateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[4]
+	mi := &file_mdm_service_user_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -231,7 +319,7 @@ func (x *UserCreateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserCreateRequest.ProtoReflect.Descriptor instead.
 func (*UserCreateRequest) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{4}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *UserCreateRequest) GetFirstName() string {
@@ -285,7 +373,7 @@ type UserCreateResponse struct {
 
 func (x *UserCreateResponse) Reset() {
 	*x = UserCreateResponse{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[5]
+	mi := &file_mdm_service_user_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -297,7 +385,7 @@ func (x *UserCreateResponse) String() string {
 func (*UserCreateResponse) ProtoMessage() {}
 
 func (x *UserCreateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[5]
+	mi := &file_mdm_service_user_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -310,7 +398,7 @@ func (x *UserCreateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserCreateResponse.ProtoReflect.Descriptor instead.
 func (*UserCreateResponse) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{5}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *UserCreateResponse) GetUser() *entity.User {
@@ -336,7 +424,7 @@ type UserUpdateRequest struct {
 
 func (x *UserUpdateRequest) Reset() {
 	*x = UserUpdateRequest{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[6]
+	mi := &file_mdm_service_user_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -348,7 +436,7 @@ func (x *UserUpdateRequest) String() string {
 func (*UserUpdateRequest) ProtoMessage() {}
 
 func (x *UserUpdateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[6]
+	mi := &file_mdm_service_user_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -361,7 +449,7 @@ func (x *UserUpdateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserUpdateRequest.ProtoReflect.Descriptor instead.
 func (*UserUpdateRequest) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{6}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *UserUpdateRequest) GetId() int64 {
@@ -429,7 +517,7 @@ type UserUpdateResponse struct {
 
 func (x *UserUpdateResponse) Reset() {
 	*x = UserUpdateResponse{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[7]
+	mi := &file_mdm_service_user_service_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -441,7 +529,7 @@ func (x *UserUpdateResponse) String() string {
 func (*UserUpdateResponse) ProtoMessage() {}
 
 func (x *UserUpdateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[7]
+	mi := &file_mdm_service_user_service_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -454,7 +542,7 @@ func (x *UserUpdateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserUpdateResponse.ProtoReflect.Descriptor instead.
 func (*UserUpdateResponse) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{7}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *UserUpdateResponse) GetUser() *entity.User {
@@ -474,7 +562,7 @@ type UserRolesSetRequest struct {
 
 func (x *UserRolesSetRequest) Reset() {
 	*x = UserRolesSetRequest{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[8]
+	mi := &file_mdm_service_user_service_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -486,7 +574,7 @@ func (x *UserRolesSetRequest) String() string {
 func (*UserRolesSetRequest) ProtoMessage() {}
 
 func (x *UserRolesSetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[8]
+	mi := &file_mdm_service_user_service_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -499,7 +587,7 @@ func (x *UserRolesSetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserRolesSetRequest.ProtoReflect.Descriptor instead.
 func (*UserRolesSetRequest) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{8}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *UserRolesSetRequest) GetId() int64 {
@@ -525,7 +613,7 @@ type UserRolesSetResponse struct {
 
 func (x *UserRolesSetResponse) Reset() {
 	*x = UserRolesSetResponse{}
-	mi := &file_mdm_service_user_service_proto_msgTypes[9]
+	mi := &file_mdm_service_user_service_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -537,7 +625,7 @@ func (x *UserRolesSetResponse) String() string {
 func (*UserRolesSetResponse) ProtoMessage() {}
 
 func (x *UserRolesSetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_mdm_service_user_service_proto_msgTypes[9]
+	mi := &file_mdm_service_user_service_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -550,7 +638,7 @@ func (x *UserRolesSetResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserRolesSetResponse.ProtoReflect.Descriptor instead.
 func (*UserRolesSetResponse) Descriptor() ([]byte, []int) {
-	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{9}
+	return file_mdm_service_user_service_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *UserRolesSetResponse) GetUser() *entity.User {
@@ -571,6 +659,10 @@ const file_mdm_service_user_service_proto_rawDesc = "" +
 	"\x14UserFetchByIDRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\"B\n" +
 	"\x15UserFetchByIDResponse\x12)\n" +
+	"\x04user\x18\x01 \x01(\v2\x15.contract.entity.UserR\x04user\"/\n" +
+	"\x17UserFetchByEmailRequest\x12\x14\n" +
+	"\x05email\x18\x01 \x01(\tR\x05email\"E\n" +
+	"\x18UserFetchByEmailResponse\x12)\n" +
 	"\x04user\x18\x01 \x01(\v2\x15.contract.entity.UserR\x04user\"\x88\x02\n" +
 	"\x11UserCreateRequest\x12\x1d\n" +
 	"\n" +
@@ -608,10 +700,11 @@ const file_mdm_service_user_service_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12-\n" +
 	"\x05roles\x18\x02 \x03(\x0e2\x17.contract.enum.UserRoleR\x05roles\"A\n" +
 	"\x14UserRolesSetResponse\x12)\n" +
-	"\x04user\x18\x01 \x01(\v2\x15.contract.entity.UserR\x04user2\xd6\x03\n" +
+	"\x04user\x18\x01 \x01(\v2\x15.contract.entity.UserR\x04user2\xc1\x04\n" +
 	"\vUserService\x12T\n" +
 	"\tUserFetch\x12\".contract.service.UserFetchRequest\x1a#.contract.service.UserFetchResponse\x12`\n" +
-	"\rUserFetchByID\x12&.contract.service.UserFetchByIDRequest\x1a'.contract.service.UserFetchByIDResponse\x12W\n" +
+	"\rUserFetchByID\x12&.contract.service.UserFetchByIDRequest\x1a'.contract.service.UserFetchByIDResponse\x12i\n" +
+	"\x10UserFetchByEmail\x12).contract.service.UserFetchByEmailRequest\x1a*.contract.service.UserFetchByEmailResponse\x12W\n" +
 	"\n" +
 	"UserCreate\x12#.contract.service.UserCreateRequest\x1a$.contract.service.UserCreateResponse\x12W\n" +
 	"\n" +
@@ -631,48 +724,53 @@ func file_mdm_service_user_service_proto_rawDescGZIP() []byte {
 	return file_mdm_service_user_service_proto_rawDescData
 }
 
-var file_mdm_service_user_service_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_mdm_service_user_service_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_mdm_service_user_service_proto_goTypes = []any{
-	(*UserFetchRequest)(nil),      // 0: contract.service.UserFetchRequest
-	(*UserFetchResponse)(nil),     // 1: contract.service.UserFetchResponse
-	(*UserFetchByIDRequest)(nil),  // 2: contract.service.UserFetchByIDRequest
-	(*UserFetchByIDResponse)(nil), // 3: contract.service.UserFetchByIDResponse
-	(*UserCreateRequest)(nil),     // 4: contract.service.UserCreateRequest
-	(*UserCreateResponse)(nil),    // 5: contract.service.UserCreateResponse
-	(*UserUpdateRequest)(nil),     // 6: contract.service.UserUpdateRequest
-	(*UserUpdateResponse)(nil),    // 7: contract.service.UserUpdateResponse
-	(*UserRolesSetRequest)(nil),   // 8: contract.service.UserRolesSetRequest
-	(*UserRolesSetResponse)(nil),  // 9: contract.service.UserRolesSetResponse
-	(*entity.User)(nil),           // 10: contract.entity.User
-	(*timestamppb.Timestamp)(nil), // 11: google.protobuf.Timestamp
-	(enum.UserStatus)(0),          // 12: contract.enum.UserStatus
-	(enum.UserRole)(0),            // 13: contract.enum.UserRole
+	(*UserFetchRequest)(nil),         // 0: contract.service.UserFetchRequest
+	(*UserFetchResponse)(nil),        // 1: contract.service.UserFetchResponse
+	(*UserFetchByIDRequest)(nil),     // 2: contract.service.UserFetchByIDRequest
+	(*UserFetchByIDResponse)(nil),    // 3: contract.service.UserFetchByIDResponse
+	(*UserFetchByEmailRequest)(nil),  // 4: contract.service.UserFetchByEmailRequest
+	(*UserFetchByEmailResponse)(nil), // 5: contract.service.UserFetchByEmailResponse
+	(*UserCreateRequest)(nil),        // 6: contract.service.UserCreateRequest
+	(*UserCreateResponse)(nil),       // 7: contract.service.UserCreateResponse
+	(*UserUpdateRequest)(nil),        // 8: contract.service.UserUpdateRequest
+	(*UserUpdateResponse)(nil),       // 9: contract.service.UserUpdateResponse
+	(*UserRolesSetRequest)(nil),      // 10: contract.service.UserRolesSetRequest
+	(*UserRolesSetResponse)(nil),     // 11: contract.service.UserRolesSetResponse
+	(*entity.User)(nil),              // 12: contract.entity.User
+	(*timestamppb.Timestamp)(nil),    // 13: google.protobuf.Timestamp
+	(enum.UserStatus)(0),             // 14: contract.enum.UserStatus
+	(enum.UserRole)(0),               // 15: contract.enum.UserRole
 }
 var file_mdm_service_user_service_proto_depIdxs = []int32{
-	10, // 0: contract.service.UserFetchResponse.users:type_name -> contract.entity.User
-	10, // 1: contract.service.UserFetchByIDResponse.user:type_name -> contract.entity.User
-	11, // 2: contract.service.UserCreateRequest.birthday:type_name -> google.protobuf.Timestamp
-	10, // 3: contract.service.UserCreateResponse.user:type_name -> contract.entity.User
-	11, // 4: contract.service.UserUpdateRequest.birthday:type_name -> google.protobuf.Timestamp
-	12, // 5: contract.service.UserUpdateRequest.status:type_name -> contract.enum.UserStatus
-	10, // 6: contract.service.UserUpdateResponse.user:type_name -> contract.entity.User
-	13, // 7: contract.service.UserRolesSetRequest.roles:type_name -> contract.enum.UserRole
-	10, // 8: contract.service.UserRolesSetResponse.user:type_name -> contract.entity.User
-	0,  // 9: contract.service.UserService.UserFetch:input_type -> contract.service.UserFetchRequest
-	2,  // 10: contract.service.UserService.UserFetchByID:input_type -> contract.service.UserFetchByIDRequest
-	4,  // 11: contract.service.UserService.UserCreate:input_type -> contract.service.UserCreateRequest
-	6,  // 12: contract.service.UserService.UserUpdate:input_type -> contract.service.UserUpdateRequest
-	8,  // 13: contract.service.UserService.UserRolesSet:input_type -> contract.service.UserRolesSetRequest
-	1,  // 14: contract.service.UserService.UserFetch:output_type -> contract.service.UserFetchResponse
-	3,  // 15: contract.service.UserService.UserFetchByID:output_type -> contract.service.UserFetchByIDResponse
-	5,  // 16: contract.service.UserService.UserCreate:output_type -> contract.service.UserCreateResponse
-	7,  // 17: contract.service.UserService.UserUpdate:output_type -> contract.service.UserUpdateResponse
-	9,  // 18: contract.service.UserService.UserRolesSet:output_type -> contract.service.UserRolesSetResponse
-	14, // [14:19] is the sub-list for method output_type
-	9,  // [9:14] is the sub-list for method input_type
-	9,  // [9:9] is the sub-list for extension type_name
-	9,  // [9:9] is the sub-list for extension extendee
-	0,  // [0:9] is the sub-list for field type_name
+	12, // 0: contract.service.UserFetchResponse.users:type_name -> contract.entity.User
+	12, // 1: contract.service.UserFetchByIDResponse.user:type_name -> contract.entity.User
+	12, // 2: contract.service.UserFetchByEmailResponse.user:type_name -> contract.entity.User
+	13, // 3: contract.service.UserCreateRequest.birthday:type_name -> google.protobuf.Timestamp
+	12, // 4: contract.service.UserCreateResponse.user:type_name -> contract.entity.User
+	13, // 5: contract.service.UserUpdateRequest.birthday:type_name -> google.protobuf.Timestamp
+	14, // 6: contract.service.UserUpdateRequest.status:type_name -> contract.enum.UserStatus
+	12, // 7: contract.service.UserUpdateResponse.user:type_name -> contract.entity.User
+	15, // 8: contract.service.UserRolesSetRequest.roles:type_name -> contract.enum.UserRole
+	12, // 9: contract.service.UserRolesSetResponse.user:type_name -> contract.entity.User
+	0,  // 10: contract.service.UserService.UserFetch:input_type -> contract.service.UserFetchRequest
+	2,  // 11: contract.service.UserService.UserFetchByID:input_type -> contract.service.UserFetchByIDRequest
+	4,  // 12: contract.service.UserService.UserFetchByEmail:input_type -> contract.service.UserFetchByEmailRequest
+	6,  // 13: contract.service.UserService.UserCreate:input_type -> contract.service.UserCreateRequest
+	8,  // 14: contract.service.UserService.UserUpdate:input_type -> contract.service.UserUpdateRequest
+	10, // 15: contract.service.UserService.UserRolesSet:input_type -> contract.service.UserRolesSetRequest
+	1,  // 16: contract.service.UserService.UserFetch:output_type -> contract.service.UserFetchResponse
+	3,  // 17: contract.service.UserService.UserFetchByID:output_type -> contract.service.UserFetchByIDResponse
+	5,  // 18: contract.service.UserService.UserFetchByEmail:output_type -> contract.service.UserFetchByEmailResponse
+	7,  // 19: contract.service.UserService.UserCreate:output_type -> contract.service.UserCreateResponse
+	9,  // 20: contract.service.UserService.UserUpdate:output_type -> contract.service.UserUpdateResponse
+	11, // 21: contract.service.UserService.UserRolesSet:output_type -> contract.service.UserRolesSetResponse
+	16, // [16:22] is the sub-list for method output_type
+	10, // [10:16] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_mdm_service_user_service_proto_init() }
@@ -680,15 +778,15 @@ func file_mdm_service_user_service_proto_init() {
 	if File_mdm_service_user_service_proto != nil {
 		return
 	}
-	file_mdm_service_user_service_proto_msgTypes[4].OneofWrappers = []any{}
 	file_mdm_service_user_service_proto_msgTypes[6].OneofWrappers = []any{}
+	file_mdm_service_user_service_proto_msgTypes[8].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_mdm_service_user_service_proto_rawDesc), len(file_mdm_service_user_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   10,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

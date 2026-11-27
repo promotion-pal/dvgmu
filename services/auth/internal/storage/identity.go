@@ -3,7 +3,6 @@ package storage
 import (
 	"context"
 	"errors"
-	"strings"
 	"time"
 
 	"gorm.io/gorm"
@@ -15,7 +14,6 @@ type AuthIdentity struct {
 	ID           int64     `gorm:"primaryKey;autoIncrement"`
 	MDMUserID    int64     `gorm:"not null;uniqueIndex"`
 	Subject      string    `gorm:"size:128;not null;uniqueIndex"`
-	Email        string    `gorm:"size:320;not null;uniqueIndex"`
 	PasswordHash string    `gorm:"not null"`
 	CreatedAt    time.Time `gorm:"not null"`
 	UpdatedAt    time.Time `gorm:"not null"`
@@ -29,9 +27,9 @@ type IdentityStore struct {
 
 func NewIdentityStore(db *gorm.DB) *IdentityStore { return &IdentityStore{db: db} }
 
-func (s *IdentityStore) ByEmail(ctx context.Context, email string) (*AuthIdentity, error) {
+func (s *IdentityStore) ByMDMUserID(ctx context.Context, userID int64) (*AuthIdentity, error) {
 	var identity AuthIdentity
-	err := s.db.WithContext(ctx).Where("email = ?", strings.ToLower(strings.TrimSpace(email))).First(&identity).Error
+	err := s.db.WithContext(ctx).Where("mdm_user_id = ?", userID).First(&identity).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, ErrIdentityNotFound
 	}
@@ -58,7 +56,6 @@ func (s *IdentityStore) Upsert(ctx context.Context, identity *AuthIdentity) erro
 	}
 	return s.db.WithContext(ctx).Model(&current).Updates(map[string]any{
 		"subject":       identity.Subject,
-		"email":         identity.Email,
 		"password_hash": identity.PasswordHash,
 	}).Error
 }

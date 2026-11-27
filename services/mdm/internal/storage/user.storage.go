@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
 	"time"
 
 	"dvgmu/mdm/internal/domain/models"
@@ -35,6 +36,18 @@ func (s *UserStorage) UserByID(ctx context.Context, id int64) (*models.User, err
 	}
 	if err != nil {
 		return nil, fmt.Errorf("fetch user %d: %w", id, err)
+	}
+	return &user, nil
+}
+
+func (s *UserStorage) UserByEmail(ctx context.Context, email string) (*models.User, error) {
+	var user models.User
+	err := s.userQuery(ctx).Where("LOWER(email) = ?", strings.ToLower(strings.TrimSpace(email))).First(&user).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, models.ErrUserNotFound
+	}
+	if err != nil {
+		return nil, fmt.Errorf("fetch user by email: %w", err)
 	}
 	return &user, nil
 }
