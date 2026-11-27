@@ -31,12 +31,7 @@ func main() {
 	if err != nil || userID <= 0 {
 		fatal(fmt.Errorf("ID пользователя MDM должен быть положительным числом"))
 	}
-	email := strings.ToLower(strings.TrimSpace(values[1]))
-	address, err := mail.ParseAddress(email)
-	if err != nil || address.Address != email {
-		fatal(fmt.Errorf("укажите корректный email"))
-	}
-	password := values[2]
+	password := values[1]
 	if len(password) < 8 {
 		fatal(fmt.Errorf("пароль должен содержать не менее 8 символов"))
 	}
@@ -51,9 +46,17 @@ func main() {
 	if err != nil {
 		fatal(fmt.Errorf("пользователь MDM с ID %d недоступен: %w", userID, err))
 	}
+	if mdmResponse == nil || mdmResponse.Msg == nil {
+		fatal(fmt.Errorf("MDM вернул пустой ответ для пользователя ID %d", userID))
+	}
 	user := mdmResponse.Msg.GetUser()
 	if user == nil || user.GetStatus() != mdmenum.UserStatus_USER_STATUS_ACTIVE {
 		fatal(fmt.Errorf("пользователь MDM с ID %d отсутствует или неактивен", userID))
+	}
+	email := strings.ToLower(strings.TrimSpace(user.GetEmail()))
+	address, err := mail.ParseAddress(email)
+	if err != nil || address.Address != email {
+		fatal(fmt.Errorf("у пользователя MDM с ID %d не задан корректный email", userID))
 	}
 
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
@@ -90,9 +93,9 @@ func main() {
 	fmt.Printf("Данные для входа сохранены: MDM ID=%d, email=%s\n", userID, email)
 }
 
-func readInput(reader *bufio.Reader) ([3]string, error) {
-	var values [3]string
-	for i, label := range []string{"ID пользователя MDM", "Email", "Пароль"} {
+func readInput(reader *bufio.Reader) ([2]string, error) {
+	var values [2]string
+	for i, label := range []string{"ID пользователя MDM", "Пароль"} {
 		value, err := reader.ReadString('\n')
 		if err != nil && len(value) == 0 {
 			return values, fmt.Errorf("не удалось прочитать %s", label)

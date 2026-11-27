@@ -29,7 +29,7 @@ pnpm install
 | `make prod-down` | Останавливает production сервисы без удаления данных Postgres. |
 | `make lk-prod-up` / `make lk-prod-down` | Отдельно запускает или останавливает LK за Traefik, если backend уже поднят. |
 | `make set-admin` | Интерактивно создаёт первого администратора в новой production-базе MDM; старую базу не использует. |
-| `make set-login` | Привязывает email и пароль к существующему активному MDM ID в Auth; пароль вводится скрыто и хранится только в виде bcrypt-хэша. |
+| `make set-login` | Задаёт пароль существующему активному MDM ID; email для входа берётся из MDM, пароль вводится скрыто и хранится только в виде bcrypt-хэша в Auth. |
 | `make panel-up` | Запускает Plane локально с публикацией портов 80/443; настройки и секреты — в `apps/panel/plane-app/plane.env`. |
 | `make panel-prod-up` | Запускает Plane за существующим Traefik на `mentor.fesmu.ru`; требует `plane.env`, `plane.prod.env` и внешнюю Docker-сеть `traefik-network`. |
 | `make panel-down` / `make panel-prod-down` | Останавливает локальный или Traefik-вариант Plane, сохраняя Docker volumes. |

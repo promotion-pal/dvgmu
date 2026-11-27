@@ -57,11 +57,10 @@ set-login:
 	@bash -c '\
 		set -euo pipefail; \
 		read -r -p "ID пользователя MDM: " mdm_user_id; \
-		read -r -p "Email для входа: " email; \
 		read -r -s -p "Пароль: " password; printf "\\n"; \
 		read -r -s -p "Повторите пароль: " password_confirmation; printf "\\n"; \
 		if [[ "$$password" != "$$password_confirmation" ]]; then echo "Пароли не совпадают." >&2; exit 1; fi; \
-		printf "%s\\n%s\\n%s\\n" "$$mdm_user_id" "$$email" "$$password" | docker exec -i dvgmu_auth ./auth-set-login; \
+		printf "%s\\n%s\\n" "$$mdm_user_id" "$$password" | docker exec -i dvgmu_auth ./auth-set-login; \
 		unset password password_confirmation'
 
 panel-up:
