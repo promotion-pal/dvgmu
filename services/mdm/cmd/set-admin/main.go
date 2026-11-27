@@ -30,8 +30,14 @@ func main() {
 	reader := bufio.NewReader(os.Stdin)
 	firstName := prompt(reader, "Имя")
 	lastName := prompt(reader, "Фамилия")
+	patronymic := prompt(reader, "Отчество (необязательно)")
 	email := prompt(reader, "Email")
-	user, err := models.NewUser(models.UserCreateParams{FirstName: firstName, LastName: lastName, Email: email})
+	user, err := models.NewUser(models.UserCreateParams{
+		FirstName:  firstName,
+		LastName:   lastName,
+		Patronymic: patronymic,
+		Email:      email,
+	})
 	if err != nil {
 		fatal(fmt.Errorf("проверьте имя, фамилию и email: %w", err))
 	}
