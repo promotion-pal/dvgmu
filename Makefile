@@ -7,7 +7,8 @@ TICKETS_COMPOSE := docker compose -f services/tickets/docker-compose.dev.yml
 MDM_COMPOSE := docker compose -f services/mdm/docker-compose.dev.yml
 AUTH_COMPOSE := docker compose -f services/auth/docker-compose.dev.yml
 GATEWAY_COMPOSE := docker compose -f services/api-gateway/docker-compose.dev.yml
-LK_PROD_COMPOSE := docker compose -f apps/lk/docker-compose.yml
+PROD_COMPOSE := docker compose --env-file .env
+LK_PROD_COMPOSE := $(PROD_COMPOSE) -f apps/lk/docker-compose.yml
 PANEL_COMPOSE := docker compose -f apps/panel/plane-app/docker-compose.yaml --env-file apps/panel/plane-app/plane.env
 PANEL_TRAEFIK_COMPOSE := docker compose -f apps/panel/plane-app/docker-compose.yaml -f apps/panel/plane-app/docker-compose.traefik.yaml --env-file apps/panel/plane-app/plane.env --env-file apps/panel/plane-app/plane.prod.env
 
@@ -29,18 +30,18 @@ dev-stop:
 prod-up:
 	@docker network inspect traefik-network >/dev/null 2>&1 || (echo "External Docker network traefik-network is missing. Start Traefik or create its network first." >&2; exit 1)
 	@docker network inspect dvgmu-backend >/dev/null 2>&1 || docker network create dvgmu-backend
-	@docker compose -f services/mdm/docker-compose.yml up -d --build
-	@docker compose -f services/tickets/docker-compose.yml up -d --build
-	@docker compose -f services/auth/docker-compose.yml up -d --build
-	@docker compose -f services/api-gateway/docker-compose.yml up -d --build
+	@$(PROD_COMPOSE) -f services/mdm/docker-compose.yml up -d --build
+	@$(PROD_COMPOSE) -f services/tickets/docker-compose.yml up -d --build
+	@$(PROD_COMPOSE) -f services/auth/docker-compose.yml up -d --build
+	@$(PROD_COMPOSE) -f services/api-gateway/docker-compose.yml up -d --build
 	@$(LK_PROD_COMPOSE) up -d --build
 
 prod-down:
 	@$(LK_PROD_COMPOSE) down
-	@docker compose -f services/api-gateway/docker-compose.yml down
-	@docker compose -f services/auth/docker-compose.yml down
-	@docker compose -f services/tickets/docker-compose.yml down
-	@docker compose -f services/mdm/docker-compose.yml down
+	@$(PROD_COMPOSE) -f services/api-gateway/docker-compose.yml down
+	@$(PROD_COMPOSE) -f services/auth/docker-compose.yml down
+	@$(PROD_COMPOSE) -f services/tickets/docker-compose.yml down
+	@$(PROD_COMPOSE) -f services/mdm/docker-compose.yml down
 
 lk-prod-up:
 	@docker network inspect traefik-network >/dev/null 2>&1 || (echo "External Docker network traefik-network is missing. Start Traefik or create its network first." >&2; exit 1)
