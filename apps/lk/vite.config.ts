@@ -12,6 +12,9 @@ export default defineConfig(({ mode }) => {
 
   return {
     envDir,
+    preview: {
+      allowedHosts: ['api.core.fesmu.ru'],
+    },
     define: {
       __APP_VERSION__: JSON.stringify(env.VERSION || 'dev'),
     },

@@ -14,13 +14,13 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-network
-      - traefik.http.routers.fesmu-core-app-secure.rule=Host(`${APP_DOMAIN:-api.core.fesmu.ru}`)
-      - traefik.http.routers.fesmu-core-app-secure.priority=1
-      - traefik.http.routers.fesmu-core-app-secure.entrypoints=${TRAEFIK_ENTRYPOINTS:-websecure}
-      - traefik.http.routers.fesmu-core-app-secure.tls=true
-      - traefik.http.routers.fesmu-core-app-secure.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}
-      - traefik.http.routers.fesmu-core-app-secure.service=fesmu-core-app
-      - traefik.http.services.fesmu-core-app.loadbalancer.server.port=80
+      - traefik.http.routers.dvgmu-secure.rule=Host(`${APP_DOMAIN:-api.core.fesmu.ru}`) && !PathPrefix(`/api`)
+      - traefik.http.routers.dvgmu-secure.priority=50
+      - traefik.http.routers.dvgmu-secure.entrypoints=${TRAEFIK_ENTRYPOINTS:-websecure}
+      - traefik.http.routers.dvgmu-secure.tls=true
+      - traefik.http.routers.dvgmu-secure.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}
+      - traefik.http.routers.dvgmu-secure.service=dvgmu
+      - traefik.http.services.dvgmu.loadbalancer.server.port=80
 
 networks:
   traefik-network:
