@@ -32,6 +32,13 @@ test("calendar dates honour parity, semester bounds and explicit lesson dates", 
                 },
             ],
         };
+        const [first, second, ...later] = weekly.slots;
+        const slotIssues = (slots: ScheduleTimetable["slots"]) =>
+            validateTimetable({ ...weekly, slots }).filter(({ section }: { section: string }) => section === "slots");
+        assert.deepEqual(slotIssues([first, { ...second, start: first.end }, ...later]), []);
+        assert.ok(slotIssues([first, { ...second, start: first.start }, ...later]).length > 0);
+        assert.ok(slotIssues([second, first, ...later]).length > 0);
+
         const view = (dateFrom: string, timetable = weekly, dateTo?: string) => buildScheduleView(
             timetable, { subjectIds: [], weekdays: [], dateFrom, dateTo }, "2026-09-07",
         );

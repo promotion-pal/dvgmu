@@ -135,8 +135,12 @@ export const validateTimetable = (t: ScheduleTimetable): ScheduleIssue[] => {
     const weeklySlots = t.format === "weekly" ? t.slots : [];
     if (t.format === "weekly" && weeklySlots.length === 0) add("slots", "Добавьте хотя бы одну пару");
     weeklySlots.forEach((slot, index) => {
+        const previous = weeklySlots[index - 1];
         if (!CLOCK.test(slot.start) || !CLOCK.test(slot.end)) add("slots", `Пара ${index + 1}: укажите время начала и конца`);
         else if (minutes(slot.end) <= minutes(slot.start)) add("slots", `Пара ${index + 1} заканчивается раньше, чем начинается`);
+        else if (previous && CLOCK.test(previous.end) && minutes(slot.start) < minutes(previous.end)) {
+            add("slots", `Пара ${index + 1} начинается раньше окончания пары ${index}`);
+        }
     });
 
     const subjectIds = new Set(t.subjects.map((subject) => subject.id));

@@ -37,6 +37,11 @@ func TestScheduleValidateAcceptsAWellFormedTimetable(t *testing.T) {
 	if err := ScheduleValidate(validTimetable()); err != nil {
 		t.Fatalf("expected valid, got %v", err)
 	}
+	timetable := validTimetable()
+	timetable.Slots[1].Start = timetable.Slots[0].End
+	if err := ScheduleValidate(timetable); err != nil {
+		t.Fatalf("expected adjacent slots to be valid, got %v", err)
+	}
 }
 
 func TestScheduleValidateRejects(t *testing.T) {
@@ -54,6 +59,8 @@ func TestScheduleValidateRejects(t *testing.T) {
 		"no slots":             {func(t *entity.ScheduleTimetable) { t.Slots = nil }, "пару"},
 		"bad slot time":        {func(t *entity.ScheduleTimetable) { t.Slots[0].Start = "8-30" }, "ЧЧ:ММ"},
 		"slot ends first":      {func(t *entity.ScheduleTimetable) { t.Slots[0].End = "08:00" }, "раньше"},
+		"overlapping slots":    {func(t *entity.ScheduleTimetable) { t.Slots[1].Start = "10:00" }, "окончания пары"},
+		"out of order slots":   {func(t *entity.ScheduleTimetable) { t.Slots[0], t.Slots[1] = t.Slots[1], t.Slots[0] }, "окончания пары"},
 		"duplicate subject":    {func(t *entity.ScheduleTimetable) { t.Subjects = append(t.Subjects, t.Subjects[0]) }, "дважды"},
 		"weekday out of range": {func(t *entity.ScheduleTimetable) { t.Entries[0].Weekday = 8 }, "день недели"},
 		"unknown slot":         {func(t *entity.ScheduleTimetable) { t.Entries[0].SlotId = "s9" }, "сетке"},

@@ -184,6 +184,7 @@ func scheduleValidateSlots(slots []*entity.ScheduleSlot) (map[string]int, error)
 		return nil, scheduleInvalid("добавьте хотя бы одну пару в сетку времени")
 	}
 	index := make(map[string]int, len(slots))
+	previousEnd := 0
 	for i, s := range slots {
 		if strings.TrimSpace(s.GetId()) == "" {
 			return nil, scheduleInvalid("пара №%d: пустой идентификатор", i+1)
@@ -194,9 +195,14 @@ func scheduleValidateSlots(slots []*entity.ScheduleSlot) (map[string]int, error)
 		if !scheduleClockRe.MatchString(s.GetStart()) || !scheduleClockRe.MatchString(s.GetEnd()) {
 			return nil, scheduleInvalid("пара №%d: время должно быть в формате ЧЧ:ММ", i+1)
 		}
-		if scheduleMinutes(s.GetEnd()) <= scheduleMinutes(s.GetStart()) {
+		start, end := scheduleMinutes(s.GetStart()), scheduleMinutes(s.GetEnd())
+		if end <= start {
 			return nil, scheduleInvalid("пара №%d заканчивается раньше, чем начинается", i+1)
 		}
+		if start < previousEnd {
+			return nil, scheduleInvalid("пара №%d начинается раньше окончания пары №%d", i+1, i)
+		}
+		previousEnd = end
 		index[s.GetId()] = i
 	}
 	return index, nil
