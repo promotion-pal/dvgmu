@@ -191,6 +191,8 @@ services:
         API_URL: http://localhost:18200
         AUTH_URL: http://localhost:18201
         VERSION: local
+    environment:
+      CALENDAR_API_URL: http://api:4000
     ports: ["127.0.0.1:18300:3000"]
     depends_on: [api]
 
