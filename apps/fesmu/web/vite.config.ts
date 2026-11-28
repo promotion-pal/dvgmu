@@ -2,6 +2,7 @@ import react, { reactCompilerPreset } from '@vitejs/plugin-react'
 import babel from '@rolldown/plugin-babel'
 import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
+import { pathToFileURL } from 'node:url'
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import { defineConfig, loadEnv, type Connect, type Plugin } from 'vite'
 
@@ -20,6 +21,10 @@ function calendarFeed(api: string): Plugin {
         const { serveCalendar } = await server.ssrLoadModule('/server/calendar-feed.ts')
         return { serveCalendar }
       }))
+    },
+    configurePreviewServer(server) {
+      const file = pathToFileURL(path.join(server.config.root, 'dist-server/calendar-feed.js')).href
+      server.middlewares.use(middleware(() => import(file)))
     },
   }
 }
