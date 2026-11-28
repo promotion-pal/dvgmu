@@ -3,9 +3,11 @@ import type { IncomingMessage, ServerResponse } from "node:http";
 import { Code, ConnectError, createClient } from "@connectrpc/connect";
 import { createConnectTransport } from "@connectrpc/connect-web";
 import { ScheduleService } from "@fesmu/contract/fesmu/service/v1/schedule.service_pb";
+import { SchedulaService } from "@fesmu/contract/schedula/service/schedula.service_pb";
+import { EventStatus } from "@fesmu/contract/schedula/enum/schedule.enum_pb";
 import { calendarLessons } from "../src/widgets/schedule/schedule.calendar.utils";
 import { fromMessage } from "../src/widgets/schedule/schedule.message";
-import { offsetDate } from "../src/widgets/schedule/schedule.utils";
+import { offsetDate, todayIso } from "../src/widgets/schedule/schedule.utils";
 
 type FeedEvent = { id: string; name: string; location?: string; start: string; end: string; cancelled?: boolean; allDay?: boolean };
 
@@ -86,8 +88,18 @@ export async function serveCalendar(req: IncomingMessage, res: ServerResponse, a
                 };
             });
         } else {
-            res.writeHead(400).end();
-            return;
+            const today = todayIso();
+            const { events: published } = await createClient(SchedulaService, transport).publicScheduleFetch({
+                filter: { group, dateFrom: offsetDate(today, -30), dateTo: offsetDate(today, 335) },
+            });
+            name = "Расписание ДВГМУ · " + group;
+            events = published.map(event => {
+                const midnight = Date.parse(event.date + "T00:00:00+10:00");
+                const start = midnight + event.startMinute * 60000;
+                return { id: "schedula:" + event.id, name: event.subject?.name || "Занятие", start: stamp(new Date(start)),
+                    end: stamp(new Date(start + event.durationMinutes * 60000)), location: [event.site, event.room, event.address].filter(Boolean).join(", "),
+                    cancelled: event.status === EventStatus.CANCELLED };
+            });
         }
         const body = renderFeed(name, events, modified);
         res.writeHead(200, { "Content-Type": "text/calendar; charset=utf-8", "Cache-Control": "public, max-age=60" });
