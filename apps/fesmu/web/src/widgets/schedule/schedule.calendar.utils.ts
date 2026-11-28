@@ -20,6 +20,7 @@ export const calendarPeriod = (mode: CalendarMode, date: string, semester: Sched
 };
 
 export interface CalendarLesson extends ScheduleLessonView {
+    seriesId: string;
     from: string;
     to: string;
     start?: string;
@@ -47,6 +48,7 @@ export const calendarLessons = (timetable: ScheduleTimetable, filters: ScheduleF
             const lesson = toLessonView(timetable, { entry });
             return (dates ?? []).map((date) => ({
                 ...lesson,
+                seriesId: `weekly:${entry.id}`,
                 id: `weekly:${entry.id}:${date}`,
                 from: date,
                 to: date,
@@ -64,6 +66,7 @@ export const calendarLessons = (timetable: ScheduleTimetable, filters: ScheduleF
                     .filter((date) => date >= period.from && date <= period.to)
                     .map((date) => ({
                         ...subject(lecture.subjectId),
+                        seriesId: `lecture:${lecture.id}`,
                         id: `lecture:${lecture.id}:${date}`,
                         from: date,
                         to: date,
@@ -80,6 +83,7 @@ export const calendarLessons = (timetable: ScheduleTimetable, filters: ScheduleF
                 .filter((cycle) => cycle.from <= period.to && cycle.to >= period.from)
                 .map((cycle) => ({
                     ...subject(cycle.subjectId),
+                    seriesId: `cycle:${cycle.id}`,
                     id: `cycle:${cycle.id}`,
                     from: cycle.from,
                     to: cycle.to,
