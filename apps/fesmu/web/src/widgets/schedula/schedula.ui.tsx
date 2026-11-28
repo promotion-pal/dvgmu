@@ -1,3 +1,4 @@
+import { CalendarSubscription } from "@/shared/components/schedule/calendar-subscription";
 import { useRef, useState, type ReactNode } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { CalendarDaysIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
@@ -174,6 +175,7 @@ export function Schedula({ publicView = false }: { publicView?: boolean }) {
                     </h1>
                 </div>
                 <div className="flex flex-wrap gap-2">
+                    {filter.group && <CalendarSubscription group={filter.group} title={`Группа ${filter.group}`} />}
                     {!publicView && shareUrl && <CommonShareLink url={shareUrl} label="Публичная ссылка" />}
                     {internal?.canSearchSlots && catalog && <Button size="sm" variant="outline" onClick={() => setEditor({ kind: "slots" })}>Подобрать слот</Button>}
                     {internal?.canEditCatalog && catalog && <Button size="sm" variant="outline" onClick={() => setEditor({ kind: "catalog" })}>Справочники</Button>}
