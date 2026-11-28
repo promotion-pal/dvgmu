@@ -1,12 +1,16 @@
-import { useState, type FormEvent, type ReactNode } from "react";
+import { useId, useState, type ComponentProps, type FormEvent, type ReactNode } from "react";
 import { ConnectError } from "@connectrpc/connect";
 import type { Catalog } from "@fesmu/contract/schedula/entity/schedule.entity_pb";
 import type { PeriodType } from "@fesmu/contract/schedula/enum/schedule.enum_pb";
+import { CalendarIcon, ChevronDownIcon } from "lucide-react";
+import { ru } from "react-day-picker/locale";
 import { Button } from "@/shared/ui/button";
+import { Calendar } from "@/shared/ui/calendar";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/shared/ui/dialog";
 import { Input } from "@/shared/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@/shared/ui/popover";
 import { schedulaClient } from "./schedula.api";
-import { periodTypes, readTime } from "./schedula.utils";
+import { periodTypes, readTime, today } from "./schedula.utils";
 
 const kinds = {
     term: "Семестр", subject: "Дисциплина", site: "Корпус или клиническая база", room: "Площадка",
@@ -19,6 +23,9 @@ export function SchedulaCatalog({ catalog, onClose, onSaved }: { catalog?: Catal
     const [kind, setKind] = useState<Kind>("term");
     const [busy, setBusy] = useState(false);
     const [error, setError] = useState("");
+    const hasEndDate = kind === "term" || kind === "period";
+    const hasStartDate = hasEndDate || kind === "holiday" || kind === "booking";
+    const startDateLabel = hasEndDate ? "Дата начала" : "Дата";
     const submit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -27,6 +34,12 @@ export function SchedulaCatalog({ catalog, onClose, onSaved }: { catalog?: Catal
         const name = text("name");
         const dateFrom = text("from");
         const dateTo = text("to");
+        if ((hasStartDate && !dateFrom) || (hasEndDate && !dateTo)) {
+            const missing = !dateFrom ? "from" : "to";
+            setError(`Заполните поле «${missing === "from" ? startDateLabel : "Дата окончания"}».`);
+            event.currentTarget.querySelector<HTMLButtonElement>(`button[data-date-field="${missing}"]`)?.focus();
+            return;
+        }
         const roomId = text("room");
         const dates = { dateFrom, dateTo };
         const payload = {
@@ -64,17 +77,16 @@ export function SchedulaCatalog({ catalog, onClose, onSaved }: { catalog?: Catal
     return <Dialog open onOpenChange={(open) => { if (!open && !busy) onClose(); }}>
         <DialogContent>
             <DialogHeader><DialogTitle>Справочники</DialogTitle></DialogHeader>
-            <Field label="Раздел"><select className={selectStyle} value={kind} disabled={busy}
-                onChange={(event) => { setKind(event.target.value as Kind); setError(""); }}>
-                {Object.entries(kinds).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
-            </select></Field>
-            <form key={kind} onSubmit={submit}>
-                <fieldset disabled={busy} className="space-y-3">
+            <form className="grid gap-3" onSubmit={submit}>
+                <Field label="Раздел"><CatalogSelect value={kind} disabled={busy}
+                    onChange={(event) => { setKind(event.target.value as Kind); setError(""); }}>
+                    {Object.entries(kinds).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
+                </CatalogSelect></Field>
+                <fieldset key={kind} disabled={busy} className="grid gap-3">
                     {kind !== "holiday" && kind !== "travel" && <Field label="Код записи"><Input name="id" required maxLength={128} /></Field>}
                     {kind !== "period" && kind !== "travel" && <Field label="Название"><Input name="name" required /></Field>}
-                    {(kind === "term" || kind === "period" || kind === "holiday" || kind === "booking") &&
-                        <Field label={kind === "holiday" || kind === "booking" ? "Дата" : "Дата начала"}><Input name="from" type="date" required /></Field>}
-                    {(kind === "term" || kind === "period") && <Field label="Дата окончания"><Input name="to" type="date" required /></Field>}
+                    {hasStartDate && <CatalogDateField label={startDateLabel} name="from" />}
+                    {hasEndDate && <CatalogDateField label="Дата окончания" name="to" />}
                     {kind === "site" && <>
                         <Field label="Адрес"><Input name="address" required /></Field>
                         <Field label="Точка сбора"><Input name="point" /></Field>
@@ -91,9 +103,9 @@ export function SchedulaCatalog({ catalog, onClose, onSaved }: { catalog?: Catal
                     </>}
                     {kind === "period" && <>
                         <Field label="Семестр"><ResourceSelect name="term" rows={catalog?.terms} /></Field>
-                        <Field label="Тип периода"><select name="periodType" className={selectStyle} required>
+                        <Field label="Тип периода"><CatalogSelect name="periodType" required>
                             {Object.entries(periodTypes).slice(1).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
-                        </select></Field>
+                        </CatalogSelect></Field>
                         <Field label="Группа"><Input name="group" required /></Field>
                         <Field label="Подгруппа"><Input name="subgroup" /></Field>
                         <Field label="Курс"><Input name="course" type="number" min={1} max={6} required /></Field>
@@ -109,7 +121,7 @@ export function SchedulaCatalog({ catalog, onClose, onSaved }: { catalog?: Catal
                         <label className="flex items-center gap-2"><input name="cancelled" type="checkbox" />Бронь отменена</label>
                     </>}
                     {error && <p role="alert" className="text-destructive">{error}</p>}
-                    <Button type="submit" disabled={busy}>Сохранить запись</Button>
+                    <Button type="submit" className="justify-self-start" disabled={busy}>Сохранить запись</Button>
                 </fieldset>
             </form>
         </DialogContent>
@@ -121,10 +133,43 @@ function Field({ label, children }: { label: string; children: ReactNode }) {
 }
 
 function ResourceSelect({ name, rows }: { name: string; rows?: { id: string; name: string }[] }) {
-    return <select name={name} className={selectStyle} required>
+    return <CatalogSelect name={name} required>
         <option value="">Выберите запись</option>
         {rows?.map((item) => <option value={item.id} key={item.id}>{item.name}</option>)}
-    </select>;
+    </CatalogSelect>;
 }
 
-const selectStyle = "h-9 w-full rounded-md border bg-background px-2 text-sm";
+function CatalogSelect(props: ComponentProps<"select">) {
+    return <span className="relative block">
+        <select className="h-9 w-full appearance-none rounded-md border border-input bg-background pr-8 pl-2.5 text-sm shadow-xs focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none disabled:opacity-50" {...props} />
+        <ChevronDownIcon aria-hidden="true" className="pointer-events-none absolute right-2 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+    </span>;
+}
+
+const formDate = new Intl.DateTimeFormat("sv-SE");
+const displayDate = new Intl.DateTimeFormat("ru-RU");
+
+function CatalogDateField({ label, name }: { label: string; name: string }) {
+    const id = useId();
+    const [date, setDate] = useState<Date>();
+    const [open, setOpen] = useState(false);
+    const currentDay = new Date(`${today()}T00:00:00`);
+
+    return <div className="grid gap-1 text-sm font-medium">
+        <label htmlFor={id}>{label}</label>
+        <input type="hidden" name={name} value={date ? formDate.format(date) : ""} />
+        <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
+                <Button id={id} type="button" variant="outline" data-date-field={name}
+                    className="w-full justify-between font-normal tabular-nums" aria-label={`${label}: ${date ? displayDate.format(date) : "выберите дату"}`}>
+                    {date ? displayDate.format(date) : <span className="text-muted-foreground">Выберите дату</span>}
+                    <CalendarIcon className="text-muted-foreground" />
+                </Button>
+            </PopoverTrigger>
+            <PopoverContent align="start" collisionPadding={12} className="w-auto rounded-lg p-0" aria-label={label}>
+                <Calendar mode="single" required autoFocus locale={ru} today={currentDay} selected={date} defaultMonth={date ?? currentDay}
+                    onSelect={(day) => { setDate(day); setOpen(false); }} />
+            </PopoverContent>
+        </Popover>
+    </div>;
+}

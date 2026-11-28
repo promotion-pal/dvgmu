@@ -6,5 +6,13 @@ import { SCHEDULA_PERMISSIONS } from "@/shared/config/permissions";
 
 export default function SchedulaPage() {
     const personal = useUserProvider((s) => s.hasRole(...ACCESS.STUDENT, ...ACCESS.TEACHER));
-    return personal ? <Schedula /> : <PermissionGate permissions={SCHEDULA_PERMISSIONS}><Schedula /></PermissionGate>;
+    return (
+        <div className="w-full min-w-0 px-4 py-4 sm:px-6">
+            {personal ? <Schedula /> : (
+                <PermissionGate permissions={SCHEDULA_PERMISSIONS}>
+                    <Schedula />
+                </PermissionGate>
+            )}
+        </div>
+    );
 }

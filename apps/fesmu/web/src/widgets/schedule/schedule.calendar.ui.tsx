@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { CalendarSearchIcon, ChevronLeftIcon, ChevronRightIcon, SlidersHorizontalIcon } from "lucide-react";
+import { CalendarIcon, CalendarSearchIcon, ChevronLeftIcon, ChevronRightIcon, SlidersHorizontalIcon } from "lucide-react";
+import { ru } from "react-day-picker/locale";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { urlCodec, useUrlState } from "@/features/lib/url-state";
 import type { UrlStateSchema } from "@/features/lib/url-state";
@@ -10,10 +11,11 @@ import { ROUTE } from "@/shared/config/path";
 import { cn } from "@/shared/lib/utils";
 import { Badge } from "@/shared/ui/badge";
 import { Button } from "@/shared/ui/button";
+import { Calendar } from "@/shared/ui/calendar";
 import { Card } from "@/shared/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/shared/ui/dialog";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/shared/ui/empty";
-import { Input } from "@/shared/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@/shared/ui/popover";
 import { CALENDAR_MODES, calendarDays, calendarLessons, calendarPeriod, semesterDate } from "./schedule.calendar.utils";
 import type { CalendarLesson, CalendarMode } from "./schedule.calendar.utils";
 import type { useSchedule } from "./schedule.fn";
@@ -59,6 +61,8 @@ const EMPTY_URL: CalendarUrl = {};
 const validDate = (date?: string) => date && !Number.isNaN(Date.parse(date)) ? date : undefined;
 const dateLabel = (date: string) => `${WEEKDAY_LABEL[isoWeekday(date)]}, ${formatDate(date)}`;
 const lessonDate = (lesson: CalendarLesson) => lesson.from === lesson.to ? dateLabel(lesson.from) : formatRange(lesson.from, lesson.to);
+const pickerDate = (date: string) => new Date(`${date}T00:00:00`);
+const pickerDateFormat = new Intl.DateTimeFormat("sv-SE");
 
 function useCalendar() {
     const [state, setState] = useUrlState(CALENDAR_URL, EMPTY_URL);
@@ -87,6 +91,7 @@ export function ScheduleCalendar({ schedule, staff = false, showAudience = staff
     const { state, setState, today, defaultMode } = useCalendar();
     const [params, setParams] = useSearchParams();
     const [draft, setDraft] = useState<FilterDraft>();
+    const [datePickerOpen, setDatePickerOpen] = useState(false);
     const { timetable, filters, options, changeFilters, view } = schedule;
     if (!timetable || !view) return null;
 
@@ -166,19 +171,27 @@ export function ScheduleCalendar({ schedule, staff = false, showAudience = staff
             <Card className="gap-4 p-4">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                     <div className="flex flex-wrap items-center gap-2">
-                        {paged && (
-                            <Button type="button" size="icon-sm" variant="outline" aria-label="Предыдущий период" disabled={range.from <= semester.start} onClick={() => selectPeriod(mode, offsetDate(date, -step))}>
-                                <ChevronLeftIcon />
-                            </Button>
-                        )}
-                        <strong className="text-sm">{mode === "day" ? dateLabel(date) : mode === "term" ? semester.label : formatRange(range.from, range.to)}</strong>
-                        {paged && (
-                            <Button type="button" size="icon-sm" variant="outline" aria-label="Следующий период" disabled={range.to >= semester.end} onClick={() => selectPeriod(mode, offsetDate(date, step))}>
-                                <ChevronRightIcon />
-                            </Button>
+                        {paged ? (
+                            <div className="inline-flex items-center gap-2">
+                                <Button type="button" size="icon-sm" variant="outline" aria-label="Предыдущий период" disabled={range.from <= semester.start} onClick={() => selectPeriod(mode, offsetDate(date, -step))}>
+                                    <ChevronLeftIcon />
+                                </Button>
+                                <strong className={cn("whitespace-nowrap text-sm tabular-nums", mode === "day" && "min-w-[24ch]")}>
+                                    {mode === "day" ? dateLabel(date) : formatRange(range.from, range.to)}
+                                </strong>
+                                <Button type="button" size="icon-sm" variant="outline" aria-label="Следующий период" disabled={range.to >= semester.end} onClick={() => selectPeriod(mode, offsetDate(date, step))}>
+                                    <ChevronRightIcon />
+                                </Button>
+                            </div>
+                        ) : (
+                            <strong className="text-sm tabular-nums">{mode === "term" ? semester.label : formatRange(range.from, range.to)}</strong>
                         )}
                         <Button type="button" size="sm" variant="ghost" onClick={() => selectPeriod(mode === "range" ? "day" : mode, today)}>Сегодня</Button>
-                        {mode === "week" && <Badge variant="outline">Неделя {week} из {weekOptions.length}</Badge>}
+                        {mode === "week" && (
+                            <Badge variant="outline" className="tabular-nums">
+                                <span>Неделя <span className="inline-block min-w-[2ch] text-center">{week}</span> из {weekOptions.length}</span>
+                            </Badge>
+                        )}
                     </div>
                     <div className="flex flex-wrap items-center gap-2">
                         <div className="inline-flex gap-0.5 rounded-lg bg-muted p-0.5" role="group" aria-label="Период">
@@ -204,9 +217,32 @@ export function ScheduleCalendar({ schedule, staff = false, showAudience = staff
                             </div>
                         )}
                         {paged && (
-                            <Input className="w-auto bg-background" aria-label="Перейти к дате" type="date" min={semester.start} max={semester.end} value={date} onChange={(event) => {
-                                if (event.target.value) selectPeriod(mode, event.target.value);
-                            }} />
+                            <Popover open={datePickerOpen} onOpenChange={setDatePickerOpen}>
+                                <PopoverTrigger asChild>
+                                    <Button type="button" variant="outline" className="gap-3 font-normal tabular-nums" aria-label={`Перейти к дате, выбрано ${formatDate(date)}`}>
+                                        {formatDate(date)}
+                                        <CalendarIcon className="text-muted-foreground" />
+                                    </Button>
+                                </PopoverTrigger>
+                                <PopoverContent align="end" collisionPadding={12} className="w-auto rounded-lg p-0" aria-label="Выбор даты">
+                                    <Calendar
+                                        mode="single"
+                                        required
+                                        autoFocus
+                                        locale={ru}
+                                        today={pickerDate(today)}
+                                        selected={pickerDate(date)}
+                                        defaultMonth={pickerDate(date)}
+                                        startMonth={pickerDate(semester.start)}
+                                        endMonth={pickerDate(semester.end)}
+                                        disabled={{ before: pickerDate(semester.start), after: pickerDate(semester.end) }}
+                                        onSelect={(day) => {
+                                            selectPeriod(mode, pickerDateFormat.format(day));
+                                            setDatePickerOpen(false);
+                                        }}
+                                    />
+                                </PopoverContent>
+                            </Popover>
                         )}
                     </div>
                 </div>}

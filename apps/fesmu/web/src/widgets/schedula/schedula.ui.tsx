@@ -254,7 +254,7 @@ export function Schedula({ publicView = false }: { publicView?: boolean }) {
                         sources: source === "testing" ? [EventType.COMPUTER_CLASS_TEST]
                             : source === "study" ? Object.keys(eventTypes).map(Number).filter((type) => type > 0 && type !== EventType.COMPUTER_CLASS_TEST) : undefined,
                     }))} />}
-                <Button size="sm" variant="ghost" onClick={() => setFilter({ view: filter.view, layout: filter.layout })}>Сбросить</Button>
+                <Button variant="ghost" className="self-end" onClick={() => setFilter({ view: filter.view, layout: filter.layout })}>Сбросить</Button>
             </CommonFilter>
 
             {catalogError && !publicView && <p role="alert" className="text-sm text-destructive">{catalogError.rawMessage}</p>}
