@@ -1,104 +1,82 @@
-# Schedula
+# Schedula — сервис учебного расписания
 
-Schedula owns academic events, terms, venues, bookings, and changes to the published timetable. The portal serves the public timetable at `/schedula` and the signed-in timetable and editor at `/lk/schedula`. The legacy `/schedule` and `/lk/study/schedule` routes use the portal’s existing schedule service and a separate data model.
+Schedula отвечает за конкретное занятие в конкретную дату, его размещение, публикацию и последующие изменения. Публичный календарь портала открывается на `/schedula`, личный календарь и рабочее место сотрудника — на `/lk/schedula`.
 
-## Architecture
-
-```text
-Portal web ──Connect──> FESMU API gateway ──Connect──> Schedula API ──> PostgreSQL
-                                                           └──Connect──> MDM
-```
-
-| Location | Responsibility |
+| Задача | Где читать |
 | --- | --- |
-| [`api/contract/schedula`](api/contract/schedula) | Source protobuf messages, enums, and RPC definitions |
-| [`api/internal/app`](api/internal/app) | Configuration, database connection, embedded Goose migrations, and the HTTP server |
-| [`api/internal/grpc`](api/internal/grpc) | Connect handlers, MDM account and instructor lookups, authorization, and error mapping |
-| [`api/internal/service`](api/internal/service) | Catalog validation, recurrence, conflict detection, slot search, completeness, and change requests |
-| [`api/internal/storage`](api/internal/storage) and [`api/migrations`](api/migrations) | GORM queries, writes serialized with a PostgreSQL transaction lock, and database constraints |
-| [`apps/fesmu/api/internal/modules/schedula`](../../apps/fesmu/api/internal/modules/schedula) | Portal session verification and forwarding to Schedula |
-| [`apps/fesmu/web/src/widgets/schedula`](../../apps/fesmu/web/src/widgets/schedula) | Timetable, filters, editor, catalog, and change history |
+| Определить границы первой версии, права трёх ролей и путь от нагрузки до публикации | [MVP отдела расписания](MVP.md) |
+| Вызвать метод, определить право, обработать результат | [Контракт и правила расписания](API.md) |
+| Изменить календарь, редактор или рабочий экран | [Страницы и сценарии портала](FRONTEND.md) |
+| Сверить расширенные требования к следующим версиям | [Критерии приёмки и необходимые изменения](ACCEPTANCE.md) |
+| Внести изменение в репозиторий | [Инструкции для агента](AGENTS.md) |
 
-MDM owns user identities, roles, effective permissions, instructor names, and student groups and counts. Schedula stores instructor UUIDs and event audiences. The current MDM student profile supplies the group only, so the personal student timetable can automatically select whole-group events. The signed-in timetable supports explicit subgroup filtering.
+## Границы и слои
 
-The gateway overwrites incoming authorization and `X-Schedula-User` headers, strips the session cookie before forwarding, and adds the user UUID from the verified portal session. Schedula requires the shared bearer token for every RPC, including the public RPC. For signed-in calls it also resolves the actor against MDM and checks permissions. The public RPC uses its own response type with group labels and venue details. Instructor identities, subgroups, pending changes, and audit records belong to the signed-in API.
+Браузер обращается через Connect к API портала. Шлюз проверяет сессию и передаёт запрос в Schedula. Сервис определяет полномочия через MDM и читает или изменяет собственную БД PostgreSQL. Для публичного календаря предусмотрен отдельный метод. Общая схема проекта описана в [архитектуре репозитория](../../ARCHITECTURE.md).
 
-## API
+| Где | Чем владеет |
+| --- | --- |
+| [Контракт Schedula](api/contract/schedula) | Внешние типы, перечисления и методы. Клиенты Go и TypeScript генерируются из одних схем. |
+| [app](api/internal/app), [config](api/internal/config) | Сборка зависимостей, подключение к БД и MDM, миграции, HTTP-сервер Connect и проверка готовности. |
+| [grpc](api/internal/grpc) | Служебная аутентификация, загрузка пользователя, групп и преподавателей из MDM, допуск к RPC, преобразование ошибок. |
+| [service](api/internal/service) | Проверка объекта и ревизии, построение выдачи, календарные правила, поиск слотов, полнота, публикация и согласование. Здесь выбирают границу транзакции. |
+| [models](api/internal/domain/models), [storage](api/internal/storage), [migrations](api/migrations) | Состояние события и заявки, выборки, блокировка конкурентных записей, ключи и ограничения БД. Изменение схемы оформляется новой миграцией Goose. |
+| [Шлюз портала](../../apps/fesmu/api/internal/modules/schedula/module.go) | Монтирует существующий Connect-путь. Удаляет входящие cookie и заголовок идентификатора перед пересылкой, подставляет служебный токен и UUID подтверждённой сессии для закрытых методов. |
+| [Виджет портала](../../apps/fesmu/web/src/widgets/schedula) | Показывает результат API, собирает ввод и хранит контекст просмотра в URL. |
 
-The Connect service is `contract.schedula.service.SchedulaService`. Call it through the portal API under `/contract.schedula.service.SchedulaService/<Method>`. The [service definition](api/contract/schedula/service/schedula.service.proto) lists the exact request and response fields.
+Schedula хранит семестры, учебные периоды, дисциплины, корпуса и клинические базы, помещения, праздники, нормы перемещения, брони, события и заявки. MDM владеет учётными записями, действующими зачислениями и полномочиями. В событии хранится ID преподавателя, при чтении календаря имя разрешается через MDM. У учебных планов, составов подгрупп и именных назначений ещё предстоит подтвердить источник. При его подключении сохранять ссылку на запись владельца и дату её действия.
 
-| RPC | Access | Behavior |
-| --- | --- | --- |
-| `PublicScheduleFetch` | Anonymous through the gateway | Reads published and cancelled events in the requested dates. Returns subject, site, and room filter options for the date range. |
-| `ScheduleFetch` | Active students, teachers, staff, and admins | Reads the timetable, academic periods, and holiday transfers. Can select the actor’s personal timetable. Only editors can include drafts. |
-| `CatalogFetch` | Same signed-in users | Returns terms, subjects, sites, rooms, and instructors. Editors also receive periods, holidays, travel times, and bookings. |
-| `CatalogSave` | Editors | Upserts the supplied catalog records. Omitted records stay in the catalog. |
-| `EventSave` | Editors | Creates a draft or recurring series, or updates a draft by ID and revision. |
-| `EventCheckFetch` | Editors | Reports missing details and conflicts for the saved event, including dates that require a holiday transfer. |
-| `EventPublish` | Editors | Publishes a draft or all remaining drafts of its series in one transaction after conflict checks. |
-| `CompletenessFetch` | Editors | Reports events missing time or venue and courses, groups, or configured subgroups without a scheduled assignment in the term. |
-| `SlotsFetch` | Editors and authorized staff or teachers | Finds up to 12 compatible slots within a 31-day range. Editors can account for drafts and exclude an event being rescheduled. |
-| `ChangeCreate` | Editors and the event’s instructor | Submits a move, instructor replacement, room change, or cancellation for approval. |
-| `ChangeDecide` | Editors | Approves or rejects a pending request. A rejection requires a reason. |
-| `ChangeHistoryFetch` | Editors and teachers | Editors see all requests for the event. Teachers see their own requests. |
+## Зачем пока нужен старый ScheduleService
 
-Editors are admins or staff and teachers with `schedule.post`. Staff and teachers with `computer_classes.fetch` or `computer_classes.post` can also search for slots. The web app uses capability flags from `ScheduleFetch` to decide which controls to show.
+**Решение — оставить прежний сервис для действующих документов и выводить его поэтапно. Новое формирование расписания вести в Schedula.** `ScheduleService` встроен в API портала. Отдельного контейнера `schedule` для отключения нет. Его единица записи — семестровый документ программы и курса в таблице `schedule_timetables` БД портала. Редактор сохраняет документ целиком с проверкой версии. В Schedula единица записи — экземпляр занятия с собственным ID и ревизией. Простая замена одного клиента другим потеряет смысл старых ID и ссылок. [Контракт ScheduleService](../../apps/fesmu/api/contract/fesmu/service/v1/schedule.service.proto) · [Хранилище документов](../../apps/fesmu/api/internal/storage/schedule.storage.go)
 
-Dates use `YYYY-MM-DD` and inclusive bounds. With no dates, the schedule RPCs return the current Monday–Sunday week in the configured university time zone. Providing only `dateFrom` selects one day. Schedule ranges can span up to 370 days. Times use minutes from local midnight and durations use elapsed minutes. The Monday of the term’s first week anchors weekly recurrence. `academicWeek` describes the first in-term day in the requested range and is `0` when the range misses every term.
+| Потребитель старой модели | Что сломается при удалении сегодня |
+| --- | --- |
+| `/schedule` и `/lk/my/schedule` | Обе страницы читают расписания групп. Публичные ссылки и QR могут содержать программу, курс, группу, ID документа, дни и период. В кабинете это сейчас тот же групповой просмотр. [Публичная страница](../../apps/fesmu/web/src/page/public/Schedule.tsx) · [Разбор старых ссылок](../../apps/fesmu/web/src/widgets/schedule/schedule.url.ts) |
+| `/lk/study/schedule`, `/new` и `/:id/edit` внутри этого раздела | Список и редактор используют пять RPC для чтения, создания, изменения и удаления. Недельные расписания, циклы и датированные лекции также используются для экспорта в Word. [Клиент редактора](../../apps/fesmu/web/src/widgets/schedule/schedule.api.ts) · [Экспорт](../../apps/fesmu/web/src/widgets/schedule/schedule.export.ts) |
+| Подписки `/calendar/timetable/<id>/…` и вариант запроса с `timetable` | Генератор ICS запрашивает документ через `ScheduleByID`. Подписка группы без ID документа уже использует Schedula. [Сервер календарной выдачи](../../apps/fesmu/web/server/calendar-feed.ts) |
 
-Mutation responses can contain `issues` with a successful HTTP response even when nothing was published or approved. Check for returned events or a returned change before treating the operation as complete. A stale event revision or a completed change decision returns `FailedPrecondition`. Fetch the updated record before retrying an edit.
+`ScheduleCollectService` обслуживает передачу сведений и входящие отдельно. Бронирование лекционных залов и компьютерных классов также имеет собственные маршруты. При выводе `ScheduleService` нельзя удалять их по общему префиксу `schedule`.
 
-## Scheduling rules
+**Условия вывода из эксплуатации**
 
-- Drafts can be incomplete and can overlap. Publishing checks timing, room hours, capacity, equipment, bookings, instructor and audience overlaps, travel between consecutive events, and clinical-event details. Intervals that touch at their endpoints do not overlap. Whole-group events overlap every subgroup in the group.
-- Recurrence expands weekly slots into individual, dated draft events with a shared series ID. Weekly, odd-week, and even-week recurrence are supported. The editor can revise individual occurrences. A blocking issue on one draft blocks publication of the entire requested series.
-- A published event on a holiday is shown in the signed-in transfer list for its term. It stays out of the normal timetable until an approved move puts it on an available date. Approved cancellations are visible as cancelled entries.
-- A published event has at most one pending change. Approval rechecks the current revision and, for a non-cancellation, availability before applying the update. The history retains before and after snapshots, the author and reviewer, and their timestamps.
+1. До перехода составить на стенде инвентарь документов, действующих авторов записи и потребителей RPC, включая старые ссылки и подписки. Репозиторий подтверждает наличие зависимостей, фактические обращения внешних клиентов устанавливаются по данным эксплуатации.
+2. Выбрать пилотный семестр. Проверить новый путь от нагрузки до личной выдачи. Утвердить для прежних документов перенос или архивное чтение. При переносе сохранить соответствие ID, дат и групп, проверить циклы, выгрузки, параметры ссылок и UID подписок. Для старых записей без достоверного преподавателя или состава требуется сверка отдела.
+3. В момент переключения закрыть запись в старом API для переводимого семестра, сверить последние изменения и направить составителя в шахматку. Ссылку на личное расписание вести в закрытую личную выдачу. Публичные исторические ссылки открывают только разрешённый архив. Предусмотреть возврат маршрута с учётом уже сделанных в Schedula правок.
+4. Удалять обработчики, старый редактор и зависимости от таблицы после переноса последних читателей либо их перевода на совместимый архив. Условия — контрольные документы и ссылки воспроизведены, обращений зависимых клиентов к выводимому API за согласованный период нет, восстановление проверено. Удаление архивных данных требует отдельного решения. Готовность MVP не зависит от даты окончательного удаления.
 
-## Local development
+## Локальный запуск
 
-From the repository root, start the portal stack and seed local MDM accounts.
+Из корня репозитория запустить стек и после первого запуска заполнить тестовые данные портала.
 
 ```sh
 make dev-up
 make dev-seed
 ```
 
-The portal is at `http://localhost:18300` and the gateway is at `http://localhost:18200`. The Schedula database starts empty. Sign in as a local admin, open `/lk/schedula`, and add a term, subject, site, and room in the catalog. Choose an active teacher from MDM when creating an event. Save the event as a draft, check and publish it, then open `/schedula` for the same date to verify its public representation.
+Портал доступен на `http://localhost:18300`, шлюз — на `http://localhost:18200`. База Schedula в новом томе пуста. Для первого сквозного сценария войти администратором, открыть справочники на `/lk/schedula`, задать семестр, дисциплину, корпус и помещение с вместимостью и часами работы. Создать черновик внутри семестра, указать группу, курс, действующего преподавателя, время, длительность, численность и помещение. Проверить и опубликовать его. Открыть ту же дату на `/schedula` без входа и сверить время и место.
 
-To query the public RPC without a portal session, use the local gateway.
+Проверить публичную выдачу за конкретную дату можно через шлюз.
 
 ```sh
 curl --fail-with-body -sS \
-  -H 'Content-Type: application/json' \
-  -H 'Connect-Protocol-Version: 1' \
+  -H 'Content-Type: application/json' -H 'Connect-Protocol-Version: 1' \
   -d '{"filter":{"dateFrom":"2026-11-24"}}' \
   http://localhost:18200/contract.schedula.service.SchedulaService/PublicScheduleFetch
 ```
 
-To run the service directly, run `go run ./cmd` from `services/schedula/api`. It loads `config/local.yaml` by default, connects to PostgreSQL, and applies embedded migrations before serving traffic. `GET /healthz` checks database connectivity and returns status `204` when healthy.
+Для диагностики локального стека использовать `docker compose -f dev/docker-compose.yml logs schedula schedula-db api` из корня. При запуске API вне Docker из `services/schedula/api` команда `go run ./cmd` читает `config/local.yaml`. Нужны доступные PostgreSQL и MDM, параметры базы и служебный токен.
 
-| Variable | Applies to | Purpose |
-| --- | --- | --- |
-| `PACKAGE_SCHEDULA` | Portal API | Internal base URL of the Schedula API. The gateway mounts the module when this URL and the shared token are set. |
-| `SCHEDULA_INTERNAL_TOKEN` | Schedula and portal API | Matching bearer token supplied through the environment |
-| `PACKAGE_MDM` | Schedula | Required base URL for MDM |
-| `GRPC_PORT`, `SCHEDULA_TIME_ZONE` | Schedula | HTTP port and university time zone. Defaults are `4000` and `Asia/Vladivostok`. |
-| `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`, `DB_SSLMODE` | Schedula | PostgreSQL connection. Local defaults are `localhost`, `5432`, `postgres`, database `schedula`, and SSL mode `disable`. |
+## Контейнер и конфигурация
 
-The [standalone Compose file](docker-compose.yml) starts Schedula and its PostgreSQL instance without publishing host ports. It uses the external `traefik-network` for the portal API and MDM, and requires `POSTGRES_PASSWORD`, `PACKAGE_MDM`, and `SCHEDULA_INTERNAL_TOKEN`.
+[Dockerfile](api/Dockerfile) собирает статический Go-бинарник из корня репозитория, поскольку модуль подключает [общий Go-контракт](../../packages/go) через локальный `replace`. В образе Alpine есть сертификаты и tzdata. Процесс работает от UID 65534 и читает `config/prod.yaml`. До открытия порта он проверяет подключение к БД и применяет встроенные миграции. `GET /healthz` возвращает 204 при доступной БД и 503 при ошибке проверки. Доступность MDM проверяется при обращении к зависимому RPC.
 
-## Making and testing changes
+| Настройка | Потребитель и назначение |
+| --- | --- |
+| `PACKAGE_SCHEDULA` | URL сервиса для API портала. Шлюз подключает модуль при наличии URL и служебного токена. |
+| `SCHEDULA_INTERNAL_TOKEN` | Одинаковый секрет окружения шлюза и сервиса. Браузер использует только портальную сессию. |
+| `PACKAGE_MDM` | Обязательный HTTP(S) URL MDM, доступный из контейнера Schedula. |
+| `GRPC_PORT`, `SCHEDULA_TIME_ZONE` | Порт HTTP-сервера Connect и часовой пояс университета. По умолчанию `4000` и `Asia/Vladivostok`. |
+| `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`, `DB_SSLMODE` | Подключение процесса к PostgreSQL. При прямом локальном запуске значения по умолчанию — `localhost`, `5432`, `postgres`, база `schedula`, SSL-режим `disable`. |
 
-1. Edit protobuf contracts under `api/contract/schedula`, then run `make proto` from the repository root. Commit the matching changes under `packages/go/schedula` and `packages/ts/schedula`. Keep existing protobuf field numbers and RPC paths compatible with deployed clients.
-2. Add a new Goose migration under `api/migrations` for schema changes. Keep scheduling rules in `internal/service` and put transport permissions in `internal/grpc`.
-3. Run the service and portal checks from the repository root.
-
-   ```sh
-   (cd services/schedula/api && go test ./...)
-   (cd apps/fesmu/api && go test ./internal/modules/schedula ./internal/auth ./internal/proxy)
-   pnpm --dir apps/fesmu/web build
-   .claude/skills/fesmu-architecture/scripts/check.sh
-   ```
-
-4. Set `SCHEDULA_TEST_DSN` to a PostgreSQL URL for a disposable local database and rerun `go test -count=1 -v ./...` in `services/schedula/api` to exercise `TestScheduleLifecycle`. The test role needs permission to create schemas. The test creates its own schema, applies the migrations, exercises the Connect API with a test MDM server, and removes the schema afterward.
+[Отдельный Compose](docker-compose.yml) запускают из корня командой `docker compose -f services/schedula/docker-compose.yml up -d --build`. Требуются существующая внешняя сеть `traefik-network` и переменные `POSTGRES_PASSWORD`, `PACKAGE_MDM`, `SCHEDULA_INTERNAL_TOKEN`. Compose связывает `POSTGRES_USER` и `POSTGRES_DB` с настройками API (оба по умолчанию `schedula`). База PostgreSQL 17 хранит данные в томе `schedula_pgdata` и доступна в изолированной сети. API также подключён к общей сети, порты на хост не опубликованы. Шлюзу в той же сети задать внутренний адрес API этого стенда и соответствующий токен. Для локального портала эти связи уже заданы в [dev/docker-compose.yml](../../dev/docker-compose.yml).
