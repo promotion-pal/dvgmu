@@ -11,6 +11,7 @@ export function CalendarSubscription({ timetable, group, title }: { timetable?: 
     const path = "/calendar" + scope + audience + "/schedule.ics";
     const url = new URL(path, window.location.origin);
     const href = url.href;
+    const subscriptionHref = href.replace(/^https?:/, "webcal:");
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
@@ -21,6 +22,9 @@ export function CalendarSubscription({ timetable, group, title }: { timetable?: 
                     <DialogTitle>Подписка на расписание</DialogTitle>
                     <DialogDescription>{title}</DialogDescription>
                 </DialogHeader>
+                <Button asChild>
+                    <a href={subscriptionHref}><CalendarPlusIcon />Подписаться</a>
+                </Button>
                 <p className="text-sm text-muted-foreground">Скопируйте ссылку и вставьте её в поле подписки в календаре.</p>
                 <CommonShareLink url={href} label="Скопировать ссылку" />
             </DialogContent>
