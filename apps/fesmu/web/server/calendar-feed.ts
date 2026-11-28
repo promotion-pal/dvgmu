@@ -46,8 +46,8 @@ export function renderFeed(name: string, events: FeedEvent[], modified: Date) {
 const localTime = (date: string, clock: string) => stamp(new Date(date + "T" + clock + ":00+10:00"));
 
 export async function serveCalendar(req: IncomingMessage, res: ServerResponse, api: string) {
-    if (req.method !== "GET") {
-        res.setHeader("Allow", "GET");
+    if (req.method !== "GET" && req.method !== "HEAD") {
+        res.setHeader("Allow", "GET, HEAD");
         res.writeHead(405).end();
         return;
     }
@@ -106,8 +106,8 @@ export async function serveCalendar(req: IncomingMessage, res: ServerResponse, a
             });
         }
         const body = renderFeed(name, events, modified);
-        res.writeHead(200, { "Content-Type": "text/calendar; charset=utf-8", "Cache-Control": "public, max-age=60" });
-        res.end(body);
+        res.writeHead(200, { "Content-Type": "text/calendar; charset=utf-8", "Cache-Control": "public, max-age=60", "X-Calendar-Events": String(events.length) });
+        res.end(req.method === "HEAD" ? undefined : body);
     } catch (error) {
         const code = ConnectError.from(error).code;
         res.writeHead(code === Code.NotFound ? 404 : code === Code.InvalidArgument ? 400 : 502).end();
