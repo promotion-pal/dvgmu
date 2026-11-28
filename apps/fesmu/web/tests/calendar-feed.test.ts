@@ -35,5 +35,25 @@ test("calendar subscription preserves identity, scopes groups and reflects moves
         assert.match(changed.body, /STATUS:CANCELLED/);
         assert.equal(changed.body.match(/UID:.+/)?.[0], first.body.match(/UID:.+/)?.[0]);
         assert.doesNotMatch(changed.body, /DTSTART:20261124/);
+
+        const item = { updatedAt: "2026-11-21T12:00:00Z", id: "one", title: "Расписание", course: 1, groups: ["401", "402"],
+            semester: { start: "2026-11-01", end: "2026-11-30" }, format: "SCHEDULE_FORMAT_CYCLES",
+            lectures: [{ id: "lab", subjectId: "biology", dates: ["2026-11-24", "2026-11-26"], start: "10:00", end: "11:30", groupIds: ["401"] }],
+            cycles: [{ id: "other", subjectId: "chemistry", groupIds: ["402"], from: "2026-11-01", to: "2026-11-05" }],
+        };
+        upstream = { item };
+        const group = await read("timetable/one/group/401");
+        assert.equal(group.status, 200);
+        assert.equal((await read("/calendar/schedule.ics?timetable=one&group=401")).body, group.body);
+        assert.match(group.body, /DTSTART:20261126T000000Z/);
+        assert.equal(group.body.match(/BEGIN:VEVENT/g)?.length, 2);
+        assert.equal(new Set(group.body.match(/^UID:.+/gm)).size, 2);
+        assert.doesNotMatch(group.body, /chemistry/);
+        item.lectures[0].dates = ["2026-11-25", "2026-11-26"];
+        const moved = await read("timetable/one/group/401");
+        assert.equal(group.body.match(/UID:.+/)?.[0], moved.body.match(/UID:.+/)?.[0]);
+        assert.doesNotMatch(moved.body, /20261124/);
+        assert.equal((await read("timetable/one/group/999")).status, 404);
+        assert.match((await read("timetable/one")).body, /DTEND;VALUE=DATE:20261106/);
     } finally { await vite.close(); }
 });
