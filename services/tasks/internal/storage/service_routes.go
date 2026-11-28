@@ -3,13 +3,17 @@ package storage
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"dvgmu/tasks/internal/domain/models"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
 
-var ErrServiceRoutesVersionConflict = errors.New("service routes version changed")
+var (
+	ErrServiceRoutesVersionConflict = errors.New("service routes version changed")
+	ErrServiceRouteQueueUnavailable = errors.New("route queue unavailable")
+)
 
 type ServiceRoutesStorage struct {
 	db *gorm.DB
@@ -50,6 +54,27 @@ func (s *ServiceRoutesStorage) Replace(ctx context.Context, routes models.Servic
 }
 
 func writeServiceRoutes(tx *gorm.DB, routes models.ServiceRoutes) error {
+	codes := make([]string, 0, len(routes.Rules))
+	for _, rule := range routes.Rules {
+		if rule.Active {
+			codes = append(codes, rule.QueueID)
+		}
+	}
+	if len(codes) > 0 {
+		active, err := lockRouteQueues(tx, codes)
+		if err != nil {
+			return err
+		}
+		for _, code := range codes {
+			enabled, exists := active[code]
+			if !exists {
+				return fmt.Errorf("%w: queue %q does not exist", ErrServiceRouteQueueUnavailable, code)
+			}
+			if !enabled {
+				return fmt.Errorf("%w: queue %q is inactive", ErrServiceRouteQueueUnavailable, code)
+			}
+		}
+	}
 	return tx.Clauses(clause.OnConflict{
 		Columns:   []clause.Column{{Name: "service_id"}},
 		DoUpdates: clause.AssignmentColumns([]string{"version", "rules"}),

@@ -74,6 +74,8 @@ func (c *ServiceRoutesController) rpcError(err error) error {
 		return connect.NewError(connect.CodeNotFound, errors.New("service not found"))
 	case errors.Is(err, storage.ErrServiceRoutesVersionConflict):
 		return connect.NewError(connect.CodeAborted, err)
+	case errors.Is(err, storage.ErrServiceRouteQueueUnavailable):
+		return connect.NewError(connect.CodeFailedPrecondition, err)
 	case errors.Is(err, context.Canceled), errors.Is(err, context.DeadlineExceeded):
 		return err
 	default:

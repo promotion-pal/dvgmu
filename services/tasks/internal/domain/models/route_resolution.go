@@ -3,9 +3,11 @@ package models
 type RouteOutcome string
 
 const (
-	RouteMatched   RouteOutcome = "matched"
-	RouteNotFound  RouteOutcome = "no_match"
-	RouteAmbiguous RouteOutcome = "ambiguous"
+	RouteMatched       RouteOutcome = "matched"
+	RouteNotFound      RouteOutcome = "no_match"
+	RouteAmbiguous     RouteOutcome = "ambiguous"
+	RouteQueueNotFound RouteOutcome = "queue_not_found"
+	RouteQueueInactive RouteOutcome = "queue_inactive"
 )
 
 type RouteResolution struct {

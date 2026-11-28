@@ -131,7 +131,8 @@ func (c *CatalogController) rpcError(err error) error {
 		return connect.NewError(connect.CodeInvalidArgument, err)
 	case errors.Is(err, storage.ErrServiceConfigurationVersionConflict):
 		return connect.NewError(connect.CodeAborted, err)
-	case errors.Is(err, storage.ErrInitialStatusUnavailable), errors.Is(err, storage.ErrDefaultPriorityUnavailable):
+	case errors.Is(err, storage.ErrInitialStatusUnavailable), errors.Is(err, storage.ErrDefaultPriorityUnavailable),
+		errors.Is(err, storage.ErrServiceRouteQueueUnavailable):
 		return connect.NewError(connect.CodeFailedPrecondition, err)
 	case errors.Is(err, gorm.ErrRecordNotFound):
 		return connect.NewError(connect.CodeNotFound, errors.New("service not found"))

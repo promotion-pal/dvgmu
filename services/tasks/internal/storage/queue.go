@@ -48,3 +48,17 @@ func (s *QueueStorage) Update(ctx context.Context, code string, changes map[stri
 	}
 	return queue, nil
 }
+
+func lockRouteQueues(tx *gorm.DB, codes []string) (map[string]bool, error) {
+	var queues []models.Queue
+	err := tx.Select("code", "active").Clauses(clause.Locking{Strength: "SHARE"}).
+		Where("code IN ?", codes).Order("code ASC").Find(&queues).Error
+	if err != nil {
+		return nil, err
+	}
+	active := make(map[string]bool, len(queues))
+	for _, queue := range queues {
+		active[queue.Code] = queue.Active
+	}
+	return active, nil
+}

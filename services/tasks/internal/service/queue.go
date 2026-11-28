@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"unicode/utf8"
 
 	"dvgmu/tasks/internal/domain/models"
 	"dvgmu/tasks/internal/storage"
@@ -31,14 +32,14 @@ func (s *QueueService) Create(ctx context.Context, code, name string) (models.Qu
 
 func (s *QueueService) Get(ctx context.Context, code string) (models.Queue, error) {
 	code = strings.TrimSpace(code)
-	if !catalogCodePattern.MatchString(code) {
+	if !validQueueLookupCode(code) {
 		return models.Queue{}, fmt.Errorf("%w: provide a valid code", ErrInvalidQueue)
 	}
 	return s.storage.Get(ctx, code)
 }
 
 func (s *QueueService) List(ctx context.Context, afterCode string, active *bool, pageSize int32) ([]models.Queue, string, error) {
-	if (afterCode != "" && !catalogCodePattern.MatchString(afterCode)) || pageSize < 0 || pageSize > 100 {
+	if (afterCode != "" && !validQueueLookupCode(afterCode)) || pageSize < 0 || pageSize > 100 {
 		return nil, "", fmt.Errorf("%w: provide a valid after_code and page_size", ErrInvalidQueue)
 	}
 	if pageSize == 0 {
@@ -56,7 +57,7 @@ func (s *QueueService) List(ctx context.Context, afterCode string, active *bool,
 
 func (s *QueueService) Update(ctx context.Context, code string, name *string, active *bool) (models.Queue, error) {
 	code = strings.TrimSpace(code)
-	if !catalogCodePattern.MatchString(code) {
+	if !validQueueLookupCode(code) {
 		return models.Queue{}, fmt.Errorf("%w: provide a valid code", ErrInvalidQueue)
 	}
 	changes := make(map[string]any)
@@ -74,4 +75,9 @@ func (s *QueueService) Update(ctx context.Context, code string, name *string, ac
 		return models.Queue{}, fmt.Errorf("%w: provide a name or active state to update", ErrInvalidQueue)
 	}
 	return s.storage.Update(ctx, code, changes)
+}
+
+// Imported queue IDs can predate the format enforced for new queues.
+func validQueueLookupCode(code string) bool {
+	return code != "" && !strings.ContainsRune(code, 0) && utf8.RuneCountInString(code) <= 64
 }

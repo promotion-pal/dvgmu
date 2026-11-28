@@ -162,6 +162,17 @@ func (s *TaskStorage) Create(ctx context.Context, task models.Task, key models.T
 		}
 		// All applicants for the same service use its common route.
 		resolution := routes.Resolve("")
+		if resolution.Outcome == models.RouteMatched {
+			active, err := lockRouteQueues(tx, []string{resolution.QueueID})
+			if err != nil {
+				return err
+			}
+			if enabled, exists := active[resolution.QueueID]; !exists {
+				resolution.Outcome = models.RouteQueueNotFound
+			} else if !enabled {
+				resolution.Outcome = models.RouteQueueInactive
+			}
+		}
 		task.ServiceID = &serviceID
 		task.DirectionID = &service.DirectionID
 		task.StatusID = &settings.InitialStatusID
