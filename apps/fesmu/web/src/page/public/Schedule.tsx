@@ -1,3 +1,4 @@
+import { CalendarSubscription } from "@/shared/components/schedule/calendar-subscription";
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { CalendarDaysIcon, CalendarOffIcon } from "lucide-react";
@@ -39,6 +40,7 @@ export default function PublicSchedulePage() {
                     description={timetable ? `${timetable.course}-й курс · ${timetable.program.name}` : "Дальневосточный государственный медицинский университет"}
                     action={
                         <div className="flex flex-wrap items-center gap-2">
+                            {timetable && <CalendarSubscription timetable={timetable.id} group={filters.groupId} title={filters.groupId ? `Группа ${filters.groupId}` : timetable.title} />}
                             <SchedulePublicLink schedule={schedule} />
                             <ScheduleExportButton
                                 label={schedule.exportLabel}
