@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { CalendarPlusIcon, PencilIcon, PlusIcon, Trash2Icon } from "lucide-react";
+import { CalendarSubscription } from "@/shared/components/schedule/calendar-subscription";
 import { CommonWrapper } from "@/shared/components/wrapper";
 import { CommonControlState } from "@/shared/components/state/control-state";
 import { ROUTE } from "@/shared/config/path";
@@ -19,7 +20,7 @@ export default function SchedulePage() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const { timetable } = schedule;
+    const { timetable, filters } = schedule;
 
     const handleRemove = () => {
         if (!timetable || !confirm(`Удалить расписание «${timetable.title}»?`)) return;
@@ -32,6 +33,13 @@ export default function SchedulePage() {
             styleChildren="mx-auto max-w-[1400px]"
             action={
                 <div className="flex flex-wrap items-center gap-2">
+                    {timetable && (
+                        <CalendarSubscription
+                            timetable={timetable.id}
+                            group={filters.groupId}
+                            title={filters.groupId ? `Группа ${filters.groupId}` : timetable.title}
+                        />
+                    )}
                     <SchedulePublicLink schedule={schedule} />
                     <ScheduleExportButton
                         label={schedule.exportLabel}
