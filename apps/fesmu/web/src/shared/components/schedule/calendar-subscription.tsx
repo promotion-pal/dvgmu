@@ -31,8 +31,8 @@ export function CalendarSubscription({ timetable, group, title }: { timetable?: 
             <DialogTrigger asChild>
                 <Button variant="outline" size="sm"><CalendarPlusIcon />Подписаться на календарь</Button>
             </DialogTrigger>
-            <DialogContent>
-                <DialogHeader>
+            <DialogContent className="gap-3 p-4 sm:p-4">
+                <DialogHeader className="gap-1 pr-8">
                     <DialogTitle>Подписка на расписание</DialogTitle>
                     <DialogDescription>{title}</DialogDescription>
                 </DialogHeader>
