@@ -73,9 +73,13 @@ export async function serveCalendar(req: IncomingMessage, res: ServerResponse, a
             const lessons = calendarLessons(timetable, { groupId: group, weekdays: [], subjectIds: [] },
                 { from: timetable.semester.start, to: timetable.semester.end });
             // Explicit events keep every lesson visible in clients that skip RDATE-only series.
+            const seen = new Set<string>();
             events = lessons.map(lesson => {
+                // Preserve the original master UID for the first occurrence of each series.
+                const key = seen.has(lesson.seriesId) ? lesson.id : lesson.seriesId;
+                seen.add(lesson.seriesId);
                 return {
-                    id: JSON.stringify([timetableId, lesson.id]), name: lesson.title, location: lesson.location,
+                    id: JSON.stringify([timetableId, key]), name: lesson.title, location: lesson.location,
                     allDay: !lesson.start,
                     start: lesson.start ? localTime(lesson.from, lesson.start) : lesson.from.replaceAll("-", ""),
                     end: lesson.end ? localTime(lesson.to, lesson.end) : offsetDate(lesson.to, 1).replaceAll("-", ""),
