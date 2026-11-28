@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package tasks.service;
+
+import "tasks/entity/queue.proto";
+
+service QueueService {
+  rpc CreateQueue(CreateQueueRequest) returns (CreateQueueResponse);
+  rpc GetQueue(GetQueueRequest) returns (GetQueueResponse);
+  rpc ListQueues(ListQueuesRequest) returns (ListQueuesResponse);
+  rpc UpdateQueue(UpdateQueueRequest) returns (UpdateQueueResponse);
+}
+
+message CreateQueueRequest {
+  string code = 1;
+  string name = 2;
+}
+
+message CreateQueueResponse {
+  tasks.entity.Queue queue = 1;
+}
+
+message GetQueueRequest {
+  string code = 1;
+}
+
+message GetQueueResponse {
+  tasks.entity.Queue queue = 1;
+}
+
+message ListQueuesRequest {
+  // Defaults to 50 and accepts up to 100 queues per page.
+  int32 page_size = 1;
+  // Exclusive cursor. Use next_after_code from the preceding page.
+  string after_code = 2;
+  optional bool active = 3;
+}
+
+message ListQueuesResponse {
+  // Ordered by code in ascending order.
+  repeated tasks.entity.Queue queues = 1;
+  string next_after_code = 2;
+}
+
+message UpdateQueueRequest {
+  string code = 1;
+  optional string name = 2;
+  optional bool active = 3;
+}
+
+message UpdateQueueResponse {
+  tasks.entity.Queue queue = 1;
+}

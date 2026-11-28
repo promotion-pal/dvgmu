@@ -49,6 +49,7 @@ func New(log *slog.Logger, cfg *config.Config) *App {
 	forms := taskgrpc.NewServiceFormController(service.NewServiceFormService(storage.NewServiceFormStorage(db)), log)
 	settings := taskgrpc.NewServiceSettingsController(service.NewServiceSettingsService(storage.NewServiceSettingsStorage(db)), log)
 	routes := taskgrpc.NewServiceRoutesController(service.NewServiceRoutesService(storage.NewServiceRoutesStorage(db)), log)
+	queues := taskgrpc.NewQueueController(service.NewQueueService(storage.NewQueueStorage(db)), log)
 	numberLocation, err := time.LoadLocation("Asia/Vladivostok")
 	if err != nil {
 		panic(err)
@@ -64,5 +65,5 @@ func New(log *slog.Logger, cfg *config.Config) *App {
 		applicant := access.NewApplicantResolver(verifier, mdm, log)
 		taskHandler = taskgrpc.NewTaskController(service.NewTaskService(storage.NewTaskStorage(db), numberLocation), applicant, log)
 	}
-	return &App{GRPCServer: grpcapp.New(log, sqlDB.PingContext, cfg, directions, catalog, statuses, priorities, forms, settings, routes, taskHandler)}
+	return &App{GRPCServer: grpcapp.New(log, sqlDB.PingContext, cfg, directions, catalog, statuses, priorities, forms, settings, routes, queues, taskHandler)}
 }

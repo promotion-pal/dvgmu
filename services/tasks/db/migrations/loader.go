@@ -11,7 +11,7 @@ import (
 
 func main() {
 	statements, err := gormschema.New("postgres").Load(
-		&models.Task{}, &models.Direction{}, &models.Service{}, &models.Status{}, &models.Priority{},
+		&models.Task{}, &models.Direction{}, &models.Service{}, &models.Status{}, &models.Priority{}, &models.Queue{},
 		&models.ServiceFormVersion{}, &models.ServiceSettings{}, &models.ServiceRoutes{},
 		&models.TaskNumberCounter{}, &models.TaskEvent{}, &models.TaskRegistrationKey{},
 	)

@@ -31,6 +31,7 @@ func New(
 	forms serviceconnect.ServiceFormServiceHandler,
 	settings serviceconnect.ServiceSettingsServiceHandler,
 	routes serviceconnect.ServiceRoutesServiceHandler,
+	queues serviceconnect.QueueServiceHandler,
 	tasks serviceconnect.TaskServiceHandler,
 ) *App {
 	mux := http.NewServeMux()
@@ -42,6 +43,7 @@ func New(
 		mux.Handle(serviceconnect.NewServiceFormServiceHandler(forms))
 		mux.Handle(serviceconnect.NewServiceSettingsServiceHandler(settings))
 		mux.Handle(serviceconnect.NewServiceRoutesServiceHandler(routes))
+		mux.Handle(serviceconnect.NewQueueServiceHandler(queues))
 	}
 	if tasks != nil {
 		mux.Handle(serviceconnect.NewTaskServiceHandler(tasks))
