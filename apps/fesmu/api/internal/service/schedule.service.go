@@ -49,9 +49,8 @@ func (s *ScheduleService) ScheduleFetch(ctx context.Context, filter models.Sched
 	for _, record := range records {
 		item, err := record.ToProto()
 		if err != nil {
-			// One unreadable document must not hide the others.
-			log.Error("schedule record is unreadable, skipped", slog.String("schedule_id", record.ID), slog.String("error", err.Error()))
-			continue
+			log.Error("schedule record is unreadable", slog.String("schedule_id", record.ID), slog.String("error", err.Error()))
+			return nil, errors.New("не удалось прочитать расписание")
 		}
 		list = append(list, item)
 	}

@@ -183,3 +183,21 @@ func TestScheduleWritesRequireEditPermission(t *testing.T) {
 		}
 	}
 }
+
+func TestScheduleFetchFailsWhenDocumentIsUnreadable(t *testing.T) {
+	valid, err := models.NewSchedule(validTimetable())
+	if err != nil {
+		t.Fatal(err)
+	}
+	valid.ID = "valid"
+	store := &memoryScheduleStorage{records: map[string]*models.Schedule{
+		"valid":  valid,
+		"broken": {ID: "broken", Body: `{"course":"invalid"}`},
+	}}
+	log := slog.New(slog.NewTextHandler(io.Discard, nil))
+	h := ScheduleNewController(service.NewScheduleService(log, store, store))
+	response, err := h.ScheduleFetch(t.Context(), connect.NewRequest(&pb.ScheduleFetchRequest{}))
+	if response != nil || connect.CodeOf(err) != connect.CodeInternal {
+		t.Fatalf("expected an internal error instead of a partial list, got %v, %v", response, err)
+	}
+}
