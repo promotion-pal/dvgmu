@@ -116,6 +116,8 @@ func (c *TaskController) rpcError(err error, failureMessage string) error {
 		return connect.NewError(connect.CodeInvalidArgument, err)
 	case errors.Is(err, service.ErrTaskApplicantRequired):
 		return connect.NewError(connect.CodeUnauthenticated, err)
+	case errors.Is(err, storage.ErrQueueViewAccessDenied):
+		return connect.NewError(connect.CodePermissionDenied, err)
 	case errors.Is(err, gorm.ErrRecordNotFound):
 		return connect.NewError(connect.CodeNotFound, errors.New("service not found"))
 	case errors.Is(err, storage.ErrTaskServiceUnavailable), errors.Is(err, storage.ErrTaskDefaultsMissing),

@@ -16,7 +16,7 @@ import type { JsonObject, Message } from "@bufbuild/protobuf";
  * Describes the file tasks/service/task_service.proto.
  */
 export const file_tasks_service_task_service: GenFile = /*@__PURE__*/
-  fileDesc("CiB0YXNrcy9zZXJ2aWNlL3Rhc2tfc2VydmljZS5wcm90bxINdGFza3Muc2VydmljZSKpAQoRQ3JlYXRlVGFza1JlcXVlc3QSEgoKc2VydmljZV9pZBgBIAEoAxINCgV0aXRsZRgCIAEoCRITCgtkZXNjcmlwdGlvbhgDIAEoCRIUCgxmb3JtX3ZlcnNpb24YBCABKAMSLQoMZXh0cmFfZmllbGRzGAUgASgLMhcuZ29vZ2xlLnByb3RvYnVmLlN0cnVjdBIXCg9pZGVtcG90ZW5jeV9rZXkYBiABKAkiNgoSQ3JlYXRlVGFza1Jlc3BvbnNlEiAKBHRhc2sYASABKAsyEi50YXNrcy5lbnRpdHkuVGFzayJNCg1NeVRhc2tzQ3Vyc29yEi4KCmNyZWF0ZWRfYXQYASABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEgwKBHV1aWQYAiABKAkisgIKEkxpc3RNeVRhc2tzUmVxdWVzdBIRCglwYWdlX3NpemUYASABKAUSKwoFYWZ0ZXIYAiABKAsyHC50YXNrcy5zZXJ2aWNlLk15VGFza3NDdXJzb3ISFwoKc2VydmljZV9pZBgDIAEoA0gAiAEBEhYKCXN0YXR1c19pZBgEIAEoA0gBiAEBEhgKC3ByaW9yaXR5X2lkGAUgASgDSAKIAQESMAoMY3JlYXRlZF9mcm9tGAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIyCg5jcmVhdGVkX2JlZm9yZRgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCDQoLX3NlcnZpY2VfaWRCDAoKX3N0YXR1c19pZEIOCgxfcHJpb3JpdHlfaWQi6wEKDk15VGFza0xpc3RJdGVtEgwKBHV1aWQYASABKAkSDgoGbnVtYmVyGAIgASgJEg0KBXRpdGxlGAMgASgJEi4KCmNyZWF0ZWRfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhIKCnNlcnZpY2VfaWQYBSABKAMSFAoMc2VydmljZV9uYW1lGAYgASgJEhEKCXN0YXR1c19pZBgHIAEoAxITCgtzdGF0dXNfbmFtZRgIIAEoCRITCgtwcmlvcml0eV9pZBgJIAEoAxIVCg1wcmlvcml0eV9uYW1lGAogASgJInYKE0xpc3RNeVRhc2tzUmVzcG9uc2USLAoFdGFza3MYASADKAsyHS50YXNrcy5zZXJ2aWNlLk15VGFza0xpc3RJdGVtEjEKC25leHRfY3Vyc29yGAIgASgLMhwudGFza3Muc2VydmljZS5NeVRhc2tzQ3Vyc29yIiAKEEdldE15VGFza1JlcXVlc3QSDAoEdXVpZBgBIAEoCSKtAQoRR2V0TXlUYXNrUmVzcG9uc2USIAoEdGFzaxgBIAEoCzISLnRhc2tzLmVudGl0eS5UYXNrEhQKDHNlcnZpY2VfbmFtZRgCIAEoCRITCgtzdGF0dXNfbmFtZRgDIAEoCRIVCg1wcmlvcml0eV9uYW1lGAQgASgJEjQKC2Zvcm1fc2NoZW1hGAUgASgLMh8udGFza3MuZW50aXR5LlNlcnZpY2VGb3JtU2NoZW1hIicKF0dldE15VGFza0hpc3RvcnlSZXF1ZXN0EgwKBHV1aWQYASABKAkiUgoSTXlUYXNrSGlzdG9yeUV2ZW50EgwKBGtpbmQYASABKAkSLgoKY3JlYXRlZF9hdBgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAiTQoYR2V0TXlUYXNrSGlzdG9yeVJlc3BvbnNlEjEKBmV2ZW50cxgBIAMoCzIhLnRhc2tzLnNlcnZpY2UuTXlUYXNrSGlzdG9yeUV2ZW50MusCCgtUYXNrU2VydmljZRJRCgpDcmVhdGVUYXNrEiAudGFza3Muc2VydmljZS5DcmVhdGVUYXNrUmVxdWVzdBohLnRhc2tzLnNlcnZpY2UuQ3JlYXRlVGFza1Jlc3BvbnNlElQKC0xpc3RNeVRhc2tzEiEudGFza3Muc2VydmljZS5MaXN0TXlUYXNrc1JlcXVlc3QaIi50YXNrcy5zZXJ2aWNlLkxpc3RNeVRhc2tzUmVzcG9uc2USTgoJR2V0TXlUYXNrEh8udGFza3Muc2VydmljZS5HZXRNeVRhc2tSZXF1ZXN0GiAudGFza3Muc2VydmljZS5HZXRNeVRhc2tSZXNwb25zZRJjChBHZXRNeVRhc2tIaXN0b3J5EiYudGFza3Muc2VydmljZS5HZXRNeVRhc2tIaXN0b3J5UmVxdWVzdBonLnRhc2tzLnNlcnZpY2UuR2V0TXlUYXNrSGlzdG9yeVJlc3BvbnNlQpgBChFjb20udGFza3Muc2VydmljZUIQVGFza1NlcnZpY2VQcm90b1ABWhxmZXNtdS9jb250cmFjdC90YXNrcy9zZXJ2aWNlogIDVFNYqgINVGFza3MuU2VydmljZcoCDVRhc2tzXFNlcnZpY2XiAhlUYXNrc1xTZXJ2aWNlXEdQQk1ldGFkYXRh6gIOVGFza3M6OlNlcnZpY2ViBnByb3RvMw", [file_google_protobuf_struct, file_google_protobuf_timestamp, file_tasks_entity_service_form, file_tasks_entity_task]);
+  fileDesc("CiB0YXNrcy9zZXJ2aWNlL3Rhc2tfc2VydmljZS5wcm90bxINdGFza3Muc2VydmljZSKpAQoRQ3JlYXRlVGFza1JlcXVlc3QSEgoKc2VydmljZV9pZBgBIAEoAxINCgV0aXRsZRgCIAEoCRITCgtkZXNjcmlwdGlvbhgDIAEoCRIUCgxmb3JtX3ZlcnNpb24YBCABKAMSLQoMZXh0cmFfZmllbGRzGAUgASgLMhcuZ29vZ2xlLnByb3RvYnVmLlN0cnVjdBIXCg9pZGVtcG90ZW5jeV9rZXkYBiABKAkiNgoSQ3JlYXRlVGFza1Jlc3BvbnNlEiAKBHRhc2sYASABKAsyEi50YXNrcy5lbnRpdHkuVGFzayJNCg1NeVRhc2tzQ3Vyc29yEi4KCmNyZWF0ZWRfYXQYASABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEgwKBHV1aWQYAiABKAkisgIKEkxpc3RNeVRhc2tzUmVxdWVzdBIRCglwYWdlX3NpemUYASABKAUSKwoFYWZ0ZXIYAiABKAsyHC50YXNrcy5zZXJ2aWNlLk15VGFza3NDdXJzb3ISFwoKc2VydmljZV9pZBgDIAEoA0gAiAEBEhYKCXN0YXR1c19pZBgEIAEoA0gBiAEBEhgKC3ByaW9yaXR5X2lkGAUgASgDSAKIAQESMAoMY3JlYXRlZF9mcm9tGAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIyCg5jcmVhdGVkX2JlZm9yZRgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCDQoLX3NlcnZpY2VfaWRCDAoKX3N0YXR1c19pZEIOCgxfcHJpb3JpdHlfaWQi6wEKDk15VGFza0xpc3RJdGVtEgwKBHV1aWQYASABKAkSDgoGbnVtYmVyGAIgASgJEg0KBXRpdGxlGAMgASgJEi4KCmNyZWF0ZWRfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhIKCnNlcnZpY2VfaWQYBSABKAMSFAoMc2VydmljZV9uYW1lGAYgASgJEhEKCXN0YXR1c19pZBgHIAEoAxITCgtzdGF0dXNfbmFtZRgIIAEoCRITCgtwcmlvcml0eV9pZBgJIAEoAxIVCg1wcmlvcml0eV9uYW1lGAogASgJInYKE0xpc3RNeVRhc2tzUmVzcG9uc2USLAoFdGFza3MYASADKAsyHS50YXNrcy5zZXJ2aWNlLk15VGFza0xpc3RJdGVtEjEKC25leHRfY3Vyc29yGAIgASgLMhwudGFza3Muc2VydmljZS5NeVRhc2tzQ3Vyc29yIiAKEEdldE15VGFza1JlcXVlc3QSDAoEdXVpZBgBIAEoCSKtAQoRR2V0TXlUYXNrUmVzcG9uc2USIAoEdGFzaxgBIAEoCzISLnRhc2tzLmVudGl0eS5UYXNrEhQKDHNlcnZpY2VfbmFtZRgCIAEoCRITCgtzdGF0dXNfbmFtZRgDIAEoCRIVCg1wcmlvcml0eV9uYW1lGAQgASgJEjQKC2Zvcm1fc2NoZW1hGAUgASgLMh8udGFza3MuZW50aXR5LlNlcnZpY2VGb3JtU2NoZW1hIicKF0dldE15VGFza0hpc3RvcnlSZXF1ZXN0EgwKBHV1aWQYASABKAkiUgoSTXlUYXNrSGlzdG9yeUV2ZW50EgwKBGtpbmQYASABKAkSLgoKY3JlYXRlZF9hdBgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAiTQoYR2V0TXlUYXNrSGlzdG9yeVJlc3BvbnNlEjEKBmV2ZW50cxgBIAMoCzIhLnRhc2tzLnNlcnZpY2UuTXlUYXNrSGlzdG9yeUV2ZW50IlAKEFF1ZXVlVGFza3NDdXJzb3ISLgoKY3JlYXRlZF9hdBgBIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASDAoEdXVpZBgCIAEoCSLMAgoVTGlzdFF1ZXVlVGFza3NSZXF1ZXN0EhIKCnF1ZXVlX2NvZGUYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEi4KBWFmdGVyGAMgASgLMh8udGFza3Muc2VydmljZS5RdWV1ZVRhc2tzQ3Vyc29yEhcKCnNlcnZpY2VfaWQYBCABKANIAIgBARIWCglzdGF0dXNfaWQYBSABKANIAYgBARIYCgtwcmlvcml0eV9pZBgGIAEoA0gCiAEBEjAKDGNyZWF0ZWRfZnJvbRgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASMgoOY3JlYXRlZF9iZWZvcmUYCCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQg0KC19zZXJ2aWNlX2lkQgwKCl9zdGF0dXNfaWRCDgoMX3ByaW9yaXR5X2lkIu4BChFRdWV1ZVRhc2tMaXN0SXRlbRIMCgR1dWlkGAEgASgJEg4KBm51bWJlchgCIAEoCRINCgV0aXRsZRgDIAEoCRIuCgpjcmVhdGVkX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBISCgpzZXJ2aWNlX2lkGAUgASgDEhQKDHNlcnZpY2VfbmFtZRgGIAEoCRIRCglzdGF0dXNfaWQYByABKAMSEwoLc3RhdHVzX25hbWUYCCABKAkSEwoLcHJpb3JpdHlfaWQYCSABKAMSFQoNcHJpb3JpdHlfbmFtZRgKIAEoCSJ/ChZMaXN0UXVldWVUYXNrc1Jlc3BvbnNlEi8KBXRhc2tzGAEgAygLMiAudGFza3Muc2VydmljZS5RdWV1ZVRhc2tMaXN0SXRlbRI0CgtuZXh0X2N1cnNvchgCIAEoCzIfLnRhc2tzLnNlcnZpY2UuUXVldWVUYXNrc0N1cnNvcjLKAwoLVGFza1NlcnZpY2USUQoKQ3JlYXRlVGFzaxIgLnRhc2tzLnNlcnZpY2UuQ3JlYXRlVGFza1JlcXVlc3QaIS50YXNrcy5zZXJ2aWNlLkNyZWF0ZVRhc2tSZXNwb25zZRJUCgtMaXN0TXlUYXNrcxIhLnRhc2tzLnNlcnZpY2UuTGlzdE15VGFza3NSZXF1ZXN0GiIudGFza3Muc2VydmljZS5MaXN0TXlUYXNrc1Jlc3BvbnNlEk4KCUdldE15VGFzaxIfLnRhc2tzLnNlcnZpY2UuR2V0TXlUYXNrUmVxdWVzdBogLnRhc2tzLnNlcnZpY2UuR2V0TXlUYXNrUmVzcG9uc2USYwoQR2V0TXlUYXNrSGlzdG9yeRImLnRhc2tzLnNlcnZpY2UuR2V0TXlUYXNrSGlzdG9yeVJlcXVlc3QaJy50YXNrcy5zZXJ2aWNlLkdldE15VGFza0hpc3RvcnlSZXNwb25zZRJdCg5MaXN0UXVldWVUYXNrcxIkLnRhc2tzLnNlcnZpY2UuTGlzdFF1ZXVlVGFza3NSZXF1ZXN0GiUudGFza3Muc2VydmljZS5MaXN0UXVldWVUYXNrc1Jlc3BvbnNlQpgBChFjb20udGFza3Muc2VydmljZUIQVGFza1NlcnZpY2VQcm90b1ABWhxmZXNtdS9jb250cmFjdC90YXNrcy9zZXJ2aWNlogIDVFNYqgINVGFza3MuU2VydmljZcoCDVRhc2tzXFNlcnZpY2XiAhlUYXNrc1xTZXJ2aWNlXEdQQk1ldGFkYXRh6gIOVGFza3M6OlNlcnZpY2ViBnByb3RvMw", [file_google_protobuf_struct, file_google_protobuf_timestamp, file_tasks_entity_service_form, file_tasks_entity_task]);
 
 /**
  * @generated from message tasks.service.CreateTaskRequest
@@ -359,6 +359,172 @@ export const GetMyTaskHistoryResponseSchema: GenMessage<GetMyTaskHistoryResponse
   messageDesc(file_tasks_service_task_service, 10);
 
 /**
+ * @generated from message tasks.service.QueueTasksCursor
+ */
+export type QueueTasksCursor = Message<"tasks.service.QueueTasksCursor"> & {
+  /**
+   * @generated from field: google.protobuf.Timestamp created_at = 1;
+   */
+  createdAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: string uuid = 2;
+   */
+  uuid: string;
+};
+
+/**
+ * Describes the message tasks.service.QueueTasksCursor.
+ * Use `create(QueueTasksCursorSchema)` to create a new message.
+ */
+export const QueueTasksCursorSchema: GenMessage<QueueTasksCursor> = /*@__PURE__*/
+  messageDesc(file_tasks_service_task_service, 11);
+
+/**
+ * @generated from message tasks.service.ListQueueTasksRequest
+ */
+export type ListQueueTasksRequest = Message<"tasks.service.ListQueueTasksRequest"> & {
+  /**
+   * @generated from field: string queue_code = 1;
+   */
+  queueCode: string;
+
+  /**
+   * Defaults to 50 and accepts up to 100 tasks per page.
+   *
+   * @generated from field: int32 page_size = 2;
+   */
+  pageSize: number;
+
+  /**
+   * Use next_cursor from the preceding page for the same queue and filters.
+   *
+   * @generated from field: tasks.service.QueueTasksCursor after = 3;
+   */
+  after?: QueueTasksCursor | undefined;
+
+  /**
+   * @generated from field: optional int64 service_id = 4;
+   */
+  serviceId?: bigint | undefined;
+
+  /**
+   * @generated from field: optional int64 status_id = 5;
+   */
+  statusId?: bigint | undefined;
+
+  /**
+   * @generated from field: optional int64 priority_id = 6;
+   */
+  priorityId?: bigint | undefined;
+
+  /**
+   * Inclusive start and exclusive end of the creation period.
+   *
+   * @generated from field: google.protobuf.Timestamp created_from = 7;
+   */
+  createdFrom?: Timestamp | undefined;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp created_before = 8;
+   */
+  createdBefore?: Timestamp | undefined;
+};
+
+/**
+ * Describes the message tasks.service.ListQueueTasksRequest.
+ * Use `create(ListQueueTasksRequestSchema)` to create a new message.
+ */
+export const ListQueueTasksRequestSchema: GenMessage<ListQueueTasksRequest> = /*@__PURE__*/
+  messageDesc(file_tasks_service_task_service, 12);
+
+/**
+ * @generated from message tasks.service.QueueTaskListItem
+ */
+export type QueueTaskListItem = Message<"tasks.service.QueueTaskListItem"> & {
+  /**
+   * @generated from field: string uuid = 1;
+   */
+  uuid: string;
+
+  /**
+   * @generated from field: string number = 2;
+   */
+  number: string;
+
+  /**
+   * @generated from field: string title = 3;
+   */
+  title: string;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp created_at = 4;
+   */
+  createdAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: int64 service_id = 5;
+   */
+  serviceId: bigint;
+
+  /**
+   * @generated from field: string service_name = 6;
+   */
+  serviceName: string;
+
+  /**
+   * @generated from field: int64 status_id = 7;
+   */
+  statusId: bigint;
+
+  /**
+   * @generated from field: string status_name = 8;
+   */
+  statusName: string;
+
+  /**
+   * @generated from field: int64 priority_id = 9;
+   */
+  priorityId: bigint;
+
+  /**
+   * @generated from field: string priority_name = 10;
+   */
+  priorityName: string;
+};
+
+/**
+ * Describes the message tasks.service.QueueTaskListItem.
+ * Use `create(QueueTaskListItemSchema)` to create a new message.
+ */
+export const QueueTaskListItemSchema: GenMessage<QueueTaskListItem> = /*@__PURE__*/
+  messageDesc(file_tasks_service_task_service, 13);
+
+/**
+ * @generated from message tasks.service.ListQueueTasksResponse
+ */
+export type ListQueueTasksResponse = Message<"tasks.service.ListQueueTasksResponse"> & {
+  /**
+   * Ordered by creation time and UUID, newest first.
+   *
+   * @generated from field: repeated tasks.service.QueueTaskListItem tasks = 1;
+   */
+  tasks: QueueTaskListItem[];
+
+  /**
+   * @generated from field: tasks.service.QueueTasksCursor next_cursor = 2;
+   */
+  nextCursor?: QueueTasksCursor | undefined;
+};
+
+/**
+ * Describes the message tasks.service.ListQueueTasksResponse.
+ * Use `create(ListQueueTasksResponseSchema)` to create a new message.
+ */
+export const ListQueueTasksResponseSchema: GenMessage<ListQueueTasksResponse> = /*@__PURE__*/
+  messageDesc(file_tasks_service_task_service, 14);
+
+/**
  * @generated from service tasks.service.TaskService
  */
 export const TaskService: GenService<{
@@ -393,6 +559,16 @@ export const TaskService: GenService<{
     methodKind: "unary";
     input: typeof GetMyTaskHistoryRequestSchema;
     output: typeof GetMyTaskHistoryResponseSchema;
+  },
+  /**
+   * Requires a personal view grant for the requested queue.
+   *
+   * @generated from rpc tasks.service.TaskService.ListQueueTasks
+   */
+  listQueueTasks: {
+    methodKind: "unary";
+    input: typeof ListQueueTasksRequestSchema;
+    output: typeof ListQueueTasksResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_tasks_service_task_service, 0);

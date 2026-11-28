@@ -2,7 +2,7 @@ package models
 
 import "time"
 
-type MyTaskListItem struct {
+type TaskListItem struct {
 	UUID         string
 	Number       string
 	Title        string
@@ -16,22 +16,22 @@ type MyTaskListItem struct {
 }
 
 type MyTaskDetails struct {
-	MyTaskListItem `gorm:"embedded"`
-	Description    string
-	DirectionID    int64
-	UpdatedAt      time.Time
-	Version        int64
-	FormVersion    int64
-	ExtraFields    string
-	FormSchema     *string
+	TaskListItem `gorm:"embedded"`
+	Description  string
+	DirectionID  int64
+	UpdatedAt    time.Time
+	Version      int64
+	FormVersion  int64
+	ExtraFields  string
+	FormSchema   *string
 }
 
-type MyTasksCursor struct {
+type TaskListCursor struct {
 	CreatedAt time.Time
 	UUID      string
 }
 
-type MyTasksFilter struct {
+type TaskListFilter struct {
 	ServiceID     *int64
 	StatusID      *int64
 	PriorityID    *int64

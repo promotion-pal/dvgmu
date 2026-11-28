@@ -184,6 +184,7 @@ func New(
 		mux.Handle(requestserviceconnect.TaskServiceListMyTasksProcedure, requestsProxy)
 		mux.Handle(requestserviceconnect.TaskServiceGetMyTaskProcedure, requestsProxy)
 		mux.Handle(requestserviceconnect.TaskServiceGetMyTaskHistoryProcedure, requestsProxy)
+		mux.Handle(requestserviceconnect.TaskServiceListQueueTasksProcedure, requestsProxy)
 		mux.Handle(requestserviceconnect.QueueAccessServiceGrantQueueViewAccessProcedure, requestsProxy)
 		mux.Handle(requestserviceconnect.QueueAccessServiceListQueueViewAccessProcedure, requestsProxy)
 		mux.Handle(requestserviceconnect.QueueAccessServiceRevokeQueueViewAccessProcedure, requestsProxy)

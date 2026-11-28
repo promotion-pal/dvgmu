@@ -4,11 +4,11 @@ import "time"
 
 type Task struct {
 	ID        int64     `gorm:"primaryKey;autoIncrement"`
-	UUID      string    `gorm:"type:uuid;not null;default:gen_random_uuid();uniqueIndex:tasks_uuid_key;index:tasks_author_created_uuid_idx,priority:3"`
+	UUID      string    `gorm:"type:uuid;not null;default:gen_random_uuid();uniqueIndex:tasks_uuid_key;index:tasks_author_created_uuid_idx,priority:3;index:tasks_queue_created_uuid_idx,priority:3"`
 	Number    string    `gorm:"type:text;not null;uniqueIndex:tasks_number_key"`
 	Title     string    `gorm:"type:varchar(150);not null"`
 	Version   int64     `gorm:"not null;default:1"`
-	CreatedAt time.Time `gorm:"not null;index:tasks_author_created_uuid_idx,priority:2"`
+	CreatedAt time.Time `gorm:"not null;index:tasks_author_created_uuid_idx,priority:2;index:tasks_queue_created_uuid_idx,priority:2"`
 	UpdatedAt time.Time `gorm:"not null"`
 
 	DirectionID                  *int64
@@ -25,7 +25,7 @@ type Task struct {
 	AuthorID                     string             `gorm:"type:text;index:tasks_author_created_uuid_idx,priority:1"`
 	AuthorDepartmentIDAtCreation string             `gorm:"type:text"`
 	ExtraFields                  string             `gorm:"type:jsonb;not null;default:'{}'"`
-	QueueID                      *string            `gorm:"type:text"`
+	QueueID                      *string            `gorm:"type:text;index:tasks_queue_created_uuid_idx,priority:1"`
 	RoutingOutcome               RouteOutcome       `gorm:"type:text"`
 }
 

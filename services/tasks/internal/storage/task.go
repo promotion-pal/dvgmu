@@ -2,6 +2,7 @@ package storage
 
 import (
 	"context"
+	"database/sql"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -16,6 +17,7 @@ var (
 	ErrTaskDefaultsMissing         = errors.New("initial status and default priority are not configured for the service")
 	ErrTaskFormChanged             = errors.New("service form version changed")
 	ErrTaskRegistrationKeyConflict = errors.New("idempotency key was already used with different task data")
+	ErrQueueViewAccessDenied       = errors.New("queue view access required")
 )
 
 type TaskStorage struct {
@@ -26,7 +28,7 @@ func NewTaskStorage(db *gorm.DB) *TaskStorage {
 	return &TaskStorage{db: db}
 }
 
-const myTaskSummaryColumns = `tasks.uuid, tasks.number, tasks.title, tasks.created_at,
+const taskSummaryColumns = `tasks.uuid, tasks.number, tasks.title, tasks.created_at,
 	COALESCE(tasks.service_id, 0) AS service_id, COALESCE(services.name, '') AS service_name,
 	COALESCE(tasks.status_id, 0) AS status_id, COALESCE(statuses.name, '') AS status_name,
 	COALESCE(tasks.priority_id, 0) AS priority_id, COALESCE(priorities.name, '') AS priority_name`
@@ -36,8 +38,8 @@ func (s *TaskStorage) myTasksQuery(ctx context.Context, authorID string) *gorm.D
 		Where("tasks.author_id = ?", authorID)
 }
 
-func (s *TaskStorage) myTasksWithCatalog(ctx context.Context, authorID string) *gorm.DB {
-	return s.myTasksQuery(ctx, authorID).
+func tasksWithCatalog(query *gorm.DB) *gorm.DB {
+	return query.
 		Joins("LEFT JOIN services ON services.id = tasks.service_id").
 		Joins("LEFT JOIN statuses ON statuses.id = tasks.status_id").
 		Joins("LEFT JOIN priorities ON priorities.id = tasks.priority_id")
@@ -45,8 +47,8 @@ func (s *TaskStorage) myTasksWithCatalog(ctx context.Context, authorID string) *
 
 func (s *TaskStorage) GetMine(ctx context.Context, authorID, taskUUID string) (models.MyTaskDetails, error) {
 	var task models.MyTaskDetails
-	err := s.myTasksWithCatalog(ctx, authorID).
-		Select(myTaskSummaryColumns+`, tasks.description, COALESCE(tasks.direction_id, 0) AS direction_id,
+	err := tasksWithCatalog(s.myTasksQuery(ctx, authorID)).
+		Select(taskSummaryColumns+`, tasks.description, COALESCE(tasks.direction_id, 0) AS direction_id,
 			tasks.updated_at, tasks.version, COALESCE(tasks.form_version, 0) AS form_version,
 			tasks.extra_fields, forms.schema AS form_schema`).
 		Joins("LEFT JOIN service_form_versions AS forms ON forms.service_id = tasks.service_id AND forms.version = tasks.form_version").
@@ -83,9 +85,32 @@ func (s *TaskStorage) GetHistoryMine(ctx context.Context, authorID, taskUUID str
 	return events, nil
 }
 
-func (s *TaskStorage) ListMine(ctx context.Context, authorID string, filter models.MyTasksFilter, after *models.MyTasksCursor, limit int) ([]models.MyTaskListItem, error) {
-	var tasks []models.MyTaskListItem
-	query := s.myTasksWithCatalog(ctx, authorID).Select(myTaskSummaryColumns)
+func (s *TaskStorage) ListMine(ctx context.Context, authorID string, filter models.TaskListFilter, after *models.TaskListCursor, limit int) ([]models.TaskListItem, error) {
+	return listTasks(s.myTasksQuery(ctx, authorID), filter, after, limit)
+}
+
+func (s *TaskStorage) ListQueue(ctx context.Context, viewerID, queueCode string, filter models.TaskListFilter, after *models.TaskListCursor, limit int) ([]models.TaskListItem, error) {
+	var tasks []models.TaskListItem
+	// Check the grant and read tasks from the same database snapshot.
+	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		var grant models.QueueViewAccess
+		err := tx.Take(&grant, "queue_code = ? AND user_uuid = ?", queueCode, viewerID).Error
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return ErrQueueViewAccessDenied
+		}
+		if err != nil {
+			return err
+		}
+		query := tx.Model(&models.Task{}).Where("tasks.queue_id = ?", queueCode)
+		tasks, err = listTasks(query, filter, after, limit)
+		return err
+	}, &sql.TxOptions{Isolation: sql.LevelRepeatableRead, ReadOnly: true})
+	return tasks, err
+}
+
+func listTasks(query *gorm.DB, filter models.TaskListFilter, after *models.TaskListCursor, limit int) ([]models.TaskListItem, error) {
+	var tasks []models.TaskListItem
+	query = tasksWithCatalog(query).Select(taskSummaryColumns)
 	if filter.ServiceID != nil {
 		query = query.Where("tasks.service_id = ?", *filter.ServiceID)
 	}

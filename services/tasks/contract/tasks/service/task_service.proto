@@ -12,6 +12,8 @@ service TaskService {
   rpc ListMyTasks(ListMyTasksRequest) returns (ListMyTasksResponse);
   rpc GetMyTask(GetMyTaskRequest) returns (GetMyTaskResponse);
   rpc GetMyTaskHistory(GetMyTaskHistoryRequest) returns (GetMyTaskHistoryResponse);
+  // Requires a personal view grant for the requested queue.
+  rpc ListQueueTasks(ListQueueTasksRequest) returns (ListQueueTasksResponse);
 }
 
 message CreateTaskRequest {
@@ -92,4 +94,42 @@ message MyTaskHistoryEvent {
 message GetMyTaskHistoryResponse {
   // Events visible to the applicant, oldest first.
   repeated MyTaskHistoryEvent events = 1;
+}
+
+message QueueTasksCursor {
+  google.protobuf.Timestamp created_at = 1;
+  string uuid = 2;
+}
+
+message ListQueueTasksRequest {
+  string queue_code = 1;
+  // Defaults to 50 and accepts up to 100 tasks per page.
+  int32 page_size = 2;
+  // Use next_cursor from the preceding page for the same queue and filters.
+  QueueTasksCursor after = 3;
+  optional int64 service_id = 4;
+  optional int64 status_id = 5;
+  optional int64 priority_id = 6;
+  // Inclusive start and exclusive end of the creation period.
+  google.protobuf.Timestamp created_from = 7;
+  google.protobuf.Timestamp created_before = 8;
+}
+
+message QueueTaskListItem {
+  string uuid = 1;
+  string number = 2;
+  string title = 3;
+  google.protobuf.Timestamp created_at = 4;
+  int64 service_id = 5;
+  string service_name = 6;
+  int64 status_id = 7;
+  string status_name = 8;
+  int64 priority_id = 9;
+  string priority_name = 10;
+}
+
+message ListQueueTasksResponse {
+  // Ordered by creation time and UUID, newest first.
+  repeated QueueTaskListItem tasks = 1;
+  QueueTasksCursor next_cursor = 2;
 }
