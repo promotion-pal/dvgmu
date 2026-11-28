@@ -58,6 +58,10 @@ export async function serveCalendar(req: IncomingMessage, res: ServerResponse, a
     try {
         timetableId = scope[1] && decodeURIComponent(scope[1]);
         group = scope[2] && decodeURIComponent(scope[2]);
+        if (url.pathname === "/calendar/schedule.ics") {
+            timetableId = url.searchParams.get("timetable") || undefined;
+            group = url.searchParams.get("group") || undefined;
+        }
     } catch {
         res.writeHead(400).end();
         return;
