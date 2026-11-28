@@ -82,22 +82,18 @@ const fromMessage = (message: ScheduleCollectEntryMessage): ScheduleCollectEntry
     substitutionSubjCafId: message.substitutionSubjCafId,
     substitutionThemas: message.substitutionThemas,
     createdAt: message.createdAt ? new Date(Number(message.createdAt.seconds) * 1000).toISOString() : "",
+    authorUuid: message.authorUuid,
+    batchId: message.batchId,
+    batchRow: message.batchRow,
 });
 
-/** The only place the widget talks to the schedule-collect service. The
- * server never fails a submission with a transport error for a validation
- * problem — it answers success=false with a reason — so that case is
- * turned into a thrown error here, same as a transport failure would be. */
 export const scheduleCollectApi = {
     async fetch(offset: number, signal: AbortSignal) {
         const response = await client.scheduleCollectFetch({ offset }, { signal });
         return { items: response.items.map(fromMessage), hasMore: response.hasMore };
     },
-    async create(input: ScheduleCollectEntryInput): Promise<ScheduleCollectEntry> {
-        const response = await client.scheduleCollectCreate({ item: toMessage(input) });
-        if (!response.success || !response.item) {
-            throw new Error(response.message || "Не удалось сохранить запись");
-        }
-        return fromMessage(response.item);
+    async createBatch(batchId: string, inputs: ScheduleCollectEntryInput[]) {
+        const response = await client.scheduleCollectBatchCreate({ batchId, items: inputs.map(toMessage) });
+        return response.items.map(fromMessage);
     },
 };

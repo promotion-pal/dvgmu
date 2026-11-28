@@ -41,7 +41,7 @@ const requiredText = (message: string) => z.string().trim().min(1, message);
 export const scheduleCollectEntrySchema = z
     .object({
         group: requiredText("Укажите группу").max(255),
-        les: z.coerce.number({ message: "Укажите номер занятия" }).int().min(1, "Номер занятия должен быть не меньше 1"),
+        les: z.coerce.number({ message: "Укажите номер занятия" }).int().min(1, "Номер занятия должен быть не меньше 1").max(2147483647, "Номер занятия слишком велик"),
         aud: requiredText("Укажите аудиторию"),
         date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Укажите дату занятия"),
 
@@ -116,6 +116,9 @@ export interface ScheduleCollectEntry {
     substitutionSubjCafId: string;
     substitutionThemas: string;
     createdAt: string;
+    authorUuid: string;
+    batchId: string;
+    batchRow: number;
 }
 
 export const EMPTY_SCHEDULE_COLLECT_ENTRY: ScheduleCollectEntryInput = {

@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file fesmu/service/v1/schedule_collect.service.proto.
  */
 export const file_fesmu_service_v1_schedule_collect_service: GenFile = /*@__PURE__*/
-  fileDesc("Ci9mZXNtdS9zZXJ2aWNlL3YxL3NjaGVkdWxlX2NvbGxlY3Quc2VydmljZS5wcm90bxITY29udHJhY3Quc2VydmljZS52MSJWChxTY2hlZHVsZUNvbGxlY3RDcmVhdGVSZXF1ZXN0EjYKBGl0ZW0YASABKAsyKC5jb250cmFjdC5lbnRpdHkudjEuU2NoZWR1bGVDb2xsZWN0RW50cnkieQodU2NoZWR1bGVDb2xsZWN0Q3JlYXRlUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEjYKBGl0ZW0YAyABKAsyKC5jb250cmFjdC5lbnRpdHkudjEuU2NoZWR1bGVDb2xsZWN0RW50cnkiLQobU2NoZWR1bGVDb2xsZWN0RmV0Y2hSZXF1ZXN0Eg4KBm9mZnNldBgBIAEoDSJpChxTY2hlZHVsZUNvbGxlY3RGZXRjaFJlc3BvbnNlEjcKBWl0ZW1zGAEgAygLMiguY29udHJhY3QuZW50aXR5LnYxLlNjaGVkdWxlQ29sbGVjdEVudHJ5EhAKCGhhc19tb3JlGAIgASgIMpUCChZTY2hlZHVsZUNvbGxlY3RTZXJ2aWNlEn4KFVNjaGVkdWxlQ29sbGVjdENyZWF0ZRIxLmNvbnRyYWN0LnNlcnZpY2UudjEuU2NoZWR1bGVDb2xsZWN0Q3JlYXRlUmVxdWVzdBoyLmNvbnRyYWN0LnNlcnZpY2UudjEuU2NoZWR1bGVDb2xsZWN0Q3JlYXRlUmVzcG9uc2USewoUU2NoZWR1bGVDb2xsZWN0RmV0Y2gSMC5jb250cmFjdC5zZXJ2aWNlLnYxLlNjaGVkdWxlQ29sbGVjdEZldGNoUmVxdWVzdBoxLmNvbnRyYWN0LnNlcnZpY2UudjEuU2NoZWR1bGVDb2xsZWN0RmV0Y2hSZXNwb25zZULPAQoXY29tLmNvbnRyYWN0LnNlcnZpY2UudjFCG1NjaGVkdWxlQ29sbGVjdFNlcnZpY2VQcm90b1ABWilmZXNtdS9jb250cmFjdC9mZXNtdS9zZXJ2aWNlL3YxO3NlcnZpY2V2MaICA0NTWKoCE0NvbnRyYWN0LlNlcnZpY2UuVjHKAhNDb250cmFjdFxTZXJ2aWNlXFYx4gIfQ29udHJhY3RcU2VydmljZVxWMVxHUEJNZXRhZGF0YeoCFUNvbnRyYWN0OjpTZXJ2aWNlOjpWMWIGcHJvdG8z", [file_fesmu_entity_v1_schedule_collect_entity]);
+  fileDesc("Ci9mZXNtdS9zZXJ2aWNlL3YxL3NjaGVkdWxlX2NvbGxlY3Quc2VydmljZS5wcm90bxITY29udHJhY3Quc2VydmljZS52MSJWChxTY2hlZHVsZUNvbGxlY3RDcmVhdGVSZXF1ZXN0EjYKBGl0ZW0YASABKAsyKC5jb250cmFjdC5lbnRpdHkudjEuU2NoZWR1bGVDb2xsZWN0RW50cnkieQodU2NoZWR1bGVDb2xsZWN0Q3JlYXRlUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEjYKBGl0ZW0YAyABKAsyKC5jb250cmFjdC5lbnRpdHkudjEuU2NoZWR1bGVDb2xsZWN0RW50cnkiLQobU2NoZWR1bGVDb2xsZWN0RmV0Y2hSZXF1ZXN0Eg4KBm9mZnNldBgBIAEoDSJpChxTY2hlZHVsZUNvbGxlY3RGZXRjaFJlc3BvbnNlEjcKBWl0ZW1zGAEgAygLMiguY29udHJhY3QuZW50aXR5LnYxLlNjaGVkdWxlQ29sbGVjdEVudHJ5EhAKCGhhc19tb3JlGAIgASgIIm4KIVNjaGVkdWxlQ29sbGVjdEJhdGNoQ3JlYXRlUmVxdWVzdBIQCghiYXRjaF9pZBgBIAEoCRI3CgVpdGVtcxgCIAMoCzIoLmNvbnRyYWN0LmVudGl0eS52MS5TY2hlZHVsZUNvbGxlY3RFbnRyeSJdCiJTY2hlZHVsZUNvbGxlY3RCYXRjaENyZWF0ZVJlc3BvbnNlEjcKBWl0ZW1zGAEgAygLMiguY29udHJhY3QuZW50aXR5LnYxLlNjaGVkdWxlQ29sbGVjdEVudHJ5MqUDChZTY2hlZHVsZUNvbGxlY3RTZXJ2aWNlEn4KFVNjaGVkdWxlQ29sbGVjdENyZWF0ZRIxLmNvbnRyYWN0LnNlcnZpY2UudjEuU2NoZWR1bGVDb2xsZWN0Q3JlYXRlUmVxdWVzdBoyLmNvbnRyYWN0LnNlcnZpY2UudjEuU2NoZWR1bGVDb2xsZWN0Q3JlYXRlUmVzcG9uc2USewoUU2NoZWR1bGVDb2xsZWN0RmV0Y2gSMC5jb250cmFjdC5zZXJ2aWNlLnYxLlNjaGVkdWxlQ29sbGVjdEZldGNoUmVxdWVzdBoxLmNvbnRyYWN0LnNlcnZpY2UudjEuU2NoZWR1bGVDb2xsZWN0RmV0Y2hSZXNwb25zZRKNAQoaU2NoZWR1bGVDb2xsZWN0QmF0Y2hDcmVhdGUSNi5jb250cmFjdC5zZXJ2aWNlLnYxLlNjaGVkdWxlQ29sbGVjdEJhdGNoQ3JlYXRlUmVxdWVzdBo3LmNvbnRyYWN0LnNlcnZpY2UudjEuU2NoZWR1bGVDb2xsZWN0QmF0Y2hDcmVhdGVSZXNwb25zZULPAQoXY29tLmNvbnRyYWN0LnNlcnZpY2UudjFCG1NjaGVkdWxlQ29sbGVjdFNlcnZpY2VQcm90b1ABWilmZXNtdS9jb250cmFjdC9mZXNtdS9zZXJ2aWNlL3YxO3NlcnZpY2V2MaICA0NTWKoCE0NvbnRyYWN0LlNlcnZpY2UuVjHKAhNDb250cmFjdFxTZXJ2aWNlXFYx4gIfQ29udHJhY3RcU2VydmljZVxWMVxHUEJNZXRhZGF0YeoCFUNvbnRyYWN0OjpTZXJ2aWNlOjpWMWIGcHJvdG8z", [file_fesmu_entity_v1_schedule_collect_entity]);
 
 /**
  * @generated from message contract.service.v1.ScheduleCollectCreateRequest
@@ -103,6 +103,45 @@ export const ScheduleCollectFetchResponseSchema: GenMessage<ScheduleCollectFetch
   messageDesc(file_fesmu_service_v1_schedule_collect_service, 3);
 
 /**
+ * @generated from message contract.service.v1.ScheduleCollectBatchCreateRequest
+ */
+export type ScheduleCollectBatchCreateRequest = Message<"contract.service.v1.ScheduleCollectBatchCreateRequest"> & {
+  /**
+   * @generated from field: string batch_id = 1;
+   */
+  batchId: string;
+
+  /**
+   * @generated from field: repeated contract.entity.v1.ScheduleCollectEntry items = 2;
+   */
+  items: ScheduleCollectEntry[];
+};
+
+/**
+ * Describes the message contract.service.v1.ScheduleCollectBatchCreateRequest.
+ * Use `create(ScheduleCollectBatchCreateRequestSchema)` to create a new message.
+ */
+export const ScheduleCollectBatchCreateRequestSchema: GenMessage<ScheduleCollectBatchCreateRequest> = /*@__PURE__*/
+  messageDesc(file_fesmu_service_v1_schedule_collect_service, 4);
+
+/**
+ * @generated from message contract.service.v1.ScheduleCollectBatchCreateResponse
+ */
+export type ScheduleCollectBatchCreateResponse = Message<"contract.service.v1.ScheduleCollectBatchCreateResponse"> & {
+  /**
+   * @generated from field: repeated contract.entity.v1.ScheduleCollectEntry items = 1;
+   */
+  items: ScheduleCollectEntry[];
+};
+
+/**
+ * Describes the message contract.service.v1.ScheduleCollectBatchCreateResponse.
+ * Use `create(ScheduleCollectBatchCreateResponseSchema)` to create a new message.
+ */
+export const ScheduleCollectBatchCreateResponseSchema: GenMessage<ScheduleCollectBatchCreateResponse> = /*@__PURE__*/
+  messageDesc(file_fesmu_service_v1_schedule_collect_service, 5);
+
+/**
  * ScheduleCollectService collects schedule rows from signed-in teachers.
  *
  * @generated from service contract.service.v1.ScheduleCollectService
@@ -123,6 +162,14 @@ export const ScheduleCollectService: GenService<{
     methodKind: "unary";
     input: typeof ScheduleCollectFetchRequestSchema;
     output: typeof ScheduleCollectFetchResponseSchema;
+  },
+  /**
+   * @generated from rpc contract.service.v1.ScheduleCollectService.ScheduleCollectBatchCreate
+   */
+  scheduleCollectBatchCreate: {
+    methodKind: "unary";
+    input: typeof ScheduleCollectBatchCreateRequestSchema;
+    output: typeof ScheduleCollectBatchCreateResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_fesmu_service_v1_schedule_collect_service, 0);

@@ -55,7 +55,11 @@ export function ScheduleInbox() {
                     <TableBody>
                         {page?.items.map((entry) => (
                             <TableRow key={entry.id}>
-                                <TableCell>{entry.createdAt ? sentDate.format(new Date(entry.createdAt)) : "—"}</TableCell>
+                                <TableCell>
+                                    {entry.createdAt ? sentDate.format(new Date(entry.createdAt)) : "—"}
+                                    {entry.batchId && <p title={entry.batchId} className="text-xs text-muted-foreground">Пакет {entry.batchId.slice(0, 8)} · строка {entry.batchRow}</p>}
+                                    {entry.authorUuid && <p title={entry.authorUuid} className="text-xs text-muted-foreground">ID отправителя: {entry.authorUuid.slice(0, 8)}</p>}
+                                </TableCell>
                                 <TableCell>{entry.date}</TableCell>
                                 <TableCell>{entry.group || "—"}</TableCell>
                                 <TableCell>{entry.les} / {entry.aud}</TableCell>

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 	"time"
+	"unicode/utf8"
 
 	"google.golang.org/protobuf/types/known/timestamppb"
 
@@ -44,11 +45,23 @@ type ScheduleCollect struct {
 	SubstitutionSubjCafID string `gorm:"column:substitution_subj_caf_id;size:64;not null;default:''"`
 	SubstitutionThemas    string `gorm:"type:text;not null;default:''"`
 
-	AuthorUUID *string   `gorm:"type:uuid"`
+	AuthorUUID *string `gorm:"type:uuid"`
+	BatchID    *string `gorm:"type:uuid"`
+	BatchRow   *uint32
 	CreatedAt  time.Time `gorm:"not null;index:idx_schedulecollect_created_id,priority:1,sort:desc"`
 }
 
 func (ScheduleCollect) TableName() string { return "schedule_collect_entries" }
+
+type ScheduleCollectBatch struct {
+	ID          string `gorm:"column:id;type:uuid;primaryKey"`
+	AuthorUUID  string `gorm:"type:uuid"`
+	PayloadHash string
+}
+
+func (ScheduleCollectBatch) TableName() string { return "schedule_collect_batches" }
+
+var ErrScheduleCollectBatchConflict = errors.New("идентификатор пакета уже использован")
 
 // NewScheduleCollect validates a submitted row and builds its stored form.
 // The id is assigned by the service.
@@ -85,6 +98,40 @@ func NewScheduleCollect(e *entity.ScheduleCollectEntry) (*ScheduleCollect, error
 	}, nil
 }
 
+func (s *ScheduleCollect) NormalizeBatchText() error {
+	for _, field := range []struct {
+		value *string
+		name  string
+		max   int
+	}{
+		{&s.GroupName, "группа", 255},
+		{&s.Aud, "аудитория", 255},
+		{&s.Name, "должность и ФИО преподавателя", 255},
+		{&s.CafID, "код кафедры", 64},
+		{&s.Subject, "дисциплина", 255},
+		{&s.SubjType, "вид занятия", 64},
+		{&s.SubjCafID, "код кафедры дисциплины", 64},
+		{&s.PrepID, "код преподавателя", 64},
+		{&s.Themas, "темы занятия", 0},
+		{&s.SubstitutionName, "должность и ФИО заменяющего преподавателя", 255},
+		{&s.SubstitutionPrepID, "код заменяющего преподавателя", 64},
+		{&s.SubstitutionSubject, "дисциплина замены", 255},
+		{&s.SubstitutionSubjType, "вид занятия замены", 64},
+		{&s.SubstitutionSubjCafID, "код кафедры дисциплины замены", 64},
+		{&s.SubstitutionThemas, "темы занятия замены", 0},
+	} {
+		text := strings.TrimSpace(*field.value)
+		if strings.ContainsRune(text, 0) {
+			return scheduleCollectInvalid("поле «%s» содержит недопустимый символ", field.name)
+		}
+		if field.max > 0 && utf8.RuneCountInString(text) > field.max {
+			return scheduleCollectInvalid("поле «%s» должно содержать не более %d символов", field.name, field.max)
+		}
+		*field.value = text
+	}
+	return nil
+}
+
 func (s *ScheduleCollect) ToProto() *entity.ScheduleCollectEntry {
 	entry := &entity.ScheduleCollectEntry{
 		Id: s.ID,
@@ -116,6 +163,10 @@ func (s *ScheduleCollect) ToProto() *entity.ScheduleCollectEntry {
 	}
 	if s.AuthorUUID != nil {
 		entry.AuthorUuid = *s.AuthorUUID
+	}
+	if s.BatchID != nil {
+		entry.BatchId = *s.BatchID
+		entry.BatchRow = *s.BatchRow
 	}
 	return entry
 }

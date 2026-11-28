@@ -45,4 +45,6 @@ message ScheduleCollectEntry {
 
   google.protobuf.Timestamp created_at = 23;
   string author_uuid = 24;
+  string batch_id = 25;
+  uint32 batch_row = 26;
 }

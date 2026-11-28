@@ -7,8 +7,8 @@ export default function ScheduleCollectPage() {
 
     return (
         <CommonWrapper
-            title="Передача сведений о занятии"
-            description="Отправьте сведения в отдел расписания. Каждое занятие отправляется отдельно."
+            title="Передача сведений о занятиях"
+            description="Добавьте занятия в пакет, проверьте строки и отправьте сведения в отдел расписания."
         >
             {userId && <ScheduleCollectPanel key={userId} userId={userId} />}
         </CommonWrapper>

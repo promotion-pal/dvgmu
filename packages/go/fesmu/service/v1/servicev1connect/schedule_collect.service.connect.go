@@ -39,6 +39,9 @@ const (
 	// ScheduleCollectServiceScheduleCollectFetchProcedure is the fully-qualified name of the
 	// ScheduleCollectService's ScheduleCollectFetch RPC.
 	ScheduleCollectServiceScheduleCollectFetchProcedure = "/contract.service.v1.ScheduleCollectService/ScheduleCollectFetch"
+	// ScheduleCollectServiceScheduleCollectBatchCreateProcedure is the fully-qualified name of the
+	// ScheduleCollectService's ScheduleCollectBatchCreate RPC.
+	ScheduleCollectServiceScheduleCollectBatchCreateProcedure = "/contract.service.v1.ScheduleCollectService/ScheduleCollectBatchCreate"
 )
 
 // ScheduleCollectServiceClient is a client for the contract.service.v1.ScheduleCollectService
@@ -46,6 +49,7 @@ const (
 type ScheduleCollectServiceClient interface {
 	ScheduleCollectCreate(context.Context, *connect.Request[v1.ScheduleCollectCreateRequest]) (*connect.Response[v1.ScheduleCollectCreateResponse], error)
 	ScheduleCollectFetch(context.Context, *connect.Request[v1.ScheduleCollectFetchRequest]) (*connect.Response[v1.ScheduleCollectFetchResponse], error)
+	ScheduleCollectBatchCreate(context.Context, *connect.Request[v1.ScheduleCollectBatchCreateRequest]) (*connect.Response[v1.ScheduleCollectBatchCreateResponse], error)
 }
 
 // NewScheduleCollectServiceClient constructs a client for the
@@ -71,13 +75,20 @@ func NewScheduleCollectServiceClient(httpClient connect.HTTPClient, baseURL stri
 			connect.WithSchema(scheduleCollectServiceMethods.ByName("ScheduleCollectFetch")),
 			connect.WithClientOptions(opts...),
 		),
+		scheduleCollectBatchCreate: connect.NewClient[v1.ScheduleCollectBatchCreateRequest, v1.ScheduleCollectBatchCreateResponse](
+			httpClient,
+			baseURL+ScheduleCollectServiceScheduleCollectBatchCreateProcedure,
+			connect.WithSchema(scheduleCollectServiceMethods.ByName("ScheduleCollectBatchCreate")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // scheduleCollectServiceClient implements ScheduleCollectServiceClient.
 type scheduleCollectServiceClient struct {
-	scheduleCollectCreate *connect.Client[v1.ScheduleCollectCreateRequest, v1.ScheduleCollectCreateResponse]
-	scheduleCollectFetch  *connect.Client[v1.ScheduleCollectFetchRequest, v1.ScheduleCollectFetchResponse]
+	scheduleCollectCreate      *connect.Client[v1.ScheduleCollectCreateRequest, v1.ScheduleCollectCreateResponse]
+	scheduleCollectFetch       *connect.Client[v1.ScheduleCollectFetchRequest, v1.ScheduleCollectFetchResponse]
+	scheduleCollectBatchCreate *connect.Client[v1.ScheduleCollectBatchCreateRequest, v1.ScheduleCollectBatchCreateResponse]
 }
 
 // ScheduleCollectCreate calls contract.service.v1.ScheduleCollectService.ScheduleCollectCreate.
@@ -90,11 +101,18 @@ func (c *scheduleCollectServiceClient) ScheduleCollectFetch(ctx context.Context,
 	return c.scheduleCollectFetch.CallUnary(ctx, req)
 }
 
+// ScheduleCollectBatchCreate calls
+// contract.service.v1.ScheduleCollectService.ScheduleCollectBatchCreate.
+func (c *scheduleCollectServiceClient) ScheduleCollectBatchCreate(ctx context.Context, req *connect.Request[v1.ScheduleCollectBatchCreateRequest]) (*connect.Response[v1.ScheduleCollectBatchCreateResponse], error) {
+	return c.scheduleCollectBatchCreate.CallUnary(ctx, req)
+}
+
 // ScheduleCollectServiceHandler is an implementation of the
 // contract.service.v1.ScheduleCollectService service.
 type ScheduleCollectServiceHandler interface {
 	ScheduleCollectCreate(context.Context, *connect.Request[v1.ScheduleCollectCreateRequest]) (*connect.Response[v1.ScheduleCollectCreateResponse], error)
 	ScheduleCollectFetch(context.Context, *connect.Request[v1.ScheduleCollectFetchRequest]) (*connect.Response[v1.ScheduleCollectFetchResponse], error)
+	ScheduleCollectBatchCreate(context.Context, *connect.Request[v1.ScheduleCollectBatchCreateRequest]) (*connect.Response[v1.ScheduleCollectBatchCreateResponse], error)
 }
 
 // NewScheduleCollectServiceHandler builds an HTTP handler from the service implementation. It
@@ -116,12 +134,20 @@ func NewScheduleCollectServiceHandler(svc ScheduleCollectServiceHandler, opts ..
 		connect.WithSchema(scheduleCollectServiceMethods.ByName("ScheduleCollectFetch")),
 		connect.WithHandlerOptions(opts...),
 	)
+	scheduleCollectServiceScheduleCollectBatchCreateHandler := connect.NewUnaryHandler(
+		ScheduleCollectServiceScheduleCollectBatchCreateProcedure,
+		svc.ScheduleCollectBatchCreate,
+		connect.WithSchema(scheduleCollectServiceMethods.ByName("ScheduleCollectBatchCreate")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/contract.service.v1.ScheduleCollectService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ScheduleCollectServiceScheduleCollectCreateProcedure:
 			scheduleCollectServiceScheduleCollectCreateHandler.ServeHTTP(w, r)
 		case ScheduleCollectServiceScheduleCollectFetchProcedure:
 			scheduleCollectServiceScheduleCollectFetchHandler.ServeHTTP(w, r)
+		case ScheduleCollectServiceScheduleCollectBatchCreateProcedure:
+			scheduleCollectServiceScheduleCollectBatchCreateHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -137,4 +163,8 @@ func (UnimplementedScheduleCollectServiceHandler) ScheduleCollectCreate(context.
 
 func (UnimplementedScheduleCollectServiceHandler) ScheduleCollectFetch(context.Context, *connect.Request[v1.ScheduleCollectFetchRequest]) (*connect.Response[v1.ScheduleCollectFetchResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.v1.ScheduleCollectService.ScheduleCollectFetch is not implemented"))
+}
+
+func (UnimplementedScheduleCollectServiceHandler) ScheduleCollectBatchCreate(context.Context, *connect.Request[v1.ScheduleCollectBatchCreateRequest]) (*connect.Response[v1.ScheduleCollectBatchCreateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("contract.service.v1.ScheduleCollectService.ScheduleCollectBatchCreate is not implemented"))
 }

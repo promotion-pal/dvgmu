@@ -10,6 +10,7 @@ option go_package = "service_v1;service_pb";
 service ScheduleCollectService {
     rpc ScheduleCollectCreate (ScheduleCollectCreateRequest) returns (ScheduleCollectCreateResponse);
     rpc ScheduleCollectFetch (ScheduleCollectFetchRequest) returns (ScheduleCollectFetchResponse);
+    rpc ScheduleCollectBatchCreate (ScheduleCollectBatchCreateRequest) returns (ScheduleCollectBatchCreateResponse);
 }
 
 message ScheduleCollectCreateRequest {
@@ -32,4 +33,13 @@ message ScheduleCollectFetchRequest {
 message ScheduleCollectFetchResponse {
     repeated contract.entity.v1.ScheduleCollectEntry items = 1;
     bool has_more = 2;
+}
+
+message ScheduleCollectBatchCreateRequest {
+    string batch_id = 1;
+    repeated contract.entity.v1.ScheduleCollectEntry items = 2;
+}
+
+message ScheduleCollectBatchCreateResponse {
+    repeated contract.entity.v1.ScheduleCollectEntry items = 1;
 }
