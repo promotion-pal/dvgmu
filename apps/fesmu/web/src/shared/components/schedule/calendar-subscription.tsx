@@ -10,7 +10,7 @@ export function CalendarSubscription({ timetable, group, title }: { timetable?: 
     const scope = timetable ? "/timetable/" + encodeURIComponent(timetable) : "";
     const audience = group ? "/group/" + encodeURIComponent(group) : "";
     const path = "/calendar" + scope + audience + "/schedule.ics";
-    const url = new URL(path, window.location.origin);
+    const url = new URL(path, import.meta.env.VITE_CALENDAR_PUBLIC_ORIGIN || window.location.origin);
     const href = url.href;
     const subscriptionHref = href.replace(/^https?:/, "webcal:");
     useEffect(() => {
