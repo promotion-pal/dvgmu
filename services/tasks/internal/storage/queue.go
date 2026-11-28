@@ -49,6 +49,25 @@ func (s *QueueStorage) Update(ctx context.Context, code string, changes map[stri
 	return queue, nil
 }
 
+func (s *QueueStorage) GrantViewAccess(ctx context.Context, code, userUUID string) error {
+	grant := models.QueueViewAccess{QueueCode: code, UserUUID: userUUID}
+	return s.db.WithContext(ctx).Clauses(clause.OnConflict{DoNothing: true}).Create(&grant).Error
+}
+
+func (s *QueueStorage) ListViewAccess(ctx context.Context, code, afterUserUUID string, limit int) ([]string, error) {
+	userUUIDs := make([]string, 0, limit)
+	query := s.db.WithContext(ctx).Model(&models.QueueViewAccess{}).Where("queue_code = ?", code)
+	if afterUserUUID != "" {
+		query = query.Where("user_uuid > ?", afterUserUUID)
+	}
+	err := query.Order("user_uuid ASC").Limit(limit).Pluck("user_uuid", &userUUIDs).Error
+	return userUUIDs, err
+}
+
+func (s *QueueStorage) RevokeViewAccess(ctx context.Context, code, userUUID string) error {
+	return s.db.WithContext(ctx).Delete(&models.QueueViewAccess{}, "queue_code = ? AND user_uuid = ?", code, userUUID).Error
+}
+
 func lockRouteQueues(tx *gorm.DB, codes []string) (map[string]bool, error) {
 	var queues []models.Queue
 	err := tx.Select("code", "active").Clauses(clause.Locking{Strength: "SHARE"}).

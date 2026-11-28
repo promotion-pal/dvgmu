@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package tasks.service;
+
+// Manages explicit view grants for a queue. Requires an active FESMU administrator.
+service QueueAccessService {
+  rpc GrantQueueViewAccess(GrantQueueViewAccessRequest) returns (GrantQueueViewAccessResponse);
+  rpc ListQueueViewAccess(ListQueueViewAccessRequest) returns (ListQueueViewAccessResponse);
+  rpc RevokeQueueViewAccess(RevokeQueueViewAccessRequest) returns (RevokeQueueViewAccessResponse);
+}
+
+message GrantQueueViewAccessRequest {
+  string queue_code = 1;
+  // UUID of an active FESMU user in MDM.
+  string user_uuid = 2;
+}
+
+message GrantQueueViewAccessResponse {}
+
+message ListQueueViewAccessRequest {
+  string queue_code = 1;
+  // Defaults to 50 and accepts up to 100 users per page.
+  int32 page_size = 2;
+  // Exclusive cursor. Use next_after_user_uuid from the preceding page.
+  string after_user_uuid = 3;
+}
+
+message ListQueueViewAccessResponse {
+  // Explicit grants ordered by user UUID, including grants to inactive users.
+  repeated string user_uuids = 1;
+  string next_after_user_uuid = 2;
+}
+
+message RevokeQueueViewAccessRequest {
+  string queue_code = 1;
+  string user_uuid = 2;
+}
+
+message RevokeQueueViewAccessResponse {}

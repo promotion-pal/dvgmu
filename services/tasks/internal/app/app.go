@@ -49,21 +49,24 @@ func New(log *slog.Logger, cfg *config.Config) *App {
 	forms := taskgrpc.NewServiceFormController(service.NewServiceFormService(storage.NewServiceFormStorage(db)), log)
 	settings := taskgrpc.NewServiceSettingsController(service.NewServiceSettingsService(storage.NewServiceSettingsStorage(db)), log)
 	routes := taskgrpc.NewServiceRoutesController(service.NewServiceRoutesService(storage.NewServiceRoutesStorage(db)), log)
-	queues := taskgrpc.NewQueueController(service.NewQueueService(storage.NewQueueStorage(db)), log)
+	queueStore := storage.NewQueueStorage(db)
+	queues := taskgrpc.NewQueueController(service.NewQueueService(queueStore), log)
 	numberLocation, err := time.LoadLocation("Asia/Vladivostok")
 	if err != nil {
 		panic(err)
 	}
 	var taskHandler serviceconnect.TaskServiceHandler
+	var queueAccessHandler serviceconnect.QueueAccessServiceHandler
 	if cfg.Auth.JWKSURL != "" || cfg.Auth.MDMURL != "" {
 		if cfg.Auth.JWKSURL == "" || cfg.Auth.MDMURL == "" {
-			panic("CreateTask requires both TASKS_AUTH_JWKS_URL and TASKS_MDM_URL")
+			panic("tasks authenticated APIs require both TASKS_AUTH_JWKS_URL and TASKS_MDM_URL")
 		}
 		keys := authsession.NewJWKS(cfg.Auth.JWKSURL)
 		verifier := authsession.NewVerifier(keys, cfg.Auth.Issuer, cfg.Auth.Audience, cfg.Auth.CookieName)
 		mdm := mdmconnect.NewUserServiceClient(&http.Client{Timeout: 5 * time.Second}, cfg.Auth.MDMURL)
 		applicant := access.NewApplicantResolver(verifier, mdm, log)
 		taskHandler = taskgrpc.NewTaskController(service.NewTaskService(storage.NewTaskStorage(db), numberLocation), applicant, log)
+		queueAccessHandler = taskgrpc.NewQueueViewAccessController(service.NewQueueViewAccessService(queueStore, applicant.RequireActiveUser), applicant.RequireAdmin, log)
 	}
-	return &App{GRPCServer: grpcapp.New(log, sqlDB.PingContext, cfg, directions, catalog, statuses, priorities, forms, settings, routes, queues, taskHandler)}
+	return &App{GRPCServer: grpcapp.New(log, sqlDB.PingContext, cfg, directions, catalog, statuses, priorities, forms, settings, routes, queues, taskHandler, queueAccessHandler)}
 }

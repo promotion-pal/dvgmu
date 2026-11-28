@@ -79,8 +79,9 @@
 | fesmu api | analytics | прокси (только чтение) + модуль `survey` (запись) | опросы и отчёты |
 | fesmu api | tickets | прокси (право раздела «Заявки») | заявки общежитий и зданий |
 | fesmu api | tasks | прокси `CreateTask`, `ListMyTasks`, `GetMyTask`, `GetMyTaskHistory` через `PACKAGE_REQUESTS` | регистрация, список, карточка и история заявок автора |
+| fesmu api | tasks | прокси `QueueAccessService` через `PACKAGE_REQUESTS` | администратор управляет правом просмотра конкретной очереди по UUID пользователя |
 | tasks | auth | `/.well-known/jwks.json` | проверка сессии FESMU через общий пакет `packages/authsession` |
-| tasks | mdm | `UserFetchByUUID` | проверка профиля и получение подразделения заявителя |
+| tasks | mdm | `UserFetchByUUID` | проверка профиля и подразделения заявителя, роли администратора и активного профиля получателя права |
 | fesmu api | file | клиент `FilesService` | справки |
 | auth | AD FS | WS-Trust | проверка пароля → objectGUID |
 | auth | mdm | `UserFetchByADObjectID` (служебный токен) | человек и роли по objectGUID |

@@ -33,6 +33,7 @@ func New(
 	routes serviceconnect.ServiceRoutesServiceHandler,
 	queues serviceconnect.QueueServiceHandler,
 	tasks serviceconnect.TaskServiceHandler,
+	queueAccess serviceconnect.QueueAccessServiceHandler,
 ) *App {
 	mux := http.NewServeMux()
 	if cfg.Env == "local" {
@@ -47,6 +48,9 @@ func New(
 	}
 	if tasks != nil {
 		mux.Handle(serviceconnect.NewTaskServiceHandler(tasks))
+	}
+	if queueAccess != nil {
+		mux.Handle(serviceconnect.NewQueueAccessServiceHandler(queueAccess))
 	}
 	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, r *http.Request) {
 		ctx, cancel := context.WithTimeout(r.Context(), cfg.GRPC.Timeout)
