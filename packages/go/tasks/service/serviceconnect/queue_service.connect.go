@@ -43,6 +43,9 @@ const (
 	// QueueServiceUpdateQueueProcedure is the fully-qualified name of the QueueService's UpdateQueue
 	// RPC.
 	QueueServiceUpdateQueueProcedure = "/tasks.service.QueueService/UpdateQueue"
+	// QueueServiceListMyQueuesProcedure is the fully-qualified name of the QueueService's ListMyQueues
+	// RPC.
+	QueueServiceListMyQueuesProcedure = "/tasks.service.QueueService/ListMyQueues"
 )
 
 // QueueServiceClient is a client for the tasks.service.QueueService service.
@@ -51,6 +54,8 @@ type QueueServiceClient interface {
 	GetQueue(context.Context, *connect.Request[service.GetQueueRequest]) (*connect.Response[service.GetQueueResponse], error)
 	ListQueues(context.Context, *connect.Request[service.ListQueuesRequest]) (*connect.Response[service.ListQueuesResponse], error)
 	UpdateQueue(context.Context, *connect.Request[service.UpdateQueueRequest]) (*connect.Response[service.UpdateQueueResponse], error)
+	// Lists queues with a personal view grant for the signed-in user.
+	ListMyQueues(context.Context, *connect.Request[service.ListMyQueuesRequest]) (*connect.Response[service.ListMyQueuesResponse], error)
 }
 
 // NewQueueServiceClient constructs a client for the tasks.service.QueueService service. By default,
@@ -88,15 +93,22 @@ func NewQueueServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 			connect.WithSchema(queueServiceMethods.ByName("UpdateQueue")),
 			connect.WithClientOptions(opts...),
 		),
+		listMyQueues: connect.NewClient[service.ListMyQueuesRequest, service.ListMyQueuesResponse](
+			httpClient,
+			baseURL+QueueServiceListMyQueuesProcedure,
+			connect.WithSchema(queueServiceMethods.ByName("ListMyQueues")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // queueServiceClient implements QueueServiceClient.
 type queueServiceClient struct {
-	createQueue *connect.Client[service.CreateQueueRequest, service.CreateQueueResponse]
-	getQueue    *connect.Client[service.GetQueueRequest, service.GetQueueResponse]
-	listQueues  *connect.Client[service.ListQueuesRequest, service.ListQueuesResponse]
-	updateQueue *connect.Client[service.UpdateQueueRequest, service.UpdateQueueResponse]
+	createQueue  *connect.Client[service.CreateQueueRequest, service.CreateQueueResponse]
+	getQueue     *connect.Client[service.GetQueueRequest, service.GetQueueResponse]
+	listQueues   *connect.Client[service.ListQueuesRequest, service.ListQueuesResponse]
+	updateQueue  *connect.Client[service.UpdateQueueRequest, service.UpdateQueueResponse]
+	listMyQueues *connect.Client[service.ListMyQueuesRequest, service.ListMyQueuesResponse]
 }
 
 // CreateQueue calls tasks.service.QueueService.CreateQueue.
@@ -119,12 +131,19 @@ func (c *queueServiceClient) UpdateQueue(ctx context.Context, req *connect.Reque
 	return c.updateQueue.CallUnary(ctx, req)
 }
 
+// ListMyQueues calls tasks.service.QueueService.ListMyQueues.
+func (c *queueServiceClient) ListMyQueues(ctx context.Context, req *connect.Request[service.ListMyQueuesRequest]) (*connect.Response[service.ListMyQueuesResponse], error) {
+	return c.listMyQueues.CallUnary(ctx, req)
+}
+
 // QueueServiceHandler is an implementation of the tasks.service.QueueService service.
 type QueueServiceHandler interface {
 	CreateQueue(context.Context, *connect.Request[service.CreateQueueRequest]) (*connect.Response[service.CreateQueueResponse], error)
 	GetQueue(context.Context, *connect.Request[service.GetQueueRequest]) (*connect.Response[service.GetQueueResponse], error)
 	ListQueues(context.Context, *connect.Request[service.ListQueuesRequest]) (*connect.Response[service.ListQueuesResponse], error)
 	UpdateQueue(context.Context, *connect.Request[service.UpdateQueueRequest]) (*connect.Response[service.UpdateQueueResponse], error)
+	// Lists queues with a personal view grant for the signed-in user.
+	ListMyQueues(context.Context, *connect.Request[service.ListMyQueuesRequest]) (*connect.Response[service.ListMyQueuesResponse], error)
 }
 
 // NewQueueServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -158,6 +177,12 @@ func NewQueueServiceHandler(svc QueueServiceHandler, opts ...connect.HandlerOpti
 		connect.WithSchema(queueServiceMethods.ByName("UpdateQueue")),
 		connect.WithHandlerOptions(opts...),
 	)
+	queueServiceListMyQueuesHandler := connect.NewUnaryHandler(
+		QueueServiceListMyQueuesProcedure,
+		svc.ListMyQueues,
+		connect.WithSchema(queueServiceMethods.ByName("ListMyQueues")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/tasks.service.QueueService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case QueueServiceCreateQueueProcedure:
@@ -168,6 +193,8 @@ func NewQueueServiceHandler(svc QueueServiceHandler, opts ...connect.HandlerOpti
 			queueServiceListQueuesHandler.ServeHTTP(w, r)
 		case QueueServiceUpdateQueueProcedure:
 			queueServiceUpdateQueueHandler.ServeHTTP(w, r)
+		case QueueServiceListMyQueuesProcedure:
+			queueServiceListMyQueuesHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -191,4 +218,8 @@ func (UnimplementedQueueServiceHandler) ListQueues(context.Context, *connect.Req
 
 func (UnimplementedQueueServiceHandler) UpdateQueue(context.Context, *connect.Request[service.UpdateQueueRequest]) (*connect.Response[service.UpdateQueueResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("tasks.service.QueueService.UpdateQueue is not implemented"))
+}
+
+func (UnimplementedQueueServiceHandler) ListMyQueues(context.Context, *connect.Request[service.ListMyQueuesRequest]) (*connect.Response[service.ListMyQueuesResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("tasks.service.QueueService.ListMyQueues is not implemented"))
 }

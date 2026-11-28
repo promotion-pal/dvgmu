@@ -27,12 +27,23 @@ func (s *QueueStorage) Get(ctx context.Context, code string) (models.Queue, erro
 }
 
 func (s *QueueStorage) List(ctx context.Context, afterCode string, active *bool, limit int) ([]models.Queue, error) {
+	return listQueues(s.db.WithContext(ctx).Model(&models.Queue{}), afterCode, active, limit)
+}
+
+func (s *QueueStorage) ListMine(ctx context.Context, viewerID, afterCode string, active *bool, limit int) ([]models.Queue, error) {
+	query := s.db.WithContext(ctx).Model(&models.Queue{}).
+		Joins("JOIN queue_view_access ON queue_view_access.queue_code = queues.code").
+		Where("queue_view_access.user_uuid = ?", viewerID)
+	return listQueues(query, afterCode, active, limit)
+}
+
+func listQueues(query *gorm.DB, afterCode string, active *bool, limit int) ([]models.Queue, error) {
 	var queues []models.Queue
-	query := s.db.WithContext(ctx).Where("code > ?", afterCode)
+	query = query.Where("queues.code > ?", afterCode)
 	if active != nil {
-		query = query.Where("active = ?", *active)
+		query = query.Where("queues.active = ?", *active)
 	}
-	err := query.Order("code ASC").Limit(limit).Find(&queues).Error
+	err := query.Order("queues.code ASC").Limit(limit).Find(&queues).Error
 	return queues, err
 }
 

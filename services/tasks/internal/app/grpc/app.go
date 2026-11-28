@@ -36,6 +36,7 @@ func New(
 	queueAccess serviceconnect.QueueAccessServiceHandler,
 ) *App {
 	mux := http.NewServeMux()
+	queuePath, queueHandler := serviceconnect.NewQueueServiceHandler(queues)
 	if cfg.Env == "local" {
 		mux.Handle(serviceconnect.NewDirectionServiceHandler(directions))
 		mux.Handle(serviceconnect.NewCatalogServiceHandler(catalog))
@@ -44,7 +45,9 @@ func New(
 		mux.Handle(serviceconnect.NewServiceFormServiceHandler(forms))
 		mux.Handle(serviceconnect.NewServiceSettingsServiceHandler(settings))
 		mux.Handle(serviceconnect.NewServiceRoutesServiceHandler(routes))
-		mux.Handle(serviceconnect.NewQueueServiceHandler(queues))
+		mux.Handle(queuePath, queueHandler)
+	} else if tasks != nil {
+		mux.Handle(serviceconnect.QueueServiceListMyQueuesProcedure, queueHandler)
 	}
 	if tasks != nil {
 		mux.Handle(serviceconnect.NewTaskServiceHandler(tasks))

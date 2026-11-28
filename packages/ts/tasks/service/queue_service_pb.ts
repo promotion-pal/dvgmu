@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file tasks/service/queue_service.proto.
  */
 export const file_tasks_service_queue_service: GenFile = /*@__PURE__*/
-  fileDesc("CiF0YXNrcy9zZXJ2aWNlL3F1ZXVlX3NlcnZpY2UucHJvdG8SDXRhc2tzLnNlcnZpY2UiMAoSQ3JlYXRlUXVldWVSZXF1ZXN0EgwKBGNvZGUYASABKAkSDAoEbmFtZRgCIAEoCSI5ChNDcmVhdGVRdWV1ZVJlc3BvbnNlEiIKBXF1ZXVlGAEgASgLMhMudGFza3MuZW50aXR5LlF1ZXVlIh8KD0dldFF1ZXVlUmVxdWVzdBIMCgRjb2RlGAEgASgJIjYKEEdldFF1ZXVlUmVzcG9uc2USIgoFcXVldWUYASABKAsyEy50YXNrcy5lbnRpdHkuUXVldWUiWgoRTGlzdFF1ZXVlc1JlcXVlc3QSEQoJcGFnZV9zaXplGAEgASgFEhIKCmFmdGVyX2NvZGUYAiABKAkSEwoGYWN0aXZlGAMgASgISACIAQFCCQoHX2FjdGl2ZSJSChJMaXN0UXVldWVzUmVzcG9uc2USIwoGcXVldWVzGAEgAygLMhMudGFza3MuZW50aXR5LlF1ZXVlEhcKD25leHRfYWZ0ZXJfY29kZRgCIAEoCSJeChJVcGRhdGVRdWV1ZVJlcXVlc3QSDAoEY29kZRgBIAEoCRIRCgRuYW1lGAIgASgJSACIAQESEwoGYWN0aXZlGAMgASgISAGIAQFCBwoFX25hbWVCCQoHX2FjdGl2ZSI5ChNVcGRhdGVRdWV1ZVJlc3BvbnNlEiIKBXF1ZXVlGAEgASgLMhMudGFza3MuZW50aXR5LlF1ZXVlMtoCCgxRdWV1ZVNlcnZpY2USVAoLQ3JlYXRlUXVldWUSIS50YXNrcy5zZXJ2aWNlLkNyZWF0ZVF1ZXVlUmVxdWVzdBoiLnRhc2tzLnNlcnZpY2UuQ3JlYXRlUXVldWVSZXNwb25zZRJLCghHZXRRdWV1ZRIeLnRhc2tzLnNlcnZpY2UuR2V0UXVldWVSZXF1ZXN0Gh8udGFza3Muc2VydmljZS5HZXRRdWV1ZVJlc3BvbnNlElEKCkxpc3RRdWV1ZXMSIC50YXNrcy5zZXJ2aWNlLkxpc3RRdWV1ZXNSZXF1ZXN0GiEudGFza3Muc2VydmljZS5MaXN0UXVldWVzUmVzcG9uc2USVAoLVXBkYXRlUXVldWUSIS50YXNrcy5zZXJ2aWNlLlVwZGF0ZVF1ZXVlUmVxdWVzdBoiLnRhc2tzLnNlcnZpY2UuVXBkYXRlUXVldWVSZXNwb25zZUKZAQoRY29tLnRhc2tzLnNlcnZpY2VCEVF1ZXVlU2VydmljZVByb3RvUAFaHGZlc211L2NvbnRyYWN0L3Rhc2tzL3NlcnZpY2WiAgNUU1iqAg1UYXNrcy5TZXJ2aWNlygINVGFza3NcU2VydmljZeICGVRhc2tzXFNlcnZpY2VcR1BCTWV0YWRhdGHqAg5UYXNrczo6U2VydmljZWIGcHJvdG8z", [file_tasks_entity_queue]);
+  fileDesc("CiF0YXNrcy9zZXJ2aWNlL3F1ZXVlX3NlcnZpY2UucHJvdG8SDXRhc2tzLnNlcnZpY2UiMAoSQ3JlYXRlUXVldWVSZXF1ZXN0EgwKBGNvZGUYASABKAkSDAoEbmFtZRgCIAEoCSI5ChNDcmVhdGVRdWV1ZVJlc3BvbnNlEiIKBXF1ZXVlGAEgASgLMhMudGFza3MuZW50aXR5LlF1ZXVlIh8KD0dldFF1ZXVlUmVxdWVzdBIMCgRjb2RlGAEgASgJIjYKEEdldFF1ZXVlUmVzcG9uc2USIgoFcXVldWUYASABKAsyEy50YXNrcy5lbnRpdHkuUXVldWUiWgoRTGlzdFF1ZXVlc1JlcXVlc3QSEQoJcGFnZV9zaXplGAEgASgFEhIKCmFmdGVyX2NvZGUYAiABKAkSEwoGYWN0aXZlGAMgASgISACIAQFCCQoHX2FjdGl2ZSJSChJMaXN0UXVldWVzUmVzcG9uc2USIwoGcXVldWVzGAEgAygLMhMudGFza3MuZW50aXR5LlF1ZXVlEhcKD25leHRfYWZ0ZXJfY29kZRgCIAEoCSJeChJVcGRhdGVRdWV1ZVJlcXVlc3QSDAoEY29kZRgBIAEoCRIRCgRuYW1lGAIgASgJSACIAQESEwoGYWN0aXZlGAMgASgISAGIAQFCBwoFX25hbWVCCQoHX2FjdGl2ZSI5ChNVcGRhdGVRdWV1ZVJlc3BvbnNlEiIKBXF1ZXVlGAEgASgLMhMudGFza3MuZW50aXR5LlF1ZXVlIlwKE0xpc3RNeVF1ZXVlc1JlcXVlc3QSEQoJcGFnZV9zaXplGAEgASgFEhIKCmFmdGVyX2NvZGUYAiABKAkSEwoGYWN0aXZlGAMgASgISACIAQFCCQoHX2FjdGl2ZSJUChRMaXN0TXlRdWV1ZXNSZXNwb25zZRIjCgZxdWV1ZXMYASADKAsyEy50YXNrcy5lbnRpdHkuUXVldWUSFwoPbmV4dF9hZnRlcl9jb2RlGAIgASgJMrMDCgxRdWV1ZVNlcnZpY2USVAoLQ3JlYXRlUXVldWUSIS50YXNrcy5zZXJ2aWNlLkNyZWF0ZVF1ZXVlUmVxdWVzdBoiLnRhc2tzLnNlcnZpY2UuQ3JlYXRlUXVldWVSZXNwb25zZRJLCghHZXRRdWV1ZRIeLnRhc2tzLnNlcnZpY2UuR2V0UXVldWVSZXF1ZXN0Gh8udGFza3Muc2VydmljZS5HZXRRdWV1ZVJlc3BvbnNlElEKCkxpc3RRdWV1ZXMSIC50YXNrcy5zZXJ2aWNlLkxpc3RRdWV1ZXNSZXF1ZXN0GiEudGFza3Muc2VydmljZS5MaXN0UXVldWVzUmVzcG9uc2USVAoLVXBkYXRlUXVldWUSIS50YXNrcy5zZXJ2aWNlLlVwZGF0ZVF1ZXVlUmVxdWVzdBoiLnRhc2tzLnNlcnZpY2UuVXBkYXRlUXVldWVSZXNwb25zZRJXCgxMaXN0TXlRdWV1ZXMSIi50YXNrcy5zZXJ2aWNlLkxpc3RNeVF1ZXVlc1JlcXVlc3QaIy50YXNrcy5zZXJ2aWNlLkxpc3RNeVF1ZXVlc1Jlc3BvbnNlQpkBChFjb20udGFza3Muc2VydmljZUIRUXVldWVTZXJ2aWNlUHJvdG9QAVocZmVzbXUvY29udHJhY3QvdGFza3Mvc2VydmljZaICA1RTWKoCDVRhc2tzLlNlcnZpY2XKAg1UYXNrc1xTZXJ2aWNl4gIZVGFza3NcU2VydmljZVxHUEJNZXRhZGF0YeoCDlRhc2tzOjpTZXJ2aWNlYgZwcm90bzM", [file_tasks_entity_queue]);
 
 /**
  * @generated from message tasks.service.CreateQueueRequest
@@ -187,6 +187,63 @@ export const UpdateQueueResponseSchema: GenMessage<UpdateQueueResponse> = /*@__P
   messageDesc(file_tasks_service_queue_service, 7);
 
 /**
+ * @generated from message tasks.service.ListMyQueuesRequest
+ */
+export type ListMyQueuesRequest = Message<"tasks.service.ListMyQueuesRequest"> & {
+  /**
+   * Defaults to 50 and accepts up to 100 queues per page.
+   *
+   * @generated from field: int32 page_size = 1;
+   */
+  pageSize: number;
+
+  /**
+   * Exclusive cursor. Use next_after_code from the preceding page with the same filter.
+   *
+   * @generated from field: string after_code = 2;
+   */
+  afterCode: string;
+
+  /**
+   * Omit to include active and inactive queues.
+   *
+   * @generated from field: optional bool active = 3;
+   */
+  active?: boolean | undefined;
+};
+
+/**
+ * Describes the message tasks.service.ListMyQueuesRequest.
+ * Use `create(ListMyQueuesRequestSchema)` to create a new message.
+ */
+export const ListMyQueuesRequestSchema: GenMessage<ListMyQueuesRequest> = /*@__PURE__*/
+  messageDesc(file_tasks_service_queue_service, 8);
+
+/**
+ * @generated from message tasks.service.ListMyQueuesResponse
+ */
+export type ListMyQueuesResponse = Message<"tasks.service.ListMyQueuesResponse"> & {
+  /**
+   * Ordered by code in ascending order.
+   *
+   * @generated from field: repeated tasks.entity.Queue queues = 1;
+   */
+  queues: Queue[];
+
+  /**
+   * @generated from field: string next_after_code = 2;
+   */
+  nextAfterCode: string;
+};
+
+/**
+ * Describes the message tasks.service.ListMyQueuesResponse.
+ * Use `create(ListMyQueuesResponseSchema)` to create a new message.
+ */
+export const ListMyQueuesResponseSchema: GenMessage<ListMyQueuesResponse> = /*@__PURE__*/
+  messageDesc(file_tasks_service_queue_service, 9);
+
+/**
  * @generated from service tasks.service.QueueService
  */
 export const QueueService: GenService<{
@@ -221,6 +278,16 @@ export const QueueService: GenService<{
     methodKind: "unary";
     input: typeof UpdateQueueRequestSchema;
     output: typeof UpdateQueueResponseSchema;
+  },
+  /**
+   * Lists queues with a personal view grant for the signed-in user.
+   *
+   * @generated from rpc tasks.service.QueueService.ListMyQueues
+   */
+  listMyQueues: {
+    methodKind: "unary";
+    input: typeof ListMyQueuesRequestSchema;
+    output: typeof ListMyQueuesResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_tasks_service_queue_service, 0);

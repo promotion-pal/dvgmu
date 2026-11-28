@@ -425,6 +425,122 @@ func (x *UpdateQueueResponse) GetQueue() *entity.Queue {
 	return nil
 }
 
+type ListMyQueuesRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Defaults to 50 and accepts up to 100 queues per page.
+	PageSize int32 `protobuf:"varint,1,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	// Exclusive cursor. Use next_after_code from the preceding page with the same filter.
+	AfterCode string `protobuf:"bytes,2,opt,name=after_code,json=afterCode,proto3" json:"after_code,omitempty"`
+	// Omit to include active and inactive queues.
+	Active        *bool `protobuf:"varint,3,opt,name=active,proto3,oneof" json:"active,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListMyQueuesRequest) Reset() {
+	*x = ListMyQueuesRequest{}
+	mi := &file_tasks_service_queue_service_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListMyQueuesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListMyQueuesRequest) ProtoMessage() {}
+
+func (x *ListMyQueuesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_tasks_service_queue_service_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListMyQueuesRequest.ProtoReflect.Descriptor instead.
+func (*ListMyQueuesRequest) Descriptor() ([]byte, []int) {
+	return file_tasks_service_queue_service_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *ListMyQueuesRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListMyQueuesRequest) GetAfterCode() string {
+	if x != nil {
+		return x.AfterCode
+	}
+	return ""
+}
+
+func (x *ListMyQueuesRequest) GetActive() bool {
+	if x != nil && x.Active != nil {
+		return *x.Active
+	}
+	return false
+}
+
+type ListMyQueuesResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Ordered by code in ascending order.
+	Queues        []*entity.Queue `protobuf:"bytes,1,rep,name=queues,proto3" json:"queues,omitempty"`
+	NextAfterCode string          `protobuf:"bytes,2,opt,name=next_after_code,json=nextAfterCode,proto3" json:"next_after_code,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListMyQueuesResponse) Reset() {
+	*x = ListMyQueuesResponse{}
+	mi := &file_tasks_service_queue_service_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListMyQueuesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListMyQueuesResponse) ProtoMessage() {}
+
+func (x *ListMyQueuesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_tasks_service_queue_service_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListMyQueuesResponse.ProtoReflect.Descriptor instead.
+func (*ListMyQueuesResponse) Descriptor() ([]byte, []int) {
+	return file_tasks_service_queue_service_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *ListMyQueuesResponse) GetQueues() []*entity.Queue {
+	if x != nil {
+		return x.Queues
+	}
+	return nil
+}
+
+func (x *ListMyQueuesResponse) GetNextAfterCode() string {
+	if x != nil {
+		return x.NextAfterCode
+	}
+	return ""
+}
+
 var File_tasks_service_queue_service_proto protoreflect.FileDescriptor
 
 const file_tasks_service_queue_service_proto_rawDesc = "" +
@@ -455,13 +571,23 @@ const file_tasks_service_queue_service_proto_rawDesc = "" +
 	"\x05_nameB\t\n" +
 	"\a_active\"@\n" +
 	"\x13UpdateQueueResponse\x12)\n" +
-	"\x05queue\x18\x01 \x01(\v2\x13.tasks.entity.QueueR\x05queue2\xda\x02\n" +
+	"\x05queue\x18\x01 \x01(\v2\x13.tasks.entity.QueueR\x05queue\"y\n" +
+	"\x13ListMyQueuesRequest\x12\x1b\n" +
+	"\tpage_size\x18\x01 \x01(\x05R\bpageSize\x12\x1d\n" +
+	"\n" +
+	"after_code\x18\x02 \x01(\tR\tafterCode\x12\x1b\n" +
+	"\x06active\x18\x03 \x01(\bH\x00R\x06active\x88\x01\x01B\t\n" +
+	"\a_active\"k\n" +
+	"\x14ListMyQueuesResponse\x12+\n" +
+	"\x06queues\x18\x01 \x03(\v2\x13.tasks.entity.QueueR\x06queues\x12&\n" +
+	"\x0fnext_after_code\x18\x02 \x01(\tR\rnextAfterCode2\xb3\x03\n" +
 	"\fQueueService\x12T\n" +
 	"\vCreateQueue\x12!.tasks.service.CreateQueueRequest\x1a\".tasks.service.CreateQueueResponse\x12K\n" +
 	"\bGetQueue\x12\x1e.tasks.service.GetQueueRequest\x1a\x1f.tasks.service.GetQueueResponse\x12Q\n" +
 	"\n" +
 	"ListQueues\x12 .tasks.service.ListQueuesRequest\x1a!.tasks.service.ListQueuesResponse\x12T\n" +
-	"\vUpdateQueue\x12!.tasks.service.UpdateQueueRequest\x1a\".tasks.service.UpdateQueueResponseB\x99\x01\n" +
+	"\vUpdateQueue\x12!.tasks.service.UpdateQueueRequest\x1a\".tasks.service.UpdateQueueResponse\x12W\n" +
+	"\fListMyQueues\x12\".tasks.service.ListMyQueuesRequest\x1a#.tasks.service.ListMyQueuesResponseB\x99\x01\n" +
 	"\x11com.tasks.serviceB\x11QueueServiceProtoP\x01Z\x1cfesmu/contract/tasks/service\xa2\x02\x03TSX\xaa\x02\rTasks.Service\xca\x02\rTasks\\Service\xe2\x02\x19Tasks\\Service\\GPBMetadata\xea\x02\x0eTasks::Serviceb\x06proto3"
 
 var (
@@ -476,36 +602,41 @@ func file_tasks_service_queue_service_proto_rawDescGZIP() []byte {
 	return file_tasks_service_queue_service_proto_rawDescData
 }
 
-var file_tasks_service_queue_service_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_tasks_service_queue_service_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_tasks_service_queue_service_proto_goTypes = []any{
-	(*CreateQueueRequest)(nil),  // 0: tasks.service.CreateQueueRequest
-	(*CreateQueueResponse)(nil), // 1: tasks.service.CreateQueueResponse
-	(*GetQueueRequest)(nil),     // 2: tasks.service.GetQueueRequest
-	(*GetQueueResponse)(nil),    // 3: tasks.service.GetQueueResponse
-	(*ListQueuesRequest)(nil),   // 4: tasks.service.ListQueuesRequest
-	(*ListQueuesResponse)(nil),  // 5: tasks.service.ListQueuesResponse
-	(*UpdateQueueRequest)(nil),  // 6: tasks.service.UpdateQueueRequest
-	(*UpdateQueueResponse)(nil), // 7: tasks.service.UpdateQueueResponse
-	(*entity.Queue)(nil),        // 8: tasks.entity.Queue
+	(*CreateQueueRequest)(nil),   // 0: tasks.service.CreateQueueRequest
+	(*CreateQueueResponse)(nil),  // 1: tasks.service.CreateQueueResponse
+	(*GetQueueRequest)(nil),      // 2: tasks.service.GetQueueRequest
+	(*GetQueueResponse)(nil),     // 3: tasks.service.GetQueueResponse
+	(*ListQueuesRequest)(nil),    // 4: tasks.service.ListQueuesRequest
+	(*ListQueuesResponse)(nil),   // 5: tasks.service.ListQueuesResponse
+	(*UpdateQueueRequest)(nil),   // 6: tasks.service.UpdateQueueRequest
+	(*UpdateQueueResponse)(nil),  // 7: tasks.service.UpdateQueueResponse
+	(*ListMyQueuesRequest)(nil),  // 8: tasks.service.ListMyQueuesRequest
+	(*ListMyQueuesResponse)(nil), // 9: tasks.service.ListMyQueuesResponse
+	(*entity.Queue)(nil),         // 10: tasks.entity.Queue
 }
 var file_tasks_service_queue_service_proto_depIdxs = []int32{
-	8, // 0: tasks.service.CreateQueueResponse.queue:type_name -> tasks.entity.Queue
-	8, // 1: tasks.service.GetQueueResponse.queue:type_name -> tasks.entity.Queue
-	8, // 2: tasks.service.ListQueuesResponse.queues:type_name -> tasks.entity.Queue
-	8, // 3: tasks.service.UpdateQueueResponse.queue:type_name -> tasks.entity.Queue
-	0, // 4: tasks.service.QueueService.CreateQueue:input_type -> tasks.service.CreateQueueRequest
-	2, // 5: tasks.service.QueueService.GetQueue:input_type -> tasks.service.GetQueueRequest
-	4, // 6: tasks.service.QueueService.ListQueues:input_type -> tasks.service.ListQueuesRequest
-	6, // 7: tasks.service.QueueService.UpdateQueue:input_type -> tasks.service.UpdateQueueRequest
-	1, // 8: tasks.service.QueueService.CreateQueue:output_type -> tasks.service.CreateQueueResponse
-	3, // 9: tasks.service.QueueService.GetQueue:output_type -> tasks.service.GetQueueResponse
-	5, // 10: tasks.service.QueueService.ListQueues:output_type -> tasks.service.ListQueuesResponse
-	7, // 11: tasks.service.QueueService.UpdateQueue:output_type -> tasks.service.UpdateQueueResponse
-	8, // [8:12] is the sub-list for method output_type
-	4, // [4:8] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	10, // 0: tasks.service.CreateQueueResponse.queue:type_name -> tasks.entity.Queue
+	10, // 1: tasks.service.GetQueueResponse.queue:type_name -> tasks.entity.Queue
+	10, // 2: tasks.service.ListQueuesResponse.queues:type_name -> tasks.entity.Queue
+	10, // 3: tasks.service.UpdateQueueResponse.queue:type_name -> tasks.entity.Queue
+	10, // 4: tasks.service.ListMyQueuesResponse.queues:type_name -> tasks.entity.Queue
+	0,  // 5: tasks.service.QueueService.CreateQueue:input_type -> tasks.service.CreateQueueRequest
+	2,  // 6: tasks.service.QueueService.GetQueue:input_type -> tasks.service.GetQueueRequest
+	4,  // 7: tasks.service.QueueService.ListQueues:input_type -> tasks.service.ListQueuesRequest
+	6,  // 8: tasks.service.QueueService.UpdateQueue:input_type -> tasks.service.UpdateQueueRequest
+	8,  // 9: tasks.service.QueueService.ListMyQueues:input_type -> tasks.service.ListMyQueuesRequest
+	1,  // 10: tasks.service.QueueService.CreateQueue:output_type -> tasks.service.CreateQueueResponse
+	3,  // 11: tasks.service.QueueService.GetQueue:output_type -> tasks.service.GetQueueResponse
+	5,  // 12: tasks.service.QueueService.ListQueues:output_type -> tasks.service.ListQueuesResponse
+	7,  // 13: tasks.service.QueueService.UpdateQueue:output_type -> tasks.service.UpdateQueueResponse
+	9,  // 14: tasks.service.QueueService.ListMyQueues:output_type -> tasks.service.ListMyQueuesResponse
+	10, // [10:15] is the sub-list for method output_type
+	5,  // [5:10] is the sub-list for method input_type
+	5,  // [5:5] is the sub-list for extension type_name
+	5,  // [5:5] is the sub-list for extension extendee
+	0,  // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_tasks_service_queue_service_proto_init() }
@@ -515,13 +646,14 @@ func file_tasks_service_queue_service_proto_init() {
 	}
 	file_tasks_service_queue_service_proto_msgTypes[4].OneofWrappers = []any{}
 	file_tasks_service_queue_service_proto_msgTypes[6].OneofWrappers = []any{}
+	file_tasks_service_queue_service_proto_msgTypes[8].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_tasks_service_queue_service_proto_rawDesc), len(file_tasks_service_queue_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

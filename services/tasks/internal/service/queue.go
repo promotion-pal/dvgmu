@@ -39,20 +39,46 @@ func (s *QueueService) Get(ctx context.Context, code string) (models.Queue, erro
 }
 
 func (s *QueueService) List(ctx context.Context, afterCode string, active *bool, pageSize int32) ([]models.Queue, string, error) {
-	if (afterCode != "" && !validQueueLookupCode(afterCode)) || pageSize < 0 || pageSize > 100 {
-		return nil, "", fmt.Errorf("%w: provide a valid after_code and page_size", ErrInvalidQueue)
-	}
-	if pageSize == 0 {
-		pageSize = 50
-	}
-	queues, err := s.storage.List(ctx, afterCode, active, int(pageSize)+1)
+	limit, err := queuePageSize(afterCode, pageSize)
 	if err != nil {
 		return nil, "", err
 	}
-	if len(queues) > int(pageSize) {
-		return queues[:pageSize], queues[pageSize-1].Code, nil
+	queues, err := s.storage.List(ctx, afterCode, active, limit+1)
+	if err != nil {
+		return nil, "", err
 	}
-	return queues, "", nil
+	page, next := queuePage(queues, limit)
+	return page, next, nil
+}
+
+func (s *QueueService) ListMine(ctx context.Context, viewerID, afterCode string, active *bool, pageSize int32) ([]models.Queue, string, error) {
+	limit, err := queuePageSize(afterCode, pageSize)
+	if err != nil {
+		return nil, "", err
+	}
+	queues, err := s.storage.ListMine(ctx, viewerID, afterCode, active, limit+1)
+	if err != nil {
+		return nil, "", err
+	}
+	page, next := queuePage(queues, limit)
+	return page, next, nil
+}
+
+func queuePageSize(afterCode string, pageSize int32) (int, error) {
+	if (afterCode != "" && !validQueueLookupCode(afterCode)) || pageSize < 0 || pageSize > 100 {
+		return 0, fmt.Errorf("%w: provide a valid after_code and page_size", ErrInvalidQueue)
+	}
+	if pageSize == 0 {
+		return 50, nil
+	}
+	return int(pageSize), nil
+}
+
+func queuePage(queues []models.Queue, limit int) ([]models.Queue, string) {
+	if len(queues) > limit {
+		return queues[:limit], queues[limit-1].Code
+	}
+	return queues, ""
 }
 
 func (s *QueueService) Update(ctx context.Context, code string, name *string, active *bool) (models.Queue, error) {

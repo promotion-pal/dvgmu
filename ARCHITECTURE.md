@@ -80,7 +80,7 @@
 | fesmu api | tickets | прокси (право раздела «Заявки») | заявки общежитий и зданий |
 | fesmu api | tasks | прокси `CreateTask`, `ListMyTasks`, `GetMyTask`, `GetMyTaskHistory` через `PACKAGE_REQUESTS` | регистрация, список, карточка и история заявок автора |
 | fesmu api | tasks | прокси `QueueAccessService` через `PACKAGE_REQUESTS` | администратор управляет правом просмотра конкретной очереди по UUID пользователя |
-| fesmu api | tasks | прокси `ListQueueTasks`, `GetQueueTask` через `PACKAGE_REQUESTS` | список и карточка заявки очереди по персональному праву просмотра |
+| fesmu api | tasks | прокси `ListMyQueues`, `ListQueueTasks`, `GetQueueTask` через `PACKAGE_REQUESTS` | доступные пользователю очереди, список и карточка заявки по персональному праву просмотра |
 | tasks | auth | `/.well-known/jwks.json` | проверка сессии FESMU через общий пакет `packages/authsession` |
 | tasks | mdm | `UserFetchByUUID` | проверка профиля и подразделения заявителя, роли администратора и активного профиля получателя права |
 | fesmu api | file | клиент `FilesService` | справки |
