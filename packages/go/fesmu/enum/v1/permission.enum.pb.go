@@ -69,7 +69,14 @@ const (
 	// изменение — выдача кодов первого входа (лист на группу для печати).
 	PermissionSection_PERMISSION_SECTION_DEANERY PermissionSection = 18
 	// Экзаменационный банк, сессии экзаменов и результаты — отдельный доступ.
-	PermissionSection_PERMISSION_SECTION_EXAM_TESTS PermissionSection = 19
+	PermissionSection_PERMISSION_SECTION_EXAM_TESTS           PermissionSection = 19
+	PermissionSection_PERMISSION_SECTION_SCHEDULE_DRAFTS      PermissionSection = 20
+	PermissionSection_PERMISSION_SECTION_SCHEDULE_PUBLICATION PermissionSection = 21
+	PermissionSection_PERMISSION_SECTION_SCHEDULE_CHANGES     PermissionSection = 22
+	PermissionSection_PERMISSION_SECTION_SCHEDULE_TESTING     PermissionSection = 23
+	PermissionSection_PERMISSION_SECTION_SCHEDULE_REPORTS     PermissionSection = 24
+	PermissionSection_PERMISSION_SECTION_SCHEDULE_INTAKE      PermissionSection = 25
+	PermissionSection_PERMISSION_SECTION_SCHEDULE_CATALOG     PermissionSection = 26
 )
 
 // Enum value maps for PermissionSection.
@@ -95,6 +102,13 @@ var (
 		17: "PERMISSION_SECTION_ANALYTICS",
 		18: "PERMISSION_SECTION_DEANERY",
 		19: "PERMISSION_SECTION_EXAM_TESTS",
+		20: "PERMISSION_SECTION_SCHEDULE_DRAFTS",
+		21: "PERMISSION_SECTION_SCHEDULE_PUBLICATION",
+		22: "PERMISSION_SECTION_SCHEDULE_CHANGES",
+		23: "PERMISSION_SECTION_SCHEDULE_TESTING",
+		24: "PERMISSION_SECTION_SCHEDULE_REPORTS",
+		25: "PERMISSION_SECTION_SCHEDULE_INTAKE",
+		26: "PERMISSION_SECTION_SCHEDULE_CATALOG",
 	}
 	PermissionSection_value = map[string]int32{
 		"PERMISSION_SECTION_UNSPECIFIED":          0,
@@ -117,6 +131,13 @@ var (
 		"PERMISSION_SECTION_ANALYTICS":            17,
 		"PERMISSION_SECTION_DEANERY":              18,
 		"PERMISSION_SECTION_EXAM_TESTS":           19,
+		"PERMISSION_SECTION_SCHEDULE_DRAFTS":      20,
+		"PERMISSION_SECTION_SCHEDULE_PUBLICATION": 21,
+		"PERMISSION_SECTION_SCHEDULE_CHANGES":     22,
+		"PERMISSION_SECTION_SCHEDULE_TESTING":     23,
+		"PERMISSION_SECTION_SCHEDULE_REPORTS":     24,
+		"PERMISSION_SECTION_SCHEDULE_INTAKE":      25,
+		"PERMISSION_SECTION_SCHEDULE_CATALOG":     26,
 	}
 )
 
@@ -203,7 +224,7 @@ var File_fesmu_enum_v1_permission_enum_proto protoreflect.FileDescriptor
 
 const file_fesmu_enum_v1_permission_enum_proto_rawDesc = "" +
 	"\n" +
-	"#fesmu/enum/v1/permission.enum.proto\x12\x10contract.enum.v1*\xe6\x05\n" +
+	"#fesmu/enum/v1/permission.enum.proto\x12\x10contract.enum.v1*\x87\b\n" +
 	"\x11PermissionSection\x12\"\n" +
 	"\x1ePERMISSION_SECTION_UNSPECIFIED\x10\x00\x12%\n" +
 	"!PERMISSION_SECTION_INFRASTRUCTURE\x10\x01\x12 \n" +
@@ -225,7 +246,14 @@ const file_fesmu_enum_v1_permission_enum_proto_rawDesc = "" +
 	"\x1aPERMISSION_SECTION_MANUALS\x10\x10\x12 \n" +
 	"\x1cPERMISSION_SECTION_ANALYTICS\x10\x11\x12\x1e\n" +
 	"\x1aPERMISSION_SECTION_DEANERY\x10\x12\x12!\n" +
-	"\x1dPERMISSION_SECTION_EXAM_TESTS\x10\x13*n\n" +
+	"\x1dPERMISSION_SECTION_EXAM_TESTS\x10\x13\x12&\n" +
+	"\"PERMISSION_SECTION_SCHEDULE_DRAFTS\x10\x14\x12+\n" +
+	"'PERMISSION_SECTION_SCHEDULE_PUBLICATION\x10\x15\x12'\n" +
+	"#PERMISSION_SECTION_SCHEDULE_CHANGES\x10\x16\x12'\n" +
+	"#PERMISSION_SECTION_SCHEDULE_TESTING\x10\x17\x12'\n" +
+	"#PERMISSION_SECTION_SCHEDULE_REPORTS\x10\x18\x12&\n" +
+	"\"PERMISSION_SECTION_SCHEDULE_INTAKE\x10\x19\x12'\n" +
+	"#PERMISSION_SECTION_SCHEDULE_CATALOG\x10\x1a*n\n" +
 	"\x10PermissionAction\x12!\n" +
 	"\x1dPERMISSION_ACTION_UNSPECIFIED\x10\x00\x12\x1b\n" +
 	"\x17PERMISSION_ACTION_FETCH\x10\x01\x12\x1a\n" +

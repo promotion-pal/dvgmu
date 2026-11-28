@@ -100,7 +100,7 @@ export function SchedulaCatalog({ catalog, onClose, onSaved }: { catalog?: Catal
                     </>}
                     {kind === "travel" && <>
                         <Field label="Куда"><ResourceSelect name="destination" rows={catalog?.sites} /></Field>
-                        <Field label="Норматив, мин"><Input name="minutes" type="number" min={1} max={1440} required /></Field>
+                        <Field label="Норматив, мин"><Input name="minutes" type="number" min={0} max={1440} required /></Field>
                     </>}
                     {kind === "booking" && <>
                         <Field label="Площадка"><ResourceSelect name="room" rows={catalog?.rooms} /></Field>

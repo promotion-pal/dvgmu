@@ -2,7 +2,7 @@ import type { ComponentType } from "react";
 import type { UserRole } from "@fesmu/contract/fesmu/enum/v1/user.enum_pb";
 import { BookOpenTextIcon, ChartColumnIcon, QrCodeIcon, BriefcaseIcon, LibraryIcon, Building2Icon, FileCheckIcon, CalendarDaysIcon, CalendarRangeIcon, ClipboardListIcon, FileTextIcon, GraduationCapIcon, HourglassIcon, ListChecksIcon, ListTodoIcon, MonitorIcon, ReceiptTextIcon, ShieldCheckIcon, ShoppingBagIcon, ShoppingCartIcon, TicketIcon, UsersIcon } from "lucide-react";
 import { ACCESS } from "@/shared/config/access";
-import { PermissionAction, PermissionSection, PURCHASE_SECTIONS, permsFor, permsForAny } from "@/shared/config/permissions";
+import { PermissionSection, PURCHASE_SECTIONS, SCHEDULA_PERMISSIONS, permsFor, permsForAny } from "@/shared/config/permissions";
 import { ROUTE } from "@/shared/config/path";
 
 interface NavItem {
@@ -13,6 +13,7 @@ interface NavItem {
     roles?: UserRole[];
     /** And/or only with one of these rights (ADMIN has all). */
     permissions?: string[];
+    anyAccess?: boolean;
 }
 
 const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
@@ -20,7 +21,7 @@ const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
         label: "Студенту",
         items: [
             { title: "Заказать справку", url: ROUTE.MY.CERTIFICATE, icon: FileTextIcon, roles: [...ACCESS.STUDENT] },
-            { title: "Расписание", url: ROUTE.MY.SCHEDULE, icon: CalendarDaysIcon, roles: [...ACCESS.STUDENT] },
+            { title: "Расписание групп", url: ROUTE.MY.SCHEDULE, icon: CalendarDaysIcon, roles: [...ACCESS.STUDENT] },
         ],
     },
     {
@@ -39,10 +40,10 @@ const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
     {
         label: "Учёба",
         items: [
-            { title: "Календарь занятий", url: ROUTE.SCHEDULA, icon: CalendarDaysIcon },
+            { title: "Календарь занятий", url: ROUTE.SCHEDULA, icon: CalendarDaysIcon, roles: [...ACCESS.TEACHER, ...ACCESS.STUDENT], permissions: SCHEDULA_PERMISSIONS, anyAccess: true },
             { title: "Расписание групп", url: ROUTE.STUDY.SCHEDULE, icon: CalendarDaysIcon, permissions: permsFor(PermissionSection.SCHEDULE) },
             { title: "Передать сведения о занятии", url: ROUTE.PUBLIC.SCHEDULE_COLLECT, icon: FileTextIcon, roles: [...ACCESS.TEACHER] },
-            { title: "Поступившие сведения", url: ROUTE.STUDY.SCHEDULE_INBOX, icon: ClipboardListIcon, permissions: permsFor(PermissionSection.SCHEDULE, PermissionAction.POST) },
+            { title: "Поступившие сведения", url: ROUTE.STUDY.SCHEDULE_INBOX, icon: ClipboardListIcon, permissions: permsFor(PermissionSection.SCHEDULE_INTAKE) },
             // Страница доступна всем вошедшим: halls.post открывает общее
             // расписание и модерацию, остальные видят форму личной заявки.
             { title: "Заявка / расписание лекционных залов", url: ROUTE.STUDY.SCHEDULE_HALL, icon: CalendarRangeIcon },
@@ -116,9 +117,9 @@ export const visibleGroups = (hasRole: HasRole, hasPermission: HasPermission) =>
         .map((group) => ({
             ...group,
             items: group.items.filter(
-                (item) =>
-                    (!item.roles || hasRole(...item.roles)) &&
-                    (!item.permissions || hasPermission(...item.permissions)),
+                (item) => item.anyAccess
+                    ? hasRole(...(item.roles ?? [])) || hasPermission(...(item.permissions ?? []))
+                    : (!item.roles || hasRole(...item.roles)) && (!item.permissions || hasPermission(...item.permissions)),
             ),
         }))
         .filter((group) => group.items.length > 0);

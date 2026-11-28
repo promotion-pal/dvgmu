@@ -50,13 +50,23 @@ func (s *Service) Completeness(ctx context.Context, termID string) ([]*pb.Comple
 	assignedCourses := make(map[int32]bool)
 	var gaps []*pb.CompletenessGap
 	for _, event := range events {
+		before := len(gaps)
+		addEventGap := func(kind scheduleenum.CompletenessGapType) {
+			gaps = append(gaps, &pb.CompletenessGap{Type: kind, Event: eventProto(event, c)})
+		}
 		if !event.Timed() {
-			gaps = append(gaps, &pb.CompletenessGap{Type: scheduleenum.CompletenessGapType_COMPLETENESS_GAP_TYPE_TIME, Event: eventProto(event, c)})
+			addEventGap(scheduleenum.CompletenessGapType_COMPLETENESS_GAP_TYPE_TIME)
 		}
 		if event.RoomID == nil {
-			gaps = append(gaps, &pb.CompletenessGap{Type: scheduleenum.CompletenessGapType_COMPLETENESS_GAP_TYPE_ROOM, Event: eventProto(event, c)})
+			addEventGap(scheduleenum.CompletenessGapType_COMPLETENESS_GAP_TYPE_ROOM)
 		}
-		if !event.Timed() || event.RoomID == nil || c.holidays[*event.Date] != "" {
+		if missingInstructor(event) {
+			addEventGap(scheduleenum.CompletenessGapType_COMPLETENESS_GAP_TYPE_INSTRUCTOR)
+		}
+		if missingClinicalDetails(event) {
+			addEventGap(scheduleenum.CompletenessGapType_COMPLETENESS_GAP_TYPE_CLINICAL_DETAILS)
+		}
+		if len(gaps) != before || c.holidays[*event.Date] != "" {
 			continue
 		}
 		for _, a := range event.Audiences {

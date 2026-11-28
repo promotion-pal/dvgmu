@@ -53,7 +53,7 @@ func (h *ScheduleCollectHandler) ScheduleCollectFetch(
 	ctx context.Context,
 	req *connect.Request[pb.ScheduleCollectFetchRequest],
 ) (*connect.Response[pb.ScheduleCollectFetchResponse], error) {
-	if err := auth.RequireCan(ctx, auth.SectionSchedule, auth.ActionPost); err != nil {
+	if err := auth.RequireCan(ctx, auth.SectionScheduleIntake, auth.ActionFetch); err != nil {
 		return nil, err
 	}
 	items, hasMore, err := h.service.ScheduleCollectFetch(ctx, req.Msg.GetOffset())

@@ -1,5 +1,6 @@
 import { useState, type FormEvent, type ReactNode } from "react";
 import { ConnectError } from "@connectrpc/connect";
+import { toast } from "sonner";
 import type { Event, Issue, Slot } from "@fesmu/contract/schedula/entity/schedule.entity_pb";
 import { EventType, IssueType, Recurrence } from "@fesmu/contract/schedula/enum/schedule.enum_pb";
 import type { CatalogFetchResponse } from "@fesmu/contract/schedula/service/schedula.service_pb";
@@ -14,12 +15,15 @@ interface Props {
     catalog: CatalogFetchResponse;
     event?: Event;
     slotsOnly: boolean;
+    canEdit: boolean;
+    canPublish: boolean;
     suggestedDate?: string;
+    suggestedRoomId?: string;
     onClose: () => void;
     onSaved: () => void;
 }
 
-export function SchedulaEditor({ catalog, event, slotsOnly, suggestedDate, onClose, onSaved }: Props) {
+export function SchedulaEditor({ catalog, event, slotsOnly, canEdit, canPublish, suggestedDate, suggestedRoomId, onClose, onSaved }: Props) {
     const initial = event?.details;
     const resources = catalog.catalog;
     const [busy, setBusy] = useState(false);
@@ -29,12 +33,14 @@ export function SchedulaEditor({ catalog, event, slotsOnly, suggestedDate, onClo
     const [issues, setIssues] = useState<Issue[]>([]);
     const [slots, setSlots] = useState<Slot[]>([]);
     const [audiences, setAudiences] = useState(() => initial?.audiences.map((a, id) => ({ ...a, id })) ?? [{ id: 0, group: "", subgroup: "", course: 1 }]);
-    const [room, setRoom] = useState(initial?.roomId ?? "");
+    const [room, setRoom] = useState(initial?.roomId ?? (resources?.rooms.find(({ id }) => id === suggestedRoomId)?.id ?? ""));
     const [point, setPoint] = useState(initial?.meetingPoint ?? "");
     const [day, setDay] = useState(initial?.date ?? suggestedDate ?? today());
     const [start, setStart] = useState(initial?.startMinute === undefined ? "" : timeLabel(initial.startMinute));
     const [recurrence, setRecurrence] = useState(Recurrence.UNSPECIFIED);
     const [duration, setDuration] = useState(initial?.durationMinutes ?? 90);
+    const canFill = slotsOnly || canEdit;
+    const allowedTypes = new Set([EventType.EXAM, EventType.CONSULTATION, EventType.RETAKE, EventType.GIA]);
 
     const clearFeedback = () => {
         setError("");
@@ -60,6 +66,7 @@ export function SchedulaEditor({ catalog, event, slotsOnly, suggestedDate, onClo
 
     const submit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        if (!canFill) return;
         const data = new FormData(e.currentTarget);
         const text = (key: string) => String(data.get(key) ?? "").trim();
         const details = {
@@ -116,7 +123,10 @@ export function SchedulaEditor({ catalog, event, slotsOnly, suggestedDate, onClo
     const publish = (series = false) => event && void perform(async () => {
         const result = await schedulaClient.eventPublish({ id: event.id, revision: event.revision, series });
         setIssues(result.issues);
-        if (result.events.length) onSaved();
+        if (result.events.length) {
+            if (result.issues.length) toast.warning("Расписание опубликовано с предупреждением", { description: result.issues[0].message });
+            onSaved();
+        }
     });
 
     return <Dialog open onOpenChange={(open) => { if (!open && !busy) onClose(); }}>
@@ -124,7 +134,7 @@ export function SchedulaEditor({ catalog, event, slotsOnly, suggestedDate, onClo
             <DialogHeader><DialogTitle>{slotsOnly ? "Подбор свободного слота" : event ? "Черновик занятия" : "Создать черновик"}</DialogTitle></DialogHeader>
             {!resources?.terms.length || !resources.subjects.length ? <p className="text-muted-foreground">Добавьте семестр и дисциплины в справочники.</p> :
                 <form onSubmit={submit} onChange={edit} className="space-y-4">
-                    <fieldset disabled={busy} className="grid min-w-0 gap-3 sm:grid-cols-2">
+                    <fieldset disabled={busy || !canFill} className="grid min-w-0 gap-3 sm:grid-cols-2">
                         <Field label="Семестр"><select required className={selectStyle} name="term" defaultValue={initial?.termId ?? resources.terms.find((term) => day >= term.dateFrom && day <= term.dateTo)?.id}>
                             {resources.terms.map((term) => <option key={term.id} value={term.id}>{term.name}</option>)}
                         </select></Field>
@@ -132,7 +142,8 @@ export function SchedulaEditor({ catalog, event, slotsOnly, suggestedDate, onClo
                             {resources.subjects.map((subject) => <option key={subject.id} value={subject.id}>{subject.name}</option>)}
                         </select></Field>
                         <Field label="Тип события"><select required name="kind" className={selectStyle} defaultValue={initial?.type ?? (slotsOnly ? EventType.EXAM : EventType.LECTURE)}>
-                            {Object.entries(eventTypes).slice(1).map(([type, label]) => <option key={type} value={type}>{label}</option>)}
+                            {Object.entries(eventTypes).slice(1).filter(([type]) => canEdit || !slotsOnly || allowedTypes.has(Number(type) as EventType))
+                                .map(([type, label]) => <option key={type} value={type}>{label}</option>)}
                         </select></Field>
                         <Field label="Число участников"><Input type="number" name="count" min={1} required={slotsOnly} defaultValue={initial?.expectedAttendance || undefined} /></Field>
                         <Field label="Преподаватель или наставник"><select name="teacher" className={selectStyle} defaultValue={initial?.instructorId}>
@@ -159,7 +170,7 @@ export function SchedulaEditor({ catalog, event, slotsOnly, suggestedDate, onClo
                         {!slotsOnly && recurrence !== Recurrence.UNSPECIFIED && <Field label="Повторять до"><Input type="date" name="until" min={day} required /></Field>}
                     </fieldset>
 
-                    <fieldset disabled={busy} className="space-y-2">
+                    <fieldset disabled={busy || !canFill} className="space-y-2">
                         <legend className="mb-2 text-sm font-semibold">Группы</legend>
                         {audiences.map((a) => <div key={a.id} className="grid grid-cols-[2fr_2fr_1fr_auto] items-end gap-2">
                             <Field label="Группа"><Input name={`group-${a.id}`} required defaultValue={a.group} /></Field>
@@ -192,12 +203,12 @@ export function SchedulaEditor({ catalog, event, slotsOnly, suggestedDate, onClo
                     {status && <p role="status" className="text-sm text-muted-foreground">{status}</p>}
                     {event && dirty && <p className="text-sm text-muted-foreground">Сохраните изменения перед проверкой и публикацией.</p>}
                     <div className="flex flex-wrap gap-2">
-                        <Button type="submit" name="action" value="save" disabled={busy}>{slotsOnly ? "Найти слоты" : "Сохранить черновик"}</Button>
+                        {canFill && <Button type="submit" name="action" value="save" disabled={busy}>{slotsOnly ? "Найти слоты" : "Сохранить черновик"}</Button>}
                         {!slotsOnly && event && <>
                             <Button type="button" variant="outline" onClick={check} disabled={busy || dirty}>Проверить сохранённое</Button>
-                            <Button type="submit" value="find" variant="outline" disabled={busy}>Найти время или площадку</Button>
-                            <Button type="button" variant="outline" onClick={() => publish()} disabled={busy || dirty}>Опубликовать</Button>
-                            {event.seriesId && <Button type="button" variant="outline" onClick={() => publish(true)} disabled={busy || dirty}>Опубликовать серию</Button>}
+                            {canEdit && <Button type="submit" value="find" variant="outline" disabled={busy}>Найти время или площадку</Button>}
+                            {canPublish && <Button type="button" variant="outline" onClick={() => publish()} disabled={busy || dirty}>Опубликовать</Button>}
+                            {canPublish && event.seriesId && <Button type="button" variant="outline" onClick={() => publish(true)} disabled={busy || dirty}>Опубликовать серию</Button>}
                         </>}
                     </div>
                 </form>}

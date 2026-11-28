@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { ConnectError } from "@connectrpc/connect";
+import { toast } from "sonner";
 import type { Change, Event, Issue } from "@fesmu/contract/schedula/entity/schedule.entity_pb";
 import { ChangeStatus, ChangeType, EventStatus } from "@fesmu/contract/schedula/enum/schedule.enum_pb";
 import type { CatalogFetchResponse } from "@fesmu/contract/schedula/service/schedula.service_pb";
@@ -81,6 +82,7 @@ export function SchedulaChanges({ event, catalog, canDecide, canSubmit, onClose,
         const result = await schedulaClient.changeDecide({ id, approve, decision });
         setIssues(result.issues);
         if (result.change) {
+            if (result.issues.length) toast.warning("Изменение утверждено с предупреждением", { description: result.issues[0].message });
             onSaved();
             onClose();
         }

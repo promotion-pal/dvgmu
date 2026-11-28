@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"dvgmu/schedula/internal/domain/models"
+	"dvgmu/schedula/internal/storage"
 	pb "fesmu/contract/schedula/entity"
 	scheduleenum "fesmu/contract/schedula/enum"
 )
@@ -96,6 +97,95 @@ func TestTravelOnlyBetweenConsecutiveLessons(t *testing.T) {
 	}
 }
 
+func TestTravelDistinguishesMissingNormFromZero(t *testing.T) {
+	day, _ := date("2026-11-24")
+	lesson := func(id, site string, start int32) models.Event {
+		room := models.Room{ID: id, SiteID: site, Capacity: 30, OpensAt: 480, ClosesAt: 1140}
+		return models.Event{
+			ID: id, Date: &day, StartMinute: &start, DurationMinutes: 30,
+			RoomID: &room.ID, Room: room, ExpectedAttendance: 20, InstructorID: "teacher",
+		}
+	}
+	first := lesson("first", "main", 540)
+	second := lesson("second", "clinic", 580)
+	for _, tc := range []struct {
+		name    string
+		travel  map[[2]string]int32
+		kind    scheduleenum.IssueType
+		message string
+	}{
+		{name: "missing", kind: scheduleenum.IssueType_ISSUE_TYPE_TRAVEL_NORM_MISSING, message: "Переход не проверен: между площадками не указан норматив, доступно 10 мин"},
+		{name: "only reverse direction", travel: map[[2]string]int32{{"clinic", "main"}: 0}, kind: scheduleenum.IssueType_ISSUE_TYPE_TRAVEL_NORM_MISSING, message: "Переход не проверен: между площадками не указан норматив, доступно 10 мин"},
+		{name: "explicit zero", travel: map[[2]string]int32{{"main", "clinic"}: 0}},
+		{name: "exact norm", travel: map[[2]string]int32{{"main", "clinic"}: 10}},
+		{name: "too short", travel: map[[2]string]int32{{"main", "clinic"}: 15}, kind: scheduleenum.IssueType_ISSUE_TYPE_TRAVEL, message: "На переход 10 мин, требуется 15 мин"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			issues := (catalog{travel: tc.travel}).check(second, []models.Event{first}, false)
+			if tc.message == "" {
+				if len(issues) != 0 {
+					t.Fatalf("unexpected issue: %v", issues)
+				}
+				return
+			}
+			if len(issues) != 1 || issues[0].Type != tc.kind ||
+				issues[0].Message != tc.message || issues[0].Event.GetId() != second.ID || issues[0].ConflictingEvent.GetId() != first.ID {
+				t.Fatalf("wrong travel issue: %v", issues)
+			}
+		})
+	}
+	second.Room.SiteID = first.Room.SiteID
+	if issues := (catalog{}).check(second, []models.Event{first}, false); len(issues) != 0 {
+		t.Fatalf("different rooms in the same site do not need a norm: %v", issues)
+	}
+}
+
+func TestGroupPeriodRestrictsPlacementAndSupportsSubgroupOverride(t *testing.T) {
+	day, _ := date("2026-11-24")
+	room := models.Room{
+		ID: "clinic-1", Capacity: 30, OpensAt: 480, ClosesAt: 1140,
+		Site: models.Site{Clinical: true, Address: "Адрес"},
+	}
+	practice := models.AcademicPeriod{
+		ID: "practice", TermID: "term", Group: "301", Course: 3,
+		Type: scheduleenum.PeriodType_PERIOD_TYPE_PRACTICE, DateFrom: day.AddDate(0, 0, -1), DateTo: day,
+	}
+	exams := models.AcademicPeriod{
+		ID: "exam", TermID: "term", Group: "301", Subgroup: "B", Course: 3,
+		Type: scheduleenum.PeriodType_PERIOD_TYPE_EXAMS, DateFrom: day, DateTo: day,
+	}
+	c := catalogFromRows(storage.Catalog{Periods: []models.AcademicPeriod{practice, exams}})
+	event := models.Event{
+		TermID: "term", Date: &day, StartMinute: new(int32(540)), DurationMinutes: 90,
+		Room: room, RoomID: &room.ID, ExpectedAttendance: 15, InstructorID: "instructor",
+		Department: "Кафедра", MeetingPoint: "Вход",
+	}
+	for _, tc := range []struct {
+		name     string
+		subgroup string
+		kind     scheduleenum.EventType
+		problem  string
+	}{
+		{"third-year clinical day", "A", scheduleenum.EventType_EVENT_TYPE_CLINICAL_CYCLE, ""},
+		{"lecture during inherited practice", "A", scheduleenum.EventType_EVENT_TYPE_LECTURE, "301 / A: в этот день по учебному графику проходит практика"},
+		{"exam in subgroup override", "B", scheduleenum.EventType_EVENT_TYPE_EXAM, ""},
+		{"clinical day in subgroup exams", "B", scheduleenum.EventType_EVENT_TYPE_CLINICAL_CYCLE, "301 / B: в этот день по учебному графику проходит сессия"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			event.Type = tc.kind
+			event.Audiences = []models.Audience{{Group: "301", Subgroup: tc.subgroup, Course: 3}}
+			issues := c.check(event, nil, false)
+			if tc.problem == "" {
+				if len(issues) != 0 {
+					t.Fatalf("unexpected issue: %v", issues)
+				}
+			} else if len(issues) != 1 || issues[0].Type != scheduleenum.IssueType_ISSUE_TYPE_AVAILABILITY || issues[0].Message != tc.problem {
+				t.Fatalf("unexpected placement result: %v", issues)
+			}
+		})
+	}
+}
+
 func TestSlotOrderUsesTimeAndOffersAlternativeRoom(t *testing.T) {
 	day, _ := date("2026-11-24")
 	late := models.Room{ID: "late", Capacity: 30, OpensAt: 780, ClosesAt: 1140}
@@ -143,5 +233,28 @@ func TestRecurrenceUsesAcademicWeek(t *testing.T) {
 	}
 	if events[0].EndMinute() != 630 || events[1].EndMinute() != 750 {
 		t.Fatalf("wrong end times: %d, %d", events[0].EndMinute(), events[1].EndMinute())
+	}
+}
+
+func TestSeriesRejectsOverlappingWeeklySlots(t *testing.T) {
+	from, _ := date("2026-11-23")
+	term := models.Term{DateFrom: from, DateTo: from.AddDate(0, 0, 7)}
+	event := models.Event{Date: &from}
+	series := &pb.Series{
+		Recurrence: scheduleenum.Recurrence_RECURRENCE_WEEKLY, DateTo: "2026-11-29",
+		Slots: []*pb.WeeklySlot{
+			{Weekday: 1, StartMinute: 540, DurationMinutes: 90},
+			{Weekday: 1, StartMinute: 540, DurationMinutes: 90},
+		},
+	}
+	for _, start := range []int32{540, 600} {
+		series.Slots[1].StartMinute = start
+		if _, err := expand(event, series, term); err == nil {
+			t.Fatalf("accepted overlapping slot at minute %d", start)
+		}
+	}
+	series.Slots[1].StartMinute = 630
+	if events, err := expand(event, series, term); err != nil || len(events) != 2 {
+		t.Fatalf("expected two adjacent slots, got %v: %v", events, err)
 	}
 }

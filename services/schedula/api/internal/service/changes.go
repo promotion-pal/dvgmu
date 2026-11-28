@@ -41,7 +41,7 @@ func (s *Service) CreateChange(ctx context.Context, in *rpc.ChangeCreateRequest,
 		if err != nil {
 			return err
 		}
-		if !actor.CanEdit && (!actor.Teacher || before.InstructorID != actor.ID) {
+		if !actor.CanReviewChanges && (!actor.Teacher || before.InstructorID != actor.ID) {
 			return denied()
 		}
 		if err := requireRevision(before, in.Revision, published); err != nil {
@@ -60,7 +60,7 @@ func (s *Service) CreateChange(ctx context.Context, in *rpc.ChangeCreateRequest,
 		}
 		if after.Status != cancelled {
 			result.Issues, err = check(ctx, tx, attendance(after, groups), false)
-			if err != nil || len(result.Issues) != 0 {
+			if err != nil || hasBlockingIssue(result.Issues) {
 				return err
 			}
 		}
@@ -172,7 +172,7 @@ func (s *Service) DecideChange(ctx context.Context, in *rpc.ChangeDecideRequest,
 				}
 				current.ID = next.ID
 				result.Issues, err = check(ctx, tx, attendance(current, groups), false)
-				if err != nil || len(result.Issues) != 0 {
+				if err != nil || hasBlockingIssue(result.Issues) {
 					return err
 				}
 			}
@@ -197,7 +197,7 @@ func (s *Service) History(ctx context.Context, eventID string, actor Actor) ([]*
 		return nil, invalid("некорректный идентификатор занятия")
 	}
 	var authorID *string
-	if !actor.CanEdit {
+	if !actor.CanReviewChanges {
 		authorID = &actor.ID
 	}
 	history, err := s.store.Changes(ctx, eventID, authorID)

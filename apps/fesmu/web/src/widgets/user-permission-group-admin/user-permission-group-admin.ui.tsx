@@ -9,8 +9,10 @@ import {
     PermissionAction,
     SECTIONS,
     SECTION_GROUPS,
+    hasSingleSectionAction,
     perm,
     purchasePerm,
+    sectionToggleAction,
     summarizePermissions,
 } from "@/shared/config/permissions";
 import { CommonControlState } from "@/shared/components/state/control-state";
@@ -21,7 +23,7 @@ import { Input } from "@/shared/ui/input";
 import { Label } from "@/shared/ui/label";
 import { Switch } from "@/shared/ui/switch";
 import { Textarea } from "@/shared/ui/textarea";
-import { toggleHallManagement, toggleSectionAction, toggleSections } from "./user-permission-group-admin.fn";
+import { toggleSectionAction, toggleSections } from "./user-permission-group-admin.fn";
 import type { UserPermissionGroupDraft } from "./user-permission-group-admin.fn";
 
 interface UserPermissionGroupListProps extends ComponentProps<typeof CommonControlState> {
@@ -67,7 +69,7 @@ const SectionsPicker: FC<{ value: string[]; onChange: (codes: string[]) => void 
         {SECTION_GROUPS.map((group) => {
             const sections = SECTIONS.filter((s) => s.group === group);
             const opened = sections.filter((s) =>
-                value.includes(perm(s.key, s.manageOnly ? PermissionAction.POST : PermissionAction.FETCH)),
+                value.includes(perm(s.key, sectionToggleAction(s.key))),
             ).length;
             return (
                 <section key={group} className="rounded-lg border">
@@ -89,18 +91,21 @@ const SectionsPicker: FC<{ value: string[]; onChange: (codes: string[]) => void 
                             const canFetch = value.includes(perm(section.key, PermissionAction.FETCH));
                             const canPost = value.includes(perm(section.key, PermissionAction.POST));
                             const title = section.short ?? section.label;
-                            if (section.manageOnly) {
+                            if (hasSingleSectionAction(section.key)) {
+                                const action = sectionToggleAction(section.key);
+                                const code = perm(section.key, action);
+                                const enabled = value.includes(code) || (action === PermissionAction.FETCH && canPost);
                                 return (
                                     <li key={section.key} className="flex items-center gap-3 px-3 py-2.5">
                                         <Switch
-                                            aria-label={`${section.label}: расписание, заявки и модерация`}
-                                            checked={canPost}
-                                            onCheckedChange={(on) => onChange(toggleHallManagement(value, on))}
+                                            aria-label={section.label}
+                                            checked={enabled}
+                                            onCheckedChange={(on) => onChange(toggleSectionAction(value, section.key, action, on))}
                                         />
                                         <span className="flex min-w-0 flex-1 flex-col">
-                                            <span className={canPost ? "text-sm font-medium" : "text-sm"}>{title}</span>
-                                            <span className="text-xs text-muted-foreground">Доступ к общему расписанию, всем заявкам, редактированию и модерации</span>
-                                            <code className="text-[11px] text-muted-foreground">Permission: {perm(section.key, PermissionAction.POST)}</code>
+                                            <span className={enabled ? "text-sm font-medium" : "text-sm"}>{title}</span>
+                                            <span className="text-xs text-muted-foreground">{section.description}</span>
+                                            <code className="text-[11px] text-muted-foreground">Permission: {code}</code>
                                         </span>
                                     </li>
                                 );

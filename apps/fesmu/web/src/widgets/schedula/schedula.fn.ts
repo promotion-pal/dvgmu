@@ -4,6 +4,7 @@ import type { EventType } from "@fesmu/contract/schedula/enum/schedule.enum_pb";
 import type { CatalogFetchResponse, PublicScheduleFetchResponse, ScheduleFetchResponse } from "@fesmu/contract/schedula/service/schedula.service_pb";
 import { urlCodec, useUrlState, type UrlStateSchema } from "@/features/lib/url-state";
 import { schedulaClient } from "./schedula.api";
+import { scheduleDate } from "./schedula.utils";
 
 interface FilterState {
     dateFrom?: string;
@@ -17,13 +18,15 @@ interface FilterState {
     roomId?: string;
     type?: number;
     sources?: number[];
-    view?: string;
-    layout?: string;
+    view?: "mine" | "all";
+    layout?: "grid" | "list";
 }
 
+const dateCodec = { ...urlCodec.isoDate, parse: (value: string | null) => scheduleDate(value ?? undefined) };
+
 const filterSchema: UrlStateSchema<FilterState> = {
-    dateFrom: { key: "from", codec: urlCodec.isoDate },
-    dateTo: { key: "to", codec: urlCodec.isoDate },
+    dateFrom: { key: "from", codec: dateCodec },
+    dateTo: { key: "to", codec: dateCodec },
     group: { key: "group", codec: urlCodec.text },
     subgroup: { key: "subgroup", codec: urlCodec.text },
     course: { key: "course", codec: urlCodec.integer },
@@ -33,16 +36,16 @@ const filterSchema: UrlStateSchema<FilterState> = {
     roomId: { key: "room", codec: urlCodec.text },
     type: { key: "type", codec: urlCodec.integer },
     sources: { key: "sources", codec: urlCodec.list(urlCodec.integer) },
-    view: { key: "view", codec: urlCodec.text },
-    layout: { key: "layout", codec: urlCodec.text },
+    view: { key: "view", codec: urlCodec.oneOf(["mine", "all"]) },
+    layout: { key: "layout", codec: urlCodec.oneOf(["grid", "list"]) },
 };
 
 const defaultFilter: FilterState = {};
 
 type ScheduleState =
-    | { key: object; kind: "private"; result: ScheduleFetchResponse }
-    | { key: object; kind: "public"; result: PublicScheduleFetchResponse }
-    | { key: object; kind: "error"; error: ConnectError };
+    | { key: object; personal: boolean; kind: "private"; result: ScheduleFetchResponse }
+    | { key: object; personal: boolean; kind: "public"; result: PublicScheduleFetchResponse }
+    | { key: object; personal: boolean; kind: "error"; error: ConnectError };
 
 export function useSchedula(publicView: boolean, defaultPersonal: boolean) {
     const [filter, setFilter] = useUrlState(filterSchema, defaultFilter);
@@ -56,7 +59,7 @@ export function useSchedula(publicView: boolean, defaultPersonal: boolean) {
     useEffect(() => {
         const controller = new AbortController();
         const request = {
-            dateFrom: filter.dateFrom,
+            dateFrom: filter.dateFrom ?? filter.dateTo,
             dateTo: filter.dateTo,
             group: filter.group,
             subgroup: publicView ? undefined : filter.subgroup,
@@ -72,13 +75,13 @@ export function useSchedula(publicView: boolean, defaultPersonal: boolean) {
             try {
                 if (publicView) {
                     const result = await schedulaClient.publicScheduleFetch({ filter: request }, { signal: controller.signal });
-                    if (!controller.signal.aborted) setState({ key: filter, kind: "public", result });
+                    if (!controller.signal.aborted) setState({ key: filter, personal, kind: "public", result });
                 } else {
                     const result = await schedulaClient.scheduleFetch({ filter: request, personal, includeDrafts: !personal }, { signal: controller.signal });
-                    if (!controller.signal.aborted) setState({ key: filter, kind: "private", result });
+                    if (!controller.signal.aborted) setState({ key: filter, personal, kind: "private", result });
                 }
             } catch (cause) {
-                if (!controller.signal.aborted) setState({ key: filter, kind: "error", error: ConnectError.from(cause) });
+                if (!controller.signal.aborted) setState({ key: filter, personal, kind: "error", error: ConnectError.from(cause) });
             }
         };
         void load();
@@ -102,7 +105,8 @@ export function useSchedula(publicView: boolean, defaultPersonal: boolean) {
     }, [publicView, version]);
 
     return {
-        filter, setFilter, personal, state: state?.key === filter ? state : undefined,
+        filter, setFilter, personal, state: state?.key === filter && state.personal === personal &&
+            (state.kind === "error" || (state.kind === "public") === publicView) ? state : undefined,
         catalog, catalogError, reload: () => setVersion((v) => v + 1),
     };
 }

@@ -27,14 +27,20 @@ const (
 )
 
 type Actor struct {
-	ID           string
-	Group        string
-	Subgroup     string
-	Student      bool
-	Teacher      bool
-	CanEdit      bool
-	CanFindSlots bool
+	ID               string
+	Groups           []string
+	Subgroup         string
+	Student          bool
+	Teacher          bool
+	CanEdit          bool
+	CanFindSlots     bool
+	CanPublish       bool
+	CanReviewChanges bool
+	CanEditCatalog   bool
+	CanViewReports   bool
 }
+
+func (a Actor) CanSeeDrafts() bool { return a.CanEdit || a.CanPublish || a.CanViewReports }
 
 type Service struct {
 	store    *storage.Storage
@@ -56,19 +62,29 @@ func (s *Service) Schedule(ctx context.Context, input *rpc.ScheduleFetchRequest,
 	if err != nil {
 		return nil, err
 	}
-	withDrafts := input.IncludeDrafts && actor.CanEdit
+	withDrafts := input.IncludeDrafts && actor.CanSeeDrafts() && !input.Personal
 	events, err := s.store.Events(ctx, from, to, withDrafts)
 	if err != nil {
 		return nil, err
 	}
 	result := &rpc.ScheduleFetchResponse{
 		DateFrom: from.Format(time.DateOnly), DateTo: to.Format(time.DateOnly), AcademicWeek: week,
-		CanEdit: actor.CanEdit, CanSearchSlots: actor.CanFindSlots, CanRequestChange: actor.Teacher || actor.CanEdit,
+		CanEdit: actor.CanEdit, CanSearchSlots: actor.CanFindSlots, CanRequestChange: actor.Teacher || actor.CanReviewChanges,
+		CanPublish: actor.CanPublish, CanReviewChanges: actor.CanReviewChanges,
+		CanViewReports: actor.CanViewReports, CanEditCatalog: actor.CanEditCatalog,
 	}
 	personal := input.Personal && f.GetGroup() == "" && f.GetCourse() == 0
-	visible := func(e models.Event) bool { return matchesEvent(e, f) && (!personal || matchesActor(e, actor)) }
+	studentView := actor.Student && !actor.Teacher && !actor.CanSeeDrafts() &&
+		!actor.CanFindSlots && !actor.CanReviewChanges && !actor.CanEditCatalog
+	studentAudience := func(a models.Audience) bool { return a.Subgroup == "" || matchesStudent(a, actor) }
+	visibleEvent := func(e models.Event) (models.Event, bool) {
+		if studentView {
+			e.Audiences = slices.DeleteFunc(slices.Clone(e.Audiences), func(a models.Audience) bool { return !studentAudience(a) })
+		}
+		return e, matchesEvent(e, f) && (!personal || matchesActor(e, actor))
+	}
 	for _, e := range events {
-		if visible(e) {
+		if e, visible := visibleEvent(e); visible {
 			result.Events = append(result.Events, eventSnapshot(e, e.Status))
 		}
 	}
@@ -77,7 +93,7 @@ func (s *Service) Schedule(ctx context.Context, input *rpc.ScheduleFetchRequest,
 		return nil, err
 	}
 	for _, e := range transfers {
-		if visible(e) {
+		if e, visible := visibleEvent(e); visible {
 			status := e.Status
 			if status == published {
 				status = scheduleenum.EventStatus_EVENT_STATUS_TRANSFER
@@ -91,7 +107,7 @@ func (s *Service) Schedule(ctx context.Context, input *rpc.ScheduleFetchRequest,
 	}
 	for _, p := range periods {
 		a := models.Audience{Group: p.Group, Subgroup: p.Subgroup, Course: p.Course}
-		if (personal && !matchesStudent(a, actor)) || !matchesAudience(a, f) {
+		if (personal && !matchesStudent(a, actor)) || (studentView && !studentAudience(a)) || !matchesAudience(a, f) {
 			continue
 		}
 		result.Periods = append(result.Periods, periodProto(p))
@@ -166,7 +182,7 @@ func matchesAudience(a models.Audience, f *pb.ScheduleFilter) bool {
 }
 
 func matchesStudent(a models.Audience, actor Actor) bool {
-	return actor.Student && actor.Group != "" && actor.Group == a.Group && (a.Subgroup == "" || a.Subgroup == actor.Subgroup)
+	return actor.Student && slices.Contains(actor.Groups, a.Group) && (a.Subgroup == "" || a.Subgroup == actor.Subgroup)
 }
 
 func matchesActor(e models.Event, actor Actor) bool {
@@ -279,7 +295,7 @@ func (s *Service) Publish(ctx context.Context, in *rpc.EventPublishRequest) (*rp
 			issues := c.check(attendance(event, groups), scheduled, true)
 			result.Issues = append(result.Issues, issues...)
 		}
-		if len(result.Issues) != 0 {
+		if hasBlockingIssue(result.Issues) {
 			return nil
 		}
 		ids := make([]string, 0, len(events))

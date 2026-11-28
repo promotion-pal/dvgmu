@@ -12,6 +12,7 @@ import (
 	"net/url"
 	"os"
 	"strings"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -42,8 +43,10 @@ func TestScheduleLifecycle(t *testing.T) {
 	token := rand.Text()
 
 	mdmMux := http.NewServeMux()
-	mdmMux.Handle(mdmconnect.NewUserServiceHandler(testDirectory{}))
-	mdmMux.Handle(mdmconnect.NewUserDirectoryServiceHandler(testDirectory{}))
+	var testingRevoked atomic.Bool
+	mdm := testDirectory{testingRevoked: &testingRevoked}
+	mdmMux.Handle(mdmconnect.NewUserServiceHandler(mdm))
+	mdmMux.Handle(mdmconnect.NewUserDirectoryServiceHandler(mdm))
 	directory := httptest.NewServer(mdmMux)
 	t.Cleanup(directory.Close)
 	mdmClient := mdmconnect.NewUserServiceClient(directory.Client(), directory.URL)
@@ -54,7 +57,7 @@ func TestScheduleLifecycle(t *testing.T) {
 			return []service.Group{{Code: "301", Course: 3, Count: 20}, {Code: "402", Course: 4, Count: 12}}, nil
 		})
 		_, handler := serviceconnect.NewSchedulaServiceHandler(grpc.New(svc, mdmClient, directoryClient, log),
-			connect.WithInterceptors(grpc.Authenticate(token, mdmClient)))
+			connect.WithInterceptors(grpc.Authenticate(token, mdmClient, directoryClient)))
 		server := httptest.NewServer(handler)
 		t.Cleanup(server.Close)
 		return serviceconnect.NewSchedulaServiceClient(server.Client(), server.URL), server.Close
@@ -63,6 +66,9 @@ func TestScheduleLifecycle(t *testing.T) {
 
 	admin := func() map[string]string {
 		return map[string]string{"Authorization": "Bearer " + token, "X-Schedula-User": "admin"}
+	}
+	as := func(user string) map[string]string {
+		return map[string]string{"Authorization": "Bearer " + token, "X-Schedula-User": user}
 	}
 	request := &rpc.EventSaveRequest{Details: &pb.EventInput{
 		TermId: "term", SubjectId: "subject", Type: scheduleenum.EventType_EVENT_TYPE_LECTURE,
@@ -105,12 +111,38 @@ func TestScheduleLifecycle(t *testing.T) {
 		}
 	}
 
-	created, err := client.EventSave(ctx, signed(request, admin()))
+	created, err := client.EventSave(ctx, signed(request, as("scheduler")))
 	if err != nil {
 		t.Fatal(err)
 	}
 	first := created.Msg.Events[0]
 	filter := &pb.ScheduleFilter{DateFrom: "2026-11-24"}
+	mayPublish := &rpc.EventPublishRequest{Id: first.Id, Revision: first.Revision}
+	for _, user := range []string{"student", "teacher", "tester", "scheduler", "legacy-editor"} {
+		if _, err := client.EventPublish(ctx, signed(mayPublish, as(user))); connect.CodeOf(err) != connect.CodePermissionDenied {
+			t.Fatalf("%s could publish a draft: %v", user, err)
+		}
+	}
+	if _, err := client.EventSave(ctx, signed(request, as("tester"))); connect.CodeOf(err) != connect.CodePermissionDenied {
+		t.Fatalf("tester could create a draft: %v", err)
+	}
+	if _, err := client.EventSave(ctx, signed(request, as("publisher"))); connect.CodeOf(err) != connect.CodePermissionDenied {
+		t.Fatalf("publisher could create a draft: %v", err)
+	}
+	if _, err := client.CompletenessFetch(ctx, signed(&rpc.CompletenessFetchRequest{TermId: "term"}, as("scheduler"))); connect.CodeOf(err) != connect.CodePermissionDenied {
+		t.Fatalf("draft editor could view completeness: %v", err)
+	}
+	for _, tc := range []struct {
+		user                 string
+		drafts               int
+		edit, publish, slots bool
+	}{{"tester", 0, false, false, true}, {"scheduler", 1, true, false, true}, {"publisher", 1, false, true, false}, {"legacy-editor", 0, false, false, false}} {
+		result, err := client.ScheduleFetch(ctx, signed(&rpc.ScheduleFetchRequest{Filter: filter, IncludeDrafts: true}, as(tc.user)))
+		if err != nil || len(result.Msg.Events) != tc.drafts || result.Msg.CanEdit != tc.edit ||
+			result.Msg.CanPublish != tc.publish || result.Msg.CanSearchSlots != tc.slots {
+			t.Fatalf("schedule rights for %s: %v %v", tc.user, result, err)
+		}
+	}
 	public := func(client serviceconnect.SchedulaServiceClient) []*pb.PublicEvent {
 		t.Helper()
 		result, err := client.PublicScheduleFetch(ctx, signed(&rpc.PublicScheduleFetchRequest{Filter: filter}, map[string]string{"Authorization": "Bearer " + token}))
@@ -148,7 +180,7 @@ func TestScheduleLifecycle(t *testing.T) {
 	if _, err := client.EventSave(ctx, signed(request, admin())); err != nil {
 		t.Fatal(err)
 	}
-	published, err := client.EventPublish(ctx, signed(&rpc.EventPublishRequest{Id: first.Id, Revision: first.Revision}, admin()))
+	published, err := client.EventPublish(ctx, signed(&rpc.EventPublishRequest{Id: first.Id, Revision: first.Revision}, as("publisher")))
 	if err != nil || len(published.Msg.Events) != 1 || len(published.Msg.Issues) != 0 {
 		t.Fatalf("publish free event: %v %v", published, err)
 	}
@@ -173,6 +205,36 @@ func TestScheduleLifecycle(t *testing.T) {
 			t.Fatalf("slot overlaps existing use: %v", slot)
 		}
 	}
+	testingSlots := &rpc.SlotsFetchRequest{
+		Details: &pb.EventInput{
+			TermId: "term", SubjectId: "subject", Type: scheduleenum.EventType_EVENT_TYPE_EXAM,
+			Audiences: []*pb.Audience{{Group: "301", Course: 3}}, InstructorId: "teacher",
+			DurationMinutes: 90, ExpectedAttendance: 20,
+		},
+		DateFrom: filter.DateFrom, DateTo: filter.DateFrom,
+	}
+	slots, err := client.SlotsFetch(ctx, signed(testingSlots, as("tester")))
+	if err != nil || len(slots.Msg.Slots) == 0 {
+		t.Fatalf("tester slot search: %v %v", slots, err)
+	}
+	for _, slot := range slots.Msg.Slots {
+		if slot.StartMinute < 645 && slot.StartMinute+slot.DurationMinutes > 555 {
+			t.Fatalf("tester slot overlaps the published event: %v", slot)
+		}
+	}
+	testingSlots.ExcludeEventId = first.Id
+	if _, err := client.SlotsFetch(ctx, signed(testingSlots, as("tester"))); connect.CodeOf(err) != connect.CodePermissionDenied {
+		t.Fatalf("tester could exclude an existing event: %v", err)
+	}
+	testingSlots.ExcludeEventId = ""
+	if _, err := client.SlotsFetch(ctx, signed(testingSlots, as("classroom-editor"))); connect.CodeOf(err) != connect.CodePermissionDenied {
+		t.Fatalf("computer classroom permissions opened slot search: %v", err)
+	}
+	testingRevoked.Store(true)
+	if _, err := client.SlotsFetch(ctx, signed(testingSlots, as("tester"))); connect.CodeOf(err) != connect.CodePermissionDenied {
+		t.Fatalf("tester retained access after revocation: %v", err)
+	}
+	testingRevoked.Store(false)
 	report, err := client.CompletenessFetch(ctx, signed(&rpc.CompletenessFetchRequest{TermId: "term"}, admin()))
 	if err != nil || len(report.Msg.Gaps) != 2 || report.Msg.Gaps[0].Audience.GetCourse() != 4 ||
 		report.Msg.Gaps[1].Audience.GetGroup() != "402" {
@@ -198,7 +260,11 @@ func TestScheduleLifecycle(t *testing.T) {
 	if items := public(client); len(items) != 1 || items[0].StartMinute != 555 {
 		t.Fatalf("pending request changed public schedule: %v", items)
 	}
-	if result, err := client.ChangeDecide(ctx, signed(&rpc.ChangeDecideRequest{Id: change.Msg.Change.Id, Approve: true}, admin())); err != nil || result.Msg.Change.GetStatus() != scheduleenum.ChangeStatus_CHANGE_STATUS_APPROVED {
+	decision := &rpc.ChangeDecideRequest{Id: change.Msg.Change.Id, Approve: true}
+	if _, err := client.ChangeDecide(ctx, signed(decision, as("publisher"))); connect.CodeOf(err) != connect.CodePermissionDenied {
+		t.Fatalf("publisher could approve a change: %v", err)
+	}
+	if result, err := client.ChangeDecide(ctx, signed(decision, as("reviewer"))); err != nil || result.Msg.Change.GetStatus() != scheduleenum.ChangeStatus_CHANGE_STATUS_APPROVED {
 		t.Fatalf("approve change: %v %v", result, err)
 	}
 	history, err := client.ChangeHistoryFetch(ctx, signed(&rpc.ChangeHistoryFetchRequest{EventId: first.Id}, admin()))
@@ -206,7 +272,7 @@ func TestScheduleLifecycle(t *testing.T) {
 		t.Fatalf("read change history: %v %v", history, err)
 	}
 	entry := history.Msg.Changes[0]
-	if entry.AuthorId != "teacher" || entry.ReviewerId != "admin" || entry.SubmittedAt == "" || entry.DecidedAt == "" {
+	if entry.AuthorId != "teacher" || entry.ReviewerId != "reviewer" || entry.SubmittedAt == "" || entry.DecidedAt == "" {
 		t.Fatalf("incomplete change history: %v", entry)
 	}
 
@@ -266,6 +332,122 @@ func TestScheduleLifecycle(t *testing.T) {
 		seriesPublished.Msg.Events[0].Revision != 2 || seriesPublished.Msg.Events[1].Revision != 2 {
 		t.Fatalf("publish both dates after cancelling the booking: %v %v", seriesPublished, err)
 	}
+
+	request.Id, request.Revision, request.Series = "", 0, nil
+	request.Details.Date = "2026-12-03"
+	request.Details.Audiences = []*pb.Audience{{Group: "301", Subgroup: "2", Course: 3}}
+	subgroupDraft, err := client.EventSave(ctx, signed(request, admin()))
+	if err != nil || len(subgroupDraft.Msg.Events) != 1 {
+		t.Fatalf("create subgroup draft: %v %v", subgroupDraft, err)
+	}
+	subgroupEvent := subgroupDraft.Msg.Events[0]
+	subgroupPublished, err := client.EventPublish(ctx, signed(&rpc.EventPublishRequest{Id: subgroupEvent.Id, Revision: subgroupEvent.Revision}, admin()))
+	if err != nil || len(subgroupPublished.Msg.Events) != 1 {
+		t.Fatalf("publish subgroup event: %v %v", subgroupPublished, err)
+	}
+	subgroupFilter := &pb.ScheduleFilter{DateFrom: "2026-12-03", Group: "301", Subgroup: "2"}
+	studentView, err := client.ScheduleFetch(ctx, signed(&rpc.ScheduleFetchRequest{Filter: subgroupFilter}, as("student")))
+	if err != nil || len(studentView.Msg.Events) != 0 {
+		t.Fatalf("student could access an unassigned subgroup through the group filter: %v %v", studentView, err)
+	}
+	testerView, err := client.ScheduleFetch(ctx, signed(&rpc.ScheduleFetchRequest{Filter: subgroupFilter}, as("tester")))
+	if err != nil || len(testerView.Msg.Events) != 1 {
+		t.Fatalf("tester could not see subgroup occupancy: %v %v", testerView, err)
+	}
+
+	request.Details.Date = "2026-12-04"
+	request.Details.Audiences = []*pb.Audience{{Group: "402", Course: 4}}
+	secondGroup, err := client.EventSave(ctx, signed(request, admin()))
+	if err != nil || len(secondGroup.Msg.Events) != 1 {
+		t.Fatalf("create event for the second enrollment: %v %v", secondGroup, err)
+	}
+	second := secondGroup.Msg.Events[0]
+	secondPublished, err := client.EventPublish(ctx, signed(&rpc.EventPublishRequest{Id: second.Id, Revision: second.Revision}, admin()))
+	if err != nil || len(secondPublished.Msg.Events) != 1 {
+		t.Fatalf("publish event for the second enrollment: %v %v", secondPublished, err)
+	}
+	personal, err := client.ScheduleFetch(ctx, signed(&rpc.ScheduleFetchRequest{
+		Filter: &pb.ScheduleFilter{DateFrom: "2026-12-01", DateTo: "2026-12-04"}, Personal: true,
+	}, as("student")))
+	if err != nil || len(personal.Msg.Events) != 2 ||
+		personal.Msg.Events[0].Id != seriesPublished.Msg.Events[0].Id || personal.Msg.Events[1].Id != second.Id {
+		t.Fatalf("personal schedule should include both active groups and exclude the unassigned subgroup: %v %v", personal, err)
+	}
+
+	t.Run("travel norms through Connect", func(t *testing.T) {
+		otherSite := &pb.Site{Id: "second-building", Name: "Второй корпус", Address: "Другой адрес"}
+		_, err := client.CatalogSave(ctx, signed(&rpc.CatalogSaveRequest{Catalog: &pb.Catalog{
+			Sites: []*pb.Site{otherSite},
+			Rooms: []*pb.Room{{Id: "b10", Site: otherSite, Name: "Аудитория 10", Capacity: 30, OpensAt: 480, ClosesAt: 1140}},
+		}}, admin()))
+		if err != nil {
+			t.Fatal(err)
+		}
+		for _, tc := range []struct {
+			day       string
+			norm      *int32
+			issue     scheduleenum.IssueType
+			published bool
+		}{
+			{"2026-12-10", nil, scheduleenum.IssueType_ISSUE_TYPE_TRAVEL_NORM_MISSING, true},
+			{"2026-12-11", new(int32(0)), scheduleenum.IssueType_ISSUE_TYPE_UNSPECIFIED, true},
+			{"2026-12-12", new(int32(20)), scheduleenum.IssueType_ISSUE_TYPE_TRAVEL, false},
+		} {
+			if tc.norm != nil {
+				_, err := client.CatalogSave(ctx, signed(&rpc.CatalogSaveRequest{Catalog: &pb.Catalog{
+					TravelTimes: []*pb.TravelTime{{FromSiteId: "main", ToSiteId: otherSite.Id, Minutes: *tc.norm}},
+				}}, admin()))
+				if err != nil {
+					t.Fatal(err)
+				}
+			}
+			draft := func(room string, start int32) *pb.Event {
+				t.Helper()
+				response, err := client.EventSave(ctx, signed(&rpc.EventSaveRequest{Details: &pb.EventInput{
+					TermId: "term", SubjectId: "subject", Type: scheduleenum.EventType_EVENT_TYPE_LECTURE,
+					Audiences: []*pb.Audience{{Group: "301", Course: 3}}, InstructorId: "teacher",
+					Date: tc.day, StartMinute: &start, DurationMinutes: 60, RoomId: room,
+				}}, admin()))
+				if err != nil || len(response.Msg.Events) != 1 {
+					t.Fatalf("create draft on %s: %v %v", tc.day, response, err)
+				}
+				return response.Msg.Events[0]
+			}
+			first := draft("a214", 540)
+			publish := func(event *pb.Event) *rpc.EventPublishResponse {
+				t.Helper()
+				response, err := client.EventPublish(ctx, signed(&rpc.EventPublishRequest{Id: event.Id, Revision: event.Revision}, admin()))
+				if err != nil {
+					t.Fatal(err)
+				}
+				return response.Msg
+			}
+			if result := publish(first); len(result.Events) != 1 || len(result.Issues) != 0 {
+				t.Fatalf("publish first event on %s: %v", tc.day, result)
+			}
+			second := draft("b10", 610)
+			assertIssue := func(issues []*pb.Issue) {
+				t.Helper()
+				if tc.issue == scheduleenum.IssueType_ISSUE_TYPE_UNSPECIFIED {
+					if len(issues) != 0 {
+						t.Fatalf("unexpected issue for zero minutes: %v", issues)
+					}
+				} else if len(issues) != 1 || issues[0].Type != tc.issue || issues[0].ConflictingEvent.GetId() != first.Id {
+					t.Fatalf("wrong issue on %s: %v", tc.day, issues)
+				}
+			}
+			checked, err := client.EventCheckFetch(ctx, signed(&rpc.EventCheckFetchRequest{Id: second.Id}, admin()))
+			if err != nil {
+				t.Fatal(err)
+			}
+			assertIssue(checked.Msg.Issues)
+			result := publish(second)
+			assertIssue(result.Issues)
+			if (len(result.Events) == 1) != tc.published {
+				t.Fatalf("unexpected publication result on %s: %v", tc.day, result)
+			}
+		}
+	})
 }
 
 func signed[T any](msg *T, headers map[string]string) *connect.Request[T] {
@@ -279,24 +461,45 @@ func signed[T any](msg *T, headers map[string]string) *connect.Request[T] {
 type testDirectory struct {
 	mdmconnect.UnimplementedUserServiceHandler
 	mdmconnect.UnimplementedUserDirectoryServiceHandler
+	testingRevoked *atomic.Bool
 }
 
-func (testDirectory) UserFetchByUUID(_ context.Context, req *connect.Request[mdm.UserFetchByUUIDRequest]) (*connect.Response[mdm.UserFetchByUUIDResponse], error) {
+func (d testDirectory) UserFetchByUUID(_ context.Context, req *connect.Request[mdm.UserFetchByUUIDRequest]) (*connect.Response[mdm.UserFetchByUUIDResponse], error) {
 	roles := map[string]mdmenum.UserRole{
 		"admin": mdmenum.UserRole_USER_ROLE_ADMIN, "student": mdmenum.UserRole_USER_ROLE_STUDENT, "teacher": mdmenum.UserRole_USER_ROLE_TEACHER,
 	}
+	permissions := map[string][]string{
+		"tester":           {"schedule_testing.fetch"},
+		"scheduler":        {"schedule_drafts.post"},
+		"publisher":        {"schedule_publication.post"},
+		"reviewer":         {"schedule_changes.post"},
+		"legacy-editor":    {"schedule.post"},
+		"classroom-editor": {"computer_classes.post"},
+	}
+	role := roles[req.Msg.Uuid]
+	if len(permissions[req.Msg.Uuid]) != 0 {
+		role = mdmenum.UserRole_USER_ROLE_STAFF
+	}
+	if req.Msg.Uuid == "tester" && d.testingRevoked.Load() {
+		delete(permissions, "tester")
+	}
 	return connect.NewResponse(&mdm.UserFetchByUUIDResponse{User: &mdmentity.User{
-		Id: 1, Uuid: req.Msg.Uuid, Status: mdmenum.UserStatus_USER_STATUS_ACTIVE, Roles: []mdmenum.UserRole{roles[req.Msg.Uuid]},
-	}}), nil
-}
-
-func (testDirectory) UserFetchByID(context.Context, *connect.Request[mdm.UserFetchByIDRequest]) (*connect.Response[mdm.UserFetchByIDResponse], error) {
-	return connect.NewResponse(&mdm.UserFetchByIDResponse{Profile: &mdmentity.UserFull{
-		Student: &mdmentity.Student{Group: "301", Status: mdmenum.UserStudentStatus_USER_STUDENT_STATUS_STUDYING},
-	}}), nil
+		Id: 1, Uuid: req.Msg.Uuid, Status: mdmenum.UserStatus_USER_STATUS_ACTIVE, Roles: []mdmenum.UserRole{role},
+	}, EffectivePermissions: permissions[req.Msg.Uuid]}), nil
 }
 
 func (testDirectory) UserDirectoryFetch(_ context.Context, req *connect.Request[mdm.UserDirectoryFetchRequest]) (*connect.Response[mdm.UserDirectoryFetchResponse], error) {
+	if req.Msg.ProfileKind == "student" {
+		if !req.Msg.ActiveStudentsOnly || len(req.Msg.UserUuids) != 1 || req.Msg.UserUuids[0] != "student" || req.Msg.Limit != 1 {
+			return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("expected an active enrollment lookup scoped to the student"))
+		}
+		return connect.NewResponse(&mdm.UserDirectoryFetchResponse{ProfileKind: "student", Users: []*mdm.UserDirectoryEntry{{
+			Uuid: "student", Students: []*mdm.UserDirectoryStudent{
+				{Group: " 301 ", Status: mdmenum.UserStudentStatus_USER_STUDENT_STATUS_UNSPECIFIED},
+				{Group: "402", Status: mdmenum.UserStudentStatus_USER_STUDENT_STATUS_TRANSFERRED},
+			},
+		}}}), nil
+	}
 	if ids := req.Msg.UserUuids; len(ids) != 1 || ids[0] != "teacher" || req.Msg.ProfileKind != "employee" ||
 		req.Msg.Role != mdmenum.UserRole_USER_ROLE_TEACHER || req.Msg.UserStatus != mdmenum.UserStatus_USER_STATUS_ACTIVE {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("expected a scoped instructor lookup"))

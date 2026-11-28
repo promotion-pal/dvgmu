@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"errors"
+	"slices"
 	"strings"
 	"time"
 
@@ -19,6 +20,7 @@ type catalog struct {
 	terms    map[string]models.Term
 	subjects map[string]models.Subject
 	rooms    map[string]models.Room
+	periods  map[[3]string][]models.AcademicPeriod
 	holidays map[time.Time]string
 	travel   map[[2]string]int32
 	bookings map[time.Time][]models.Booking
@@ -35,7 +37,7 @@ func loadCatalog(ctx context.Context, store *storage.Storage, detailed bool) (ca
 func catalogFromRows(rows storage.Catalog) catalog {
 	c := catalog{
 		Catalog: rows, terms: make(map[string]models.Term), subjects: make(map[string]models.Subject),
-		rooms: make(map[string]models.Room), holidays: make(map[time.Time]string),
+		rooms: make(map[string]models.Room), periods: make(map[[3]string][]models.AcademicPeriod), holidays: make(map[time.Time]string),
 		travel: make(map[[2]string]int32), bookings: make(map[time.Time][]models.Booking),
 	}
 	for _, term := range rows.Terms {
@@ -46,6 +48,10 @@ func catalogFromRows(rows storage.Catalog) catalog {
 	}
 	for _, room := range rows.Rooms {
 		c.rooms[room.ID] = room
+	}
+	for _, period := range rows.Periods {
+		scope := [3]string{period.TermID, period.Group, period.Subgroup}
+		c.periods[scope] = append(c.periods[scope], period)
 	}
 	for _, holiday := range rows.Holidays {
 		c.holidays[holiday.Date] = holiday.Name
@@ -199,7 +205,7 @@ func (s *Service) SaveCatalog(ctx context.Context, input *pb.Catalog) error {
 		rows.Holidays = append(rows.Holidays, models.Holiday{Date: d, Name: in.Name})
 	}
 	for _, in := range input.TravelTimes {
-		if !named(in.GetFromSiteId(), in.GetToSiteId()) || in.FromSiteId == in.ToSiteId || in.Minutes <= 0 || in.Minutes > 1440 {
+		if !named(in.GetFromSiteId(), in.GetToSiteId()) || in.FromSiteId == in.ToSiteId || in.Minutes < 0 || in.Minutes > 1440 {
 			return invalid("укажите разные корпуса и время перехода")
 		}
 		rows.TravelTimes = append(rows.TravelTimes, models.TravelTime{FromSiteID: in.FromSiteId, ToSiteID: in.ToSiteId, Minutes: in.Minutes})
@@ -230,6 +236,11 @@ func (s *Service) SaveCatalog(ctx context.Context, input *pb.Catalog) error {
 			term := c.terms[period.TermID]
 			if period.DateFrom.Before(term.DateFrom) || period.DateTo.After(term.DateTo) {
 				return invalid("учебный период выходит за границы семестра")
+			}
+		}
+		for _, period := range rows.Periods {
+			if slices.ContainsFunc(c.Periods, func(other models.AcademicPeriod) bool { return periodsOverlap(period, other) }) {
+				return invalid("учебные периоды одной группы или подгруппы пересекаются")
 			}
 		}
 		for _, term := range rows.Terms {
@@ -263,6 +274,11 @@ func (s *Service) SaveCatalog(ctx context.Context, input *pb.Catalog) error {
 		}
 		return nil
 	})
+}
+
+func periodsOverlap(a, b models.AcademicPeriod) bool {
+	return a.ID != b.ID && a.TermID == b.TermID && a.Group == b.Group && a.Subgroup == b.Subgroup &&
+		!a.DateFrom.After(b.DateTo) && !b.DateFrom.After(a.DateTo)
 }
 
 func named(id, name string) bool {

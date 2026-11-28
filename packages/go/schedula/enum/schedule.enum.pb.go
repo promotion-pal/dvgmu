@@ -207,19 +207,20 @@ func (Recurrence) EnumDescriptor() ([]byte, []int) {
 type IssueType int32
 
 const (
-	IssueType_ISSUE_TYPE_UNSPECIFIED      IssueType = 0
-	IssueType_ISSUE_TYPE_TIME             IssueType = 1
-	IssueType_ISSUE_TYPE_ROOM             IssueType = 2
-	IssueType_ISSUE_TYPE_GROUP            IssueType = 3
-	IssueType_ISSUE_TYPE_INSTRUCTOR       IssueType = 4
-	IssueType_ISSUE_TYPE_CAPACITY         IssueType = 5
-	IssueType_ISSUE_TYPE_EQUIPMENT        IssueType = 6
-	IssueType_ISSUE_TYPE_AVAILABILITY     IssueType = 7
-	IssueType_ISSUE_TYPE_BOOKING          IssueType = 8
-	IssueType_ISSUE_TYPE_TRAVEL           IssueType = 9
-	IssueType_ISSUE_TYPE_CLINICAL_DETAILS IssueType = 10
-	IssueType_ISSUE_TYPE_HOLIDAY          IssueType = 11
-	IssueType_ISSUE_TYPE_AUDIENCE         IssueType = 12
+	IssueType_ISSUE_TYPE_UNSPECIFIED         IssueType = 0
+	IssueType_ISSUE_TYPE_TIME                IssueType = 1
+	IssueType_ISSUE_TYPE_ROOM                IssueType = 2
+	IssueType_ISSUE_TYPE_GROUP               IssueType = 3
+	IssueType_ISSUE_TYPE_INSTRUCTOR          IssueType = 4
+	IssueType_ISSUE_TYPE_CAPACITY            IssueType = 5
+	IssueType_ISSUE_TYPE_EQUIPMENT           IssueType = 6
+	IssueType_ISSUE_TYPE_AVAILABILITY        IssueType = 7
+	IssueType_ISSUE_TYPE_BOOKING             IssueType = 8
+	IssueType_ISSUE_TYPE_TRAVEL              IssueType = 9
+	IssueType_ISSUE_TYPE_CLINICAL_DETAILS    IssueType = 10
+	IssueType_ISSUE_TYPE_HOLIDAY             IssueType = 11
+	IssueType_ISSUE_TYPE_AUDIENCE            IssueType = 12
+	IssueType_ISSUE_TYPE_TRAVEL_NORM_MISSING IssueType = 13
 )
 
 // Enum value maps for IssueType.
@@ -238,21 +239,23 @@ var (
 		10: "ISSUE_TYPE_CLINICAL_DETAILS",
 		11: "ISSUE_TYPE_HOLIDAY",
 		12: "ISSUE_TYPE_AUDIENCE",
+		13: "ISSUE_TYPE_TRAVEL_NORM_MISSING",
 	}
 	IssueType_value = map[string]int32{
-		"ISSUE_TYPE_UNSPECIFIED":      0,
-		"ISSUE_TYPE_TIME":             1,
-		"ISSUE_TYPE_ROOM":             2,
-		"ISSUE_TYPE_GROUP":            3,
-		"ISSUE_TYPE_INSTRUCTOR":       4,
-		"ISSUE_TYPE_CAPACITY":         5,
-		"ISSUE_TYPE_EQUIPMENT":        6,
-		"ISSUE_TYPE_AVAILABILITY":     7,
-		"ISSUE_TYPE_BOOKING":          8,
-		"ISSUE_TYPE_TRAVEL":           9,
-		"ISSUE_TYPE_CLINICAL_DETAILS": 10,
-		"ISSUE_TYPE_HOLIDAY":          11,
-		"ISSUE_TYPE_AUDIENCE":         12,
+		"ISSUE_TYPE_UNSPECIFIED":         0,
+		"ISSUE_TYPE_TIME":                1,
+		"ISSUE_TYPE_ROOM":                2,
+		"ISSUE_TYPE_GROUP":               3,
+		"ISSUE_TYPE_INSTRUCTOR":          4,
+		"ISSUE_TYPE_CAPACITY":            5,
+		"ISSUE_TYPE_EQUIPMENT":           6,
+		"ISSUE_TYPE_AVAILABILITY":        7,
+		"ISSUE_TYPE_BOOKING":             8,
+		"ISSUE_TYPE_TRAVEL":              9,
+		"ISSUE_TYPE_CLINICAL_DETAILS":    10,
+		"ISSUE_TYPE_HOLIDAY":             11,
+		"ISSUE_TYPE_AUDIENCE":            12,
+		"ISSUE_TYPE_TRAVEL_NORM_MISSING": 13,
 	}
 )
 
@@ -448,12 +451,14 @@ func (ChangeStatus) EnumDescriptor() ([]byte, []int) {
 type CompletenessGapType int32
 
 const (
-	CompletenessGapType_COMPLETENESS_GAP_TYPE_UNSPECIFIED CompletenessGapType = 0
-	CompletenessGapType_COMPLETENESS_GAP_TYPE_COURSE      CompletenessGapType = 1
-	CompletenessGapType_COMPLETENESS_GAP_TYPE_GROUP       CompletenessGapType = 2
-	CompletenessGapType_COMPLETENESS_GAP_TYPE_SUBGROUP    CompletenessGapType = 3
-	CompletenessGapType_COMPLETENESS_GAP_TYPE_TIME        CompletenessGapType = 4
-	CompletenessGapType_COMPLETENESS_GAP_TYPE_ROOM        CompletenessGapType = 5
+	CompletenessGapType_COMPLETENESS_GAP_TYPE_UNSPECIFIED      CompletenessGapType = 0
+	CompletenessGapType_COMPLETENESS_GAP_TYPE_COURSE           CompletenessGapType = 1
+	CompletenessGapType_COMPLETENESS_GAP_TYPE_GROUP            CompletenessGapType = 2
+	CompletenessGapType_COMPLETENESS_GAP_TYPE_SUBGROUP         CompletenessGapType = 3
+	CompletenessGapType_COMPLETENESS_GAP_TYPE_TIME             CompletenessGapType = 4
+	CompletenessGapType_COMPLETENESS_GAP_TYPE_ROOM             CompletenessGapType = 5
+	CompletenessGapType_COMPLETENESS_GAP_TYPE_INSTRUCTOR       CompletenessGapType = 6
+	CompletenessGapType_COMPLETENESS_GAP_TYPE_CLINICAL_DETAILS CompletenessGapType = 7
 )
 
 // Enum value maps for CompletenessGapType.
@@ -465,14 +470,18 @@ var (
 		3: "COMPLETENESS_GAP_TYPE_SUBGROUP",
 		4: "COMPLETENESS_GAP_TYPE_TIME",
 		5: "COMPLETENESS_GAP_TYPE_ROOM",
+		6: "COMPLETENESS_GAP_TYPE_INSTRUCTOR",
+		7: "COMPLETENESS_GAP_TYPE_CLINICAL_DETAILS",
 	}
 	CompletenessGapType_value = map[string]int32{
-		"COMPLETENESS_GAP_TYPE_UNSPECIFIED": 0,
-		"COMPLETENESS_GAP_TYPE_COURSE":      1,
-		"COMPLETENESS_GAP_TYPE_GROUP":       2,
-		"COMPLETENESS_GAP_TYPE_SUBGROUP":    3,
-		"COMPLETENESS_GAP_TYPE_TIME":        4,
-		"COMPLETENESS_GAP_TYPE_ROOM":        5,
+		"COMPLETENESS_GAP_TYPE_UNSPECIFIED":      0,
+		"COMPLETENESS_GAP_TYPE_COURSE":           1,
+		"COMPLETENESS_GAP_TYPE_GROUP":            2,
+		"COMPLETENESS_GAP_TYPE_SUBGROUP":         3,
+		"COMPLETENESS_GAP_TYPE_TIME":             4,
+		"COMPLETENESS_GAP_TYPE_ROOM":             5,
+		"COMPLETENESS_GAP_TYPE_INSTRUCTOR":       6,
+		"COMPLETENESS_GAP_TYPE_CLINICAL_DETAILS": 7,
 	}
 )
 
@@ -533,7 +542,7 @@ const file_schedula_enum_schedule_enum_proto_rawDesc = "" +
 	"\x16RECURRENCE_UNSPECIFIED\x10\x00\x12\x15\n" +
 	"\x11RECURRENCE_WEEKLY\x10\x01\x12\x12\n" +
 	"\x0eRECURRENCE_ODD\x10\x02\x12\x13\n" +
-	"\x0fRECURRENCE_EVEN\x10\x03*\xd3\x02\n" +
+	"\x0fRECURRENCE_EVEN\x10\x03*\xf7\x02\n" +
 	"\tIssueType\x12\x1a\n" +
 	"\x16ISSUE_TYPE_UNSPECIFIED\x10\x00\x12\x13\n" +
 	"\x0fISSUE_TYPE_TIME\x10\x01\x12\x13\n" +
@@ -548,7 +557,8 @@ const file_schedula_enum_schedule_enum_proto_rawDesc = "" +
 	"\x1bISSUE_TYPE_CLINICAL_DETAILS\x10\n" +
 	"\x12\x16\n" +
 	"\x12ISSUE_TYPE_HOLIDAY\x10\v\x12\x17\n" +
-	"\x13ISSUE_TYPE_AUDIENCE\x10\f*\x8d\x01\n" +
+	"\x13ISSUE_TYPE_AUDIENCE\x10\f\x12\"\n" +
+	"\x1eISSUE_TYPE_TRAVEL_NORM_MISSING\x10\r*\x8d\x01\n" +
 	"\n" +
 	"PeriodType\x12\x1b\n" +
 	"\x17PERIOD_TYPE_UNSPECIFIED\x10\x00\x12\x17\n" +
@@ -567,14 +577,16 @@ const file_schedula_enum_schedule_enum_proto_rawDesc = "" +
 	"\x19CHANGE_STATUS_UNSPECIFIED\x10\x00\x12\x19\n" +
 	"\x15CHANGE_STATUS_PENDING\x10\x01\x12\x1a\n" +
 	"\x16CHANGE_STATUS_APPROVED\x10\x02\x12\x1a\n" +
-	"\x16CHANGE_STATUS_REJECTED\x10\x03*\xe3\x01\n" +
+	"\x16CHANGE_STATUS_REJECTED\x10\x03*\xb5\x02\n" +
 	"\x13CompletenessGapType\x12%\n" +
 	"!COMPLETENESS_GAP_TYPE_UNSPECIFIED\x10\x00\x12 \n" +
 	"\x1cCOMPLETENESS_GAP_TYPE_COURSE\x10\x01\x12\x1f\n" +
 	"\x1bCOMPLETENESS_GAP_TYPE_GROUP\x10\x02\x12\"\n" +
 	"\x1eCOMPLETENESS_GAP_TYPE_SUBGROUP\x10\x03\x12\x1e\n" +
 	"\x1aCOMPLETENESS_GAP_TYPE_TIME\x10\x04\x12\x1e\n" +
-	"\x1aCOMPLETENESS_GAP_TYPE_ROOM\x10\x05B\xc7\x01\n" +
+	"\x1aCOMPLETENESS_GAP_TYPE_ROOM\x10\x05\x12$\n" +
+	" COMPLETENESS_GAP_TYPE_INSTRUCTOR\x10\x06\x12*\n" +
+	"&COMPLETENESS_GAP_TYPE_CLINICAL_DETAILS\x10\aB\xc7\x01\n" +
 	"\x1acom.contract.schedula.enumB\x11ScheduleEnumProtoP\x01Z\x1cfesmu/contract/schedula/enum\xa2\x02\x03CSE\xaa\x02\x16Contract.Schedula.Enum\xca\x02\x16Contract\\Schedula\\Enum\xe2\x02\"Contract\\Schedula\\Enum\\GPBMetadata\xea\x02\x18Contract::Schedula::Enumb\x06proto3"
 
 var (

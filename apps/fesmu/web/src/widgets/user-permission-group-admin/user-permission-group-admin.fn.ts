@@ -4,7 +4,7 @@ import { UserService } from "@fesmu/contract/mdm/service/user.service_pb";
 import { connectTransport } from "@/shared/config/api";
 import { ConnectError, createClient } from "@connectrpc/connect";
 import { toast } from "sonner";
-import { PermissionAction, PermissionSection, perm } from "@/shared/config/permissions";
+import { PermissionAction, PermissionSection, hasSingleSectionAction, perm, sectionToggleAction } from "@/shared/config/permissions";
 import type { PermissionSection as PermissionSectionType } from "@/shared/config/permissions";
 
 const userClient = createClient(UserService, connectTransport);
@@ -15,6 +15,12 @@ const toggleSectionAction = (codes: string[], section: PermissionSectionType, ac
     const fetch = perm(section, PermissionAction.FETCH);
     const post = perm(section, PermissionAction.POST);
     const next = new Set(codes);
+    if (hasSingleSectionAction(section)) {
+        next.delete(fetch);
+        next.delete(post);
+        if (on) next.add(perm(section, sectionToggleAction(section)));
+        return [...next].sort();
+    }
     if (on) {
         next.add(fetch);
         if (action === PermissionAction.POST) next.add(post);
@@ -30,26 +36,12 @@ const toggleSectionAction = (codes: string[], section: PermissionSectionType, ac
 const toggleSections = (codes: string[], sections: PermissionSectionType[], on: boolean) => {
     const next = new Set(codes);
     for (const section of sections) {
-        if (section === PermissionSection.HALLS) {
-            next.delete(perm(section, PermissionAction.FETCH));
-            if (on) next.add(perm(section, PermissionAction.POST));
-            else next.delete(perm(section, PermissionAction.POST));
-            continue;
-        }
-        if (on) next.add(perm(section, PermissionAction.FETCH));
+        if (on) next.add(perm(section, sectionToggleAction(section)));
         else {
             next.delete(perm(section, PermissionAction.FETCH));
             next.delete(perm(section, PermissionAction.POST));
         }
     }
-    return [...next].sort();
-};
-
-const toggleHallManagement = (codes: string[], on: boolean) => {
-    const next = new Set(codes);
-    next.delete(perm(PermissionSection.HALLS, PermissionAction.FETCH));
-    if (on) next.add(perm(PermissionSection.HALLS, PermissionAction.POST));
-    else next.delete(perm(PermissionSection.HALLS, PermissionAction.POST));
     return [...next].sort();
 };
 
@@ -124,5 +116,5 @@ const useUserPermissionGroups = () => {
     return { groups: state, fetch, save, remove };
 };
 
-export { emptyDraft, toDraft, toggleHallManagement, toggleSectionAction, toggleSections, useUserPermissionGroups };
+export { emptyDraft, toDraft, toggleSectionAction, toggleSections, useUserPermissionGroups };
 export type { UserPermissionGroupDraft };

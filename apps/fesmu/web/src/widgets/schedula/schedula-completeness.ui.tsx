@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ConnectError } from "@connectrpc/connect";
 import type { Audience, CompletenessGap, Event, Term } from "@fesmu/contract/schedula/entity/schedule.entity_pb";
-import { CompletenessGapType } from "@fesmu/contract/schedula/enum/schedule.enum_pb";
+import { CompletenessGapType, EventStatus } from "@fesmu/contract/schedula/enum/schedule.enum_pb";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/shared/ui/dialog";
 import { Button } from "@/shared/ui/button";
 import { schedulaClient } from "./schedula.api";
@@ -14,13 +14,15 @@ const gapLabel = {
     [CompletenessGapType.SUBGROUP]: "Подгруппа без занятий",
     [CompletenessGapType.TIME]: "Нет времени",
     [CompletenessGapType.ROOM]: "Нет площадки",
+    [CompletenessGapType.INSTRUCTOR]: "Нет преподавателя или наставника",
+    [CompletenessGapType.CLINICAL_DETAILS]: "Не заполнен клинический день",
 };
 
 interface Props {
     terms: Term[];
     date?: string;
     onClose: () => void;
-    onEvent: (event: Event) => void;
+    onEvent?: (event: Event) => void;
     onAudience: (term: Term, audience: Audience) => void;
 }
 
@@ -57,9 +59,9 @@ export function SchedulaCompleteness({ terms, date, onClose, onEvent, onAudience
                                     ? [`${gap.audience.course}-й курс`, gap.audience.group, gap.audience.subgroup].filter(Boolean).join(" · ")
                                     : [gap.event?.subject?.name, dateLabel(gap.event?.details?.date ?? "")].filter(Boolean).join(" · ")}</p>
                             </div>
-                            {gap.event && <Button size="sm" variant="outline" onClick={() => { if (gap.event) onEvent(gap.event); }}>Открыть черновик</Button>}
+                            {gap.event?.status === EventStatus.DRAFT && onEvent && <Button size="sm" variant="outline" onClick={() => { if (gap.event) onEvent(gap.event); }}>Открыть черновик</Button>}
                             {term && gap.audience && <Button size="sm" variant="outline" onClick={() => { if (gap.audience) onAudience(term, gap.audience); }}>Открыть расписание</Button>}
-                        </li>)}</ul> : <p className="text-muted-foreground">Пропусков в группах, времени и площадках не обнаружено.</p>}
+                        </li>)}</ul> : <p className="text-muted-foreground">Пропусков в назначениях групп, времени, площадках и обязательных данных занятий не обнаружено.</p>}
             </>}
         </DialogContent>
     </Dialog>;

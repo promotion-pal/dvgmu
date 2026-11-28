@@ -31,6 +31,7 @@ const (
 	SectionInventory       = enum.PermissionSection_PERMISSION_SECTION_INVENTORY
 	SectionTickets         = enum.PermissionSection_PERMISSION_SECTION_TICKETS
 	SectionSchedule        = enum.PermissionSection_PERMISSION_SECTION_SCHEDULE
+	SectionScheduleIntake  = enum.PermissionSection_PERMISSION_SECTION_SCHEDULE_INTAKE
 	SectionHalls           = enum.PermissionSection_PERMISSION_SECTION_HALLS
 	SectionComputerClasses = enum.PermissionSection_PERMISSION_SECTION_COMPUTER_CLASSES
 	SectionVaccination     = enum.PermissionSection_PERMISSION_SECTION_VACCINATION

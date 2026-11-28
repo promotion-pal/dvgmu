@@ -68,7 +68,7 @@ func Run(ctx context.Context, cfg config.Config, log *slog.Logger) error {
 	students := grpc.Students(directory)
 	controller := grpc.New(service.New(storage.New(db), location, students), users, directory, log)
 	path, handler := serviceconnect.NewSchedulaServiceHandler(controller,
-		connect.WithInterceptors(grpc.Authenticate(cfg.InternalToken, users)),
+		connect.WithInterceptors(grpc.Authenticate(cfg.InternalToken, users, directory)),
 		connect.WithReadMaxBytes(1<<20),
 	)
 	mux := http.NewServeMux()

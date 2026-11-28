@@ -94,6 +94,10 @@ type ScheduleFetchResponse struct {
 	CanSearchSlots   bool                     `protobuf:"varint,7,opt,name=can_search_slots,json=canSearchSlots,proto3" json:"can_search_slots,omitempty"`
 	Transfers        []*entity.Event          `protobuf:"bytes,8,rep,name=transfers,proto3" json:"transfers,omitempty"`
 	CanRequestChange bool                     `protobuf:"varint,9,opt,name=can_request_change,json=canRequestChange,proto3" json:"can_request_change,omitempty"`
+	CanPublish       bool                     `protobuf:"varint,10,opt,name=can_publish,json=canPublish,proto3" json:"can_publish,omitempty"`
+	CanReviewChanges bool                     `protobuf:"varint,11,opt,name=can_review_changes,json=canReviewChanges,proto3" json:"can_review_changes,omitempty"`
+	CanViewReports   bool                     `protobuf:"varint,12,opt,name=can_view_reports,json=canViewReports,proto3" json:"can_view_reports,omitempty"`
+	CanEditCatalog   bool                     `protobuf:"varint,13,opt,name=can_edit_catalog,json=canEditCatalog,proto3" json:"can_edit_catalog,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -187,6 +191,34 @@ func (x *ScheduleFetchResponse) GetTransfers() []*entity.Event {
 func (x *ScheduleFetchResponse) GetCanRequestChange() bool {
 	if x != nil {
 		return x.CanRequestChange
+	}
+	return false
+}
+
+func (x *ScheduleFetchResponse) GetCanPublish() bool {
+	if x != nil {
+		return x.CanPublish
+	}
+	return false
+}
+
+func (x *ScheduleFetchResponse) GetCanReviewChanges() bool {
+	if x != nil {
+		return x.CanReviewChanges
+	}
+	return false
+}
+
+func (x *ScheduleFetchResponse) GetCanViewReports() bool {
+	if x != nil {
+		return x.CanViewReports
+	}
+	return false
+}
+
+func (x *ScheduleFetchResponse) GetCanEditCatalog() bool {
+	if x != nil {
+		return x.CanEditCatalog
 	}
 	return false
 }
@@ -1383,7 +1415,7 @@ const file_schedula_service_schedula_service_proto_rawDesc = "" +
 	"\x14ScheduleFetchRequest\x12@\n" +
 	"\x06filter\x18\x01 \x01(\v2(.contract.schedula.entity.ScheduleFilterR\x06filter\x12\x1a\n" +
 	"\bpersonal\x18\x02 \x01(\bR\bpersonal\x12%\n" +
-	"\x0einclude_drafts\x18\x03 \x01(\bR\rincludeDrafts\"\xa1\x03\n" +
+	"\x0einclude_drafts\x18\x03 \x01(\bR\rincludeDrafts\"\xc4\x04\n" +
 	"\x15ScheduleFetchResponse\x127\n" +
 	"\x06events\x18\x01 \x03(\v2\x1f.contract.schedula.entity.EventR\x06events\x12B\n" +
 	"\aperiods\x18\x02 \x03(\v2(.contract.schedula.entity.AcademicPeriodR\aperiods\x12\x1b\n" +
@@ -1393,7 +1425,13 @@ const file_schedula_service_schedula_service_proto_rawDesc = "" +
 	"\bcan_edit\x18\x06 \x01(\bR\acanEdit\x12(\n" +
 	"\x10can_search_slots\x18\a \x01(\bR\x0ecanSearchSlots\x12=\n" +
 	"\ttransfers\x18\b \x03(\v2\x1f.contract.schedula.entity.EventR\ttransfers\x12,\n" +
-	"\x12can_request_change\x18\t \x01(\bR\x10canRequestChange\"^\n" +
+	"\x12can_request_change\x18\t \x01(\bR\x10canRequestChange\x12\x1f\n" +
+	"\vcan_publish\x18\n" +
+	" \x01(\bR\n" +
+	"canPublish\x12,\n" +
+	"\x12can_review_changes\x18\v \x01(\bR\x10canReviewChanges\x12(\n" +
+	"\x10can_view_reports\x18\f \x01(\bR\x0ecanViewReports\x12(\n" +
+	"\x10can_edit_catalog\x18\r \x01(\bR\x0ecanEditCatalog\"^\n" +
 	"\x1aPublicScheduleFetchRequest\x12@\n" +
 	"\x06filter\x18\x01 \x01(\v2(.contract.schedula.entity.ScheduleFilterR\x06filter\"\xf2\x02\n" +
 	"\x1bPublicScheduleFetchResponse\x12=\n" +

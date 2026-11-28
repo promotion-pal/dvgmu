@@ -12,13 +12,22 @@ import { PurchasePermission } from "@fesmu/contract/fesmu/enum/v3/purchase.enum_
 
 export { PermissionAction, PermissionSection };
 
+const POST_ONLY_SECTIONS: PermissionSection[] = [
+    PermissionSection.HALLS, PermissionSection.SCHEDULE_DRAFTS, PermissionSection.SCHEDULE_PUBLICATION,
+    PermissionSection.SCHEDULE_CHANGES, PermissionSection.SCHEDULE_CATALOG,
+];
+
+const FETCH_ONLY_SECTIONS: PermissionSection[] = [
+    PermissionSection.SCHEDULE_TESTING, PermissionSection.SCHEDULE_REPORTS, PermissionSection.SCHEDULE_INTAKE,
+];
+
 /** Право action на раздел: "schedule.post". */
 export const perm = (section: PermissionSection, action: PermissionAction) =>
     `${PermissionSection[section].toLowerCase()}.${PermissionAction[action].toLowerCase()}`;
 
 /** Права, с которыми действие доступно: просмотр — fetch или post, изменение — post. */
 export const permsFor = (section: PermissionSection, action: PermissionAction = PermissionAction.FETCH) =>
-    section === PermissionSection.HALLS
+    POST_ONLY_SECTIONS.includes(section)
         ? [perm(section, PermissionAction.POST)]
         : action === PermissionAction.FETCH
         ? [perm(section, PermissionAction.FETCH), perm(section, PermissionAction.POST)]
@@ -27,6 +36,18 @@ export const permsFor = (section: PermissionSection, action: PermissionAction = 
 /** Права, с которыми действие доступно хотя бы в одном из разделов. */
 export const permsForAny = (sections: readonly PermissionSection[], action: PermissionAction = PermissionAction.FETCH) =>
     sections.flatMap((section) => permsFor(section, action));
+
+export const SCHEDULA_PERMISSIONS = permsForAny([
+    PermissionSection.SCHEDULE, PermissionSection.SCHEDULE_DRAFTS, PermissionSection.SCHEDULE_PUBLICATION,
+    PermissionSection.SCHEDULE_CHANGES, PermissionSection.SCHEDULE_TESTING, PermissionSection.SCHEDULE_REPORTS,
+    PermissionSection.SCHEDULE_CATALOG,
+]);
+
+export const sectionToggleAction = (section: PermissionSection) =>
+    POST_ONLY_SECTIONS.includes(section) ? PermissionAction.POST : PermissionAction.FETCH;
+
+export const hasSingleSectionAction = (section: PermissionSection) =>
+    POST_ONLY_SECTIONS.includes(section) || FETCH_ONLY_SECTIONS.includes(section);
 
 /** Разделы закупок v2 — по разделу на роль в процессе; просмотр любого открывает страницу. */
 export const PURCHASE_SECTIONS = [
@@ -46,7 +67,7 @@ export const ACTION_LABEL: Record<(typeof ACTIONS)[number], string> = {
 };
 
 /** Группы разделов в окне «Доступ». */
-export const SECTION_GROUPS = ["Хозяйство", "Учёба", "Библиотека", "Студентам", "Аналитика", "Демо"] as const;
+export const SECTION_GROUPS = ["Хозяйство", "Учёба", "Расписание", "Библиотека", "Студентам", "Аналитика", "Демо"] as const;
 
 /** Подписи разделов для окна «Доступ» и профиля. short — подпись внутри своей группы. */
 export const SECTIONS: {
@@ -56,20 +77,24 @@ export const SECTIONS: {
     short?: string;
     description: string;
     postLabel?: string;
-    /** A single permission grants both viewing and management for this section. */
-    manageOnly?: boolean;
 }[] = [
     { key: PermissionSection.INFRASTRUCTURE, group: "Хозяйство", label: "Инфраструктура", description: "Корпуса, этажи, помещения" },
     { key: PermissionSection.INVENTORY, group: "Хозяйство", label: "Инвентарь", description: "Учёт инвентаря" },
     { key: PermissionSection.TICKETS, group: "Хозяйство", label: "Заявки", description: "Заявки общежития и хозяйственные" },
-    { key: PermissionSection.SCHEDULE, group: "Учёба", label: "Расписание", description: "Расписание групп, сбор пожеланий" },
+    { key: PermissionSection.SCHEDULE, group: "Расписание", label: "Расписание групп", description: "Просматривать и редактировать действующие расписания групп" },
+    { key: PermissionSection.SCHEDULE_DRAFTS, group: "Расписание", label: "Черновики расписания", description: "Создавать, редактировать и проверять черновики, искать время и площадку", postLabel: "Подготавливать черновики" },
+    { key: PermissionSection.SCHEDULE_PUBLICATION, group: "Расписание", label: "Публикация расписания", description: "Проверять и публиковать сохранённые черновики", postLabel: "Публиковать" },
+    { key: PermissionSection.SCHEDULE_CHANGES, group: "Расписание", label: "Заявки на изменение расписания", description: "Рассматривать и согласовывать изменения опубликованных занятий", postLabel: "Согласовывать изменения" },
+    { key: PermissionSection.SCHEDULE_TESTING, group: "Расписание", label: "Расписание для отдела тестирования", description: "Просматривать общую сетку и подбирать свободные слоты для аттестации" },
+    { key: PermissionSection.SCHEDULE_REPORTS, group: "Расписание", label: "Отчёты по расписанию", description: "Просматривать полноту расписания и нагрузку преподавателей" },
+    { key: PermissionSection.SCHEDULE_INTAKE, group: "Расписание", label: "Поступившие сведения о занятиях", description: "Просматривать сведения о занятиях и экзаменах, переданные преподавателями" },
+    { key: PermissionSection.SCHEDULE_CATALOG, group: "Расписание", label: "Справочники расписания", description: "Настраивать семестры, периоды и ресурсы расписания", postLabel: "Настраивать справочники" },
     {
         key: PermissionSection.HALLS,
         group: "Учёба",
         label: "Расписание лекционных залов",
         description: "Просмотр — общий календарь и заявки; изменение — создавать и снимать бронирования, одобрять и отклонять заявки",
         postLabel: "Расписание, заявки и модерация",
-        manageOnly: true,
     },
     { key: PermissionSection.COMPUTER_CLASSES, group: "Учёба", label: "Компьютерные классы", description: "Расписание компьютерных классов" },
     { key: PermissionSection.TESTS, group: "Учёба", label: "Тесты", description: "Просмотр — тесты, сессии и результаты, выгрузка в RTF; изменение — создавать, импортировать, выдавать студентам, удалять" },

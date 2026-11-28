@@ -21,19 +21,14 @@ func (c catalog) check(event models.Event, events []models.Event, allowTransfer 
 	if event.RoomID == nil {
 		add(scheduleenum.IssueType_ISSUE_TYPE_ROOM, "Не назначена площадка", nil)
 	}
-	if event.InstructorID == "" && event.Type != scheduleenum.EventType_EVENT_TYPE_COMPUTER_CLASS_TEST {
+	if missingInstructor(event) {
 		add(scheduleenum.IssueType_ISSUE_TYPE_AUDIENCE, "Не назначен преподаватель или наставник", nil)
 	}
 	if event.ExpectedAttendance == 0 {
 		add(scheduleenum.IssueType_ISSUE_TYPE_AUDIENCE, "Не указано число участников", nil)
 	}
-	if event.Type == scheduleenum.EventType_EVENT_TYPE_CLINICAL_CYCLE {
-		if event.InstructorID == "" || event.Department == "" || event.MeetingPoint == "" ||
-			!event.Room.Site.Clinical || event.Room.Site.Address == "" || slices.ContainsFunc(event.Audiences, func(a models.Audience) bool {
-			return a.Course < 4 || a.Subgroup == ""
-		}) {
-			add(scheduleenum.IssueType_ISSUE_TYPE_CLINICAL_DETAILS, "Для клинического цикла укажите подгруппу старшего курса, кафедру, наставника, клиническую базу и точку сбора", nil)
-		}
+	if missingClinicalDetails(event) {
+		add(scheduleenum.IssueType_ISSUE_TYPE_CLINICAL_DETAILS, "Для клинического цикла укажите подгруппу, кафедру, клиническую базу с адресом и точку сбора", nil)
 	}
 	if event.RoomID != nil {
 		if event.ExpectedAttendance > event.Room.Capacity {
@@ -53,6 +48,15 @@ func (c catalog) check(event models.Event, events []models.Event, allowTransfer 
 			add(scheduleenum.IssueType_ISSUE_TYPE_HOLIDAY, "Требуется перенос. "+holiday, nil)
 		}
 		return issues
+	}
+	for _, audience := range event.Audiences {
+		if problem := c.periodProblem(event, audience); problem != "" {
+			label := audience.Group
+			if audience.Subgroup != "" {
+				label += " / " + audience.Subgroup
+			}
+			add(scheduleenum.IssueType_ISSUE_TYPE_AVAILABILITY, label+": "+problem, nil)
+		}
 	}
 	start, end := *event.StartMinute, event.EndMinute()
 	if event.RoomID != nil {
@@ -87,7 +91,8 @@ func (c catalog) check(event models.Event, events []models.Event, allowTransfer 
 			}
 			continue
 		}
-		if !(sameAudience || sameInstructor) || event.Room.SiteID == "" || other.Room.SiteID == "" {
+		if !(sameAudience || sameInstructor) || event.Room.SiteID == "" || other.Room.SiteID == "" ||
+			event.Room.SiteID == other.Room.SiteID {
 			continue
 		}
 		first, second := event, other
@@ -95,12 +100,34 @@ func (c catalog) check(event models.Event, events []models.Event, allowTransfer 
 			first, second = other, event
 		}
 		gap := *second.StartMinute - first.EndMinute()
-		minutes := c.travel[[2]string{first.Room.SiteID, second.Room.SiteID}]
-		if gap < minutes && needsTravel(first, second, events) {
+		minutes, known := c.travel[[2]string{first.Room.SiteID, second.Room.SiteID}]
+		if (known && gap >= minutes) || !needsTravel(first, second, events) {
+			continue
+		}
+		if known {
 			add(scheduleenum.IssueType_ISSUE_TYPE_TRAVEL, fmt.Sprintf("На переход %d мин, требуется %d мин", gap, minutes), other.Reference())
+		} else {
+			add(scheduleenum.IssueType_ISSUE_TYPE_TRAVEL_NORM_MISSING, fmt.Sprintf("Переход не проверен: между площадками не указан норматив, доступно %d мин", gap), other.Reference())
 		}
 	}
 	return issues
+}
+
+func hasBlockingIssue(issues []*pb.Issue) bool {
+	return slices.ContainsFunc(issues, func(issue *pb.Issue) bool {
+		return issue.Type != scheduleenum.IssueType_ISSUE_TYPE_TRAVEL_NORM_MISSING
+	})
+}
+
+func missingInstructor(event models.Event) bool {
+	return event.InstructorID == "" && event.Type != scheduleenum.EventType_EVENT_TYPE_COMPUTER_CLASS_TEST
+}
+
+func missingClinicalDetails(event models.Event) bool {
+	return event.Type == scheduleenum.EventType_EVENT_TYPE_CLINICAL_CYCLE &&
+		(event.Department == "" || event.MeetingPoint == "" || event.RoomID == nil || !event.Room.Site.Clinical ||
+			event.Room.Site.Address == "" || len(event.Audiences) == 0 ||
+			slices.ContainsFunc(event.Audiences, func(a models.Audience) bool { return a.Subgroup == "" }))
 }
 
 func needsTravel(first, second models.Event, events []models.Event) bool {

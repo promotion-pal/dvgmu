@@ -11,6 +11,7 @@ import (
 	"connectrpc.com/connect"
 
 	"dvgmu/schedula/internal/service"
+	portal "fesmu/contract/fesmu/enum/v1"
 	mdmenum "fesmu/contract/mdm/enum"
 	mdm "fesmu/contract/mdm/service"
 	mdmconnect "fesmu/contract/mdm/service/serviceconnect"
@@ -19,7 +20,7 @@ import (
 
 type actorKey struct{}
 
-func Authenticate(token string, directory mdmconnect.UserServiceClient) connect.UnaryInterceptorFunc {
+func Authenticate(token string, users mdmconnect.UserServiceClient, directory mdmconnect.UserDirectoryServiceClient) connect.UnaryInterceptorFunc {
 	expected := sha256.Sum256([]byte("Bearer " + token))
 	return func(next connect.UnaryFunc) connect.UnaryFunc {
 		return func(ctx context.Context, req connect.AnyRequest) (connect.AnyResponse, error) {
@@ -34,7 +35,7 @@ func Authenticate(token string, directory mdmconnect.UserServiceClient) connect.
 			if id == "" {
 				return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("требуется вход в личный кабинет"))
 			}
-			actor, err := actorFromMDM(ctx, directory, id, req.Spec().Procedure == schedulaconnect.SchedulaServiceScheduleFetchProcedure)
+			actor, err := actorFromMDM(ctx, users, directory, id, req.Spec().Procedure == schedulaconnect.SchedulaServiceScheduleFetchProcedure)
 			if err != nil {
 				return nil, err
 			}
@@ -43,8 +44,8 @@ func Authenticate(token string, directory mdmconnect.UserServiceClient) connect.
 	}
 }
 
-func actorFromMDM(ctx context.Context, directory mdmconnect.UserServiceClient, id string, needStudentGroup bool) (service.Actor, error) {
-	response, err := directory.UserFetchByUUID(ctx, connect.NewRequest(&mdm.UserFetchByUUIDRequest{Uuid: id}))
+func actorFromMDM(ctx context.Context, users mdmconnect.UserServiceClient, directory mdmconnect.UserDirectoryServiceClient, id string, needStudentGroups bool) (service.Actor, error) {
+	response, err := users.UserFetchByUUID(ctx, connect.NewRequest(&mdm.UserFetchByUUIDRequest{Uuid: id}))
 	if connect.CodeOf(err) == connect.CodeNotFound {
 		return service.Actor{}, connect.NewError(connect.CodePermissionDenied, errors.New("учётная запись недоступна"))
 	}
@@ -60,23 +61,29 @@ func actorFromMDM(ctx context.Context, directory mdmconnect.UserServiceClient, i
 	admin := slices.Contains(roles, mdmenum.UserRole_USER_ROLE_ADMIN)
 	student := slices.Contains(roles, mdmenum.UserRole_USER_ROLE_STUDENT)
 	teacher := slices.Contains(roles, mdmenum.UserRole_USER_ROLE_TEACHER)
-	staff := slices.Contains(roles, mdmenum.UserRole_USER_ROLE_STAFF)
-	canEdit := admin || (staff || teacher) && slices.Contains(perms, "schedule.post")
-	canFindSlots := canEdit || (staff || teacher) && (slices.Contains(perms, "computer_classes.fetch") || slices.Contains(perms, "computer_classes.post"))
-	if !student && !teacher && !staff && !canEdit && !canFindSlots {
+	can := func(section portal.PermissionSection, write bool) bool {
+		name := strings.ToLower(strings.TrimPrefix(section.String(), "PERMISSION_SECTION_"))
+		return admin || slices.Contains(perms, name+".post") || !write && slices.Contains(perms, name+".fetch")
+	}
+	actor := service.Actor{
+		ID: id, Student: student, Teacher: teacher,
+		CanEdit:          can(portal.PermissionSection_PERMISSION_SECTION_SCHEDULE_DRAFTS, true),
+		CanPublish:       can(portal.PermissionSection_PERMISSION_SECTION_SCHEDULE_PUBLICATION, true),
+		CanReviewChanges: can(portal.PermissionSection_PERMISSION_SECTION_SCHEDULE_CHANGES, true),
+		CanEditCatalog:   can(portal.PermissionSection_PERMISSION_SECTION_SCHEDULE_CATALOG, true),
+		CanViewReports:   can(portal.PermissionSection_PERMISSION_SECTION_SCHEDULE_REPORTS, false),
+	}
+	actor.CanFindSlots = actor.CanEdit || can(portal.PermissionSection_PERMISSION_SECTION_SCHEDULE_TESTING, false)
+	if !student && !teacher && !actor.CanSeeDrafts() && !actor.CanReviewChanges && !actor.CanEditCatalog &&
+		!actor.CanFindSlots && !can(portal.PermissionSection_PERMISSION_SECTION_SCHEDULE, false) {
 		return service.Actor{}, connect.NewError(connect.CodePermissionDenied, errors.New("недостаточно прав"))
 	}
-	actor := service.Actor{ID: id, Student: student, Teacher: teacher, CanEdit: canEdit, CanFindSlots: canFindSlots}
-	if student && needStudentGroup {
-		profile, err := directory.UserFetchByID(ctx, connect.NewRequest(&mdm.UserFetchByIDRequest{Id: user.GetId()}))
+	if student && needStudentGroups {
+		groups, err := studentGroups(ctx, directory, id)
 		if err != nil {
-			return service.Actor{}, directoryUnavailable()
+			return service.Actor{}, err
 		}
-		student := profile.Msg.GetProfile().GetStudent()
-		switch student.GetStatus() {
-		case mdmenum.UserStudentStatus_USER_STUDENT_STATUS_STUDYING, mdmenum.UserStudentStatus_USER_STUDENT_STATUS_RESTORED:
-			actor.Group = strings.TrimSpace(student.GetGroup())
-		}
+		actor.Groups = groups
 	}
 	return actor, nil
 }

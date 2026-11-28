@@ -79,12 +79,20 @@ func expand(event models.Event, series *pb.Series, term models.Term) ([]models.E
 	if err != nil {
 		return nil, err
 	}
-	if to.After(term.DateTo) {
+	if from.Before(term.DateFrom) || to.After(term.DateTo) {
 		return nil, invalid("серия выходит за границы семестра")
 	}
-	for _, slot := range series.Slots {
+	for i, slot := range series.Slots {
 		if slot.GetWeekday() < 1 || slot.GetWeekday() > 7 || !validTime(slot.GetStartMinute(), slot.GetDurationMinutes()) {
 			return nil, invalid("некорректное время в серии")
+		}
+		for _, previous := range series.Slots[:i] {
+			if previous.Weekday == slot.Weekday && intersects(
+				previous.StartMinute, previous.StartMinute+previous.DurationMinutes,
+				slot.StartMinute, slot.StartMinute+slot.DurationMinutes,
+			) {
+				return nil, invalid("в один день недели занятия серии пересекаются")
+			}
 		}
 	}
 
@@ -111,6 +119,48 @@ func expand(event models.Event, series *pb.Series, term models.Term) ([]models.E
 		return nil, invalid("серия должна содержать от 1 до 370 занятий")
 	}
 	return events, nil
+}
+
+func (c catalog) periodProblem(event models.Event, audience models.Audience) string {
+	period, overlap := c.periodOn(event.TermID, audience.Group, audience.Subgroup, *event.Date)
+	if period == 0 && audience.Subgroup != "" {
+		period, overlap = c.periodOn(event.TermID, audience.Group, "", *event.Date)
+	}
+	if overlap {
+		return "проверка учебного периода невозможна, в графике пересекаются даты"
+	}
+	switch period {
+	case scheduleenum.PeriodType_PERIOD_TYPE_PRACTICE:
+		switch event.Type {
+		case scheduleenum.EventType_EVENT_TYPE_PRACTICE, scheduleenum.EventType_EVENT_TYPE_CLINICAL_CYCLE:
+			return ""
+		}
+		return "в этот день по учебному графику проходит практика"
+	case scheduleenum.PeriodType_PERIOD_TYPE_EXAMS:
+		switch event.Type {
+		case scheduleenum.EventType_EVENT_TYPE_EXAM, scheduleenum.EventType_EVENT_TYPE_CONSULTATION, scheduleenum.EventType_EVENT_TYPE_RETAKE,
+			scheduleenum.EventType_EVENT_TYPE_GIA, scheduleenum.EventType_EVENT_TYPE_COMPUTER_CLASS_TEST:
+			return ""
+		}
+		return "в этот день по учебному графику проходит сессия"
+	case scheduleenum.PeriodType_PERIOD_TYPE_HOLIDAYS:
+		return "в этот день по учебному графику каникулы"
+	}
+	return ""
+}
+
+func (c catalog) periodOn(term, group, subgroup string, day time.Time) (scheduleenum.PeriodType, bool) {
+	var found scheduleenum.PeriodType
+	for _, period := range c.periods[[3]string{term, group, subgroup}] {
+		if day.Before(period.DateFrom) || day.After(period.DateTo) {
+			continue
+		}
+		if found != 0 {
+			return found, true
+		}
+		found = period.Type
+	}
+	return found, false
 }
 
 func invalid(message string) error {

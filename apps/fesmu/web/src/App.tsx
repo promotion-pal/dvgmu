@@ -132,6 +132,8 @@ function App() {
           <Route element={<AllowSection section={PermissionSection.SCHEDULE} action={PermissionAction.POST} />}>
             <Route path={ROUTE.STUDY.SCHEDULE_NEW} element={<ScheduleEditorPage />} />
             <Route path={ROUTE.STUDY.SCHEDULE_EDIT} element={<ScheduleEditorPage />} />
+          </Route>
+          <Route element={<AllowSection section={PermissionSection.SCHEDULE_INTAKE} />}>
             <Route path={ROUTE.STUDY.SCHEDULE_INBOX} element={<ScheduleInboxPage />} />
           </Route>
           <Route element={<Allow roles={ACCESS.TEACHER} />}>

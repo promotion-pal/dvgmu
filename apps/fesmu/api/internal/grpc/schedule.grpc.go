@@ -7,6 +7,7 @@ import (
 	"connectrpc.com/connect"
 
 	pb "fesmu/contract/fesmu/service/v1"
+	"dvgmu/api/internal/auth"
 	"dvgmu/api/internal/domain/models"
 	"dvgmu/api/internal/service"
 )
@@ -54,6 +55,9 @@ func (h *ScheduleHandler) ScheduleCreate(
 	ctx context.Context,
 	req *connect.Request[pb.ScheduleCreateRequest],
 ) (*connect.Response[pb.ScheduleCreateResponse], error) {
+	if err := auth.RequireCan(ctx, auth.SectionSchedule, auth.ActionPost); err != nil {
+		return nil, err
+	}
 	id, err := h.service.ScheduleCreate(ctx, req.Msg.GetItem())
 	if err != nil {
 		return nil, scheduleConnectError(err)
@@ -70,6 +74,9 @@ func (h *ScheduleHandler) ScheduleUpdate(
 	ctx context.Context,
 	req *connect.Request[pb.ScheduleUpdateRequest],
 ) (*connect.Response[pb.ScheduleUpdateResponse], error) {
+	if err := auth.RequireCan(ctx, auth.SectionSchedule, auth.ActionPost); err != nil {
+		return nil, err
+	}
 	if err := h.service.ScheduleUpdate(ctx, req.Msg.GetItem()); err != nil {
 		return nil, scheduleConnectError(err)
 	}
@@ -84,6 +91,9 @@ func (h *ScheduleHandler) ScheduleDelete(
 	ctx context.Context,
 	req *connect.Request[pb.ScheduleDeleteRequest],
 ) (*connect.Response[pb.ScheduleDeleteResponse], error) {
+	if err := auth.RequireCan(ctx, auth.SectionSchedule, auth.ActionPost); err != nil {
+		return nil, err
+	}
 	if req.Msg.GetId() == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("id is required"))
 	}

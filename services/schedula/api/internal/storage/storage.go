@@ -2,6 +2,7 @@ package storage
 
 import (
 	"context"
+	"slices"
 	"time"
 
 	"gorm.io/gorm"
@@ -154,7 +155,12 @@ func (s *Storage) Availability(ctx context.Context, dates []time.Time) (Catalog,
 	if err := db.Find(&c.TravelTimes).Error; err != nil {
 		return c, err
 	}
-	err := db.Where("NOT cancelled AND date IN ?", dates).Order("date, start_minute, id").Find(&c.Bookings).Error
+	periods, err := s.Periods(ctx, slices.MinFunc(dates, time.Time.Compare), slices.MaxFunc(dates, time.Time.Compare))
+	if err != nil {
+		return c, err
+	}
+	c.Periods = periods
+	err = db.Where("NOT cancelled AND date IN ?", dates).Order("date, start_minute, id").Find(&c.Bookings).Error
 	return c, err
 }
 

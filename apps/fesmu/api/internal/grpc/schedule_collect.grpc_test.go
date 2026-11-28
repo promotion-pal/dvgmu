@@ -60,6 +60,7 @@ func TestScheduleCollectSubmissionAndInbox(t *testing.T) {
 	teacher := auth.WithUser(ctx, &auth.User{UUID: teacherID, Roles: []string{auth.RoleTeacher}})
 	student := auth.WithUser(ctx, &auth.User{UUID: uuid.NewString(), Roles: []string{auth.RoleStudent}})
 	editor := auth.WithUser(ctx, &auth.User{Permissions: []string{auth.Perm(auth.SectionSchedule, auth.ActionPost)}})
+	reviewer := auth.WithUser(ctx, &auth.User{Permissions: []string{auth.Perm(auth.SectionScheduleIntake, auth.ActionFetch)}})
 	submission := &pb.ScheduleCollectCreateRequest{Item: &entity.ScheduleCollectEntry{
 		Group: "401", Day: 1, Les: 2, Aud: "312", Name: "Преподаватель",
 		Subject: "Анатомия", SubjType: "пр.", Date: "2026-11-30", AuthorUuid: uuid.NewString(),
@@ -75,17 +76,20 @@ func TestScheduleCollectSubmissionAndInbox(t *testing.T) {
 	if _, err := handler.ScheduleCollectFetch(teacher, connect.NewRequest(inbox)); connect.CodeOf(err) != connect.CodePermissionDenied {
 		t.Fatalf("teacher inbox error = %v", err)
 	}
+	if _, err := handler.ScheduleCollectFetch(editor, connect.NewRequest(inbox)); connect.CodeOf(err) != connect.CodePermissionDenied {
+		t.Fatalf("group timetable editor inbox error = %v", err)
+	}
 	for i := 0; i < 51; i++ {
 		result, err := handler.ScheduleCollectCreate(teacher, connect.NewRequest(submission))
 		if err != nil || !result.Msg.GetSuccess() || result.Msg.GetItem().GetAuthorUuid() != teacherID {
 			t.Fatalf("submission %d = %v, %v", i, result, err)
 		}
 	}
-	result, err := handler.ScheduleCollectFetch(editor, connect.NewRequest(inbox))
+	result, err := handler.ScheduleCollectFetch(reviewer, connect.NewRequest(inbox))
 	if err != nil || len(result.Msg.GetItems()) != 50 || !result.Msg.GetHasMore() {
 		t.Fatalf("first inbox page = %v, %v", result, err)
 	}
-	next, err := handler.ScheduleCollectFetch(editor, connect.NewRequest(&pb.ScheduleCollectFetchRequest{Offset: 50}))
+	next, err := handler.ScheduleCollectFetch(reviewer, connect.NewRequest(&pb.ScheduleCollectFetchRequest{Offset: 50}))
 	if err != nil || len(next.Msg.GetItems()) != 1 || next.Msg.GetHasMore() {
 		t.Fatalf("second inbox page = %v, %v", next, err)
 	}

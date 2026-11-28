@@ -36,6 +36,10 @@ message ScheduleFetchResponse {
   bool can_search_slots = 7;
   repeated contract.schedula.entity.Event transfers = 8;
   bool can_request_change = 9;
+  bool can_publish = 10;
+  bool can_review_changes = 11;
+  bool can_view_reports = 12;
+  bool can_edit_catalog = 13;
 }
 
 message PublicScheduleFetchRequest {

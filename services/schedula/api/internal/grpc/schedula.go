@@ -70,7 +70,7 @@ func (h *Handler) PublicScheduleFetch(ctx context.Context, req *connect.Request[
 }
 
 func (h *Handler) CatalogFetch(ctx context.Context, _ *connect.Request[rpc.CatalogFetchRequest]) (*connect.Response[rpc.CatalogFetchResponse], error) {
-	catalog, err := h.service.Catalog(ctx, actorFromContext(ctx).CanEdit)
+	catalog, err := h.service.Catalog(ctx, actorFromContext(ctx).CanEditCatalog)
 	if err != nil {
 		return nil, h.rpcError(ctx, err)
 	}
@@ -82,7 +82,7 @@ func (h *Handler) CatalogFetch(ctx context.Context, _ *connect.Request[rpc.Catal
 }
 
 func (h *Handler) CatalogSave(ctx context.Context, req *connect.Request[rpc.CatalogSaveRequest]) (*connect.Response[rpc.CatalogSaveResponse], error) {
-	if err := require(actorFromContext(ctx).CanEdit); err != nil {
+	if err := require(actorFromContext(ctx).CanEditCatalog); err != nil {
 		return nil, err
 	}
 	if err := h.service.SaveCatalog(ctx, req.Msg.Catalog); err != nil {
@@ -107,7 +107,7 @@ func (h *Handler) EventSave(ctx context.Context, req *connect.Request[rpc.EventS
 }
 
 func (h *Handler) CompletenessFetch(ctx context.Context, req *connect.Request[rpc.CompletenessFetchRequest]) (*connect.Response[rpc.CompletenessFetchResponse], error) {
-	if err := require(actorFromContext(ctx).CanEdit); err != nil {
+	if err := require(actorFromContext(ctx).CanViewReports); err != nil {
 		return nil, err
 	}
 	gaps, err := h.service.Completeness(ctx, req.Msg.TermId)
@@ -118,7 +118,8 @@ func (h *Handler) CompletenessFetch(ctx context.Context, req *connect.Request[rp
 }
 
 func (h *Handler) EventCheckFetch(ctx context.Context, req *connect.Request[rpc.EventCheckFetchRequest]) (*connect.Response[rpc.EventCheckFetchResponse], error) {
-	if err := require(actorFromContext(ctx).CanEdit); err != nil {
+	actor := actorFromContext(ctx)
+	if err := require(actor.CanEdit || actor.CanPublish); err != nil {
 		return nil, err
 	}
 	issues, err := h.service.Check(ctx, req.Msg.Id)
@@ -129,7 +130,7 @@ func (h *Handler) EventCheckFetch(ctx context.Context, req *connect.Request[rpc.
 }
 
 func (h *Handler) EventPublish(ctx context.Context, req *connect.Request[rpc.EventPublishRequest]) (*connect.Response[rpc.EventPublishResponse], error) {
-	if err := require(actorFromContext(ctx).CanEdit); err != nil {
+	if err := require(actorFromContext(ctx).CanPublish); err != nil {
 		return nil, err
 	}
 	result, err := h.service.Publish(ctx, req.Msg)
@@ -144,6 +145,14 @@ func (h *Handler) SlotsFetch(ctx context.Context, req *connect.Request[rpc.Slots
 	if err := require(actor.CanFindSlots); err != nil {
 		return nil, err
 	}
+	if !actor.CanEdit {
+		switch req.Msg.GetDetails().GetType() {
+		case scheduleenum.EventType_EVENT_TYPE_EXAM, scheduleenum.EventType_EVENT_TYPE_CONSULTATION,
+			scheduleenum.EventType_EVENT_TYPE_RETAKE, scheduleenum.EventType_EVENT_TYPE_GIA:
+		default:
+			return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("выберите тип события учебной аттестации"))
+		}
+	}
 	result, err := h.service.Slots(ctx, req.Msg, actor.CanEdit)
 	if err != nil {
 		return nil, h.rpcError(ctx, err)
@@ -153,7 +162,7 @@ func (h *Handler) SlotsFetch(ctx context.Context, req *connect.Request[rpc.Slots
 
 func (h *Handler) ChangeCreate(ctx context.Context, req *connect.Request[rpc.ChangeCreateRequest]) (*connect.Response[rpc.ChangeCreateResponse], error) {
 	actor := actorFromContext(ctx)
-	if err := require(actor.CanEdit || actor.Teacher); err != nil {
+	if err := require(actor.CanReviewChanges || actor.Teacher); err != nil {
 		return nil, err
 	}
 	if req.Msg.Type == scheduleenum.ChangeType_CHANGE_TYPE_INSTRUCTOR {
@@ -170,7 +179,7 @@ func (h *Handler) ChangeCreate(ctx context.Context, req *connect.Request[rpc.Cha
 
 func (h *Handler) ChangeDecide(ctx context.Context, req *connect.Request[rpc.ChangeDecideRequest]) (*connect.Response[rpc.ChangeDecideResponse], error) {
 	actor := actorFromContext(ctx)
-	if err := require(actor.CanEdit); err != nil {
+	if err := require(actor.CanReviewChanges); err != nil {
 		return nil, err
 	}
 	result, err := h.service.DecideChange(ctx, req.Msg, actor)
@@ -182,7 +191,7 @@ func (h *Handler) ChangeDecide(ctx context.Context, req *connect.Request[rpc.Cha
 
 func (h *Handler) ChangeHistoryFetch(ctx context.Context, req *connect.Request[rpc.ChangeHistoryFetchRequest]) (*connect.Response[rpc.ChangeHistoryFetchResponse], error) {
 	actor := actorFromContext(ctx)
-	if err := require(actor.CanEdit || actor.Teacher); err != nil {
+	if err := require(actor.CanReviewChanges || actor.Teacher); err != nil {
 		return nil, err
 	}
 	changes, err := h.service.History(ctx, req.Msg.EventId, actor)

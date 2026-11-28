@@ -13,6 +13,7 @@ import (
 	entity "fesmu/contract/fesmu/entity/v1"
 	enum "fesmu/contract/fesmu/enum/v1"
 	pb "fesmu/contract/fesmu/service/v1"
+	"dvgmu/api/internal/auth"
 	"dvgmu/api/internal/domain/models"
 	"dvgmu/api/internal/service"
 )
@@ -90,9 +91,10 @@ func newTestScheduleHandler() *ScheduleHandler {
 
 func TestScheduleCreateFetchUpdateDelete(t *testing.T) {
 	ctx := context.Background()
+	editor := auth.WithUser(ctx, &auth.User{Permissions: []string{auth.Perm(auth.SectionSchedule, auth.ActionPost)}})
 	h := newTestScheduleHandler()
 
-	created, err := h.ScheduleCreate(ctx, connect.NewRequest(&pb.ScheduleCreateRequest{Item: validTimetable()}))
+	created, err := h.ScheduleCreate(editor, connect.NewRequest(&pb.ScheduleCreateRequest{Item: validTimetable()}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -112,11 +114,11 @@ func TestScheduleCreateFetchUpdateDelete(t *testing.T) {
 
 	edited := list.Msg.GetList()[0]
 	edited.Title = "Новое название"
-	if _, err := h.ScheduleUpdate(ctx, connect.NewRequest(&pb.ScheduleUpdateRequest{Item: edited})); err != nil {
+	if _, err := h.ScheduleUpdate(editor, connect.NewRequest(&pb.ScheduleUpdateRequest{Item: edited})); err != nil {
 		t.Fatal(err)
 	}
 	edited.Title = "Устаревшее изменение"
-	if _, err := h.ScheduleUpdate(ctx, connect.NewRequest(&pb.ScheduleUpdateRequest{Item: edited})); connect.CodeOf(err) != connect.CodeFailedPrecondition {
+	if _, err := h.ScheduleUpdate(editor, connect.NewRequest(&pb.ScheduleUpdateRequest{Item: edited})); connect.CodeOf(err) != connect.CodeFailedPrecondition {
 		t.Fatalf("expected FailedPrecondition for stale edit, got %v", err)
 	}
 	got, _ := h.ScheduleByID(ctx, connect.NewRequest(&pb.ScheduleByIDRequest{Id: id}))
@@ -124,7 +126,7 @@ func TestScheduleCreateFetchUpdateDelete(t *testing.T) {
 		t.Fatalf("update not applied: %v", got.Msg.GetItem().GetTitle())
 	}
 
-	if _, err := h.ScheduleDelete(ctx, connect.NewRequest(&pb.ScheduleDeleteRequest{Id: id})); err != nil {
+	if _, err := h.ScheduleDelete(editor, connect.NewRequest(&pb.ScheduleDeleteRequest{Id: id})); err != nil {
 		t.Fatal(err)
 	}
 	_, err = h.ScheduleByID(ctx, connect.NewRequest(&pb.ScheduleByIDRequest{Id: id}))
@@ -134,7 +136,7 @@ func TestScheduleCreateFetchUpdateDelete(t *testing.T) {
 }
 
 func TestScheduleHandlerMapsErrorsToStatusCodes(t *testing.T) {
-	ctx := context.Background()
+	ctx := auth.WithUser(t.Context(), &auth.User{Roles: []string{auth.RoleAdmin}})
 	h := newTestScheduleHandler()
 
 	broken := validTimetable()
@@ -161,5 +163,23 @@ func TestScheduleHandlerMapsErrorsToStatusCodes(t *testing.T) {
 	_, err = h.ScheduleUpdate(ctx, connect.NewRequest(&pb.ScheduleUpdateRequest{Item: missing}))
 	if connect.CodeOf(err) != connect.CodeInvalidArgument {
 		t.Fatalf("update without a known version must be InvalidArgument, got %v", err)
+	}
+}
+
+func TestScheduleWritesRequireEditPermission(t *testing.T) {
+	h := newTestScheduleHandler()
+	student := auth.WithUser(t.Context(), &auth.User{Roles: []string{auth.RoleStudent}})
+	for _, tc := range []struct {
+		ctx  context.Context
+		want connect.Code
+	}{{t.Context(), connect.CodeUnauthenticated}, {student, connect.CodePermissionDenied}} {
+		_, createErr := h.ScheduleCreate(tc.ctx, connect.NewRequest(&pb.ScheduleCreateRequest{}))
+		_, updateErr := h.ScheduleUpdate(tc.ctx, connect.NewRequest(&pb.ScheduleUpdateRequest{}))
+		_, deleteErr := h.ScheduleDelete(tc.ctx, connect.NewRequest(&pb.ScheduleDeleteRequest{}))
+		for _, err := range []error{createErr, updateErr, deleteErr} {
+			if connect.CodeOf(err) != tc.want {
+				t.Errorf("write error = %v, want %v", err, tc.want)
+			}
+		}
 	}
 }
