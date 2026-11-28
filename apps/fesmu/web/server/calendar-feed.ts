@@ -5,6 +5,21 @@ type FeedEvent = { id: string; name: string; location?: string; start: string; e
 const stamp = (date: Date) => date.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
 const text = (value: string) => value.replace(/\\/g, "\\\\").replace(/\r\n|\r|\n/g, "\\n").replace(/[,;]/g, "\\$&");
 
+// RFC 5545 counts octets, including the continuation space.
+function fold(line: string) {
+    let result = "", length = 0;
+    for (const character of line) {
+        const size = Buffer.byteLength(character);
+        if (length + size > 75) {
+            result += "\r\n ";
+            length = 1;
+        }
+        result += character;
+        length += size;
+    }
+    return result;
+}
+
 export function renderFeed(name: string, events: FeedEvent[], modified: Date) {
     const lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//FESMU//Schedule//RU", "CALSCALE:GREGORIAN", "X-WR-CALNAME:" + text(name)];
     for (const event of events) {
@@ -16,5 +31,5 @@ export function renderFeed(name: string, events: FeedEvent[], modified: Date) {
         if (event.cancelled) lines.push("STATUS:CANCELLED");
         lines.push("END:VEVENT");
     }
-    return [...lines, "END:VCALENDAR"].join("\r\n") + "\r\n";
+    return [...lines, "END:VCALENDAR"].map(fold).join("\r\n") + "\r\n";
 }
