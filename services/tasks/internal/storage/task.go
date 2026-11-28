@@ -45,9 +45,23 @@ func tasksWithCatalog(query *gorm.DB) *gorm.DB {
 		Joins("LEFT JOIN priorities ON priorities.id = tasks.priority_id")
 }
 
-func (s *TaskStorage) GetMine(ctx context.Context, authorID, taskUUID string) (models.MyTaskDetails, error) {
-	var task models.MyTaskDetails
-	err := tasksWithCatalog(s.myTasksQuery(ctx, authorID)).
+func (s *TaskStorage) GetMine(ctx context.Context, authorID, taskUUID string) (models.TaskDetails, error) {
+	return getTaskDetails(s.myTasksQuery(ctx, authorID), taskUUID)
+}
+
+func (s *TaskStorage) GetInQueue(ctx context.Context, viewerID, queueCode, taskUUID string) (models.TaskDetails, error) {
+	var task models.TaskDetails
+	err := s.withQueueView(ctx, viewerID, queueCode, func(query *gorm.DB) error {
+		var err error
+		task, err = getTaskDetails(query, taskUUID)
+		return err
+	})
+	return task, err
+}
+
+func getTaskDetails(query *gorm.DB, taskUUID string) (models.TaskDetails, error) {
+	var task models.TaskDetails
+	err := tasksWithCatalog(query).
 		Select(taskSummaryColumns+`, tasks.description, COALESCE(tasks.direction_id, 0) AS direction_id,
 			tasks.updated_at, tasks.version, COALESCE(tasks.form_version, 0) AS form_version,
 			tasks.extra_fields, forms.schema AS form_schema`).
@@ -91,8 +105,17 @@ func (s *TaskStorage) ListMine(ctx context.Context, authorID string, filter mode
 
 func (s *TaskStorage) ListQueue(ctx context.Context, viewerID, queueCode string, filter models.TaskListFilter, after *models.TaskListCursor, limit int) ([]models.TaskListItem, error) {
 	var tasks []models.TaskListItem
+	err := s.withQueueView(ctx, viewerID, queueCode, func(query *gorm.DB) error {
+		var err error
+		tasks, err = listTasks(query, filter, after, limit)
+		return err
+	})
+	return tasks, err
+}
+
+func (s *TaskStorage) withQueueView(ctx context.Context, viewerID, queueCode string, read func(*gorm.DB) error) error {
 	// Check the grant and read tasks from the same database snapshot.
-	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var grant models.QueueViewAccess
 		err := tx.Take(&grant, "queue_code = ? AND user_uuid = ?", queueCode, viewerID).Error
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -101,11 +124,8 @@ func (s *TaskStorage) ListQueue(ctx context.Context, viewerID, queueCode string,
 		if err != nil {
 			return err
 		}
-		query := tx.Model(&models.Task{}).Where("tasks.queue_id = ?", queueCode)
-		tasks, err = listTasks(query, filter, after, limit)
-		return err
+		return read(tx.Model(&models.Task{}).Where("tasks.queue_id = ?", queueCode))
 	}, &sql.TxOptions{Isolation: sql.LevelRepeatableRead, ReadOnly: true})
-	return tasks, err
 }
 
 func listTasks(query *gorm.DB, filter models.TaskListFilter, after *models.TaskListCursor, limit int) ([]models.TaskListItem, error) {

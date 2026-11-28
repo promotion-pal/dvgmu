@@ -41,24 +41,36 @@ func NewTaskService(storage *storage.TaskStorage, numberLocation *time.Location)
 	return &TaskService{storage: storage, numberLocation: numberLocation}
 }
 
-func (s *TaskService) GetMine(ctx context.Context, applicantID, taskUUID string) (models.MyTaskDetails, error) {
-	id, err := validateMyTaskLookup(applicantID, taskUUID)
+func (s *TaskService) GetMine(ctx context.Context, applicantID, taskUUID string) (models.TaskDetails, error) {
+	id, err := validateTaskLookup(applicantID, taskUUID)
 	if err != nil {
-		return models.MyTaskDetails{}, err
+		return models.TaskDetails{}, err
 	}
 	return s.storage.GetMine(ctx, applicantID, id)
 }
 
+func (s *TaskService) GetInQueue(ctx context.Context, viewerID, queueCode, taskUUID string) (models.TaskDetails, error) {
+	id, err := validateTaskLookup(viewerID, taskUUID)
+	if err != nil {
+		return models.TaskDetails{}, err
+	}
+	queueCode = strings.TrimSpace(queueCode)
+	if !validQueueLookupCode(queueCode) {
+		return models.TaskDetails{}, fmt.Errorf("%w: provide a valid queue_code", ErrInvalidTask)
+	}
+	return s.storage.GetInQueue(ctx, viewerID, queueCode, id)
+}
+
 func (s *TaskService) GetHistoryMine(ctx context.Context, applicantID, taskUUID string) ([]models.MyTaskHistoryEvent, error) {
-	id, err := validateMyTaskLookup(applicantID, taskUUID)
+	id, err := validateTaskLookup(applicantID, taskUUID)
 	if err != nil {
 		return nil, err
 	}
 	return s.storage.GetHistoryMine(ctx, applicantID, id)
 }
 
-func validateMyTaskLookup(applicantID, taskUUID string) (string, error) {
-	if strings.TrimSpace(applicantID) == "" {
+func validateTaskLookup(userID, taskUUID string) (string, error) {
+	if strings.TrimSpace(userID) == "" {
 		return "", ErrTaskApplicantRequired
 	}
 	id, err := uuid.Parse(taskUUID)

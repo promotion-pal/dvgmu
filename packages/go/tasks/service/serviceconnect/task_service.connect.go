@@ -45,6 +45,9 @@ const (
 	// TaskServiceListQueueTasksProcedure is the fully-qualified name of the TaskService's
 	// ListQueueTasks RPC.
 	TaskServiceListQueueTasksProcedure = "/tasks.service.TaskService/ListQueueTasks"
+	// TaskServiceGetQueueTaskProcedure is the fully-qualified name of the TaskService's GetQueueTask
+	// RPC.
+	TaskServiceGetQueueTaskProcedure = "/tasks.service.TaskService/GetQueueTask"
 )
 
 // TaskServiceClient is a client for the tasks.service.TaskService service.
@@ -55,6 +58,8 @@ type TaskServiceClient interface {
 	GetMyTaskHistory(context.Context, *connect.Request[service.GetMyTaskHistoryRequest]) (*connect.Response[service.GetMyTaskHistoryResponse], error)
 	// Requires a personal view grant for the requested queue.
 	ListQueueTasks(context.Context, *connect.Request[service.ListQueueTasksRequest]) (*connect.Response[service.ListQueueTasksResponse], error)
+	// Requires a personal view grant and a task currently in the requested queue.
+	GetQueueTask(context.Context, *connect.Request[service.GetQueueTaskRequest]) (*connect.Response[service.GetQueueTaskResponse], error)
 }
 
 // NewTaskServiceClient constructs a client for the tasks.service.TaskService service. By default,
@@ -98,6 +103,12 @@ func NewTaskServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(taskServiceMethods.ByName("ListQueueTasks")),
 			connect.WithClientOptions(opts...),
 		),
+		getQueueTask: connect.NewClient[service.GetQueueTaskRequest, service.GetQueueTaskResponse](
+			httpClient,
+			baseURL+TaskServiceGetQueueTaskProcedure,
+			connect.WithSchema(taskServiceMethods.ByName("GetQueueTask")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -108,6 +119,7 @@ type taskServiceClient struct {
 	getMyTask        *connect.Client[service.GetMyTaskRequest, service.GetMyTaskResponse]
 	getMyTaskHistory *connect.Client[service.GetMyTaskHistoryRequest, service.GetMyTaskHistoryResponse]
 	listQueueTasks   *connect.Client[service.ListQueueTasksRequest, service.ListQueueTasksResponse]
+	getQueueTask     *connect.Client[service.GetQueueTaskRequest, service.GetQueueTaskResponse]
 }
 
 // CreateTask calls tasks.service.TaskService.CreateTask.
@@ -135,6 +147,11 @@ func (c *taskServiceClient) ListQueueTasks(ctx context.Context, req *connect.Req
 	return c.listQueueTasks.CallUnary(ctx, req)
 }
 
+// GetQueueTask calls tasks.service.TaskService.GetQueueTask.
+func (c *taskServiceClient) GetQueueTask(ctx context.Context, req *connect.Request[service.GetQueueTaskRequest]) (*connect.Response[service.GetQueueTaskResponse], error) {
+	return c.getQueueTask.CallUnary(ctx, req)
+}
+
 // TaskServiceHandler is an implementation of the tasks.service.TaskService service.
 type TaskServiceHandler interface {
 	CreateTask(context.Context, *connect.Request[service.CreateTaskRequest]) (*connect.Response[service.CreateTaskResponse], error)
@@ -143,6 +160,8 @@ type TaskServiceHandler interface {
 	GetMyTaskHistory(context.Context, *connect.Request[service.GetMyTaskHistoryRequest]) (*connect.Response[service.GetMyTaskHistoryResponse], error)
 	// Requires a personal view grant for the requested queue.
 	ListQueueTasks(context.Context, *connect.Request[service.ListQueueTasksRequest]) (*connect.Response[service.ListQueueTasksResponse], error)
+	// Requires a personal view grant and a task currently in the requested queue.
+	GetQueueTask(context.Context, *connect.Request[service.GetQueueTaskRequest]) (*connect.Response[service.GetQueueTaskResponse], error)
 }
 
 // NewTaskServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -182,6 +201,12 @@ func NewTaskServiceHandler(svc TaskServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(taskServiceMethods.ByName("ListQueueTasks")),
 		connect.WithHandlerOptions(opts...),
 	)
+	taskServiceGetQueueTaskHandler := connect.NewUnaryHandler(
+		TaskServiceGetQueueTaskProcedure,
+		svc.GetQueueTask,
+		connect.WithSchema(taskServiceMethods.ByName("GetQueueTask")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/tasks.service.TaskService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case TaskServiceCreateTaskProcedure:
@@ -194,6 +219,8 @@ func NewTaskServiceHandler(svc TaskServiceHandler, opts ...connect.HandlerOption
 			taskServiceGetMyTaskHistoryHandler.ServeHTTP(w, r)
 		case TaskServiceListQueueTasksProcedure:
 			taskServiceListQueueTasksHandler.ServeHTTP(w, r)
+		case TaskServiceGetQueueTaskProcedure:
+			taskServiceGetQueueTaskHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -221,4 +248,8 @@ func (UnimplementedTaskServiceHandler) GetMyTaskHistory(context.Context, *connec
 
 func (UnimplementedTaskServiceHandler) ListQueueTasks(context.Context, *connect.Request[service.ListQueueTasksRequest]) (*connect.Response[service.ListQueueTasksResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("tasks.service.TaskService.ListQueueTasks is not implemented"))
+}
+
+func (UnimplementedTaskServiceHandler) GetQueueTask(context.Context, *connect.Request[service.GetQueueTaskRequest]) (*connect.Response[service.GetQueueTaskResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("tasks.service.TaskService.GetQueueTask is not implemented"))
 }

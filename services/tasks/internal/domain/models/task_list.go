@@ -15,7 +15,7 @@ type TaskListItem struct {
 	PriorityName string
 }
 
-type MyTaskDetails struct {
+type TaskDetails struct {
 	TaskListItem `gorm:"embedded"`
 	Description  string
 	DirectionID  int64

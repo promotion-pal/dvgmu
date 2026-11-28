@@ -14,6 +14,8 @@ service TaskService {
   rpc GetMyTaskHistory(GetMyTaskHistoryRequest) returns (GetMyTaskHistoryResponse);
   // Requires a personal view grant for the requested queue.
   rpc ListQueueTasks(ListQueueTasksRequest) returns (ListQueueTasksResponse);
+  // Requires a personal view grant and a task currently in the requested queue.
+  rpc GetQueueTask(GetQueueTaskRequest) returns (GetQueueTaskResponse);
 }
 
 message CreateTaskRequest {
@@ -132,4 +134,18 @@ message ListQueueTasksResponse {
   // Ordered by creation time and UUID, newest first.
   repeated QueueTaskListItem tasks = 1;
   QueueTasksCursor next_cursor = 2;
+}
+
+message GetQueueTaskRequest {
+  string queue_code = 1;
+  string uuid = 2;
+}
+
+message GetQueueTaskResponse {
+  tasks.entity.Task task = 1;
+  string service_name = 2;
+  string status_name = 3;
+  string priority_name = 4;
+  // The form version recorded on the task. Absent if submitted without a saved form.
+  tasks.entity.ServiceFormSchema form_schema = 5;
 }

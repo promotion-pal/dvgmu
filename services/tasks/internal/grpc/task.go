@@ -8,6 +8,7 @@ import (
 
 	"connectrpc.com/connect"
 	"dvgmu/tasks/internal/access"
+	"dvgmu/tasks/internal/domain/models"
 	"dvgmu/tasks/internal/service"
 	"dvgmu/tasks/internal/storage"
 	entity "fesmu/contract/tasks/entity"
@@ -60,29 +61,55 @@ func (c *TaskController) GetMyTask(ctx context.Context, req *connect.Request[api
 	if err != nil {
 		return nil, c.taskReadError(err, failureMessage)
 	}
+	task, formSchema, err := taskDetailsMessage(details)
+	if err != nil {
+		return nil, c.rpcError(err, failureMessage)
+	}
+	return connect.NewResponse(&api.GetMyTaskResponse{
+		Task: task, FormSchema: formSchema,
+		ServiceName: details.ServiceName, StatusName: details.StatusName, PriorityName: details.PriorityName,
+	}), nil
+}
 
+func (c *TaskController) GetQueueTask(ctx context.Context, req *connect.Request[api.GetQueueTaskRequest]) (*connect.Response[api.GetQueueTaskResponse], error) {
+	const failureMessage = "loading queue task failed"
+	viewer, err := c.applicant.Resolve(ctx, req.Header())
+	if err != nil {
+		return nil, err
+	}
+	details, err := c.service.GetInQueue(ctx, viewer.ID, req.Msg.QueueCode, req.Msg.Uuid)
+	if err != nil {
+		return nil, c.taskReadError(err, failureMessage)
+	}
+	task, formSchema, err := taskDetailsMessage(details)
+	if err != nil {
+		return nil, c.rpcError(err, failureMessage)
+	}
+	return connect.NewResponse(&api.GetQueueTaskResponse{
+		Task: task, FormSchema: formSchema,
+		ServiceName: details.ServiceName, StatusName: details.StatusName, PriorityName: details.PriorityName,
+	}), nil
+}
+
+func taskDetailsMessage(details models.TaskDetails) (*entity.Task, *entity.ServiceFormSchema, error) {
 	extraFields := &structpb.Struct{}
 	if err := protojson.Unmarshal([]byte(details.ExtraFields), extraFields); err != nil {
-		return nil, c.rpcError(fmt.Errorf("decode stored task fields: %w", err), failureMessage)
+		return nil, nil, fmt.Errorf("decode stored task fields: %w", err)
 	}
 	var formSchema *entity.ServiceFormSchema
 	if details.FormSchema != nil {
 		formSchema = &entity.ServiceFormSchema{}
 		if err := protojson.Unmarshal([]byte(*details.FormSchema), formSchema); err != nil {
-			return nil, c.rpcError(fmt.Errorf("decode stored task form: %w", err), failureMessage)
+			return nil, nil, fmt.Errorf("decode stored task form: %w", err)
 		}
 	}
 
-	return connect.NewResponse(&api.GetMyTaskResponse{
-		Task: &entity.Task{
-			Uuid: details.UUID, Number: details.Number, Title: details.Title, Description: details.Description,
-			CreatedAt: timestamppb.New(details.CreatedAt), UpdatedAt: timestamppb.New(details.UpdatedAt), Version: details.Version,
-			ServiceId: details.ServiceID, DirectionId: details.DirectionID, StatusId: details.StatusID, PriorityId: details.PriorityID,
-			FormVersion: details.FormVersion, ExtraFields: extraFields,
-		},
-		ServiceName: details.ServiceName, StatusName: details.StatusName, PriorityName: details.PriorityName,
-		FormSchema: formSchema,
-	}), nil
+	return &entity.Task{
+		Uuid: details.UUID, Number: details.Number, Title: details.Title, Description: details.Description,
+		CreatedAt: timestamppb.New(details.CreatedAt), UpdatedAt: timestamppb.New(details.UpdatedAt), Version: details.Version,
+		ServiceId: details.ServiceID, DirectionId: details.DirectionID, StatusId: details.StatusID, PriorityId: details.PriorityID,
+		FormVersion: details.FormVersion, ExtraFields: extraFields,
+	}, formSchema, nil
 }
 
 func (c *TaskController) GetMyTaskHistory(ctx context.Context, req *connect.Request[api.GetMyTaskHistoryRequest]) (*connect.Response[api.GetMyTaskHistoryResponse], error) {
